@@ -1,7 +1,7 @@
 #!/bin/bash  
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.3 2003/11/06 01:46:43 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.4 2003/11/11 15:01:12 zhen Exp $
 
 # Original work done by livewire@gentoo.org and drobbins@gentoo.org
 # Adapted to a catalyst plugin by zhen@gentoo.org
@@ -19,6 +19,7 @@
 # ISO_ROOT				iso (build?) location					-
 # LOOP_FILE				?										-
 # CLOOP_FILE			cloop defs?								-
+# STOREDIR				temp dir for building					clst_storedir	
 
 # ok, now for mounting - all of this should be handled by catalyst itself.
 # catalyst_util.py should handle all of the code - rel_type just needs to be set to livecd.
@@ -44,17 +45,6 @@ mount_all() {
 	mount -o bind $CD_DISTDIR $CHROOT_PATH/home/distfiles || chroot_die
 }
 #####################################################################################
-
-# pre_fetch and build_setup can probably also be replaced by catalyst proper.
-# There is no reason for all of that to be defined here.
-
-pre_fetch() {
-	#extract stage tarball...
-	if [ ! -e "$CD_STAGEFILE" ] 
-	then
-		( cd $CD_STAGELOC; wget $CD_STAGETARBALL )
-	fi
-}
 
 build_setup() {
 	cat > $STOREDIR/build-setup << EOF
@@ -146,17 +136,6 @@ zapmost() {
 	done
 	rm -rf ${rootdir}*
 	mv ${STOREDIR}/zap/* ${rootdir}
-}
-
-chroot_die() {
-	umount_all
-	if [ -n "$1" ]
-	then
-		echo "chroot_generate: error: $1"
-	else
-		echo "chroot_generate: aborting."
-	fi
-	exit 1
 }
 
 #clean up if we are interrupted:
@@ -303,13 +282,6 @@ chroot_generate() {
 	umount_all
 }
 
-chroot_enter() {
-	umount_all
-	mount_all
-	chroot ${CHROOT_PATH}
-	umount_all
-}
-
 chroot_clean() {
 	umount_all
     #first do local modifications script
@@ -337,4 +309,9 @@ chroot_clean() {
 
 }
 
+case $1 in
+
+	enter)
+		clst_CHROOT clst_chroot_path
+	;;
 
