@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.163 2005/01/29 04:05:46 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.164 2005/01/29 04:07:00 wolf31o2 Exp $
+
+  28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1.sh:
+  Added killall for gconfd-2 back into livecd-stage1.sh
 
   28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/alpha-archscript.sh:
