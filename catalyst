@@ -9,10 +9,6 @@ if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()
 	sys.exit(1)
 
-import targets
-targetmap={}
-targets.register(targetmap)
-
 if os.getuid()!=0:
 	#non-root callers can't go any further than here. 
 	die("This script requires root privileges to operate.")	
@@ -41,9 +37,13 @@ for x in confdefaults.keys():
 sys.path.append(myspec["sharedir"]+"/modules")
 try:
 	from catalyst_support import *
+	import targets
 except ImportError:
-	print "catalyst: catalyst_support module not found in "+myspec["sharedir"]+"/modules; exiting."
+	print "catalyst: python modules not found in "+myspec["sharedir"]+"/modules; exiting."
 	sys.exit(1)
+
+targetmap={}
+targets.register(targetmap)
 
 if "ccache" in string.split(myspec["options"]):
 	print "Compiler cache support enabled."
