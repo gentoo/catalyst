@@ -23,14 +23,24 @@ if os.getuid()!=0:
 	die("This script requires root privileges to operate.")	
 
 myspec={}
-#these would come from /etc/catalyst.conf:
-myspec["storedir"]="/var/tmp/catalyst"
-#myspec["sharedir"]="/usr/share/catalyst"
-myspec["sharedir"]=os.getcwd()
-#these would come from there too?:
-myspec["distdir"]="/mnt/misc/distfiles"
-myspec["portdir"]="/usr/portage"
-myspec["options"]="ccache pkgcache"
+myconf={}
+if os.path.exists("/etc/catalyst.conf"):
+	try:
+		execfile("/etc/catalyst.conf",myconf,myconf)
+	except:
+		raise CatalystError, "Unable to read config file (syntax error)"
+
+confdefaults={ "storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",
+"portdir":"/usr/portage","options":"ccache"}
+
+for x in confdefaults.keys():
+	if myconf.has_key(x):
+		print "Setting",x,"to config file value \""+myconf[x]+"\""
+		myspec[x]=myconf[x]
+	else:
+		print "Setting",x,"to default value \""+confdefaults[x]+"\""
+		myspec[x]=confdefaults[x]
+
 if "ccache" in string.split(myspec["options"]):
 	print "Compiler cache support enabled."
 	myspec["CCACHE"]="1"
