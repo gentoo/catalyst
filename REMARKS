@@ -99,7 +99,10 @@ Building custom livecds such as the kde/gnome cd might involve running an extra 
 Update 25022004:
 ----------------
 
-It should be possible to describe what livecd init.d services should be added/removed, in the spec file.  
+It should be possible to describe what livecd init.d services should be added/removed, in the spec file. 
+
+If one has build 700M of GRP packages, these can be reused for assembling the livecd. Rebuilding all packages again
+is a time and resource wasting process.
 
 Pieter Van den Abeele
 pvdabeel@gentoo.org
