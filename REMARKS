@@ -1,0 +1,101 @@
+DESIGN REMARKS
+--------------
+
+- arch/ is perfect (strategy design pattern)
+
+- Catalyst 
+
+  idea:
+
+  PRE:    Valid configuration (correct command line options, configuration file,...) 
+  OK:     Run target defined in configuration
+  NOT OK: Show usage, version, display exception and stop program
+
+  Suggestions: 
+  	- create a catalyst configuration class (proxy design pattern), in its constructor 
+	  it parses sys.argv, returns a new object with configuration set, throw an exception
+	  if an error occurred. Preferably in a new file. This allows to migrate for instance
+	  to XML configuration later on, still allowing for the older format.
+	- global variables are not a good idea because they could be more easily overridden 
+	  unintentionally by a module.
+
+- spec/examples/kconfig:
+
+  Suggestions: 
+  	- Kernel .configs in examples/livecd and kconfig should be removed, as this is the 
+	  responsibility of genkernel?
+   	- Spec files in examples should be listed in spec/
+
+- examples/livecd:
+
+  Is there a reason this needs to be done in shell script rather than with a python class 
+  inheritance structure? I'm ok with reinventing inheritance using 'case' should something 
+  be required that cannot be realized using python. In any case, much needs to be improved:
+
+  chroot ${blabla} /bin/bash << EOF
+	body
+EOF
+
+  is prone to errors because people tend to use variables from outside the chroot in the body.
+  This also destroys indentation, and prevents reuse. A much better technique is the one used 
+  in the livecd script used by ppc (gentoo/users/pvdabeel/livecd):
+
+  ${_VARS_} chroot ${blabla} /livecd/install-kernel.sh
+  ${_VARS_} chroot ${blabla} /livecd/install-packages.sh
+  ${_VARS_} chroot ${blabla} /livecd/remove-packages.sh
+  ${_VARS_} chroot ${blabla} /livecd/hard-cleanup.sh
+  ${_VARS_} chroot ${blabla} /livecd/configure-runlevels.sh
+
+  This technique allows to define several tasks that need to be run inside the chroot. This is
+  very usefull: a kde/gnome livecd could feature an extra customize-desktop.sh task. 
+
+  Also, what happens with the mounts in the runscript on CTRL-C? 
+
+  Emerge genkernel fails for users needing a PROXY. the ${_VARS_} before the chroot allows one
+  to solve that problem. (same for ccache, distcc, cflags...). No need to write an if then else
+  for each of them.
+
+- files:
+  Should be considered specs.
+
+- modules/targets.py:
+  A target file for each target class, comments needed for each class. 
+  Generic_stage_target contains hardcoded data that should be provided in the specs (targetmap,
+  machinemap)
+
+- modules/targets.py <-> targets/
+ 
+  The remark about chroot applies. The technique is illustrated in the ppc livecd script.
+  The targets/ definitely need a cleanup (is livecd/livecd.sh used?). zapmost is never called.
+  Have only looked at the livecd part. Stage part needs rework, e.g: stage1 still uses packages.build
+  rather than a spec file?
+
+RUNTIME REMARKS
+---------------
+
+Variables format in /etc/catalyst.conf differs from other gentoo config files. A common approach is needed.
+
+There is catalyst stuff in make.conf: GRP_STAGE23_USE, does a package know when it is rebuild whether is should
+use these USE flags rather than those set in usr/portage/profiles/.../make.defaults? This should become a spec.
+
+How to declare proxy settings to catalyst?
+
+Specs use different settings than config
+
+The availability of a snapshot is a pre-requirement for both stages/grp and livecd. PRE requirements should
+be checked before doing work such as unpacking the stage. (remember: user leaves computer and returns the day
+after and sees no snapshot was available.) 
+
+Incremental building requirement for livecds. If building the kernel failed in the live environment, there is no 
+need to unpack the stage3 again, install the kernel again. We only need to reconfigure it. PPC livecd scripts 
+behave like this. This allows to CTRL-C the livecd building, chroot into the live environment, make a few changes
+and restart the script. (trick is to touch files on specific milestones).
+
+I still don't know what livecd-stage1, stage2 stage3 is supposed to do. Comments/instructions needed.
+
+Building custom livecds such as the kde/gnome cd might involve running an extra script inside the live environment
+(to modify motd, issue, ...). See design remarks about targets and ppc livecd script.
+
+
+Pieter Van den Abeele
+pvdabeel@gentoo.org
