@@ -69,14 +69,14 @@ class arch_athlon_xp(generic_x86):
 class arch_pentium4(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=pentium4 -fomit-frame-pointer -finline-functions -finline-limit=800"
+		self.settings["CFLAGS"]="-O2 -march=pentium4 -fomit-frame-pointer"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 
 class arch_pentium3(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=pentium3 -fomit-frame-pointer -finline-functions -finline-limit=800"
+		self.settings["CFLAGS"]="-O2 -march=pentium3 -fomit-frame-pointer"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 
