@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.13 2004/10/01 02:48:08 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.14 2004/10/05 13:22:06 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -321,12 +321,6 @@ class generic_stage_target(generic_target):
 			myf.write('CXXFLAGS="${CFLAGS}"\n')
 		myf.close()
 
-		#create entry in /etc/passwd for distcc user
-		if self.settings.has_key("DISTCC"): 
-			myf=open(self.settings["chroot_path"]+"/etc/passwd","a")
-			myf.write("distcc:x:7980:2:distccd:/dev/null:/bin/false\n")
-			myf.close()
-		
 	def clean(self):
 		destpath=self.settings["chroot_path"]
 		
@@ -348,17 +342,6 @@ class generic_stage_target(generic_target):
 			"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
-		# cleanup after distcc
-		if self.settings.has_key("DISTCC"):
-			myf=open(self.settings["chroot_path"]+"/etc/passwd","r")
-			outf=open(self.settings["chroot_path"]+"/tmp/out.txt","w")
-			for line in myf:
-				if not line.startswith("distcc:"):
-					outf.write(line)
-			myf.close()
-			outf.close()
-			os.rename(self.settings["chroot_path"]+"/tmp/out.txt",self.settings["chroot_path"]+"/etc/passwd")
-						
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+\
 				"/"+self.settings["target"]+".sh preclean","preclean script failed.")
@@ -437,10 +420,6 @@ class generic_stage_target(generic_target):
 		# unbind everything here so that we can clean()
 		self.unbind()
 		
-		# kill distcc processes outside of the chroot
-		if self.settings.has_key("DISTCC"): 
-			cmd("/usr/bin/pkill -U 7980","could not kill distcc process(es)")
-
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
 			# clean is for removing things after bind-mounts are 
 			# unmounted (general file removal and cleanup)

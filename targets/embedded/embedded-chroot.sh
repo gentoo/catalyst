@@ -1,15 +1,12 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.7 2004/09/08 15:58:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.8 2004/10/05 13:22:06 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
 
-if [ -f /tmp/envscript ]
-then
-	source /tmp/envscript
-fi
+[ -f /tmp/envscript ] && source /tmp/envscript
 
 if [ -n "${clst_CCACHE}" ]
 then
@@ -23,8 +20,6 @@ then
 	export DISTCC_HOSTS="${clst_distcc_hosts}"
 
 	USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
-	/usr/bin/distcc-config --install 2>&1 > /dev/null
-	/usr/bin/distccd 2>&1 > /dev/null
 fi
 
 if [ -n "${clst_PKGCACHE}" ]

@@ -1,16 +1,12 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.6 2004/09/08 15:58:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.7 2004/10/05 13:22:07 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
 
-if [ -f /tmp/envscript ]
-then
-	source /tmp/envscript
-	rm -f /tmp/envscript
-fi
+[ -f /tmp/envscript ] && source /tmp/envscript
 
 if [ -n "${clst_CCACHE}" ]
 then
@@ -24,8 +20,6 @@ then
 	export DISTCC_HOSTS="${clst_distcc_hosts}"
 
 	USE="-gnome -gtk" emerge --oneshot --nodeps -b -k distcc || exit 1
-	/usr/bin/distcc-config --install 2>&1 > /dev/null
-	/usr/bin/distccd 2>&1 > /dev/null
 fi
 
 # setup the environment
