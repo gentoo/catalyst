@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.12 2004/04/14 22:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.13 2004/06/04 14:03:46 zhen Exp $
 
 case $1 in
 	enter)
@@ -27,9 +27,9 @@ case $1 in
 		#preclean runs with bind mounts active -- for running any commands inside chroot
 		
 		#first we cleanup after ourselves
-		cp ${clst_sharedir}/targets/stage1/stage1-preclean1-chroot.sh ${clst_chroot_path}/tmp
-        ${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-preclean1-chroot.sh || exit 1
-        rm -f ${clst_chroot_path}/tmp/stage1-preclean1-chroot.sh
+		#cp ${clst_sharedir}/targets/stage1/stage1-preclean1-chroot.sh ${clst_chroot_path}/tmp
+        #${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-preclean1-chroot.sh || exit 1
+        #rm -f ${clst_chroot_path}/tmp/stage1-preclean1-chroot.sh
 
 		#second we do the gcc magic
 		cp ${clst_sharedir}/targets/stage1/stage1-preclean2-chroot.sh ${clst_chroot_path}/tmp/stage1root/tmp

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.1 2004/05/17 01:21:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.2 2004/06/04 14:03:46 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -231,6 +231,12 @@ class generic_stage_target(generic_target):
 		else:
 			myf.write('CXXFLAGS="${CFLAGS}"\n')
 		myf.close()
+
+		#create entry in /etc/passwd for distcc user
+		if self.settings.has_key("DISTCC"): 
+			myf=open(self.settings["chroot_path"]+"/etc/passwd","a")
+			myf.write("distcc:x:7980:2:distccd:/dev/null:/bin/false\n")
+			myf.close()
 		
 	def clean(self):
 		destpath=self.settings["chroot_path"]
@@ -246,6 +252,7 @@ class generic_stage_target(generic_target):
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
+		
 		if self.settings["target"]=="livecd-stage2":
 			if self.settings.has_key("livecd/empty"):
 				if type(self.settings["livecd/empty"])==types.StringType:
@@ -273,6 +280,17 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
+		#cleanup after distcc
+		if self.settings.has_key("DISTCC"):
+			myf=open(self.settings["chroot_path"]+"/etc/passwd","r")
+			outf=open(self.settings["chroot_path"]+"/tmp/out.txt","w")
+			for line in myf:
+				if not line.startswith("distcc:"):
+					outf.write(line)
+			myf.close()
+			outf.close()
+			os.rename(self.settings["chroot_path"]+"/tmp/out.txt",self.settings["chroot_path"]+"/etc/passwd")
+			cmd("/usr/bin/pkill -U 7980","could not kill distcc process(es)")
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
 		except:

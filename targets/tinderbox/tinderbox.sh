@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.8 2004/04/14 22:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.9 2004/06/04 14:03:46 zhen Exp $
 
 case $1 in
 	run)
@@ -13,9 +13,10 @@ case $1 in
 	;;
 
 	preclean)
-        cp ${clst_sharedir}/targets/grp/tinderbox-preclean-chroot.sh ${clst_chroot_path}/tmp
-        ${clst_CHROOT} ${clst_chroot_path} /tmp/tinderbox-preclean-chroot.sh || exit 1
-        rm -f ${clst_chroot_path}/tmp/tinderbox-preclean-chroot.sh
+        #cp ${clst_sharedir}/targets/grp/tinderbox-preclean-chroot.sh ${clst_chroot_path}/tmp
+        #${clst_CHROOT} ${clst_chroot_path} /tmp/tinderbox-preclean-chroot.sh || exit 1
+        #rm -f ${clst_chroot_path}/tmp/tinderbox-preclean-chroot.sh
+		exit 0
     ;;
 
     clean)

@@ -1,6 +1,21 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.57 2004/06/02 06:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.58 2004/06/04 14:03:46 zhen Exp $
+
+  04 Jun 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
+  targets/embedded/embedded-chroot.sh,
+  targets/embedded/embedded-preclean-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/grp/grp-preclean-chroot.sh, targets/grp/grp.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage1/stage1-preclean1-chroot.sh, targets/stage1/stage1.sh,
+  targets/stage2/stage2-chroot.sh, targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-chroot.sh, targets/stage3/stage3-preclean-chroot.sh,
+  targets/tinderbox/tinderbox-chroot.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh,
+  targets/tinderbox/tinderbox.sh:
+  Fixes bug 51603, a lot of distcc fixups (has to do w/ bind mounts and such)
 
   02 Jun 2004; John Davis <zhen@gentoo.org> modules/snapshot_target.py:
   Fixes to address bugs #51072 and #52045. The snapshot logic was tweaked to be
