@@ -506,12 +506,12 @@ class livecd_stage3_target(generic_stage_target):
 			self.unbind()
 			raise
 
-#	def clean(self):
-#		try:
-#			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
-#		except:
-#			self.unbind()
-#			raise
+	def clean(self):
+		try:
+			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
+		except:
+			self.unbind()
+			raise
 
 	def cdroot_setup(self):
 		if os.path.exists(self.settings["cdroot_path"]):
