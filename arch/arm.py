@@ -23,7 +23,7 @@ class arch_armv4l(generic_arm):
 	"Builder class for armv4l (StrongArm-110) target"
 	def __init__(self,myspec):
 		generic_arm.__init__(self,myspec)
-		self.settings["CFLAGS"]+=" -march=strongarm110"
+		self.settings["CFLAGS"]+=" -mcpu=strongarm110"
 		self.settings["CHOST"]="armv4l-unknown-linux-gnu"
 
 def register(foo):
