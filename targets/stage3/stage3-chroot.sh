@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.1 2004/04/12 14:39:35 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.2 2004/04/14 00:17:59 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -24,7 +24,9 @@ then
 	export DISTCC_HOSTS="${clst_distcc_hosts}"
 
 	USE="-gnome -gtk" emerge --oneshot --nodeps distcc || exit 1
-	echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
+	cat /etc/passwd
+	sleep 10
+	echo "distcc:x:7980:2:distccd:/dev/null:/bin/false" >> /etc/passwd
 	/usr/bin/distcc-config --install 2>&1 > /dev/null
 	/usr/bin/distccd 2>&1 > /dev/null
 fi

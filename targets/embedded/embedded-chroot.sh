@@ -1,16 +1,10 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.1 2004/04/12 14:38:26 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.2 2004/04/14 00:17:59 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
-
-if [ -n "${clst_ENVSCRIPT}" ]
-then
-	source /tmp/envscript
-	rm -f /tmp/envscript
-fi
 
 if [ -n "${clst_CCACHE}" ]
 then
