@@ -1,6 +1,19 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.65 2004/06/16 18:34:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.66 2004/06/18 18:06:21 zhen Exp $
+
+  18 Jun 2004; John Davis <zhen@gentoo.org> catalyst,
+  modules/catalyst_support.py, modules/generic_stage_target.py,
+  targets/stage1/build.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh:
+  stage resuming functionality should be working. I still have to work on GRP
+  and livecds, but they should not be hard. I could not incorporate emerge
+  --resume into stage resuming functionality because in some instances, portage
+  is remerged (bootstrap, stage2), which wipes out the resume data and puts
+  catalyst into an infinite portage merging loop (very unproductive, trust me ;)
+  ). I also made some small tweaks to the stage target scripts which clean up
+  the envscript stuff. Not noticable performance wise, but it makes me feel all
+  warm and fuzzy to know that it is programmed absolutely correctly ;)
 
   16 Jun 2004; John Davis <zhen@gentoo.org> TODO, modules/catalyst_support.py,
   modules/generic_stage_target.py:

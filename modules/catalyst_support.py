@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.23 2004/06/16 18:34:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.24 2004/06/18 18:06:21 zhen Exp $
 
 import sys,string,os,types
 
@@ -18,6 +18,7 @@ valid_config_file_values.append("PKGCACHE")
 valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
+valid_config_file_values.append("AUTORESUME")
 valid_config_file_values.append("options")
 
 verbosity=1
@@ -90,7 +91,7 @@ def cmd(mycmd,myexc=""):
 		if retval != 0:
 			raise CatalystError,myexc
 	except KeyboardInterrupt:
-		raise CatalystError,"Build aborting due to user intervention"
+		raise CatalystError,"Caught SIGINT, aborting."
 
 def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and

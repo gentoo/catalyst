@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.37 2004/06/13 15:18:49 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.38 2004/06/18 18:06:21 zhen Exp $
 
 import os,sys,imp,string
 
@@ -94,6 +94,10 @@ if "pkgcache" in string.split(myspec["options"]):
 if "distcc" in string.split(myspec["options"]):
 	print "Distcc support enabled."
 	myspec["DISTCC"]="1"
+
+if "autoresume" in string.split(myspec["options"]):
+	print "Autoresuming support enabled."
+	myspec["AUTORESUME"]="1"
 
 if myconf.has_key("envscript"):
 	print "Envscript support enabled."

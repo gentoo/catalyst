@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.3 2004/06/16 18:34:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.4 2004/06/18 18:06:21 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -147,11 +147,11 @@ class generic_stage_target(generic_target):
 	def dir_setup(self):
 		print "Setting up directories..."
 		self.mount_safety_check()
-		if not os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
-			cmd("rm -rf "+self.settings["chroot_path"],"Could not remove existing directory: "+self.settings["chroot_path"])
-		else:
+		if self.settings.has_key("AUTORESUME") and os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
 			print "Directories previously setup, resuming..."
-			
+		else:
+			cmd("rm -rf "+self.settings["chroot_path"],"Could not remove existing directory: "+self.settings["chroot_path"])
+
 		if not os.path.exists(self.settings["chroot_path"]):
 			os.makedirs(self.settings["chroot_path"])
 		if self.settings.has_key("PKGCACHE"):	
@@ -159,7 +159,9 @@ class generic_stage_target(generic_target):
 				os.makedirs(self.settings["pkgcache_path"])
 					
 	def unpack_and_bind(self):
-		if not os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
+		if self.settings.has_key("AUTORESUME") and os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
+			print "CHROOT previously unpacked and bind mounted, resuming..."
+		else:
 			print "Unpacking stage tarball..."
 			cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],"Error unpacking tarball")
 			if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
@@ -171,9 +173,7 @@ class generic_stage_target(generic_target):
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile","Error zapping profile link")
 			cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+" "+self.settings["chroot_path"]+"/etc/make.profile","Error creating profile link")
 			touch(self.settings["chroot_path"]+"/tmp/unpacked")
-		else:
-			print "CHROOT previously unpacked and bind mounted, resuming..."
-		
+				
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
@@ -208,49 +208,47 @@ class generic_stage_target(generic_target):
 			raise CatalystError,"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
-		if not os.path.exists(self.settings["chroot_path"]+"/tmp/chroot_setup"):
-			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
-			if self.settings.has_key("ENVSCRIPT"):
-				if not os.path.exists(self.settings["ENVSCRIPT"]):
-					raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
-				cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript","Could not copy envscript into place.")
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
+		print "Setting up chroot..."
+		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
+		if self.settings.has_key("ENVSCRIPT"):
+			if not os.path.exists(self.settings["ENVSCRIPT"]):
+				raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
+			cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript","Could not copy envscript into place.")
+		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
 
-			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
-			myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
-			myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
-			myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
-			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
-			myusevars=[]
-			if self.settings.has_key("HOSTUSE"):
-				myusevars.extend(self.settings["HOSTUSE"])
-			if self.settings["target"]=="grp":
-				myusevars.append("bindist")
-				myusevars.extend(self.settings["grp/use"])
-				myf.write('USE="'+string.join(myusevars)+'"\n')
-			elif self.settings["target"]=="tinderbox":
-				myusevars.extend(self.settings["tinderbox/use"])
-				myf.write('USE="'+string.join(myusevars)+'"\n')
-			elif self.settings["target"]=="livecd-stage1":
-				myusevars.extend(self.settings["livecd/use"])
-				myf.write('USE="'+string.join(myusevars)+'"\n')
-			elif self.settings["target"]=="embedded":
-				myusevars.extend(self.settings["embedded/use"])
-				myf.write('USE="'+string.join(myusevars)+'"\n')
-			if self.settings.has_key("CXXFLAGS"):
-				myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
-			else:
-				myf.write('CXXFLAGS="${CFLAGS}"\n')
-			myf.close()
-
-			#create entry in /etc/passwd for distcc user
-			if self.settings.has_key("DISTCC"): 
-				myf=open(self.settings["chroot_path"]+"/etc/passwd","a")
-				myf.write("distcc:x:7980:2:distccd:/dev/null:/bin/false\n")
-				myf.close()
-			touch(self.settings["chroot_path"]+"/tmp/chroot_setup")
+		myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
+		myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
+		myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
+		myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
+		myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
+		myusevars=[]
+		if self.settings.has_key("HOSTUSE"):
+			myusevars.extend(self.settings["HOSTUSE"])
+		if self.settings["target"]=="grp":
+			myusevars.append("bindist")
+			myusevars.extend(self.settings["grp/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
+		elif self.settings["target"]=="tinderbox":
+			myusevars.extend(self.settings["tinderbox/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
+		elif self.settings["target"]=="livecd-stage1":
+			myusevars.extend(self.settings["livecd/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
+		elif self.settings["target"]=="embedded":
+			myusevars.extend(self.settings["embedded/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
+		if self.settings.has_key("CXXFLAGS"):
+			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		else:
-			print "CHROOT previously setup, resuming..."
+			myf.write('CXXFLAGS="${CFLAGS}"\n')
+		myf.close()
+
+		#create entry in /etc/passwd for distcc user
+		if self.settings.has_key("DISTCC"): 
+			myf=open(self.settings["chroot_path"]+"/etc/passwd","a")
+			myf.write("distcc:x:7980:2:distccd:/dev/null:/bin/false\n")
+			myf.close()
+		touch(self.settings["chroot_path"]+"/tmp/chroot_setup")
 		
 	def clean(self):
 		destpath=self.settings["chroot_path"]
