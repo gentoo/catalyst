@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.19 2004/12/16 03:49:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.20 2004/12/16 17:51:23 wolf31o2 Exp $
 
 #return codes to be used by archscript
 die() {
@@ -145,11 +145,26 @@ case $1 in
 			${clst_chroot_path}/root/.bash_profile
 		cp -a ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
+
+		# touch /etc/startx if our livecd/type requires it
+		if [ "${clst_livecd_type}" = "gentoo-release-environmental" ] \
+		|| [ "${clst_livecd_type}" = "gentoo-gamecd" ]
+		then
+			touch ${clst_chroot_path}/etc/startx
+		fi
 		
 		# now, finalize and tweak the livecd fs (inside of the chroot)
 		cp ${clst_sharedir}/livecd/runscript-support/livecdfs-update.sh ${clst_chroot_path}/tmp
 		${clst_CHROOT} ${clst_chroot_path} /tmp/livecdfs-update.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/livecdfs-update.sh
+
+		# execute gamecdfs-update.sh if we're a gamecd
+		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
+		then
+			cp ${clst_sharedir}/livecd/runscript-support/gamecdfs-update.sh ${clst_chroot_path}/tmp
+			${clst_CHROOT} ${clst_chroot_path} /tmp/gamecdfs-update.sh || exit 1
+			rm -f ${clst_chroot_path}/tmp/gamecdfs-update.sh
+		fi
 		
 		# if the user has their own fs update script, execute it
 		if [ -n "${clst_livecd_fsscript}" ]

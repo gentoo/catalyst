@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.23 2004/12/16 03:49:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.24 2004/12/16 17:51:23 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -20,11 +20,17 @@ rc-update del netmount default
 rc-update add autoconfig default
 rc-update del keymaps
 rc-update del consolefont
-rc-update add metalog default
 rc-update add modules default
 rc-update add pwgen default
 [ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 [ -e /etc/init.d/splash ] && rc-update add splash default
+[ -e /etc/init.d/sysklogd ] && rc-update add sysklogd default
+[ -e /etc/init.d/metalog ] && rc-update add metalog default
+[ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
+[ -e /etc/init.d/alsasound ] && rc-update add alsasound default
+[ -e /etc/init.d/hdparm ] && rc-update add hdparm default
+
+[ -e /etc/startx ] && rc-update add mkxf86config default
 
 # perform any rcadd then any rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
@@ -96,6 +102,12 @@ then
 	ln -s /usr/share/hwdata/pci.ids /usr/share/misc/pci.ids
 	ln -s /usr/share/hwdata/usb.ids /usr/share/misc/usb.ids
 fi
+
+# setup opengl in /etc (if configured)
+[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
+
+# touch /etc/asound.state if alsa is configured
+[ -d /proc/asound/card0 ] && touch /etc/asound.state
 
 # tweak the motd for gentoo releases 
 if [ "${clst_livecd_type}" = "gentoo-release-universal" ]

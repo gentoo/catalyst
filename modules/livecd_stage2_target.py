@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.23 2004/10/16 13:38:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.24 2004/12/16 17:51:23 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -39,7 +39,8 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
 			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/splash_theme",\
 			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
-			"livecd/root_overlay","livecd/devmanager","livecd/splash_type"])
+			"livecd/root_overlay","livecd/devmanager","livecd/splash_type",\
+			"gamecd/conf"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
