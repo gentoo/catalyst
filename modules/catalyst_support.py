@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.27 2004/09/16 05:53:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.28 2004/10/06 01:34:29 zhen Exp $
 
 import sys,string,os,types,re
 
@@ -10,7 +10,7 @@ required_build_targets=["generic_target","generic_stage_target"]
 # new build types should be added here
 valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target",
 						"livecd_stage1_target","livecd_stage2_target","embedded_target",
-						"tinderbox_target","snapshot_target"]
+						"tinderbox_target","snapshot_target","netboot"]
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]

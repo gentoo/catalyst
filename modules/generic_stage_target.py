@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.14 2004/10/05 13:22:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.15 2004/10/06 01:34:29 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -112,6 +112,10 @@ class generic_stage_target(generic_target):
 		elif self.settings["target"] == "livecd-stage2":
 			self.settings["source_path"]=st+"/tmp/"+self.settings["source_subpath"]
 			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]
+			
+		elif self.settings["target"] == "netboot":
+			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
+			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
