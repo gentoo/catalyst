@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.107 2004/10/29 21:14:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.108 2004/11/02 23:23:16 wolf31o2 Exp $
+
+  02 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/pre-kmerge.sh:
+  Ssshhh... I've added my super-secret pre-kmerge.sh sed replacement so
+  genkernel will only add the 1024x768 version of the gensplash image to the
+  bzImage, which added with the livecd-stage2 removal of the unused splash
+  images, makes for a significantly smaller (54MB v. 50MB) LiveCD.
 
   29 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   +livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
