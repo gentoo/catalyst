@@ -12,7 +12,18 @@ livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 boot/kernel: gentoo
 boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.1-r1
 boot/kernel/gentoo/config: examples/livecd/x86/config-2.6.1-x86
+#this next line sets any USE settings you want exported to the environment for
+#your kernel build *and* during the build of any kernel-dependent packages
+boot/kernel/gentoo/use: pcmcia
+#use this next option to add an extension to the name of your kernel. This
+#allows you to have 2 identical kernels on the livecd built with different
+#options, and each with their own modules dir in /lib/modules (otherwise
+#the second kernel would overwrite the first modules directory.
 boot/kernel/gentoo/extraversion: livecd
+#this next line is for merging kernel-dependent packages after your kernel
+#is built. This is where you merge third-party ebuilds that contain kernel
+#modules.
+boot/kernel/gentoo/packages: =sys-apps/pcmcia-cs-3.2.5-r1
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl

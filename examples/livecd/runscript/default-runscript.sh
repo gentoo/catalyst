@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.12 2004/02/02 04:00:40 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.13 2004/02/11 19:12:07 drobbins Exp $
 
 #return codes to be used by archscript
 
@@ -75,6 +75,15 @@ case $1 in
 		shift
 		numkernels="$1"
 		shift
+		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
+		env-update
+		source /etc/profile
+		export CONFIG_PROTECT="-*"
+		[ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
+		emerge genkernel
+		install -d /tmp/binaries
+EOF
+	[ $? -ne 0 ] && exit 1
 		count=0
 		while [ $count -lt $numkernels ]
 		do
@@ -85,31 +94,52 @@ case $1 in
 			clst_kextversion="$1"
 			shift
 			$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-				# SCRIPT TO BUILD EACH KERNEL. THIS GETS EXECUTED IN CHROOT
-				env-update
+				# Script to build each kernel, kernel-related packages 
 				source /etc/profile
-				export CONFIG_PROTECT="-*"
-				install -d /tmp/binaries
-				emerge genkernel
+				[ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 				rm -f /usr/src/linux
-				emerge -C $clst_ksource
-				export USE="-* build"
-				if [ -n "${clst_PKGCACHE}" ]
+				[ -e /var/tmp/$clst_kname.use ] && export USE="\$( cat /var/tmp/$clst_kname.use )" || unset USE
+				# Don't use pkgcache here, as the kernel source may get emerge with different USE variables
+				# (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
+				# pkgcache for kernel source ebuilds.
+				emerge --noreplace $clst_ksource || exit 1
+				[ ! -e /usr/src/linux ] && die "Can't find required directory /usr/src/linux"
+				#if catalyst has set NULL_VALUE, extraversion wasn't specified so we skip this part
+				if [ "$clst_kextversion" != "NULL_VALUE" ]
 				then
-					emerge --usepkg --buildpkg --noreplace $clst_ksource || exit 1
-				else
-					emerge --noreplace $clst_ksource || exit 1
+					# Append Extraversion
+					sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextversion}:" /usr/src/linux/Makefile
 				fi
-				# Append Extraversion
-				[ ! -e /usr/src/linux ] && exit 1 
-				sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextversion}:" /usr/src/linux/Makefile
 				genkernel ${genkernel_args} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
-				emerge -C genkernel $clst_ksource
-				# END OF SCRIPT TO BUILD EACH KERNEL
+				#now we merge any kernel-dependent packages
+				if [ -e /var/tmp/$clst_kname.packages ]
+				then
+					for x in "\$( cat /var/tmp/$clst_kname.packages )"
+					do
+						# we don't want to use the pkgcache for these since the results
+						# are kernel-dependent.
+						emerge "\$x"
+					done
+				fi
+				cd /usr/src/linux
+				#mrproper cleans out the tree and allows full unmerging of all subdirs
+				make mrproper
+				cd /usr/src
+				#now the unmerge...
+				emerge -C $clst_ksource
+				unset USE
 EOF
 			[ $? -ne 0 ] && exit 1 
 			count=$(( $count + 1 ))
 		done
+		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
+			#cleanup steps
+			source /etc/profile
+			emerge -C genkernel 
+			/sbin/depscan.sh
+			find /lib/modules -name modules.dep -exec touch {} \;
+EOF
+	[ $? -ne 0 ] && exit 1
 	;;
 
 	preclean)
@@ -127,7 +157,6 @@ EOF
 			rc-update add metalog default
 			rc-update add modules default
 			[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
-			/sbin/depscan.sh
 			rm -rf /etc/localtime
 			cp /usr/share/zoneinfo/GMT /etc/localtime
 			echo "livecd" > /etc/hostname

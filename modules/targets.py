@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.81 2004/02/11 17:07:57 tigger Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.82 2004/02/11 19:12:07 drobbins Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -431,6 +431,7 @@ class livecd_stage1_target(generic_stage_target):
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript"]
+		self.valid_values=[]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
 		if type(addlargs["boot/kernel"]) == types.StringType:
@@ -440,8 +441,10 @@ class livecd_stage2_target(generic_stage_target):
 		for x in loopy:
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
-			self.required_values.append("boot/kernel/"+x+"/extraversion")
-		self.valid_values=self.required_values[:]
+			self.valid_values.append("boot/kernel/"+x+"/extraversion")
+			self.valid_values.append("boot/kernel/"+x+"/packages")
+			self.valid_values.append("boot/kernel/"+x+"/use")
+		self.valid_values.extend(self.required_values)
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -514,12 +517,12 @@ class livecd_stage2_target(generic_stage_target):
 			mynames=[mynames]
 		args=[]
 		args.append(`len(mynames)`)
-		for x in mynames:
-			args.append(x)
-			args.append(self.settings["boot/kernel/"+x+"/sources"])
-			if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
+		for kname in mynames:
+			args.append(kname)
+			args.append(self.settings["boot/kernel/"+kname+"/sources"])
+			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
 				self.unbind()
-				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
 
 			# We must support multiple configs for the same kernel, so we must manually edit the
 			# EXTRAVERSION on the kernel to allow them to coexist.  The extraversion field gets appended
@@ -527,17 +530,41 @@ class livecd_stage2_target(generic_stage_target):
 			# and on PPC64 we need a seperate pSeries, iSeries, and PPC970 (G5) kernels, all compiled off the
 			# same source, without having to release a seperate livecd for each (since other than the kernel,
 			# they are all binary compatible)
-			args.append(self.settings["boot/kernel/"+x+"/extraversion"])
-			retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
+			if self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
+				#extraversion is now an optional parameter, so that don't need to worry about it unless
+				#they have to
+				args.append(self.settings["boot/kernel/"+kname+"/extraversion"])
+			else
+				#this value will be detected on the bash side and indicate that EXTRAVERSION processing
+				#should be skipped
+				args.append("NULL_VALUE")
+			#write out /var/tmp/kname.(use|packages) files, used for kernel USE and extra packages settings
+			for extra in ["use","packages"]:
+				if self.settings.has_key("boot/kernel/"+kname+"/"+extra):
+					myex=self.settings["boot/kernel/"+kname+"/"+extra]
+					if type(myex)=ListType:
+						myex=string.join(myex)
+					try:
+						myf=open(self.settings["chroot_path"]+"/var/tmp"+kname+"."+extra,"w")
+					except:
+						self.unbind()
+						raise CatalystError,"Couldn't create file /var/tmp/"+kname+"."+extra+" in chroot."
+					if extra=="use":
+						myf.write("export USE=\""+myex+"\"\n")
+					else:
+						myf.write(myex+"\n")
+					myf.close
+
+			retval=os.system("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+kname+".config")
 			if retval!=0:
 				self.unbind()
-				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
 		try:
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"runscript kernel build failed")
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"livecd-stage2 build aborting due to error."
+			raise CatalystError,"runscript aborting due to error."
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
