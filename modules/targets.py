@@ -16,7 +16,7 @@ class generic_stage_target(generic_target):
 	def __init__(self,myspec,addlargs):
 		
 		self.required_values.extend(["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"])
-		self.valid_values.extend(self.required_values[:])
+		self.valid_values.extend(["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"])
 		generic_target.__init__(self,addlargs,myspec)
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
@@ -303,13 +303,10 @@ class generic_stage_target(generic_target):
 			
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
+		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
-		self.required_values=self.valid_values
 		generic_target.__init__(self,myspec,addlargs)
-		
 		self.settings=myspec
-		if not self.settings.has_key("version_stamp"):
-			raise CatalystError, "Required value \"version_stamp\" not specified."
 		self.settings["target_subpath"]="portage-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=st+"/snapshots/"+self.settings["target_subpath"]+".tar.bz2"
@@ -339,19 +336,26 @@ class snapshot_target(generic_target):
 			
 class stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
+		self.required_values=[]
+		self.valid_values=[]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 class stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
+		self.required_values=[]
+		self.valid_values=[]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 class stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
+		self.required_values=[]
+		self.valid_values=[]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
+		self.valid_values=self.required_values[:]
 		if not addlargs.has_key("grp"):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 		self.required_values.extend(["grp","grp/use"])
@@ -359,21 +363,17 @@ class grp_target(generic_stage_target):
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.valid_values=self.required_values
 
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["tinderbox/packages","tinderbox/use","version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
-		for myarg in ["tinderbox/packages","tinderbox/use"]:
-			if not addlargs.has_key(myarg):
-				raise CatalystError,"Required value \""+myarg+"\" not specified in spec."
+		self.required_values=["tinderbox/packages","tinderbox/use"]
+		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.valid_values=self.required_values
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["livecd-stage1/packages"]
-		self.valid_values=["livecd-stage1/use","livecd-stage1/packages"]
+		self.required_values=["livecd-stage1/packages","livecd-stage1/use"]
+		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 class livecd_stage2_target(generic_stage_target):
@@ -388,7 +388,7 @@ class livecd_stage2_target(generic_stage_target):
 		for x in loopy:
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
-		self.valid_values=self.required_values[:]	
+		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 def register(foo):
