@@ -29,10 +29,6 @@ boot/kernel/G5-SMP/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G5-SMP/use: extlib
 boot/kernel/G5-SMP/config: /usr/src/configs/G5-SMP
 boot/kernel/G5-SMP/extraversion: G5-SMP
-boot/kernel/fallback/sources: =sys-kernel/ppc-sources-2.4.24-r2
-boot/kernel/fallback/use: extlib
-boot/kernel/fallback/config: /usr/src/configs/fallback
-boot/kernel/fallback/extraversion: fallback
 
 
 livecd/unmerge:
