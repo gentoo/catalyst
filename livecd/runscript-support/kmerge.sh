@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.20 2005/01/11 22:49:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.21 2005/01/28 20:23:05 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -52,6 +52,8 @@ build_kernel() {
 	if [ "${clst_livecd_devmanager}" == "udev" ]
 	then
 		GK_ARGS="${GK_ARGS} --udev"
+	else
+		GK_ARGS="${GK_ARGS} --devfs"
 	fi
 	
 	# build with genkernel using the set options

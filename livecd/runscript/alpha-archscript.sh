@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.6 2004/12/12 16:39:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.7 2005/01/28 20:23:05 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -42,6 +42,14 @@ case $1 in
 			# change initrd name from "initrd" to "gentoo.igz", for example
 			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/${x}.igz
 		done
+
+		# figure out what device manager we are using and handle it accordingly
+		if [ "${clst_livecd_devmanager}" == "udev" ]
+		then
+			cmdline_opts="${cmdline_opts} udev nodevfs"
+		else
+			cmdline_opts="${cmdline_opts} noudev devfs"
+		fi
 
 		acfg=${clst_cdroot_path}/etc/aboot.conf
 		bctr=0
