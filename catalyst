@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.65 2005/03/07 00:20:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.66 2005/03/09 19:42:36 wolf31o2 Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
 import os,sys,imp,string,getopt
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="1.1.7_pre1"
+__version__="1.1.7"
 
 conf_values={}
 

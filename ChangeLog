@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.188 2005/03/09 00:22:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.189 2005/03/09 19:42:36 wolf31o2 Exp $
+
+  09 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  Calling this one 1.1.7 and rolling a tarball.
 
   08 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,
