@@ -1,7 +1,7 @@
 #!/bin/bash
-# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.15 2004/08/02 23:23:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.16 2004/10/15 02:46:58 zhen Exp $
 
 case $1 in
 	enter)

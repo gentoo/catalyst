@@ -1,7 +1,7 @@
 #!/bin/bash
-# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.9 2004/06/04 14:03:46 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.10 2004/10/15 02:46:58 zhen Exp $
 
 case $1 in
 	run)

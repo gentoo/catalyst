@@ -1,11 +1,11 @@
-# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.10 2004/10/11 14:27:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.11 2004/10/15 02:50:38 zhen Exp $
 
 Licensing
 ========================
 
-Catalyst is copyrighted by Gentoo Technolgies, Inc, and released
+Catalyst is copyrighted by the Gentoo Foundation, and released
 under the terms of the GNU General Public License v.2.0 or later. For more
 information, please consult COPYING.
 

@@ -1,7 +1,7 @@
 #!/bin/bash
-# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.23 2004/10/12 18:01:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.24 2004/10/15 02:46:58 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile

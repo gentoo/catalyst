@@ -1,7 +1,7 @@
 #!/bin/bash
-# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.12 2004/06/04 14:03:46 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.13 2004/10/15 02:46:58 zhen Exp $
 
 case $1 in
 	enter)
