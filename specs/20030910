@@ -1,9 +1,0 @@
-snapshot: 20030910
-subarch: pentium4
-profile: default-x86-1.4
-#next line means "build me using 20030909 spec and snapshot"
-stage1: x86 20030909
-#self means "build me using my own stage and own snapshot"
-stage2: self
-stage3: self
-
