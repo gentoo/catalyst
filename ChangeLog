@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.122 2004/12/15 00:50:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.123 2004/12/16 03:49:49 wolf31o2 Exp $
+
+  15 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/default-runscript.sh,
+  livecd/runscript-support/livecdfs-update.sh:
+  Added gentoo-release-environmental as a valid livecd/type and did some
+  cleanup in livecdfs-update.sh to allow hotplug to dhcp on detected ethernet
+  devices other than eth0.
 
   14 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-chroot.sh:

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.18 2004/12/12 16:17:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.19 2004/12/16 03:49:49 wolf31o2 Exp $
 
 #return codes to be used by archscript
 die() {
@@ -129,6 +129,7 @@ case $1 in
 			cp -a ${clst_sharedir}/livecd/files/generic.motd.txt \
 				${clst_sharedir}/livecd/files/universal.motd.txt \
 				${clst_sharedir}/livecd/files/minimal.motd.txt \
+				${clst_sharedir}/livecd/files/environmental.motd.txt \
 				${clst_sharedir}/livecd/files/gamecd.motd.txt \
 				${clst_chroot_path}/etc
 		fi

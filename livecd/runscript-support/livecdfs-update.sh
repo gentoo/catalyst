@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.22 2004/12/08 19:47:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.23 2004/12/16 03:49:49 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -14,14 +14,9 @@ fi
 
 sed -i 's/RC_DEVICE_TARBALL="yes"/RC_DEVICE_TARBALL="no"/' /etc/conf.d/rc
 
-# fix /etc/issue for mingetty and friends
-echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
-
 # default programs that we always want to start
 rc-update del iptables default
 rc-update del netmount default
-# rc-update add hotplug default
-# rc-update add kudzu default
 rc-update add autoconfig default
 rc-update del keymaps
 rc-update del consolefont
@@ -31,7 +26,7 @@ rc-update add pwgen default
 [ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 [ -e /etc/init.d/splash ] && rc-update add splash default
 
-# switch the order of rcadd/ rcdel
+# perform any rcadd then any rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
 then
 	if [ -n "${clst_livecd_rcadd}" ]
@@ -50,12 +45,21 @@ then
 		done
 	fi
 fi
-	
+
+# clean up the time and set to GMT
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/GMT /etc/localtime
+
+# setup the hostname
 echo "livecd" > /etc/hostname
 echo "gentoo" > /etc/dnsdomainname
 sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
+
+# setup dhcp on all detected ethernet devices
+echo "ifconfig_eth0( \"dhcp\" )" > /etc/conf.d/net
+echo "ifconfig_eth1( \"dhcp\" )" >> /etc/conf.d/net
+echo "ifconfig_eth2( \"dhcp\" )" >> /etc/conf.d/net
+echo "ifconfig_eth3( \"dhcp\" )" >> /etc/conf.d/net
 
 # gpm fixes
 [ -e /etc/conf.d/gpm ] && sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
@@ -63,7 +67,6 @@ sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
 	/etc/conf.d/gpm
 
 # fstab tweaks
-#sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
 echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs		/usr/lib/hotplug/firmware	tmpfs	defaults	0 0" >> /etc/fstab
 sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
@@ -78,6 +81,7 @@ echo "####################################################" >> /etc/fstab
 cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
 
+# add some helpful aliases
 echo "alias cp='cp -i'" >> /etc/profile
 echo "alias mv='mv -i'" >> /etc/profile
 echo "alias rm='rm -i'" >> /etc/profile
@@ -87,10 +91,10 @@ echo "alias grep='grep --color=auto'" >> /etc/profile
 # make sure we have the latest pci and hotplug ids
 if [ -d /usr/share/hwdata ]
 then
-	[ -f /usr/share/hwdata/pci.ids ] && rm -f /usr/share/hwdata/pci.ids
-	[ -f /usr/share/hwdata/usb.ids ] && rm -f /usr/share/hwdata/usb.ids
-	ln -s /usr/share/misc/pci.ids /usr/share/hwdata/pci.ids
-	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
+	[ -f /usr/share/misc/pci.ids ] && rm -f /usr/share/misc/pci.ids
+	[ -f /usr/share/misc/usb.ids ] && rm -f /usr/share/misc/usb.ids
+	ln -s /usr/share/hwdata/pci.ids /usr/share/misc/pci.ids
+	ln -s /usr/share/hwdata/usb.ids /usr/share/misc/usb.ids
 fi
 
 # tweak the motd for gentoo releases 
@@ -103,8 +107,15 @@ fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
 then
-	cat /etc/generic.motd.txt > /etc/motd
+	cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
 	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Minimal Installation LiveCD!/' /etc/motd
+fi
+
+if [ "${clst_livecd_type}" = "gentoo-release-environmental" ]
+then
+	cat /etc/generic.motd.txt /etc/universal.motd.txt \
+		/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
+	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Live Environment!/' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
@@ -113,7 +124,7 @@ then
 	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux ##GAME_NAME GameCD!/' /etc/motd
 fi
 
-rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/gamecd.motd.txt
+rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/environmental.motd.txt /etc/gamecd.motd.txt
 
 # setup splash/bootsplash (if called for)
 if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
@@ -142,5 +153,5 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-[ -n "$(ls /usr/lib/hotplug/firmware)" ] && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/* && rm -f /usr/lib/hotplug/firmware/*
+[ -n "$(ls /usr/lib/hotplug/firmware)" ] && cd /usr/lib/hotplug/firmware && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 . && rm -f /usr/lib/hotplug/firmware/*
 ln -sf /lib/firmware /usr/lib/hotplug/firmware
