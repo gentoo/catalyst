@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.56 2005/01/02 04:15:51 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.57 2005/01/05 00:17:37 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -209,15 +209,6 @@ if __name__ == "__main__":
 		usage()
 		sys.exit(2)
 	
-	# check to see if -f and -C are used together
-	for i in opts:
-		myopts.append(i[0])
-		
-	if ('-f' in myopts or '--file' in myopts) and ('-C' in myopts or '--cli' in myopts):
-		print "!!! catalyst: please specify one of either -f or -C\n"
-		usage()
-		sys.exit(2)
-
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()

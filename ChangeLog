@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.137 2005/01/04 23:54:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.138 2005/01/05 00:17:37 zhen Exp $
+
+  04 Jan 2005; John Davis <zhen@gentoo.org> catalyst:
+  patch for pvdabeel@gentoo.org. -f and -C can now be used together on the
+  cmdline
 
   04 Jan 2005; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
   modules/livecd_stage2_target.py:
