@@ -27,6 +27,7 @@ grp/use:
 	ldap
 	ssl
 	tcpd
+	-bindist
 
 grp/src/type: srcset
 grp/src/packages:
@@ -115,19 +116,19 @@ grp/cd2/packages:
 	kde
 	libsdl
 	mozilla
-	openbox
+#	openbox
 	sylpheed
 	vim
 	xemacs
 	xmms
 #use interactions?
 	mozilla-firefox
-	gaim
+#	gaim
 	tetex
 	xcdroast
-	kdrive
+#	kdrive
 	samba
 	nmap
-	gradm
+#	gradm
 	xchat
 
