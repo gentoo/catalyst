@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.21 2005/01/30 00:48:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.22 2005/03/05 05:12:58 wolf31o2 Exp $
 
 case $1 in
 	enter)
@@ -22,7 +22,7 @@ case $1 in
 	preclean)
 		if [ `pidof gconfd-2` ]
 		then
-			killall -9 gconfd-2
+			gconftool-2 --shutdown
 		fi
 		#cp ${clst_sharedir}/targets/grp/grp-preclean-chroot.sh ${clst_chroot_path}/tmp
 		#${clst_CHROOT} ${clst_chroot_path} /tmp/grp-preclean-chroot.sh || exit 1

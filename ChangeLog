@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.180 2005/03/03 22:36:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.181 2005/03/05 05:12:58 wolf31o2 Exp $
+
+  05 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> targets/grp/grp.sh,
+  targets/livecd-stage1/livecd-stage1.sh:
+  Changing the killall -9 gconfd-2 to gconftool-2 --shutdown and resolving bug
+  #73363.
 
   03 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,
