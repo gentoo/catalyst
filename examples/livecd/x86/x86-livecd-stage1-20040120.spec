@@ -53,3 +53,5 @@ livecd/packages:
 	device-mapper
 	lvm2
 	livecd-tools	
+	ucl
+
