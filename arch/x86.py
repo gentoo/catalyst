@@ -10,20 +10,21 @@ import builder
 
 class generic_x86(builder.generic):
 	"abstract base class for all x86 builders"
-	def __init__(self):
+	def __init__(self,myspec):
+		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="x86"
 
 class arch_x86(generic_x86):
 	"builder class for generic x86 (486+)"
-	def __init__(self):
-		base_x86.__init__(self)
+	def __init__(self,myspec):
+		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mcpu=i686 -fomit-frame-pointer"
 
 class arch_pentium4(generic_x86):
 	"builder class for Pentium 4"
-	def __init__(self):
-		base_x86.__init__(self)
-		self.settings["CFLAGS"]="-O2 -mcpu=i686 -fomit-frame-pointer"
+	def __init__(self,myspec):
+		generic_x86.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=pentium4 -fomit-frame-pointer -finline-functions -finline-limit=800"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 

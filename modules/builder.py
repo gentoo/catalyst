@@ -1,6 +1,6 @@
 class generic:
-	def __init__(self):
-		self.settings={}
+	def __init__(self,myspec):
+		self.settings=myspec
 	def mount_safety_check(self):
 		"""make sure that no bind mounts exist in chrootdir (to use before
 		cleaning the directory, to make sure we don't wipe the contents of

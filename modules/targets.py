@@ -12,7 +12,8 @@ source_subpath			default-x86-1.4/stage2-pentium4-20031016	user (from spec)
 """
 
 class generic_target:
-	def __init__(self):
+	def __init__(self,myspec):
+		self.settings=myspec
 		pass
 	def run_prep(self):
 		"""copy scripts into location, generate files containing build
@@ -25,8 +26,17 @@ class generic_target:
 		"""return list of definitions required from spec"""
 
 class generic_stage_target(generic_target):
-	def spec_require(self):
-		return ["version_stamp","subarch","rel_type","rel_version","snapshot","source_subpath"]
+	def __init__(self,myspec):
+		generic_target.__init__(self,myspec)
+		#we'd want to make sure we have all the settings we need here
+		self.settings["target_subpath"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
+		self.settings["target_subpath"]+="/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
+		st=self.settings["storedir"]
+		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
+		self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
+		self.settings["pkgcache_path"]=st+"/packages/"+self.settings["target_subpath"]
 
 class snapshot_target(generic_target):
 	def __init__(self):
@@ -35,23 +45,23 @@ class snapshot_target(generic_target):
 		return ["snapshot"]
 
 class stage1_target(generic_stage_target):
-	def __init__(self):
-		generic_target.__init__(self)
+	def __init__(self,spec):
+		generic_stage_target.__init__(self,spec)
 		pass
 
 class stage2_target(generic_stage_target):
-	def __init__(self):
-		generic_target.__init__(self)
+	def __init__(self,spec):
+		generic_stage_target.__init__(self,spec)
 		pass
 
 class stage3_target(generic_stage_target):
-	def __init__(self):
-		generic_target.__init__(self)
+	def __init__(self,spec):
+		generic_stage_target.__init__(self,spec)
 		pass
 
 class grp_target(generic_stage_target):
-	def __init__(self):
-		generic_target.__init__(self)
+	def __init__(self,spec):
+		generic_target.__init__(self,spec)
 		pass
 
 class livecd_target(generic_stage_target):

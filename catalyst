@@ -16,9 +16,21 @@ def usage():
 if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()
 	sys.exit(1)
-elif os.getuid()!=0:
-	#non-root callers can still get -h and --help to work.
-	die("This script requires root privileges to operate.")	
+
+def arg_parse(mydict, myvalids):
+	"very wimpy argument parsing, just for the prototype"
+	for x in sys.argv[1:]:
+		foo=string.split(x,"=")
+		if len(foo)!=2:
+			die("Invalid arg syntax: "+x)
+		else:
+			if foo[0] not in myvalids:
+				die("Invalid arg name: "+foo[0])
+			mydict[foo[0]]=foo[1]
+			
+def spec_dump(myspec):
+	for x in myspec.keys():
+		print x+": "+repr(myspec[x])
 
 """
 Overview of catalyst operation
@@ -109,4 +121,52 @@ print "Available subarches:",string.join(subarchmap.keys())
 import targets
 targetmap={}
 targets.register(targetmap)
+
 print "Available targets:",string.join(targetmap.keys())
+
+if os.getuid()!=0:
+	#non-root callers can't go any further than here. 
+	die("This script requires root privileges to operate.")	
+
+#the spec begins!
+validspec=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
+myspec={}
+
+"""
+local variables from spec:
+
+version_stamp			20031016					user (from spec)
+target				stage3						user (from spec)
+subarch				pentium4					user (from spec)
+rel_type			default						user (from spec) (was BUILDTYPE)
+rel_version			1.4						user (from spec) (was MAINVERSION)
+snapshot			20031016					user (from spec)
+source_subpath			default-x86-1.4/stage2-pentium4-20031016	user (from spec)
+"""
+
+arg_parse(myspec,validspec)
+#need to verify that we have all required args here. Leaving this out for the prototype.
+if myspec["subarch"] not in subarchmap.keys():
+	die("Sub-arch "+myspec["subarch"]+" not available.")
+
+#call builder constructor:
+mybuilder=subarchmap[myspec["subarch"]](myspec)
+if myspec["target"] not in targetmap.keys():
+	die("Target "+myspec["target"]+" not available.")
+
+#these would come from /etc/catalyst.conf:
+myspec["storedir"]="/var/tmp/catalyst"
+myspec["sharedir"]="/usr/share/catalyst"
+#these would come from there too?:
+myspec["distdir"]="/usr/portage/distfiles"
+myspec["portdir"]="/usr/portage"
+
+#call target constructor:
+mytarget=targetmap[myspec["target"]](myspec)
+print
+spec_dump(myspec)
+
+#to test this program, type:
+
+# ./catalyst subarch=pentium4 version_stamp=20031016 target=stage3 rel_type=default rel_version=1.4 snapshot=20031016 source_subpath=default-x86-1.4/stage2-pentium4-20031016
+
