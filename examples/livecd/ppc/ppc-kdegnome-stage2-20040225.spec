@@ -8,6 +8,9 @@ version_stamp: 20040225
 source_subpath: default-ppc-2004.0/livecd-stage1-ppc-20040225
 
 livecd/cdfstype: gcloop
+livecd/archscript: examples/livecd/runscript/ppc-archscript.sh
+livecd/runscript: examples/livecd/runscript/default-runscript.sh
+livecd/cdtar: examples/livecd/cdtar/yaboot-1.3.11-cdtar.tar.bz2
 
 boot/kernel: G3 G4 G5 G3-SMP G4-SMP G5-SMP
 boot/kernel/G3/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
