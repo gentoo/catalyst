@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.7 2004/07/13 14:06:44 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.8 2004/07/14 17:23:16 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -16,6 +16,7 @@ fi
 # fix /etc/issue for mingetty and friends
 echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
 
+# switch the order of rcadd/ rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
 then
 	if [ -n "${clst_livecd_rcadd}" ]

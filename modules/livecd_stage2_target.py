@@ -1,12 +1,12 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.14 2004/07/14 04:26:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.15 2004/07/14 17:23:16 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
 """
 
-import os,string,types
+import os,string,types,stat,shutil
 from catalyst_support import *
 from generic_stage_target import *
 
@@ -111,6 +111,36 @@ class livecd_stage2_target(generic_stage_target):
 				touch(self.settings["chroot_path"]+"/tmp/.clst_unmerge")
 
 	def clean(self):
+		if self.settings.has_key("livecd/empty"):
+		
+			if type(self.settings["livecd/empty"])==types.StringType:
+				self.settings["livecd/empty"]=[self.settings["livecd/empty"]]
+			
+			for x in self.settings["livecd/empty"]:
+				myemp=self.settings["chroot_path"]+x
+				if not os.path.isdir(myemp):
+					print x,"not a directory or does not exist, skipping 'empty' operation."
+					continue
+				print "Emptying directory",x
+				# stat the dir, delete the dir, recreate the dir and set 
+				# the proper perms and ownership
+				mystat=os.stat(myemp)
+				shutil.rmtree(myemp)
+				os.makedirs(myemp)
+				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+				os.chmod(myemp,mystat[ST_MODE])
+			
+		if self.settings.has_key("livecd/rm"):	
+				
+			if type(self.settings["livecd/rm"])==types.StringType:
+				self.settings["livecd/rm"]=[self.settings["livecd/rm"]]
+			
+			for x in self.settings["livecd/rm"]:
+				# we're going to shell out for all these cleaning operations,
+				# so we get easy glob handling
+				print "livecd: removing "+x
+				os.system("rm -rf "+self.settings["chroot_path"]+x)
+
 		try:
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean",\
 				"Clean runscript failed.")

@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.71 2004/07/13 14:06:44 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.72 2004/07/14 17:23:16 zhen Exp $
+
+  14 Jul 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh,
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py:
+  fixed a bug for livecd-stage2. somehow, the inheritance got mucked up and the
+  livecds were not cleaning out livecd/empty livecd/rm etc. I moved the code for
+  this out of generic_stage_target and into livecd-stage2 since the
+  livecd-stage2 class was overriding generic_stage_target for cleaning anyway.
 
   13 Jul 2004; <zhen@gentoo.org> livecd/runscript-support/livecdfs-update.sh:
   changed the behavior of rcadd/ rcdel. it was getting hokey to have to add the
