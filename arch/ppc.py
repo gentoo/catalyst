@@ -1,5 +1,6 @@
-# Distributed under the GNU General Public License version 2
-# Copyright 2003-2004 Gentoo Technologies, Inc. && Pieter Van den Abeele
+# Copyright 1999-2004 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.11 2004/10/15 02:36:00 zhen Exp $
 
 import os,builder
 from catalyst_support import *
