@@ -1,4 +1,4 @@
-import sys,string
+import sys,string,os
 
 config_file_values=["storedir","sharedir","distdir","portdir"]
 
@@ -6,13 +6,25 @@ class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
 			print "catalyst: "+message
-		sys.exit(1)
-
 def die(msg=None):
-	raise CatalystError, msg
+	warn(msg)
+	sys.exit(1)
 
 def warn(msg):
 	print "catalyst: "+msg
+
+def ismount(path):
+	"enhanced to handle bind mounts"
+	if os.path.ismount(path):
+		return 1
+	a=open("/proc/mounts","r")
+	mylines=a.readlines()
+	a.close()
+	for line in mylines:
+		mysplit=line.split()
+		if path == mysplit[1]:
+			return 1
+	return 0
 
 def arg_parse(mydict,remaining={}):
 	global config_file_values

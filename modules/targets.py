@@ -1,4 +1,4 @@
-import os,stat,string,imp
+import os,stat,string,imp,types
 from catalyst_support import *
 
 class generic_target:
@@ -16,11 +16,6 @@ class generic_stage_target(generic_target):
 		self.valid_values=self.required_values
 		generic_target.__init__(self,addlargs,myspec)
 
-		#ensure we have all required user-supplied settings before proceeding
-		for x in requiredspec:
-			if not self.settings.has_key(x):
-				raise CatalystError, "Required value \""+x+"\" not specified."
-		
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
@@ -74,15 +69,12 @@ class generic_stage_target(generic_target):
 		paths=["/usr/portage/packages","/usr/portage/distfiles", "/var/tmp/distfiles", "/proc", "/root/.ccache", "/dev"]
 		if not os.path.exists(mypath):
 			return 
-		mypstat=os.stat(mypath)[stat.ST_DEV]
 		for x in paths:
 			if not os.path.exists(mypath+x):
 				continue
-			teststat=os.stat(mypath+x)[stat.ST_DEV]
-			if teststat!=mypstat:
+			if ismount(mypath+x):
 				#something is still mounted
 				raise CatalystError, x+" is still mounted; aborting."
-		return 1
 		
 	def dir_setup(self):
 		self.mount_safety_check()
@@ -111,24 +103,56 @@ class generic_stage_target(generic_target):
 				raise CatalystError,"Couldn't bind mount "+x[0]
 
 	def unbind(self):
+		ouch=0
+		mypath=self.settings["chroot_path"]
 		for x in ["/usr/portage/distfiles","/proc","/dev"]:
-			retval=os.system("umount "+self.settings["chroot_path"]+x)
+			if not os.path.exists(mypath+x):
+				continue
+			if not ismount(mypath+x):
+				#it's not mounted, continue
+				continue
+			retval=os.system("umount "+mypath+x)
 			if retval!=0:
-				warning("Couldn't umount bind mount: "+self.settings["chroot_path"]+x)
+				ouch=1
+				warn("Couldn't umount bind mount: "+mypath+x)
+				#keep trying to umount the others, to minimize damage if developer makes a mistake
+		if ouch:
+			#if any bind mounts really failed, then we need to raise this to potentially prevent
+			#an upcoming bash stage cleanup script from wiping our bind mounts.
+			raise CatalystError,"Couldn't umount one or more bind-mounts; aborting for safety."
 
-	def setup(self):
-		#setup will leave everything in unbound state if there is a failure
-		self.dir_setup()
+	def chroot_setup(self):
 		self.unpack_and_bind()
+		retval=os.system("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc")
+		if retval!=0:
+			raise CatalystError,"Could not copy resolv.conf into place."
 
+	def clean(self):
+		"do not call without first unbinding"
+		retval=os.system("rm "+self.settings["chroot_path"]+"/etc/resolv.conf")
+		if retval!=0:
+			raise CatalystError,"Could not clean up resolv.conf."
+		retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean")
+		if retval!=0:
+			raise CatalystError,"clean script failed."
+		
 	def run(self):
-		self.setup()
+		self.dir_setup()
+		self.chroot_setup()
+		#modify the current environment. This is an ugly hack that should be fixed. We need this
+		#to use the os.system() call since we can't specify our own environ:
+		for x in self.settings.keys():
+			if type(self.settings[x])==types.StringType:
+				os.environ[x]=self.settings[x]
 		try:
-			pass
+			retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run")
+			if retval!=0:
+				raise CatalystError,"build script failed."
 		finally:
-			#always unbind
 			self.unbind()
-	
+		self.clean()
+
+			
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
 		self.valid_values=["version_stamp","target"]

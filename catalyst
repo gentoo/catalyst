@@ -13,50 +13,6 @@ def usage():
 if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()
 	sys.exit(1)
-"""
-Overview of catalyst operation
-==============================
-
-* The program starts, and the local machine type is detected. 
-
-* Based on this information, catalyst determines what kind of machine types
-  it can build for (amd64 and ia64 can build for x86 as well, for example.)
-  The appropriate arch plugins are loaded, which contain builder classes
-  for each supported sub-arch.
-
-* Command-line arguments are parsed. If specified, a spec file is read.
-
-* These build variables are stored in an internal "spec" object, which will
-  be a standard python dictionary. This spec dictionary contains all relevant
-  build-related information.
-
-* The spec object is passed to the appropriate target constructor.
-  The target constructor updates the spec object to contain data relevant
-  to the particular target (stage1, stage3, grp, etc.)
-
-*** PROTOTYPE CODE UP TO HERE IS COMPLETE (drobbins, 26 Oct '03)
-
-* The full data of the spec object is written to disc, so there is a complete
-  record of all variables that will be used to build what we're building.  This
-  will allow for another person to re-use this information to replicate our
-  work (it should be possible to distribute a spec file along with a portage
-  snapshot and a starter tarball, and our build can be replicated exactly on
-  any machine.) The spec object contains data like CFLAGS, CHOST, subarch,
-  mainarch, the profile used to build, and for GRP and LiveCDs the complete
-  package build list. This is important to allow work to be replicated. It's
-  possible that the stage1/2/3.sh and other scripts should be distributed as
-  well, to allow proper replication of work.
-
-* The build process begins by calling the appropriate method of the builder
-  instance. This includes cleanup, setup of chroot, entering the chroot,
-  running the appropriate bash build script, checking for error conditions,
-  and finishing up.
-  
-* The catalyst process is now complete :)
-"""
-
-#map current machine information from uname() to the mainarch we are running
-#under
 
 import targets
 targetmap={}
@@ -73,20 +29,26 @@ myspec={}
 myspec["storedir"]="/var/tmp/catalyst"
 myspec["sharedir"]="/usr/share/catalyst"
 #these would come from there too?:
-myspec["distdir"]="/usr/portage/distfiles"
+myspec["distdir"]="/mnt/misc/distfiles"
 myspec["portdir"]="/usr/portage"
 
-#all the main program needs to do is figure out the target. The rest of the args go to the
-#target constructor
+#determine target, call target constructor and hand it the rest of the arguments
 
-#call target constructor, pass our "myspec" settings as well as cmdline arguments for parsing
-
-addlargs={}
-arg_parse(myspec,addlargs)
-if not targetmap.has_key(myspec["target"]):
-	raise CatalystError,"Target \""+myspec["target"]+"\" not available."
-mytarget=targetmap[myspec["target"]](myspec,addlargs)
-mytarget.run()
-
+try:
+	addlargs={}
+	arg_parse(myspec,addlargs)
+	if not targetmap.has_key(myspec["target"]):
+		raise CatalystError,"Target \""+myspec["target"]+"\" not available."
+	mytarget=targetmap[myspec["target"]](myspec,addlargs)
+	
+	#let's display our spec information in all its glory
+	print
+	spec_dump(myspec)
+	print
+	
+	mytarget.run()
+except CatalystError:
+	sys.exit(1)
+# Examples:
 # ./catalyst subarch=pentium4 version_stamp=20031016 target=stage3 rel_type=default rel_version=1.4 snapshot=20031016 source_subpath=default-x86-1.4/stage2-pentium4-20031016
-
+# ./catalyst target=snapshot version_stamp=20031028
