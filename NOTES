@@ -1,0 +1,10 @@
+July 11, 2004
+
+If you were previously using a script to call Catalyst and pass options to it on
+the commandline (catalyst target=foo meep=yar), BEHAVIOR HAS CHANGED.
+You now need to pass Catalyst the -C (--cli) option to tell it to read the next
+arguments as a commandline. NOTE THAT -C MUST BE THE LAST ARGUMENT PASSED OR
+ELSE BREAKAGE WILL ENSUE.
+
+The old behavior exists in Catalyst <=1.0.8. The new behavior will exist in
+Catalyst >=1.0.9.

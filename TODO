@@ -1,13 +1,7 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.7 2004/06/16 18:34:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.8 2004/07/11 21:31:40 zhen Exp $
 
 catalyst man page
-
-resuming of builds (sucks having to unpack and repack seeds every time)
-
-finish catalyst howto
-
-re-do catalyst main script to be more robust
 
 Fix the hardcoded arch information in modules/generic_stage_target.py
