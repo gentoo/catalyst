@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.97 2004/03/31 15:18:43 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.98 2004/04/02 18:44:00 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -615,11 +615,11 @@ class embedded_target(generic_stage_target):
             if self.settings.has_key("embedded/unmerge"):
 		    if type(self.settings["embedded/unmerge"])==types.StringType:
 			    self.settings["embedded/unmerge"]=[self.settings["embedded/unmerge"]]
-			    myunmerge=self.settings["embedded/unmerge"][:]
+		    myunmerge=self.settings["embedded/unmerge"][:]
                     
                     for x in range(0,len(myunmerge)):
                         myunmerge[x]="'"+myunmerge[x]+"'"
-			myunmerge=string.join(myunmerge)
+	     	myunmerge=string.join(myunmerge)
                         # before cleaning unmerge stuff
 		    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
                         
@@ -628,9 +628,9 @@ class embedded_target(generic_stage_target):
 		    if type(self.settings["embedded/rm"])==types.StringType:
 			    self.settings["embedded/rm"]=[self.settings["embedded/rm"]]
 			    print "Removing directories from image"
-			    for x in self.settings["embedded/rm"]:
-				    print "Removing "+x
-				    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
+		    for x in self.settings["embedded/rm"]:
+			    print "Removing "+x
+			    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
     def run_local(self):
 	    mypackages=list_bashify(self.settings["embedded/packages"])
 	    print "Merging embedded image"
