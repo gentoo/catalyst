@@ -60,7 +60,7 @@ targetmap={}
 targets.register(targetmap)
 
 if "ccache" in string.split(myspec["options"]):
-	if not os.environ.has_key["CCACHE_DIR"]:
+	if not os.environ.has_key("CCACHE_DIR"):
 		print "Compiler cache support disabled (no CCACHE_DIR defined)"
 	elif not os.path.exists(os.environ["CCACHE_DIR"]):
 		print "Compiler cache support disabled (no cache found at CCACHE_DIR)"
