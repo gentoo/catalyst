@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.9 2004/01/21 05:48:24 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.10 2004/01/25 07:32:58 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -90,6 +90,7 @@ case $1 in
 				install -d /tmp/binaries
 				emerge genkernel
 				rm -f /usr/src/linux
+				emerge -C $clst_ksource
 				export USE="-* build"
 				if [ -n "${clst_PKGCACHE}" ]
 				then
@@ -97,6 +98,7 @@ case $1 in
 				else
 					emerge --noreplace $clst_ksource || exit 1
 				fi
+
 				genkernel --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 				emerge -C genkernel $clst_ksource
 				# END OF SCRIPT TO BUILD EACH KERNEL
@@ -113,12 +115,14 @@ EOF
 			source /etc/profile
 			rc-update del iptables default
 			rc-update del netmount default
-			rc-update add hotplug default
-			rc-update add kudzu default
+#			rc-update add hotplug default
+#			rc-update add kudzu default
+			rc-update add autoconfig default
 			rc-update del keymaps
 			rc-update del consolefont
 			rc-update add metalog default
 			rc-update add modules default
+			/sbin/depscan.sh
 			rm -rf /etc/localtime
 			cp /usr/share/zoneinfo/GMT /etc/localtime
 			echo "livecd" > /etc/hostname
