@@ -1,10 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.146 2005/01/13 00:05:55 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.147 2005/01/13 20:50:06 wolf31o2 Exp $
 
 12 Jan 2005; John Davis <zhen@gentoo.org>
   modules/embedded.py:
-  kernel building patch for embedded from mutex@gentoo.org (bug #76542) 
+  kernel building patch for embedded from mutex@gentoo.org (bug #76542)
+
+  13 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/livecd-local.start:
+  Possible local.start fix for beejay.
 
   11 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/kmerge.sh:
