@@ -182,6 +182,7 @@ class generic_stage_target(generic_target):
 			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
 			cleanables.extend(["/usr/share/gettext","/usr/lib/python2.2/test","/usr/lib/python2.2/encodings","/usr/lib/python2.2/email","/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
 		for x in cleanables: 
+			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
 		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	

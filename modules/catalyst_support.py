@@ -19,6 +19,7 @@ def warn(msg):
 	print "catalyst: "+msg
 
 def cmd(mycmd,myexc=""):
+	print "Running command \""+mycmd+"\""
 	retval=os.system(mycmd)
 	if retval != 0:
 		raise CatalystError,myexc
