@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.56 2004/05/27 16:41:36 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.57 2004/06/02 06:35:29 zhen Exp $
+
+  02 Jun 2004; John Davis <zhen@gentoo.org> modules/snapshot_target.py:
+  Fixes to address bugs #51072 and #52045. The snapshot logic was tweaked to be
+  more efficient, and I added a new snapshot specfile option, portdir_overlay.
+  It should be a full path pointing to a portage overlay dir.
 
   27 May 2004; John Davis <zhen@gentoo.org>
   livecd/cdtar/silo-1.3.1-cdtar.tar.bz2,
