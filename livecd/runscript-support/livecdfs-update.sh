@@ -1,18 +1,22 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.24 2004/12/16 17:51:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.25 2004/12/29 15:51:43 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
 
+# allow root logins to the livecd by default
 if [ -e /etc/sshd/sshd_config ]
 then
-	#allow root logins to the livecd by default
-	sed -i "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config
+	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' /etc/ssh/sshd_config
 fi
 
-sed -i 's/RC_DEVICE_TARBALL="yes"/RC_DEVICE_TARBALL="no"/' /etc/conf.d/rc
+# turn off udev tarball
+sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
+
+# turn bashlogin shells to actual login shells
+sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
 # default programs that we always want to start
 rc-update del iptables default
@@ -59,7 +63,7 @@ cp /usr/share/zoneinfo/GMT /etc/localtime
 # setup the hostname
 echo "livecd" > /etc/hostname
 echo "gentoo" > /etc/dnsdomainname
-sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
+sed -i 's:localhost:livecd.gentoo localhost:' /etc/hosts
 
 # setup dhcp on all detected ethernet devices
 echo "ifconfig_eth0( \"dhcp\" )" > /etc/conf.d/net
@@ -68,14 +72,14 @@ echo "ifconfig_eth2( \"dhcp\" )" >> /etc/conf.d/net
 echo "ifconfig_eth3( \"dhcp\" )" >> /etc/conf.d/net
 
 # gpm fixes
-[ -e /etc/conf.d/gpm ] && sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
+[ -e /etc/conf.d/gpm ] && sed -i -e 's:#MOUSE=imps2:MOUSE=imps2:' \
 	-e 's:#MOUSEDEV=/dev/input/mice:MOUSEDEV=/dev/input/mice:' \
 	/etc/conf.d/gpm
 
 # fstab tweaks
 echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs		/usr/lib/hotplug/firmware	tmpfs	defaults	0 0" >> /etc/fstab
-sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
+sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # tweak the livecd fstab so that users know not to edit it
 # http://bugs.gentoo.org/show_bug.cgi?id=60887
@@ -114,26 +118,26 @@ if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
 then
 	cat /etc/generic.motd.txt /etc/universal.motd.txt \
 		/etc/minimal.motd.txt > /etc/motd
-	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Universal Installation LiveCD!/' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation LiveCD!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
 then
 	cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
-	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Minimal Installation LiveCD!/' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation LiveCD!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-environmental" ]
 then
 	cat /etc/generic.motd.txt /etc/universal.motd.txt \
 		/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
-	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Live Environment!/' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Live Environment!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
 then
 	cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
-	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux ##GAME_NAME GameCD!/' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
 fi
 
 rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/environmental.motd.txt /etc/gamecd.motd.txt
@@ -143,7 +147,7 @@ if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_th
 then
 	if [ -d /etc/bootsplash/${clst_livecd_splash_theme} ]
 	then
-		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\"/' /etc/conf.d/bootsplash
+		sed -i 's:BOOTSPLASH_THEME=\"gentoo\":BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/bootsplash
 		rm /etc/bootsplash/default
 		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" /etc/bootsplash/default
 	else
@@ -155,7 +159,7 @@ elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_t
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
-		sed -i 's/# SPLASH_THEME="gentoo"/SPLASH_THEME=\"${clst_livecd_splash_theme}\"/' /etc/conf.d/splash
+		sed -i 's:# SPLASH_THEME="gentoo":SPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/splash
 		rm /etc/splash/default
 		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else
