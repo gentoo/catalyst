@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.15 2004/10/19 03:39:36 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.16 2004/10/19 04:06:35 zhen Exp $
 
 die() {
 	echo "$1"
@@ -47,8 +47,11 @@ build_kernel() {
 	--postconf="emerge ${clst_kernel_postconf}" || exit 1
 	
 	# pack up the modules for resuming
-	tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
-		/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+	if [ -n "${clst_PKGCACHE}" ]
+	then
+		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
+			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+	fi
 
 }
 
@@ -110,7 +113,7 @@ then
 	# test to see if the kernel .configs are the same, if so, then we skip kernel building
 	test1=$(md5sum /var/tmp/${clst_kname}.config | cut -d " " -f 1)
 	test2=$(md5sum /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config | cut -d " " -f 1)
-	if [ "${test1}" == "${test2}" ]
+	if [ "${test1}" == "${test2}" -a -n "${clst_PKGCACHE}" ]
 	then
 		echo
 		echo "No kernel configuration change, skipping kernel build..."
@@ -140,4 +143,4 @@ emerge -C ${clst_ksource}
 unset USE
 
 # keep the config around so that we can resume at some point
-cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config
+[ -n "${clst_PKGCACHE}" ] && cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config

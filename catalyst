@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.50 2004/10/15 02:48:20 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.51 2004/10/19 04:06:35 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -14,14 +14,14 @@ conf_values={}
 
 def usage():
 	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
-	print " -h --help		print this help message"
-	print " -v --version		display version information"
-	print " -d --debug		enable debugging"
 	print " -c --config		use specified configuration file"
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
+	print " -d --debug		enable debugging"
 	print " -f --file		read specfile"
-	print " -V --verbose		verbose output"
+	print " -h --help		print this help message"
 	print " -s --snapshot		generate a Portage snapshot"
+	print " -v --version		display version information"
+	print " -V --verbose		verbose output"
 	print
 	print "Usage examples:"
 	print
