@@ -10,7 +10,8 @@ class arch_hppa(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="hppa"
 		self.settings["CHROOT"]="chroot"
-		self.settings["CFLAGS"]="-O2"
+		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["CXXFLAGS"]="-O1 -pipe"
 		self.settings["CHOST"]="hppa-unknown-linux-gnu"
 
 def register(foo):
