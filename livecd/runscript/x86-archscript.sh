@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.16 2004/12/09 14:05:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.17 2004/12/12 16:32:06 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -107,6 +107,6 @@ case $1 in
 
 	iso)
 		#this is for the livecd-stage2 target, and calls the proper command to build the iso file
-		mkisofs -J -R -l -o  ${2} -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -z ${clst_cdroot_path}
+		mkisofs -J -R -l -o  ${2} -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -z ${clst_cdroot_path} || die "Cannot make ISO image"
 		;;
 esac

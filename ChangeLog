@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.119 2004/12/12 16:17:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.120 2004/12/12 16:32:06 wolf31o2 Exp $
+
+  12 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/x86-archscript.sh:
+  Making sure the mkisofs call causes a failure when it doesn't complete
+  successfully. Once again, blame jforman, our beloved infra-monkey.
 
   12 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/default-runscript.sh:
