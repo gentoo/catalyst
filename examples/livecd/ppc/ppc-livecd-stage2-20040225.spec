@@ -16,7 +16,6 @@ boot/kernel: G4 G5 G4-SMP G5-SMP
 boot/kernel/G4/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G4/config: /usr/src/configs/G4
 boot/kernel/G4/use: extlib
-boot/kernel/G4/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/G4/extraversion: G4
 boot/kernel/G5/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G5/config: /usr/src/configs/G5
@@ -25,7 +24,6 @@ boot/kernel/G5/extraversion: G5
 boot/kernel/G4-SMP/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G4-SMP/config: /usr/src/configs/G4-SMP
 boot/kernel/G4-SMP/use: extlib
-boot/kernel/G4-SMP/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/G4-SMP/extraversion: G4-SMP
 boot/kernel/G5-SMP/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G5-SMP/use: extlib
