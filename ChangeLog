@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.31 2004/03/31 21:56:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.32 2004/04/01 15:49:38 zhen Exp $
+
+  01 Apr 2004; John Davis <zhen@gentoo.org> catalyst, files/catalyst.conf,
+  files/x86-help.msg:
+  cosmetic touchups for 1.0.5
 
   31 Mar 2004; John Davis <zhen@gentoo.org> targets/stage2/stage2.sh:
   added support to the stage2 for stackable profiles bootstrap
