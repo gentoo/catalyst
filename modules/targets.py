@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.87 2004/02/13 02:41:26 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.88 2004/02/17 09:55:23 drobbins Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -384,6 +384,8 @@ class grp_target(generic_stage_target):
 		if not addlargs.has_key("grp"):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 		self.required_values.extend(["grp","grp/use"])
+		if type(addlargs["grp"])==StringType:
+			addlargs["grp"]=[addlargs["grp"]]
 		for x in addlargs["grp"]:
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
