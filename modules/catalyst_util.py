@@ -35,7 +35,7 @@ subarch				pentium4					user (from spec)
 rel_type			default						user (from spec) (was BUILDTYPE)
 rel_version			1.4						user (from spec) (was MAINVERSION)
 snapshot			20031016					user (from spec)
-source				default-x86-1.4/stage2-pentium4-20031016	user (from spec)
+source_subpath			default-x86-1.4/stage2-pentium4-20031016	user (from spec)
 
 
 target_subpath			default-x86-1.4/stage3-pentium4-20031016
@@ -53,16 +53,16 @@ source_path			/var/tmp/catalyst/builds/default-x86-1.4/stage2-pentium4-20031016.
 chroot_path			/var/tmp/catalyst/tmp/default-x86-1.4/stage3-pentium4-20031016
 				storedir+"/tmp/"+target_subpath
 
+pkgcache_path			/var/tmp/catalyst/packages/default-x86-1.4/stage3-pentium4-20031016
+				storedir+"/packages/"+target_subpath
 
 locals, auto-generated:
 
-pkgdir										default (package cache dir)
 mainarch			x86						auto
-catdirname			default-x86-1.4/stage3-pentium4-20031016	auto
-cflags				-O2						auto
-cxxflags			-O2						auto
-hostuse				mmx sse						auto
-chost				i686-pc-linux-gnu				auto
+cflags				-O2						auto, or user
+cxxflags			-O2						auto, or user
+hostuse				mmx sse						auto, or user
+chost				i686-pc-linux-gnu				auto, or user
 makeopts			-j2						auto (but overridable from catalyst.conf)
 chroot				chroot						auto (linux32 chroot or chroot)
 

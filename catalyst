@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import os,sys,imp,string
+
+machinemap={ 	"i386" : "x86",
+		"i486" : "x86",
+		"i586" : "x86",
+		"i686" : "x86",
+		"x86_64" : "amd64"
+	}
+	
+targetmap={ 	"x86" : ["x86"],
+		"amd64" : ["x86","amd64"]
+	}
+		
+mymachine=os.uname()[4]
+if not machinemap.has_key(mymachine):
+	print "Unknown machine type:",mymachine
+	sys.exit(1)
+hostarch=machinemap[mymachine]
+print "Host architecture:",hostarch
+print "Supported architecture targets:",string.join(targetmap[hostarch])
+print "Loading plugins:",
+archmap={}
+for x in targetmap[hostarch]:
+	fh=open("arch/"+x+".py")
+	archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
+	fh.close()	
+	print x,
+print
+
