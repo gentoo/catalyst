@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.5 2004/07/03 00:33:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.6 2004/07/06 13:48:00 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -181,23 +181,28 @@ class generic_stage_target(generic_target):
 		print "Setting up directories..."
 		self.mount_safety_check()
 		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
-			print "Directories previously setup, resuming..."
+			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_dir_setup"):
+			print "Resume point detected, skipping directory setup..."
 		
 		else:
 			cmd("rm -rf "+self.settings["chroot_path"],\
 				"Could not remove existing directory: "+self.settings["chroot_path"])
-
+			
+			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+				os.makedirs(self.settings["chroot_path"]+"/tmp")
+				touch(self.settings["chroot_path"]+"/tmp/.clst_dir_setup")
+			
 		if not os.path.exists(self.settings["chroot_path"]):
 			os.makedirs(self.settings["chroot_path"])
 		
 		if self.settings.has_key("PKGCACHE"):	
 			if not os.path.exists(self.settings["pkgcache_path"]):
 				os.makedirs(self.settings["pkgcache_path"])
-					
+	
+		
 	def unpack_and_bind(self):
 		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/unpacked"):
+			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind"):
 			print "Resume point detected, skipping unpack and bind operation..."
 		
 		else:
@@ -214,7 +219,7 @@ class generic_stage_target(generic_target):
 			cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
 				self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
 			
-			touch(self.settings["chroot_path"]+"/tmp/.unpack_and_bind")
+			touch(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind")
 
 		# for safety's sake, we really don't want to resume these either		
 		print "Configuring profile link..."
@@ -411,6 +416,12 @@ class generic_stage_target(generic_target):
 		# now make sure path exists
 		if not os.path.exists(mypath):
 			os.makedirs(mypath)
+
+		# clean resume points since they are no longer needed
+		if self.settings.has_key("AUTORESUME"):
+			cmd("rm -f "+self.settings["chroot_path"]+"/tmp/.clst*",\
+				"Couldn't remove resume points")
+			
 		print "Creating stage tarball..."
 		
 		if self.settings["target"]=="stage1":

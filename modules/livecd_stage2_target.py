@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.11 2004/07/03 00:33:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.12 2004/07/06 13:48:00 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -46,8 +46,8 @@ class livecd_stage2_target(generic_stage_target):
 	
 	def unpack_and_bind(self):
 		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["cdroot_path"]+"/tmp/.unpack_and_bind"):
-			print "Detected resume point, skipping unpack and bind operation..."
+			and os.path.exists(self.settings["cdroot_path"]+"/tmp/.clst_unpack_and_bind"):
+			print "Resume point detected, skipping unpack and bind operation..."
 		
 		else:
 			if os.path.exists(self.settings["chroot_path"]):
@@ -58,7 +58,7 @@ class livecd_stage2_target(generic_stage_target):
 			print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
 			cmd("cp -a "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],
 				"Error copying initial livecd-stage2")
-			touch(self.settings["chroot_path"]+"/tmp/.unpack_and_bind")
+			touch(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind")
 	
 		# we do not want to resume code below this line
 		print "Configuring profile link..."
@@ -85,8 +85,8 @@ class livecd_stage2_target(generic_stage_target):
 			
 	def unmerge(self):
 		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/unmerge"):
-			print "Detected resume point, skipping unmerge operation..."
+			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unmerge"):
+			print "Resume point detected, skipping unmerge operation..."
 		
 		else:
 			if self.settings.has_key("livecd/unmerge"):
@@ -108,51 +108,37 @@ class livecd_stage2_target(generic_stage_target):
 				except CatalystError:
 					self.unbind()
 					raise
-				touch(self.settings["chroot_path"]+"/tmp/unmerge")
+				touch(self.settings["chroot_path"]+"/tmp/.clst_unmerge")
 
 	def clean(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clean"):
-			print "Detected resume point, skipping clean operation..."
-		
-		else:
-			generic_stage_target.clean(self)
-			try:
-				cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean",\
-					"Clean runscript failed.")
-			except:
-				self.unbind()
-				raise
-			touch(self.settings["chroot_path"]+"/tmp/.clean")
+		try:
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean",\
+				"Clean runscript failed.")
+		except:
+			self.unbind()
+			raise
 
 	def preclean(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.preclean"):
-			print "Detected resume point, skipping preclean operation..."
-		
-		else:
-			try:
-				cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean",
-					"Preclean runscript failed.")
-			
-			except:
-				self.unbind()
-				raise
-			touch(self.settings["chroot_path"]+"/tmp/.preclean")
+		try:
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean",\
+				"Preclean runscript failed.")
+	
+		except:
+			self.unbind()
+			raise
 
 	def cdroot_setup(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.cdroot_setup"):
-			print "Detected resume point, skipping cdroot setup..."
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","CDFS runscript failed.")
 		
-		else:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","CDFS runscript failed.")
-			if self.settings.has_key("livecd/overlay"):
-				cmd("/bin/cp -a "+self.settings["livecd/overlay"]+"/* "+\
-					self.settings["cdroot_path"],"LiveCD overlay copy failed.")
-					
-			touch(self.settings["chroot_path"]+"/tmp/.cdroot_setup")
-		
+		if self.settings.has_key("livecd/overlay"):
+			cmd("/bin/cp -a "+self.settings["livecd/overlay"]+"/* "+\
+			self.settings["cdroot_path"],"LiveCD overlay copy failed.")
+	
+		# clean up the resume points
+		if self.settings.has_key("AUTORESUME"):
+			cmd("rm -f "+self.settings["chroot_path"]+"/tmp/.clst*",\
+			"Couldn't remove resume points")
+	
 		# create the ISO - this is the preferred method (the iso scripts do not always work)
 		if self.settings.has_key("livecd/iso"):
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+\
@@ -247,8 +233,8 @@ class livecd_stage2_target(generic_stage_target):
 		# first clean up any existing cdroot stuff
 		# unless of course we are resuming
 		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.run_local_cdroot_clean"):
-			print "Detected resume point, not cleaning cdroot_path..."
+			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_cdroot_clean"):
+			print "Resume point detected, not cleaning cdroot_path..."
 		
 		else:
 			if os.path.exists(self.settings["cdroot_path"]):
@@ -257,26 +243,26 @@ class livecd_stage2_target(generic_stage_target):
 					"Could not remove existing directory: "+self.settings["cdroot_path"])
 			else:
 				os.makedirs(self.settings["cdroot_path"])
-				touch(self.settings["chroot_path"]+"/tmp/.run_local_cdroot_clean")
+				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_cdroot_clean")
 				
 		# the runscripts do the real building, so execute them now
 		# this is the part that we want to resume on since it is the most time consuming
 		try:
 			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.run_local_kernel_script"):
+				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_kernel_script"):
 				print "Resume point detected, skipping kernel build runscript..."
 			
 			else:
 				self.build_kernel()
-				touch(self.settings["chroot_path"]+"/tmp/.run_local_kernel_script")
+				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_kernel_script")
 			
 			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.run_local_bootloader_script"):
+				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_bootloader_script"):
 				print "Resume point detected, skipping bootloader runscript..."
 			
 			else:
 				cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","Bootloader runscript failed.")
-				touch(self.settings["chroot_path"]+"/tmp/.run_local_bootloader_script")
+				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_bootloader_script")
 		
 		except CatalystError:
 			self.unbind()
@@ -284,7 +270,7 @@ class livecd_stage2_target(generic_stage_target):
 
 		# what modules do we want to blacklist?
 		if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.run_local_blacklist"):
+				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_blacklist"):
 				print "Resume point detected, skipping module blacklisting..."
 		
 		else:
@@ -298,7 +284,7 @@ class livecd_stage2_target(generic_stage_target):
 				for x in self.settings["livecd/modblacklist"]:
 					myf.write("\n"+x)
 				myf.close()
-			touch(self.settings["chroot_path"]+"/tmp/.run_local_blacklist")
+			touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_blacklist")
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})
