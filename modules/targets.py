@@ -218,7 +218,9 @@ class generic_stage_target(generic_target):
 	def clean(self):
 		destpath=self.settings["chroot_path"]
 		
-		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*","/var/cache/ccache"]
+		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*"]
+		if self.settings.has_key("CCACHE"):
+			cleanables.append("/var/cache/ccache/*")
 		if self.settings["target"] not in ["livecd-stage2"]:
 			#we don't need to clean up a livecd-stage2
 			cleanables.append("/usr/portage")
