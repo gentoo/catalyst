@@ -159,8 +159,6 @@ grp/cd2/packages:
 	pciutils
 	pmud
 	powerprefs
-	ppc-development-sources
-	ppc-sources
 	ppp
 	pppconfig
 	pppoed
@@ -193,6 +191,7 @@ grp/cd2/packages:
 grp/src/type: srcset
 grp/src/packages:
 	ppc-development-sources
+	ppc-sources
 	metalog
 	pcmcia-cs
 	syslog-ng
