@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.117 2004/12/09 14:05:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.118 2004/12/09 14:13:02 wolf31o2 Exp $
+
+  09 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/isogen/x86-isogen.sh:
+  Removed -no-emul-boot from x86-isogen.sh to keep the ISO being made from
+  possibly not booting on really old systems.
 
   09 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/x86-archscript.sh:
