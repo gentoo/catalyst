@@ -18,6 +18,11 @@ def die(msg=None):
 def warn(msg):
 	print "catalyst: "+msg
 
+def cmd(mycmd,myexc=""):
+	retval=os.system(mycmd)
+	if retval != 0:
+		raise CatalystError,myexc
+
 def ismount(path):
 	"enhanced to handle bind mounts"
 	if os.path.ismount(path):

@@ -47,8 +47,8 @@ class generic_stage_target(generic_target):
 			fh.close()	
 		#call arch constructor, pass our settings
 		self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
-		self.settings["target_subpath"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
-		self.settings["target_subpath"]+="/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
+		self.settings["target_profile"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
+		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
 		self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
@@ -82,22 +82,16 @@ class generic_stage_target(generic_target):
 	def dir_setup(self):
 		print "Setting up directories..."
 		self.mount_safety_check()
-		retval=os.system("rm -rf "+self.settings["chroot_path"])
-		if retval != 0:
-			raise CatalystError,"Could not remove existing directory: "+self.settings["chroot_path"]
+		cmd("rm -rf "+self.settings["chroot_path"],"Could not remove existing directory: "+self.settings["chroot_path"])
 		os.makedirs(self.settings["chroot_path"])
 		if not os.path.exists(self.settings["pkgcache_path"]):
 			os.makedirs(self.settings["pkgcache_path"])
 		
 	def unpack_and_bind(self):
 		print "Unpacking stage tarball..."
-		retval=os.system("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"])
-		if retval!=0:
-			raise CatalystError,"Error unpacking tarball"
+		cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],"Error unpacking tarball")
 		print "Unpacking portage tree snapshot..."
-		retval=os.system("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr")
-		if retval!=0:
-			raise CatalystError,"Error unpacking snapshot"
+		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
@@ -106,6 +100,9 @@ class generic_stage_target(generic_target):
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount "+src
+		print "Configuring profile link..."
+		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile","Error zapping profile link")
+		cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+" "+self.settings["chroot_path"]+"/etc/make.profile","Error creating profile link")
 
 	def unbind(self):
 		ouch=0
@@ -127,9 +124,7 @@ class generic_stage_target(generic_target):
 			raise CatalystError,"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
-		retval=os.system("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc")
-		if retval!=0:
-			raise CatalystError,"Could not copy resolv.conf into place."
+		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
 		#Ugly bunch of sed commands to get /etc/make.conf to hold the correct default values for the stage
 		#we're building. This way, when a user uses a pentium4 stage3, it is set up to compile for pentium4
 		#using the CFLAGS and USE settings we used. It's possible that this would look nicer written in
@@ -150,25 +145,24 @@ class generic_stage_target(generic_target):
 		mycmds.append(sedcmd)
 		for x in mycmds:
 			mycmd=x+" "+self.settings["chroot_path"]+"/etc/make.conf"
-			retval=os.system(mycmd)
-			if retval != 0:
-				raise CatalystError, "Sed command failed: "+mycmd
+			cmd(mycmd,"Sed command failed: "+mycmd)
 
 	def clean(self):
 		"do not call without first unbinding; this code needs a cleanup once it stabilizes"
-		os.system("rm -f "+self.settings["chroot_path"]+"/etc/ld.so.preload")
-		retval=os.system("rm -f "+self.settings["chroot_path"]+"/etc/resolv.conf")
-		if retval!=0:
-			raise CatalystError,"Could not clean up resolv.conf."
-		retval=os.system("rm -rf "+self.settings["chroot_path"]+"/usr/portage")
-		if retval!=0:
-			raise CatalystError,"Could not clean up Portage tree."
-		retval=os.system("rm -rf "+self.settings["chroot_path"]+"/var/tmp/*")
-		if retval!=0:
-			raise CatalystError,"Could not clean up Portage tree."
-		retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean")
-		if retval!=0:
-			raise CatalystError,"clean script failed."
+		for x in ["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*"]: 
+			cmd("rm -rf "+self.settings["chroot_path"]+x,"Couldn't clean "+x)
+		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
+		
+	def capture(self):
+		"""capture target in a tarball"""
+		mypath=self.settings["target_path"].split("/")
+		#remove filename from path
+		mypath=string.join(mypath[:-1],"/")
+		#now make sure path exists
+		if not os.path.exists(mypath):
+			os.makedirs(mypath)
+		print "Creating stage tarball..."
+		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+" .","Couldn't create stage tarball")
 		
 	def run(self):
 		self.dir_setup()
@@ -184,14 +178,14 @@ class generic_stage_target(generic_target):
 			if type(self.settings[x])==types.StringType:
 				#prefix to prevent namespace clashes:
 				os.environ["clst_"+x]=self.settings[x]
+			elif type(self.settings[x])==types.ListType:
+				os.environ["clst_"+x]=string.join(self.settings[x])
 		try:
-			retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run")
-			if retval!=0:
-				raise CatalystError,"build script failed."
+			cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
 		finally:
 			self.unbind()
 		self.clean()
-
+		self.capture()
 			
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
@@ -217,26 +211,18 @@ class snapshot_target(generic_target):
 		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+" from "+self.settings["portdir"]+"..."
 		mytmp=self.settings["tmp_path"]
 		if os.path.exists(mytmp):
-			retval=os.system("rm -rf "+mytmp)
-			if retval != 0:
-				raise CatalystError, "Could not remove existing directory: "+mytmp
+			cmd("rm -rf "+mytmp,"Could not remove existing directory: "+mytmp)
 		os.makedirs(mytmp)
-		retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+self.settings["portdir"]+"/ "+mytmp+"/portage/")
-		if retval != 0:
-			raise CatalystError,"Snapshot failure"
+		cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure")
 		print "Compressing Portage snapshot tarball..."
-		retval=os.system("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage")
-		if retval != 0:
-			raise CatalystError,"Snapshot creation failure"
+		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage","Snapshot creation failure")
 		self.cleanup()
 
 	def cleanup(self):
 		mytmp=self.settings["tmp_path"]+"/"+self.settings["target_subpath"]
 		print "Cleaning up temporary snapshot directory..."
 		#Be a good citizen and clean up after ourselves
-		retval=os.system("rm -rf "+mytmp)
-		if retval != 0:
-			raise CatalystError,"Snapshot cleanup failure"
+		cmd("rm -rf "+mytmp,"Snapshot cleanup failure")
 			
 class stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
