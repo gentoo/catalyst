@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.5 2004/01/29 21:53:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.6 2004/02/10 00:14:33 drobbins Exp $
 
 case $1 in
 enter)
@@ -45,9 +45,17 @@ run)
 		export PKGDIR="/tmp/grp/$clst_grp_target"
 		emerge --usepkg --buildpkg --noreplace $clst_grp_packages || exit 1
 	else
-		export DISTDIR="/tmp/grp/$clst_grp_target"
-		unset PKGDIR
+		unset DISTDIR
+		#first grab to the normal distdir
 		emerge --fetchonly $clst_grp_packages || exit 1
+		export DISTDIR="/tmp/grp/$clst_grp_target"
+		export OLD_MIRRORS="\$GENTOO_MIRRORS\"
+		export GENTOO_MIRRORS="/usr/portage/distfiles"
+		#now grab them again, but with /usr/portage/distfiles as the primary mirror (local grab)
+		emerge --fetchonly $clst_grp_packages || exit 1
+		#restore original GENTOO_MIRRORS setting, if any
+		export GENTOO_MIRRORS="\$OLD_MIRRORS"
+		unset PKGDIR
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1

@@ -108,12 +108,14 @@ class generic_stage_target(generic_target):
 				ccdir=os.environ["CCACHE_DIR"]
 				del os.environ["CCACHE_DIR"]
 			else:
-				ccdir="/var/tmp/portage/ccache"
+				ccdir="/root/.ccache"
 			if not os.path.isdir(ccdir):
 					raise CatalystError,"Compiler cache support can't be enabled (can't find "+ccdir+")"
-			self.mounts.append("/var/tmp/portage/ccache")
-			self.mountmap["/var/tmp/portage/ccache"]=ccdir
-		
+			self.mounts.append("/var/tmp/ccache")
+			self.mountmap["/var/tmp/ccache"]=ccdir
+			#for the chroot:
+			os.environ["CCACHE_DIR"]="/var/tmp/ccache"	
+
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
@@ -221,8 +223,6 @@ class generic_stage_target(generic_target):
 		destpath=self.settings["chroot_path"]
 		
 		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*"]
-		if self.settings.has_key("CCACHE"):
-			cleanables.append("/var/cache/ccache/*")
 		if self.settings["target"] not in ["livecd-stage2"]:
 			#we don't need to clean up a livecd-stage2
 			cleanables.append("/usr/portage")

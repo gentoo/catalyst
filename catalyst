@@ -59,8 +59,7 @@ except ImportError:
 targetmap={}
 targets.register(targetmap)
 
-if "ccache" in string.split(myspec["options"]):
-	myspec["CCACHE"]="1"
+myspec["CCACHE"]="1"
 	print "Compiler cache support enabled."
 if "pkgcache" in string.split(myspec["options"]):
 	print "Package cache support enabled."
