@@ -30,6 +30,7 @@ class generic_stage_target(generic_target):
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
 				"ppc" : ["ppc"],
+				"ppc64" : ["ppc64"],
 				"hppa" : ["hppa"],
 				"mips" : ["mips"]
 		}
@@ -44,6 +45,7 @@ class generic_stage_target(generic_target):
 				"alpha" : "alpha",
 				"sparc" : "sparc",
 				"ppc" : "ppc",
+				"ppc64" : "ppc64",
 				"parisc" : "hppa",
 				"parisc64" : "hppa",
 				"mips" : "mips",
