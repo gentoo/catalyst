@@ -94,7 +94,10 @@ livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-2.08-memtest86-cdtar.tar.b
 # directory that is to be overlayed on the livecd rootfs (the booted fs)
 #livecd/root_overlay: /tmp/livecd-root-overlay
 
-# let catalyst know how many kernels to build, and what their names are
+# if you want your livecd to use udev instead of devfs, uncomment this line
+#livecd/devmanager: udev
+
+# let catalyst know the names of the kernels that you want it to build
 boot/kernel: gentoo smp
 
 # for the first kernel (gentoo), let catalyst know what sources to use and what kernel config to use
@@ -111,21 +114,21 @@ boot/kernel/smp/config:
 # per-kernel arguments for genkernel
 #boot/kernel/smp/gk_kernargs: --makeopts=-j1
 
-#this next line sets any USE settings you want exported to the environment for
-#your kernel build *and* during the build of any kernel-dependent packages
+# this next line sets any USE settings you want exported to the environment for
+# your kernel build *and* during the build of any kernel-dependent packages
 boot/kernel/gentoo/use: pcmcia usb
 boot/kernel/smp/use: pcmcia usb
 
-#use this next option to add an extension to the name of your kernel. This
-#allows you to have 2 identical kernels on the livecd built with different
-#options, and each with their own modules dir in /lib/modules (otherwise
-#the second kernel would overwrite the first modules directory.
+# use this next option to add an extension to the name of your kernel. This
+# allows you to have 2 identical kernels on the livecd built with different
+# options, and each with their own modules dir in /lib/modules (otherwise
+# the second kernel would overwrite the first modules directory.
 boot/kernel/gentoo/extraversion: livecd
 boot/kernel/smp/extraversion: livecd
 
-#this next line is for merging kernel-dependent packages after your kernel
-#is built. This is where you merge third-party ebuilds that contain kernel
-#modules.
+# this next line is for merging kernel-dependent packages after your kernel
+# is built. This is where you merge third-party ebuilds that contain kernel
+# modules.
 boot/kernel/gentoo/packages:
 	pcmcia-cs
 	slmodem
