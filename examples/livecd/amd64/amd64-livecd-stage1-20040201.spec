@@ -54,4 +54,4 @@ livecd/packages:
 	lvm2
 	livecd-tools
 	ucl
-
+	wireless-tools

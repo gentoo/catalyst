@@ -10,11 +10,13 @@ livecd/archscript: examples/livecd/runscript/x86-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 boot/kernel: gentoo smp
-boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.2_rc1
+boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.2-r1
 boot/kernel/gentoo/config: /usr/share/genkernel/x86_64/kernel-config-2.6
+boot/kernel/gentoo/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/gentoo/extraversion: up
-boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.2_rc1
+boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.2-r1
 boot/kernel/smp/config: /usr/share/genkernel/x86_64/kernel-config-2.6-smp
+boot/kernel/smp/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/smp/extraversion: smp
 
 livecd/unmerge:
