@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.9 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.10 2004/03/31 21:56:23 zhen Exp $
 
 case $1 in
 enter)
@@ -36,7 +36,13 @@ run)
 	then
 		export EMERGE_OPTS="--usepkg --buildpkg"
 	fi
-	/usr/portage/scripts/bootstrap.sh || exit 1
+	if [ -f /usr/portage/profiles/${clst_profile}/parent ]
+    then
+    	export clst_bootstrap="bootstrap-cascade.sh"
+    else
+    	export clst_bootstrap=bootstrap.sh
+    fi
+	/usr/portage/scripts/\${clst_bootstrap} || exit 1
 EOF
 	[ $? -ne 0 ] && exit 1 
 	;;
