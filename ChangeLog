@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.152 2005/01/24 23:03:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.153 2005/01/25 22:54:00 wolf31o2 Exp $
+
+  25 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-preclean2-chroot.sh:
+  Added code to clean up /var/db/pkg, while still keeping the CONTENTS,
+  COUNTER and ebuilds. This should keep a stage1 useable, while still keeping
+  its size small.
 
   24 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh:
