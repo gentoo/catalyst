@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.171 2005/02/04 16:46:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.172 2005/02/04 16:55:59 wolf31o2 Exp $
+
+  04 Feb 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
+  Removed ccache from default options as it breaks catalyst when merged with
+  USE=-ccache.
 
   04 Feb 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/snapshot_target.py:
