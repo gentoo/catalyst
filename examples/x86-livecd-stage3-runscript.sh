@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/Attic/x86-livecd-stage3-runscript.sh,v 1.2 2004/01/09 01:12:25 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/Attic/x86-livecd-stage3-runscript.sh,v 1.3 2004/01/09 22:35:05 drobbins Exp $
 
 die() {
 	echo "$1"
@@ -40,7 +40,7 @@ cdroot_setup)
 	
 	cdtar=$clst_livecd_stage3_cdtar
 	[ "$cdtar" = "" ] && die "No livecd-stage3/cdtar specified (required)"
-	tar xpvf $cdtar -C $clst_cdroot_path || die "Couldn't extract cdtar $cdtar"
+	tar xjpvf $cdtar -C $clst_cdroot_path || die "Couldn't extract cdtar $cdtar"
 	if [ "$clst_boot_kernel" = "" ]
 	then
 		echo "No boot/kernel setting defined, exiting."

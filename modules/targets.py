@@ -256,7 +256,6 @@ class generic_stage_target(generic_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
-			pass
 
 	def run(self):
 		self.dir_setup()
@@ -287,6 +286,8 @@ class generic_stage_target(generic_target):
 			self.clean()
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
 			self.capture()
+		if self.settings["target"] in ["livecd-stage3"]:
+			self.cdroot_setup()
 			
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
@@ -427,6 +428,23 @@ class livecd_stage3_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 		self.valid_values.append("livecd-stage3/cdtar","livecd-stage3/clean")
 		generic_stage_target.__init__(self,spec,addlargs)
+
+	def run_local(self):
+		try:
+			cmd(self.settings["livecd-stage3/runscript"]+" run","runscript failed")
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"Stage build aborting due to error."
+
+	def preclean(self):
+		try:
+			cmd(self.settings["livecd-stage3/runscript"]+" preclean","preclean runscript failed.")
+		except:
+			self.unbind()
+			raise
+
+	def cdroot_setup(self):
+		cmd(self.settings["livecd-stage3/runscript"]+" cdroot_setup","preclean runscript failed.")
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
