@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.130 2004/12/18 04:47:14 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.131 2004/12/18 04:56:21 zhen Exp $
+
+  17 Dec 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py:
+  fix for #73851
 
   17 Dec 2004; John Davis <zhen@gentoo.org> modules/catalyst_support.py:
   fix for #66592. catalyst now gives a traceback when it bails out, making

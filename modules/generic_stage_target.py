@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.19 2004/12/17 21:18:06 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.20 2004/12/18 04:56:21 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -287,6 +287,12 @@ class generic_stage_target(generic_target):
 				raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
 			cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
 				"Could not copy envscript into place.")
+
+		# copy over /etc/hosts from the host in case there are any specialties in there
+		if os.path.exists("/etc/hosts"):
+			cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
+				"/etc/hosts.bck", "Could not backup /etc/hosts")
+			cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts")
 		
 		# modify and write out make.conf (for the chroot)
 		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
@@ -341,6 +347,10 @@ class generic_stage_target(generic_target):
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
+
+		# put /etc/hosts back into place
+		cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+\
+				"/etc/hosts", "Could not replace /etc/hosts")
 		
 		cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+\
 			"/"+self.settings["target"]+".sh clean","clean script failed.")
