@@ -40,6 +40,7 @@ livecd/packages:
 	lzo 
 	mac-fdisk
 	metalog
+	memtester
 	mirrorselect
 	mingetty
 	module-init-tools
