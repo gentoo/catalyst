@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.4 2004/01/15 04:21:26 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.5 2004/01/17 03:55:42 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0

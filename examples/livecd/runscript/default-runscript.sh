@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/01/15 02:52:27 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/01/17 03:55:42 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -110,7 +110,8 @@ EOF
 			rm -rf /etc/localtime
 			cp /usr/share/zoneinfo/GMT /etc/localtime
 			echo "livecd" > /etc/hostname
-			sed -i -e 's:^/dev/[RBS]*::' /etc/fstab
+			sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
+			echo "tmpfs		/	tmpfs	defaults	0 0" >> /etc/fstab
 			sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 			# END OF SCRIPT TO UPDATE FILESYSTEM
 EOF
