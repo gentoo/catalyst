@@ -1,14 +1,15 @@
 subarch: amd64
-version_stamp: 20040124
+version_stamp: 20040201
 target: livecd-stage1
 rel_type: default
-rel_version: 1.4
-snapshot: 20040124
-source_subpath: default-amd64-1.4/stage3-amd64-20040124
+rel_version: 2004.0
+snapshot: 20040201
+source_subpath: default-amd64-2004.0/stage3-amd64-20040201
 livecd/use:
 	-X
 	-gtk
 	-svga
+	fbcon
 	livecd
 livecd/packages:
 	>=sys-apps/baselayout-1.8.6.12-r4

@@ -424,6 +424,7 @@ class livecd_stage2_target(generic_stage_target):
 		for x in loopy:
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
+			self.required_values.append("boot/kernel/"+x+"/extraversion")
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
@@ -503,6 +504,14 @@ class livecd_stage2_target(generic_stage_target):
 			if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
 				self.unbind()
 				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+
+			# We must support multiple configs for the same kernel, so we must manually edit the
+			# EXTRAVERSION on the kernel to allow them to coexist.  The extraversion field gets appended
+			# to the current EXTRAVERSION in the kernel Makefile.  Examples of this usage are UP vs SMP kernels,
+			# and on PPC64 we need a seperate pSeries, iSeries, and PPC970 (G5) kernels, all compiled off the
+			# same source, without having to release a seperate livecd for each (since other than the kernel,
+			# they are all binary compatible)
+			args.append(self.settings["boot/kernel/"+x+"/extraversion"])
 			retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
 			if retval!=0:
 				self.unbind()

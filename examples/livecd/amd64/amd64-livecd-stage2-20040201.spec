@@ -1,17 +1,22 @@
 subarch: amd64
-version_stamp: 20040124
+version_stamp: 20040201
 target: livecd-stage2
 rel_type: default
-rel_version: 1.4
-snapshot: 20040124
-source_subpath: default-amd64-1.4/livecd-stage1-amd64-20040124
-livecd/cdfstype: normal
+rel_version: 2004.0
+snapshot: 20040201
+source_subpath: default-amd64-2004.0/livecd-stage1-amd64-20040201
+livecd/cdfstype: zisofs
 livecd/archscript: examples/livecd/runscript/x86-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
-boot/kernel: gentoo
+boot/kernel: gentoo smp
 boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.2_rc1
 boot/kernel/gentoo/config: /usr/share/genkernel/x86_64/kernel-config-2.6
+boot/kernel/gentoo/extraversion: up
+boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.2_rc1
+boot/kernel/smp/config: /usr/share/genkernel/x86_64/kernel-config-2.6-smp
+boot/kernel/smp/extraversion: smp
+
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl

@@ -12,6 +12,7 @@ livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 boot/kernel: gentoo
 boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.1-r1
 boot/kernel/gentoo/config: examples/livecd/x86/config-2.6.1-x86
+boot/kernel/gentoo/extraversion: livecd
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl

@@ -9,6 +9,7 @@ livecd/use:
 	-X
 	-gtk
 	-svga
+	fbcon
 	livecd
 livecd/packages:
 	>=sys-apps/baselayout-1.8.6.12-r4

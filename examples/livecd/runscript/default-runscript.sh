@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.11 2004/01/26 18:15:50 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.12 2004/02/02 04:00:40 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -82,6 +82,8 @@ case $1 in
 			shift
 			clst_ksource="$1"
 			shift
+			clst_kextversion="$1"
+			shift
 			$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 				# SCRIPT TO BUILD EACH KERNEL. THIS GETS EXECUTED IN CHROOT
 				env-update
@@ -98,7 +100,9 @@ case $1 in
 				else
 					emerge --noreplace $clst_ksource || exit 1
 				fi
-
+				# Append Extraversion
+				[ ! -e /usr/src/linux ] && exit 1 
+				sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextversion}:" /usr/src/linux/Makefile
 				genkernel ${genkernel_args} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 				emerge -C genkernel $clst_ksource
 				# END OF SCRIPT TO BUILD EACH KERNEL
@@ -122,6 +126,7 @@ EOF
 			rc-update del consolefont
 			rc-update add metalog default
 			rc-update add modules default
+			[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 			/sbin/depscan.sh
 			rm -rf /etc/localtime
 			cp /usr/share/zoneinfo/GMT /etc/localtime
