@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.7 2004/05/22 05:51:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.8 2004/06/08 04:07:34 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -67,7 +67,7 @@ class livecd_stage2_target(generic_stage_target):
 			myunmerge=string.join(myunmerge)
 			#before cleaning, unmerge stuff:
 			try:
-				cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
+				cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"Unmerge script failed.")
 			except CatalystError:
 				self.unbind()
 				raise
@@ -75,25 +75,25 @@ class livecd_stage2_target(generic_stage_target):
 	def clean(self):
 		generic_stage_target.clean(self)
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean","Clean runscript failed.")
 		except:
 			self.unbind()
 			raise
 
 	def preclean(self):
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean","Preclean runscript failed.")
 		except:
 			self.unbind()
 			raise
 
 	def cdroot_setup(self):
-		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","CDFS runscript failed.")
 		if self.settings.has_key("livecd/overlay"):
 			cmd("/bin/cp -a "+self.settings["livecd/overlay"]+"/* "+self.settings["cdroot_path"],
 					"LiveCD overlay copy failed.") 
 		if self.settings.has_key("livecd/iso"):
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"iso runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"ISO creation runscript failed.")
 		print "livecd-stage2: complete!"
 
 	def run_local(self):
@@ -111,9 +111,12 @@ class livecd_stage2_target(generic_stage_target):
 		for kname in mynames:
 			args.append(kname)
 			args.append(self.settings["boot/kernel/"+kname+"/sources"])
-			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
-				self.unbind()
-				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
+			try:
+				if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
+					self.unbind()
+					raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
+			except TypeError:
+				raise CatalystError, "Required value boot/kernel/config not specified"
 
 			# We must support multiple configs for the same kernel,
 			# so we must manually edit the EXTRAVERSION on the kernel to allow them to coexist.
@@ -167,11 +170,11 @@ class livecd_stage2_target(generic_stage_target):
 				os.putenv(kname+"_kernelopts", "")
 			
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"runscript kernel build failed")
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+"kernel "+list_bashify(args)," Runscript kernel build failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+"bootloader"," Bootloader runscript failed.")
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"runscript aborting due to error."
+			raise CatalystError,"Runscript aborting due to error."
 
 		# what modules do we want to blacklist?
 		if self.settings.has_key("livecd/modblacklist"):

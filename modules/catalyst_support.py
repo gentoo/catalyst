@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.21 2004/05/17 02:00:25 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.22 2004/06/08 04:07:34 zhen Exp $
 
 import sys,string,os,types
 
@@ -38,7 +38,7 @@ class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
 			print
-			print "catalyst: "+message
+			print "!!! catalyst: "+message
 			
 def die(msg=None):
 	warn(msg)

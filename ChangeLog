@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.59 2004/06/04 14:24:53 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.60 2004/06/08 04:07:34 zhen Exp $
+
+  08 Jun 2004; John Davis <zhen@gentoo.org> modules/builder.py,
+  modules/catalyst_support.py, modules/livecd_stage2_target.py:
+  livecd-stage2 traced back when boot/kernel/x/config was an empty string, fixed
+  the code to give a nice error msg instead of a cryptic traceback
 
   04 Jun 2004; John Davis <zhen@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh:
