@@ -51,7 +51,7 @@ grp/cd1/packages:
 	syslog-ng
 	raidtools
 	mac-fdisk
-	#xfsprogs
+#xfsprogs
 	reiserfsprogs
 	lvm-user
 	dosfstools
@@ -93,9 +93,9 @@ grp/cd1/packages:
 	ufed	
 	dev-lang/tcl
 	dev-lang/tk
-	
-grp/cd2/type: pkgset
-grp/cd2/packages:
+
+	grp/cd2/type: pkgset
+	grp/cd2/packages:
 	DirectFB
 	apache
 	app-cdr/cdrtools
@@ -116,7 +116,7 @@ grp/cd2/packages:
 	links
 	mozilla
 #will be unmasked asap
-	#xfce4
+#xfce4
 	openbox
 # gentoo-ppc prefers the ximian flavour, to be unmasked asap
 	openoffice-ximian
@@ -139,15 +139,16 @@ grp/cd2/packages:
 	ettercap
 	xchat
 
-grp/src/type: srcset
-grp/src/packages:
+	grp/src/type: srcset
+	grp/src/packages:
 #isdn4k-utils was a binary pkg in 1.4, so we will need to get docs updated
 #since it's kernel-dependent? maybe?
 	iproute
 	wireless-tools
 	pcmcia-cs
 #not yet on stable
-	#evms
+#evms
 	linux-wlan-ng
 	mol
+
 
