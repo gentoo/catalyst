@@ -57,6 +57,8 @@ Overview of catalyst operation
   The target constructor updates the spec object to contain data relevant
   to the particular target (stage1, stage3, grp, etc.)
 
+*** PROTOTYPE CODE UP TO HERE IS COMPLETE (drobbins, 26 Oct '03)
+
 * The full data of the spec object is written to disc, so there is a complete
   record of all variables that will be used to build what we're building.  This
   will allow for another person to re-use this information to replicate our
