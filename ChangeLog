@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.183 2005/03/07 00:20:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.184 2005/03/07 19:52:00 wolf31o2 Exp $
+
+  07 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/pre-kmerge.sh:
+  Change genkernel check to use best_version and has_version to determine if
+  the any previously installed versions of genkernel are up to date. Change
+  emerge line for kernels to use -n option to only install if they were not
+  previously installed.
 
   06 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
