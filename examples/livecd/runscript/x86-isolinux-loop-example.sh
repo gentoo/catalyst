@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.5 2004/01/11 23:42:56 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.6 2004/01/13 03:55:49 brad_mssw Exp $
 
 die() {
 	echo "$1"
@@ -139,6 +139,13 @@ cdroot_setup)
 	sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
 	echo "cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount"
 	cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount 
+
+	# Filesystem stuff
+	echo "Setting up filesystem files"
+	echo "livecd" > $clst_cdroot_path/loopmount/etc/hostname
+	sed -i -e 's:^/dev/[RBS]*::' $clst_cdroot_path/loopmount/etc/fstab
+	sed -i -e '/dev-state/ s/^/#/' $clst_cdroot_path/loopmount/etc/devfsd.conf
+
 	[ $? -ne 0 ] && { umount $clst_cdroot_path/loopmount; die "Couldn't copy files to loopback ext2 filesystem"; }
 	umount $clst_cdroot_path/loopmount || die "Couldn't unmount loopback ext2 filesystem"
 	rm -rf $clst_cdroot_path/loopmount
