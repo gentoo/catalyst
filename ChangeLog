@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.106 2004/10/28 18:45:00 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.107 2004/10/29 21:14:59 wolf31o2 Exp $
+
+  29 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  +livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
+  livecd/runscript/sparc64-archscript.sh:
+  Updated with silo/mkisofs patch from gustavoz.
 
   28 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/x86-help.msg:
