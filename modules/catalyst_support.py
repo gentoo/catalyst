@@ -1,16 +1,16 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.32 2004/12/17 21:18:06 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.33 2004/12/18 04:47:14 zhen Exp $
 
-import sys,string,os,types,re
+import sys,string,os,types,re,traceback
 
 # these should never be touched
 required_build_targets=["generic_target","generic_stage_target"]
 
 # new build types should be added here
 valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target",
-						"livecd_stage1_target","livecd_stage2_target","embedded_target",
-						"tinderbox_target","snapshot_target","netboot"]
+			"livecd_stage1_target","livecd_stage2_target","embedded_target",
+			"tinderbox_target","snapshot_target","netboot"]
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
@@ -41,6 +41,8 @@ def list_bashify(mylist):
 class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
+			print
+			print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
 			
