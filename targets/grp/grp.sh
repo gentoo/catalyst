@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.1 2003/11/09 01:51:30 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.2 2003/11/09 01:55:48 drobbins Exp $
 
 case $1 in
 enter)
@@ -28,7 +28,8 @@ run)
 	export CONFIG_PROTECT="-*"
 	
 	USE="build" emerge portage
-	
+	#turn off auto-use:
+	export USE_ORDER="env:conf:defaults"	
 	if [ "$clst_grp_type" = "pkgset" ]
 	then
 		unset DISTDIR
