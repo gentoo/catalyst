@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/01/17 03:55:42 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.5 2004/01/17 18:37:24 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -8,6 +8,14 @@ RETURN_GOOD=0
 RETURN_BAD=1
 # Should continue
 RETURN_CONTINUE=2
+
+# Set default looptype to zisofs
+if [ "${LOOPTYPE}" == "" ]
+then
+	LOOPTYPE="zisofs"
+fi
+
+export LOOPTYPE
 
 die() {
 	echo "$1"
@@ -57,6 +65,53 @@ then
 else
 	echo "${ARCH_RUNSCRIPT} finished successfully, running default commands"
 fi
+
+create_normal_loop()
+{
+		#We get genkernel-built kernels and initrds in place, create the loopback fs on 
+		#$clst_cdroot_path, mount it, copy our bootable filesystem over, umount it, and 
+		#we then have a ready-to-burn ISO tree at $clst_cdroot_path.
+
+		echo "Calculating size of loopback filesystem..."
+		loopsize=`du -ks $clst_chroot_path | cut -f1`
+		[ "$loopsize" = "0" ] && loopsize=1
+		#increase the size by 1/3, then divide by 4 to get 4k blocks
+		loopsize=$(( ( $loopsize + ( $loopsize / 2 ) ) / 4  ))
+		echo "Creating loopback file..."
+		dd if=/dev/zero of=$clst_cdroot_path/livecd.loop bs=4k count=$loopsize || die "livecd.loop creation failure"
+		#echo "Calculating number of inodes required for ext2 filesystem..."
+		#numnodes=`find $clst_chroot_path | wc -l`
+		#numnodes=$(( $numnodes + 200 ))
+		mke2fs -m 0 -F -b 4096 -q $clst_cdroot_path/livecd.loop || die "Couldn't create ext2 filesystem"
+		install -d $clst_cdroot_path/loopmount
+		sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
+		mount -t ext2 -o loop $clst_cdroot_path/livecd.loop $clst_cdroot_path/loopmount || die "Couldn't mount loopback ext2 filesystem"
+		sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
+		echo "cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount"
+		cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount 
+
+		[ $? -ne 0 ] && { umount $clst_cdroot_path/loopmount; die "Couldn't copy files to loopback ext2 filesystem"; }
+		umount $clst_cdroot_path/loopmount || die "Couldn't unmount loopback ext2 filesystem"
+		rm -rf $clst_cdroot_path/loopmount
+		#now, $clst_cdroot_path should contain a proper bootable image for our iso, including
+		#boot loader and loopback filesystem.
+		return $RETURN_GOOD
+}
+
+create_zisofs()
+{
+	rm -rf ${clst_cdroot_path}/zisofs > /dev/null 2>&1
+	echo "Creating zisofs..."
+	mkzftree -z 9 -p2 ${clst_chroot_path} ${clst_cdroot_path}/zisofs || die "Could not run mkzftree, did you emerge zisofs"
+	return $RETURN_GOOD
+}
+
+create_noloop()
+{
+	echo "Copying files for image (no loop)..."
+	cp -a $clst_chroot_path/* $clst_cdroot_path || die "Could not copy files to image (no loop)"
+	return $RETURN_GOOD
+}
 
 case $1 in
 	kernbuild)
@@ -149,34 +204,21 @@ EOF
 	;;
 
 	loop)
-		#We get genkernel-built kernels and initrds in place, create the loopback fs on 
-		#$clst_cdroot_path, mount it, copy our bootable filesystem over, umount it, and 
-		#we then have a ready-to-burn ISO tree at $clst_cdroot_path.
-
-		echo "Calculating size of loopback filesystem..."
-		loopsize=`du -ks $clst_chroot_path | cut -f1`
-		[ "$loopsize" = "0" ] && loopsize=1
-		#increase the size by 1/3, then divide by 4 to get 4k blocks
-		loopsize=$(( ( $loopsize + ( $loopsize / 2 ) ) / 4  ))
-		echo "Creating loopback file..."
-		dd if=/dev/zero of=$clst_cdroot_path/livecd.loop bs=4k count=$loopsize || die "livecd.loop creation failure"
-		#echo "Calculating number of inodes required for ext2 filesystem..."
-		#numnodes=`find $clst_chroot_path | wc -l`
-		#numnodes=$(( $numnodes + 200 ))
-		mke2fs -m 0 -F -b 4096 -q $clst_cdroot_path/livecd.loop || die "Couldn't create ext2 filesystem"
-		install -d $clst_cdroot_path/loopmount
-		sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
-		mount -t ext2 -o loop $clst_cdroot_path/livecd.loop $clst_cdroot_path/loopmount || die "Couldn't mount loopback ext2 filesystem"
-		sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
-		echo "cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount"
-		cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount 
-
-		[ $? -ne 0 ] && { umount $clst_cdroot_path/loopmount; die "Couldn't copy files to loopback ext2 filesystem"; }
-		umount $clst_cdroot_path/loopmount || die "Couldn't unmount loopback ext2 filesystem"
-		rm -rf $clst_cdroot_path/loopmount
-		#now, $clst_cdroot_path should contain a proper bootable image for our iso, including
-		#boot loader and loopback filesystem.
-		exit $RETURN_GOOD
+		loopret=1
+		if [ "${LOOPTYPE}" = "normal" ]
+		then
+			create_normal_loop
+			loopret=$?
+		elif [ "${LOOPTYPE}" = "zisofs" ]
+		then
+			create_zisofs
+			loopret=$?
+		elif [ "${LOOPTYPE}" = "noloop" ]
+		then
+			create_noloop
+			loopret=$?
+		fi		
+		exit $loopret
 	;;
 
 	iso_create)

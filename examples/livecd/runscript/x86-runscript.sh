@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.5 2004/01/17 03:55:42 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.6 2004/01/17 18:37:25 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -36,6 +36,20 @@ case $1 in
 	;;
 
 	setup_bootloader)
+		# LOOPTYPE should be exported from default runscript, we use it to
+		# determine kernel args
+		if [ "${LOOPTYPE}" = "zisofs" ]
+		then
+			loop_opts="looptype=zisofs loop=/zisofs"
+		elif [ "${LOOPTYPE}" = "normal" ]
+		then
+			loop_opts="looptype=normal loop=/livecd.loop"
+		elif [ "${LOOPTYPE}" = "noloop" ]
+		then
+			# no loop at all wanted, just a raw copy on a cd
+			loop_opts="looptype=noloop"
+		fi
+
 		#Time to create a filesystem tree for the ISO at $clst_cdroot_path.
 		#We extract the "cdtar" to this directory, which will normally contains a pre-built
 		#binary boot-loader/filesystem skeleton for the ISO. 
@@ -85,12 +99,12 @@ case $1 in
 			echo >> $icfg
 			echo "label $x" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc loop=/livecd.loop cdroot vga=0x317 splash=silent" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${loop_opts} cdroot vga=0x317 splash=silent" >> $icfg
 			echo >> $icfg
 			echo "   $x" >> $kmsg
 			echo "label $x-nofb" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc loop=/livecd.loop cdroot" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${loop_opts} cdroot" >> $icfg
 			echo >> $icfg
 			echo "   ${x}-nofb" >> $kmsg
 		done
