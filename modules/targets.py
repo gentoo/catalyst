@@ -514,8 +514,13 @@ class livecd_stage3_target(generic_stage_target):
 #			raise
 
 	def cdroot_setup(self):
-		if not os.path.exists(self.settings["cdroot_path"]):
-			os.makedirs(self.settings["cdroot_path"])
+		if os.path.exists(self.settings["cdroot_path"]):
+			print "cleaning previous livecd-stage3 build"
+			cmd("rm -rf "+self.settings["cdroot_path"],"Could not remove existing directory: "+self.settings["cdroot_path"])
+
+		print "creating livecd-stage3 cdroot"
+		os.makedirs(self.settings["cdroot_path"])
+
 		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" setup_bootloader","setup_bootloader runscript failed.")
 		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" loop","loop runscript failed.")
 		print "livecd-stage3: complete!"
