@@ -28,7 +28,8 @@ class generic_stage_target(generic_target):
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
-				"ppc" : ["ppc"]
+				"ppc" : ["ppc"],
+				"hppa" : ["hppa"]
 		}
 		
 		machinemap={ 	"i386" : "x86",
@@ -40,7 +41,9 @@ class generic_stage_target(generic_target):
 				"ia64" : "ia64",
 				"alpha" : "alpha",
 				"sparc" : "sparc",
-				"ppc" : "ppc"
+				"ppc" : "ppc",
+				"parisc" : "hppa",
+				"parisc64" : "hppa"
 		}
 	
 		mymachine=os.uname()[4]
@@ -80,7 +83,6 @@ class generic_stage_target(generic_target):
 				os.makedirs(self.settings["target_path"])
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
-
 		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
 		

@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.13 2003/11/30 01:51:44 drobbins Exp $
- 
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.14 2003/12/16 14:40:59 gmsoft Exp $
+
+  16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py :
+  Added hppa specific code.
+
   29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Tinderbox target added. See
   tinderbox examples in examples/ dir.
   
