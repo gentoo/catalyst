@@ -265,6 +265,23 @@ class generic_stage_target(generic_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
+		elif self.settings["target"]=="livecd-stage2":
+			mynames=self.settings["boot/kernel"]
+			if type(mynames)==types.StringType:
+				mynames=[mynames]
+			args=`len(mynames)`
+			for x in mynames:
+				args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
+				if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]:
+					raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config "+self.settings["chroot_dir"]+"/var/tmp/"+x+".config")
+				if retval!=0:
+					raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+			try:
+				cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args))
+			except CatalystError:
+				self.unbind()
+				raise CatalystError,"GRP build aborting due to error."
 		else:
 			#tinderbox
 			#example call: "grp.sh run xmms vim sys-apps/gleep"
@@ -354,8 +371,12 @@ class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		generic_target.__init__(self,spec,addlargs)
 
+class livecd_stage2_target(generic_stage_target):
+	def __init__(self,spec,addlargs):
+		generic_target.__init__(self,spec,addlargs)
+
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
-	"grp":grp_target,"livecd-stage1":livecd_stage1_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
+	"grp":grp_target,"livecd-stage1":livecd_stage1_target,"livecd-stage2":livecd_stage2_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
 	return foo
 	
