@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.91 2004/02/25 19:22:36 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.92 2004/03/22 15:25:52 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -218,7 +218,9 @@ class generic_stage_target(generic_target):
 			myusevars.extend(self.settings["tinderbox/use"])
 		elif self.settings["target"]=="livecd-stage1":
 			myusevars.extend(self.settings["livecd/use"])
-		myf.write('USE="'+string.join(myusevars)+'"\n')
+		elif self.settings["target"]=="embedded":
+			myusevars.extend(self.settings["embedded/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		else:
@@ -322,7 +324,7 @@ class generic_stage_target(generic_target):
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
-		if self.settings["target"] in ["stage1","stage2","stage3"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","embedded"]:
 			self.capture()
 		if self.settings["target"] in ["livecd-stage2"]:
 			self.cdroot_setup()
@@ -584,10 +586,81 @@ class livecd_stage2_target(generic_stage_target):
 			self.unbind()
 			raise CatalystError,"runscript aborting due to error."
 
+# this class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
+# of building a stage3, it emerges a 'system' into another directory
+# inside the 'stage2' system.  This way we do not have to emerge gcc/portage
+# into the staged system.
+#
+# it sounds real complicated but basically it's a it runs
+# ROOT=/tmp/submerge emerge --blahblah foo bar
+class embedded_target(generic_stage_target):
+
+    def __init__(self,spec,addlargs):
+        self.required_values=[]
+        self.valid_values=[]
+	#self.required_values.extend(["embedded/packages"]);
+        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/runscript","embedded/mergeroot","embedded/packages","embedded/use"])
+
+        generic_stage_target.__init__(self,spec,addlargs)
+	self.settings["image_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/image"	
+               
+    # taken from livecd-stage3 code
+    def unmerge(self):
+	    print "Unmerging packages"
+            if self.settings.has_key("embedded/unmerge"):
+		    if type(self.settings["embedded/unmerge"])==types.StringType:
+			    self.settings["embedded/unmerge"]=[self.settings["embedded/unmerge"]]
+		    myunmerge=self.settings["embedded/unmerge"][:]
+                    
+                    for x in range(0,len(myunmerge)):
+                        myunmerge[x]="'"+myunmerge[x]+"'"
+		    myunmerge=string.join(myunmerge)
+                        # before cleaning unmerge stuff
+		    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
+                        
+    def clean(self):
+	    if self.settings.has_key("embedded/rm"):
+		    if type(self.settings["embedded/rm"])==types.StringType:
+			    self.settings["lembedded/rm"]=[self.settings["embedded/rm"]]
+		    print "Removing directories from image"
+		    for x in self.settings["embedded/rm"]:
+			    print "Removing "+x
+			    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
+    def run_local(self):
+	    mypackages=list_bashify(self.settings["embedded/packages"])
+	    print "Merging embedded image"
+	    try:
+		    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/embedded/embedded.sh run")
+	    except CatalystError:
+		    self.unbind()
+		    raise CatalystError, "Embedded build aborted due to error."
+	    self.unmerge()
+	    self.clean()
+	    try:
+		    if self.settings.has_key("embedded/runscript"):
+			    cmd("/bin/bash "+self.settings["embedded/runscript"]+" run ","runscript failed")
+	    except CatalystError:
+		    self.unbind()
+		    raise CatalystError, "embedded runscript aborting due to error."
+	    
+
+    def capture(self):
+	    """capture target in a tarball"""
+	    mypath=self.settings["target_path"].split("/")
+	    #remove filename from path
+	    mypath=string.join(mypath[:-1],"/")
+	    #now make sure path exists
+	    if not os.path.exists(mypath):
+		    os.makedirs(mypath)
+	    print "Creating stage tarball..."
+	    cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+"/tmp/mergeroot .","Couldn't create stage tarball")
+
+
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
 	"grp":grp_target,"livecd-stage1":livecd_stage1_target,
 	"livecd-stage2":livecd_stage2_target,
-	"snapshot":snapshot_target,"tinderbox":tinderbox_target})
+	"snapshot":snapshot_target,"tinderbox":tinderbox_target,
+	"embedded":embedded_target})
 	return foo
 	
