@@ -498,12 +498,10 @@ def run_local(self):
 			self.unbind()
 			raise CatalystError,"livecd-stage2 build aborting due to error."
 
-class livecd_stage3_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
 	"grp":grp_target,"livecd-stage1":livecd_stage1_target,
-	"livecd-stage2":livecd_stage2_target,"livecd-stage3":livecd_stage3_target,
+	"livecd-stage2":livecd_stage2_target,
 	"snapshot":snapshot_target,"tinderbox":tinderbox_target})
 	return foo
 	
