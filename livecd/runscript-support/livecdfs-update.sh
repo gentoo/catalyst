@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.33 2005/03/06 14:35:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.34 2005/03/08 18:35:33 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -33,7 +33,6 @@ rc-update add pwgen default
 [ -e /etc/init.d/metalog ] && rc-update add metalog default
 [ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
 [ -e /etc/init.d/alsasound ] && rc-update add alsasound default
-[ -e /etc/init.d/hdparm ] && rc-update add hdparm default
 
 # Comment out current getty settings
 sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
