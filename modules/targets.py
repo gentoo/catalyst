@@ -15,7 +15,6 @@ class generic_stage_target(generic_target):
 		self.required_values=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
 		self.valid_values=self.required_values
 		generic_target.__init__(self,addlargs,myspec)
-
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
@@ -30,7 +29,6 @@ class generic_stage_target(generic_target):
 				"i686" : "x86",
 				"x86_64" : "amd64"
 		}
-
 	
 		mymachine=os.uname()[4]
 		if not machinemap.has_key(mymachine):
@@ -191,7 +189,7 @@ class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
 		self.valid_values=["version_stamp","target"]
 		self.required_values=self.valid_values
-		generic_target.__init__(myspec,addlargs)
+		generic_target.__init__(self,myspec,addlargs)
 		
 		self.settings=myspec
 		if not self.settings.has_key("version_stamp"):
