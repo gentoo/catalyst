@@ -1,11 +1,13 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.1 2004/01/15 00:25:56 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/01/15 01:43:44 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
 # An error has occurred
 RETURN_BAD=1
+# Should continue
+RETURN_CONTINUE=2
 
 die() {
 	echo "$1"
@@ -33,6 +35,28 @@ die() {
 # runscript: cdroot_setup
 
 # livecd-stage3 completes.
+
+if [ "${ARCH_RUNSCRIPT}" == "" -o ! -f "${ARCH_RUNSCRIPT}" ]
+then
+	die "ARCH_RUNSCRIPT NOT DEFINED OR NOT FOUND"
+fi
+
+${ARCH_RUNSCRIPT} $*
+RET="$?"
+
+if [ "${RET}" != "${RETURN_CONTINUE}" ]
+then
+	if [ "${RET}" -eq "0" ]
+	then
+		echo "${ARCH_RUNSCRIPT} finished successfully, don\'t have to run default commands"
+		exit 0
+	else
+		echo "${ARCH_RUNSCRIPT} errored out, not continuing"
+		exit 1
+	fi
+else
+	echo "${ARCH_RUNSCRIPT} finished successfully, running default commands"
+fi
 
 case $1 in
 	kernbuild)
@@ -63,7 +87,7 @@ case $1 in
 				genkernel --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 				emerge -C genkernel $clst_ksource
 				# END OF SCRIPT TO BUILD EACH KERNEL
-			EOF
+EOF
 			[ $? -ne 0 ] && exit $RETURN_BAD
 			count=$(( $count + 1 ))
 		done
@@ -88,7 +112,7 @@ case $1 in
 			sed -i -e 's:^/dev/[RBS]*::' /etc/fstab
 			sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 			# END OF SCRIPT TO UPDATE FILESYSTEM
-		EOF
+EOF
 		[ $? -ne 0 ] && exit $RETURN_BAD
 	
 		exit $RETURN_GOOD
@@ -119,43 +143,6 @@ case $1 in
 		#Time to create a filesystem tree for the ISO at $clst_cdroot_path.
 		#We extract the "cdtar" to this directory, which will normally contains a pre-built
 		#binary boot-loader/filesystem skeleton for the ISO. 
-		
-		cdtar=$clst_livecd_cdtar
-		[ "$cdtar" = "" ] && die "No livecd/cdtar specified (required)"
-		tar xjpvf $cdtar -C $clst_cdroot_path || die "Couldn't extract cdtar $cdtar"
-		if [ "$clst_boot_kernel" = "" ]
-		then
-			echo "No boot/kernel setting defined, exiting."
-			exit 1
-		fi
-		first=""
-		for x in $clst_boot_kernel
-		do
-			if [ "$first" = "" ]
-			then
-				#grab name of first kernel
-				first="$x"
-			fi
-			if [ ! -e "$clst_binaries_source_path/$x.tar.bz2" ] 
-			then
-				echo "Can't find kernel tarball at $clst_binaries_source_path/$x.tar.bz2"
-				exit 1
-			fi
-			tar xjvf $clst_binaries_source_path/$x.tar.bz2 -C $clst_cdroot_path/isolinux
-			#change kernel name from "kernel" to "gentoo", for example
-			mv $clst_cdroot_path/isolinux/kernel $clst_cdroot_path/isolinux/$x
-			#change initrd name from "initrd" to "gentoo.igz", for example
-			mv $clst_cdroot_path/isolinux/initrd $clst_cdroot_path/isolinux/$x.igz
-		done
-		icfg=$clst_cdroot_path/isolinux/isolinux.cfg
-		echo "default $first" > $icfg
-		for x in $clst_boot_kernel
-		do
-			echo >> $icfg
-			echo "label $x" >> $icfg
-			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc loop=/livecd.loop cdroot" >> $icfg
-		done
 		exit $RETURN_GOOD
 	;;
 
@@ -192,8 +179,7 @@ case $1 in
 
 	iso_create)
 		#this is for the livecd-final target, and calls the proper command to build the iso file
-		mkisofs -J -R -l -o ${clst_iso_path} -b isolinux/isolinux.bin -c isolinux/boot.cat \
-			-no-emul-boot -boot-load-size 4 -boot-info-table $clst_cdroot_path
+		exit $RETURN_GOOD
 	;;
 esac
 exit $RETURN_GOOD

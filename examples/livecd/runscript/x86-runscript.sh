@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.1 2004/01/15 00:25:56 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.2 2004/01/15 01:43:45 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -27,7 +27,7 @@ case $1 in
 
 	preclean)
 		echo "no generic process for x86, continuing"
-		exit $RETURN_CONTINUE
+		exit 2
 	;;
 
 	clean)
