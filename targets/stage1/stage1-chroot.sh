@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.25 2004/11/23 00:02:57 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.26 2005/01/11 14:10:19 wolf31o2 Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -25,6 +25,11 @@ fi
 if [ -n "${clst_PKGCACHE}" ]
 then
 	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
+fi
+
+if [ -n "${clst_FETCH}" ]
+then
+	export clst_myemergeopts="${clst_myemergeopts} -f"
 fi
 
 # setup our environment

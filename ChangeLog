@@ -1,6 +1,15 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.142 2005/01/11 13:12:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.143 2005/01/11 14:10:18 wolf31o2 Exp $
+
+  11 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/livecd-stage1/livecd-stage1.sh,
+  targets/netboot/netboot-packages.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh:
+  Added a -F or --fetchonly command line option and closing out bug #77480.
+  Also added a portage version check to livecd-stage1 to close out bug #68307.
 
   11 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh,

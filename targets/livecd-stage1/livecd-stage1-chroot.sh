@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.10 2004/12/15 00:50:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.11 2005/01/11 14:10:19 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -24,9 +24,14 @@ fi
 
 if [ -n "${clst_PKGCACHE}" ]
 then
-	clst_emergeopts="--usepkg --buildpkg --newuse"
+	export clst_emergeopts="--usepkg --buildpkg --newuse"
 else
-	clst_emergeopts=""
+	export clst_emergeopts=""
+fi
+
+if [ -n "${clst_FETCH}" ]
+then
+	export clst_emergeopts="${clst_emergeopts} -f"
 fi
 
 ## setup the environment
@@ -44,6 +49,15 @@ then
 	sleep 15
 fi
 
-for packages in ${clst_packages}; do
-	emerge ${clst_emergeopts} ${packages}
-done
+portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
+	| cut -d/ -f2 | cut -d- -f2,3`
+
+if [ `echo ${portage_version} | cut -d- -f1 | cut -d. -f3` -ge 51 ] &&
+	[ `echo ${portage_version} | cut -d- -f2 | cut -dr -f2` -ge 4 ]
+then
+	emerge ${clst_emergeopts} ${clst_packages}
+else
+	for packages in ${clst_packages}; do
+		emerge ${clst_emergeopts} ${packages}
+	done
+fi

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.57 2005/01/05 00:17:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.58 2005/01/11 14:10:18 wolf31o2 Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -18,6 +18,7 @@ def usage():
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
 	print " -d --debug		enable debugging"
 	print " -f --file		read specfile"
+	print " -F --fetchonly		fetch files only"
 	print " -h --help		print this help message"
 	print " -s --snapshot		generate a Portage snapshot"
 	print " -v --version		display version information"
@@ -188,8 +189,8 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:Vs:", ["help", "version", "debug",\
-			"config=", "cli=", "file=", "verbose","snapshot="])
+		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:FVs:", ["help", "version", "debug",\
+			"config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
 		usage()
@@ -198,6 +199,7 @@ if __name__ == "__main__":
 	# defaults for commandline opts
 	debug=False
 	verbose=False
+	fetch=False
 	myconfig=""
 	myspecfile=""
 	mycmdline=[]
@@ -242,6 +244,14 @@ if __name__ == "__main__":
 			
 		if o in ("-f", "--file"):
 			myspecfile=a
+
+		if o in ("-F", "--fetchonly"):
+			if len(sys.argv) < 3:
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
+			else:
+				conf_values["FETCH"]="1"
 			
 		if o in ("-V", "--verbose"):
 			if len(sys.argv) < 3:
