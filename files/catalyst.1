@@ -60,6 +60,16 @@ Tell \fBcatalyst\fR to use the user supplied specfile.
 .BR "\-\-verbose " (\fB\-V\fR)
 Enable verbose mode.
 
+.SH EXAMPLES
+.TP
+Using the commandline option (\-C, \-\-cli) to build a Portage snapshot:
+.LP
+catalyst \-C target=snapshot version_stamp=my_date
+.LP
+Using the specfile option (\-f, \-\-file) to build a stage target:
+.LP
+catalyst \-f stage1\-specfile.spec
+
 .SH FILES
 .TP
 Example specfiles can be found in /usr/share/doc/catalyst-<version>/examples. An example configuration file can be found at /etc/catalyst/catalyst.conf.
@@ -82,4 +92,4 @@ A more in-depth examination of Catalyst options and procedures can be found link
 John Davis <zhen@gentoo.org>
 
 .SH "CVS HEADER"
-$Id: catalyst.1,v 1.1 2004/08/13 16:00:48 zhen Exp $
+$Id: catalyst.1,v 1.2 2004/09/18 19:32:13 zhen Exp $
