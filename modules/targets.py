@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.100 2004/04/05 20:31:43 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.101 2004/04/13 20:04:32 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -443,7 +443,7 @@ class livecd_stage1_target(generic_stage_target):
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript","livecd/iso"]
+		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript"]
 		self.valid_values=[]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
@@ -458,7 +458,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso"])
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
 	
@@ -516,7 +516,8 @@ class livecd_stage2_target(generic_stage_target):
 
 	def cdroot_setup(self):
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
-		cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"iso runscript failed.")
+		if self.settings.has_key("livecd/iso"):
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"iso runscript failed.")
 		print "livecd-stage2: complete!"
 
 	def run_local(self):
