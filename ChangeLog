@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.26 2004/03/23 07:20:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.27 2004/03/25 00:03:27 zhen Exp $
+
+  24 Mar 2004; John Davis <zhen@gentoo.org> catalyst,
+  livecd/cdtar/isolinux-2.08-memtest86-cdtar.tar.bz2,
+  livecd/runscript/default-runscript.sh, livecd/runscript/x86-archscript.sh:
+  memtest is in. if you want to use it, check out the memtest86 cd tarball
+  Also, fixes for bugs 45078, 45188, 44306
 
   23 Mar 2004; John Davis <zhen@gentoo.org>
   livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.30 2004/03/05 06:24:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.31 2004/03/25 00:03:27 zhen Exp $
 
 import os,sys,imp,string
 
@@ -47,7 +47,7 @@ if os.path.exists(myconffile):
 		sys.exit(1)
 
 confdefaults={ "storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",
-"portdir":"/usr/portage","options":"ccache"}
+"portdir":"/usr/portage","options":""}
 
 for x in confdefaults.keys():
 	if myconf.has_key(x):
@@ -69,8 +69,9 @@ except ImportError:
 targetmap={}
 targets.register(targetmap)
 
-myspec["CCACHE"]="1"
-print "Compiler cache support enabled."
+if "ccache" in string.split(myspec["options"]):
+	print "Compiler cache support enabled."
+	myspec["CCACHE"]="1"
 
 if "pkgcache" in string.split(myspec["options"]):
 	print "Package cache support enabled."

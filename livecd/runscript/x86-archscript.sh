@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.2 2004/03/23 07:20:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
 
 case $1 in
 	kernel)
@@ -52,9 +52,9 @@ case $1 in
 		echo "F2 help.msg" >> $icfg
 
 		echo "Available kernels:" > $kmsg
-		cp examples/livecd/runscript/x86-help.msg $hmsg
+		cp ${clst_sharedir}/livecd/files/x86-help.msg $hmsg
 
-		for x in $clst_boot_kernel
+		for x in ${clst_boot_kernel}
 		do
 
 			eval custom_kopts=\$${x}_kernelopts
@@ -71,8 +71,16 @@ case $1 in
 			echo >> $icfg
 			echo "   ${x}-nofb" >> $kmsg
 		done
-	;;
 
+		if [ -f ${clst_cdroot_path}/isolinux/memtest86 ]
+		then
+			echo >> $icfg
+			echo "   memtest86" >> $kmsg
+			echo "label memtest86" >> $icfg
+			echo "  kernel memtest86" >> $icfg
+		fi
+	;;
+	
 	cdfs)
 	;;
 

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/03/18 20:08:17 beejay Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
 
 #return codes to be used by archscript
 
@@ -87,7 +87,7 @@ create_gcloop()
 create_squashfs()
 {
 	echo "Creating squashfs..."
-	mksquashfs -noappend "${clst_chroot_path}" "${clst_cdroot_path}/livecd.squashfs" || die "mksquashfs failed, did you emerge squashfs?"
+	mksquashfs "${clst_chroot_path}" "${clst_cdroot_path}/livecd.squashfs" -noappend || die "mksquashfs failed, did you emerge squashfs-utils?"
 }
 
 case $1 in
@@ -181,7 +181,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/03/18 20:08:17 beejay Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
 
 depend() {
 	after *
@@ -189,13 +189,13 @@ depend() {
 
 start() {
 	ebegin "Auto-scrambling root password for security"
-	echo root:`pwgen -s 16` | chpasswd  > /dev/null 2>&1
-	eend $? "Failed to start local."
+	echo root:\`pwgen -s 16\` | chpasswd  > /dev/null 2>&1
+	eend \$? "Failed to start local."
 }
 
 stop() {
 	ebegin "Stopping local"
-	eend $? "Failed to stop local."
+	eend \$? "Failed to stop local."
 }
 EOF
 		
