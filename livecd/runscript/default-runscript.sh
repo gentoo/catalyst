@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.13 2004/06/11 19:06:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.14 2004/07/13 14:01:50 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -126,7 +126,7 @@ case $1 in
 		cp -a ${clst_sharedir}/livecd/files/livecd-rclocal ${clst_chroot_path}/etc/init.d/local
 		
 		# move over the motd (if applicable)
-		if [ -n ${clst_livecd_motd} ]
+		if [ -n "${clst_livecd_motd}" ]
 		then
 			cp -a ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
 		fi
