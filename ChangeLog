@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.157 2005/01/28 18:37:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.158 2005/01/28 19:23:43 wolf31o2 Exp $
+
+  28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/x86-archscript.sh:
+  Changed acpi=ht to acpi=off. This fixes acpi loading and also allows for
+  users to use apm.
 
   28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.19 2004/12/17 21:06:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.20 2005/01/28 19:23:43 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -79,16 +79,16 @@ case $1 in
 			
 			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 			then
-				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
 			else
-				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent" >> ${icfg}
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent" >> ${icfg}
 			fi
 			
 			echo >> ${icfg}
 			echo "   ${x}" >> ${kmsg}
 			echo "label ${x}-nofb" >> ${icfg}
 			echo "	kernel ${x}" >> ${icfg}
-			echo "	append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot" >> ${icfg}
+			echo "	append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot" >> ${icfg}
 			echo >> ${icfg}
 			echo "   ${x}-nofb" >> ${kmsg}
 		done
