@@ -1,17 +1,17 @@
-subarch: amd64 
-version_stamp: 20031222
+subarch: amd64
+version_stamp: 20040124
 target: livecd-stage2
 rel_type: default
 rel_version: 1.4
-snapshot: 20031222
-source_subpath: default-amd64-1.4/livecd-stage1-amd64-20031222
+snapshot: 20040124
+source_subpath: default-amd64-1.4/livecd-stage1-amd64-20040124
+livecd/cdfstype: normal
+livecd/archscript: examples/livecd/runscript/x86-archscript.sh
+livecd/runscript: examples/livecd/runscript/default-runscript.sh
+livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 boot/kernel: gentoo
-boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.0
-boot/kernel/gentoo/config: /home/drobbins/cvs/gentoo/src/catalyst/kconfig/config-2.6.0-amd64
-livecd/cdfstype: zisofs
-livecd/cdtar: /home/drobbins/cvs/gentoo/src/catalyst/examples/isolinux-2.08-cdtar.tar.bz2
-livecd/runscript: /home/drobbins/cvs/gentoo/src/catalyst/examples/runscript.sh
-livecd/archscript: /home/drobbins/cvs/gentoo/src/catalyst/examples/x86-archscript.sh
+boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.2_rc1
+boot/kernel/gentoo/config: /usr/share/genkernel/x86_64/kernel-config-2.6
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl
