@@ -24,7 +24,8 @@ case $1 in
 	;;
 
 	preclean)
-		${clst_CHROOT} ${2} /bin/bash << EOF
+		#normal chroot is fine here since this is our second chroot (no $clst_CHROOT needed)
+		chroot ${2} /bin/bash << EOF
 		#now, some finishing touches to initialize gcc-config....
 		unset ROOT
 		if [ -e /usr/sbin/gcc-config ]
