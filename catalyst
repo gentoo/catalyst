@@ -95,8 +95,7 @@ targetmap={ 	"x86" : ["x86"],
 		
 mymachine=os.uname()[4]
 if not machinemap.has_key(mymachine):
-	print "Unknown machine type:",mymachine
-	sys.exit(1)
+	die("Unknown machine type: "+mymachine)
 hostarch=machinemap[mymachine]
 print "Host architecture:",hostarch
 print "Supported architectures for targets:",string.join(targetmap[hostarch])
@@ -162,10 +161,7 @@ mytarget=targetmap[myspec["target"]](myspec)
 print
 spec_dump(myspec)
 
-#set up build directories, etc.
-retval=mytarget.run()
-if not retval:
-	die("Target failed.")
+mytarget.run()
 
 #to test this program, type:
 
