@@ -460,21 +460,21 @@ class livecd_stage2_target(generic_stage_target):
 
 class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd-stage3/runscript"]
+		self.required_values=["boot/kernel","livecd/runscript"]
 		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["livecd-stage3/cdtar","livecd-stage3/empty","livecd-stage3/rm","livecd-stage3/unmerge"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
-		if self.settings.has_key("livecd-stage3/cdtar"):
-			if not os.path.exists(self.settings["livecd-stage3/cdtar"]):
-				raise CatalystError, "Cannot locate specified livecd-stage3/cdtar: "+self.settings["livecd-stage3/cdtar"]
-		if not os.path.exists(self.settings["livecd-stage3/runscript"]):
-				raise CatalystError, "Cannot locate specified livecd-stage3/runscript: "+self.settings["livecd-stage3/runscript"]
+		if self.settings.has_key("livecd/cdtar"):
+			if not os.path.exists(self.settings["livecd/cdtar"]):
+				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
+		if not os.path.exists(self.settings["livecd/runscript"]):
+				raise CatalystError, "Cannot locate specified livecd/runscript: "+self.settings["livecd/runscript"]
 
 	def unmerge(self):
-		if self.settings["target"]=="livecd-stage3" and self.settings.has_key("livecd-stage3/unmerge"):
-			if type(self.settings["livecd-stage3/unmerge"])==types.StringType:
-				self.settings["livecd-stage3/unmerge"]=[self.settings["livecd-stage3/unmerge"]]
-			myunmerge=self.settings["livecd-stage3/unmerge"][:]
+		if self.settings["target"]=="livecd-stage3" and self.settings.has_key("livecd/unmerge"):
+			if type(self.settings["livecd/unmerge"])==types.StringType:
+				self.settings["livecd/unmerge"]=[self.settings["livecd/unmerge"]]
+			myunmerge=self.settings["livecd/unmerge"][:]
 			for x in range(0,len(myunmerge)):
 				#surround args with quotes for passing to bash, allows things like "<" to remain intact
 				myunmerge[x]='"'+myunmerge[x]+'"'
@@ -484,14 +484,14 @@ class livecd_stage3_target(generic_stage_target):
 
 	def run_local(self):
 		try:
-			cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" run","runscript failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" run","runscript failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
 
 	def preclean(self):
 		try:
-			cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" preclean","preclean runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
 		except:
 			self.unbind()
 			raise
@@ -499,7 +499,7 @@ class livecd_stage3_target(generic_stage_target):
 	def cdroot_setup(self):
 		if not os.path.exists(self.settings["cdroot_path"]):
 			os.makedirs(self.settings["cdroot_path"])
-		cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" cdroot_setup","preclean runscript failed.")
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdroot_setup","preclean runscript failed.")
 		print "livecd-stage3: complete!"
 
 def register(foo):

@@ -6,12 +6,12 @@ rel_version: 1.4
 snapshot: 20040110
 source_subpath: default-x86-1.4/livecd-stage2-x86-20040110
 boot/kernel: gentoo
-livecd-stage3/cdtar: /var/home/drobbins/cvs/gentoo/src/catalyst/examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
-livecd-stage3/runscript: /var/home/drobbins/cvs/gentoo/src/catalyst/examples/livecd/runscript/x86-isolinux-loop-example.sh
-livecd-stage3/unmerge:
+livecd/runscript: /var/home/drobbins/cvs/gentoo/src/catalyst/examples/livecd/runscript/x86-isolinux-loop-example.sh
+livecd/cdtar: /var/home/drobbins/cvs/gentoo/src/catalyst/examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
+livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl
-livecd-stage3/empty:
+livecd/empty:
 	/var/tmp
 	/var/cache
 	/var/db
@@ -43,7 +43,7 @@ livecd-stage3/empty:
 	/usr/src
 	/usr/share/doc
 	/usr/share/man
-livecd-stage3/rm:
+livecd/rm:
 	/lib/*.a
 	/usr/lib/*.a
 	/usr/lib/gcc-lib/*/*/libgcj*

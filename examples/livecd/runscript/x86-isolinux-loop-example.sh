@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.3 2004/01/11 18:41:20 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.4 2004/01/11 23:28:47 drobbins Exp $
 
 die() {
 	echo "$1"
@@ -11,11 +11,11 @@ die() {
 #
 # runscript: run
 # runscript: preclean (bind mounts still mounted)
-# catalyst: do livecd-stage3/unmerge (bind mounts still mounted)
+# catalyst: do livecd/unmerge (bind mounts still mounted)
 # catalyst: bind mounts unmounted
-# catalyst: do livecd-stage3/empty
-# catalyst: do livecd-stage3/delete
-# runscript: livecd-stage3/clean
+# catalyst: do livecd/empty
+# catalyst: do livecd/delete
+# runscript: livecd/clean
 # runscript: cdroot_setup
 
 case $1 in
@@ -37,7 +37,7 @@ EOF
 	[ $? -ne 0 ] && exit 1
 ;;
 clean)
-	#livecd-stage3/unmerge, bind-unmount, and livecd-stage3/{empty,delete,prune}
+	#livecd/unmerge, bind-unmount, and livecd/{empty,delete,prune}
 	#have already executed at this point. You now have the opportunity to perform
 	#any additional cleaning steps that may be required.
 	find $clst_chroot_path/usr/lib -iname "*.pyc" -exec rm -f {} \;
@@ -50,8 +50,8 @@ cdroot_setup)
 	#mount it, copy our bootable filesystem over, umount it, and we then have a
 	#ready-to-burn ISO tree at $clst_cdroot_path.
 	
-	cdtar=$clst_livecd_stage3_cdtar
-	[ "$cdtar" = "" ] && die "No livecd-stage3/cdtar specified (required)"
+	cdtar=$clst_livecd_cdtar
+	[ "$cdtar" = "" ] && die "No livecd/cdtar specified (required)"
 	tar xjpvf $cdtar -C $clst_cdroot_path || die "Couldn't extract cdtar $cdtar"
 	if [ "$clst_boot_kernel" = "" ]
 	then
