@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.3 2004/05/18 02:09:57 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.4 2004/05/19 12:40:03 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,7 +29,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/readme"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -89,6 +89,9 @@ class livecd_stage2_target(generic_stage_target):
 
 	def cdroot_setup(self):
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
+		if self.settings.has_key("livecd/overlay"):
+			cmd("/bin/cp -a "+self.settings["livecd/overlay"]+"/* "+self.settings["cdroot_path"],
+					"LiveCD overlay copy failed.") 
 		if self.settings.has_key("livecd/iso"):
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"iso runscript failed.")
 		print "livecd-stage2: complete!"
