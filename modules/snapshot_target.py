@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.3 2004/07/03 00:33:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.4 2004/08/13 16:00:48 zhen Exp $
 
 """
 Builder class for snapshots.
@@ -14,11 +14,13 @@ class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target","portdir_overlay"]
+		
 		generic_target.__init__(self,myspec,addlargs)
 		self.settings=myspec
-		self.settings["target_subpath"]="portage-"+self.settings["version_stamp"]
+		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=st+"/snapshots/"+self.settings["target_subpath"]+".tar.bz2"
+		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["version_stamp"]\
+			+".tar.bz2"
 		self.settings["tmp_path"]=st+"/tmp/"+self.settings["target_subpath"]
 
 	def setup(self):

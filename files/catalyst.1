@@ -1,0 +1,85 @@
+.TH "CATALYST" "1" "August 12, 2004" "Catalyst 1.0.9" "Catalyst"
+
+.SH NAME
+catalyst \- The Gentoo Linux Release Engineering meta-tool
+
+.SH SYNOPSIS
+.TP
+
+.BR catalyst
+[\fIoptions\fR] [\fI\-f file\fR | \fI\-C keys\fR] ...
+.TP
+
+.BR catalyst
+\fI\-\-help \-h\fR
+.TP
+
+.BR catalyst
+\fI\-\-version \-v\fR
+
+.SH DESCRIPTION
+\fBcatalyst\fR is the tool that the Gentoo Release Engineering team
+utilizes to build all Gentoo Linux releases. It is capable of building
+installation stages, bootable LiveCDs, and Gentoo Reference Platform (GRP)
+sets. \fBcatalyst\fR is also capable of providing a simple tinderbox
+environment for ebuild/package testing.
+
+For more information, please visit the \fBcatalyst\fR project page
+on the web at <http://www.gentoo.org/proj/en/releng/catalyst>.
+
+.SH OPTIONS
+.TP
+
+.BR "\-\-help " (\fB\-h\fR)
+Print the help message and exit
+.TP
+
+.BR "\-\-version " (\fB\-v\fR)
+Print the version information and exit
+.TP
+
+.BR "\-\-debug " (\fB\-d\fR)
+Enable debugging mode
+.TP
+
+.BR "\-\-config " (\fB\-c\fR)
+Tell \fBcatalyst\fR to use a user-defined configuration file. A sample
+configuration file is installed at /etc/catalyst/catalyst.conf.
+.TP
+
+.BR "\-\-cli " (\fB\-C\fR)
+This option is to be used in place of a specfile. All options are passed
+to \fBcatalyst\fR on the commandline. Please note that this option must
+be the last option passed to \fBcatalyst\fR for everything to work correctly.
+.TP
+
+.BR "\-\-file " (\fB\-f\fR)
+Tell \fBcatalyst\fR to use the user supplied specfile.
+.TP
+
+.BR "\-\-verbose " (\fB\-V\fR)
+Enable verbose mode.
+
+.SH FILES
+.TP
+Example specfiles can be found in /usr/share/doc/catalyst-<version>/examples. An example configuration file can be found at /etc/catalyst/catalyst.conf.
+
+.SH BUGS
+.TP
+An up-to-date list of Catalyst bugs can always be found listed on the Gentoo Linux bug-tracking system at <http://bugs.gentoo.org>.
+
+.SH SEE ALSO
+.TP
+A more in-depth examination of Catalyst options and procedures can be found linked from the \fBcatalyst\fR project page, which is located at <http://www.gentoo.org/proj/en/releng/catalyst>.
+
+.SH NOTES
+.TP
+\fBCatalyst\fR is conceptually derived from the Gentoo livecd-ng and Gentoo stager projects, both of which were used to create pre-1.4 Gentoo releases.
+.LP
+\fBCatalyst\fR was originally conceived and coded by both Daniel Robbins and John Davis.
+
+.SH AUTHOR
+John Davis <zhen@gentoo.org>
+
+.SH "CVS HEADER"
+$Id: catalyst.1,v 1.1 2004/08/13 16:00:48 zhen Exp $

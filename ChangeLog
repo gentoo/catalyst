@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.77 2004/08/10 04:25:08 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.78 2004/08/13 16:00:47 zhen Exp $
+
+  13 Aug 2004; John Davis <zhen@gentoo.org> +files/catalyst.1,
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py,
+  modules/snapshot_target.py:
+  bugfixes for #55014 (catalyst needs a manpage), #56581 (livecd-stage2 I/O
+  enhancements), and #56773 (catalyst overlay for build root). Snapshotting
+  time should also be improved due to a more efficient use of rsync. This commit will
+  mark the portage version of catalyst-1.9.0.
 
   10 Aug 2004; John Davis <zhen@gentoo.org> arch/mips.py:
   add support for mips4n32 subarch. thanks to iluxa@gentoo.org. closes bug

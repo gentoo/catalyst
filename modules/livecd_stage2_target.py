@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.17 2004/07/21 05:03:42 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.18 2004/08/13 16:00:48 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -37,7 +37,8 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
 			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/bootsplash",\
-			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc"])
+			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
+			"livecd/root_overlay"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -45,22 +46,12 @@ class livecd_stage2_target(generic_stage_target):
 			file_locate(self.settings,["portage_confdir"],expand=0)
 	
 	def unpack_and_bind(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["cdroot_path"]+"/tmp/.clst_unpack_and_bind"):
-			print "Resume point detected, skipping unpack and bind operation..."
-		
-		else:
-			if os.path.exists(self.settings["chroot_path"]):
-				print "Removing previously-existing livecd-stage2 chroot directory..."
-				cmd("rm -rf "+self.settings["chroot_path"],"Error removing livecd-stage2 chroot")
-				os.makedirs(self.settings["chroot_path"])
+		if not os.path.exists(self.settings["chroot_path"]):
+			os.makedirs(self.settings["chroot_path"])
 				
-			print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
-			cmd("cp -a "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],
-				"Error copying initial livecd-stage2")
-			touch(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind")
+		print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
+		cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],"Error copying initial livecd-stage2")
 	
-		# we do not want to resume code below this line
 		print "Configuring profile link..."
 		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile","Error zapping profile link")
 		cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+" "
@@ -161,7 +152,7 @@ class livecd_stage2_target(generic_stage_target):
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","CDFS runscript failed.")
 		
 		if self.settings.has_key("livecd/overlay"):
-			cmd("/bin/cp -a "+self.settings["livecd/overlay"]+"/* "+\
+			cmd("rsync -a "+self.settings["livecd/overlay"]+"/* "+\
 			self.settings["cdroot_path"],"LiveCD overlay copy failed.")
 	
 		# clean up the resume points
@@ -261,65 +252,42 @@ class livecd_stage2_target(generic_stage_target):
 
 	def run_local(self):
 		# first clean up any existing cdroot stuff
-		# unless of course we are resuming
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_cdroot_clean"):
-			print "Resume point detected, not cleaning cdroot_path..."
-		
-		else:
-			if os.path.exists(self.settings["cdroot_path"]):
-				print "cleaning previous livecd-stage2 build"
-				cmd("rm -rf "+self.settings["cdroot_path"],
-					"Could not remove existing directory: "+self.settings["cdroot_path"])
+		if os.path.exists(self.settings["cdroot_path"]):
+			print "cleaning previous livecd-stage2 build"
+			cmd("rm -rf "+self.settings["cdroot_path"],
+				"Could not remove existing directory: "+self.settings["cdroot_path"])
 			
-			if not os.path.exists(self.settings["cdroot_path"]):
-				os.makedirs(self.settings["cdroot_path"])
-				
-			touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_cdroot_clean")
+		if not os.path.exists(self.settings["cdroot_path"]):
+			os.makedirs(self.settings["cdroot_path"])
 				
 		# the runscripts do the real building, so execute them now
 		# this is the part that we want to resume on since it is the most time consuming
 		try:
-			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+\
-					"/tmp/.clst_run_local_kernel_script"):
-				print "Resume point detected, skipping kernel build runscript..."
+			self.build_kernel()
 			
-			else:
-				self.build_kernel()
-				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_kernel_script")
-			
-			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+\
-					"/tmp/.clst_run_local_bootloader_script"):
-				print "Resume point detected, skipping bootloader runscript..."
-			
-			else:
-				cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader",\
-					"Bootloader runscript failed.")
-				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_bootloader_script")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader",\
+				"Bootloader runscript failed.")
 		
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Runscript aborting due to error."
 
 		# what modules do we want to blacklist?
-		if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_blacklist"):
-				print "Resume point detected, skipping module blacklisting..."
-		
-		else:
-			if self.settings.has_key("livecd/modblacklist"):
-				try:
-					myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
-				except:
-					self.unbind()
-					raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
-				myf.write("\n#Added by Catalyst:")
-				for x in self.settings["livecd/modblacklist"]:
-					myf.write("\n"+x)
-				myf.close()
-			touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_blacklist")
+		if self.settings.has_key("livecd/modblacklist"):
+			try:
+				myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
+			except:
+				self.unbind()
+				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
+			myf.write("\n#Added by Catalyst:")
+			for x in self.settings["livecd/modblacklist"]:
+				myf.write("\n"+x)
+			myf.close()
+
+		# copy over the livecd/root_overlay
+		if self.settings.has_key("livecd/root_overlay"):
+			cmd("rsync -a "+self.settings["livecd/root_overlay"]+"/* "+\
+				self.settings["chroot_path"], "livecd/root_overlay copy failed.")
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})

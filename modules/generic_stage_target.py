@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.10 2004/08/05 04:25:25 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.11 2004/08/13 16:00:48 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -185,17 +185,13 @@ class generic_stage_target(generic_target):
 	def dir_setup(self):
 		print "Setting up directories..."
 		self.mount_safety_check()
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_dir_setup"):
-			print "Resume point detected, skipping directory setup..."
 		
-		else:
+		if not self.settings["target"] == "livecd-stage2":
 			cmd("rm -rf "+self.settings["chroot_path"],\
 				"Could not remove existing directory: "+self.settings["chroot_path"])
 			
-			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-				os.makedirs(self.settings["chroot_path"]+"/tmp")
-				touch(self.settings["chroot_path"]+"/tmp/.clst_dir_setup")
+		if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+			os.makedirs(self.settings["chroot_path"]+"/tmp")
 			
 		if not os.path.exists(self.settings["chroot_path"]):
 			os.makedirs(self.settings["chroot_path"])
@@ -206,27 +202,19 @@ class generic_stage_target(generic_target):
 	
 		
 	def unpack_and_bind(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind"):
-			print "Resume point detected, skipping unpack and bind operation..."
-		
-		else:
-			print "Unpacking stage tarball..."
-			cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],\
-				"Error unpacking tarball")
+		print "Unpacking stage tarball..."
+		cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],\
+			"Error unpacking tarball")
 				
-			if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
-				print "Cleaning up existing portage tree snapshot..."
-				cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
-					"Error removing existing snapshot directory.")
+		if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
+			print "Cleaning up existing portage tree snapshot..."
+			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
+				"Error removing existing snapshot directory.")
 			
-			print "Unpacking portage tree snapshot..."
-			cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
-				self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
+		print "Unpacking portage tree snapshot..."
+		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
+			self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
 			
-			touch(self.settings["chroot_path"]+"/tmp/.clst_unpack_and_bind")
-
-		# for safety's sake, we really don't want to resume these either		
 		print "Configuring profile link..."
 		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile",\
 			"Error zapping profile link")
@@ -239,7 +227,6 @@ class generic_stage_target(generic_target):
 			cmd("cp -R "+self.settings["portage_confdir"]+" "+self.settings["chroot_path"]+\
 				"/etc/portage","Error copying /etc/portage")
 
-		# do all of our bind mounts here (does not get autoresumed!)
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
