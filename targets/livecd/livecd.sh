@@ -1,67 +1,29 @@
 #!/bin/bash  
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.2 2003/11/04 17:26:41 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.3 2003/11/06 01:46:43 zhen Exp $
 
 # Original work done by livewire@gentoo.org and drobbins@gentoo.org
 # Adapted to a catalyst plugin by zhen@gentoo.org
 
 # we need a specfile setup for this!!! there are a ton of options that need set.
 
-# this is a mess that needs cleaned up
-# settings should be put in the spec file.
-source ${LIVECD_ROOT}/profiles/${CD_PROFILE}/settings
-# perhaps this will look like so?
+#############################################################################################
+# Variables needed for livecd creation - make sure these get defined in the spec file		#
+# Var					Use										Catalyst Define					#
+#############################################################################################
+# LIVECD_ROOT			build directory root					clst_livecd_root
+# CD_PROFILE			build profile (portage profile)			clst_cd_profile (rel_type?)
+# CD_STAGEFILE			stage3 used for building				-
+# LOOP_ROOT				loop location (doesn't cloop do this?)	-
+# ISO_ROOT				iso (build?) location					-
+# LOOP_FILE				?										-
+# CLOOP_FILE			cloop defs?								-
 
-source ${SPECFILE}
+# ok, now for mounting - all of this should be handled by catalyst itself.
+# catalyst_util.py should handle all of the code - rel_type just needs to be set to livecd.
 
-# unfinished variable declarations that will get changed to catalyst specific things.
-export CD_PROFILE=${REL_TYPE}
-export LIVECD_ROOT=${STORE_DIR}
-
-#it's important to keep CDROOT defined; some stuff uses it, and it may be nice to switch over
-#to it since it's a shorter name.
-export CDROOT=${CHROOT_PATH}
-CD_STAGEFILE="${SOURCE_PATH}/${CD_STAGETARBALL##*/}"
-LOOP_ROOT=${CDROOT}/looproot
-ISO_ROOT=${CDROOT}/isoroot
-LOOP_FILE=${CDROOT}/livecd.loop
-CLOOP_FILE=${CDROOT}/livecd.cloop
-
-
-#"zapmost" is used to remove an entire directory tree, *except* for certain
-#specified files. Arg 1 is the tree, args 2+ are the items to keep, which can
-#be files or directories at the root or deeper levels.
-
-#example calls:
-#zapmost /usr/share/locales en_us
-#zapmost /usr/share/terminfo l/linux
-
-zapmost() {
-	local rootdir
-	rootdir="${CHROOT_PATH}${1}/"
-	[ ! -e  "$rootdir" ] && echo "zapmost: $rootdir not found; skipping..." && return 1
-	install -d ${STOREDIR}/zap
-	local dirs
-	shift
-	local x
-	for x in ${*}
-	do
-		if [ "${x##*/}" = "${x}" ]
-		then
-			#one deep
-			mv ${rootdir}${x} ${STOREDIR}/zap
-		else
-			#more than one deep; create intermediate directories
-			dirs=${x%/*}
-			install -d ${STOREDIR}/zap/${dirs}
-			mv ${rootdir}${x} ${STOREDIR}/zap/${x}
-		fi
-	done
-	rm -rf ${rootdir}*
-	mv ${STOREDIR}/zap/* ${rootdir}
-}
-
+#####################################################################################
 umount_all() {
 	local x
 	for x in /usr/portage /proc /home/distfiles /dev /tmp/livecd -initrd 
@@ -81,20 +43,10 @@ mount_all() {
 	mount -o bind $STOREDIR $CHROOT_PATH/tmp/livecd || chroot_die
 	mount -o bind $CD_DISTDIR $CHROOT_PATH/home/distfiles || chroot_die
 }
+#####################################################################################
 
-chroot_die() {
-	umount_all
-	if [ -n "$1" ]
-	then
-		echo "chroot_generate: error: $1"
-	else
-		echo "chroot_generate: aborting."
-	fi
-	exit 1
-}
-
-#clean up if we are interrupted:
-trap "chroot_die" SIGINT SIGQUIT
+# pre_fetch and build_setup can probably also be replaced by catalyst proper.
+# There is no reason for all of that to be defined here.
 
 pre_fetch() {
 	#extract stage tarball...
@@ -157,6 +109,58 @@ cwrapper() {
 }
 EOF
 	}
+
+
+#####################################################################################
+#####################################################################################
+# END COMMENTS
+
+#"zapmost" is used to remove an entire directory tree, *except* for certain
+#specified files. Arg 1 is the tree, args 2+ are the items to keep, which can
+#be files or directories at the root or deeper levels.
+
+#example calls:
+#zapmost /usr/share/locales en_us
+#zapmost /usr/share/terminfo l/linux
+
+zapmost() {
+	local rootdir
+	rootdir="${CHROOT_PATH}${1}/"
+	[ ! -e  "$rootdir" ] && echo "zapmost: $rootdir not found; skipping..." && return 1
+	install -d ${STOREDIR}/zap
+	local dirs
+	shift
+	local x
+	for x in ${*}
+	do
+		if [ "${x##*/}" = "${x}" ]
+		then
+			#one deep
+			mv ${rootdir}${x} ${STOREDIR}/zap
+		else
+			#more than one deep; create intermediate directories
+			dirs=${x%/*}
+			install -d ${STOREDIR}/zap/${dirs}
+			mv ${rootdir}${x} ${STOREDIR}/zap/${x}
+		fi
+	done
+	rm -rf ${rootdir}*
+	mv ${STOREDIR}/zap/* ${rootdir}
+}
+
+chroot_die() {
+	umount_all
+	if [ -n "$1" ]
+	then
+		echo "chroot_generate: error: $1"
+	else
+		echo "chroot_generate: aborting."
+	fi
+	exit 1
+}
+
+#clean up if we are interrupted:
+trap "chroot_die" SIGINT SIGQUIT
 
 base_build() {
 	cp "${LIVECD_ROOT}/profiles/${CD_PROFILE}/aux-files/freeramdisk.c" $STOREDIR || chroot_die
