@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.85 2004/02/12 06:20:45 beejay Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.86 2004/02/12 19:51:37 drobbins Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -545,7 +545,7 @@ class livecd_stage2_target(generic_stage_target):
 					if type(myex)==types.ListType:
 						myex=string.join(myex)
 					try:
-						myf=open(self.settings["chroot_path"]+"/var/tmp"+kname+"."+extra,"w")
+						myf=open(self.settings["chroot_path"]+"/var/tmp/"+kname+"."+extra,"w")
 					except:
 						self.unbind()
 						raise CatalystError,"Couldn't create file /var/tmp/"+kname+"."+extra+" in chroot."

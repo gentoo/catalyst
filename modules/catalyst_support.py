@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.15 2004/02/11 03:31:55 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.16 2004/02/12 19:51:37 drobbins Exp $
 
 import sys,string,os,types
 
@@ -165,11 +165,13 @@ def ismount(path):
 def arg_parse(mydict,remaining,argv):
 	"grab settings from argv, storing 'target' in mydict, and everything in remaining for later parsing"
 	global required_config_file_values
+	print "ARGV",argv
 	for x in argv:
 		foo=string.split(x,"=")
 		if len(foo)!=2:
 			raise CatalystError, "Invalid arg syntax: "+x
 		remaining[foo[0]]=foo[1]
+		print "X",x
 	if not remaining.has_key("target"):
 		raise CatalystError, "Required value \"target\" not specified."
 	mydict["target"]=remaining["target"]

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.28 2004/02/11 03:31:55 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.29 2004/02/12 19:51:37 drobbins Exp $
 
 import os,sys,imp,string
 
@@ -32,11 +32,18 @@ if os.getuid()!=0:
 
 myspec={}
 myconf={}
-if os.path.exists("/etc/catalyst.conf"):
+myconffile="/etc/catalyst.conf"
+if os.environ.has_key("clst_conf"):
+	if not os.path.exists(os.environ["clst_conf"]):
+		print "catalyst: Unable to find config file specified in env var 'clst_conf'"
+		sys.exit(1)
+	myconffile=os.environ["clst_conf"]
+	
+if os.path.exists(myconffile):
 	try:
-		execfile("/etc/catalyst.conf",myconf,myconf)
+		execfile(myconffile,myconf,myconf)
 	except:
-		print "catalyst: Unable to parse /etc/catalyst.conf config file (syntax error)"
+		print "catalyst: Unable to parse "+myconffile+" config file (syntax error)"
 		sys.exit(1)
 
 confdefaults={ "storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",
