@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.34 2005/03/08 18:35:33 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.35 2005/03/30 17:29:13 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -96,6 +96,7 @@ mkdir -p /etc/sysconfig
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs	/lib/firmware			tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs /usr/portage			tmpfs	defaults	0 0" >> /etc/fstab
 # if /usr/lib/X11/xkb/compiled then make it tmpfs
 if [ -d /usr/lib/X11/xkb/compiled ]
 then

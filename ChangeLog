@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.197 2005/03/29 18:53:32 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.198 2005/03/30 17:29:13 wolf31o2 Exp $
+
+  30 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh:
+  Added /usr/portage as tmpfs (this will be made conditional later).
 
   29 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   +livecd/files/livecd-bash_profile, livecd/runscript/default-runscript.sh:
