@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.84 2004/02/11 21:57:39 carpaski Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.85 2004/02/12 06:20:45 beejay Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -542,7 +542,7 @@ class livecd_stage2_target(generic_stage_target):
 			for extra in ["use","packages"]:
 				if self.settings.has_key("boot/kernel/"+kname+"/"+extra):
 					myex=self.settings["boot/kernel/"+kname+"/"+extra]
-					if type(myex)==ListType:
+					if type(myex)==types.ListType:
 						myex=string.join(myex)
 					try:
 						myf=open(self.settings["chroot_path"]+"/var/tmp"+kname+"."+extra,"w")
