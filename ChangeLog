@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.44 2004/04/26 15:18:54 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.45 2004/04/30 23:16:34 zhen Exp $
+
+  30 Apr 2004; John Davis <zhen@gentoo.org>
+  livecd/cdtar/isolinux-2.08-cdtar.tar.bz2,
+  livecd/cdtar/isolinux-2.08-memtest86+-cdtar.tar.bz2,
+  livecd/cdtar/isolinux-2.08-memtest86-cdtar.tar.bz2,
+  livecd/files/x86-help.msg, livecd/runscript/x86-archscript.sh:
+  lots of changes
+  -fixed 2004.0 branding in the isolinux cdtar
+  -fixed up acpi stuff in the runscripts
+  -fixed up the x86 help message and corrected the numerous errors in it
 
   26 Apr 2004; John Davis <zhen@gentoo.org> catalyst,
   livecd/runscript/default-runscript.sh:

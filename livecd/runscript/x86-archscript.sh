@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.4 2004/04/30 23:16:34 zhen Exp $
 
 case $1 in
 	kernel)
@@ -62,12 +62,12 @@ case $1 in
 			echo >> $icfg
 			echo "label $x" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot vga=0x317 splash=silent" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot vga=0x317 splash=silent" >> $icfg
 			echo >> $icfg
 			echo "   $x" >> $kmsg
 			echo "label $x-nofb" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot" >> $icfg
 			echo >> $icfg
 			echo "   ${x}-nofb" >> $kmsg
 		done
