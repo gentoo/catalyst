@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.176 2005/03/02 02:37:56 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.177 2005/03/02 21:47:41 wolf31o2 Exp $
+
+  02 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/pre-kmerge.sh:
+  Made splash reduction to 1024x768 only for minimal and universal release media.
 
   01 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean2-chroot.sh:
