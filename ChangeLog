@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
-# Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.14 2003/12/16 14:40:59 gmsoft Exp $
+# Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.15 2004/01/14 06:21:56 zhen Exp $
+
+  14 Jan 2004; zhen <zhen@gentoo.org> arch/mips.py, modules/targets.py:
+  adding Kumba's patches for MIPS
 
   16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py :
   Added hppa specific code.

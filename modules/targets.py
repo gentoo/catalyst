@@ -30,7 +30,8 @@ class generic_stage_target(generic_target):
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
 				"ppc" : ["ppc"],
-				"hppa" : ["hppa"]
+				"hppa" : ["hppa"],
+				"mips" : ["mips"]
 		}
 		
 		machinemap={ 	"i386" : "x86",
@@ -44,7 +45,9 @@ class generic_stage_target(generic_target):
 				"sparc" : "sparc",
 				"ppc" : "ppc",
 				"parisc" : "hppa",
-				"parisc64" : "hppa"
+				"parisc64" : "hppa",
+				"mips" : "mips",
+				"mips64" : "mips"
 		}
 	
 		mymachine=os.uname()[4]
