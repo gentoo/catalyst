@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.2 2004/01/15 01:43:45 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-runscript.sh,v 1.3 2004/01/15 03:21:04 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -68,11 +68,16 @@ case $1 in
 			mv $clst_cdroot_path/isolinux/initrd $clst_cdroot_path/isolinux/$x.igz
 		done
 		icfg=$clst_cdroot_path/isolinux/isolinux.cfg
+		bmsg=$clst_cdroot_path/isolinux/boot.msg
+		hmsg=$clst_cdroot_path/isolinux/help.msg
 		echo "default $first" > $icfg
-		echo "prompt: 1" >> $icfg
-		echo "display: boot.msg" >> $icfg
+		echo "timeout 60" >> $icfg
+		echo "display boot.msg" >> $icfg
 		echo "F1 boot.msg" >> $icfg
 		echo "F2 help.msg" >> $icfg
+
+		echo "Please choose an available boot kernel:" > $bmsg
+		echo "TEST HELP MESSAGE" > $hmsg
 
 		for x in $clst_boot_kernel
 		do
@@ -81,9 +86,12 @@ case $1 in
 			echo "	kernel $x" >> $icfg
 			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc loop=/livecd.loop cdroot vga=0x317 splash=silent" >> $icfg
 			echo >> $icfg
+			echo "   $x" >> $bmsg
 			echo "label $x-nofb" >> $icfg
 			echo "	kernel $x" >> $icfg
 			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc loop=/livecd.loop cdroot" >> $icfg
+			echo >> $icfg
+			echo "   ${x}-nofb" >> $bmsg
 		done
 		exit $RETURN_CONTINUE
 	;;
