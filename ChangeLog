@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.193 2005/03/19 17:46:39 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.194 2005/03/24 14:17:29 wolf31o2 Exp $
+
+  24 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> +livecd/files/mkvardb,
+  livecd/runscript/default-runscript.sh,
+  targets/livecd-stage1/livecd-stage1.sh:
+  Adding back in the kill for livecd-stage1 for gconfd-2 and resolving bug
+  #73363. Adding in mkvardb script to create a /var/db/pkg entry from an
+  arbitrary set of files. Modifying default-runscript.sh to copy mkvardb to
+  /tmp in the chroot.
 
   19 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/ppc-archscript.sh:

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.21 2005/03/05 05:12:58 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.22 2005/03/24 14:17:29 wolf31o2 Exp $
 
 case $1 in
 	enter)
@@ -19,7 +19,8 @@ case $1 in
 		GCONFD_RUNNING="`pidof gconfd-2`"
 		if [ -n "${GCONFD_RUNNING}" ]
 		then
-			gconftool-2 --shutdown
+			kill -9 ${GCONFD_RUNNING}
+			#gconftool-2 --shutdown
 		fi
 		#cp ${clst_sharedir}/targets/livecd-stage1/livecd-stage1-preclean-chroot.sh ${clst_chroot_path}/tmp
 		#${clst_CHROOT} ${clst_chroot_path} /tmp/livecd-stage1-preclean-chroot.sh || exit 1
