@@ -27,6 +27,7 @@ class arch_i386(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=i386 -fomit-frame-pointer"
+		self.settings["CHOST"]="i386-pc-linux-gnu"
 
 class arch_i486(generic_x86):
 	def __init__(self,myspec):
