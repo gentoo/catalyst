@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.78 2004/02/11 03:31:55 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.79 2004/02/11 15:14:05 tigger Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -227,7 +227,7 @@ class generic_stage_target(generic_target):
 	def clean(self):
 		destpath=self.settings["chroot_path"]
 		
-		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*"]
+		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*","/root/.*"]
 		if self.settings["target"] not in ["livecd-stage2"]:
 			#we don't need to clean up a livecd-stage2
 			cleanables.append("/usr/portage")
