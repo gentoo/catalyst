@@ -187,11 +187,11 @@ class generic_stage_target(generic_target):
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
-		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
+		cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
 		try:
-			cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
+			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
 		except:
 			self.unbind()
 			raise
@@ -227,7 +227,7 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				os.environ["clst_"+x]=string.join(self.settings[x])
 		try:
-			cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
+			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
 		finally:
 			#pre-clean is for stuff that needs to run with bind-mounts still active
 			self.preclean()
