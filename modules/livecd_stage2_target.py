@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.29 2005/01/10 01:05:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.30 2005/03/09 00:22:05 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -47,6 +47,12 @@ class livecd_stage2_target(generic_stage_target):
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
 		if self.settings.has_key("portage_confdir"):
 			file_locate(self.settings,["portage_confdir"],expand=0)
+
+		if self.settings.has_key("livecd/volid"):
+			self.volumeid = string.join(self.settings["livecd/volid"])
+			if len(self.volumeid)>32:
+				raise CatalystError,"ISO volume id must not exceed 32 characters."
+			os.putenv("iso_volume_id",self.volumeid);
 	
 	def unpack_and_bind(self):
 		if not os.path.exists(self.settings["chroot_path"]):

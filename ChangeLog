@@ -1,6 +1,15 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.187 2005/03/08 18:41:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.188 2005/03/09 00:22:05 wolf31o2 Exp $
+
+  08 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,
+  livecd/runscript/ppc-archscript.sh, livecd/runscript/sparc-archscript.sh,
+  -livecd/runscript/sparc64-archscript.sh,
+  livecd/runscript/x86-archscript.sh, modules/livecd_stage2_target.py:
+  Added livecd/volid to set the volume ID when creating the ISO, patch by
+  Gustavo Zacarias <gustavoz@gentoo.org>. Also copied sparc64-archscript.sh to
+  sparc-archscript.sh and removing sparc64 one, as they are identical now.
 
   08 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   +livecd/cdtar/isolinux-2.13-cdtar.tar.bz2,
