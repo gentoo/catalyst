@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.206 2005/04/06 02:44:37 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.207 2005/04/06 03:02:06 rocket Exp $
+
+  06 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  targets/stage1/stage1-preclean-chroot.sh:
+  Removing gcc-config stuff to see if its still required to work around a gcc bug
 
   06 Apr 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/chroot-functions.sh, targets/support/kmerge.sh:
