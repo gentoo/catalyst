@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.8 2004/02/25 19:30:19 pvdabeel Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.9 2004/10/05 13:53:14 zhen Exp $
 
 Licensing
 ========================
@@ -40,7 +40,7 @@ Configuring catalyst
 ========================
 
 After emerging catalyst, the first thing (and probably only thing)
-that you will have to do is edit /etc/catalyst.conf to your liking.
+that you will have to do is edit /etc/catalyst/catalyst.conf to your liking.
 
 Example catalyst.conf:
 
