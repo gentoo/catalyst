@@ -15,15 +15,18 @@ boot/kernel/gentoo/config: /usr/share/genkernel/x86_64/kernel-config-2.6
 boot/kernel/gentoo/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/gentoo/extraversion: up
 boot/kernel/gentoo/kernelopts:
+boot/kernel/gentoo/use: -X
 boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
 boot/kernel/smp/config: /usr/share/genkernel/x86_64/kernel-config-2.6-smp
 boot/kernel/smp/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/smp/extraversion: smp
 boot/kernel/smp/kernelopts:
+boot/kernel/smp/use: -X
 boot/kernel/emachines/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
 boot/kernel/emachines/config: /usr/share/genkernel/x86_64/kernel-config-2.6-emachines
 boot/kernel/emachines/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/emachines/extraversion: emachines
+boot/kernel/emachines/use: -X
 boot/kernel/emachines/kernelopts: pci=noacpi noapic
 
 livecd/unmerge:
