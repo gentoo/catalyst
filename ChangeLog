@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.38 2004/04/05 20:31:43 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.39 2004/04/06 05:31:37 zhen Exp $
+
+  06 Apr 2004; John Davis <zhen@gentoo.org> targets/stage1/stage1-chroot.sh:
+  fix for /dev in stage1
 
   05 Apr 2004; John Davis <zhen@gentoo.org> modules/targets.py:
   bugfix for #46861

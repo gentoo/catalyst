@@ -43,10 +43,10 @@ case $1 in
 			USE="-* build" emerge ${EMERGE_OPTS} --noreplace $x || exit 1
 		done
 
-		if [ ! -d /dev ]
+		if [ ! -d ${ROOT}/dev ]
 		then
-			mkdir -p /dev
-			cd /dev
+			mkdir -p ${ROOT}/dev
+			cd ${ROOT}/dev
 			MAKEDEV generic-i386
 		fi
 	;;
@@ -59,7 +59,7 @@ case $1 in
 		if [ -e /usr/sbin/gcc-config ]
 		then
 			mythang=\$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* )
-			gcc-config \${mythang}; env-update; source /etc/profile
+			gcc-config \${mythang}; /usr/sbin/env-update; source /etc/profile
 		fi
 		#stage1 is not going to have anything in zoneinfo, so save our Factory timezone
 		rm -f /etc/localtime
