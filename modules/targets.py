@@ -39,13 +39,13 @@ class generic_stage_target(generic_target):
 		for x in targetmap[self.settings["hostarch"]]:
 			try:
 				fh=open(self.settings["sharedir"]+"/arch/"+x+".py")
+				#this next line loads the plugin as a module and assigns it to archmap[x]
+				self.archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
+				#this next line registers all the subarches supported in the plugin
+				self.archmap[x].register(self.subarchmap)
+				fh.close()	
 			except IOError:
-				raise CatalystError, "Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/"
-			#this next line loads the plugin as a module and assigns it to archmap[x]
-			self.archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
-			#this next line registers all the subarches supported in the plugin
-			self.archmap[x].register(self.subarchmap)
-			fh.close()	
+				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 		#call arch constructor, pass our settings
 		self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
 		#self.settings["mainarch"] should now be set by our arch constructor, so we print
