@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.9 2004/02/23 17:53:18 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.10 2004/03/19 16:06:37 zhen Exp $
 
 case $1 in
 enter)
@@ -35,10 +35,6 @@ run)
                 /usr/bin/distcc-config --install 2>&1 > /dev/null
                 /usr/bin/distccd 2>&1 > /dev/null
     fi
-	if [ ${clst_rel_type} = "hardened" ]
-	then
-		emerge --oneshot --nodeps hardened-gcc || exit 1
-	fi
 	export CONFIG_PROTECT="-*"
 	
 	USE="build" emerge portage

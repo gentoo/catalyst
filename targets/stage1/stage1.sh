@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.8 2004/01/29 21:53:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.9 2004/03/19 16:06:37 zhen Exp $
 
 case $1 in
 enter)
@@ -26,10 +26,6 @@ preclean)
 clean)
 	#clean runs after preclean with bind mounts unmounted
 	keepers="sys-kernel/linux-headers sys-devel/binutils sys-devel/gcc sys-apps/baselayout sys-libs/glibc virtual/glibc virtual/kernel"
-	if [ ${clst_rel_type} = "hardened" ]
-	then
-		keepers="${keepers} sys-devel/hardened-gcc"
-	fi
 	# set everything to uid 999 (nouser)
 	cd ${clst_chroot_path}/tmp/stage1root
 	install -d var/db/pkg2 
