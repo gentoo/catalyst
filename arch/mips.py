@@ -44,6 +44,13 @@ class arch_mips4(generic_mips):
 		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -fomit-frame-pointer"
 
+class arch_mips4n32(generic_mips):
+	"Builder class for MIPS IV [Big-endian N32]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -fomit-frame-pointer"
+		self.settings["CHOST"]="mips64-unknown-linux-gnu"
+
 class arch_mipsel1(generic_mipsel):
 	"Builder class for all MIPS I [Little-endian]"
 	def __init__(self,myspec):
@@ -78,6 +85,7 @@ def register(foo):
 			"mips2"		:arch_mips2,
 			"mips3"		:arch_mips3,
 			"mips4"		:arch_mips4,
+			"mips4n32"	:arch_mips4n32,
 			"mipsel"	:arch_mipsel1,
 			"mipsel1"	:arch_mipsel1,
 			"mipsel2"	:arch_mipsel2,
