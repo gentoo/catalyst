@@ -41,6 +41,7 @@ livecd/packages:
 	mac-fdisk
 	metalog
 	mirrorselect
+	mingetty
 	module-init-tools
 	nano
 	nfs-utils
