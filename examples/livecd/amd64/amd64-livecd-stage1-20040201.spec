@@ -55,3 +55,4 @@ livecd/packages:
 	livecd-tools
 	ucl
 	wireless-tools
+	gpart
