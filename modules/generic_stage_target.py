@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.22 2005/01/04 23:54:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.23 2005/01/10 01:05:59 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -245,7 +245,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("portage_confdir"):
 			print "Configuring /etc/portage..."
 			cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage","Error zapping /etc/portage")
-			cmd("cp -R "+self.settings["portage_confdir"]+" "+self.settings["chroot_path"]+\
+			cmd("cp -R "+self.settings["portage_confdir"]+"/ "+self.settings["chroot_path"]+\
 				"/etc/portage","Error copying /etc/portage")
 
 		for x in self.mounts: 
