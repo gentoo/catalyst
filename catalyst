@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.29 2004/02/12 19:51:37 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.30 2004/03/05 06:24:17 zhen Exp $
 
 import os,sys,imp,string
 
@@ -32,7 +32,7 @@ if os.getuid()!=0:
 
 myspec={}
 myconf={}
-myconffile="/etc/catalyst.conf"
+myconffile="/etc/catalyst/catalyst.conf"
 if os.environ.has_key("clst_conf"):
 	if not os.path.exists(os.environ["clst_conf"]):
 		print "catalyst: Unable to find config file specified in env var 'clst_conf'"
