@@ -1,6 +1,15 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.103 2004/10/21 17:19:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.104 2004/10/22 04:23:16 wolf31o2 Exp $
+
+  22 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf,
+  livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  targets/livecd-stage2/unmerge.sh, targets/netboot/netboot-kernel.sh:
+  Changed kernel build caching to use kerncache option, rather than pkgcache
+  option. Fixed --postconf and --callback for builds that do not require them.
+  Removed delay when removing package sin the system profile. This is now
+  catalyst 1.1.0, so enjoy.
 
   21 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh:

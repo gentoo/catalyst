@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.17 2004/10/21 17:06:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.18 2004/10/22 04:23:16 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -34,18 +34,14 @@ build_kernel() {
 		do
 			clst_kernel_postconf="${clst_kernel_postconf} ${x}"
 		done
-		GK_ARGS="${GK_ARGS} --postconf=\"${clst_kernel_postconf}\""
 	fi
 
 	if [ -e "/var/tmp/${clst_kname}.packages" ]
 	then
 		for x in $( cat /var/tmp/${clst_kname}.packages )
 		do
-			# we don't want to use the pkgcache for these since the results
-			# are kernel-dependent.
 			clst_kernel_merge="${clst_kernel_merge} ${x}"
 		done
-		GK_ARGS="${GK_ARGS} --callback=\"${clst_kernel_merge}\""
 	fi
 	
 	if [ "${clst_livecd_devmanager}" == "udev" ]
@@ -54,16 +50,31 @@ build_kernel() {
 	fi
 	
 	# build with genkernel using the set options
-	# callback is put here to avoid escaping issues
-	genkernel ${GK_ARGS} || exit 1
-	
+	# callback and postconf are put here to avoid escaping issues
+	if [ -e "/var/tmp/${clst_kname}.packages" -a \
+	-e "/var/tmp/${clst_kname}.postconf" ]
+	then
+		genkernel --callback="emerge ${clst_kernel_merge}" \
+			--postconf="emerge ${clst_kernel_postconf}" \
+			${GK_ARGS} || exit 1
+	elif [ -e "/var/tmp/${clst_kname}.packages" ]
+	then
+		genkernel --callback="emerge ${clst_kernel_merge}" \
+			${GK_ARGS} || exit 1
+	elif [ -e "/var/tmp/${clst_kname}.postconf" ]
+	then
+		genkernel --postconf="emerge ${clst_kernel_postconf}" \
+			${GK_ARGS} || exit 1
+	else
+		genkernel ${GK_ARGS} || exit 1
+	fi
+
 	# pack up the modules for resuming
 	if [ -n "${clst_KERNCACHE}" ]
 	then
 		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
-			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+			/lib/modules/${1} || die "Could not package kernel modules, exiting"
 	fi
-
 }
 
 # Script to build each kernel, kernel-related packages
@@ -137,10 +148,16 @@ else
 fi
 
 /sbin/modules-update --assume-kernel=${clst_fudgeuname}
-		
+
 #now the unmerge... (wipe db entry)
 emerge -C ${clst_ksource}
 unset USE
 
+echo
 # keep the config around so that we can resume at some point
-[ -n "${clst_KERNCACHE}" ] && cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config
+if [ -n "${clst_KERNCACHE}" ]
+then
+ 	cp /var/tmp/${clst_kname}.config \
+	/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config
+fi
+echo

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.3 2004/10/11 14:19:30 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.4 2004/10/22 04:23:16 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -16,7 +16,7 @@ export USE_ORDER="env:conf:defaults"
 mkdir -p ${GK_BINARIES}
 BUILD_KERNEL=1
 
-if [ -n "${clst_PKGCACHE}" ]
+if [ -n "${clst_KERNCACHE}" ]
 then
 	GK_PKGDIR="$(portageq envvar PKGDIR)/All/genkernel"
 	mkdir -p ${GK_PKGDIR}
@@ -55,7 +55,7 @@ then
 	tar -jxf ${GK_BINARIES}/kernel.tar.bz2 -C ${GK_BINARIES}
 	mv ${GK_BINARIES}/{${kernname},kernel} || exit 1 
 
-	if [ -n "${clst_PKGCACHE}" ]
+	if [ -n "${clst_KERNCACHE}" ]
 	then
 		case ${clst_mainarch} in
 			alpha|arm|sparc);;
