@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-archscript.sh,v 1.4 2004/01/26 18:15:50 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-archscript.sh,v 1.5 2004/02/25 19:22:36 brad_mssw Exp $
 
 case $1 in
 	kernel)
@@ -52,19 +52,22 @@ case $1 in
 		echo "F2 help.msg" >> $icfg
 
 		echo "Available kernels:" > $kmsg
-		echo "TEST HELP MESSAGE" > $hmsg
+		cp examples/livecd/runscript/x86-help.msg $hmsg
 
 		for x in $clst_boot_kernel
 		do
+
+			eval custom_kopts=\$${x}_kernelopts
+			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 			echo >> $icfg
 			echo "label $x" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot vga=0x317 splash=silent" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot vga=0x317 splash=silent" >> $icfg
 			echo >> $icfg
 			echo "   $x" >> $kmsg
 			echo "label $x-nofb" >> $icfg
 			echo "	kernel $x" >> $icfg
-			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot" >> $icfg
+			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot" >> $icfg
 			echo >> $icfg
 			echo "   ${x}-nofb" >> $kmsg
 		done

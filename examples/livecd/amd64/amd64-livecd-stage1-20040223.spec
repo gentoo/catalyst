@@ -16,6 +16,7 @@ livecd/packages:
 	kudzu
 	module-init-tools
 	hotplug
+	>=glib-2
 	irssi
 	aumix
 	metalog
@@ -55,4 +56,4 @@ livecd/packages:
 	livecd-tools
 	ucl
 	wireless-tools
-	gpart
+#	gpart

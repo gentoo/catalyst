@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.16 2004/02/14 22:21:58 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.17 2004/02/25 19:22:36 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -148,7 +148,7 @@ EOF
 						# we don't want to use the pkgcache for these since the results
 						# are kernel-dependent.
 						echo DEBUG emerge "\$x"
-						emerge "\$x"
+						USE="-X" emerge "\$x"
 					done
 				fi
 				cd /usr/src

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.90 2004/02/23 05:49:40 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.91 2004/02/25 19:22:36 brad_mssw Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -566,6 +566,17 @@ class livecd_stage2_target(generic_stage_target):
 			if retval!=0:
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
+
+			# If we need to pass special options to the bootloader for this kernel
+			# put them into the environment.
+			if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
+				myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
+				if type(myopts) != types.StringType:
+					myopts = string.join(myopts)
+				os.putenv(kname+"_kernelopts", myopts)
+			else:
+				os.putenv(kname+"_kernelopts", "")
+			
 		try:
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"runscript kernel build failed")
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
