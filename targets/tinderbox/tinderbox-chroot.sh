@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.8 2004/10/15 02:46:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.9 2005/01/26 21:59:40 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -29,7 +29,7 @@ export CONFIG_PROTECT="-*"
 # START THE BUILD
 USE="build" emerge portage
 #turn off auto-use:
-export USE_ORDER="env:conf:defaults"	
+export USE_ORDER="env:pkg:conf:defaults"	
 #back up pristine system
 rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / /tmp/rsync-bak/ 
 

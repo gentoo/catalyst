@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-packages.sh,v 1.4 2005/01/13 22:57:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-packages.sh,v 1.5 2005/01/26 21:59:40 wolf31o2 Exp $
 
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 	| cut -d/ -f2 | cut -d- -f2,3`
@@ -20,7 +20,7 @@ source /etc/profile
 # setup our environment
 export FEATURES="${clst_myfeatures}"
 export CONFIG_PROTECT="-*"
-export USE_ORDER="env:conf:defaults"
+export USE_ORDER="env:pkg:conf:defaults"
 
 if [ "${clst_FETCH}" ]
 then

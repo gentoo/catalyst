@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.12 2005/01/13 22:57:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.13 2005/01/26 21:59:40 wolf31o2 Exp $
 
 # check portage version in seed stage
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
@@ -40,7 +40,7 @@ export CONFIG_PROTECT="-*"
 USE="build" emerge portage
 
 #turn off auto-use:
-export USE_ORDER="env:conf:defaults"
+export USE_ORDER="env:pkg:conf:defaults"
 	
 if [ "${clst_grp_type}" = "pkgset" ]
 then

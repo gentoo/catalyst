@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.5 2005/01/11 15:22:41 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.6 2005/01/26 21:59:40 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -11,7 +11,7 @@ source /etc/profile
 # setup our environment
 export FEATURES="${clst_myfeatures}"
 export CONFIG_PROTECT="-*"
-export USE_ORDER="env:conf:defaults"	
+export USE_ORDER="env:pkg:conf:defaults"	
 
 mkdir -p ${GK_BINARIES}
 BUILD_KERNEL=1
