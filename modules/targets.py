@@ -78,13 +78,22 @@ class generic_stage_target(generic_target):
 		if self.settings["target"] in ["grp","tinderbox"]:
 			#grp creates a directory of packages and sources rather than a compressed tarball
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
+			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		elif self.settings["target"] == "livecd-stage2":
 			#we have a main directory and a tarball in this case
 			os.makedirs(st+"/builds/"+self.settings["target_subpath"])
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/"+self.settings["target_subpath"]+".tar.bz2"
+			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+		elif self.settings["target"]=="livecd-stage3":
+			# the loop-prep/ dir is for unpacking the chroot image, and will be used to prep it.
+			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/loop-prep"
+			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]+"/cdroot"
+			os.makedirs(self.settings["target_path"])
+			os.makedirs(self.settings["cdroot_path"])
+			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+"/"+self.settings["source_subpath"]+".tar.bz2"
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
-		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
 		
 		self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
@@ -208,6 +217,13 @@ class generic_stage_target(generic_target):
 			destpath+="/tmp/stage1root"
 			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
 			cleanables.extend(["/usr/share/gettext","/usr/lib/python2.2/test","/usr/lib/python2.2/encodings","/usr/lib/python2.2/email","/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
+		if self.settings["target"]=="livecd-stage3":
+			if self.settings.has_key("livecd-stage3/clean"):
+				if type(self.settings["livecd-stage3/clean"])==types.StringType:
+					cleanables.append(self.settings["livecd-stage3/clean"])
+				else:
+					#a list of directories to clean
+					cleanables.extend(self.settings["livecd-stage3/clean"])
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
@@ -234,6 +250,14 @@ class generic_stage_target(generic_target):
 		else:
 			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+" .","Couldn't create stage tarball")
 
+	def run_local(self):
+		try:
+			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"Stage build aborting due to error."
+pass
+
 	def run(self):
 		self.dir_setup()
 		self.unpack_and_bind()
@@ -245,60 +269,17 @@ class generic_stage_target(generic_target):
 		#modify the current environment. This is an ugly hack that should be fixed. We need this
 		#to use the os.system() call since we can't specify our own environ:
 		for x in self.settings.keys():
+			varname="clst_"+x
+			#"/" is replaced with "_", "-" is also replaced with "_"
+			string.replace(varname,"/-","__")
 			if type(self.settings[x])==types.StringType:
 				#prefix to prevent namespace clashes:
-				os.environ["clst_"+x]=self.settings[x]
+				os.environ[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
-				os.environ["clst_"+x]=string.join(self.settings[x])
+				os.environ[varname]=string.join(self.settings[x])
 			
-		if self.settings["target"] in ["stage1","stage2","stage3"]:
-			try:
-				cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,"Stage build aborting due to error."
-		elif self.settings["target"]=="grp":
-			for pkgset in self.settings["grp"]:
-				#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-				try:
-					cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
-				except CatalystError:
-					self.unbind()
-					raise CatalystError,"GRP build aborting due to error."
-		elif self.settings["target"]=="livecd-stage1":
-			try:
-				cmd(self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,"GRP build aborting due to error."
-		elif self.settings["target"]=="livecd-stage2":
-			mynames=self.settings["boot/kernel"]
-			if type(mynames)==types.StringType:
-				mynames=[mynames]
-			args=`len(mynames)`
-			for x in mynames:
-				args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
-				if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
-					raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
-				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
-				if retval!=0:
-					raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
-			try:
-				cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,"GRP build aborting due to error."
-		elif self.settings["target"]=="tinderbox":
-			#tinderbox
-			#example call: "grp.sh run xmms vim sys-apps/gleep"
-			try:
-				cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,"Tinderbox aborting due to error."
-		else:
-			raise CatalystError,"You shouldn't get to this point. Target not recognized."
-		if self.settings["target"] in ["stage1","stage2","stage3"]:
+		self.run_local()
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage3"]:
 			self.preclean()
 		self.unbind()
 		if self.settings["target"] in ["stage1","stage2","stage3"]:
@@ -370,17 +351,42 @@ class grp_target(generic_stage_target):
 			self.required_values.append("grp/"+x+"/type")
 		generic_stage_target.__init__(self,spec,addlargs)
 
+	def run_local(self):
+		for pkgset in self.settings["grp"]:
+			#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
+			try:
+				cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
+			except CatalystError:
+				self.unbind()
+				raise CatalystError,"GRP build aborting due to error."
+
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["tinderbox/packages","tinderbox/use"]
 		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
 
+	def run_local(self):
+		#tinderbox
+		#example call: "grp.sh run xmms vim sys-apps/gleep"
+		try:
+			cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"Tinderbox aborting due to error."
+
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["livecd-stage1/packages","livecd-stage1/use"]
 		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
+
+	def run_local(self):
+		try:
+			cmd(self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"GRP build aborting due to error."
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -396,9 +402,36 @@ class livecd_stage2_target(generic_stage_target):
 			self.required_values.append("boot/kernel/"+x+"/config")
 		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
+	
+	def run_local(self):
+		mynames=self.settings["boot/kernel"]
+		if type(mynames)==types.StringType:
+			mynames=[mynames]
+		args=`len(mynames)`
+		for x in mynames:
+			args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
+			if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
+				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+			retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
+			if retval!=0:
+				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
+		try:
+			cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"GRP build aborting due to error."
+
+class livecd_stage3_target(generic_stage_target):
+	def __init__(self,spec,addlargs):
+		self.required_values=["boot/kernel","livecd-stage3/runscript"]
+		self.valid_values=self.required_values[:]
+		self.valid_values.append("livecd-stage3/cdtar","livecd-stage3/clean")
+		generic_stage_target.__init__(self,spec,addlargs)
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
-	"grp":grp_target,"livecd-stage1":livecd_stage1_target,"livecd-stage2":livecd_stage2_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
+	"grp":grp_target,"livecd-stage1":livecd_stage1_target,
+	"livecd-stage2":livecd_stage2_target,"livecd-stage3":livecd_stage3_target,
+	"snapshot":snapshot_target,"tinderbox":tinderbox_target})
 	return foo
 	
