@@ -160,7 +160,7 @@ class generic_stage_target(generic_target):
 		'CFLAGS="'+self.settings["CFLAGS"]+'"',
 		'CHOST="'+self.settings["CHOST"]+'"']
 		if self.settings.has_key("HOSTUSE"):
-			cmds.append('USE="'+self.settings["HOSTUSE"]+'"')
+			cmds.append('USE="'+string.join(self.settings["HOSTUSE"])+'"')
 		else:
 			cmds.append('USE=""')
 		if self.settings.has_key("CXXFLAGS"):
