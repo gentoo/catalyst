@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.3 2003/10/30 06:21:08 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.4 2003/10/30 21:11:57 drobbins Exp $
 
 case $1 in
 enter)
@@ -13,10 +13,6 @@ run)
 	cat /etc/make.profile/make.defaults | grep GRP_STAGE23_USE > /tmp/stage23
 	source /tmp/stage23
 	export USE="-* \${clst_HOSTUSE} \${GRP_STAGE23_USE}"
-	echo
-	echo "USE variables active: \${USE}"
-	rm -f /tmp/stage23
-	echo
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export FEATURES="ccache"	

@@ -25,7 +25,8 @@ if os.getuid()!=0:
 myspec={}
 #these would come from /etc/catalyst.conf:
 myspec["storedir"]="/var/tmp/catalyst"
-myspec["sharedir"]="/usr/share/catalyst"
+#myspec["sharedir"]="/usr/share/catalyst"
+myspec["sharedir"]=os.getcwd()
 #these would come from there too?:
 myspec["distdir"]="/mnt/misc/distfiles"
 myspec["portdir"]="/usr/portage"

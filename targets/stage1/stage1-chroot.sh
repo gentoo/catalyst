@@ -6,10 +6,19 @@ case $1 in
 	build)
 		export ROOT=${2}
 		install -d $ROOT
+		if [ -n "${clst_CCACHE}" ]
+		then
+			export FEATURES="ccache"	
+			emerge --oneshot --nodeps ccache || exit 1
+		fi
+		if [ -n "${clst_PKGCACHE}" ]
+		then
+			export EMERGE_OPTS="--usepkg --buildpkg"
+		fi
 		for x in $(/tmp/build.sh)
 		do
 			echo $x >> /tmp/build.log
-			USE="-* build" emerge --usepkg --buildpkg --noreplace $x || exit 1
+			USE="-* build" emerge --noreplace $x || exit 1
 		done
 	;;
 
