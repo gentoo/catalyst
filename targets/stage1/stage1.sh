@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.4 2003/10/30 19:42:56 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.5 2003/10/30 20:00:04 drobbins Exp $
 
 case $1 in
 enter)
@@ -26,5 +26,6 @@ clean)
 *)
 	exit 1
 	;;
+esac
 exit 0
 
