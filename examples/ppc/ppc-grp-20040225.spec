@@ -112,7 +112,6 @@ grp/cd2/packages:
 	dhcpcd
 	dialog
 	dosfstools
-	emacs
 	ettercap
 	evolution
 	fluxbox
