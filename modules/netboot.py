@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.2 2004/10/11 14:19:30 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.3 2004/10/11 15:31:39 zhen Exp $
 
 """
 Builder class for a netboot build.
@@ -31,18 +31,18 @@ class netboot_target(generic_stage_target):
 			else:
 				loopy=addlargs["netboot/packages"]
 			
-		for x in loopy:
-			self.required_values.append("netboot/packages/"+x+"/files")
+			for x in loopy:
+				self.required_values.append("netboot/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot/packages."
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		
 		if addlargs.has_key("netboot/busybox_config"):
-		file_locate(self.settings, ["netboot/busybox_config"])
+			file_locate(self.settings, ["netboot/busybox_config"])
 
 		if addlargs.has_key("netboot/kernel/sources"):
-		file_locate(self.settings, ["netboot/kernel/config"])
+			file_locate(self.settings, ["netboot/kernel/config"])
 		elif addlargs.has_key("netboot/kernel/prebuilt"):
 			file_locate(self.settings, ["netboot/kernel/prebuilt"])
 		else:
@@ -65,7 +65,7 @@ class netboot_target(generic_stage_target):
 
 		# build packages
 		if self.settings.has_key("netboot/packages"):
-		mypack=list_bashify(self.settings["netboot/packages"])
+			mypack=list_bashify(self.settings["netboot/packages"])
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
 				"/targets/netboot/netboot.sh packages "+mypack)
@@ -103,10 +103,10 @@ class netboot_target(generic_stage_target):
 		# create image
 		myfiles=[]
 		if self.settings.has_key("netboot/packages"):
-		if type(self.settings["netboot/packages"]) == types.StringType:
-			loopy=[self.settings["netboot/packages"]]
-		else:
-			loopy=self.settings["netboot/packages"]
+			if type(self.settings["netboot/packages"]) == types.StringType:
+				loopy=[self.settings["netboot/packages"]]
+			else:
+				loopy=self.settings["netboot/packages"]
 		
 		for x in loopy:
 			print x, self.settings["netboot/packages/"+x+"/files"]
@@ -116,10 +116,10 @@ class netboot_target(generic_stage_target):
 				myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 		if self.settings.has_key("netboot/extra_files"):
-		if type(self.settings["netboot/extra_files"]) == types.ListType:
-			myfiles.extend(self.settings["netboot/extra_files"])
-		else:
-			myfiles.append(self.settings["netboot/extra_files"])
+			if type(self.settings["netboot/extra_files"]) == types.ListType:
+				myfiles.extend(self.settings["netboot/extra_files"])
+			else:
+				myfiles.append(self.settings["netboot/extra_files"])
 
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
