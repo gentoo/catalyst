@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.9 2004/10/05 13:53:14 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.10 2004/10/11 14:27:45 zhen Exp $
 
 Licensing
 ========================
@@ -35,6 +35,7 @@ Catalyst is capable of:
 -Building bootable LiveCDs for every architecture supported by Gentoo.
 -Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo.
 -Setting up a Tinderbox target for test building.
+-Building netboot images.
 
 Configuring catalyst
 ========================
