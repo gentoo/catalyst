@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.42 2004/04/14 22:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.43 2004/04/16 18:56:08 zhen Exp $
+
+  16 Apr 2004; John Davis <zhen@gentoo.org> targets/stage1/stage1-chroot.sh:
+  fix for the problem that gustavoz found wrt the /dev creation stuff not
+  detecting arches. also an efficiency fix for stage1 building
 
   14 Apr 2004; John Davis <zhen@gentoo.org>
   targets/embedded/embedded-chroot.sh,

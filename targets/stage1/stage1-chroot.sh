@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.13 2004/04/14 22:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.14 2004/04/16 18:56:08 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -31,7 +31,7 @@ fi
 
 if [ -n "${clst_PKGCACHE}" ]
 then
-		export EMERGE_OPTS="--usepkg --buildpkg"
+		export clst_myemergeopts="--usepkg --buildpkg"
 fi
 	
 # setup our environment
@@ -42,14 +42,56 @@ install -d ${ROOT}
 ## START BUILD
 for x in $(/tmp/build.sh)
 do
-	echo $x >> /tmp/build.log
-	USE="-* build" emerge ${EMERGE_OPTS} --noreplace $x || exit 1
+	#echo $x >> /tmp/build.log
+	export clst_buildpkgs="${clst_buildpkgs} ${x}"
 done
 
+USE="-* build" emerge ${clst_myemergeopts} --noreplace ${clst_buildpkgs} || exit 1
+
 # if baselayout did not fix up /dev, we do it
-if [ ! -d i${ROOT}/dev ]
+# THIS SHOULD BE TEMPORARY CODE - NOT A SOLUTION
+case ${clst_mainarch} in
+	x86)
+		clst_devtype=i386
+		;;
+	ppc)
+		clst_devtype=powerpc
+		;;
+	ppc64)
+		clst_devtype=powerpc
+		;;
+	sparc)
+		clst_devtype=sparc
+		;;
+	sparc64)
+		clst_devtype=sparc
+		;;
+	alpha)
+		clst_devtype=alpha
+		;;
+	s390)
+		clst_devtype=s390
+		;;
+	amd64)
+		clst_devtype=i386
+		;;
+	hppa)
+		clst_devtype=hppa
+		;;
+	ia64)
+		clst_devtype=ia64
+		;;
+	mips)
+		clst_devtype=mips
+		;;
+	*)
+		echo "!!! Catalyst mainarch ${clst_mainarch} not supported" && exit 1
+		;;
+esac
+
+if [ ! -d ${ROOT}/dev ]
 then
 	mkdir -p ${ROOT}/dev
 	cd ${ROOT}/dev
-	MAKEDEV generic-i386
+	MAKEDEV generic-${clst_devtype}
 fi
