@@ -35,7 +35,7 @@ grp/cd1/packages:
 	gpm
 	rp-pppoe
 	ppp
-	wvdial
+#	wvdial (not building correctly)
 	isdn4k-utils
 	speedtouch
 	pciutils
