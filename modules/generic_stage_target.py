@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.9 2004/08/03 00:09:24 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.10 2004/08/05 04:25:25 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -92,7 +92,7 @@ class generic_stage_target(generic_target):
 		# grab build settings from the environment
 		for envvar in "CHOST", "CFLAGS", "CXXFLAGS":
 			if os.environ.has_key(envvar):
-			self.settings[envvar] = os.environ[envvar]
+				self.settings[envvar] = os.environ[envvar]
 		
 		# define all of our core variables
 		self.settings["target_profile"]=self.settings["profile"]
