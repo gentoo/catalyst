@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.15 2004/04/14 14:27:38 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.16 2004/04/14 22:35:29 zhen Exp $
 
 case $1 in
 	enter)
@@ -15,23 +15,14 @@ case $1 in
 		shift
 				
 		cp ${clst_sharedir}/targets/grp/grp-chroot.sh ${clst_chroot_path}/tmp
-		
-		clst_grp_packages="$*" ${clst_CHROOT} ${clst_chroot_path} /tmp/grp-chroot.sh
-		[ $? -ne 0 ] && exit 1
-
+		clst_grp_packages="$*" ${clst_CHROOT} ${clst_chroot_path} /tmp/grp-chroot.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/grp-chroot.sh
- 
-			;;
+	;;
 
 	preclean)
 		cp ${clst_sharedir}/targets/grp/grp-preclean-chroot.sh ${clst_chroot_path}/tmp
-        
-		${clst_CHROOT} ${clst_chroot_path} /tmp/grp-preclean-chroot.sh
-        [ $? -ne 0 ] && exit 1
-		
+		${clst_CHROOT} ${clst_chroot_path} /tmp/grp-preclean-chroot.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/grp-preclean-chroot.sh
-
-        
 	;;
 
 	clean)

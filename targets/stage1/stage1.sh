@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.11 2004/04/14 00:17:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.12 2004/04/14 22:35:29 zhen Exp $
 
 case $1 in
 	enter)
@@ -20,8 +20,7 @@ case $1 in
 		cp -a ${clst_chroot_path}/etc/make.profile ${clst_chroot_path}/tmp/stage1root/etc
 		
 		# enter chroot, execute our build script
- 		${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-chroot.sh /tmp/stage1root
-		[ $? -ne 0 ] && exit 1
+ 		${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-chroot.sh /tmp/stage1root || exit 1
 	;;
 
 	preclean)
@@ -29,15 +28,13 @@ case $1 in
 		
 		#first we cleanup after ourselves
 		cp ${clst_sharedir}/targets/stage1/stage1-preclean1-chroot.sh ${clst_chroot_path}/tmp
-        ${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-preclean1-chroot.sh
+        ${clst_CHROOT} ${clst_chroot_path} /tmp/stage1-preclean1-chroot.sh || exit 1
         rm -f ${clst_chroot_path}/tmp/stage1-preclean1-chroot.sh
-		[ $? -ne 0 ] && exit 1
 
 		#second we do the gcc magic
 		cp ${clst_sharedir}/targets/stage1/stage1-preclean2-chroot.sh ${clst_chroot_path}/tmp/stage1root/tmp
-		${clst_CHROOT} ${clst_chroot_path}/tmp/stage1root /tmp/stage1-preclean2-chroot.sh
+		${clst_CHROOT} ${clst_chroot_path}/tmp/stage1root /tmp/stage1-preclean2-chroot.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/stage1root/tmp/stage1-preclean2-chroot.sh
-		[ $? -ne 0 ] && exit 1
 	;;
 	
 	clean)

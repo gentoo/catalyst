@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.14 2004/04/14 00:17:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.15 2004/04/14 22:35:29 zhen Exp $
 
 case $1 in
 	enter)
@@ -10,16 +10,14 @@ case $1 in
 
 	run)
 		cp ${clst_sharedir}/targets/stage3/stage3-chroot.sh ${clst_chroot_path}/tmp	
-		${clst_CHROOT} ${clst_chroot_path} /tmp/stage3-chroot.sh
+		${clst_CHROOT} ${clst_chroot_path} /tmp/stage3-chroot.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/stage3-chroot.sh
-		[ $? -ne 0 ] && exit 1
 	;;
 
 	preclean)
 		cp ${clst_sharedir}/targets/stage3/stage3-preclean-chroot.sh ${clst_chroot_path}/tmp
-		${clst_CHROOT} ${clst_chroot_path} /tmp/stage3-preclean-chroot.sh
+		${clst_CHROOT} ${clst_chroot_path} /tmp/stage3-preclean-chroot.sh || exit 1
 		rm -rf ${clst_chroot_path}/tmp/stage3-preclean-chroot.sh
-		[ $? -ne 0 ] && exit 1
 	;;
 
 	clean)
