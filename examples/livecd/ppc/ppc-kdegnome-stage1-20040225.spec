@@ -165,12 +165,10 @@ livecd/packages:
 	popt
 	powerprefs
 	ppc-development-sources
-	ppc-sources
 	ppp
 	pppconfig
 	pppoed
 	pwgen
-	quik
 	raidtools
 	rdate
 	reiserfsprogs
@@ -203,6 +201,5 @@ livecd/packages:
 	xemacs
 	xfce4
 	xfree
-	xfsprogs
 	xmms
 	yaboot

@@ -8,15 +8,13 @@ version_stamp: 20040225
 source_subpath: default-ppc-2004.0/stage3-ppc-20040225
 
 livecd/use:
-	-X
-	-gtk
+	-*
 	ipv6
 	pic
 	livecd
 
 livecd/packages:
 	baselayout
-	bootsplash
 	ccache
 	curl
 	cvs
@@ -32,7 +30,6 @@ livecd/packages:
 	hotplug
 	iputils
 	irssi
-	jfsutils
 	keychain
 	kpnadsl4linux
 	less
@@ -54,6 +51,7 @@ livecd/packages:
 	ppp
 	pppconfig
 	pppoed
+	ppc-development-sources
 	pwgen
 	raidtools
 	reiserfsprogs
@@ -69,5 +67,4 @@ livecd/packages:
 	vixie-cron
 	wget
 	wireless-tools
-	xfsprogs
 	yaboot
