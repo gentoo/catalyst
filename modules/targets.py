@@ -232,10 +232,10 @@ class generic_stage_target(generic_target):
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
 		if self.settings["target"]=="livecd-stage3":
-			if self.settings.has_key("livecd-stage3/empty"):
-				if type(self.settings["livecd-stage3/empty"])==types.StringType:
-					self.settings["livecd-stage3/empty"]=[self.settings["livecd-stage3/empty"]]
-				for x in self.settings["livecd-stage3/empty"]:
+			if self.settings.has_key("livecd/empty"):
+				if type(self.settings["livecd/empty"])==types.StringType:
+					self.settings["livecd/empty"]=[self.settings["livecd/empty"]]
+				for x in self.settings["livecd/empty"]:
 					myemp=self.settings["chroot_path"]+x
 					if not os.path.isdir(myemp):
 						print x,"not a directory or does not exist, skipping 'empty' operation."
@@ -247,10 +247,10 @@ class generic_stage_target(generic_target):
 					os.makedirs(myemp)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
-			if self.settings.has_key("livecd-stage3/rm"):	
-				if type(self.settings["livecd-stage3/rm"])==types.StringType:
-					self.settings["livecd-stage3/rm"]=[self.settings["livecd-stage3/rm"]]
-				for x in self.settings["livecd-stage3/rm"]:
+			if self.settings.has_key("livecd/rm"):	
+				if type(self.settings["livecd/rm"])==types.StringType:
+					self.settings["livecd/rm"]=[self.settings["livecd/rm"]]
+				for x in self.settings["livecd/rm"]:
 					#we're going to shell out for all these cleaning operations, so we get easy glob handling
 					print "livecd: removing "+x
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
