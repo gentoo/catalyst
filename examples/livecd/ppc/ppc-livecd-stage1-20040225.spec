@@ -15,6 +15,7 @@ livecd/use:
 
 livecd/packages:
 	baselayout
+	bootsplash
 	ccache
 	curl
 	cvs

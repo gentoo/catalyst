@@ -12,12 +12,7 @@ livecd/archscript: examples/livecd/runscript/ppc-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/yaboot-1.3.11-cdtar.tar.bz2
 
-boot/kernel: G3 G4 G5 G3-SMP G4-SMP G5-SMP
-boot/kernel/G3/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
-boot/kernel/G3/config: /usr/src/configs/G3
-boot/kernel/G3/use: extlib
-boot/kernel/G3/packages: >=sys-apps/pcmcia-cs-3.2.7
-boot/kernel/G3/extraversion: G3
+boot/kernel: G4 G5 G4-SMP G5-SMP
 boot/kernel/G4/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G4/config: /usr/src/configs/G4
 boot/kernel/G4/use: extlib
@@ -27,11 +22,6 @@ boot/kernel/G5/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G5/config: /usr/src/configs/G5
 boot/kernel/G5/use: extlib
 boot/kernel/G5/extraversion: G5
-boot/kernel/G3-SMP/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
-boot/kernel/G3-SMP/config: /usr/src/configs/G3-SMP
-boot/kernel/G3-SMP/use: extlib
-boot/kernel/G3-SMP/packages: >=sys-apps/pcmcia-cs-3.2.7
-boot/kernel/G3-SMP/extraversion: G3-SMP
 boot/kernel/G4-SMP/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G4-SMP/config: /usr/src/configs/G4-SMP
 boot/kernel/G4-SMP/use: extlib
