@@ -51,4 +51,4 @@ livecd/packages:
 	bootsplash
 	device-mapper
 	lvm2
-	
+	livecd-tools	
