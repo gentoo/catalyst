@@ -411,13 +411,6 @@ class livecd_stage1_target(generic_stage_target):
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript"]
-		if self.settings.has_key("livecd/cdtar"):
-			if not os.path.exists(self.settings["livecd/cdtar"]):
-				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
-		if not os.path.exists(self.settings["livecd/runscript"]):
-			raise CatalystError, "Cannot locate specified livecd/runscript: "+self.settings["livecd/runscript"]
-		if not os.path.exists(self.settings["livecd/archscript"]):
-			raise CatalystError, "Cannot locate specified livecd/archscript: "+self.settings["livecd/archscript"]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
 		if type(addlargs["boot/kernel"]) == types.StringType:
@@ -430,7 +423,19 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
-			
+		if self.settings.has_key("livecd/cdtar"):
+			if not os.path.exists(self.settings["livecd/cdtar"]):
+				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
+		for myscript in ["livecd/archscript","livecd/runscript"]:
+			if self.settings[myscript][0]=="/":
+				if not os.path.exists(self.settings[myscript]):
+					raise CatalystError, "Cannot locate specified "+myscript+": "+self.settings[myscript]
+			elif os.path.exists(os.getcwd()+"/"+self.settings[myscript]):
+				self.settings[myscript]=os.getcwd()+"/"+self.settings[myscript]
+			else:
+				print os.getcwd()+"/"+self.settings[myscript]
+				raise CatalystError, "Cannot locate specified "+myscript+": "+self.settings[myscript]+" (2nd try)"
+		
 	def unmerge(self):
 		if self.settings.has_key("livecd/unmerge"):
 			if type(self.settings["livecd/unmerge"])==types.StringType:
@@ -441,8 +446,11 @@ class livecd_stage2_target(generic_stage_target):
 				myunmerge[x]="'"+myunmerge[x]+"'"
 			myunmerge=string.join(myunmerge)
 			#before cleaning, unmerge stuff:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
-
+			try:
+				cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
+			except CatalystError:
+				self.unbind()
+				raise
 	def setupfs(self):
 		try:
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
@@ -475,6 +483,9 @@ class livecd_stage2_target(generic_stage_target):
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
 		print "livecd-stage3: complete!"
+
+	def run_local(self):
+		pass
 
 def run_local(self):
 		mynames=self.settings["boot/kernel"]

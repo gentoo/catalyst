@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.5 2004/01/12 06:46:55 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.6 2004/01/20 23:56:43 drobbins Exp $
 
 case $1 in
 enter)
@@ -20,12 +20,25 @@ run)
 	USE="build" emerge portage
 	#turn off auto-use:
 	export USE_ORDER="env:conf:defaults"	
-	if [ -n "${clst_PKGCACHE}" ]
-	then
-		emerge --usepkg --buildpkg --noreplace $* || exit 1
-	else
-		emerge --noreplace $* || exit 1
-	fi
+	for x in $*
+	do
+		if [ -n "${clst_PKGCACHE}" ]
+		then
+			emerge --usepkg --buildpkg "\$x" || exit 1
+			if [ "\$?" -ne 0 ]
+			then
+				echo "\$x failed to build."
+				exit 1
+			fi
+		else
+			emerge "\$x"
+			if [ "\$?" -ne 0 ]
+			then
+				echo "\$x failed to build."
+				exit 1
+			fi
+		fi
+	done
 EOF
 	[ $? -ne 0 ] && exit 1
 	;;

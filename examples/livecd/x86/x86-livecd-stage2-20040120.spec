@@ -1,12 +1,12 @@
 subarch: x86
-version_stamp: 20040114
+version_stamp: 20040120
 target: livecd-stage2
 rel_type: default
 rel_version: 1.4
-snapshot: 20040114
-source_subpath: default-x86-1.4/livecd-stage1-x86-20040114
-livecd/looptype: normal
-livecd/archscript: examples/livecd/runscript/x86-archcript.sh
+snapshot: 20040120
+source_subpath: default-x86-1.4/livecd-stage1-x86-20040120
+livecd/cdfstype: normal
+livecd/archscript: examples/livecd/runscript/x86-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 boot/kernel: gentoo
