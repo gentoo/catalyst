@@ -45,6 +45,13 @@ class generic_stage_target(generic_target):
 			fh.close()	
 		#call arch constructor, pass our settings
 		self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
+		#self.settings["mainarch"] should now be set by our arch constructor, so we print
+		#a nice informational message:
+		if self.settings["mainarch"]==self.settings["hostarch"]:
+			print "Building natively for",self.settings["hostarch"]
+		else:
+			print "Building on",self.settings["hostarch"],"for alternate machine type",self.settings["mainarch"]
+			
 		self.settings["target_profile"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
 		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
