@@ -115,8 +115,9 @@ class generic_stage_target(generic_target):
 		self.mount_safety_check()
 		cmd("rm -rf "+self.settings["chroot_path"],"Could not remove existing directory: "+self.settings["chroot_path"])
 		os.makedirs(self.settings["chroot_path"])
-		if not os.path.exists(self.settings["pkgcache_path"]):
-			os.makedirs(self.settings["pkgcache_path"])
+		if self.settings.has_key["PKGCACHE"]:	
+			if not os.path.exists(self.settings["pkgcache_path"]):
+				os.makedirs(self.settings["pkgcache_path"])
 		
 	def unpack_and_bind(self):
 		print "Unpacking stage tarball..."
