@@ -1,11 +1,12 @@
 subarch: hppa
-version_stamp: 20040110
+version_stamp: 20040227
 target: grp
 rel_type: default
-rel_version: 1.4
-snapshot: 20040110
-source_subpath: default-hppa-1.4/stage3-hppa-20031231
-grp: cd1 cd2
+rel_version: 2004.0
+snapshot: 20040227
+source_subpath: default-hppa-2004.0/stage3-hppa-20040227
+#grp: cd1 cd2
+grp: cd1
 
 grp/use:
 	-*
@@ -103,8 +104,8 @@ grp/cd1/packages:
 	squid
 	xfsprogs
 	
-grp/cd2/type: pkgset
-grp/cd2/packages:
+#grp/cd2/type: pkgset
+#grp/cd2/packages:
 	xfree
 	rp-pppoe
 	xfce4
