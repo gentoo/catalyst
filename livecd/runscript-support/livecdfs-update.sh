@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.4 2004/06/04 14:24:53 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.5 2004/06/10 15:55:11 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -9,23 +9,44 @@ source /etc/profile
 if [ -e /etc/sshd/sshd_config ]
 then
 	#allow root logins to the livecd by default
-	sed -e "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config > /etc/ssh/sshd_config1
-	mv /etc/ssh/sshd_config1 /etc/ssh/sshd_config
+	sed -i "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config
+	#mv /etc/ssh/sshd_config1 /etc/ssh/sshd_config
 fi
 
 # fix /etc/issue for mingetty and friends
 echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
-		
-rc-update del iptables default
-rc-update del netmount default
-#rc-update add hotplug default
-#rc-update add kudzu default
-rc-update add autoconfig default
-rc-update del keymaps
-rc-update del consolefont
-rc-update add metalog default
-rc-update add modules default
-[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
+
+if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
+then
+	if [ -n "${clst_livecd_rcadd}" ]
+	then
+		for x in ${clst_livecd_rcadd}
+		do
+			rc-update add "${x%%:*}" "${x##*:}"
+		done
+	fi
+	
+	if [ -n "${clst_livecd_rcdel}" ]
+	then
+		for x in ${clst_livecd_rcdel}
+		do
+			rc-update del "${x%%:*}" "${x##*:}"
+		done
+	fi
+	
+else
+	# use the defaults if nothing else is specified
+	rc-update del iptables default
+	rc-update del netmount default
+	#rc-update add hotplug default
+	#rc-update add kudzu default
+	rc-update add autoconfig default
+	rc-update del keymaps
+	rc-update del consolefont
+	rc-update add metalog default
+	rc-update add modules default
+	[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
+fi
 
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/GMT /etc/localtime
@@ -62,14 +83,15 @@ then
 fi
 
 # setup bootsplash (if called for)
-if [ -n ${clst_livecd_bootsplash} ]
+if [ -n "${clst_livecd_bootsplash}" ]
 then
-	if [ -d /etc/bootsplash/${clst_livecd_bootsplash} ]
+	if [ -d "/etc/bootsplash/${clst_livecd_bootsplash}" ]
 	then
 		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/\"${clst_livecd_bootsplash}\"/' /etc/conf.d/bootsplash
 		rm /etc/bootsplash/default
-		ln -s /etc/bootsplash/${clst_livecd_bootsplash} /etc/bootsplash/default
+		ln -s "/etc/bootsplash/${clst_livecd_bootsplash}" /etc/bootsplash/default
 	else
+		echo "Error, cannot setup bootsplash theme ${clst_livecd_bootsplash}"
 		exit 1
 	fi
 fi

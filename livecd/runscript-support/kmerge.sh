@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.5 2004/05/22 05:51:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.6 2004/06/10 15:55:11 zhen Exp $
 
 die() {
 	echo "$1"
@@ -20,13 +20,13 @@ rm -f /usr/src/linux
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
-[ -e /var/tmp/${clst_kname}.use ] && export USE="$( cat /var/tmp/${clst_kname}.use )" || unset USE
-[ -e /var/tmp/${clst_kname}.gk_kernargs ] && source /var/tmp/${clst_kname}.gk_kernargs
+[ -e "/var/tmp/${clst_kname}.use" ] && export USE="$( cat /var/tmp/${clst_kname}.use )" || unset USE
+[ -e "/var/tmp/${clst_kname}.gk_kernargs" ] && source /var/tmp/${clst_kname}.gk_kernargs
 # Don't use pkgcache here, as the kernel source may get emerge with different USE variables
 # (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
 # pkgcache for kernel source ebuilds.
 	
-emerge ${clst_ksource} || exit 1
+emerge "${clst_ksource}" || exit 1
 [ ! -e /usr/src/linux ] && die "Can't find required directory /usr/src/linux"
 	
 #if catalyst has set NULL_VALUE, extraversion wasn't specified so we skip this part
@@ -57,7 +57,7 @@ fi
 
 ${genkernel} 
 #now we merge any kernel-dependent packages
-if [ -e /var/tmp/${clst_kname}.packages ]
+if [ -e "/var/tmp/${clst_kname}.packages" ]
 then
 	for x in $( cat /var/tmp/${clst_kname}.packages )
 	do
