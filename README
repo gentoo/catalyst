@@ -118,14 +118,14 @@ The build directory used to build this stage can be found at:
 
 /var/tmp/catalyst/tmp/default-x86-1.4/stage2-x86-20031102/
 
-Building amd64 stages on x86
+Building x86 stages on amd64
 ============================
 
-Catalyst currently supports building x86 stages on 64-bit AMD64 systems. To do this,
-simply use as you would on x86, but ensure that the linux32 ebuild is emerged before
-starting. Catalyst will detect that you are building a 32-bit stage and will use the
-linux32 tool automatically when setting up chroots. Everything should work identically
-to if you were using a 32-bit system.
+Catalyst currently supports building x86 stages on 64-bit AMD64 systems. To do
+this, simply use as you would on x86, but ensure that the linux32 ebuild is
+emerged before starting. Catalyst will detect that you are building a 32-bit
+stage and will use the linux32 tool automatically when setting up chroots.
+Everything should work identically to if you were using a 32-bit system.
 
 Questions, bug reports:
 drobbins@gentoo.org
