@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.13 2004/10/16 13:38:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.14 2004/10/18 15:23:14 zhen Exp $
 
 die() {
 	echo "$1"
@@ -34,8 +34,6 @@ build_kernel() {
 		do
 			clst_kernel_postconf="${clst_kernel_postconf} ${x}"
 		done
-
-		GK_ARGS="${GK_ARGS} ${clst_kernel_postconf}"
 	fi
 	
 	if [ "${clst_livecd_devmanager}" == "udev" ]
