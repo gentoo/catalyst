@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.99 2004/04/02 21:09:10 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.100 2004/04/05 20:31:43 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -208,6 +208,7 @@ class generic_stage_target(generic_target):
 
 		myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 		myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
+		myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
 		myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 		myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		myusevars=[]

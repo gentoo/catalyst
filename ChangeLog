@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.37 2004/04/04 20:20:50 beejay Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.38 2004/04/05 20:31:43 zhen Exp $
+
+  05 Apr 2004; John Davis <zhen@gentoo.org> modules/targets.py:
+  bugfix for #46861
 
   04 Apr 2004; Benjamin Judas <beejay@gentoo.org> 
   livecd/kconfig/config-2004.1-gentoo-dev-sources-2.6.3-r1,
