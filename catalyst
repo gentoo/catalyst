@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.28 2004/02/11 03:31:55 zhen Exp $
 
 import os,sys,imp,string
 
@@ -33,7 +36,7 @@ if os.path.exists("/etc/catalyst.conf"):
 	try:
 		execfile("/etc/catalyst.conf",myconf,myconf)
 	except:
-		print "catalyst: Unable to /etc/catalyst.conf config file (syntax error)"
+		print "catalyst: Unable to parse /etc/catalyst.conf config file (syntax error)"
 		sys.exit(1)
 
 confdefaults={ "storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",
@@ -60,7 +63,8 @@ targetmap={}
 targets.register(targetmap)
 
 myspec["CCACHE"]="1"
-	print "Compiler cache support enabled."
+print "Compiler cache support enabled."
+
 if "pkgcache" in string.split(myspec["options"]):
 	print "Package cache support enabled."
 	myspec["PKGCACHE"]="1"
@@ -69,6 +73,10 @@ if "distcc" in string.split(myspec["options"]):
 	print "Distcc support enabled."
 	myspec["DISTCC"]="1"
 
+if myconf.has_key("envscript"):
+	print "Envscript support enabled."
+	myspec["ENVSCRIPT"]=myconf["envscript"]
+	
 if sys.argv[1] in ["-f", "--file" ]:
 	try:
 		addlargs=read_spec(sys.argv[2])

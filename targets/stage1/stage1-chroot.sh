@@ -2,6 +2,11 @@
 		
 env-update
 source /etc/profile
+if [ -n "${clst_ENVSCRIPT}" ]
+then
+	source /tmp/envscript
+	rm -f /tmp/envscript
+fi
 case $1 in
 	build)
 		#emerge and enable ccache before we set ROOT

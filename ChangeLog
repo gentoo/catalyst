@@ -1,6 +1,15 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.15 2004/01/14 06:21:56 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.16 2004/02/11 03:31:55 zhen Exp $
+
+  10 Feb 2004; John Davis <zhen@gentoo.org> README, TODO, catalyst,
+  modules/builder.py, modules/catalyst_support.py, modules/targets.py,
+  targets/grp/grp.sh, targets/livecd-stage1/livecd-stage1.sh,
+  targets/livecd-stage2/livecd-stage2.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2.sh, targets/stage3/stage3.sh,
+  targets/tinderbox/tinderbox.sh:
+  added envscripts support (fixes bug #39832) massive cleanup of tree to prepare
+  it for ebuild - added headers to everything and removed deprecated dirs
 
   14 Jan 2004; zhen <zhen@gentoo.org> arch/mips.py, modules/targets.py:
   adding Kumba's patches for MIPS

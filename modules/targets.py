@@ -1,5 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.78 2004/02/11 03:31:55 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -196,6 +197,10 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
+		if self.settings.has_key("ENVSCRIPT"):
+			if not os.path.exists(self.settings["ENVSCRIPT"]):
+				raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
+			cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript","Could not copy envscript into place.")
 		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
 
 		myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")

@@ -1,5 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.15 2004/02/11 03:31:55 zhen Exp $
 
 import sys,string,os,types
 
@@ -22,6 +23,7 @@ valid_config_file_values=required_config_file_values[:]
 valid_config_file_values.append("PKGCACHE")
 valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
+valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("options")
 
 verbosity=1
@@ -191,5 +193,3 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 def spec_dump(myspec):
 	for x in myspec.keys():
 		print x+": "+repr(myspec[x])
-
-

@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.2 2003/11/30 03:52:03 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.3 2004/02/11 03:31:55 zhen Exp $
 
 case $1 in
 run)
@@ -9,10 +9,24 @@ run)
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 	env-update
 	source /etc/profile
+	if [ -n "${clst_ENVSCRIPT}" ]
+	then
+		source /tmp/envscript
+		rm -f /tmp/envscript
+	fi
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export FEATURES="ccache"
 		emerge --oneshot --nodeps ccache || exit 1
+	fi
+	if [ -n "${clst_DISTCC}" ]
+	then
+		export FEATURES="distcc"
+		export DISTCC_HOSTS="${clst_distcc_hosts}"
+		emerge --oneshot --nodeps distcc || exit 1
+		echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
+		/usr/bin/distcc-config --install 2>&1 > /dev/null
+		/usr/bin/distccd 2>&1 > /dev/null
 	fi
 	export CONFIG_PROTECT="-*"
 	

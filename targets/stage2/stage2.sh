@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.7 2004/01/29 21:53:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.8 2004/02/11 03:31:55 zhen Exp $
 
 case $1 in
 enter)
@@ -10,6 +10,11 @@ run)
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 	env-update
 	source /etc/profile
+	if [ -n "${clst_ENVSCRIPT}" ]
+	then
+		source /tmp/envscript
+		rm -f /tmp/envscript
+	fi
 	cat /etc/make.profile/make.defaults | grep GRP_STAGE23_USE > /tmp/stage23
 	source /tmp/stage23
 	export USE="-* \${clst_HOSTUSE} \${GRP_STAGE23_USE}"

@@ -1,6 +1,6 @@
-catalyst is released under the GNU General Public License version 2,
-and is copyright Gentoo Technologies, Inc. Will be adding official
-COPYING file and source file preambles soon.
+# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.4 2004/02/11 03:31:55 zhen Exp $
 
 How do I use this thing?
 ========================
@@ -130,3 +130,4 @@ Everything should work identically to if you were using a 32-bit system.
 
 Questions, bug reports:
 drobbins@gentoo.org
+

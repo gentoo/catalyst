@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/Attic/livecd-stage2.sh,v 1.4 2004/01/07 17:47:26 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/Attic/livecd-stage2.sh,v 1.5 2004/02/11 03:31:55 zhen Exp $
 
 case $1 in
 enter)
@@ -20,6 +20,11 @@ run)
 		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 		env-update
 		source /etc/profile
+		if [ -n "${clst_ENVSCRIPT}" ]
+		then
+			source /tmp/envscript
+			rm -f /tmp/envscript
+		fi		
 		export CONFIG_PROTECT="-*"
 		emerge genkernel
 		rm -f /usr/src/linux
