@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.5 2004/01/17 18:37:24 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.6 2004/01/17 22:13:40 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -49,7 +49,7 @@ then
 	die "ARCH_RUNSCRIPT NOT DEFINED OR NOT FOUND"
 fi
 
-${ARCH_RUNSCRIPT} $*
+/bin/bash ${ARCH_RUNSCRIPT} $*
 RET="$?"
 
 if [ "${RET}" != "${RETURN_CONTINUE}" ]
@@ -76,13 +76,16 @@ create_normal_loop()
 		loopsize=`du -ks $clst_chroot_path | cut -f1`
 		[ "$loopsize" = "0" ] && loopsize=1
 		#increase the size by 1/3, then divide by 4 to get 4k blocks
-		loopsize=$(( ( $loopsize + ( $loopsize / 2 ) ) / 4  ))
+#		loopsize=$(( ( $loopsize + ( $loopsize / 2 ) ) / 4  ))
+		# Add 4MB for filesystem slop
+		loopsize=`expr $loopsize + 4096`
 		echo "Creating loopback file..."
-		dd if=/dev/zero of=$clst_cdroot_path/livecd.loop bs=4k count=$loopsize || die "livecd.loop creation failure"
+		dd if=/dev/zero of=$clst_cdroot_path/livecd.loop bs=1k count=$loopsize || die "livecd.loop creation failure"
 		#echo "Calculating number of inodes required for ext2 filesystem..."
 		#numnodes=`find $clst_chroot_path | wc -l`
 		#numnodes=$(( $numnodes + 200 ))
-		mke2fs -m 0 -F -b 4096 -q $clst_cdroot_path/livecd.loop || die "Couldn't create ext2 filesystem"
+		mke2fs -m 0 -F -q $clst_cdroot_path/livecd.loop || die "Couldn't create ext2 filesystem"
+#		mke2fs -m 0 -F -b 4096 -q $clst_cdroot_path/livecd.loop || die "Couldn't create ext2 filesystem"
 		install -d $clst_cdroot_path/loopmount
 		sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
 		mount -t ext2 -o loop $clst_cdroot_path/livecd.loop $clst_cdroot_path/loopmount || die "Couldn't mount loopback ext2 filesystem"
