@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.1 2004/05/17 01:21:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.2 2004/05/17 01:41:53 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -28,7 +28,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/genkernel_args"])
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
 	
@@ -59,7 +59,8 @@ class livecd_stage2_target(generic_stage_target):
 				self.settings["livecd/unmerge"]=[self.settings["livecd/unmerge"]]
 			myunmerge=self.settings["livecd/unmerge"][:]
 			for x in range(0,len(myunmerge)):
-				#surround args with quotes for passing to bash, allows things like "<" to remain intact
+				#surround args with quotes for passing to bash, 
+				#allows things like "<" to remain intact
 				myunmerge[x]="'"+myunmerge[x]+"'"
 			myunmerge=string.join(myunmerge)
 			#before cleaning, unmerge stuff:
