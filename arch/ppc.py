@@ -35,12 +35,12 @@ class arch_g4(generic_ppc):
 		self.settings["CFLAGS"]="-O2 -mcpu=7400 -maltivec -mabi=altivec"
 		self.settings["HOSTUSE"]=["altivec"]
 
-#class arch_g5(generic_ppc):
-#	"builder class for ppc970 32bit mode"
-#	def __init__(self,myspec):
-#		generic_ppc.__init__(self,myspec)
-#		self.settings["CFLAGS"]="-O2 -mcpu=970 -maltivec -mabi=altivec"
-#		self.settings["HOSTUSE"]=["altivec"]
+class arch_g5(generic_ppc):
+	"builder class for ppc970 32bit mode"
+	def __init__(self,myspec):
+		generic_ppc.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -mcpu=970 -maltivec -mabi=altivec"
+		self.settings["HOSTUSE"]=["altivec"]
 
 
 def register(foo):
