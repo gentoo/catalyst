@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.21 2004/02/25 19:20:44 pvdabeel Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.22 2004/03/04 19:34:11 zhen Exp $
+
+  04 Mar 2004; John Davis <zhen@gentoo.org> alpha-isogen.sh,
+  examples/livecd/alpha/alpha-livecd-stage1-20040225.spec,
+  examples/livecd/alpha/alpha-livecd-stage2-20040225.spec,
+  examples/livecd/alpha/config-2.4.21-r4-alpha,
+  examples/livecd/alpha/config-2.4.21-r4-jensen,
+  examples/livecd/alpha/config-2.4.21-r4-legacy,
+  examples/livecd/cdtar/aboot-0.9-r1-cdtar.tar.bz2,
+  examples/livecd/runscript/alpha-archscript.sh, files/catalyst.conf:
+  fixes for bugs 43676, 43701. Alpha support added as well.
 
   25 Feb 2004; Pieter Van den Abeele <pvdabeel@gentoo.org>: 
   added powerpc livecd support, preparing for 2004.0 release. Preliminary 
