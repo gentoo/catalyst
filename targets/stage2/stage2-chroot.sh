@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.5 2004/08/02 23:23:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.6 2004/09/29 06:44:26 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -26,20 +26,14 @@ fi
 										
 if [ -n "${clst_PKGCACHE}" ]
 then
-	export EMERGE_OPTS="--usepkg --buildpkg"
+	export bootstrap_opts="-r"
 fi
 
 GRP_STAGE23_USE="$(source /etc/make.profile/make.defaults ; echo ${GRP_STAGE23_USE})"
 
-if [ -f /usr/portage/profiles/${clst_profile}/parent ]
-then
-	export clst_bootstrap="bootstrap-cascade.sh"
-else
-	export clst_bootstrap=bootstrap.sh
-fi
 
 ## setup the environment
 export FEATURES="${clst_myfeatures}"
 
 ## START BUILD
-/usr/portage/scripts/${clst_bootstrap} || exit 1
+/usr/portage/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
