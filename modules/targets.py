@@ -240,27 +240,32 @@ class generic_stage_target(generic_target):
 				os.environ["clst_"+x]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
 				os.environ["clst_"+x]=string.join(self.settings[x])
-		try:
-			if self.settings["target"] not in ["grp","tinderbox"]:
+			
+		if self.settings["target"] not in ["grp","tinderbox"]:
+			try:
 				cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
-			elif self.settings["target"]=="grp":
-				for pkgset in self.settings["grp"]:
-					#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-					cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
-			else:
-				#tinderbox
-				#example call: "grp.sh run xmms vim sys-apps/gleep"
+			except CatalystError:
+				self.unbind()
+				raise CatalystError,"Stage build aborting due to error."
+		elif self.settings["target"]=="grp":
+			for pkgset in self.settings["grp"]:
+				#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
 				try:
-					cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+					cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
 				except CatalystError:
 					self.unbind()
-					raise CatalystError,"Tinderbox aborting due to error."
-		
-		finally:
-			#pre-clean is for stuff that needs to run with bind-mounts still active
-			if self.settings["target"] not in ["grp","tinderbox"]:
-				self.preclean()
-			self.unbind()
+					raise CatalystError,"GRP build aborting due to error."
+		else:
+			#tinderbox
+			#example call: "grp.sh run xmms vim sys-apps/gleep"
+			try:
+				cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+			except CatalystError:
+				self.unbind()
+				raise CatalystError,"Tinderbox aborting due to error."
+		if self.settings["target"] not in ["grp","tinderbox"]:
+			self.preclean()
+		self.unbind()
 		if self.settings["target"] not in ["grp","tinderbox"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
