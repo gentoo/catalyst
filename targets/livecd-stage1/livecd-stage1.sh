@@ -1,12 +1,13 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.1 2003/12/16 05:37:46 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/Attic/livecd-stage1.sh,v 1.2 2003/12/23 06:36:52 drobbins Exp $
 
 case $1 in
 enter)
 	$clst_CHROOT $clst_chroot_path
 	;;
 run)
+	shift
 	export clst_packages="$*"
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 	env-update

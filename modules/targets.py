@@ -15,8 +15,8 @@ class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
 		
-		self.required_values=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
-		self.valid_values=self.required_values
+		self.required_values.extend(["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"])
+		self.valid_values.extend(self.required_values[:])
 		generic_target.__init__(self,addlargs,myspec)
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
@@ -245,7 +245,7 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				os.environ["clst_"+x]=string.join(self.settings[x])
 			
-		if self.settings["target"] not in ["grp","tinderbox"]:
+		if self.settings["target"] in ["stage1","stage2","stage3"]:
 			try:
 				cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
 			except CatalystError:
@@ -282,7 +282,7 @@ class generic_stage_target(generic_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
-		else:
+		elif self.settings["target"]=="tinderbox":
 			#tinderbox
 			#example call: "grp.sh run xmms vim sys-apps/gleep"
 			try:
@@ -290,6 +290,8 @@ class generic_stage_target(generic_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"Tinderbox aborting due to error."
+		else:
+			raise CatalystError,"You shouldn't get to this point. Target not recognized."
 		if self.settings["target"] not in ["grp","tinderbox"]:
 			self.preclean()
 		self.unbind()
@@ -369,11 +371,14 @@ class tinderbox_target(generic_stage_target):
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		generic_target.__init__(self,spec,addlargs)
+		self.required_values=["livecd-stage1/packages"]
+		self.valid_values=["livecd-stage1/use","livecd-stage1/packages"]
+		generic_stage_target.__init__(self,spec,addlargs)
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		generic_target.__init__(self,spec,addlargs)
+		self.required_values=["boot"]
+		generic_stage_target.__init__(self,spec,addlargs)
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
