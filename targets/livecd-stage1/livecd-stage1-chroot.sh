@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.14 2005/01/28 18:37:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.15 2005/03/07 21:14:42 wolf31o2 Exp $
 
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 	| cut -d/ -f2 | cut -d- -f2,3`
@@ -64,15 +64,4 @@ then
 	fi
 fi
 
-portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
-	| cut -d/ -f2 | cut -d- -f2,3`
-
-if [ `echo ${portage_version} | cut -d- -f1 | cut -d. -f3` -ge 51 ] &&
-	[ `echo ${portage_version} | cut -d- -f2 | cut -dr -f2` -ge 4 ]
-then
-	emerge ${clst_emergeopts} ${clst_packages}
-else
-	for packages in ${clst_packages}; do
-		emerge ${clst_emergeopts} ${packages}
-	done
-fi
+emerge ${clst_emergeopts} ${clst_packages}

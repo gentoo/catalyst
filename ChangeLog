@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.184 2005/03/07 19:52:00 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.185 2005/03/07 21:14:42 wolf31o2 Exp $
+
+  07 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/pre-kmerge.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh:
+  Revert last set of changes and remove portage version check from emerge in
+  livecd-stage1, as it breaks catalyst's ability to fail properly on an
+  incomplete emerge.
 
   07 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/kmerge.sh,
