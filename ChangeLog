@@ -1,6 +1,18 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.202 2005/04/05 21:42:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.203 2005/04/05 21:43:09 wolf31o2 Exp $
+
+  05 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  examples/fsscript.sh.example, livecd/files/README.txt,
+  livecd/files/livecd-bash_profile, livecd/files/livecd-bashrc,
+  livecd/files/minimal.motd.txt, livecd/files/universal.motd.txt,
+  targets/support/gamecdfs-update.sh, targets/support/livecdfs-update.sh:
+  Changed maintainers. Updated examples/fsscript.sh.example to provide better
+  documentation. Lots of minor cosmetic updates. Updated minimal.motd.txt and
+  universal.motd.txt to resolve documentation issue on bug #86914. Added
+  x-setup to default runlevel on gamecd builds. Removed extranneous bashlogin
+  sed-fu from livecdfs-update.sh and made default timezone UTC rather than
+  GMT.
 
   05 Apr 2005; Eric Edgar <rocket@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:

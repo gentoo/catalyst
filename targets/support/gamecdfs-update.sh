@@ -14,3 +14,4 @@ echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
 
 # we add spind to default here since we don't want the CD to spin down
 rc-update add spind default
+rc-update add x-setup default

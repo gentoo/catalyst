@@ -1,9 +1,10 @@
 #!/bin/bash
 
-if [ -e /usr/X11R6/bin/X ]; then
+if [ -e /usr/bin/X ]; then
 	if [ -e /etc/startx ]; then
 		rm -f /etc/startx
-		startx
+		export BASHRC_READ=1
+		#startx
 		cat /etc/motd
 	fi
 fi

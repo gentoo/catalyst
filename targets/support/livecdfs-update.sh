@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.1 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.2 2005/04/05 21:43:09 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -14,9 +14,6 @@ fi
 
 # turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
-
-# turn bashlogin shells to actual login shells
-sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
 # default programs that we always want to start
 rc-update del iptables default
@@ -64,9 +61,9 @@ then
 	fi
 fi
 
-# clean up the time and set to GMT
+# clean up the time and set to UTC
 rm -rf /etc/localtime
-cp /usr/share/zoneinfo/GMT /etc/localtime
+cp /usr/share/zoneinfo/UTC /etc/localtime
 
 # setup the hostname
 echo "livecd" > /etc/hostname

@@ -12,7 +12,7 @@ Mailing Lists: Please see our quick Mailing List HOWTO at:
 
 Gentoo user forums: <http://forums.gentoo.org>
 
-Gentoo Bug Database <http://bugs.gentoo.org>
+Gentoo Bug Database: <http://bugs.gentoo.org>
 
 On this LiveCD, we've provided a minimal IRC client called "irssi" and a simple
 text web browser called "links." Both can be accessed via the command line by
