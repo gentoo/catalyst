@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.19 2004/02/13 05:23:20 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.20 2004/02/18 21:56:27 zhen Exp $
+
+  18 Feb 2004; John Davis <zhen@gentoo.org> files/catalyst.conf:
+  fix in catalyst.conf for bug #42044
 
   13 Feb 2004; John Davis <zhen@gentoo.org> sparc64-isogen.sh, arch/sparc.py,
   arch/sparc64.py, examples/livecd/runscript/sparc64-archscript.sh,
