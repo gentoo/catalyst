@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.88 2004/02/17 09:55:23 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.89 2004/02/22 19:51:18 drobbins Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -155,10 +155,11 @@ class generic_stage_target(generic_target):
 	def unpack_and_bind(self):
 		print "Unpacking stage tarball..."
 		cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],"Error unpacking tarball")
-		if self.settings["target"] not in ["livecd-stage3"]:
-			#a livecd-stage2 isn't "cleaned up" so there's no need to re-extract the portage snapshot
-			print "Unpacking portage tree snapshot..."
-			cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
+		if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
+			print "Cleaning up existing portage tree snapshot..."
+			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage","Error removing existing snapshot directory.")
+		print "Unpacking portage tree snapshot..."
+		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
