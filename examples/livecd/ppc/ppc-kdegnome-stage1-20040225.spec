@@ -8,11 +8,10 @@ version_stamp: 20040225
 source_subpath: default-ppc-2004.0/stage3-ppc-20040225
 
 livecd/use:
-	pic
 	aalib 
 	accessibility 
 	altivec 
-	alsa 
+	-alsa 
 	apache2 
 	apm 
 	arts 
@@ -92,32 +91,22 @@ livecd/use:
 	xmms
 	yahoo 
 	zlib
-
-
 	livecd
 
 livecd/packages:
 	DirectFB
-	abiword
 	apache
-	aumix
 	baselayout
 	bootsplash
-	ccache
 	ccache
 	cdrdao
 	cdrtools
 	chkrootkit
 	cups
 	curl
-	curl
-	cvs
 	cvs
 	dante
-	device-mapper
 	dhcpcd
-	dhcpcd
-	dialog
 	dialog
 	dosfstools
 	e2fsprogs
@@ -126,7 +115,6 @@ livecd/packages:
 	evolution
 	fluxbox
 	ftp
-	ftp
 	gabber
 	gaim
 	genflags
@@ -134,77 +122,44 @@ livecd/packages:
 	gentoolkit
 	gimp
 	gnome
-	gpart
 	gpm
-	gpm
-	gradm
-	gradm2
 	gtkpbbuttons
-	hdparm
 	hdparm
 	hfsplusutils
 	hfsutils
-	host
 	host 
 	hotplug
-	hotplug
-	hwdata-knoppix
-	hwsetup
 	iptables
 	iputils
-	iputils
-	irssi
 	irssi
 	jfsutils
 	joe
 	kde
 	kdevelop
 	keychain
-	keywhein
 	koffice
 	kpnadsl4linux
-	kpnadsl4linux
-	kudzu
-	lcrzoex
 	less
 	libsdl
 	links
-	links
-	livecd-tools
 	logrotate
-	logrotate
-	lukemftp
-	lynx
 	lynx
 	lzo
-	lzo 
-	mac-fdisk
 	mac-fdisk
 	metalog
-	metalog
-	minicom
-	mirrorselect
 	mirrorselect
 	module-init-tools
 	mozilla
-	mozilla-firebird
-	nano
 	nano
 	netcat
 	nfs-utils
-	nfs-utils
 	nmap
 	openbox
-	openoffice-ximian
-	openssh
+	openoffice-bin
 	openssh
 	parted
-	parted
-	partimage
-	passook
 	passook
 	pbbuttonsd
-	pciutils
 	pciutils
 	pmud
 	popt
@@ -212,62 +167,42 @@ livecd/packages:
 	ppc-development-sources
 	ppc-sources
 	ppp
-	ppp
 	pppconfig
-	pppconfig
-	pppoed
 	pppoed
 	pwgen
 	quik
 	raidtools
-	raidtools
 	rdate
 	reiserfsprogs
-	reiserfsprogs
-	rp-pppoe
 	rp-pppoe
 	rpm2targz
 	ruby
 	samba
 	screen
-	screen
-	speedtouch
 	star
 	strace
 	superadduser
-	sylpheed
 	sysklogd
 	syslog-ng
 	tcl
 	tcpdump
 	tetex
 	tk
-	tsocks
 	ucl
-	ucl
-	ufed
 	ufed	
 	unzip
-	unzip
 	usbutils
-	vcron
-	vile
 	vim
-	vim
-	vixie-cron
 	vixie-cron
 	wget
 	whois
 	wireless-tools
-	xautoconf
 	xcdroast
-	xchat
 	xchat
 	xeasyconf
 	xemacs
+	xfce4
 	xfree
 	xfsprogs
 	xmms
 	yaboot
-	yaboot
-	zip
