@@ -84,12 +84,15 @@ class generic_stage_target(generic_target):
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		elif self.settings["target"] == "livecd-stage2":
-			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+			self.settings["source_path"]=st+"/tmp/"+self.settings["source_subpath"]
 			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
+		
+		#this next line checks to make sure that the specified variables exist on disk.
+		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
 		
 		self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
 		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts","/usr/portage/distfiles":self.settings["distdir"]}
@@ -301,7 +304,7 @@ class generic_stage_target(generic_target):
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1"]:
+		if self.settings["target"] in ["stage1","stage2","stage3"]:
 			self.capture()
 		if self.settings["target"] in ["livecd-stage2"]:
 			self.cdroot_setup()
@@ -423,18 +426,28 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
-		for myscript in ["livecd/cdtar","livecd/archscript","livecd/runscript"]:
-			if not self.settings.has_key(myscript):
-				#cdtar is optional, so we don't assume the variable is defined.
-				pass
-			if self.settings[myscript][0]=="/":
-				if not os.path.exists(self.settings[myscript]):
-					raise CatalystError, "Cannot locate specified "+myscript+": "+self.settings[myscript]
-			elif os.path.exists(os.getcwd()+"/"+self.settings[myscript]):
-				self.settings[myscript]=os.getcwd()+"/"+self.settings[myscript]
-			else:
-				print os.getcwd()+"/"+self.settings[myscript]
-				raise CatalystError, "Cannot locate specified "+myscript+": "+self.settings[myscript]+" (2nd try)"
+		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
+	
+	def unpack_and_bind(self):
+		if os.path.exists(self.settings["chroot_path"]):
+			print "Removing previously-existing livecd-stage2 chroot directory..."
+			cmd("rm -rf "+self.settings["chroot_path"],"Error removing livecd-stage2 chroot")
+			os.makedirs(self.settings["chroot_path"])
+		print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
+		cmd("cp -a "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],"Error copying initial livecd-stage2")
+		for x in self.mounts: 
+			if not os.path.exists(self.settings["chroot_path"]+x):
+				os.makedirs(self.settings["chroot_path"]+x)
+			if not os.path.exists(self.mountmap[x]):
+				os.makedirs(self.mountmap[x])
+			src=self.mountmap[x]
+			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
+			if retval!=0:
+				self.unbind()
+				raise CatalystError,"Couldn't bind mount "+src
+		print "Configuring profile link..."
+		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile","Error zapping profile link")
+		cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+" "+self.settings["chroot_path"]+"/etc/make.profile","Error creating profile link")
 		
 	def unmerge(self):
 		if self.settings.has_key("livecd/unmerge"):
@@ -459,7 +472,6 @@ class livecd_stage2_target(generic_stage_target):
 		except:
 			self.unbind()
 			raise
-
 
 	def preclean(self):
 		try:
