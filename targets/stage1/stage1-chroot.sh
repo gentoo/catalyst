@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.17 2004/06/18 18:06:21 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.18 2004/07/12 14:25:16 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -29,12 +29,6 @@ then
 	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg"
 fi
 
-# broken, need to figure out how to avoid a portage infinite loop
-#if [ -n "${clst_AUTORESUME}" ] && [ -e /tmp/build.log ]
-#then
-#	export clst_myemergeopts="${clst_myemergeopts} --resume"
-#fi
-	
 # setup our environment
 export FEATURES="${clst_myfeatures}"
 export ROOT=${1}
@@ -46,5 +40,10 @@ do
 	#echo $x >> /tmp/build.log
 	export clst_buildpkgs="${clst_buildpkgs} ${x}"
 done
+
+if [ -n "${clst_DEBUG}" ]
+then
+	USE="-* build" emerge ${clst_myemergeopts} -vp --noreplace ${clst_buildpkgs} || exit 1
+fi
 
 USE="-* build" emerge ${clst_myemergeopts} --noreplace ${clst_buildpkgs} || exit 1

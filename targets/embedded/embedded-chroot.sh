@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.4 2004/06/04 14:03:46 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.5 2004/07/12 14:25:16 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -44,4 +44,9 @@ then
 fi
 
 ## START BUILD
+if [ "${clst_DEBUG}" ]
+then
+	ROOT=/tmp/mergeroot emerge ${clst_myemergeopts} -vp ${clst_embedded_packages} || exit 1
+fi
+
 ROOT=/tmp/mergeroot emerge ${clst_myemergeopts} ${clst_embedded_packages} || exit 1
