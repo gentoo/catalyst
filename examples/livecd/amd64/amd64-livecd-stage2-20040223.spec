@@ -1,23 +1,27 @@
 subarch: amd64
-version_stamp: 20040201
+version_stamp: 20040223
 target: livecd-stage2
 rel_type: default
 rel_version: 2004.0
-snapshot: 20040201
-source_subpath: default-amd64-2004.0/livecd-stage1-amd64-20040201
+snapshot: 20040223
+source_subpath: default-amd64-2004.0/livecd-stage1-amd64-20040223
 livecd/cdfstype: zisofs
 livecd/archscript: examples/livecd/runscript/x86-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
-boot/kernel: gentoo smp
-boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.2-r1
+boot/kernel: gentoo smp emachines
+boot/kernel/gentoo/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
 boot/kernel/gentoo/config: /usr/share/genkernel/x86_64/kernel-config-2.6
 boot/kernel/gentoo/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/gentoo/extraversion: up
-boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.2-r1
+boot/kernel/smp/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
 boot/kernel/smp/config: /usr/share/genkernel/x86_64/kernel-config-2.6-smp
 boot/kernel/smp/packages: >=sys-apps/pcmcia-cs-3.2.7
 boot/kernel/smp/extraversion: smp
+boot/kernel/emachines/sources: =sys-kernel/gentoo-dev-sources-2.6.3-r2
+boot/kernel/emachines/config: /usr/share/genkernel/x86_64/kernel-config-2.6-emachines
+boot/kernel/emachines/packages: >=sys-apps/pcmcia-cs-3.2.7
+boot/kernel/emachines/extraversion: emachines
 
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
