@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/gamecdfs-update.sh,v 1.4 2004/11/15 01:32:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/gamecdfs-update.sh,v 1.5 2004/11/19 18:19:23 wolf31o2 Exp $
 
 # These variables are to be used for creating the menu entry and also to tell
 # the CD what to execute
@@ -9,11 +9,11 @@ GAME_NAME="Unreal Tournament 2004 Demo"
 GAME_SHORT_NAME="UT2004 Demo"
 GAME_EXECUTABLE="/usr/games/bin/ut2004demo"
 
-sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
+sed -i -e "s:localhost:gamecd.gentoo localhost:" /etc/hosts
 sed -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
-sed -i -e "s:GAME_EXECUTABLE:${GAME_EXECUTABLE}:" /etc/X11/xinit/xinitrc
+sed -i -e "s:##GAME_EXECUTABLE:${GAME_EXECUTABLE}:" /etc/X11/xinit/xinitrc
 
-[ -x /sbin/openglify ] && /sbin/openglify
+[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
 touch /etc/asound.state /etc/startx
 
 cat > /usr/share/fluxbox/menu << EOF

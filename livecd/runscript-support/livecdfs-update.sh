@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.20 2004/11/07 13:51:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.21 2004/11/19 18:19:23 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -55,6 +55,7 @@ rm -rf /etc/localtime
 cp /usr/share/zoneinfo/GMT /etc/localtime
 echo "livecd" > /etc/hostname
 echo "gentoo" > /etc/dnsdomainname
+sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
 
 # gpm fixes
 sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
@@ -78,11 +79,10 @@ cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
 
 echo "alias cp='cp -i'" >> /etc/profile
-echo "alias ls='ls --color'" >> /etc/profile
 echo "alias mv='mv -i'" >> /etc/profile
-echo "alias pico='nano -w'" >> /etc/profile
 echo "alias rm='rm -i'" >> /etc/profile
-echo "alias grep='grep --color'" >> /etc/profile
+echo "alias ls='ls --color=auto'" >> /etc/profile
+echo "alias grep='grep --color=auto'" >> /etc/profile
 
 # make sure we have the latest pci and hotplug ids
 if [ -d /usr/share/hwdata ]
