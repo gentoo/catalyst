@@ -1,8 +1,8 @@
 #!/bin/bash
-# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.12 2004/04/12 14:38:26 zhen Exp $
-		
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.1 2004/04/12 14:38:26 zhen Exp $
+
 /usr/sbin/env-update
 source /etc/profile
 
@@ -11,19 +11,19 @@ then
 	source /tmp/envscript
 	rm -f /tmp/envscript
 fi
-		
+
 if [ -n "${clst_CCACHE}" ]
 then
-	export clst_myfeatures="${clst_myfeatures} ccache"	
+	export clst_myfeatures="${clst_myfeatures} ccache"
 	emerge --oneshot --nodeps ccache || exit 1
 fi
-		
+
 if [ -n "${clst_DISTCC}" ]
 then   
 	export clst_myfeatures="${clst_myfeatures} distcc"
 	export DISTCC_HOSTS="${clst_distcc_hosts}"
 
-	USE="-gtk -gnome" emerge --oneshot --nodeps distcc || exit 1
+	USE="-gnome -gtk" emerge --oneshot --nodeps distcc || exit 1
 	echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
 	/usr/bin/distcc-config --install 2>&1 > /dev/null
 	/usr/bin/distccd 2>&1 > /dev/null
@@ -31,25 +31,18 @@ fi
 
 if [ -n "${clst_PKGCACHE}" ]
 then
-		export EMERGE_OPTS="--usepkg --buildpkg"
+	clst_emergeopts="--usepkg --buildpkg"
+else
+	clst_emergeopts=""
 fi
-	
-# setup our environment
-export FEATURES="${clst_myfeatures}"
-export ROOT=${1}
-install -d ${ROOT}
-		
-## START BUILD
-for x in $(/tmp/build.sh)
-do
-	echo $x >> /tmp/build.log
-	USE="-* build" emerge ${EMERGE_OPTS} --noreplace $x || exit 1
-done
 
-# if baselayout did not fix up /dev, we do it
-if [ ! -d i${ROOT}/dev ]
-then
-	mkdir -p ${ROOT}/dev
-	cd ${ROOT}/dev
-	MAKEDEV generic-i386
-fi
+## setup the environment
+export FEATURES="${clst_myfeatures}"
+export CONFIG_PROTECT="-*"
+
+## START BUILD
+USE="build" emerge portage
+#turn off auto-use:
+export USE_ORDER="env:conf:defaults"	
+
+emerge ${clst_emergeopts} ${clst_packages}

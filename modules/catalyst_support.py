@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.17 2004/02/13 02:41:26 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.18 2004/04/12 14:38:26 zhen Exp $
 
 import sys,string,os,types
 
@@ -14,8 +14,8 @@ def list_bashify(mylist):
 		mypack[x]="'"+mypack[x]+"'"
 	mypack=string.join(mypack)
 	#escape ">" and "<" for the shell (using backslash)
-	mypack=string.replace(mypack,">","\\>")
-	mypack=string.replace(mypack,"<","\\<")
+	#mypack=string.replace(mypack,">","\\>")
+	#mypack=string.replace(mypack,"<","\\<")
 	return mypack
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
