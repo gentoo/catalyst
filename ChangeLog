@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.148 2005/01/13 20:52:17 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.149 2005/01/13 22:57:25 wolf31o2 Exp $
+
+  13 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-packages.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage3/stage3-chroot.sh:
+  Added a portage version check to each target that uses --newuse to ensure a
+  high enough version is used. This resolves bug #75336.
 
   13 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/livecd-local.start:

@@ -1,7 +1,17 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.11 2005/01/11 14:10:19 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.12 2005/01/13 22:57:25 wolf31o2 Exp $
+
+# check portage version in seed stage
+portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
+	| cut -d/ -f2 | cut -d- -f2,3`
+if [ `echo ${portage_version} | cut -d- -f1 | cut -d. -f3` -lt 51 ]
+then
+	echo "ERROR: Your portage version is too low in your seed stage.  Portage version"
+	echo "2.0.51 or greater is required."
+	exit 1
+fi
 
 /usr/sbin/env-update
 source /etc/profile
