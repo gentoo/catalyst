@@ -100,7 +100,7 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
-		if self.settings["target"]="livecd-stage2":
+		if self.settings["target"]=="livecd-stage2":
 			self.mounts.append("/tmp/binaries")
 			self.mountmap["/tmp/binaries"]=st+"/builds/"+self.settings["target_subpath"]+"/binaries"
 			
