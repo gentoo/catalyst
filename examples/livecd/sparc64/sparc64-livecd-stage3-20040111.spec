@@ -7,7 +7,7 @@ snapshot: 20040111
 source_subpath: default-sparc64-1.4/livecd-stage2-sparc64-20040111
 boot/kernel: gentoo
 livecd/looptype: normal
-livecd/archscript: examples/livecd/runscript/sparc64-runscript.sh
+livecd/archscript: examples/livecd/runscript/sparc64-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/silo-1.3.1-cdtar.tar.bz2
 livecd/unmerge:

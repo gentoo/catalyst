@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-runscript.sh,v 1.1 2004/01/19 04:01:48 weeve Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-archscript.sh,v 1.1 2004/01/20 20:01:41 drobbins Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0

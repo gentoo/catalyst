@@ -6,7 +6,7 @@ rel_version: 1.4
 snapshot: 20040111
 source_subpath: default-sparc64-1.4/livecd-stage1-sparc64-20040111
 livecd/looptype: normal
-livecd/archscript: examples/livecd/runscript/sparc64-runscript.sh
+livecd/archscript: examples/livecd/runscript/sparc64-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 boot/kernel: gentoo
 boot/kernel/gentoo/sources: =sys-kernel/vanilla-sources-2.4.24
