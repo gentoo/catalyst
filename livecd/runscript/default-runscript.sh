@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.1 2004/03/04 23:29:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/03/18 20:08:17 beejay Exp $
 
 #return codes to be used by archscript
 
@@ -154,6 +154,7 @@ EOF
 						# are kernel-dependent.
 						echo DEBUG emerge "\$x"
 						emerge "\$x"
+						update-modules
 					done
 				fi
 				cd /usr/src
@@ -180,7 +181,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.1 2004/03/04 23:29:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/03/18 20:08:17 beejay Exp $
 
 depend() {
 	after *
