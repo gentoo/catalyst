@@ -1,0 +1,16 @@
+nforce-net
+nforce-audio
+iproute
+#nvidia-glx requires nvidia-kernel
+nvidia-kernel
+nvidia-glx
+ati-drivers
+e100
+e1000
+wireless-tools
+pcmcia-cs
+emu10k1
+evms
+linux-wlan-ng
+#still masked
+#xfree-drm
