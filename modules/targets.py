@@ -417,8 +417,13 @@ class livecd_stage1_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
+		mypack=self.settings["livecd/packages"][:]
+		for x in range(0,len(mypack)):
+			#surround args with quotes for passing to bash, allows things like "<" to remain intact
+			mypack[x]='"'+mypack[x]+'"'
+		mypack=string.join(mypack)
 		try:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd/packages"]))
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+mypack)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"GRP build aborting due to error."
