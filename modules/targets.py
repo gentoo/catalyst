@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.92 2004/03/22 15:25:52 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.93 2004/03/23 07:20:34 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -431,11 +431,11 @@ class livecd_stage1_target(generic_stage_target):
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+mypack)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"GRP build aborting due to error."
+			raise CatalystError,"LiveCD stage1 build aborting due to error."
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript"]
+		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript","livecd/iso"]
 		self.valid_values=[]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
@@ -508,7 +508,8 @@ class livecd_stage2_target(generic_stage_target):
 
 	def cdroot_setup(self):
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
-		print "livecd-stage3: complete!"
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" iso "+self.settings["livecd/iso"],"iso runscript failed.")
+		print "livecd-stage2: complete!"
 
 	def run_local(self):
 		#first clean up any existing cdroot stuff

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.1 2004/03/07 12:29:47 gmsoft Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.2 2004/03/23 07:20:34 zhen Exp $
 
 case $1 in
 	kernel)
@@ -73,7 +73,7 @@ case $1 in
 
 	iso)
 		#this is for the livecd-final target, and calls the proper command to build the iso file
-		mkisofs -J -R -r -l -o ${clst_iso_path} $clst_cdroot_path
-		palo -f boot/palo.conf -C ${clst_iso_path}
+		mkisofs -J -R -l -o  ${2} ${clst_cdroot_path}
+		palo -f boot/palo.conf -C ${2}
 	;;
 esac

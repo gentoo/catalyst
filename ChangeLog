@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.25 2004/03/22 15:25:52 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.26 2004/03/23 07:20:34 zhen Exp $
+
+  23 Mar 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,
+  livecd/runscript/ppc-archscript.sh, livecd/runscript/sparc64-archscript.sh,
+  livecd/runscript/x86-archscript.sh, modules/targets.py,
+  targets/livecd-stage3/unmerge.sh:
+  added "livecd/iso" to targets.py and fixed up the archscripts so that isos are
+  created at the end of the livecd-stage2 process.
 
   22 Mar 2004; John Davis <zhen@gentoo.org> modules/targets.py,
   targets/embedded/embedded.sh:

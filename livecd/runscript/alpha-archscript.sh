@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.1 2004/03/04 23:29:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.2 2004/03/23 07:20:34 zhen Exp $
 
 case $1 in
 	kernel)
@@ -69,14 +69,14 @@ case $1 in
 	iso)
 		# this is for the livecd-final target, and calls the proper
 		# command to build the iso file
-		case $clst_livecd_cdfstype in
+		case ${clst_livecd_cdfstype} in
 			zisofs)
-				mkisofs -J -R -l -z -o ${clst_iso_path} $clst_cdroot_path
+				mkisofs -J -R -l -z -o ${2} ${clst_cdroot_path}
 			;;
 			*)
-				mkisofs -J -R -l -o ${clst_iso_path} $clst_cdroot_path
+				mkisofs -J -R -l -o ${2} ${clst_cdroot_path}
 			;;
 		esac
-		isomarkboot $clst_iso_path /boot/bootlx
+		isomarkboot ${2} /boot/bootlx
 	;;
 esac

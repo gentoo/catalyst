@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.1 2004/03/04 23:29:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.2 2004/03/23 07:20:34 zhen Exp $
 
 case $1 in
 	kernel)
@@ -68,6 +68,6 @@ case $1 in
 
 	iso)
 		# The name of the iso should be retrieved from the specs. For now, asssume GentooPPC_2004.0
-		mkisofs -J -r -netatalk -hfs -probe -map boot/map.hfs -part -no-desktop -hfs-volid GentooPPC_2004.0 -hfs-bless ./boot -o ${clst_iso_path} ${clst_cdroot_path}
+		mkisofs -J -r -netatalk -hfs -probe -map boot/map.hfs -part -no-desktop -hfs-volid GentooPPC_2004.0 -hfs-bless ./boot -o ${2} ${clst_cdroot_path}
 	;;
 esac
