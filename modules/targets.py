@@ -23,14 +23,16 @@ class generic_stage_target(generic_target):
 		# x86 or amd64.
 		
 		targetmap={ 	"x86" : ["x86"],
-				"amd64" : ["x86","amd64"]
+				"amd64" : ["x86","amd64"],
+				"sparc" : ["sparc"]
 		}
 		
 		machinemap={ 	"i386" : "x86",
 				"i486" : "x86",
 				"i586" : "x86",
 				"i686" : "x86",
-				"x86_64" : "amd64"
+				"x86_64" : "amd64",
+				"sparc64" : "sparc"
 		}
 	
 		mymachine=os.uname()[4]
