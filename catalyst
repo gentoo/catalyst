@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.44 2004/07/12 15:01:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.45 2004/09/09 05:09:11 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -21,6 +21,14 @@ def usage():
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
 	print " -f --file		read specfile"
 	print " -V --verbose		verbose output"
+	print
+	print "Build examples:"
+	print
+	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
+	print "catalyst -C target=snapshot version_stamp=my_date"
+	print
+	print "Using the specfile option (-f, --file) to build a stage target:"
+	print "catalyst -f stage1-specfile.spec"
 
 def version():
 	print "Gentoo Catalyst, version "+__version__
@@ -185,7 +193,11 @@ if __name__ == "__main__":
 	myconfig=""
 	myspecfile=""
 	mycmdline=[]
-
+	
+	if len(opts) == 0:
+		print "!!! catalyst: please specify one of either -f or -C"
+		sys.exit(2)
+	
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
@@ -212,7 +224,7 @@ if __name__ == "__main__":
 			
 		if o in ("-V", "--verbose"):
 			conf_values["VERBOSE"]="1"
-	
+				
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 	sys.path.append(conf_values["sharedir"]+"/modules")
@@ -232,3 +244,4 @@ if __name__ == "__main__":
 		build_target(addlargs, targetmap)
 	except:
 		print "!!! catalyst: could not complete build"
+		sys.exit(2)
