@@ -32,14 +32,14 @@ class arch_g3(generic_ppc):
 class arch_g4(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -cpu=7400 -maltivec -mabi=altivec"
+		self.settings["CFLAGS"]="-O2 -mcpu=7400 -maltivec -mabi=altivec"
 		self.settings["HOSTUSE"]=["altivec"]
 
 #class arch_g5(generic_ppc):
 #	"builder class for ppc970 32bit mode"
 #	def __init__(self,myspec):
 #		generic_ppc.__init__(self,myspec)
-#		self.settings["CFLAGS"]="-O2 -cpu=970 -maltivec -mabi=altivec"
+#		self.settings["CFLAGS"]="-O2 -mcpu=970 -maltivec -mabi=altivec"
 #		self.settings["HOSTUSE"]=["altivec"]
 
 
@@ -47,4 +47,4 @@ def register(foo):
 	"Inform main catalyst program of the contents of this plugin."
 	#power/ppc can't be used as a subarch name as it has a "/" in it and is used in filenames
 	foo.update({"ppc":arch_ppc,"power-ppc":arch_power_ppc,"g3":arch_g3,"g4":arch_g4})
-		
+
