@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.24 2004/10/15 02:46:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.25 2004/11/23 00:02:57 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -34,7 +34,7 @@ install -d ${ROOT}
 		
 ## START BUILD
 export clst_buildpkgs="$(/tmp/build.py)"
-STAGE1_USE="$(source /etc/make.profile/make.defaults ; echo ${STAGE1_USE})"
+STAGE1_USE="$(portageq envvar STAGE1_USE)"
 
 # duplicate line to below - why is this here??
 #USE="-* build ${STAGE1_USE}" emerge ${clst_myemergeopts} --noreplace ${clst_buildpkgs} || exit 1

@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.113 2004/11/19 18:19:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.114 2004/11/23 00:02:56 zhen Exp $
+
+  22 Nov 2004; John Davis <zhen@gentoo.org> modules/embedded_target.py,
+  modules/generic_stage_target.py, -targets/embedded/cramfs-runscript.sh,
+  +targets/embedded/embedded-fs-runscript.sh,
+  targets/livecd-stage2/unmerge.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh:
+  fixes for bugs #49819 and #71033. Partial fix for #67289 - waiting on a patch
+  from mutex@gentoo.org for modules/embedded.py
 
   19 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/gamecd-xinitrc, livecd/runscript-support/gamecdfs-update.sh,

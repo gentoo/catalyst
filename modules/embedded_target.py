@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.2 2004/10/15 02:27:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.3 2004/11/23 00:02:57 zhen Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -8,7 +8,7 @@ of building a stage3, it emerges a 'system' into another directory
 inside the 'stage2' system.  This way we do not have to emerge gcc/portage
 into the staged system.
 
-It sounds real complicated but basically it's a it runs
+It sounds real complicated but basically it runs
 ROOT=/tmp/submerge emerge --blahblah foo bar
 """
 
@@ -22,8 +22,10 @@ class embedded_target(generic_stage_target):
     def __init__(self,spec,addlargs):
         self.required_values=[]
         self.valid_values=[]
-	#self.required_values.extend(["embedded/packages"]);
-        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/runscript","embedded/mergeroot","embedded/packages","embedded/use"])
+        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/runscript","embedded/mergeroot","embedded/packages","embedded/use","embedded/fstype"])
+
+        if addlargs.has_key("embedded/fstype"):
+            self.valid_values.append("embedded/fsops")
 
         generic_stage_target.__init__(self,spec,addlargs)
 	self.settings["image_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/image"	
@@ -50,6 +52,16 @@ class embedded_target(generic_stage_target):
 		    for x in self.settings["embedded/rm"]:
 			    print "Removing "+x
 			    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
+
+    def build_fs(self):
+        try:
+            if self.settings.has_key("embedded/fstype"):
+                cmd("/bin/bash "+self.settings["sharedir"]+"/targets/embedded/embedded.sh package","filesystem packaging failed")
+        except CatalystError:
+                self.unbind()
+                raise CatalystError, "embedded filesystem created aborting due to error."
+
+
     def run_local(self):
 	    mypackages=list_bashify(self.settings["embedded/packages"])
 	    print "Merging embedded image"
@@ -60,13 +72,8 @@ class embedded_target(generic_stage_target):
 		    raise CatalystError, "Embedded build aborted due to error."
 	    self.unmerge()
 	    self.clean()
-	    try:
-		    if self.settings.has_key("embedded/runscript"):
-			    cmd("/bin/bash "+self.settings["embedded/runscript"]+" run ","runscript failed")
-	    except CatalystError:
-		    self.unbind()
-		    raise CatalystError, "embedded runscript aborting due to error."
+            self.build_fs()
 
 def register(foo):
-	foo.update({"embedded":embedded_target})
-	return foo
+        foo.update({"embedded":embedded_target})
+        return foo
