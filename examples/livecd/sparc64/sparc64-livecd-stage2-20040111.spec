@@ -1,0 +1,13 @@
+subarch: sparc64
+version_stamp: 20040111
+target: livecd-stage2
+rel_type: default
+rel_version: 1.4
+snapshot: 20040111
+source_subpath: default-sparc64-1.4/livecd-stage1-sparc64-20040111
+livecd/looptype: normal
+livecd/archscript: examples/livecd/runscript/sparc64-runscript.sh
+livecd/runscript: examples/livecd/runscript/default-runscript.sh
+boot/kernel: gentoo
+boot/kernel/gentoo/sources: =sys-kernel/vanilla-sources-2.4.24
+boot/kernel/gentoo/config: examples/livecd/sparc64/config-2.4.24-sparc64
