@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.3 2004/05/17 01:44:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.4 2004/09/08 15:58:12 zhen Exp $
 
 case $1 in
 	kernel)
@@ -16,36 +16,39 @@ case $1 in
 		# CDFSTYPE and loop_opts are exported from the default
 		# runscript
 
-		# Time to create a filesystem tree for the ISO at $clst_cdroot_path.
+		# Create a filesystem tree for the ISO at $clst_cdroot_path.
 		# We extract the "cdtar" to this directory, which will normally contains a pre-built
 		# binary boot-loader/filesystem skeleton for the ISO. 
 		
-		cdtar=$clst_livecd_cdtar
-		[ "$cdtar" = "" ] && die "No livecd/cdtar specified (required)"
-		tar xjpvf $cdtar -C $clst_cdroot_path || die "Couldn't extract cdtar $cdtar"
-		[ "$clst_boot_kernel" = "" ] && die "No boot/kernel setting defined, exiting."
+		cdtar=${clst_livecd_cdtar}
+		[ -z "$cdtar" ] && die "Required key livecd/cdtar not specified, exiting"
+		tar xjpvf ${cdtar} -C ${clst_cdroot_path} || die "Couldn't extract cdtar ${cdtar}"
+		
+		[ -z "$clst_boot_kernel" ] && die "Required key boot/kernel not specified, exiting"
+		
+		# install our kernel(s) that were built in kmerge.sh
 		first=""
-		for x in $clst_boot_kernel
+		for x in ${clst_boot_kernel}
 		do
-			if [ "$first" = "" ]
+			kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${x}-${clst_version_stamp}.tar.bz2"	
+			if [ -z "$first" ]
 			then
-				#grab name of first kernel
-				first="$x"
+				# grab name of first kernel
+				first="${x}"
 			fi
-			[ ! -e "$clst_chroot_path/tmp/binaries/$x.tar.bz2" ] && die "Can't find kernel tarball at $clst_chroot_path/tmp/binaries/$x.tar.bz2"
-			tar xjvf $clst_chroot_path/tmp/binaries/$x.tar.bz2 -C $clst_cdroot_path/boot
-			#change kernel name from "kernel" to "gentoo", for example
+			[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
+			tar xjvf ${kbinary} -C ${clst_cdroot_path}/boot
 		done
+		
 		# THIS SHOULD BE IMPROVED !
-			mv $clst_cdroot_path/boot/kernel $clst_cdroot_path/vmlinux
-			#change initrd name from "initrd" to "gentoo.igz", for example
-			mv $clst_cdroot_path/boot/initrd $clst_cdroot_path/initrd
-		icfg=$clst_cdroot_path/boot/palo.conf
-		kmsg=$clst_cdroot_path/boot/kernels.msg
-		hmsg=$clst_cdroot_path/boot/help.msg
-		echo "--commandline=0/$first initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> $icfg
-		echo "--bootloader=boot/iplboot" >> $icfg
-		echo "--ramdisk=boot/$x.igz" >> $icfg
+		mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/vmlinux
+		mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/initrd
+		icfg=${clst_cdroot_path}/boot/palo.conf
+		kmsg=${clst_cdroot_path}/boot/kernels.msg
+		hmsg=${clst_cdroot_path}/boot/help.msg
+		echo "--commandline=0/${first} initrd=${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
+		echo "--bootloader=boot/iplboot" >> ${icfg}
+		echo "--ramdisk=boot/${x}.igz" >> ${icfg}
 
 #		for x in $clst_boot_kernel
 #		do
@@ -70,7 +73,7 @@ case $1 in
 	;;
 
 	iso)
-		#this is for the livecd-final target, and calls the proper command to build the iso file
+		#this is for the livecd-stage2 target, and calls the proper command to build the iso file
 		mkisofs -J -R -l -o  ${2} ${clst_cdroot_path}
 		palo -f boot/palo.conf -C ${2}
 	;;

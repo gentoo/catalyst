@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.3 2004/05/22 00:42:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.4 2004/09/08 15:58:12 zhen Exp $
 
 case $1 in
 	kernel)
@@ -13,63 +13,58 @@ case $1 in
 	;;
 
 	bootloader)
-		# Time to create a filesystem tree for the ISO at
+		# Create a filesystem tree for the ISO at
 		# $clst_cdroot_path. We extract the "cdtar" to this directory,
 		# which will normally contains a pre-built binary
 		# boot-loader/filesystem skeleton for the ISO. 
 		
-		cdtar=$clst_livecd_cdtar
-		[ "$cdtar" = "" ] && die "No livecd/cdtar specified (required)"
-		tar xjpvf $cdtar -C $clst_cdroot_path || die \
-		    "Couldn't extract cdtar $cdtar"
-		if [ "$clst_boot_kernel" = "" ]
-		then
-			echo "No boot/kernel setting defined, exiting."
-			exit 1
-		fi
+		cdtar=${clst_livecd_cdtar}
+		[ -z "$cdtar" ] && die "Required key livecd/cdtar not defined, exiting"
+		tar xjpvf ${cdtar} -C ${clst_cdroot_path} || die "Couldn't extract cdtar ${cdtar}"
+		
+		[ -z "$clst_boot_kernel" ] && die "Required key boot/kernel not defined, exiting"
+		
+		# install the kernels built in kmerge.sh
 		first=""
-		for x in $clst_boot_kernel
+		for x in ${clst_boot_kernel}
 		do
-			if [ "$first" = "" ]
+			kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${x}-${clst_version_stamp}.tar.bz2"	
+			
+			if [ -z "${first}" ]
 			then
-				#grab name of first kernel
-				first="$x"
+				# grab name of first kernel
+				first="${x}"
 			fi
-			if [ ! -e "$clst_chroot_path/tmp/binaries/$x.tar.bz2" ] 
-			then
-				echo "Can't find kernel tarball at $clst_chroot_path/tmp/binaries/$x.tar.bz2"
-				exit 1
-			fi
-			tar xjvf $clst_chroot_path/tmp/binaries/$x.tar.bz2 -C \
-			    $clst_cdroot_path/boot
-			# change kernel name from "kernel" to "gentoo", for
-			# example
-			mv $clst_cdroot_path/boot/kernel \
-			    $clst_cdroot_path/boot/$x
-			# change initrd name from "initrd" to "gentoo.igz",
-			# for example
-			mv $clst_cdroot_path/boot/initrd \
-			    $clst_cdroot_path/boot/$x.igz
+			
+			[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
+			tar xjvf ${kbinary} -C ${clst_cdroot_path}/boot
+			
+			# change kernel name from "kernel" to "gentoo", for example
+			mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/boot/${x}
+			
+			# change initrd name from "initrd" to "gentoo.igz", for example
+			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/${x}.igz
 		done
-		scfg=$clst_cdroot_path/boot/silo.conf
-		echo "default=\"help\"" > $scfg
-		echo "message=\"/boot/boot.msg\"" >> $scfg
+		
+		scfg=${clst_cdroot_path}/boot/silo.conf
+		echo "default=\"help\"" > ${scfg}
+		echo "message=\"/boot/boot.msg\"" >> ${scfg}
 
-		for x in $clst_boot_kernel
+		for x in ${clst_boot_kernel}
 		do
-			echo >> $icfg
-			echo "image=\"/boot/$x\"" >> $scfg
-			echo -e "\tlabel=\"$x\"" >> $scfg
-			echo -e "\tappend=\"initrd=/boot/$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot\"" >> $scfg
+			echo >> ${icfg}
+			echo "image=\"/boot/${x}\"" >> ${scfg}
+			echo -e "\tlabel=\"${x}\"" >> ${scfg}
+			echo -e "\tappend=\"initrd=/boot/${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot\"" >> ${scfg}
 
 		done
 
-		echo "image=\"cat /boot/silo.conf\"" >> $scfg
-		echo -e "label=\"config\"" >> $scfg
-		echo "image=\"cat /boot/video.msg\"" >> $scfg
-		echo -e "label=\"video\"" >> $scfg
-		echo "image=\"cat /boot/help.msg\"" >> $scfg
-		echo -e "label=\"help\"" >> $scfg
+		echo "image=\"cat /boot/silo.conf\"" >> ${scfg}
+		echo -e "label=\"config\"" >> ${scfg}
+		echo "image=\"cat /boot/video.msg\"" >> ${scfg}
+		echo -e "label=\"video\"" >> ${scfg}
+		echo "image=\"cat /boot/help.msg\"" >> ${scfg}
+		echo -e "label=\"help\"" >> ${scfg}
 	;;
 
 	cdfs)

@@ -1,6 +1,21 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.80 2004/09/07 14:04:24 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.81 2004/09/08 15:58:12 zhen Exp $
+
+  08 Sep 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript/alpha-archscript.sh, livecd/runscript/hppa-archscript.sh,
+  livecd/runscript/ppc-archscript.sh, livecd/runscript/sparc-archscript.sh,
+  livecd/runscript/sparc64-archscript.sh, livecd/runscript/x86-archscript.sh,
+  livecd/runscript-support/kmerge.sh, livecd/runscript-support/pre-kmerge.sh,
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  -targets/livecd-stage2/unmerge.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage3/stage3-chroot.sh, targets/tinderbox/tinderbox-chroot.sh:
+  lots of changes in this revision. first of all, major cosmetic fixups to the
+  archscripts. i also fixed a non-reported bug where pkgcache was not being used
+  for distcc or ccache builds in most of the targets. bug #56581 is finially
+  closed (kernel caching for multiple runs of the livecd-stage2 build) - big
+  performance enhancement here.
 
   07 Sep 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
   modules/livecd_stage2_target.py:

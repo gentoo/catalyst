@@ -1,11 +1,35 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.8 2004/07/21 05:03:42 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.9 2004/09/08 15:58:12 zhen Exp $
 
 die() {
 	echo "$1"
 	exit 1
+}
+
+build_kernel() {
+	if [ -n "${clst_livecd_bootsplash}" ]
+	then
+		genkernel --bootsplash=${clst_livecd_bootsplash} \
+			--callback="emerge ${clst_kernel_merge}" ${clst_livecd_gk_mainargs} \
+			${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux \
+			--kernel-config=/var/tmp/${clst_kname}.config \
+			--minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all \
+				|| exit 1
+				
+		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
+			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+	else
+		genkernel --callback="emerge ${clst_kernel_merge}" \
+			${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} \
+			--kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config \
+			--minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all \
+				|| exit 1
+		
+		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
+			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+	fi
 }
 
 # Script to build each kernel, kernel-related packages
@@ -22,10 +46,10 @@ ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
 [ -e "/var/tmp/${clst_kname}.use" ] && export USE="$( cat /var/tmp/${clst_kname}.use )" || unset USE
 [ -e "/var/tmp/${clst_kname}.gk_kernargs" ] && source /var/tmp/${clst_kname}.gk_kernargs
+
 # Don't use pkgcache here, as the kernel source may get emerge with different USE variables
 # (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
 # pkgcache for kernel source ebuilds.
-	
 emerge "${clst_ksource}" || exit 1
 [ ! -e /usr/src/linux ] && die "Can't find required directory /usr/src/linux"
 	
@@ -59,18 +83,38 @@ then
 	done
 fi
 
-if [ -n "${clst_livecd_bootsplash}" ]
+# kernel building happens here
+# does the old config exist? if it does not, we build by default
+if [ -e "/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config" ]
 then
-	genkernel --bootsplash=${clst_livecd_bootsplash} \
-		--callback="emerge ${clst_kernel_merge}" ${clst_livecd_gk_mainargs} \
-		${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux \
-		--kernel-config=/var/tmp/${clst_kname}.config \
-		--minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+	# test to see if the kernel .configs are the same, if so, then we skip kernel building
+	test1=$(md5sum /var/tmp/${clst_kname}.config | cut -d " " -f 1)
+	test2=$(md5sum /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config | cut -d " " -f 1)
+	if [ "${test1}" == "${test2}" ]
+	then
+		echo
+		echo "No kernel configuration change, skipping kernel build..."
+		echo
+		sleep 5
+
+		# copy over our config file so that kernel_merge packages like pcmcia don't complain
+		#cp /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config /usr/src/linux/.config
+		#emerge ${clst_kernel_merge}
+
+		# unpack our modules to the LiveCD fs
+		echo
+		echo "Unpacking kernel modules from the previous build..."
+		echo
+		[ ! -d /lib/modules ] && mkdir /lib/modules
+		tar xvjpf /usr/portage/packages/gk_binaries/${clst_fudgeuname}-modules-${clst_version_stamp}.tar.bz2 \
+			-C / || die "Could not unpack kernel modules"
+	else
+		build_kernel ${clst_fudgeuname}
+	fi
+
 else
-	genkernel --callback="emerge ${clst_kernel_merge}" \
-		${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} \
-		--kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config \
-		--minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+	build_kernel ${clst_fudgeuname}
+	
 fi
 
 /sbin/modules-update --assume-kernel=${clst_fudgeuname}
@@ -78,3 +122,6 @@ fi
 #now the unmerge... (wipe db entry)
 emerge -C ${clst_ksource}
 unset USE
+
+# keep the config around so that we can resume at some point
+cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config
