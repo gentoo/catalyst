@@ -2,6 +2,10 @@
 # Copyright 2003 Gentoo Technologies, Inc.; http://www.gentoo.org
 # Released under the GNU General Public License version 2
 
+#TODO: add snapshotting of portage trees, which will not be handled by spec files.
+#Then, add spec file support and env var export support, then mount/umount support...
+#then we should be getting close to completion and usability.
+
 import sys,os,string,stat
 
 subarches=["amd64", "hppa", "hppa1.1", "hppa2.0", "x86", "i386", "i486", "i586", "i686",
@@ -22,9 +26,18 @@ snapshot			SNAPSHOT		user (from spec)
 source_tarball			SOURCE_TARBALL		user (from spec)
 target				TARGET			user (from spec)
 cflags				CFLAGS			auto
+cxxflags			CXXFLAGS		auto
 hostuse				HOSTUSE			auto
 chost				CHOST			auto
 mainarch			MAINARCH		auto
+makeopts			MAKEOPTS		auto (but overridable from catalyst.conf for distcc building and such)
+Config file sources:
+	1. defaults can come from /etc/catalyst.conf (since it's run as root, might as well put it in /etc
+		(these defaults can be things like pkgdir, distdir, but not rel_version or rel_type
+		which we specifically want in the spec file so that we have a complete description there.)
+		This file can also tell catalyst whether to use ccache or not.
+	2. spec file
+		spec can override any of the "auto" variables. we need to remember cxxflags too.
 """
 class generic_target:
 	def __init__(self,myset):
@@ -217,9 +230,13 @@ def verify_subarch(myset,subarch):
 			results=["alpha","-O3 -mcpu="+subarch,"alpha"+subarch+"-linux-gnu",[]]
 	if results==None:
 		raise ValueError, "Invalid subarch value passed to compile_defaults (you should not see this)"
+	#the main architecture we're building for: (string)
 	myset["mainarch"]=results[0]
+	#the CFLAGS we should use on this specific architecture (ie pentium4): (string)
 	myset["cflags"]=results[1]
+	#the CHOST setting (ie i686-pc-linux-gnu): (string)
 	myset["chost"]=results[2]
+	#any USE variables that should be enabled on this platform (mmx, sse, 3dnow) (list)
 	myset["hostuse"]=results[3]
 	
 def die(msg=None):
