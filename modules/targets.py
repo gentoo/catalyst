@@ -420,7 +420,7 @@ class livecd_stage1_target(generic_stage_target):
 		mypack=self.settings["livecd/packages"][:]
 		for x in range(0,len(mypack)):
 			#surround args with quotes for passing to bash, allows things like "<" to remain intact
-			mypack[x]='"'+mypack[x]+'"'
+			mypack[x]="'"+mypack[x]+"'"
 		mypack=string.join(mypack)
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+mypack)
@@ -482,7 +482,7 @@ class livecd_stage3_target(generic_stage_target):
 			myunmerge=self.settings["livecd/unmerge"][:]
 			for x in range(0,len(myunmerge)):
 				#surround args with quotes for passing to bash, allows things like "<" to remain intact
-				myunmerge[x]='"'+myunmerge[x]+'"'
+				myunmerge[x]="'"+myunmerge[x]+"'"
 			myunmerge=string.join(myunmerge)
 			#before cleaning, unmerge stuff:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
