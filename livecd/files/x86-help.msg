@@ -21,6 +21,5 @@ Options available to pass to your kernel of choice.
 - ide=nodma     Force disabling of dma for malfunctioning ide devices
 - cdcache       Cache the entire runtime portion of cd in ram, allows you
                 to umount /mnt/cdrom to mount another cdrom.
-- noraid        disables autoloading of evms modules
 - dokeymap      enable keymap selection for non-us keyboard layouts
 - noapic        disable apic (try if having hardware problems ,nics,scsi,etc)
