@@ -1,19 +1,23 @@
 subarch: sparc64
-version_stamp: 20040111
+version_stamp: 20040330
 target: livecd-stage1
 rel_type: default
-rel_version: 1.4
-snapshot: 20040111
-source_subpath: default-sparc64-1.4/stage3-sparc64-20040111
+rel_version: 2004.0
+profile: default-sparc64-2004.0
+snapshot: 20040330
+source_subpath: default/stage3-sparc64-20040330
 livecd/use:
 	-X
 	-gtk
+	-perl
 	livecd
+	minimal
 livecd/packages:
-	>=sys-apps/baselayout-1.8.6.12-r4
+	>=sys-apps/baselayout-1.8.6.13
 	module-init-tools
 	hotplug
 	irssi
+	rdate
 	aumix
 	metalog
 	pciutils
@@ -28,6 +32,7 @@ livecd/packages:
 	reiserfsprogs
 	hdparm
 	nano
+	vim
 	less
 	openssh
 	dhcpcd
