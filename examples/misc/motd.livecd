@@ -15,9 +15,10 @@ a known value.
 
 Stage tarball(s), distfiles and packages can be found in /mnt/cdrom/. 
 
-View installation instructions by typing "links /mnt/cdrom/docs/handbook/html/index.html"
-or "links http://www.gentoo.org/doc/en/handbook/handbook.xml" for the latest
-version from the gentoo.org Web site.
+View installation instructions by typing "links
+/mnt/cdrom/docs/handbook/html/index.html" or "links
+http://www.gentoo.org/doc/en/handbook/handbook.xml" for the latest version from
+the gentoo.org Web site.
 
 Please report any bugs you find to http://bugs.gentoo.org. Be sure to include
 detailed information about how to reproduce the bug you are reporting. Thanks
