@@ -3,7 +3,7 @@ version_stamp: 20031102
 target: grp
 rel_type: default
 rel_version: 1.4
-snapshot: 20031102
+snapshot: 20031112
 source_subpath: default-x86-1.4/stage3-x86-20031102
 grp: cd1 cd2 src
 
@@ -112,6 +112,7 @@ grp/cd2/packages:
 	mozilla
 	xfce4
 	openbox
+#	openoffice is breaking during build (see bug 33168)
 	openoffice
 	sylpheed
 	vim
