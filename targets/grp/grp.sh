@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.8 2004/02/23 06:13:22 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.9 2004/02/23 17:53:18 drobbins Exp $
 
 case $1 in
 enter)
@@ -51,6 +51,8 @@ run)
 		emerge --usepkg --buildpkg --noreplace $clst_grp_packages || exit 1
 	else
 		unset DISTDIR
+		#don't grab MS core fonts, etc.
+		export USE="\$USE bindist"
 		#first grab to the normal distdir
 		emerge --fetchonly $clst_grp_packages || exit 1
 		export DISTDIR="/tmp/grp/$clst_grp_target"
