@@ -39,6 +39,9 @@ case $1 in
 			mythang=\$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* )
 			gcc-config \${mythang}; env-update; source /etc/profile
 		fi
+		#stage1 is not going to have anything in zoneinfo, so save our Factory timezone
+		rm -f /etc/localtime
+		cp /usr/share/zoneinfo/Factory /etc/localtime
 EOF
 	;;		
 esac

@@ -156,9 +156,12 @@ class generic_stage_target(generic_target):
 
 	def clean(self):
 		destpath=self.settings["chroot_path"]
+		cleanables=["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*"]
 		if self.settings["target"]=="stage1":
 			destpath+="/tmp/stage1root"
-		for x in ["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*"]: 
+			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
+			cleanables.extend(["/usr/share/gettext","/usr/lib/python2.2/test","/usr/lib/python2.2/encodings","/usr/lib/python2.2/email","/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
+		for x in cleanables: 
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
 		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	

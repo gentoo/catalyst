@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.6 2003/11/03 02:43:55 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.7 2003/11/03 15:46:14 drobbins Exp $
 
 case $1 in
 enter)
@@ -49,7 +49,7 @@ clean)
 	# zap all .pyc and .pyo files
 	find -iname "*.py[co]" -exec rm -f {} \;
 	# cleanup all .a files except libgcc.a, *_nonshared.a and /usr/lib/portage/bin/*.a
-	find -iname "*.a" | `find -iname "*.a" | grep -v 'libgcc.a' | grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | grep -v 'libgcc_eh.a'` | xargs rm -f
+	find -iname "*.a" | grep -v 'libgcc.a' | grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | grep -v 'libgcc_eh.a' | xargs rm -f
 	;;
 *)
 	exit 1
