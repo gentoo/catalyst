@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.9 2004/10/15 02:46:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.10 2004/12/15 00:50:35 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -44,4 +44,6 @@ then
 	sleep 15
 fi
 
-emerge ${clst_emergeopts} ${clst_packages}
+for packages in ${clst_packages}; do
+	emerge ${clst_emergeopts} ${packages}
+done
