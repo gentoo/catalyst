@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.75 2004/08/02 23:48:15 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.76 2004/08/03 00:09:24 zhen Exp $
+
+  02 Aug 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py:
+  fix for bug #58208
 
   02 Aug 2004; John Davis <zhen@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh:
