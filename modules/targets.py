@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.98 2004/04/02 18:44:00 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.99 2004/04/02 21:09:10 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -216,10 +216,13 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			myusevars.append("bindist")
 			myusevars.extend(self.settings["grp/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
 		elif self.settings["target"]=="tinderbox":
 			myusevars.extend(self.settings["tinderbox/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
 		elif self.settings["target"]=="livecd-stage1":
 			myusevars.extend(self.settings["livecd/use"])
+			myf.write('USE="'+string.join(myusevars)+'"\n')
 		elif self.settings["target"]=="embedded":
 			myusevars.extend(self.settings["embedded/use"])
 			myf.write('USE="'+string.join(myusevars)+'"\n')
@@ -619,8 +622,8 @@ class embedded_target(generic_stage_target):
                     
                     for x in range(0,len(myunmerge)):
                         myunmerge[x]="'"+myunmerge[x]+"'"
-	     	myunmerge=string.join(myunmerge)
-                        # before cleaning unmerge stuff
+	     		myunmerge=string.join(myunmerge)
+                    # before cleaning unmerge stuff
 		    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
                         
     def clean(self):
