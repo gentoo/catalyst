@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/Attic/livecd-stage2.sh,v 1.3 2004/01/07 17:45:57 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/Attic/livecd-stage2.sh,v 1.4 2004/01/07 17:47:26 drobbins Exp $
 
 case $1 in
 enter)
@@ -30,7 +30,7 @@ run)
 		else
 			emerge --noreplace $clst_ksource || exit 1
 		fi
-		genkernel --no-bootsplash --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --kernelpackage=/tmp/binaries/$clst_kname.tar.gz all || exit 1
+		genkernel --no-bootsplash --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 		emerge -C genkernel $clst_ksource
 EOF
 		[ $? -ne 0 ] && exit 1
