@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.18 2004/08/13 16:00:48 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.19 2004/09/06 04:52:06 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -246,9 +246,9 @@ class livecd_stage2_target(generic_stage_target):
 			else:
 				os.putenv(kname+"_kernelopts", "")
 
-			# execute the script that builds the kernel
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),
-				"Runscript kernel build failed")
+		# execute the script that builds the kernel
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),\
+			"Runscript kernel build failed")
 
 	def run_local(self):
 		# first clean up any existing cdroot stuff
