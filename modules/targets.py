@@ -184,6 +184,8 @@ class generic_stage_target(generic_target):
 			myusevars.extend(self.settings["grp/use"])
 		elif self.settings["target"]=="tinderbox":
 			myusevars.extend(self.settings["tinderbox/use"])
+		elif self.settings["target"]=="livecd-stage1":
+			myusevars.extend(self.settings["livecd-stage1/use"])
 		myf.write('USE="'+string.join(myusevars)+'"\n')
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
@@ -255,6 +257,12 @@ class generic_stage_target(generic_target):
 				except CatalystError:
 					self.unbind()
 					raise CatalystError,"GRP build aborting due to error."
+		elif self.settings["target"]=="livecd-stage1":
+			try:
+				cmd(self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
+			except CatalystError:
+				self.unbind()
+				raise CatalystError,"GRP build aborting due to error."
 		else:
 			#tinderbox
 			#example call: "grp.sh run xmms vim sys-apps/gleep"
@@ -340,12 +348,12 @@ class tinderbox_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.valid_values=self.required_values
 
-class livecd_target(generic_stage_target):
+class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		generic_target.__init__(self,spec,addlargs)
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
-	"grp":grp_target,"livecd":livecd_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
+	"grp":grp_target,"livecd-stage1":livecd_stage1_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
 	return foo
 	
