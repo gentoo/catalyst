@@ -9,7 +9,12 @@ class generic_sparc(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="sparc"
-		self.settings["CHROOT"]="chroot"
+		if self.settings["hostarch"]=="sparc64":
+			if not os.path.exists("/usr/bin/sparc32"):
+				raise CatalystError,"required /usr/bin/sparc32 executable not found (\"emerge sparc-utils\" to fix.)"
+			self.settings["CHROOT"]="/usr/bin/sparc32 chroot"
+		else:
+			self.settings["CHROOT"]="chroot"
 
 class arch_sparc(generic_sparc):
 	"builder class for generic sparc (sun4cdm)"

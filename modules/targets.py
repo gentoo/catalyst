@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.96 2004/03/30 19:45:14 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.97 2004/03/31 15:18:43 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -26,7 +26,7 @@ class generic_stage_target(generic_target):
 		
 		targetmap={ 	"x86" : ["x86"],
 				"amd64" : ["x86","amd64"],
-				"sparc64" : ["sparc64"],
+				"sparc64" : ["sparc","sparc64"],
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
