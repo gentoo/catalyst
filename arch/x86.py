@@ -1,4 +1,4 @@
-import builder,os
+import builder,os,catalyst_support
 
 # This module defines the various "builder" classes for the various x86
 # sub-arches. For example, we have a class to handle building of Pentium 4
