@@ -147,6 +147,7 @@ grp/cd2/packages:
 	metalog
 	mirrorselect
 	mozilla
+	mysql
 	nano
 	netcat
 	nfs-utils
@@ -160,6 +161,7 @@ grp/cd2/packages:
 	pciutils
 	pmud
 	powerprefs
+	postgresql
 	ppc-development-sources
 	ppc-sources
 	ppp
