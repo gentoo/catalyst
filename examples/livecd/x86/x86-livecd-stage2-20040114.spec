@@ -5,6 +5,7 @@ rel_type: default
 rel_version: 1.4
 snapshot: 20040114
 source_subpath: default-x86-1.4/livecd-stage1-x86-20040114
+livecd/looptype: normal
 livecd/archscript: examples/livecd/runscript/x86-runscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 boot/kernel: gentoo
