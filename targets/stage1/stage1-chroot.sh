@@ -16,14 +16,14 @@ case $1 in
 			emerge --oneshot --nodeps ccache || exit 1
 		fi
 		if [ -n "${clst_DISTCC}" ]
-                then   
-                        export FEATURES="distcc"
-                        export DISTCC_HOSTS="${clst_distcc_hosts}"
-                        emerge --oneshot --nodeps distcc || exit 1
+        then   
+        	export FEATURES="distcc"
+        	export DISTCC_HOSTS="${clst_distcc_hosts}"
+        	USE="-gtk -gnome" emerge --oneshot --nodeps distcc || exit 1
 			echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
-                        /usr/bin/distcc-config --install 2>&1 > /dev/null
-                        /usr/bin/distccd 2>&1 > /dev/null
-                fi
+        	/usr/bin/distcc-config --install 2>&1 > /dev/null
+        	/usr/bin/distccd 2>&1 > /dev/null
+        fi
 		export ROOT=${2}
 		install -d $ROOT
 		if [ -n "${clst_PKGCACHE}" ]

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/03/26 17:03:29 zhen Exp $
 
 #return codes to be used by archscript
 
@@ -73,7 +73,7 @@ create_zisofs()
 create_noloop()
 {
 	echo "Copying files for image (no loop)..."
-	cp -a "${clst_chroot_path}/*" "${clst_cdroot_path}" || die "Could not copy files to image (no loop)"
+	cp -a "${clst_chroot_path}"/* "${clst_cdroot_path}" || die "Could not copy files to image (no loop)"
 }
 
 create_gcloop()
@@ -181,7 +181,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/03/25 00:03:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/03/26 17:03:29 zhen Exp $
 
 depend() {
 	after *

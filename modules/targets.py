@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.94 2004/03/24 17:24:47 iggy Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.95 2004/03/26 17:03:29 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -79,7 +79,8 @@ class generic_stage_target(generic_target):
 			print "Building natively for",self.settings["hostarch"]
 		else:
 			print "Building on",self.settings["hostarch"],"for alternate machine type",self.settings["mainarch"]
-			
+		#we are going to do a little hack for stackable profile integration here.
+		#if rel_version does not exist, then assume that the profile is stackable.
 		self.settings["target_profile"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
 		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
