@@ -46,15 +46,15 @@ Overview of catalyst operation
   to the particular target (stage1, stage3, grp, etc.)
 
 * The full data of the spec object is written to disc, so there is a complete
-  record of all variables that will be used to build what we're building.
-  This will allow for another person to re-use this information to
-  replicate our work (it should be possible to distribute a spec file
-  along with a portage snapshot and a starter tarball, and our build can
-  be replicated exactly on any machine.) The spec object contains data like
-  CFLAGS, CHOST, subarch, mainarch, the profile used to build, and for GRP
-  and LiveCDs the complete package build list. This is important to allow
-  work to be replicated. It's possible that the stage1/2/3.sh scripts should
-  be distributed as well, to allow proper replication of work.
+  record of all variables that will be used to build what we're building.  This
+  will allow for another person to re-use this information to replicate our
+  work (it should be possible to distribute a spec file along with a portage
+  snapshot and a starter tarball, and our build can be replicated exactly on
+  any machine.) The spec object contains data like CFLAGS, CHOST, subarch,
+  mainarch, the profile used to build, and for GRP and LiveCDs the complete
+  package build list. This is important to allow work to be replicated. It's
+  possible that the stage1/2/3.sh and other scripts should be distributed as
+  well, to allow proper replication of work.
 
 * The build process begins by calling the appropriate method of the builder
   instance. This includes cleanup, setup of chroot, entering the chroot,
@@ -62,9 +62,7 @@ Overview of catalyst operation
   and finishing up.
   
 * The catalyst process is now complete :)
-
 """
-
 
 #This allows plugins to import modules in the /modules dir
 sys.path.append(os.getcwd()+"/modules")
