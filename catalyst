@@ -2,6 +2,8 @@
 
 import os,sys,imp,string
 
+#map current machine information from uname() to the mainarch we are running under
+
 machinemap={ 	"i386" : "x86",
 		"i486" : "x86",
 		"i586" : "x86",
@@ -9,6 +11,9 @@ machinemap={ 	"i386" : "x86",
 		"x86_64" : "amd64"
 	}
 	
+#map the mainarch we are running under to the mainarches we support for building
+#stages and LiveCDs. (for example, on amd64, we can build stages for x86 or amd64.
+
 targetmap={ 	"x86" : ["x86"],
 		"amd64" : ["x86","amd64"]
 	}
