@@ -27,7 +27,8 @@ class generic_stage_target(generic_target):
 				"sparc64" : ["sparc64"],
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
-				"sparc" : ["sparc"]
+				"sparc" : ["sparc"],
+				"ppc" : ["ppc"]
 		}
 		
 		machinemap={ 	"i386" : "x86",
@@ -38,7 +39,8 @@ class generic_stage_target(generic_target):
 				"sparc64" : "sparc64",
 				"ia64" : "ia64",
 				"alpha" : "alpha",
-				"sparc" : "sparc"
+				"sparc" : "sparc",
+				"ppc" : "ppc"
 		}
 	
 		mymachine=os.uname()[4]
