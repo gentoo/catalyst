@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.11 2004/05/19 12:40:03 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.12 2004/05/27 16:41:36 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -128,7 +128,6 @@ case $1 in
 		# move over the motd (if applicable)
 		if [ -n ${clst_livecd_motd} ]
 		then
-			rm -r ${clst_chroot_path}/etc/motd
 			cp -a ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
 		fi
 		
