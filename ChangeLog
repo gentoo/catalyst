@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.189 2005/03/09 19:42:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.190 2005/03/09 20:03:12 wolf31o2 Exp $
+
+  09 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/isolinux-2.11-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.11-memtest86+-cdtar.tar.bz2,
+  livecd/runscript/ppc-archscript.sh:
+  Alright, so I lied to you. This is now the 1.1.7 release. I removed the 2.11
+  isolinux cdtar tarballs and updated the ppc-archscript.sh to use the
+  livecd/volid for the HFS volid, too.
 
   09 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   Calling this one 1.1.7 and rolling a tarball.
