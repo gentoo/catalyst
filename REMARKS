@@ -19,6 +19,7 @@ DESIGN REMARKS
 	- global variables are not a good idea because they could be more easily overridden 
 	  unintentionally by a module.
 
+## Fixed, zhen@gentoo.org
 - spec/examples/kconfig:
 
   Suggestions: 
@@ -27,7 +28,9 @@ DESIGN REMARKS
    	- Spec files in examples should be listed in spec/
 
 - examples/livecd:
+##
 
+## Fixed, zhen@gentoo.org
   Is there a reason this needs to be done in shell script rather than with a python class 
   inheritance structure? I'm ok with reinventing inheritance using 'case' should something 
   be required that cannot be realized using python. In any case, much needs to be improved:
@@ -48,6 +51,7 @@ EOF
 
   This technique allows to define several tasks that need to be run inside the chroot. This is
   very usefull: a kde/gnome livecd could feature an extra customize-desktop.sh task. 
+##
 
   Also, what happens with the mounts in the runscript on CTRL-C? 
 
@@ -63,12 +67,15 @@ EOF
   Generic_stage_target contains hardcoded data that should be provided in the specs (targetmap,
   machinemap)
 
+## partially done, targets is cleaned up, but the build.sh stuff does need moved into a
+# spec file, zhen@gentoo.org
 - modules/targets.py <-> targets/
  
   The remark about chroot applies. The technique is illustrated in the ppc livecd script.
   The targets/ definitely need a cleanup (is livecd/livecd.sh used?). zapmost is never called.
   Have only looked at the livecd part. Stage part needs rework, e.g: stage1 still uses packages.build
   rather than a spec file?
+##
 
 RUNTIME REMARKS
 ---------------
@@ -78,6 +85,7 @@ Variables format in /etc/catalyst.conf differs from other gentoo config files. A
 There is catalyst stuff in make.conf: GRP_STAGE23_USE, does a package know when it is rebuild whether is should
 use these USE flags rather than those set in usr/portage/profiles/.../make.defaults? This should become a spec.
 
+## done, envscript option added, zhen@gentoo.org
 How to declare proxy settings to catalyst?
 
 Specs use different settings than config
