@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.36 2004/05/22 07:01:40 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.37 2004/06/13 15:18:49 zhen Exp $
 
 import os,sys,imp,string
 
@@ -17,7 +17,7 @@ def vers():
 	print "Copyright 2003-2004 Gentoo Technologies, Inc."
 	print "Distributed under the GNU General Public License version 2"
 
-version="1.0.8"
+version="1.0.8.1"
 
 if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()

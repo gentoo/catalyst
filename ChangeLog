@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.62 2004/06/11 19:06:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.63 2004/06/13 15:18:49 zhen Exp $
+
+  13 Jun 2004; John Davis <zhen@gentoo.org> catalyst:
+  rolling out 1.0.8.1
 
   11 Jun 2004; John Davis <zhen@gentoo.org>
   livecd/runscript/default-runscript.sh, modules/livecd_stage2_target.py:
