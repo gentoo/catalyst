@@ -6,7 +6,7 @@ rel_version: 1.4
 snapshot: 20040114
 source_subpath: default-x86-1.4/livecd-stage2-x86-20040114
 boot/kernel: gentoo
-livecd/archrunscript: examples/livecd/runscript/x86-runscript.sh
+livecd/archscript: examples/livecd/runscript/x86-runscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 livecd/unmerge:
