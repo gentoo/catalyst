@@ -21,65 +21,47 @@ elif os.getuid()!=0:
 	die("This script requires root privileges to operate.")	
 
 """
-Program flow:
+Overview of catalyst operation
+==============================
 
-* catalyst starts
-* it detects what machine type it is running on
-* it determines what machine targets it can build for (amd64 can build for 
-  x86 *and* amd64, for example.)
-* it loads the appropriate plugins from the arch/ directory, as modules
-* it registers each modules' classes with the main program so it can get
-  to all the subarch classes supported by each module.
+* The program starts, and the local machine type is detected. 
 
-todo:
+* Based on this information, catalyst determines what kind of machine types
+  it can build for (amd64 and ia64 can build for x86 as well, for example.)
+  The appropriate arch plugins are loaded, which contain builder classes
+  for each supported sub-arch.
 
-* it parses an incomplete spec file provided by the user
-* it generates a complete spec file and writes it to disk
-* it creates an instance of the appropriate subarch object, and passes the
-  spec to the subarch so that it can build. (?)
-* the subarch ("builder") class does all building, snapshotting, etc.
+* Command-line arguments are parsed. If specified, a spec file is read.
 
+* These build variables are stored in an internal "spec" object, which will
+  be a standard python dictionary. This spec dictionary contains all relevant
+  build-related information.
 
-Classes are to be used to reduce code duplication *and* help maintainability.
-That's about it.
+* The spec object is passed to the appropriate subarch builder constructor.
+  The subarch builder constructor updates the spec object with variables
+  relevant to the sub-arch (pentium4, g3, etc.)
 
-Class heirarchy (preliminary):
+* The spec object is passed to the appropriate target constructor.
+  The target constructor updates the spec object to contain data relevant
+  to the particular target (stage1, stage3, grp, etc.)
 
-generic_builder (in arch/generic_builder.py)
-	x86_generic_builder (in arch/x86.py)
-		x86_builder (in arch/x86.py)
-		pentium4_builder (in arch/x86.py)
-		pentium4_builder.stage1()
-		pentium4_builder.stage2()
-		pentium4_builder.stage3()
-		pentium4_builder.snapshot()
+* The full data of the spec object is written to disc, so there is a complete
+  record of all variables that will be used to build what we're building.
+  This will allow for another person to re-use this information to
+  replicate our work (it should be possible to distribute a spec file
+  along with a portage snapshot and a starter tarball, and our build can
+  be replicated exactly on any machine.) The spec object contains data like
+  CFLAGS, CHOST, subarch, mainarch, the profile used to build, and for GRP
+  and LiveCDs the complete package build list. This is important to allow
+  work to be replicated. It's possible that the stage1/2/3.sh scripts should
+  be distributed as well, to allow proper replication of work.
 
-stage1, stage2 and stage3 have almost identical set-up and break-down. What is
-different is what happens in the middle. steps are:
-
-* check for existing bind mounts at location (safety check)
-* clean chroot dir
-* chroot dir setup
-* unpack tarball to chroot dir 
-* do bind mounts
-* chroot
-* execute script (bash)
-* exit chroot
-* umount bind mounts
-* grab goodies (variant: which goodies to grab and how (grp and livecds differ)
-
-purpose of builder modules:
-	have code specific to each arch in its own file
-	have common code in a generic parent class as much as possible
-	(these both make maintenance easier)
-
-purpose of target modules:
-	each target is going to need specific tweaks to various parts of the build process
-	having a target module allows us to store these customizations in an organized way
-
-special things for targets:
-	specify auxilliary mount points and where to mount them (for GRP packages)
-	specify requirements?
+* The build process begins by calling the appropriate method of the builder
+  instance. This includes cleanup, setup of chroot, entering the chroot,
+  running the appropriate bash build script, checking for error conditions,
+  and finishing up.
+  
+* The catalyst process is now complete :)
 
 """
 
