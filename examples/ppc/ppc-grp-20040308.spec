@@ -22,7 +22,7 @@ grp/use: aalib
 	crypt 
 	cscope
 	dga 
-	directfb 
+	-directfb 
 	-doc
 	dvdr 
 	extlib 
@@ -95,7 +95,6 @@ grp/use: aalib
 
 grp/cd2/type: pkgset
 grp/cd2/packages:
-	DirectFB
 	abiword
 	apache
 	cdrtools
