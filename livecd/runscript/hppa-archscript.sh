@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/hppa-archscript.sh,v 1.1 2004/03/06 20:41:53 gmsoft Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.1 2004/03/07 12:29:47 gmsoft Exp $
 
 case $1 in
 	kernel)

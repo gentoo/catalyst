@@ -6,9 +6,9 @@ rel_version: 2004.0
 snapshot: 20040227
 source_subpath: default-hppa-2004.0/livecd-stage1-hppa-20040227
 livecd/cdfstype: normal
-livecd/archscript: examples/livecd/runscript/hppa-archscript.sh
-livecd/runscript: examples/livecd/runscript/default-runscript.sh
-livecd/cdtar: examples/livecd/cdtar/palo-1.2_pre20030630-cdtar.tar.bz2
+livecd/archscript: livecd/runscript/hppa-archscript.sh
+livecd/runscript: livecd/runscript/default-runscript.sh
+livecd/cdtar: livecd/cdtar/palo-1.2_pre20030630-cdtar.tar.bz2
 boot/kernel: vmlinux32
 boot/kernel/vmlinux32/sources: sys-kernel/hppa-sources
 boot/kernel/vmlinux32/config: examples/livecd/hppa/config-2.4.24
