@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.195 2005/03/24 15:37:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.196 2005/03/29 17:09:49 wolf31o2 Exp $
+
+  29 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/files/livecd-bash_profile, +livecd/files/livecd-bashrc,
+  livecd/files/livecd-local.start, -livecd/files/mkvardb,
+  livecd/runscript-support/pre-kmerge.sh,
+  livecd/runscript/default-runscript.sh:
+  Moved livecd-bash_profile to livecd-bashrc. Added check for
+  /usr/livecd/profiles to livecd-local.start. Removed mkvardb. Removed legacy
+  sed call from pre-kmerge.sh since it has been fixed in genkernel for a long
+  time.
 
   24 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/arm.py, catalyst,
   modules/generic_stage_target.py:

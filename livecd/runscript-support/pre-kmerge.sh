@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/pre-kmerge.sh,v 1.11 2005/03/07 21:14:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/pre-kmerge.sh,v 1.12 2005/03/29 17:09:49 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -13,8 +13,6 @@ fi
 
 install -d /usr/portage/packages/gk_binaries
 rm -f /usr/src/linux
-
-sed -i 's/uchi-hcd/uhci-hcd/' /usr/share/genkernel/x86/modules_load
 
 if [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
 || [ "${clst_livecd_type}" = "gentoo-release-universal" ]

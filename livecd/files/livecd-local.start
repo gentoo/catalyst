@@ -12,3 +12,8 @@ if [ -d /usr/livecd/db ]
 then
 	ln -sf /usr/livecd/db /var/db
 fi
+
+if [ -d /usr/livecd/profiles ]
+then
+	ln -sf /usr/livecd/profiles /usr/portage/profiles
+fi
