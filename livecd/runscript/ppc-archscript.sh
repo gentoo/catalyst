@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.5 2004/10/15 02:40:00 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.6 2005/03/03 22:36:08 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -29,7 +29,8 @@ case $1 in
 		cdtar=${clst_livecd_cdtar}
 		[ -z "${cdtar}" ] && die "Required key livecd/cdtar not defined, exiting"
 		tar xjpvf ${cdtar} -C ${clst_cdroot_path} || die "Couldn't extract cdtar ${cdtar}"
-		
+		# Here is where we poke in our identifier
+		touch ${clst_cdroot_path}/livecd
 		[ -z "${clst_boot_kernel}" ] && die "Required key boot/kernel not defined, exiting."
 		
 		first=""
