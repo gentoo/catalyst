@@ -156,8 +156,7 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
-		if os.path.exists(self.settings["chroot_path"]+"/etc/make.conf"):
-			cmd("mv "+self.settings["chroot_path"]+"/etc/make.conf "+self.settings["chroot_path"]+"/etc/make.conf.orig")
+		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
 
 		myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 		myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
