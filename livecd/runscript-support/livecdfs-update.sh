@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.14 2004/10/16 13:38:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.15 2004/10/18 02:55:16 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -64,7 +64,7 @@ sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 mv /etc/fstab /etc/fstab.old
 echo "###############################################" >> /etc/fstab
 echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD" >> /etc/fstab     
-echo "## PLEASE EDIT THE FSTAB IN /mnt/gentoo/etc" >> /etc/fstab     
+echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab" >> /etc/fstab     
 echo "###############################################" >> /etc/fstab
 cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
@@ -131,3 +131,6 @@ then
 		exit 1
 	fi
 fi
+
+# tar up the firmware so that it does not get clobbered by the livecd mounts
+tar cjpf /usr/lib/hotplug/firmware/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
