@@ -272,13 +272,13 @@ class generic_stage_target(generic_target):
 			args=`len(mynames)`
 			for x in mynames:
 				args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
-				if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]:
+				if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
 					raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
-				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config "+self.settings["chroot_dir"]+"/var/tmp/"+x+".config")
+				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_dir"]+"/var/tmp/"+x+".config")
 				if retval!=0:
 					raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 			try:
-				cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args))
+				cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
