@@ -292,10 +292,10 @@ class generic_stage_target(generic_target):
 				raise CatalystError,"Tinderbox aborting due to error."
 		else:
 			raise CatalystError,"You shouldn't get to this point. Target not recognized."
-		if self.settings["target"] not in ["grp","tinderbox"]:
+		if self.settings["target"] in ["stage1","stage2","stage3"]:
 			self.preclean()
 		self.unbind()
-		if self.settings["target"] not in ["grp","tinderbox"]:
+		if self.settings["target"] in ["stage1","stage2","stage3"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
 			self.capture()
