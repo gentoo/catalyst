@@ -62,10 +62,13 @@ EOF
 - files:
   Should be considered specs.
 
+## partially done, each module has its own file now, but still need to remove
+# the hardcoded data, zhen@gentoo.org
 - modules/targets.py:
   A target file for each target class, comments needed for each class. 
   Generic_stage_target contains hardcoded data that should be provided in the specs (targetmap,
   machinemap)
+##
 
 ## partially done, targets is cleaned up, but the build.sh stuff does need moved into a
 # spec file, zhen@gentoo.org
@@ -87,6 +90,7 @@ use these USE flags rather than those set in usr/portage/profiles/.../make.defau
 
 ## done, envscript option added, zhen@gentoo.org
 How to declare proxy settings to catalyst?
+##
 
 Specs use different settings than config
 
