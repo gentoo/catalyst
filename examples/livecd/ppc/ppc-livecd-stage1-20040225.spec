@@ -20,29 +20,23 @@ livecd/packages:
 	ccache
 	curl
 	cvs
-	device-mapper
 	dhcpcd
 	dialog
 	e2fsprogs
 	ftp
-	gpart
 	gpm
 	hdparm
 	hfsplusutils
 	hfsutils
 	host 
 	hotplug
-	hwdata-knoppix
-	hwsetup
 	iputils
 	irssi
 	jfsutils
-	keywhein
+	keychain
 	kpnadsl4linux
-	kudzu
 	less
 	links
-	livecd-tools
 	logrotate
 	lynx
 	lzo 
@@ -65,7 +59,6 @@ livecd/packages:
 	reiserfsprogs
 	rp-pppoe
 	screen
-	speedtouch
 	star
 	strace
 	ucl
