@@ -1,10 +1,10 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-preclean-chroot.sh,v 1.4 2004/10/15 02:46:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-preclean-chroot.sh,v 1.5 2005/04/04 17:48:33 rocket Exp $
 
-/usr/sbin/env-update
-source /etc/profile
+. /tmp/chroot-functions.sh
+update_env_settings
 
 export CONFIG_PROTECT="-*"
 

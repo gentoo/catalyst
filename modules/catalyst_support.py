@@ -1,16 +1,54 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.34 2005/01/02 04:15:51 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.35 2005/04/04 17:48:32 rocket Exp $
 
-import sys,string,os,types,re,traceback
+import sys,string,os,types,re,traceback,md5
+
+
+# a function to turn a string of non-printable characters into a string of
+# hex characters
+def hexify(str):
+    hexStr = string.hexdigits
+    r = ''
+    for ch in str:
+	i = ord(ch)
+	r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
+    return r
+# hexify()
+
+# A function to calculate the md5 sum of a file
+def calc_md5(file):
+    m = md5.new()
+    f = open(file, 'r')
+    for line in f.readlines():
+	m.update(line)
+    f.close()
+    md5sum = hexify(m.digest())
+    print "MD5 (%s) = %s" % (file, md5sum)
+    return md5sum
+# calc_md5
+    
+def read_from_clst(file):
+	line = ''
+	myline = ''
+	try:
+		myf=open(file,"r")
+	except:
+		raise CatalystError, "Could not open file "+file
+	for line in myf.readlines():
+	    line = string.replace(line, "\n", "") # drop newline
+	    myline = myline + line
+	myf.close()
+	return myline
+# read_from_clst
 
 # these should never be touched
 required_build_targets=["generic_target","generic_stage_target"]
 
 # new build types should be added here
-valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target",
+valid_build_targets=["stage1_target","stage2_target","stage3_target","stage4_target","grp_target",
 			"livecd_stage1_target","livecd_stage2_target","embedded_target",
-			"tinderbox_target","snapshot_target","netboot"]
+			"tinderbox_target","snapshot_target","netboot_target"]
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
@@ -23,6 +61,7 @@ valid_config_file_values.append("AUTORESUME")
 valid_config_file_values.append("options")
 valid_config_file_values.append("DEBUG")
 valid_config_file_values.append("VERBOSE")
+valid_config_file_values.append("PURGE")
 
 verbosity=1
 

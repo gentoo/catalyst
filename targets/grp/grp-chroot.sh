@@ -1,43 +1,25 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.14 2005/01/28 18:37:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.15 2005/04/04 17:48:33 rocket Exp $
+
+. /tmp/chroot-functions.sh
 
 # check portage version in seed stage
-portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
-	| cut -d/ -f2 | cut -d- -f2,3`
-if [ `echo ${portage_version} | cut -d- -f1 | cut -d. -f3` -lt 51 ]
-then
-	echo "ERROR: Your portage version is too low in your seed stage.  Portage version"
-	echo "2.0.51 or greater is required."
-	exit 1
-fi
+check_portage_version
 
-/usr/sbin/env-update
-source /etc/profile
+update_env_settings
 
 [ -f /tmp/envscript ] && source /tmp/envscript
 
-if [ -n "${clst_CCACHE}" ]
-then
-	export clst_myfeatures="${clst_myfeatures} ccache"
-	emerge --oneshot --nodeps -b -k ccache || exit 1
-fi
-
-if [ -n "${clst_DISTCC}" ]
-then   
-	export clst_myfeatures="${clst_myfeatures} distcc"
-	export DISTCC_HOSTS="${clst_distcc_hosts}"
-
-	USE="-gnome -gtk" emerge --oneshot --nodeps -b -k distcc || exit 1
-fi
+setup_myfeatures
 
 # setup the environment
 export FEATURES="${clst_myfeatures}"
 export CONFIG_PROTECT="-*"
 
 ## START BUILD
-USE="build" emerge portage
+setup_portage
 
 #turn off auto-use:
 export USE_ORDER="env:pkg:conf:defaults"

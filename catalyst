@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.68 2005/03/24 15:37:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.69 2005/04/04 17:48:32 rocket Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
 import os,sys,imp,string,getopt
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="1.1.8"
+__version__="2.0.0"
 
 conf_values={}
 
@@ -109,6 +109,10 @@ def parse_config(myconfig):
 		print "Autoresuming support enabled."
 		conf_values["AUTORESUME"]="1"
 
+	if "purge" in string.split(conf_values["options"]):
+		print "Purge support enabled."
+		conf_values["PURGE"]="1"
+	
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
@@ -168,6 +172,8 @@ def build_target(addlargs, targetmap):
 			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
 		
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
+		if conf_values.has_key("PURGE"):
+		    mytarget.purge()
 		mytarget.run()
 
 	except CatalystError:
@@ -189,7 +195,7 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:FVs:", ["help", "version", "debug",\
+		opts,args = getopt.getopt(sys.argv[1:], "xhvdc:C:f:FVs:", ["purge","help", "version", "debug",\
 			"config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
@@ -269,7 +275,9 @@ if __name__ == "__main__":
 			else:
 				mycmdline.append("target=snapshot")
 				mycmdline.append("version_stamp="+a)
-	
+		if o in ("--purge"):
+				conf_values["PURGE"]="1"
+
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 	sys.path.append(conf_values["sharedir"]+"/modules")

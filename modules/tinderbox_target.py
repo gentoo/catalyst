@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.6 2005/01/04 21:13:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.7 2005/04/04 17:48:33 rocket Exp $
 
 """
 builder class for the tinderbox target
@@ -19,9 +19,9 @@ class tinderbox_target(generic_stage_target):
 		# tinderbox
 		# example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
-			cmd("/bin/bash "+self.settings["sharedir"]+\
-				"/targets/tinderbox/tinderbox.sh run "+\
-				list_bashify(self.settings["tinderbox/packages"]))
+			if os.path.exists(self.settings["controller_file"]):
+			    cmd("/bin/bash "+self.settings["controller_file"]+" run "+\
+				list_bashify(self.settings["tinderbox/packages"]),"run script failed.")
 		
 		except CatalystError:
 			self.unbind()

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.6 2005/01/04 21:13:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.7 2005/04/04 17:48:32 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -37,8 +37,7 @@ class grp_target(generic_stage_target):
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
 			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
-				cmd("/bin/bash "+self.settings["sharedir"]+\
-					"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]\
+				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
 					+" "+pkgset+" "+mypackages)
 			
 			except CatalystError:
@@ -46,8 +45,11 @@ class grp_target(generic_stage_target):
 				raise CatalystError,"GRP build aborting due to error."
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
-	    				    "setup_environment","run_local","unbind"]
+	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+	    			"config_profile_link","setup_confdir","bind","chroot_setup",\
+	    				    "setup_environment","run_local","unmerge","unbind",\
+					    "remove","empty"]
+
 	
 	def set_use(self):
 	    self.settings["use"]=self.settings["grp/use"]

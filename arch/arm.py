@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/arm.py,v 1.4 2005/03/24 15:37:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/arm.py,v 1.5 2005/04/04 17:48:32 rocket Exp $
 
 import builder,os
 from catalyst_support import *
@@ -13,7 +13,7 @@ class generic_arm(builder.generic):
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CXXFLAGS"]="-O1 -pipe"
-
+   
 class generic_armeb(builder.generic):
 	"Abstract base class for all arm (big endian) builders"
 	def __init__(self,myspec):
@@ -56,4 +56,5 @@ def register(foo):
 		"armv4l" : arch_armv4l,
 		"armeb"  : arch_armeb,
 		"armv5b" : arch_armv5b
+
 	})

@@ -1,15 +1,17 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1-preclean2-chroot.sh,v 1.10 2005/03/03 13:59:56 wolf31o2 Exp $
-		
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-preclean-chroot.sh,v 1.1 2005/04/04 17:48:33 rocket Exp $
+
+. /tmp/chroot-functions.sh
+
 # now, some finishing touches to initialize gcc-config....
 unset ROOT
 
 if [ -x /usr/bin/gcc-config ]
 then
 	mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
-	gcc-config ${mythang}; /usr/sbin/env-update; source /etc/profile
+	gcc-config ${mythang}; update_env_settings
 fi
 
 # stage1 is not going to have anything in zoneinfo, so save our Factory timezone
@@ -21,4 +23,4 @@ else
 fi
 
 # this cleans out /var/db, but leaves behind files portage needs for removal
-#find /var/db/pkg -type f | grep -v '\(COUNTER\|CONTENTS\|SLOT\|ebuild\)' | xargs rm -f
+#find /var/db/pkg -type f | grep -v '\(COUNTER\|CONTENTS\|ebuild\)' | xargs rm -f

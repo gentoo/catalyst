@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/build.py,v 1.1 2004/08/02 23:23:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/build.py,v 1.2 2005/04/04 17:48:33 rocket Exp $
 
-import portage
+import portage,sys
 
 # this loads files from the profiles ...
 # wrap it here to take care of the different
@@ -32,4 +32,4 @@ for idx in range(0, len(pkgs)):
 			buildpkgs[bidx] = buildpkgs[bidx][1:]
 	except: pass
 
-for b in buildpkgs: print b
+for b in buildpkgs: sys.stdout.write(b+" ")
