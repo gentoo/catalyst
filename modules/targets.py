@@ -274,7 +274,7 @@ class generic_stage_target(generic_target):
 				args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
 				if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
 					raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
-				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_dir"]+"/var/tmp/"+x+".config")
+				retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
 				if retval!=0:
 					raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 			try:
@@ -298,6 +298,7 @@ class generic_stage_target(generic_target):
 		if self.settings["target"] in ["stage1","stage2","stage3"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
 			self.capture()
 			
 class snapshot_target(generic_target):
@@ -377,7 +378,17 @@ class livecd_stage1_target(generic_stage_target):
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot"]
+		self.required_values=["boot/kernel"]
+		if not addlargs.has_key("boot/kernel"):
+			raise CatalystError, "Required value boot/kernel not specified."
+		if type(addlargs["boot/kernel"]) == types.StringType:
+			loopy=[addlargs["boot/kernel"]]
+		else:
+			loopy=addlargs["boot/kernel"]
+		for x in loopy:
+			self.required_values.append("boot/kernel/"+x+"/sources")
+			self.required_values.append("boot/kernel/"+x+"/config")
+		self.valid_values=self.required_values[:]	
 		generic_stage_target.__init__(self,spec,addlargs)
 
 def register(foo):
