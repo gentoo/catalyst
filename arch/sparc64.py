@@ -16,6 +16,7 @@ class arch_sparc64(generic_sparc64):
 	def __init__(self,myspec):
 		generic_sparc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc"
+		self.settings["CXXFLAGS"]="-O2 -mcpu=ultrasparc"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):

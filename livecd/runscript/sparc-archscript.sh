@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.2 2004/05/17 01:44:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.3 2004/05/22 00:42:59 zhen Exp $
 
 case $1 in
 	kernel)
@@ -52,14 +52,8 @@ case $1 in
 			    $clst_cdroot_path/boot/$x.igz
 		done
 		scfg=$clst_cdroot_path/boot/silo.conf
-		kmsg=$clst_cdroot_path/boot/kernels.msg
-		hmsg=$clst_cdroot_path/boot/help.msg
-		echo "default=\"$first\"" > $scfg
-		echo "timeout=\"150\"" >> $scfg
+		echo "default=\"help\"" > $scfg
 		echo "message=\"/boot/boot.msg\"" >> $scfg
-
-		echo "Available kernels:" > $kmsg
-		echo "TEST HELP MESSAGE" > $hmsg
 
 		for x in $clst_boot_kernel
 		do
@@ -72,6 +66,10 @@ case $1 in
 
 		echo "image=\"cat /boot/silo.conf\"" >> $scfg
 		echo -e "label=\"config\"" >> $scfg
+		echo "image=\"cat /boot/video.msg\"" >> $scfg
+		echo -e "label=\"video\"" >> $scfg
+		echo "image=\"cat /boot/help.msg\"" >> $scfg
+		echo -e "label=\"help\"" >> $scfg
 	;;
 
 	cdfs)
@@ -80,6 +78,6 @@ case $1 in
 	iso)
 		# this is for the livecd-final target, and calls the proper
 		# command to build the iso file
-		mkisofs -J -R -l -o ${2} -G /boot/isofs.b -B ... ${clst_cdroot_path}
+		mkisofs -J -R -l -o ${2} -G ${clst_cdroot_path}/boot/isofs.b -B ... ${clst_cdroot_path}
 	;;
 esac

@@ -21,6 +21,7 @@ class arch_sparc(generic_sparc):
 	def __init__(self,myspec):
 		generic_sparc.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2"
+		self.settings["CXXFLAGS"]="-O2"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):
