@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.26 2005/01/05 20:18:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.27 2005/01/11 13:12:36 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -76,10 +76,13 @@ echo "gentoo" > /etc/dnsdomainname
 sed -i 's:localhost:livecd.gentoo localhost:' /etc/hosts
 
 # setup dhcp on all detected ethernet devices
-echo "ifconfig_eth0( \"dhcp\" )" > /etc/conf.d/net
-echo "ifconfig_eth1( \"dhcp\" )" >> /etc/conf.d/net
-echo "ifconfig_eth2( \"dhcp\" )" >> /etc/conf.d/net
-echo "ifconfig_eth3( \"dhcp\" )" >> /etc/conf.d/net
+echo "iface_eth0=\"dhcp\""> /etc/conf.d/net
+echo "iface_eth1=\"dhcp\"" >> /etc/conf.d/net
+echo "iface_eth2=\"dhcp\"" >> /etc/conf.d/net
+echo "iface_eth3=\"dhcp\"" >> /etc/conf.d/net
+
+# add this for hwsetup/mkx86config
+mkdir -p /etc/sysconfig
 
 # gpm fixes
 [ -e /etc/conf.d/gpm ] && sed -i -e 's:#MOUSE=imps2:MOUSE=imps2:' \

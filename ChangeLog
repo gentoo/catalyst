@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.141 2005/01/10 01:16:07 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.142 2005/01/11 13:12:36 wolf31o2 Exp $
+
+  11 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh,
+  targets/stage3/stage3-chroot.sh:
+  Fixed DHCP for eth0->eth3 in livecdfs-update.sh and also changed stage3
+  target to use emerge -e when building. This is only temporary until the
+  bootstrap.sh script can be fixed or another solution can be decided upon.
 
   09 Jan 2005; John Davis <zhen@gentoo.org> targets/embedded/embedded.sh,
   +targets/embedded/kmerge.sh:

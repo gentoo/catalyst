@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.13 2004/11/23 00:02:57 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.14 2005/01/11 13:12:36 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -45,4 +45,4 @@ then
 	sleep 15
 fi
 
-emerge ${clst_myemergeopts} system || exit 1
+emerge -e ${clst_myemergeopts} system || exit 1
