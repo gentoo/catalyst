@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.20 2004/05/17 01:21:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.21 2004/05/17 02:00:25 zhen Exp $
 
 import sys,string,os,types
 
@@ -10,7 +10,7 @@ required_build_targets=["generic_target","generic_stage_target"]
 # new build types should be added here
 valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target",
 						"livecd_stage1_target","livecd_stage2_target","embedded_target",
-						"tinderbox_target"]
+						"tinderbox_target","snapshot_target"]
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
@@ -21,18 +21,6 @@ valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("options")
 
 verbosity=1
-
-"""
-# register the build target for catalyst to use here
-# (uses the values from valid_build_targets)
-def register_build_targets(targetlist):
-	targetlist.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
-		"grp":grp_target,"livecd-stage1":livecd_stage1_target,
-		"livecd-stage2":livecd_stage2_target,
-		"snapshot":snapshot_target,"tinderbox":tinderbox_target,
-		"embedded":embedded_target})
-	return targetlist
-"""
 
 def list_bashify(mylist):
 	if type(mylist)==types.StringType:
