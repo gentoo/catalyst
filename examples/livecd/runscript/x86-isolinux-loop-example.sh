@@ -1,32 +1,66 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.4 2004/01/11 23:28:47 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.5 2004/01/11 23:42:56 drobbins Exp $
 
 die() {
 	echo "$1"
 	exit 1
 }
 
-#The order that catalyst does things for livecd-stage3 is as follows:
-#
-# runscript: run
-# runscript: preclean (bind mounts still mounted)
-# catalyst: do livecd/unmerge (bind mounts still mounted)
+#Here is how the livecd runscript works:
+
+# livecd-stage2 begins. The "run" part of this script is executed, which is used to build
+# kernels and copy any needed binaries to /tmp/binaries. The arguments passed to this 
+# runscript are "run <numkernels> <kname1> <ksource1> <kname2> <ksource2> ...". For example,
+# the args might be "run 2 gentoo =sys-kernel/gentoo-dev-sources-2.6.1 smp 
+# =sys-kernel/foo-sources-2.4.24". The kernel configs for each kernel can be found already
+# copied to /var/tmp/<kname>.config.
+
+# livecd-stage2 ends.
+# livecd-stage3 begins.
+
+# runscript: preclean executes (with bind mounts still mounted)
+# catalyst: do livecd/unmerge (with bind mounts still mounted)
 # catalyst: bind mounts unmounted
 # catalyst: do livecd/empty
 # catalyst: do livecd/delete
 # runscript: livecd/clean
 # runscript: cdroot_setup
 
+# livecd-stage3 completes.
+
 case $1 in
 run)
-	#For doing things inside the chroot before the "preclean". Normally, "preclean"
-	#should be used, or steps should be performed in the livecd-stage2 stage.
-	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-	echo "meep"
+	shift
+	numkernels="$1"
+	shift
+	count=0
+	while [ $count -lt $numkernels ]
+	do
+		clst_kname="$1"
+		shift
+		clst_ksource="$1"
+		shift
+		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
+env-update
+source /etc/profile
+export CONFIG_PROTECT="-*"
+emerge genkernel
+rm -f /usr/src/linux
+export USE="-* build"
+if [ -n "${clst_PKGCACHE}" ]
+then
+	emerge --usepkg --buildpkg --noreplace $clst_ksource || exit 1
+else
+	emerge --noreplace $clst_ksource || exit 1
+fi
+genkernel --no-bootsplash --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
+emerge -C genkernel $clst_ksource
 EOF
 	[ $? -ne 0 ] && exit 1
-;;
+	count=$(( $count + 1 ))
+	done
+	;;
 preclean)
 	#preclean runs with bind mounts active -- for running any commands inside chroot.
 	#The chroot environment has not been trimmed in any way, so you still have a full

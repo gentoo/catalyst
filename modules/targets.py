@@ -425,7 +425,7 @@ class livecd_stage1_target(generic_stage_target):
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel"]
+		self.required_values=["boot/kernel","livecd/runscript"]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
 		if type(addlargs["boot/kernel"]) == types.StringType:
@@ -453,10 +453,10 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" run "+args,"runscript failed")
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"GRP build aborting due to error."
+			raise CatalystError,"livecd-stage2 build aborting due to error."
 
 class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -483,11 +483,7 @@ class livecd_stage3_target(generic_stage_target):
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
 
 	def run_local(self):
-		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" run","runscript failed")
-		except CatalystError:
-			self.unbind()
-			raise CatalystError,"Stage build aborting due to error."
+		pass
 
 	def preclean(self):
 		try:
