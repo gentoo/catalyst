@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.7 2005/01/28 20:23:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/alpha-archscript.sh,v 1.8 2005/01/29 04:05:46 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -29,12 +29,12 @@ case $1 in
 		
 		# unpack the kernel(s) that were built in kmerge.sh
 		first=""
-		for x in "${clst_boot_kernel}"
+		for x in ${clst_boot_kernel}
 		do
 			kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${x}-${clst_version_stamp}.tar.bz2"
 			[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 			
-			tar xjvf ${kbinary}/${x}.tar.bz2 -C ${clst_cdroot_path}/boot
+			tar xjvf ${kbinary} -C ${clst_cdroot_path}/boot
 			
 			# change kernel name from "kernel" to "gentoo", for example
 			mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/boot/${x}

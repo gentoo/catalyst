@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.162 2005/01/28 21:00:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.163 2005/01/29 04:05:46 wolf31o2 Exp $
+
+  28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/alpha-archscript.sh:
+  Alpha fixes for multiple kernels..
 
   28 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/kmerge.sh:
