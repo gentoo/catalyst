@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.6 2004/04/01 20:00:18 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.7 2004/04/02 04:40:11 zhen Exp $
 
 #return codes to be used by archscript
 
@@ -160,7 +160,7 @@ EOF
 
 				#fix to get modprobe.conf
 				ln -s /lib/modules/\`sed -n '1s/.* //;1s/"//g; 1p' /usr/src/linux/include/linux/version.h\` /lib/modules/`uname -r`
-				/sbin/modules.update
+				/sbin/modules-update
 				rm `uname -r`
 
 				cd /usr/src
@@ -187,7 +187,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.6 2004/04/01 20:00:18 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.7 2004/04/02 04:40:11 zhen Exp $
 
 depend() {
 	after *
