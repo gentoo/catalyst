@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.2 2005/04/05 21:43:09 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.3 2005/04/06 14:07:11 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -130,10 +130,11 @@ then
 fi
 
 # setup opengl in /etc (if configured)
-[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
+#[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
+mkdir -p /etc/opengl
 
-# touch /etc/asound.state if alsa is configured
-[ -d /proc/asound/card0 ] && touch /etc/asound.state
+# touch /etc/asound.state
+touch /etc/asound.state
 
 # tweak the motd for gentoo releases 
 if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
