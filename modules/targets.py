@@ -256,7 +256,7 @@ class generic_stage_target(generic_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
-pass
+			pass
 
 	def run(self):
 		self.dir_setup()
