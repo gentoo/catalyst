@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.8 2004/06/08 04:07:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.9 2004/06/10 15:51:07 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,7 +29,10 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay","livecd/modblacklist","livecd/bootsplash"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
+			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
+			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/bootsplash",\
+			"livecd/rcadd","livecd/rcdel"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -170,8 +173,8 @@ class livecd_stage2_target(generic_stage_target):
 				os.putenv(kname+"_kernelopts", "")
 			
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+"kernel "+list_bashify(args)," Runscript kernel build failed")
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+"bootloader"," Bootloader runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"Runscript kernel build failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","Bootloader runscript failed.")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Runscript aborting due to error."
