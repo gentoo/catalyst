@@ -126,8 +126,6 @@ grp/cd2/packages:
 	gimp
 	gnome
 	gpm
-	gradm
-	gradm2
 	gtkpbbuttons
 	hdparm
 	host
@@ -141,19 +139,15 @@ grp/cd2/packages:
 	keychain
 	koffice
 	kpnadsl4linux
-	lcrzoex
 	libsdl
 	links
 	logrotate
-	lukemftp
 	lynx
 	lzo
 	mac-fdisk
 	metalog
-	minicom
 	mirrorselect
 	mozilla
-	mozilla-firebird
 	nano
 	netcat
 	nfs-utils
@@ -162,7 +156,6 @@ grp/cd2/packages:
 	openoffice-ximian
 	openssh
 	parted
-	partimage
 	passook
 	pbbuttonsd
 	pciutils
@@ -182,34 +175,27 @@ grp/cd2/packages:
 	samba
 	screen
 	superadduser
-	sylpheed
 	sysklogd
 	syslog-ng
 	tcpdump
 	tetex
-	tsocks
 	ucl
 	ufed	
 	unzip
-	vcron
-	vile
 	vim
 	vixie-cron
 	whois
-	xautoconf
 	xcdroast
-	xchat
 	xchat
 	xeasyconf
 	xemacs
 	xfree
 	xmms
 	yaboot
-	zip
 
 grp/src/type: srcset
 grp/src/packages:
-	linux-wlan-ng
+	ppc-development-sources
 	metalog
 	pcmcia-cs
 	syslog-ng
