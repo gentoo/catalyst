@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.196 2005/03/29 17:09:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.197 2005/03/29 18:53:32 wolf31o2 Exp $
+
+  29 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  +livecd/files/livecd-bash_profile, livecd/runscript/default-runscript.sh:
+  Added a new livecd-bash_profile that sources ~/.bashrc in case we're called
+  from an interactive shell.
 
   29 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/files/livecd-bash_profile, +livecd/files/livecd-bashrc,

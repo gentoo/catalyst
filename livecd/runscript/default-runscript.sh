@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.24 2005/03/29 17:09:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.25 2005/03/29 18:53:32 wolf31o2 Exp $
 
 #return codes to be used by archscript
 die() {
@@ -143,6 +143,8 @@ case $1 in
 		# move over the environment
 		cp ${clst_sharedir}/livecd/files/livecd-bashrc \
 			${clst_chroot_path}/root/.bashrc
+		cp ${clst_sharedir}/livecd/files/livecd-bash_profile \
+			${clst_chroot_path}/root/.bash_profile
 		cp ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
 		mkdir -p /usr/share/faces
