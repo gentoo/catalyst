@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.18 2004/07/12 14:25:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.19 2004/07/12 15:01:17 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -41,9 +41,10 @@ do
 	export clst_buildpkgs="${clst_buildpkgs} ${x}"
 done
 
-if [ -n "${clst_DEBUG}" ]
+if [ -n "${clst_VERBOSE}" ]
 then
 	USE="-* build" emerge ${clst_myemergeopts} -vp --noreplace ${clst_buildpkgs} || exit 1
+	sleep 15
 fi
 
 USE="-* build" emerge ${clst_myemergeopts} --noreplace ${clst_buildpkgs} || exit 1

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.4 2004/07/12 14:25:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.5 2004/07/12 15:01:17 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -44,9 +44,10 @@ USE="build" emerge portage
 #turn off auto-use:
 export USE_ORDER="env:conf:defaults"	
 
-if [ "${clst_DEBUG}" ]
+if [ "${clst_VERBOSE}" ]
 then
 	emerge ${clst_emergeopts} -vp ${clst_packages}
+	sleep 15
 fi
 
 emerge ${clst_emergeopts} ${clst_packages}

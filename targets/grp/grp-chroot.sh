@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.4 2004/07/12 14:25:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.5 2004/07/12 15:01:17 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -43,9 +43,10 @@ then
 	unset DISTDIR
 	export PKGDIR="/tmp/grp/${clst_grp_target}"
 
-	if [ -n "${clst_DEBUG}" ]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		emerge --usepkg --buildpkg --noreplace -vp ${clst_grp_packages} || exit 1
+		sleep 15
 	fi
 	
 	emerge --usepkg --buildpkg --noreplace ${clst_grp_packages} || exit 1

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.6 2004/07/12 14:25:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.7 2004/07/12 15:01:17 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -43,9 +43,10 @@ export CONFIG_PROTECT="-*"
 # make.conf. emerge system could merge it otherwise.
 USE="build" emerge portage
 
-if [ -n "${clst_DEBUG}" ]
+if [ -n "${clst_VERBOSE}" ]
 then
 	emerge ${clst_myemergeopts} -vp system || exit 1
+	sleep 15
 fi
 
 emerge ${clst_myemergeopts} system || exit 1

@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.69 2004/07/12 14:25:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.70 2004/07/12 15:01:17 zhen Exp $
+
+  12 Jul 2004; John Davis <zhen@gentoo.org> catalyst,
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/tinderbox/tinderbox-chroot.sh:
+  changing the more verbose behavior to the -V (verbose) flag
 
   12 Jul 2004; <zhen@gentoo.org> catalyst,
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
