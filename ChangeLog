@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.135 2005/01/04 21:13:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.136 2005/01/04 21:33:20 wolf31o2 Exp $
+
+  04 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/isolinux-2.08-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.08-memtest86+-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.08-memtest86-cdtar.tar.bz2,
+  +livecd/cdtar/isolinux-2.11-cdtar.tar.bz2,
+  +livecd/cdtar/isolinux-2.11-memtest86+-cdtar.tar.bz2:
+  Upgraded the isolinux cdtar files and closing bug #70518.
 
   04 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/embedded_target.py, modules/generic_stage_target.py,
