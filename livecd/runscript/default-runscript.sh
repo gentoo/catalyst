@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.12 2004/05/27 16:41:36 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.13 2004/06/11 19:06:37 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -135,6 +135,14 @@ case $1 in
 		cp ${clst_sharedir}/livecd/runscript-support/livecdfs-update.sh ${clst_chroot_path}/tmp
 		${clst_CHROOT} ${clst_chroot_path} /tmp/livecdfs-update.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/livecdfs-update.sh
+		
+		# if the user has their own fs update script, execute it
+		if [ -n "${clst_livecd_fsscript}" ]
+		then
+			cp ${clst_livecd_fsscript} ${clst_chroot_path}/tmp/fsscript.sh
+			${clst_CHROOT} ${clst_chroot_path} /tmp/fsscript.sh || exit 1
+			rm -f ${clst_chroot_path}/tmp/fsscript.sh
+		fi
 		;;
 
 	clean)
