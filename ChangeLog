@@ -1,6 +1,17 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.46 2004/05/02 10:20:27 tester Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.47 2004/05/12 21:18:50 zhen Exp $
+
+  12 May 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript/default-runscript.sh, livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  livecd/runscript-support/post-kmerge.sh,
+  livecd/runscript-support/pre-kmerge.sh, modules/catalyst_support.py,
+  modules/targets.py:
+  fixed default-runscript.sh so that it is easier to read (no more chroot >> EOF
+  silliness). Most notably, I have taken advantage of the update-modules
+  --assume-kernel fix from agriffis so that we can actually use 3rd party
+  modules now. Please note that >=baselayout-1.9.0 is required.
 
   02 May 2004; Olivier Crete <tester@gentoo.org>
   arch/x86.py:

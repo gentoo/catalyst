@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.102 2004/05/06 23:06:17 pvdabeel Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.103 2004/05/12 21:18:50 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -556,7 +556,6 @@ class livecd_stage2_target(generic_stage_target):
 			#write out /var/tmp/kname.(use|packages) files, used for kernel USE and extra packages settings
 			for extra in ["use","packages"]:
 				if self.settings.has_key("boot/kernel/"+kname+"/"+extra):
-					print "DEBUG: has key boot/kernel/"+kname+"/"+extra,self.settings["boot/kernel/"+kname+"/"+extra]
 					myex=self.settings["boot/kernel/"+kname+"/"+extra]
 					if type(myex)==types.ListType:
 						myex=string.join(myex)
@@ -570,10 +569,7 @@ class livecd_stage2_target(generic_stage_target):
 					else:
 						myf.write(myex+"\n")
 					myf.close()
-				else:
-					print "DEBUG: no key boot/kernel/"+kname+"/"+extra
 					
-
 			retval=os.system("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+kname+".config")
 			if retval!=0:
 				self.unbind()
