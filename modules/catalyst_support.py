@@ -1,8 +1,8 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.26 2004/07/12 14:37:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.27 2004/09/16 05:53:50 zhen Exp $
 
-import sys,string,os,types
+import sys,string,os,types,re
 
 # these should never be touched
 required_build_targets=["generic_target","generic_stage_target"]
@@ -149,7 +149,7 @@ def parse_spec(mylines):
 			myline=mylines[pos].split()
 			
 			if (len(myline)==0) or (myline[0][-1] != ":"):
-				msg("Skipping invalid spec line "+repr(pos))
+				msg("Skipping invalid spec line "+repr(pos+1))
 			#strip colon:
 			myline[0]=myline[0][:-1]
 			if len(myline)==2:
@@ -199,6 +199,18 @@ def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
 		print mymsg
 
+def pathcompare(path1,path2):
+	# Change double slashes to slash
+	path1 = re.sub(r"//",r"/",path1)
+	path2 = re.sub(r"//",r"/",path2)
+	# Removing ending slash
+	path1 = re.sub("/$","",path1)
+	path2 = re.sub("/$","",path2)
+	
+	if path1 == path2:
+		return 1
+	return 0
+
 def ismount(path):
 	"enhanced to handle bind mounts"
 	if os.path.ismount(path):
@@ -208,7 +220,7 @@ def ismount(path):
 	a.close()
 	for line in mylines:
 		mysplit=line.split()
-		if path == mysplit[1]:
+		if pathcompare(path,mysplit[1]):
 			return 1
 	return 0
 
