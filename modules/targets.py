@@ -78,9 +78,10 @@ class generic_stage_target(generic_target):
 		if self.settings["target"] in ["grp","tinderbox"]:
 			#grp creates a directory of packages and sources rather than a compressed tarball
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
-			#since we have a directory here, we need to create it
-			if not os.path.exists(self.settings["target_path"]):
-				os.makedirs(self.settings["target_path"])
+		elif self.settings["target"] == "livecd-stage2":
+			#we have a main directory and a tarball in this case
+			os.makedirs(st+"/builds/"+self.settings["target_subpath"])
+			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/"+self.settings["target_subpath"]+".tar.bz2"
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
@@ -99,6 +100,9 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
+		if self.settings["target"]="livecd-stage2":
+			self.mounts.append("/tmp/binaries")
+			self.mountmap["/tmp/binaries"]=st+"/builds/"+self.settings["target_subpath"]+"/binaries"
 			
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -139,6 +143,8 @@ class generic_stage_target(generic_target):
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
+			if not os.path.exists(self.mountmap[x]):
+				os.makedirs(self.mountmap[x])
 			src=self.mountmap[x]
 			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
 			if retval!=0:
