@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.15 2004/02/14 21:05:28 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.16 2004/02/14 22:21:58 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -114,6 +114,10 @@ EOF
 			clst_kextversion="$1"
 			shift
 			$clst_CHROOT $clst_chroot_path /bin/bash << EOF
+				die() {
+					echo "$1"
+					exit 1
+				}
 				# Script to build each kernel, kernel-related packages 
 				source /etc/profile
 				[ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
@@ -122,7 +126,7 @@ EOF
 				# Don't use pkgcache here, as the kernel source may get emerge with different USE variables
 				# (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
 				# pkgcache for kernel source ebuilds.
-				emerge --noreplace $clst_ksource || exit 1
+				emerge $clst_ksource || exit 1
 				[ ! -e /usr/src/linux ] && die "Can't find required directory /usr/src/linux"
 				#if catalyst has set NULL_VALUE, extraversion wasn't specified so we skip this part
 				if [ "$clst_kextversion" != "NULL_VALUE" ]
