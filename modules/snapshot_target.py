@@ -1,15 +1,14 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.2 2004/06/02 06:35:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.3 2004/07/03 00:33:37 zhen Exp $
 
 """
 Builder class for snapshots.
 """
 
-import os,string,imp,types,shutil
+import os
 from catalyst_support import *
 from generic_stage_target import *
-from stat import *
 
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
@@ -29,17 +28,24 @@ class snapshot_target(generic_target):
 
 	def run(self):
 		self.setup()
-		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+" from "+self.settings["portdir"]+"..."
+		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
+			" from "+self.settings["portdir"]+"..."
+		
 		mytmp=self.settings["tmp_path"]
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 		
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure")
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+\
+			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure")
+		
 		if self.settings.has_key("portdir_overlay"):
-			cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+self.settings["portdir_overlay"]+"/ "+mytmp+"/portage/","Snapshot/ overlay addition failure")
+			print "Adding Portage overlay to the snapshot..."
+			cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+\
+				self.settings["portdir_overlay"]+"/ "+mytmp+"/portage/","Snapshot/ overlay addition failure")
 			
 		print "Compressing Portage snapshot tarball..."
-		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage","Snapshot creation failure")
+		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
+			"Snapshot creation failure")
 		self.cleanup()
 		print "snapshot: complete!"
 

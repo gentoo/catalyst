@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.13 2004/06/04 14:03:46 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.14 2004/07/03 00:33:37 zhen Exp $
 
 case $1 in
 	enter)
@@ -39,7 +39,7 @@ case $1 in
 	
 	clean)
 		#clean runs after preclean with bind mounts unmounted
-		keepers="sys-kernel/linux-headers sys-devel/binutils sys-devel/gcc sys-apps/baselayout sys-libs/glibc virtual/glibc virtual/kernel"
+		keepers="virtual/os-headers sys-devel/binutils sys-devel/gcc virtual/baselayout sys-libs/glibc virtual/libc virtual/kernel"
 		# set everything to uid 999 (nouser)
 		cd ${clst_chroot_path}/tmp/stage1root
 		install -d var/db/pkg2 

@@ -1,6 +1,22 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.66 2004/06/18 18:06:21 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.67 2004/07/03 00:33:37 zhen Exp $
+
+  02 Jul 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
+  modules/generic_target.py, modules/grp_target.py,
+  modules/livecd_stage1_target.py, modules/livecd_stage2_target.py,
+  modules/snapshot_target.py, modules/stage1_target.py,
+  modules/stage2_target.py, modules/stage3_target.py,
+  modules/tinderbox_target.py, targets/stage1/stage1.sh:
+  fixes for bugs #55192 and #54137
+  added a new key for all specfiles, portage_confdir.
+  this should point to a directory similar in functionality to /etc/portage.
+  
+  cleaned up the module code a bit so that unnecessary modules
+  are not imported.
+  
+  more work on resuming. it is getting there, but it still needs a ton of work,
+  so please test, and report bugs.
 
   18 Jun 2004; John Davis <zhen@gentoo.org> catalyst,
   modules/catalyst_support.py, modules/generic_stage_target.py,
