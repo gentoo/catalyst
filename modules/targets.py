@@ -426,8 +426,15 @@ class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["boot/kernel","livecd-stage3/runscript"]
 		self.valid_values=self.required_values[:]
-		self.valid_values.append("livecd-stage3/cdtar","livecd-stage3/clean")
+		self.valid_values.extend(["livecd-stage3/cdtar","livecd-stage3/clean"])
 		generic_stage_target.__init__(self,spec,addlargs)
+		if self.settings.has_key("livecd-stage3/cdtar"):
+			if not os.path.exists(self.settings["livecd-stage3/cdtar"]):
+				raise CatalystError, "Cannot locate specified livecd-stage3/cdtar: "+self.settings["livecd-stage3/cdtar"]
+		if not os.path.exists(self.settings["livecd-stage3/runscript"]):
+				raise CatalystError, "Cannot locate specified livecd-stage3/runscript: "+self.settings["livecd-stage3/runscript"]
+
+
 
 	def run_local(self):
 		try:
