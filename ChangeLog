@@ -1,6 +1,17 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.174 2005/02/28 23:40:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.175 2005/03/02 02:14:33 wolf31o2 Exp $
+
+  01 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  +livecd/files/gentoo.png, livecd/files/livecd-local.start,
+  livecd/runscript/default-runscript.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  targets/livecd-stage2/unmerge.sh:
+  Moved portage profiles from livecd-local.start to unmerge.sh, since /usr is
+  not writeable at boot. Removed -a from cp in default-runscript.sh to keep
+  the copy from preserving permissions and also adding /usr/share/faces and
+  default Gentoo icon. We'll see how the icon does for us. Removing serial
+  init script, as it causes problems with the splash theme.
 
   28 Feb 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1.sh:

@@ -3,12 +3,6 @@
 # This is a good place to load any misc.
 # programs on startup ( 1>&2 )
 
-if [ -d /usr/livecd/profiles ]
-then
-	mkdir -p /usr/portage/profiles
-	ln -sf /usr/livecd/profiles /usr/portage/profiles
-fi
-
 if [ -d /usr/livecd/gconf ]
 then
 	ln -sf /usr/livecd/gconf /etc/gconf
