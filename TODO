@@ -1,6 +1,8 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.5 2004/06/15 05:39:35 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.6 2004/06/15 05:41:31 zhen Exp $
+
+resuming of builds (sucks having to unpack and repack seeds every time)
 
 finish catalyst howto
 
