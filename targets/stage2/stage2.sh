@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.4 2003/10/30 21:11:57 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.5 2003/11/03 02:43:55 drobbins Exp $
 
 case $1 in
 enter)
@@ -38,6 +38,9 @@ clean)
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1 
+	;;
+preclean)
+	exit 0
 	;;
 *)
 	exit 1

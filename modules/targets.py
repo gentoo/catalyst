@@ -75,7 +75,16 @@ class generic_stage_target(generic_target):
 				continue
 			if ismount(mypath+x):
 				#something is still mounted
-				raise CatalystError, x+" is still mounted; aborting."
+				try:
+					print x+" is still mounted; performing auto-bind-umount..."
+					#try to umount stuff ourselves
+					self.unbind()
+					if ismount(mypath+x):
+						raise CatalystError, "Auto-unbind failed for "+x
+					else:
+						print "Auto-unbind successful, continuing..."
+				except CatalystError:
+					raise CatalystError, "Unable to auto-unbind "+x
 		
 	def dir_setup(self):
 		print "Setting up directories..."
@@ -146,11 +155,16 @@ class generic_stage_target(generic_target):
 			cmd(mycmd,"Sed command failed: "+mycmd)
 
 	def clean(self):
-		"do not call without first unbinding; this code needs a cleanup once it stabilizes"
+		destpath=self.settings["chroot_path"]
+		if self.settings["target"]=="stage1":
+			destpath+="/tmp/stage1root"
 		for x in ["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*"]: 
-			cmd("rm -rf "+self.settings["chroot_path"]+x,"Couldn't clean "+x)
+			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
 		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
-		
+	
+	def preclean(self):
+		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
+
 	def capture(self):
 		"""capture target in a tarball"""
 		mypath=self.settings["target_path"].split("/")
@@ -160,8 +174,11 @@ class generic_stage_target(generic_target):
 		if not os.path.exists(mypath):
 			os.makedirs(mypath)
 		print "Creating stage tarball..."
-		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+" .","Couldn't create stage tarball")
-		
+		if self.settings["target"]=="stage1":
+			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+"/tmp/stage1root .","Couldn't create stage tarball")
+		else:
+			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+" .","Couldn't create stage tarball")
+
 	def run(self):
 		self.dir_setup()
 		self.unpack_and_bind()
@@ -181,7 +198,10 @@ class generic_stage_target(generic_target):
 		try:
 			cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
 		finally:
+			#pre-clean is for stuff that needs to run with bind-mounts still active
+			self.preclean()
 			self.unbind()
+		#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 		self.clean()
 		self.capture()
 			
