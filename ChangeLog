@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.182 2005/03/06 14:35:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.183 2005/03/07 00:20:37 wolf31o2 Exp $
+
+  06 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
+  -livecd/cdtar/silo-1.3.2-sparc64-cdtar.tar.bz2,
+  -livecd/cdtar/silo-1.4.4-sparc32-cdtar.tar.bz2,
+  livecd/runscript/sparc-archscript.sh:
+  Applying sparc32 patch from gustavoz. Replacing silo cdtar files with
+  unified sparc32/sparc64 cdtar.
 
   06 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh,
