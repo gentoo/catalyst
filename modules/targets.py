@@ -428,7 +428,7 @@ class livecd_stage1_target(generic_stage_target):
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/archscript","livecd/runscript"]
+		self.required_values=["boot/kernel","livecd/looptype","livecd/archscript","livecd/runscript"]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
 		if type(addlargs["boot/kernel"]) == types.StringType:
@@ -458,14 +458,14 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" kernbuild "+list_bashify(args),"runscript kernbuild failed")
+			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" kernbuild "+list_bashify(args),"runscript kernbuild failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"livecd-stage2 build aborting due to error."
 
 class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/archscript","livecd/runscript"]
+		self.required_values=["boot/kernel","livecd/looptype","livecd/archscript","livecd/runscript"]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
@@ -494,21 +494,21 @@ class livecd_stage3_target(generic_stage_target):
 
 	def setupfs(self):
 		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" setupfs","setupfs runscript failed.")
+			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" setupfs","setupfs runscript failed.")
 		except:
 			self.unbind()
 			raise
 
 	def preclean(self):
 		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
+			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
 		except:
 			self.unbind()
 			raise
 
 #	def clean(self):
 #		try:
-#			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
+#			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
 #		except:
 #			self.unbind()
 #			raise
@@ -516,8 +516,8 @@ class livecd_stage3_target(generic_stage_target):
 	def cdroot_setup(self):
 		if not os.path.exists(self.settings["cdroot_path"]):
 			os.makedirs(self.settings["cdroot_path"])
-		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" setup_bootloader","setup_bootloader runscript failed.")
-		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" "+self.settings["livecd/runscript"]+" loop","loop runscript failed.")
+		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" setup_bootloader","setup_bootloader runscript failed.")
+		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" loop","loop runscript failed.")
 		print "livecd-stage3: complete!"
 
 def register(foo):
