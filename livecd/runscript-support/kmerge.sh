@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.4 2004/05/18 17:56:56 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.5 2004/05/22 05:51:06 zhen Exp $
 
 die() {
 	echo "$1"
@@ -48,8 +48,14 @@ SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
-genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
-	
+if [ -n "${clst_livecd_bootsplash}" ]
+then
+	BOOTSPLASH_THEME="${clst_livecd_bootsplash}" genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+else
+	genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+fi
+
+${genkernel} 
 #now we merge any kernel-dependent packages
 if [ -e /var/tmp/${clst_kname}.packages ]
 then

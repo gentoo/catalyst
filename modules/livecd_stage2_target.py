@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.6 2004/05/21 15:28:05 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.7 2004/05/22 05:51:06 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,7 +29,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay","livecd/modblacklist"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay","livecd/modblacklist","livecd/bootsplash"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
