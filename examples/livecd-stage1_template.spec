@@ -55,35 +55,26 @@ livecd/use:
 livecd/packages:
 	baselayout
 	livecd-tools
-	genkernel
-	ucl
-	kudzu
+	kudzu-knoppix
 	module-init-tools
 	hotplug
 	irssi
 	aumix
 	metalog
-	pciutils
+	udev
 	parted
-	mt-st
 	links
-	star
 	strace
 	raidtools
 	nfs-utils
 	jfsutils
 	usbutils
-	speedtouch
 	xfsprogs
 	xfsdump
 	e2fsprogs
 	reiserfsprogs
 	hdparm
-	nano
-	less
-	openssh
 	dhcpcd
-	mingetty
 	pwgen
 	popt
 	dialog
@@ -100,12 +91,8 @@ livecd/packages:
 	lvm2
 	evms
 	vim
-	gpart
 	pwgen
 	pptpclient
 	mdadm
-	tcptraceroute
-	netcat
 	ethtool
 	wireless-tools
-	ufed
