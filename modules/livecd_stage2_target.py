@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.4 2004/05/19 12:40:03 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.5 2004/05/20 21:16:56 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,7 +29,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/overlay","livecd/modblacklist"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -172,6 +172,20 @@ class livecd_stage2_target(generic_stage_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"runscript aborting due to error."
+
+		# what modules do we want to blacklist?
+		if self.settings.has_key("livecd/modblacklist"):
+			mylist=self.settings["livecd/modblacklist"]
+			if type(mylist)==types.StringType:
+				mylist=[mylist]
+				try:
+					myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
+				except:
+					self.unbind()
+					raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
+				myf.write("\n#Added by Catalyst:")
+				for x in mylist:
+					myf.write("\n"+x+"\n")
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})
