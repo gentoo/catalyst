@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.6 2003/11/06 02:31:20 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.7 2004/01/29 21:53:22 zhen Exp $
 
 case $1 in
 enter)
@@ -18,6 +18,15 @@ run)
 		export FEATURES="ccache"	
 		emerge --oneshot --nodeps ccache || exit 1
 	fi
+	if [ -n "${clst_DISTCC}" ]
+	then
+		export FEATURES="distcc"
+		export DISTCC_HOSTS="${clst_distcc_hosts}"
+		emerge --oneshot --nodeps distcc || exit 1
+		echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
+		/usr/bin/distcc-config --install 2>&1 > /dev/null
+		/usr/bin/distccd 2>&1 > /dev/null
+	fi										
 	if [ -n "${clst_PKGCACHE}" ]
 	then
 		export EMERGE_OPTS="--usepkg --buildpkg"
@@ -34,6 +43,10 @@ preclean)
 	if [ -n "${clst_CCACHE}" ]
 	then
 		emerge -C dev-util/ccache || exit 1
+	fi
+	if [ -n "${clst_DISTCC}" ]
+	then
+		emerge -C sys-devel/distcc || exit 1
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1 

@@ -68,6 +68,10 @@ if "pkgcache" in string.split(myspec["options"]):
 	print "Package cache support enabled."
 	myspec["PKGCACHE"]="1"
 
+if "distcc" in string.split(myspec["options"]):
+	print "Distcc support enabled."
+	myspec["DISTCC"]="1"
+
 if sys.argv[1] in ["-f", "--file" ]:
 	try:
 		addlargs=read_spec(sys.argv[2])

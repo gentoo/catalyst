@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.7 2003/11/03 15:46:14 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.8 2004/01/29 21:53:22 zhen Exp $
 
 case $1 in
 enter)
@@ -15,7 +15,7 @@ run)
 	cp ${clst_chroot_path}/etc/make.conf ${clst_chroot_path}/tmp/stage1root/etc
 	cp -a ${clst_chroot_path}/etc/make.profile ${clst_chroot_path}/tmp/stage1root/etc
 	# enter chroot, execute our build script
-	$clst_CHROOT ${clst_chroot_path} /tmp/stage1-chroot.sh build /tmp/stage1root
+ 	$clst_CHROOT ${clst_chroot_path} /tmp/stage1-chroot.sh build /tmp/stage1root
 	[ $? -ne 0 ] && exit 1
 	;;
 preclean)

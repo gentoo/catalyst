@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.7 2003/11/06 03:45:15 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.8 2004/01/29 21:53:22 zhen Exp $
 
 case $1 in
 enter)
@@ -14,11 +14,6 @@ run)
 	source /tmp/stage23
 	export USE="-* \${clst_HOSTUSE} \${GRP_STAGE23_USE}"
 	rm -f /tmp/stage23
-	if [ -n "${clst_CCACHE}" ]
-	then
-		export FEATURES="ccache"
-		emerge --oneshot --nodeps ccache || exit 1
-	fi
 	if [ ${clst_rel_type} = "hardened" ]
 	then
 		emerge --oneshot --nodeps hardened-gcc || exit 1
@@ -28,7 +23,21 @@ run)
 	#portage needs to be merged manually with USE="build" set to avoid frying our
 	#make.conf. emerge system could merge it otherwise.
 	USE="build" emerge portage
-	
+
+	if [ -n "${clst_CCACHE}" ]
+	then
+		export FEATURES="ccache"
+		emerge --oneshot --nodeps ccache || exit 1
+	fi
+	if [ -n "${clst_DISTCC}" ]
+        then   
+                export FEATURES="distcc"
+                export DISTCC_HOSTS="${clst_distcc_hosts}"
+                emerge --oneshot --nodeps distcc || exit 1
+                echo "distcc:x:240:2:distccd:/dev/null:/bin/false" >> /etc/passwd
+                /usr/bin/distcc-config --install 2>&1 > /dev/null
+                /usr/bin/distccd 2>&1 > /dev/null
+        fi
 	if [ -n "${clst_PKGCACHE}" ]
 	then
 		emerge system --usepkg --buildpkg || exit 1
@@ -45,6 +54,11 @@ preclean)
 	if [ -n "${clst_CCACHE}" ]
 	then
 		emerge -C dev-util/ccache || exit 1
+	fi
+	if [ -n "${clst_DISTCC}" ]
+	then
+		emerge -C sys-devel/distcc || exit 1
+		userdel distcc
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1

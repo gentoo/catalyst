@@ -21,6 +21,7 @@ required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
 valid_config_file_values.append("PKGCACHE")
 valid_config_file_values.append("CCACHE")
+valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("options")
 
 verbosity=1

@@ -104,10 +104,11 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("CCACHE"):
 			self.mounts.append("/root/.ccache")
 			self.mountmap["/root/.ccache"]="/root/.ccache"
+		
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
-			
+	
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
 		#check and verify that none of our paths in mypath are mounted. We don't want to clean up with things still
@@ -204,7 +205,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		else:
-			myf.write('CXXFLAGS="$CFLAGS"\n')
+			myf.write('CXXFLAGS="${CFLAGS}"\n')
 		myf.close()
 		
 	def clean(self):
