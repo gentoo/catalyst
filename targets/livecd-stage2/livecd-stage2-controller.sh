@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.2 2005/04/05 21:42:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.3 2005/04/06 23:23:57 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -51,23 +51,22 @@ case $1 in
 		mkdir -p /usr/share/faces
 		cp ${clst_sharedir}/livecd/files/gentoo.png \
 			${clst_chroot_path}/usr/share/faces
-
-		# touch /etc/startx if our livecd/type requires it
-		if [ "${clst_livecd_type}" = "gentoo-release-environmental" ] \
-		|| [ "${clst_livecd_type}" = "gentoo-gamecd" ]
-		then
-			touch ${clst_chroot_path}/etc/startx
-		fi
 		
+		# execute copy gamecd.conf if we're a gamecd
+		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
+		then
+		    if [ -n "${clst_gamecd_conf}" ]
+		    then
+			cp ${clst_gamecd_conf} ${clst_chroot_path}/tmp/gamecd.conf
+		    else
+			echo "gamecd/conf is required for a gamecd!"
+			exit 1
+		    fi
+		fi
+
 		# now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 
-		# execute gamecdfs-update.sh if we're a gamecd
-		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
-		then
-			exec_in_chroot ${clst_sharedir}/targets/support/gamecdfs-update.sh
-		fi
-		
 		# if the user has their own fs update script, execute it
 		if [ -n "${clst_livecd_fsscript}" ]
 		then

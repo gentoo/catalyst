@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.208 2005/04/06 14:07:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.209 2005/04/06 23:23:57 rocket Exp $
+
+  06 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/stage1/stage1-preclean-chroot.sh, targets/support/functions.sh,
+  targets/support/gamecdfs-update.sh, targets/support/livecdfs-update.sh,
+  targets/support/pre-kmerge.sh:
+  change the code to use more case statements. Fix gcc issue in stage1.
 
   06 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-controller.sh,

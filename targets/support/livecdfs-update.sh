@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.3 2005/04/06 14:07:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.4 2005/04/06 23:23:57 rocket Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -14,6 +14,7 @@ fi
 
 # turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
+
 
 # default programs that we always want to start
 rc-update del iptables default
@@ -32,14 +33,16 @@ rc-update add pwgen default
 [ -e /etc/init.d/alsasound ] && rc-update add alsasound default
 [ -e /etc/init.d/hdparm ] && rc-update add hdparm default
 
-# Comment out current getty settings
-sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
-
-# Add our own getty settings
-for x in 1 2 3 4 5 6
-do
-	echo "c${x}:12345:respawn:/sbin/agetty -nl /bin/bashlogin 38400 tty${x} linux" >> /etc/inittab
-done
+# Do some livecd_type specific rc-update changes
+case ${clst_livecd_type} in
+	gentoo-gamecd )
+		# we add spind to default here since we don't want the CD to spin down
+		rc-update add spind default
+		rc-update add x-setup default
+	;;
+	*)
+	;;
+esac
 
 # perform any rcadd then any rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
@@ -61,15 +64,39 @@ then
 	fi
 fi
 
+# Comment out current getty settings
+sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
+
+# Add our own getty settings
+for x in 1 2 3 4 5 6
+do
+	echo "c${x}:12345:respawn:/sbin/agetty -nl /bin/bashlogin 38400 tty${x} linux" >> /etc/inittab
+done
+
+# Do some livecd_type specific inittab changes
+case ${clst_livecd_type} in
+	gnap)
+		sed -i "s/^#c1:/c1:/" /etc/inittab
+		sed -i "/^.*bashlogin.*$/ d" /etc/inittab
+	;;
+esac
+
 # clean up the time and set to UTC
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
 
 # setup the hostname
-echo "livecd" > /etc/hostname
-echo "gentoo" > /etc/dnsdomainname
-#sed -i 's:localhost:livecd.gentoo localhost:' /etc/hosts
-echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
+case ${clst_livecd_type} in
+	gnap)
+		echo "gentoo" > /etc/dnsdomainname
+		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
+	;;
+	*)
+		echo "livecd" > /etc/hostname
+		echo "gentoo" > /etc/dnsdomainname
+		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
+		;;
+esac
 
 # setup sudoers
 sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
@@ -137,31 +164,29 @@ mkdir -p /etc/opengl
 touch /etc/asound.state
 
 # tweak the motd for gentoo releases 
-if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
-then
-	cat /etc/generic.motd.txt /etc/universal.motd.txt \
-		/etc/minimal.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
-fi
-
-if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
-then
-	cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
-fi
-
-if [ "${clst_livecd_type}" = "gentoo-release-environmental" ]
-then
-	cat /etc/generic.motd.txt /etc/universal.motd.txt \
-		/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD Environment!:' /etc/motd
-fi
-
-if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
-then
-	cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
-fi
+case ${clst_livecd_type} in
+	gentoo-release-universal )
+		cat /etc/generic.motd.txt /etc/universal.motd.txt \
+			/etc/minimal.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
+	;;
+	gentoo-release-minimal )
+		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
+	;;
+	gentoo-release-environmental )
+		cat /etc/generic.motd.txt /etc/universal.motd.txt \
+			/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD Environment!:' /etc/motd
+	;;
+	gentoo-gamecd )
+		cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
+	;;
+	* )
+		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
+case
 
 rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/environmental.motd.txt /etc/gamecd.motd.txt
 
@@ -207,3 +232,28 @@ then
 	mkdir -p /usr/lib/hotplug
 	ln -sf /lib/firmware /usr/lib/hotplug/firmware
 fi
+
+# Post configuration
+case ${clst_livecd_type} in
+	gentoo-gamecd )
+		# we grab our configuration
+		if [ -e /tmp/gamecd.conf ]
+		then
+
+		    source /tmp/gamecd.conf || exit 1
+		    rm /tmp/gamecd.conf
+
+		    # here we replace out game information into several files
+		    sed -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
+
+		    # here we setup our xinitrc
+		    echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
+		fi
+
+		touch /etc/startx
+	;;
+	gentoo-release-environmental )
+		touch /etc/startx
+	;;
+esac
+

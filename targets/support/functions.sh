@@ -6,10 +6,13 @@ copy_to_chroot(){
 	then
 		echo "copying ${file_name} to ${clst_chroot_path}/${2}"
 		cp -a ${1} ${clst_chroot_path}/${2}
+		chmod 755 ${clst_chroot_path}/${2}/${file_name}
 	else
 		echo "copying ${file_name} to ${clst_chroot_path}/tmp"
 		cp -a ${1} ${clst_chroot_path}/tmp
+		chmod 755 ${clst_chroot_path}/tmp/${file_name}
 	fi
+
 }
 
 delete_from_chroot(){
@@ -23,8 +26,7 @@ exec_in_chroot(){
 # and executes it.
 		
 	local file_name=$(basename ${1})
-	cp -a ${1} ${clst_chroot_path}/tmp
-	chmod 755 ${clst_chroot_path}/tmp/${file_name}
+	copy_to_chroot ${1} ${2}/tmp
 	
 	if [ "${2}" != "" ]
 	then
@@ -38,7 +40,7 @@ exec_in_chroot(){
     	chmod 755 ${chroot_path}/tmp/${file_name}
 	copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh /${2}/tmp
 	echo "Running ${file_name} in chroot ${chroot_path}"
-		${clst_CHROOT} ${chroot_path} /tmp/${file_name} || exit 1
+		${clst_CHROOT} ${chroot_path}/ /tmp/${file_name} || exit 1
     	
 	rm -f ${chroot_path}/tmp/${file_name}
 	delete_from_chroot /${2}/tmp/chroot-functions.sh
