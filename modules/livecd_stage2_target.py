@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.22 2004/10/15 02:27:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.23 2004/10/16 13:38:09 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -32,13 +32,14 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
+			self.valid_values.append("boot/kernel/"+x+"/postconf")
 		
 		self.valid_values.extend(self.required_values)
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
-			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/bootsplash",\
+			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/splash_theme",\
 			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
-			"livecd/root_overlay","livecd/devmanager"])
+			"livecd/root_overlay","livecd/devmanager","livecd/splash_type"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
@@ -218,7 +219,7 @@ class livecd_stage2_target(generic_stage_target):
 			
 			# write out /var/tmp/kname.(use|packages) files, used for kernel USE
 			# and extra packages settings
-			for extra in ["use","packages","gk_kernargs"]:
+			for extra in ["use","packages","postconf","gk_kernargs"]:
 				if self.settings.has_key("boot/kernel/"+kname+"/"+extra):
 					myex=self.settings["boot/kernel/"+kname+"/"+extra]
 					if type(myex)==types.ListType:

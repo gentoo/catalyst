@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.12 2004/10/15 02:41:03 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.13 2004/10/16 13:38:09 zhen Exp $
 
 die() {
 	echo "$1"
@@ -13,13 +13,29 @@ build_kernel() {
 	GK_ARGS="${clst_livecd_gk_mainargs} \
 			 ${clst_livecd_gk_kernargs} \
 			 --kerneldir=/usr/src/linux \
+			 --do-keymap-auto \
 			 --kernel-config=/var/tmp/${clst_kname}.config \
 			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all"
 	
 	# extra genkernel options that we have to test for
-	if [ -n "${clst_livecd_bootsplash}" ]
+	if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
 	then
-		GK_ARGS="${GK_ARGS} --bootsplash=${clst_livecd_bootsplash}"
+		GK_ARGS="${GK_ARGS} --bootsplash=${clst_livecd_splash_theme}"
+	fi
+	
+	if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+	then
+		GK_ARGS="${GK_ARGS} --gensplash=${clst_livecd_splash_theme}"
+	fi
+	
+	if [  -e "/var/tmp/${clst_kname}.postconf" ]
+	then
+		for x in $( cat /var/tmp/${clst_kname}.postconf )
+		do
+			clst_kernel_postconf="${clst_kernel_postconf} ${x}"
+		done
+
+		GK_ARGS="${GK_ARGS} ${clst_kernel_postconf}"
 	fi
 	
 	if [ "${clst_livecd_devmanager}" == "udev" ]
@@ -29,7 +45,8 @@ build_kernel() {
 	
 	# build with genkernel using the set options
 	# callback is put here to avoid escaping issues
-	genkernel ${GK_ARGS} --callback="emerge ${clst_kernel_merge}" || exit 1
+	genkernel ${GK_ARGS} --callback="emerge ${clst_kernel_merge}" \
+	--postconf="emerge ${clst_kernel_postconf}" || exit 1
 	
 	# pack up the modules for resuming
 	tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \

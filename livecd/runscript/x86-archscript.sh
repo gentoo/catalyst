@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.12 2004/10/15 02:54:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.13 2004/10/16 13:38:09 zhen Exp $
 
 case $1 in
 	kernel)
@@ -76,6 +76,14 @@ case $1 in
 			echo >> ${icfg}
 			echo "label ${x}" >> ${icfg}
 			echo "	kernel ${x}" >> ${icfg}
+			
+			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+			then
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+			else
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent" >> ${icfg}
+			fi
+			
 			echo "	append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent" >> ${icfg}
 			echo >> ${icfg}
 			echo "   ${x}" >> ${kmsg}
