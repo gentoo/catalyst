@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.5 2004/06/10 15:55:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.6 2004/06/13 15:48:51 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -87,7 +87,7 @@ if [ -n "${clst_livecd_bootsplash}" ]
 then
 	if [ -d "/etc/bootsplash/${clst_livecd_bootsplash}" ]
 	then
-		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/\"${clst_livecd_bootsplash}\"/' /etc/conf.d/bootsplash
+		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/BOOTSPLASH_THEME=\"${clst_livecd_bootsplash}\"/' /etc/conf.d/bootsplash
 		rm /etc/bootsplash/default
 		ln -s "/etc/bootsplash/${clst_livecd_bootsplash}" /etc/bootsplash/default
 	else

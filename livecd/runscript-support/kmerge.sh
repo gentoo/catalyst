@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.6 2004/06/10 15:55:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.7 2004/06/13 15:48:51 zhen Exp $
 
 die() {
 	echo "$1"
@@ -50,7 +50,7 @@ clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
 if [ -n "${clst_livecd_bootsplash}" ]
 then
-	BOOTSPLASH_THEME="${clst_livecd_bootsplash}" genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+	genkernel --bootsplash=${clst_livecd_bootsplash} ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
 else
 	genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
 fi

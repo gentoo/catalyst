@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.7 2004/05/19 12:40:03 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.8 2004/06/13 15:48:51 zhen Exp $
 
 case $1 in
 	kernel)
@@ -35,9 +35,9 @@ case $1 in
 			[ ! -e "$clst_chroot_path/tmp/binaries/$x.tar.bz2" ] && die "Can't find kernel tarball at $clst_chroot_path/tmp/binaries/$x.tar.bz2"
 			tar xjvf $clst_chroot_path/tmp/binaries/$x.tar.bz2 -C $clst_cdroot_path/isolinux
 			#change kernel name from "kernel" to "gentoo", for example
-			mv $clst_cdroot_path/isolinux/kernel $clst_cdroot_path/isolinux/$x
+			mv $clst_cdroot_path/isolinux/kernel* $clst_cdroot_path/isolinux/$x
 			#change initrd name from "initrd" to "gentoo.igz", for example
-			mv $clst_cdroot_path/isolinux/initrd $clst_cdroot_path/isolinux/$x.igz
+			mv $clst_cdroot_path/isolinux/initrd* $clst_cdroot_path/isolinux/$x.igz
 		done
 		icfg=$clst_cdroot_path/isolinux/isolinux.cfg
 		kmsg=$clst_cdroot_path/isolinux/kernels.msg
