@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.28 2005/01/28 18:37:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.29 2005/02/28 23:21:09 wolf31o2 Exp $
 		
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 	| cut -d/ -f2 | cut -d- -f2,3`
@@ -14,6 +14,13 @@ fi
 
 /usr/sbin/env-update
 source /etc/profile
+
+if [ -x /usr/bin/gcc-config ]
+then
+	gcc_current=`gcc-config -c`
+	gcc-config 3 && source /etc/profile
+	gcc-config ${gcc_current} && source /etc/profile
+fi
 
 [ -f /tmp/envscript ] && source /tmp/envscript
 		

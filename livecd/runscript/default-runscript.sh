@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.20 2004/12/16 17:51:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.21 2005/02/28 23:21:09 wolf31o2 Exp $
 
 #return codes to be used by archscript
 die() {
@@ -143,12 +143,13 @@ case $1 in
 		# move over the environment
 		cp -a ${clst_sharedir}/livecd/files/livecd-bash_profile \
 			${clst_chroot_path}/root/.bash_profile
+		touch ${clst_chroot_path}/root/.bashrc
 		cp -a ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
 
 		# touch /etc/startx if our livecd/type requires it
-		if [ "${clst_livecd_type}" = "gentoo-release-environmental" ] \
-		|| [ "${clst_livecd_type}" = "gentoo-gamecd" ]
+		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] #\
+		#|| [ "${clst_livecd_type}" = "gentoo-release-environmental" ]
 		then
 			touch ${clst_chroot_path}/etc/startx
 		fi

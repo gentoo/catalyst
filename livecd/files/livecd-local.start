@@ -3,7 +3,18 @@
 # This is a good place to load any misc.
 # programs on startup ( 1>&2 )
 
-if [ -e /etc/startx ] && [ -x /usr/sbin/x-setup ]
+if [ -d /usr/livecd/profiles ]
 then
-	/usr/sbin/x-setup
+	mkdir -p /usr/portage/profiles
+	ln -sf /usr/livecd/profiles /usr/portage/profiles
+fi
+
+if [ -d /usr/livecd/gconf ]
+then
+	ln -sf /usr/livecd/gconf /etc/gconf
+fi
+
+if [ -d /usr/livecd/db ]
+then
+	ln -sf /usr/livecd/db /var/db
 fi

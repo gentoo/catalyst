@@ -1,6 +1,27 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.172 2005/02/04 16:55:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.173 2005/02/28 23:21:09 wolf31o2 Exp $
+
+  28 Feb 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/livecd-local.start, livecd/runscript/default-runscript.sh,
+  livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  livecd/runscript-support/post-kmerge.sh, modules/snapshot_target.py,
+  targets/livecd-stage1/livecd-stage1.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage1/stage1-preclean2-chroot.sh:
+  Removed x-setup from local.start and added in symlinks for gconf, portage
+  profiles (for installer) and /var/db. Added a touch for root's .bashrc for
+  baselayout and removed /etc/startx from the environmental type. Commented
+  unmerge of sources in kmerge.sh, as they should be unmerged by the spec
+  file. Changed livecdfs-update.sh to setup /etc/hosts properly, allow wheel
+  users to use sudo with no password, mount /usr/lib/X11/xkb/compiled as tmpfs
+  for X, use the latest pci.ids and usb.ids from portage, and create
+  /lib/firmware if it doesn't exist. Commented unmerge of genkernel in
+  post-kmerge.sh, as it should be unmerged by the spec file. Fixed typo in
+  snapshot_target.py. Made gconfd check in livecd-stage1.sh work if more than
+  one gconfd-2 is running. Added a gcc-config fix to stage1-chroot.sh. Changed
+  gcc-config check in stage1-preclean2-chroot.sh to ensure gcc-config is an
+  executable.
 
   04 Feb 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
   Removed ccache from default options as it breaks catalyst when merged with

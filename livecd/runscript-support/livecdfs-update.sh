@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.30 2005/01/31 13:46:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.31 2005/02/28 23:21:09 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -33,9 +33,6 @@ rc-update add pwgen default
 [ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
 [ -e /etc/init.d/alsasound ] && rc-update add alsasound default
 [ -e /etc/init.d/hdparm ] && rc-update add hdparm default
-
-# This was mistakenly added, but only works on x86 currently
-#[ -e /etc/startx ] && rc-update add mkxf86config default
 
 # Comment out current getty settings
 sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
@@ -73,7 +70,11 @@ cp /usr/share/zoneinfo/GMT /etc/localtime
 # setup the hostname
 echo "livecd" > /etc/hostname
 echo "gentoo" > /etc/dnsdomainname
-sed -i 's:localhost:livecd.gentoo localhost:' /etc/hosts
+#sed -i 's:localhost:livecd.gentoo localhost:' /etc/hosts
+echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
+
+# setup sudoers
+sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 
 # setup dhcp on all detected ethernet devices
 echo "iface_eth0=\"dhcp\""> /etc/conf.d/net
@@ -93,8 +94,15 @@ ln -sf net.eth0 net.eth4
 mkdir -p /etc/sysconfig
 
 # fstab tweaks
-echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
-echo "tmpfs		/lib/firmware	tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs	/					tmpfs	defaults	0 0" > /etc/fstab
+echo "tmpfs	/lib/firmware			tmpfs	defaults	0 0" >> /etc/fstab
+# if /usr/lib/X11/xkb/compiled then make it tmpfs
+if [ -d /usr/lib/X11/xkb/compiled ]
+then
+	echo "tmpfs	/usr/lib/X11/xkb/compiled	tmpfs	defaults	0 0" >> /etc/fstab
+fi
+
+# devfs tweaks
 sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # tweak the livecd fstab so that users know not to edit it
@@ -117,10 +125,10 @@ echo "alias grep='grep --color=auto'" >> /etc/profile
 # make sure we have the latest pci and hotplug ids
 if [ -d /usr/share/hwdata ]
 then
-	[ -f /usr/share/misc/pci.ids ] && rm -f /usr/share/misc/pci.ids
-	[ -f /usr/share/misc/usb.ids ] && rm -f /usr/share/misc/usb.ids
-	ln -s /usr/share/hwdata/pci.ids /usr/share/misc/pci.ids
-	ln -s /usr/share/hwdata/usb.ids /usr/share/misc/usb.ids
+	[ -f /usr/share/hwdata/pci.ids ] && rm -f /usr/share/hwdata/pci.ids
+	[ -f /usr/share/hwdata/usb.ids ] && rm -f /usr/share/hwdata/usb.ids
+	ln -s /usr/share/misc/pci.ids /usr/share/hwdata/pci.ids
+	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
 fi
 
 # setup opengl in /etc (if configured)
@@ -183,6 +191,9 @@ then
 		exit 1
 	fi
 fi
+
+# Create firmware directory if it does not exist
+[ ! -d /lib/firmware ] && mkdir -p /lib/firmware
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
 if [ -n "$(ls /lib/firmware)" ]

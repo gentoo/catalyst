@@ -1,12 +1,12 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1-preclean2-chroot.sh,v 1.7 2005/01/26 15:34:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1-preclean2-chroot.sh,v 1.8 2005/02/28 23:21:09 wolf31o2 Exp $
 		
 # now, some finishing touches to initialize gcc-config....
 unset ROOT
 
-if [ -e /usr/bin/gcc-config ]
+if [ -x /usr/bin/gcc-config ]
 then
 	mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
 	gcc-config ${mythang}; /usr/sbin/env-update; source /etc/profile

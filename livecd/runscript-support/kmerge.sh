@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.22 2005/01/28 21:00:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.23 2005/02/28 23:21:09 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -157,7 +157,7 @@ fi
 /sbin/modules-update --assume-kernel=${clst_fudgeuname}
 
 #now the unmerge... (wipe db entry)
-emerge -C ${clst_ksource}
+#emerge -C ${clst_ksource}
 unset USE
 
 echo
