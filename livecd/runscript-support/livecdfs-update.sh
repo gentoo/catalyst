@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.21 2004/11/19 18:19:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.22 2004/12/08 19:47:55 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -58,13 +58,13 @@ echo "gentoo" > /etc/dnsdomainname
 sed -i -e "s:localhost:livecd.gentoo localhost:" /etc/hosts
 
 # gpm fixes
-sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
+[ -e /etc/conf.d/gpm ] && sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
 	-e 's:#MOUSEDEV=/dev/input/mice:MOUSEDEV=/dev/input/mice:' \
 	/etc/conf.d/gpm
 
 # fstab tweaks
 #sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
-echo "tmpfs		/	tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs		/usr/lib/hotplug/firmware	tmpfs	defaults	0 0" >> /etc/fstab
 sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 
@@ -87,10 +87,10 @@ echo "alias grep='grep --color=auto'" >> /etc/profile
 # make sure we have the latest pci and hotplug ids
 if [ -d /usr/share/hwdata ]
 then
-	[ -f /usr/share/misc/pci.ids ] && rm -f /usr/share/misc/pci.ids
-	[ -f /usr/share/misc/usb.ids ] && rm -f /usr/share/misc/usb.ids
-	ln -s /usr/share/hwdata/pci.ids /usr/share/misc/pci.ids
-	ln -s /usr/share/hwdata/usb.ids /usr/share/misc/usb.ids
+	[ -f /usr/share/hwdata/pci.ids ] && rm -f /usr/share/hwdata/pci.ids
+	[ -f /usr/share/hwdata/usb.ids ] && rm -f /usr/share/hwdata/usb.ids
+	ln -s /usr/share/misc/pci.ids /usr/share/hwdata/pci.ids
+	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
 fi
 
 # tweak the motd for gentoo releases 
@@ -142,5 +142,5 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-[ -n "$(ls /usr/lib/hotplug/firmware)" ] && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
+[ -n "$(ls /usr/lib/hotplug/firmware)" ] && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/* && rm -f /usr/lib/hotplug/firmware/*
 ln -sf /lib/firmware /usr/lib/hotplug/firmware

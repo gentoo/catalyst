@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.115 2004/12/06 22:25:10 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.116 2004/12/08 19:47:55 wolf31o2 Exp $
+
+  08 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh:
+  Save some space by removing redundant firmware after tarball is made, only
+  perform sed on /etc/conf.d/gpm if it exists, and change fstab to be more
+  readable.
 
   06 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean2-chroot.sh:
