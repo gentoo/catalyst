@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.49 2004/05/17 01:41:53 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.50 2004/05/18 02:09:57 zhen Exp $
+
+  17 May 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript/default-runscript.sh, livecd/runscript/x86-archscript.sh,
+  livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  modules/livecd_stage2_target.py:
+  fixes for the genkernel arg handling - we can now do it on a per-kernel basis.
+  we also now have basic motd copying support for more branded livecds
 
   16 May 2004; John Davis <zhen@gentoo.org>
   livecd/runscript-support/kmerge.sh, modules/livecd_stage2_target.py:

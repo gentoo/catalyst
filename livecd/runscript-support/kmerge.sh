@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.2 2004/05/17 01:41:53 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.3 2004/05/18 02:09:57 zhen Exp $
 
 die() {
 	echo "$1"
@@ -21,6 +21,7 @@ rm /etc/localtime
 ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
 [ -e /var/tmp/${clst_kname}.use ] && export USE="$( cat /var/tmp/${clst_kname}.use )" || unset USE
+[ -e /var/tmp/${clst_kname}.gk_kernargs ] && source /var/tmp/${clst_kname}.gk_kernargs
 # Don't use pkgcache here, as the kernel source may get emerge with different USE variables
 # (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
 # pkgcache for kernel source ebuilds.
@@ -47,7 +48,11 @@ SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
-genkernel ${clst_livecd_genkernel_args} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
+echo "GENKERNEL ARGS"
+echo "MAINARGS: ${clst_livecd_gk_mainargs}"
+echo "KERNARGS: ${clst_livecd_gk_kernargs}"
+
+genkernel ${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config --minkernpackage=/tmp/binaries/${clst_kname}.tar.bz2 all || exit 1
 	
 #now we merge any kernel-dependent packages
 if [ -e /var/tmp/${clst_kname}.packages ]
@@ -66,4 +71,3 @@ fi
 #now the unmerge... (wipe db entry)
 emerge -C ${clst_ksource}
 unset USE
-

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.2 2004/05/17 01:41:53 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.3 2004/05/18 02:09:57 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -27,8 +27,10 @@ class livecd_stage2_target(generic_stage_target):
 			self.valid_values.append("boot/kernel/"+x+"/extraversion")
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")
+			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/genkernel_args"])
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type","livecd/motd","livecd/readme"])
+		
 		generic_stage_target.__init__(self,spec,addlargs)
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
 	
@@ -110,22 +112,25 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
 
-			# We must support multiple configs for the same kernel, so we must manually edit the
-			# EXTRAVERSION on the kernel to allow them to coexist.  The extraversion field gets appended
-			# to the current EXTRAVERSION in the kernel Makefile.  Examples of this usage are UP vs SMP kernels,
-			# and on PPC64 we need a seperate pSeries, iSeries, and PPC970 (G5) kernels, all compiled off the
-			# same source, without having to release a seperate livecd for each (since other than the kernel,
-			# they are all binary compatible)
+			# We must support multiple configs for the same kernel,
+			# so we must manually edit the EXTRAVERSION on the kernel to allow them to coexist.
+			# The extraversion field gets appended to the current EXTRAVERSION
+			# in the kernel Makefile.  Examples of this usage are UP vs SMP kernels,
+			# and on PPC64 we need a seperate pSeries, iSeries, and PPC970 (G5) kernels,
+			# all compiled off the same source, without having to release a seperate 
+			# livecd for each (since other than the kernel, they are all binary compatible)
 			if self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
-				#extraversion is now an optional parameter, so that don't need to worry about it unless
-				#they have to
+				# extraversion is now an optional parameter, so that don't need to
+				# worry about it unless they have to
 				args.append(self.settings["boot/kernel/"+kname+"/extraversion"])
 			else:
-				#this value will be detected on the bash side and indicate that EXTRAVERSION processing
-				#should be skipped
+				# this value will be detected on the bash side and indicate
+				# that EXTRAVERSION processing
+				# should be skipped
 				args.append("NULL_VALUE")
-			#write out /var/tmp/kname.(use|packages) files, used for kernel USE and extra packages settings
-			for extra in ["use","packages"]:
+			# write out /var/tmp/kname.(use|packages) files, used for kernel USE
+			# and extra packages settings
+			for extra in ["use","packages","gk_kernargs"]:
 				if self.settings.has_key("boot/kernel/"+kname+"/"+extra):
 					myex=self.settings["boot/kernel/"+kname+"/"+extra]
 					if type(myex)==types.ListType:
@@ -137,6 +142,8 @@ class livecd_stage2_target(generic_stage_target):
 						raise CatalystError,"Couldn't create file /var/tmp/"+kname+"."+extra+" in chroot."
 					if extra=="use":
 						myf.write("export USE=\""+myex+"\"\n")
+					if extra=="gk_kernargs":
+						myf.write("export clst_livecd_gk_kernargs=\""+myex+"\"\n")
 					else:
 						myf.write(myex+"\n")
 					myf.close()

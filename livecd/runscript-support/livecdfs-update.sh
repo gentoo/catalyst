@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.1 2004/05/12 21:18:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.2 2004/05/18 02:09:57 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -48,4 +48,15 @@ then
 	rm -f /usr/share/hwdata/usb.ids
 	ln -s /usr/share/misc/pci.ids /usr/share/hwdata/pci.ids
 	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
+fi
+
+# tweak the motd for gentoo releases 
+if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
+then
+	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Universal Installation LiveCD!/' /etc/motd
+fi
+
+if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
+then
+	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Minimal Installation LiveCD!/' /etc/motd
 fi

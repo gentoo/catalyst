@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.9 2004/05/12 21:18:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.10 2004/05/18 02:09:57 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -124,8 +124,15 @@ case $1 in
 		# overwrite /etc/init.d/local in the livecd root
 		rm -f ${clst_chroot_path}/etc/init.d/local
 		cp -a ${clst_sharedir}/livecd/files/livecd-rclocal ${clst_chroot_path}/etc/init.d/local
-	
-		# now, finalize and tweak the livecd fs
+		
+		# move over the motd (if applicable)
+		if [ -n ${clst_livecd_motd} ]
+		then
+			rm -r ${clst_chroot_path}/etc/motd
+			cp -a ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
+		fi
+		
+		# now, finalize and tweak the livecd fs (inside of the chroot)
 		cp ${clst_sharedir}/livecd/runscript-support/livecdfs-update.sh ${clst_chroot_path}/tmp
 		${clst_CHROOT} ${clst_chroot_path} /tmp/livecdfs-update.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/livecdfs-update.sh
@@ -133,10 +140,10 @@ case $1 in
 
 	clean)
 		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
-	;;
+		;;
 
 	bootloader)
-	;;
+		;;
 
 	cdfs)
 		loopret=1
@@ -165,6 +172,7 @@ case $1 in
 		;;
 
 	iso)
+		mkdir ${clst_cdroot_path}/docs
 		;;
 esac
 exit 0 
