@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.95 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.96 2004/03/30 19:45:14 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -17,8 +17,8 @@ class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
 		
-		self.required_values.extend(["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"])
-		self.valid_values.extend(["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"])
+		self.required_values.extend(["version_stamp","target","subarch","rel_type","profile","snapshot","source_subpath"])
+		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile","snapshot","source_subpath"])
 		generic_target.__init__(self,addlargs,myspec)
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
@@ -79,10 +79,9 @@ class generic_stage_target(generic_target):
 			print "Building natively for",self.settings["hostarch"]
 		else:
 			print "Building on",self.settings["hostarch"],"for alternate machine type",self.settings["mainarch"]
-		#we are going to do a little hack for stackable profile integration here.
-		#if rel_version does not exist, then assume that the profile is stackable.
-		self.settings["target_profile"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
-		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
+			
+		self.settings["target_profile"]=self.settings["profile"]
+		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
 		if self.settings["target"] in ["grp","tinderbox"]:
@@ -288,6 +287,8 @@ class generic_stage_target(generic_target):
 		print "Creating stage tarball..."
 		if self.settings["target"]=="stage1":
 			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+"/tmp/stage1root .","Couldn't create stage tarball")
+		elif self.settings["target"]=="embedded":
+			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+"/tmp/mergeroot .","Couldn't create stage tarball")
 		else:
 			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+" .","Couldn't create stage tarball")
 
@@ -385,7 +386,7 @@ class stage3_target(generic_stage_target):
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
+		self.required_values=["version_stamp","target","subarch","rel_type","profile","snapshot","source_subpath"]
 		self.valid_values=self.required_values[:]
 		if not addlargs.has_key("grp"):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
@@ -614,22 +615,22 @@ class embedded_target(generic_stage_target):
             if self.settings.has_key("embedded/unmerge"):
 		    if type(self.settings["embedded/unmerge"])==types.StringType:
 			    self.settings["embedded/unmerge"]=[self.settings["embedded/unmerge"]]
-		    myunmerge=self.settings["embedded/unmerge"][:]
+			    myunmerge=self.settings["embedded/unmerge"][:]
                     
                     for x in range(0,len(myunmerge)):
                         myunmerge[x]="'"+myunmerge[x]+"'"
-		    myunmerge=string.join(myunmerge)
+			myunmerge=string.join(myunmerge)
                         # before cleaning unmerge stuff
 		    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
                         
     def clean(self):
 	    if self.settings.has_key("embedded/rm"):
 		    if type(self.settings["embedded/rm"])==types.StringType:
-			    self.settings["lembedded/rm"]=[self.settings["embedded/rm"]]
-		    print "Removing directories from image"
-		    for x in self.settings["embedded/rm"]:
-			    print "Removing "+x
-			    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
+			    self.settings["embedded/rm"]=[self.settings["embedded/rm"]]
+			    print "Removing directories from image"
+			    for x in self.settings["embedded/rm"]:
+				    print "Removing "+x
+				    os.system("rm -rf "+self.settings["chroot_path"]+"/tmp/mergeroot"+x)
     def run_local(self):
 	    mypackages=list_bashify(self.settings["embedded/packages"])
 	    print "Merging embedded image"
@@ -646,19 +647,6 @@ class embedded_target(generic_stage_target):
 	    except CatalystError:
 		    self.unbind()
 		    raise CatalystError, "embedded runscript aborting due to error."
-	    
-
-    def capture(self):
-	    """capture target in a tarball"""
-	    mypath=self.settings["target_path"].split("/")
-	    #remove filename from path
-	    mypath=string.join(mypath[:-1],"/")
-	    #now make sure path exists
-	    if not os.path.exists(mypath):
-		    os.makedirs(mypath)
-	    print "Creating stage tarball..."
-	    cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+"/tmp/mergeroot .","Couldn't create stage tarball")
-
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,

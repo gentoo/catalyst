@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.5 2004/03/30 19:45:14 zhen Exp $
 
 #return codes to be used by archscript
 
@@ -181,7 +181,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.4 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.5 2004/03/30 19:45:14 zhen Exp $
 
 depend() {
 	after *
@@ -226,6 +226,12 @@ EOF
 			sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
 			echo "tmpfs		/	tmpfs	defaults	0 0" >> /etc/fstab
 			sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
+
+			echo "alias cp='cp -i'" >> /etc/profile
+			echo "alias ls='ls --color'" >> /etc/profile
+			echo "alias mv='mv -i'" >> /etc/profile
+			echo "alias pico='nano -w'" >> /etc/profile
+			echo "alias rm='rm -i'" >> /etc/profile
 			# END OF SCRIPT TO UPDATE FILESYSTEM
 EOF
 		[ $? -ne 0 ] && exit 1 
