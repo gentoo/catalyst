@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.12 2004/09/07 14:04:24 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.13 2004/10/01 02:48:08 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -36,7 +36,8 @@ class generic_stage_target(generic_target):
 				"ppc" : ["ppc"],
 				"ppc64" : ["ppc","ppc64"],
 				"hppa" : ["hppa"],
-				"mips" : ["mips"]
+				"mips" : ["mips"],
+				"arm" : ["arm"]
 		}
 		
 		machinemap={ 	"i386" : "x86",
@@ -54,7 +55,9 @@ class generic_stage_target(generic_target):
 				"parisc" : "hppa",
 				"parisc64" : "hppa",
 				"mips" : "mips",
-				"mips64" : "mips"
+				"mips64" : "mips",
+				"arm" : "arm",
+				"arm" : "armv4l"
 		}
 	
 		mymachine=os.uname()[4]
