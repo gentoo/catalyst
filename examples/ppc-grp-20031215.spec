@@ -146,7 +146,8 @@ grp/src/packages:
 	iproute
 	wireless-tools
 	pcmcia-cs
-	evms
+#not yet on stable
+	#evms
 	linux-wlan-ng
 	mol
 
