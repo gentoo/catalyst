@@ -48,6 +48,7 @@ livecd/empty:
 	/usr/src
 	/usr/share/doc
 	/usr/share/man
+	/root/.ccache
 livecd/rm:
 	/lib/*.a
 	/usr/lib/*.a
