@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.16 2004/10/19 03:39:36 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.17 2004/10/21 17:06:21 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -54,6 +54,11 @@ cp /usr/share/zoneinfo/GMT /etc/localtime
 echo "livecd" > /etc/hostname
 echo "gentoo" > /etc/dnsdomainname
 
+# gpm fixes
+sed -i -e 's/#MOUSE=imps2/MOUSE=imps2/' \
+	-e 's:#MOUSEDEV=/dev/input/mice:MOUSEDEV=/dev/input/mice:' \
+	/etc/conf.d/gpm
+
 # fstab tweaks
 #sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
 echo "tmpfs		/	tmpfs	defaults	0 0" >> /etc/fstab
@@ -63,10 +68,10 @@ sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 # tweak the livecd fstab so that users know not to edit it
 # http://bugs.gentoo.org/show_bug.cgi?id=60887
 mv /etc/fstab /etc/fstab.old
-echo "###############################################" >> /etc/fstab
-echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD" >> /etc/fstab     
-echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab" >> /etc/fstab     
-echo "###############################################" >> /etc/fstab
+echo "####################################################" >> /etc/fstab
+echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD     ##" >> /etc/fstab     
+echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab     
+echo "####################################################" >> /etc/fstab
 cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
 
@@ -75,14 +80,15 @@ echo "alias ls='ls --color'" >> /etc/profile
 echo "alias mv='mv -i'" >> /etc/profile
 echo "alias pico='nano -w'" >> /etc/profile
 echo "alias rm='rm -i'" >> /etc/profile
+echo "alias grep='grep --color'" >> /etc/profile
 
 # make sure we have the latest pci and hotplug ids
 if [ -d /usr/share/hwdata ]
 then
-	[ -f /usr/share/misc/pci.ids ] && rm -f /usr/share/hwdata/pci.ids
-	[ -f /usr/share/misc/usb.ids ] && rm -f /usr/share/hwdata/usb.ids
-	ln -s /usr/share/misc/pci.ids /usr/share/hwdata/pci.ids
-	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
+	[ -f /usr/share/misc/pci.ids ] && rm -f /usr/share/misc/pci.ids
+	[ -f /usr/share/misc/usb.ids ] && rm -f /usr/share/misc/usb.ids
+	ln -s /usr/share/hwdata/pci.ids /usr/share/misc/pci.ids
+	ln -s /usr/share/hwdata/usb.ids /usr/share/misc/usb.ids
 fi
 
 # tweak the motd for gentoo releases 

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.29 2004/10/15 02:27:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.30 2004/10/21 17:06:21 wolf31o2 Exp $
 
 import sys,string,os,types,re
 
@@ -15,6 +15,7 @@ valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
 valid_config_file_values.append("PKGCACHE")
+valid_config_file_values.append("KERNCACHE")
 valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")

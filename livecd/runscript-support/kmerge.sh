@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.16 2004/10/19 04:06:35 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.17 2004/10/21 17:06:21 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -34,6 +34,18 @@ build_kernel() {
 		do
 			clst_kernel_postconf="${clst_kernel_postconf} ${x}"
 		done
+		GK_ARGS="${GK_ARGS} --postconf=\"${clst_kernel_postconf}\""
+	fi
+
+	if [ -e "/var/tmp/${clst_kname}.packages" ]
+	then
+		for x in $( cat /var/tmp/${clst_kname}.packages )
+		do
+			# we don't want to use the pkgcache for these since the results
+			# are kernel-dependent.
+			clst_kernel_merge="${clst_kernel_merge} ${x}"
+		done
+		GK_ARGS="${GK_ARGS} --callback=\"${clst_kernel_merge}\""
 	fi
 	
 	if [ "${clst_livecd_devmanager}" == "udev" ]
@@ -43,11 +55,10 @@ build_kernel() {
 	
 	# build with genkernel using the set options
 	# callback is put here to avoid escaping issues
-	genkernel ${GK_ARGS} --callback="emerge ${clst_kernel_merge}" \
-	--postconf="emerge ${clst_kernel_postconf}" || exit 1
+	genkernel ${GK_ARGS} || exit 1
 	
 	# pack up the modules for resuming
-	if [ -n "${clst_PKGCACHE}" ]
+	if [ -n "${clst_KERNCACHE}" ]
 	then
 		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
 			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
@@ -95,17 +106,6 @@ SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
-# now we merge any kernel-dependent packages
-if [ -e "/var/tmp/${clst_kname}.packages" ]
-then
-	for x in $( cat /var/tmp/${clst_kname}.packages )
-	do
-		# we don't want to use the pkgcache for these since the results
-		# are kernel-dependent.
-		clst_kernel_merge="${clst_kernel_merge} ${x}"
-	done
-fi
-
 # kernel building happens here
 # does the old config exist? if it does not, we build by default
 if [ -e "/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config" ]
@@ -113,7 +113,7 @@ then
 	# test to see if the kernel .configs are the same, if so, then we skip kernel building
 	test1=$(md5sum /var/tmp/${clst_kname}.config | cut -d " " -f 1)
 	test2=$(md5sum /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config | cut -d " " -f 1)
-	if [ "${test1}" == "${test2}" -a -n "${clst_PKGCACHE}" ]
+	if [ "${test1}" == "${test2}" -a -n "${clst_KERNCACHE}" ]
 	then
 		echo
 		echo "No kernel configuration change, skipping kernel build..."
@@ -143,4 +143,4 @@ emerge -C ${clst_ksource}
 unset USE
 
 # keep the config around so that we can resume at some point
-[ -n "${clst_PKGCACHE}" ] && cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config
+[ -n "${clst_KERNCACHE}" ] && cp /var/tmp/${clst_kname}.config /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config

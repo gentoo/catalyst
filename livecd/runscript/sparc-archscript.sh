@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.5 2004/10/15 02:40:00 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.6 2004/10/21 17:06:21 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -40,7 +40,7 @@ case $1 in
 			tar xjvf ${kbinary} -C ${clst_cdroot_path}/boot
 			
 			# change kernel name from "kernel" to "gentoo", for example
-			mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/boot/${x}
+			mv ${clst_cdroot_path}/boot/kernel-* ${clst_cdroot_path}/boot/${x}
 			
 			# change initrd name from "initrd" to "gentoo.igz", for example
 			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/${x}.igz

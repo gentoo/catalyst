@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.51 2004/10/19 04:06:35 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.52 2004/10/21 17:06:21 wolf31o2 Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -95,6 +95,10 @@ def parse_config(myconfig):
 	if "pkgcache" in string.split(conf_values["options"]):
 		print "Package cache support enabled."
 		conf_values["PKGCACHE"]="1"
+
+	if "kerncache" in string.split(conf_values["options"]):
+		print "Kernel cache support enabled."
+		conf_values["KERNCACHE"]="1"
 	
 	if "distcc" in string.split(conf_values["options"]):
 		print "Distcc support enabled."
