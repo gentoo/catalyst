@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.104 2004/10/22 04:23:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.105 2004/10/28 15:05:36 wolf31o2 Exp $
+
+  28 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/x86-archscript.sh, livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/pre-kmerge.sh:
+  Removing auto-keymap from kmerge.sh and moving it to x86-archscript.sh since
+  it is only working properly on amd64 and x86 anyway. Also fixing a typo in
+  genkernel's module_load for x86 during pre-kmerge.sh, which should fix USB
+  loading.
 
   22 Oct 2004; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf,
   livecd/runscript-support/kmerge.sh,

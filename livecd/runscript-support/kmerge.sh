@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.18 2004/10/22 04:23:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.19 2004/10/28 15:05:36 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -13,7 +13,6 @@ build_kernel() {
 	GK_ARGS="${clst_livecd_gk_mainargs} \
 			 ${clst_livecd_gk_kernargs} \
 			 --kerneldir=/usr/src/linux \
-			 --do-keymap-auto \
 			 --kernel-config=/var/tmp/${clst_kname}.config \
 			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all"
 	

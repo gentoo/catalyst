@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.14 2004/10/19 03:39:36 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.15 2004/10/28 15:05:36 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -79,9 +79,9 @@ case $1 in
 			
 			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 			then
-				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
 			else
-				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent" >> ${icfg}
+				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 dokeymap splash=silent" >> ${icfg}
 			fi
 			
 			echo >> ${icfg}
