@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.7 2004/04/02 04:40:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.8 2004/04/26 15:18:55 zhen Exp $
 
 #return codes to be used by archscript
 
@@ -187,7 +187,7 @@ EOF
 #!/sbin/runscript
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.7 2004/04/02 04:40:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.8 2004/04/26 15:18:55 zhen Exp $
 
 depend() {
 	after *
@@ -215,7 +215,9 @@ EOF
 					sed -e "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config > /etc/ssh/sshd_config1
 					mv /etc/ssh/sshd_config1 /etc/ssh/sshd_config
 			fi
-				
+			# fix /etc/issue for mingetty and friends
+			echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
+		
 			rc-update del iptables default
 			rc-update del netmount default
 #			rc-update add hotplug default
