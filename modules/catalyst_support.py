@@ -129,9 +129,10 @@ def ismount(path):
 			return 1
 	return 0
 
-def arg_parse(mydict,remaining={}):
+def arg_parse(mydict,remaining,argv):
+	"grab settings from argv, storing 'target' in mydict, and everything in remaining for later parsing"
 	global required_config_file_values
-	for x in sys.argv[1:]:
+	for x in argv:
 		foo=string.split(x,"=")
 		if len(foo)!=2:
 			raise CatalystError, "Invalid arg syntax: "+x

@@ -62,7 +62,12 @@ class generic_stage_target(generic_target):
 		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
-		self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+		if self.settings["target"]=="grp":
+			#grp creates a directory of packages and sources rather than a compressed tarball
+			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
+		else:
+			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+
 		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
 		
@@ -76,6 +81,9 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("CCACHE"):
 			self.mounts.append("/root/.ccache")
 			self.mountmap["/root/.ccache"]="/root/.ccache"
+		if self.settings["target"]=="grp":
+			self.mounts.append("/tmp/grp")
+			self.mountmap["/tmp/grp"]=self.settings["target_path"]
 			
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -162,10 +170,15 @@ class generic_stage_target(generic_target):
 		cmds=["","# catalyst start","# These settings were added by the catalyst build script that automatically built this stage",
 		'CFLAGS="'+self.settings["CFLAGS"]+'"',
 		'CHOST="'+self.settings["CHOST"]+'"']
-		if self.settings.has_key("HOSTUSE"):
-			cmds.append('USE="'+string.join(self.settings["HOSTUSE"])+'"')
-		else:
-			cmds.append('USE=""')
+		myusevars=[]
+		if self.setttings.has_key("HOSTUSE"):
+			myusevars.extend(self.settings["HOSTUSE"])
+		if self.settings["target"]=="grp":
+			myusevars.append("bindist")
+			myusevars.extend(self.settings["grp/use"])
+			
+		cmds.append('USE="'+string.join(myusevars)+'"')
+		
 		if self.settings.has_key("CXXFLAGS"):
 			cmds.append('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"')
 		else:
@@ -230,14 +243,21 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				os.environ["clst_"+x]=string.join(self.settings[x])
 		try:
-			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
+			if self.settings["target"]!="grp":
+				cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
+			else:
+				for pkgset in self.settings["grp"]:
+					#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
+					cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
 		finally:
 			#pre-clean is for stuff that needs to run with bind-mounts still active
-			self.preclean()
+			if self.settings["target"]!="grp":
+				self.preclean()
 			self.unbind()
-		#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
-		self.clean()
-		self.capture()
+		if self.settings["target"]!="grp":
+			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
+			self.clean()
+			self.capture()
 			
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
@@ -290,7 +310,15 @@ class stage3_target(generic_stage_target):
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
+		self.required_values=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
+		if not addlargs.has_key("grp"):
+			raise CatalystError,"Required value \"grp\" not specified in spec."
+		self.required_values.extend(["grp","grp/use"])
+		for x in addlargs["grp"]:
+			self.required_values.append("grp/"+x+"/packages")
+			self.required_values.append("grp/"+x+"/type")
 		generic_stage_target.__init__(self,spec,addlargs)
+		self.valid_values=self.required_values
 
 class livecd_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
