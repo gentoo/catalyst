@@ -185,7 +185,6 @@ grp/cd2/packages:
 	xcdroast
 	xchat
 	xeasyconf
-	xemacs
 	xfree
 	xfce4
 	xmms
