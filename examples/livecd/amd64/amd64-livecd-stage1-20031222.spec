@@ -6,7 +6,9 @@ rel_version: 1.4
 snapshot: 20031222
 source_subpath: default-amd64-1.4/stage3-amd64-20031221
 livecd/packages:
+	>=sys-apps/baselayout-1.8.6.12-r4
 	irssi
 livecd/use:
 	-X
 	-gtk
+	livecd

@@ -1,55 +1,21 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-archscript.sh,v 1.1 2004/01/20 20:01:41 drobbins Exp $
-
-# Section has been handled, do not execute additional scripts
-RETURN_GOOD=0
-# An error has occurred
-RETURN_BAD=1
-# This script executed properly, continue with additional scripts
-RETURN_CONTINUE=2
-
-die() {
-	echo "$1"
-	exit $RETURN_BAD
-}
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-archscript.sh,v 1.2 2004/01/20 22:24:39 drobbins Exp $
 
 case $1 in
-	kernbuild)
-		echo "no generic process for sparc64, continuing"
-		exit $RETURN_CONTINUE
-	;;
-
-	setupfs)
-		echo "no generic process for sparc64, continuing"
+	kernel)
 		exit $RETURN_CONTINUE
 	;;
 
 	preclean)
-		echo "no generic process for sparc64, continuing"
-		exit 2
-	;;
-
-	clean)
-		echo "no generic process for sparc64, continuing"
 		exit $RETURN_CONTINUE
 	;;
 
-	setup_bootloader)
-		# LOOPTYPE should be exported from default runscript, we use
-		# it to determine kernel args
-		if [ "${LOOPTYPE}" = "zisofs" ]
-		then
-			loop_opts="looptype=zisofs loop=/zisofs"
-		elif [ "${LOOPTYPE}" = "normal" ]
-		then
-			loop_opts="looptype=normal loop=/livecd.loop"
-		elif [ "${LOOPTYPE}" = "noloop" ]
-		then
-			# no loop at all wanted, just a raw copy on a cd
-			loop_opts="looptype=noloop"
-		fi
+	clean)
+		exit $RETURN_CONTINUE
+	;;
 
+	bootloader)
 		# Time to create a filesystem tree for the ISO at
 		# $clst_cdroot_path. We extract the "cdtar" to this directory,
 		# which will normally contains a pre-built binary
@@ -72,12 +38,12 @@ case $1 in
 				#grab name of first kernel
 				first="$x"
 			fi
-			if [ ! -e "$clst_binaries_source_path/$x.tar.bz2" ] 
+			if [ ! -e "/tmp/binaries/$x.tar.bz2" ] 
 			then
-				echo "Can't find kernel tarball at $clst_binaries_source_path/$x.tar.bz2"
+				echo "Can't find kernel tarball at /tmp/binaries/$x.tar.bz2"
 				exit 1
 			fi
-			tar xjvf $clst_binaries_source_path/$x.tar.bz2 -C \
+			tar xjvf /tmp/binaries/$x.tar.bz2 -C \
 			    $clst_cdroot_path/boot
 			# change kernel name from "kernel" to "gentoo", for
 			# example
@@ -103,7 +69,7 @@ case $1 in
 			echo >> $icfg
 			echo "image=\"/boot/$x\"" >> $scfg
 			echo -e "\tlabel=\"$x\"" >> $scfg
-			echo -e "\tappend=\"initrd=/boot/$x.igz root=/dev/ram0 init=/linuxrc ${loop_opts} cdroot\"" >> $scfg
+			echo -e "\tappend=\"initrd=/boot/$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot\"" >> $scfg
 
 		done
 
@@ -112,12 +78,11 @@ case $1 in
 		exit $RETURN_CONTINUE
 	;;
 
-	loop)
-		echo "no generic process for sparc64, continuing"
+	cdfs)
 		exit $RETURN_CONTINUE
 	;;
 
-	iso_create)
+	iso)
 		# this is for the livecd-final target, and calls the proper
 		# command to build the iso file
 		mkisofs -J -R -l -o ${clst_iso_path} -G /boot/isofs.b -B ... \

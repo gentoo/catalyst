@@ -8,6 +8,7 @@ source_subpath: default-x86-1.4/stage3-x86-20040111
 livecd/use:
 	-X
 	-gtk
+	livecd
 livecd/packages:
 	>=sys-apps/baselayout-1.8.6.12-r4
 	kudzu

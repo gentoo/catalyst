@@ -8,6 +8,7 @@ source_subpath: default-sparc64-1.4/stage3-sparc64-20040111
 livecd/use:
 	-X
 	-gtk
+	livecd
 livecd/packages:
 	>=sys-apps/baselayout-1.8.6.12-r4
 	module-init-tools

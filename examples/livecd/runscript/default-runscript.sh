@@ -1,12 +1,10 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.7 2004/01/18 21:24:28 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.8 2004/01/20 22:24:39 drobbins Exp $
 
-# Section has been handled, do not execute additional scripts
+#return codes to be used by archscript
 RETURN_GOOD=0
-# An error has occurred
 RETURN_BAD=1
-# Should continue
 RETURN_CONTINUE=2
 
 die() {
@@ -14,71 +12,25 @@ die() {
 	exit $RETURN_BAD
 }
 
-#Here is how the livecd runscript works:
+case $clst_livecd_cdfstype in
+zisofs)
+	cmdline_opts="looptype=zisofs loop=/zisofs"
+	;;
+normal)
+	cmdline_opts="looptype=normal loop=/livecd.loop"
+	;;
+noloop)
+	cmdline_opts="looptype=noloop"
+	;;
+esac
+export cmdline_opts
 
-# livecd-stage2 begins. The "run" part of this script is executed, which is used to build
-# kernels and copy any needed binaries to /tmp/binaries. The arguments passed to this 
-# runscript are "run <numkernels> <kname1> <ksource1> <kname2> <ksource2> ...". For example,
-# the args might be "run 2 gentoo =sys-kernel/gentoo-dev-sources-2.6.1 smp 
-# =sys-kernel/foo-sources-2.4.24". The kernel configs for each kernel can be found already
-# copied to /var/tmp/<kname>.config.
-
-# livecd-stage2 ends.
-# livecd-stage3 begins.
-
-# runscript: preclean executes (with bind mounts still mounted)
-# catalyst: do livecd/unmerge (with bind mounts still mounted)
-# catalyst: bind mounts unmounted
-# catalyst: do livecd/empty
-# catalyst: do livecd/delete
-# runscript: livecd/clean
-# runscript: cdroot_setup
-
-# livecd-stage3 completes.
-# Set default looptype to zisofs
-
-if [ "${LOOPTYPE}" == "" ]
-then
-	LOOPTYPE="zisofs"
-fi
-
-export LOOPTYPE
-
-if [ "${LOOPTYPE}" = "zisofs" ]
-then
-	loop_opts="looptype=zisofs loop=/zisofs"
-elif [ "${LOOPTYPE}" = "normal" ]
-then
-	loop_opts="looptype=normal loop=/livecd.loop"
-elif [ "${LOOPTYPE}" = "noloop" ]
-then
-	# no loop at all wanted, just a raw copy on a cd
-	loop_opts="looptype=noloop"
-fi
-# loop options to be passed to the kernel
-export loop_opts
-
-if [ "${ARCH_RUNSCRIPT}" == "" -o ! -f "${ARCH_RUNSCRIPT}" ]
-then
-	die "ARCH_RUNSCRIPT NOT DEFINED OR NOT FOUND"
-fi
-
-/bin/bash ${ARCH_RUNSCRIPT} $*
+/bin/bash ${clst_livecd_archscript} $*
 RET="$?"
 
-if [ "${RET}" != "${RETURN_CONTINUE}" ]
-then
-	if [ "${RET}" -eq "0" ]
-	then
-		echo "${ARCH_RUNSCRIPT} finished successfully, don\'t have to run default commands"
-		exit 0
-	else
-		echo "${ARCH_RUNSCRIPT} errored out, not continuing"
-		exit 1
-	fi
-else
-	echo "${ARCH_RUNSCRIPT} finished successfully, running default commands"
-fi
+[ "${RET}" = "0" ] && exit 0
+[ "${RET}" = "1" ] && exit 1
+# if $RET is 2, then we continue and run the runscript portion as well.
 
 create_normal_loop()
 {
@@ -131,11 +83,12 @@ create_noloop()
 }
 
 case $1 in
-	kernbuild)
+	kernel)
 		shift
 		numkernels="$1"
 		shift
 		count=0
+		install -d /tmp/binaries
 		while [ $count -lt $numkernels ]
 		do
 			clst_kname="$1"
@@ -166,7 +119,7 @@ EOF
 		exit $RETURN_GOOD
 	;;
 
-	setupfs)
+	preclean)
 		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 			# SCRIPT TO UPDATE FILESYSTEM SPECIFIC FOR LIVECD. THIS GETS EXECUTED IN CHROOT
 			env-update
@@ -192,45 +145,26 @@ EOF
 		exit $RETURN_GOOD
 	;;
 
-	preclean)
-		#preclean runs with bind mounts active -- for running any commands inside chroot.
-		#The chroot environment has not been trimmed in any way, so you still have a full
-		#environment.
-		# This below doesn't seem to get honored
-		#$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-		#	echo "CDBOOT=1" >> /etc/rc.conf
-		#EOF
-		#[ $? -ne 0 ] && exit $RETURN_BAD
-		exit $RETURN_GOOD
-	;;
-
 	clean)
-		#livecd/unmerge, bind-unmount, and livecd/{empty,delete,prune}
-		#have already executed at this point. You now have the opportunity to perform
-		#any additional cleaning steps that may be required.
-
 		find $clst_chroot_path/usr/lib -iname "*.pyc" -exec rm -f {} \;
 		exit $RETURN_GOOD
 	;;
 
-	setup_bootloader)
-		#Time to create a filesystem tree for the ISO at $clst_cdroot_path.
-		#We extract the "cdtar" to this directory, which will normally contains a pre-built
-		#binary boot-loader/filesystem skeleton for the ISO. 
+	bootloader)
 		exit $RETURN_GOOD
 	;;
 
-	loop)
+	cdfs)
 		loopret=1
-		if [ "${LOOPTYPE}" = "normal" ]
+		if [ "${clst_livecd_cdfstype}" = "normal" ]
 		then
 			create_normal_loop
 			loopret=$?
-		elif [ "${LOOPTYPE}" = "zisofs" ]
+		elif [ "${clst_livecd_cdfstype}" = "zisofs" ]
 		then
 			create_zisofs
 			loopret=$?
-		elif [ "${LOOPTYPE}" = "noloop" ]
+		elif [ "${clst_livecd_cdfstype}" = "noloop" ]
 		then
 			create_noloop
 			loopret=$?
@@ -238,8 +172,7 @@ EOF
 		exit $loopret
 	;;
 
-	iso_create)
-		#this is for the livecd-final target, and calls the proper command to build the iso file
+	iso)
 		exit $RETURN_GOOD
 	;;
 esac

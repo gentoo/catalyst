@@ -84,21 +84,8 @@ class generic_stage_target(generic_target):
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		elif self.settings["target"] == "livecd-stage2":
-			#we have a main directory and a tarball in this case
-			#making these directories before we clean doesn't make sense:
-			#os.makedirs(st+"/builds/"+self.settings["target_subpath"])
-			self.settings["binaries_target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/binaries"
-			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/"+self.settings["target_subpath"]+".tar.bz2"
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
-		elif self.settings["target"]=="livecd-stage3":
-			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]+"/cdroot"
-			#making these directories before we clean doesn't make sense:
-			#if not os.path.exists(self.settings["target_path"]):
-			#	os.makedirs(self.settings["target_path"])
-			#if not os.path.exists(self.settings["cdroot_path"]):
-			#	os.makedirs(self.settings["cdroot_path"])
-			self.settings["binaries_source_path"]=st+"/builds/"+self.settings["source_subpath"]+"/binaries"
-			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+"/"+self.settings["source_subpath"]+".tar.bz2"
+			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
@@ -117,9 +104,6 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
-		if self.settings["target"]=="livecd-stage2":
-			self.mounts.append("/tmp/binaries")
-			self.mountmap["/tmp/binaries"]=self.settings["binaries_target_path"]
 			
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -309,19 +293,17 @@ class generic_stage_target(generic_target):
 				os.environ[varname]=string.join(self.settings[x])
 			
 		self.run_local()
-		if self.settings["target"] in ["livecd-stage3"]:
-			self.setupfs()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage3"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
 			self.preclean()
-		if self.settings["target"] in ["livecd-stage3"]:
+		if self.settings["target"] in ["livecd-stage2"]:
 			self.unmerge()
 		self.unbind()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage3"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1"]:
 			self.capture()
-		if self.settings["target"] in ["livecd-stage3"]:
+		if self.settings["target"] in ["livecd-stage2"]:
 			self.cdroot_setup()
 			
 class snapshot_target(generic_target):
@@ -428,7 +410,14 @@ class livecd_stage1_target(generic_stage_target):
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/looptype","livecd/archscript","livecd/runscript"]
+		self.required_values=["boot/kernel","livecd/cdfstype","livecd/archscript","livecd/runscript"]
+		if self.settings.has_key("livecd/cdtar"):
+			if not os.path.exists(self.settings["livecd/cdtar"]):
+				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
+		if not os.path.exists(self.settings["livecd/runscript"]):
+			raise CatalystError, "Cannot locate specified livecd/runscript: "+self.settings["livecd/runscript"]
+		if not os.path.exists(self.settings["livecd/archscript"]):
+			raise CatalystError, "Cannot locate specified livecd/archscript: "+self.settings["livecd/archscript"]
 		if not addlargs.has_key("boot/kernel"):
 			raise CatalystError, "Required value boot/kernel not specified."
 		if type(addlargs["boot/kernel"]) == types.StringType:
@@ -439,9 +428,55 @@ class livecd_stage2_target(generic_stage_target):
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
 		self.valid_values=self.required_values[:]
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
-	
-	def run_local(self):
+			
+	def unmerge(self):
+		if self.settings.has_key("livecd/unmerge"):
+			if type(self.settings["livecd/unmerge"])==types.StringType:
+				self.settings["livecd/unmerge"]=[self.settings["livecd/unmerge"]]
+			myunmerge=self.settings["livecd/unmerge"][:]
+			for x in range(0,len(myunmerge)):
+				#surround args with quotes for passing to bash, allows things like "<" to remain intact
+				myunmerge[x]="'"+myunmerge[x]+"'"
+			myunmerge=string.join(myunmerge)
+			#before cleaning, unmerge stuff:
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
+
+	def setupfs(self):
+		try:
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
+		except:
+			self.unbind()
+			raise
+
+	def preclean(self):
+		try:
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
+		except:
+			self.unbind()
+			raise
+
+	def clean(self):
+		try:
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
+		except:
+			self.unbind()
+			raise
+
+	def cdroot_setup(self):
+		if os.path.exists(self.settings["cdroot_path"]):
+			print "cleaning previous livecd-stage3 build"
+			cmd("rm -rf "+self.settings["cdroot_path"],"Could not remove existing directory: "+self.settings["cdroot_path"])
+
+		print "creating livecd-stage3 cdroot"
+		os.makedirs(self.settings["cdroot_path"])
+
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
+		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
+		print "livecd-stage3: complete!"
+
+def run_local(self):
 		mynames=self.settings["boot/kernel"]
 		if type(mynames)==types.StringType:
 			mynames=[mynames]
@@ -458,73 +493,13 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" kernbuild "+list_bashify(args),"runscript kernbuild failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"runscript kernel build failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"livecd-stage2 build aborting due to error."
 
 class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/looptype","livecd/archscript","livecd/runscript"]
-		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
-		generic_stage_target.__init__(self,spec,addlargs)
-		if self.settings.has_key("livecd/cdtar"):
-			if not os.path.exists(self.settings["livecd/cdtar"]):
-				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
-		if not os.path.exists(self.settings["livecd/runscript"]):
-				raise CatalystError, "Cannot locate specified livecd/runscript: "+self.settings["livecd/runscript"]
-		if not os.path.exists(self.settings["livecd/archscript"]):
-				raise CatalystError, "Cannot locate specified livecd/archscript: "+self.settings["livecd/archscript"]
-
-	def unmerge(self):
-		if self.settings["target"]=="livecd-stage3" and self.settings.has_key("livecd/unmerge"):
-			if type(self.settings["livecd/unmerge"])==types.StringType:
-				self.settings["livecd/unmerge"]=[self.settings["livecd/unmerge"]]
-			myunmerge=self.settings["livecd/unmerge"][:]
-			for x in range(0,len(myunmerge)):
-				#surround args with quotes for passing to bash, allows things like "<" to remain intact
-				myunmerge[x]="'"+myunmerge[x]+"'"
-			myunmerge=string.join(myunmerge)
-			#before cleaning, unmerge stuff:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
-
-	def run_local(self):
-		pass
-
-	def setupfs(self):
-		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" setupfs","setupfs runscript failed.")
-		except:
-			self.unbind()
-			raise
-
-	def preclean(self):
-		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" preclean","preclean runscript failed.")
-		except:
-			self.unbind()
-			raise
-
-	def clean(self):
-		try:
-			cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
-		except:
-			self.unbind()
-			raise
-
-	def cdroot_setup(self):
-		if os.path.exists(self.settings["cdroot_path"]):
-			print "cleaning previous livecd-stage3 build"
-			cmd("rm -rf "+self.settings["cdroot_path"],"Could not remove existing directory: "+self.settings["cdroot_path"])
-
-		print "creating livecd-stage3 cdroot"
-		os.makedirs(self.settings["cdroot_path"])
-
-		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" setup_bootloader","setup_bootloader runscript failed.")
-		cmd("env ARCH_RUNSCRIPT="+self.settings["livecd/archscript"]+" LOOPTYPE="+self.settings["livecd/looptype"]+" /bin/bash "+self.settings["livecd/runscript"]+" loop","loop runscript failed.")
-		print "livecd-stage3: complete!"
-
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
 	"grp":grp_target,"livecd-stage1":livecd_stage1_target,
