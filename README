@@ -80,6 +80,7 @@ Once you have your seed stage, you're now ready to build your first new stage.
 Here is a guideline for what components you'll need to build each type of stage:
 
 stage1 requires "generic" (ie. "x86" or "ppc") stage2 or 3
+NOTE: you can't use a stage1 to build a stage1
 
 stage2 requires "generic" stage1 (the only kind you should have :)
 
