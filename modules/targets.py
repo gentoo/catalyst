@@ -102,8 +102,15 @@ class generic_stage_target(generic_target):
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
 		if self.settings.has_key("CCACHE"):
-			self.mounts.append(os.environ["CCACHE_DIR"])
-			self.mountmap["/var/tmp/portage/.ccache"]=os.environ["CCACHE_DIR"]
+			if os.environ.has_key("CCACHE_DIR"):
+				ccdir=os.environ["CCACHE_DIR"]
+				del os.environ["CCACHE_DIR"]
+			else:
+				ccdir="/var/tmp/portage/ccache"
+			if not os.path.isdir(ccdir):
+					raise CatalystError,"Compiler cache support can't be enabled (can't find "+ccdir+")"
+			self.mounts.append("/var/tmp/portage/ccache")
+			self.mountmap["/var/tmp/portage/ccache"]=ccdir
 		
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
