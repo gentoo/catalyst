@@ -1,10 +1,15 @@
 import sys,string,os
 
-config_file_values=["storedir","sharedir","distdir","portdir"]
+required_config_file_values=["storedir","sharedir","distdir","portdir"]
+valid_config_file_values=required_config_file_values[:]
+valid_config_file_values.append("CCACHE")
+valid_config_file_values.append("PKGCACHE")
+valid_config_file_values.append("options")
 
 class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
+			print
 			print "catalyst: "+message
 def die(msg=None):
 	warn(msg)
@@ -27,7 +32,7 @@ def ismount(path):
 	return 0
 
 def arg_parse(mydict,remaining={}):
-	global config_file_values
+	global required_config_file_values
 	for x in sys.argv[1:]:
 		foo=string.split(x,"=")
 		if len(foo)!=2:
@@ -36,16 +41,16 @@ def arg_parse(mydict,remaining={}):
 	if not remaining.has_key("target"):
 		raise CatalystError, "Required value \"target\" not specified."
 	mydict["target"]=remaining["target"]
-	for x in config_file_values:
+	for x in required_config_file_values:
 		if not mydict.has_key(x):
 			raise CatalystError, "Required config file value \""+x+"\" not found."
 
 		
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
-	global config_file_values
+	global valid_config_file_values
 	for x in addlargs.keys():
-		if x not in validspec and x not in config_file_values:
+		if x not in validspec and x not in valid_config_file_values:
 			raise CatalystError, "Argument \""+x+"\" not recognized."
 		else:
 			myspec[x]=addlargs[x]

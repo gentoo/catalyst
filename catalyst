@@ -31,7 +31,11 @@ myspec["sharedir"]="/usr/share/catalyst"
 #these would come from there too?:
 myspec["distdir"]="/mnt/misc/distfiles"
 myspec["portdir"]="/usr/portage"
-
+myspec["options"]="ccache pkgcache"
+if "ccache" in string.split(myspec["options"]):
+	myspec["CCACHE"]="1"
+if "pkgcache" in string.split(myspec["options"]):
+	myspec["PKGCACHE"]="1"
 #determine target, call target constructor and hand it the rest of the arguments
 
 try:

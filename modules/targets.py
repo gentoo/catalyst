@@ -36,9 +36,6 @@ class generic_stage_target(generic_target):
 		if not machinemap.has_key(mymachine):
 			raise CatalystError, "Unknown machine type "+mymachine
 		self.settings["hostarch"]=machinemap[mymachine]
-		print "Host architecture:",self.settings["hostarch"]
-		print "Supported architectures for targets:",string.join(targetmap[self.settings["hostarch"]])
-		print "Loading all valid plugins for this machine:",
 		self.archmap={}
 		self.subarchmap={}
 		for x in targetmap[self.settings["hostarch"]]:
@@ -48,9 +45,6 @@ class generic_stage_target(generic_target):
 			#this next line registers all the subarches supported in the plugin
 			self.archmap[x].register(self.subarchmap)
 			fh.close()	
-		print x,
-		print
-		print "Available subarches:",string.join(self.subarchmap.keys())
 		#call arch constructor, pass our settings
 		self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
 		self.settings["target_subpath"]=self.settings["rel_type"]+"-"+self.settings["mainarch"]+"-"+self.settings["rel_version"]
@@ -60,16 +54,25 @@ class generic_stage_target(generic_target):
 		self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
-		self.settings["pkgcache_path"]=st+"/packages/"+self.settings["target_subpath"]
+		
+		self.mounts=[ "/proc","/dev","/usr/portage/distfiles" ]
+		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/usr/portage/distfiles":self.settings["distdir"]}
+		if self.settings.has_key("PKGCACHE"):
+			self.settings["pkgcache_path"]=st+"/packages/"+self.settings["target_subpath"]
+			self.mounts.append("/usr/portage/packages")
+			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
+		if self.settings.has_key("CCACHE"):
+			self.mounts.append("/root/.ccache")
+			self.mountmap["/root/.ccache"]="/root/.ccache"
+			
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
 		#check and verify that none of our paths in mypath are mounted. We don't want to clean up with things still
 		#mounted, and this allows us to check. returns 1 on ok, 0 on "something is still mounted" case.
-		paths=["/usr/portage/packages","/usr/portage/distfiles", "/var/tmp/distfiles", "/proc", "/root/.ccache", "/dev"]
 		if not os.path.exists(mypath):
 			return 
-		for x in paths:
+		for x in self.mounts:
 			if not os.path.exists(mypath+x):
 				continue
 			if ismount(mypath+x):
@@ -77,6 +80,7 @@ class generic_stage_target(generic_target):
 				raise CatalystError, x+" is still mounted; aborting."
 		
 	def dir_setup(self):
+		print "Setting up directories..."
 		self.mount_safety_check()
 		retval=os.system("rm -rf "+self.settings["chroot_path"])
 		if retval != 0:
@@ -86,26 +90,27 @@ class generic_stage_target(generic_target):
 			os.makedirs(self.settings["pkgcache_path"])
 		
 	def unpack_and_bind(self):
+		print "Unpacking stage tarball..."
 		retval=os.system("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"])
 		if retval!=0:
 			raise CatalystError,"Error unpacking tarball"
+		print "Unpacking portage tree snapshot..."
 		retval=os.system("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr")
 		if retval!=0:
 			raise CatalystError,"Error unpacking snapshot"
-		for x in [[self.settings["distdir"],"/usr/portage/distfiles"],
-				["/proc","/proc"],["/dev","/dev"]]:
-			if not os.path.exists(self.settings["chroot_path"]+x[1]):
-				os.makedirs(self.settings["chroot_path"]+x[1])
-			
-			retval=os.system("mount --bind "+x[0]+" "+self.settings["chroot_path"]+x[1])
+		for x in self.mounts: 
+			if not os.path.exists(self.settings["chroot_path"]+x):
+				os.makedirs(self.settings["chroot_path"]+x)
+			src=self.mountmap[x]
+			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
 			if retval!=0:
 				self.unbind()
-				raise CatalystError,"Couldn't bind mount "+x[0]
+				raise CatalystError,"Couldn't bind mount "+src
 
 	def unbind(self):
 		ouch=0
 		mypath=self.settings["chroot_path"]
-		for x in ["/usr/portage/distfiles","/proc","/dev"]:
+		for x in self.mounts:
 			if not os.path.exists(mypath+x):
 				continue
 			if not ismount(mypath+x):
@@ -122,28 +127,60 @@ class generic_stage_target(generic_target):
 			raise CatalystError,"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
-		self.unpack_and_bind()
 		retval=os.system("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc")
 		if retval!=0:
 			raise CatalystError,"Could not copy resolv.conf into place."
+		#Ugly bunch of sed commands to get /etc/make.conf to hold the correct default values for the stage
+		#we're building. This way, when a user uses a pentium4 stage3, it is set up to compile for pentium4
+		#using the CFLAGS and USE settings we used. It's possible that this would look nicer written in
+		#python, even without using regexes which aren't really necessary.
+		mycmds=[]
+		mycmds.append("sed -i -e '/# catalyst start/,/# catalyst stop/d'")
+		mycmds.append("sed -i -e 's:^CFLAGS=:#&:' -e 's:^CXXFLAGS=:#&:' -e 's:^CHOST=:#&:' -e 's:^USE=:#&:'")
+		sedcmd="sed -i -e '5i\\' -e '# catalyst start\\' -e '# these settings were added by the catalyst build script"
+		sedcmd+=" that automatically built this stage\\' -e 'CFLAGS=\""+self.settings["CFLAGS"]+"\"\\'"
+		if self.settings.has_key("CXXFLAGS"):
+			sedcmd+=" -e 'CXXFLAGS=\""+self.settings["CXXFLAGS"]+"\"\\'"
+		else:
+			sedcmd+=" -e 'CXXFLAGS=\"${CFLAGS}\"\\'"
+		sedcmd+=" -e 'CHOST=\""+self.settings["CHOST"]+"\"\\'"
+		if self.settings.has_key("HOSTUSE"):
+			sedcmd+=" -e 'USE=\""+string.join(self.settings["HOSTUSE"])+"\"\\'"
+		sedcmd+=" -e '# catalyst end\\' -e ''"
+		mycmds.append(sedcmd)
+		for x in mycmds:
+			mycmd=x+" "+self.settings["chroot_path"]+"/etc/make.conf"
+			retval=os.system(mycmd)
+			if retval != 0:
+				raise CatalystError, "Sed command failed: "+mycmd
 
 	def clean(self):
 		"do not call without first unbinding"
-		retval=os.system("rm "+self.settings["chroot_path"]+"/etc/resolv.conf")
+		os.system("rm -f"+self.settings["chroot_path"]+"/etc/ld.so.preload")
+		retval=os.system("rm -f"+self.settings["chroot_path"]+"/etc/resolv.conf")
 		if retval!=0:
 			raise CatalystError,"Could not clean up resolv.conf."
+		retval=os.system("rm -f"+self.settings["chroot_path"]+"/usr/portage")
+		if retval!=0:
+			raise CatalystError,"Could not clean up Portage tree."
 		retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean")
 		if retval!=0:
 			raise CatalystError,"clean script failed."
 		
 	def run(self):
 		self.dir_setup()
-		self.chroot_setup()
+		self.unpack_and_bind()
+		try:
+			self.chroot_setup()
+		except:
+			self.unbind()
+			raise
 		#modify the current environment. This is an ugly hack that should be fixed. We need this
 		#to use the os.system() call since we can't specify our own environ:
 		for x in self.settings.keys():
 			if type(self.settings[x])==types.StringType:
-				os.environ[x]=self.settings[x]
+				#prefix to prevent namespace clashes:
+				os.environ["clst_"+x]=self.settings[x]
 		try:
 			retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run")
 			if retval!=0:
