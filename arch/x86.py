@@ -13,7 +13,10 @@ class generic_x86(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="x86"
-		self.settings["CHROOT"]="chroot"
+		if self.settings["hostarch"]=="amd64":
+			self.settings["CHROOT"]="linux32 chroot"
+		else:
+			self.settings["CHROOT"]="chroot"
 
 class arch_x86(generic_x86):
 	"builder class for generic x86 (386+)"
