@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.82 2004/02/11 19:12:07 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.83 2004/02/11 21:40:26 zhen Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -534,7 +534,7 @@ class livecd_stage2_target(generic_stage_target):
 				#extraversion is now an optional parameter, so that don't need to worry about it unless
 				#they have to
 				args.append(self.settings["boot/kernel/"+kname+"/extraversion"])
-			else
+			else:
 				#this value will be detected on the bash side and indicate that EXTRAVERSION processing
 				#should be skipped
 				args.append("NULL_VALUE")
