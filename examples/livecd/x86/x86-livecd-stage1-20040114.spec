@@ -9,7 +9,7 @@ livecd/use:
 	-X
 	-gtk
 livecd/packages:
-	>=sys-apps/baselayout-1.8.6.12-r4
+	>=sys-apps/baselayout-1.8.6.12-r5
 	kudzu
 	module-init-tools
 	hotplug

@@ -6,12 +6,13 @@ rel_version: 1.4
 snapshot: 20040111
 source_subpath: default-x86-1.4/livecd-stage2-x86-20040111
 boot/kernel: gentoo
-livecd/runscript: examples/livecd/runscript/x86-isolinux-loop-example.sh
+livecd/archrunscript: examples/livecd/runscript/x86-runscript.sh
+livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl
-livecd-stage3/empty:
+livecd/empty:
 	/var/tmp
 	/var/cache
 	/var/db
