@@ -1,7 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.17 2004/02/11 19:12:07 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.18 2004/02/13 02:41:26 drobbins Exp $
 
+  12 Feb 2004; Daniel Robbins <drobbins@gentoo.org>: fixed bugs in previous
+  feature additions (see 11 Feb 2004) and added support for a $clst_conf 
+  environment variable. You can use the $clst_conf variable to point to
+  a file to use in place of /etc/catalyst.conf. By setting this variable
+  in your shell, catalyst can easily be used by multiple people on the
+  same machine. Also, ccache support now works for genkernel.
+  
   11 Feb 2004; Daniel Robbins <drobbins@gentoo.org>: removed file for
   livecd-stage2 target, as this is handled by the runscript now. Added support
   for "/boot/kernel/foo/use", "/boot/kernel/foo/packages," and made

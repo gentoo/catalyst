@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.13 2004/02/11 19:12:07 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.14 2004/02/13 02:41:26 drobbins Exp $
 
 #return codes to be used by archscript
 
@@ -110,22 +110,26 @@ EOF
 					# Append Extraversion
 					sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextversion}:" /usr/src/linux/Makefile
 				fi
+				if [ -n "${clst_CCACHE}" ]
+				then
+					#enable ccache for genkernel
+					export PATH="/usr/lib/ccache/bin:\${PATH}"
+				fi
 				genkernel ${genkernel_args} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 				#now we merge any kernel-dependent packages
 				if [ -e /var/tmp/$clst_kname.packages ]
 				then
-					for x in "\$( cat /var/tmp/$clst_kname.packages )"
+					for x in \$( cat /var/tmp/$clst_kname.packages )
 					do
 						# we don't want to use the pkgcache for these since the results
 						# are kernel-dependent.
+						echo DEBUG emerge "\$x"
 						emerge "\$x"
 					done
 				fi
-				cd /usr/src/linux
-				#mrproper cleans out the tree and allows full unmerging of all subdirs
-				make mrproper
 				cd /usr/src
-				#now the unmerge...
+				rm -rf linux*
+				#now the unmerge... (wipe db entry)
 				emerge -C $clst_ksource
 				unset USE
 EOF
