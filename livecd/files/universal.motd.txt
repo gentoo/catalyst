@@ -1,0 +1,3 @@
+
+Stage tarball(s), distfiles and packages can be found in /mnt/cdrom/.
+

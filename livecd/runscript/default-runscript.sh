@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.15 2004/07/13 15:15:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.16 2004/07/21 05:03:42 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -121,15 +121,29 @@ case $1 in
 		;;
 
 	preclean)
-		# overwrite /etc/init.d/local in the livecd root
-		rm -f ${clst_chroot_path}/etc/init.d/local
-		cp -a ${clst_sharedir}/livecd/files/livecd-rclocal ${clst_chroot_path}/etc/init.d/local
-		
 		# move over the motd (if applicable)
 		if [ -n "${clst_livecd_motd}" ]
 		then
 			cp -a ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
+		else
+			cp -a ${clst_sharedir}/livecd/files/generic.motd.txt \
+				${clst_sharedir}/livecd/files/universal.motd.txt \
+				${clst_sharedir}/livecd/files/minimal.motd.txt \
+				${clst_sharedir}/livecd/files/gamecd.motd.txt \
+				${clst_chroot_path}/etc
 		fi
+	
+		# move over the xinitrc (if applicable)
+		if [ -n "${clst_livecd_xinitrc}" ]
+		then
+			cp -a ${clst_livecd_xinitrc} ${clst_chroot_path}/etc/X11/xinit/xinitrc
+		fi
+
+		# move over the environment
+		cp -a ${clst_sharedir}/livecd/files/livecd-bash_profile \
+			${clst_chroot_path}/root/.bash_profile
+		cp -a ${clst_sharedir}/livecd/files/livecd-local.start \
+			${clst_chroot_path}/etc/conf.d/local.start
 		
 		# now, finalize and tweak the livecd fs (inside of the chroot)
 		cp ${clst_sharedir}/livecd/runscript-support/livecdfs-update.sh ${clst_chroot_path}/tmp

@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.72 2004/07/14 17:23:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.73 2004/07/21 05:03:42 zhen Exp $
+
+  21 Jul 2004; John Davis <zhen@gentoo.org> +livecd/files/gamecd-xinitrc,
+  +livecd/files/gamecd.motd.txt, +livecd/files/generic-motd.txt,
+  +livecd/files/livecd-bash_profile, +livecd/files/livecd-local.start,
+  -livecd/files/livecd-rclocal, +livecd/files/minimal.motd.txt,
+  -livecd/files/motd.txt, +livecd/files/universal.motd.txt,
+  livecd/runscript/default-runscript.sh, livecd/runscript-support/kmerge.sh,
+  livecd/runscript-support/livecdfs-update.sh,
+  modules/livecd_stage2_target.py:
+  addition of wolf31o2's gamecd patchset. untested, so please beware
 
   14 Jul 2004; John Davis <zhen@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh,

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.8 2004/07/14 17:23:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.9 2004/07/21 05:03:42 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -46,6 +46,7 @@ rc-update del keymaps
 rc-update del consolefont
 rc-update add metalog default
 rc-update add modules default
+rc-update add pwgen default
 [ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 
 rm -rf /etc/localtime
@@ -74,13 +75,24 @@ fi
 # tweak the motd for gentoo releases 
 if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
 then
+	cat /etc/generic.motd.txt /etc/universal.motd.txt \
+		/etc/minimal.motd.txt > /etc/motd
 	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Universal Installation LiveCD!/' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
 then
+	cat /etc/generic.motd.txt > /etc/motd
 	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux Minimal Installation LiveCD!/' /etc/motd
 fi
+
+if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
+then
+	cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
+	sed -i -e 's/^##GREETING/Welcome to the Gentoo Linux ##GAME_NAME GameCD!/' /etc/motd
+fi
+
+rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/gamecd.motd.txt
 
 # setup bootsplash (if called for)
 if [ -n "${clst_livecd_bootsplash}" ]
