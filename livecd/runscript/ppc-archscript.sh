@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.8 2005/03/09 20:03:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/ppc-archscript.sh,v 1.9 2005/03/16 13:46:54 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -49,7 +49,7 @@ case $1 in
 			mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/boot/${x}
 			
 			# change initrd name from "initrd" to "gentoo.igz", for example
-			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/initrd.img.gz
+			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/${x}.igz
 		done
 	;;
 
@@ -58,6 +58,6 @@ case $1 in
 
 	iso)
 		# The name of the iso should be retrieved from the specs.
-		mkisofs -J -r -netatalk -hfs -probe -map boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ./boot -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path}
+		mkisofs -J -r -netatalk -hfs -probe -map ${clst_cdroot_path}/boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ${clst_cdroot_path}/boot -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path}
 	;;
 esac

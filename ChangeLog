@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.190 2005/03/09 20:03:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.191 2005/03/16 13:46:54 wolf31o2 Exp $
+
+  16 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/ppc-archscript.sh:
+  Modifed PPC archscript to close bug #84648 and also to make the PPC
+  archscript produce multiple initrd files, like x86/amd64.
 
   09 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/cdtar/isolinux-2.11-cdtar.tar.bz2,
