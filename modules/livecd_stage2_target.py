@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.27 2005/01/04 21:13:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.28 2005/01/04 23:54:59 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -78,9 +78,9 @@ class livecd_stage2_target(generic_stage_target):
 
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
-				os.makedirs(self.settings["chroot_path"]+x)
+				os.makedirs(self.settings["chroot_path"]+x,0755)
 			if not os.path.exists(self.mountmap[x]):
-				os.makedirs(self.mountmap[x])
+				os.makedirs(self.mountmap[x],0755)
 			src=self.mountmap[x]
 			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
 			if retval!=0:
@@ -154,7 +154,7 @@ class livecd_stage2_target(generic_stage_target):
 				# the proper perms and ownership
 				mystat=os.stat(myemp)
 				shutil.rmtree(myemp)
-				os.makedirs(myemp)
+				os.makedirs(myemp,0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 			

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.21 2005/01/04 21:13:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.22 2005/01/04 23:54:59 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -212,14 +212,14 @@ class generic_stage_target(generic_target):
 				"Could not remove existing directory: "+self.settings["chroot_path"])
 			
 		if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-			os.makedirs(self.settings["chroot_path"]+"/tmp")
+			os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 			
 		if not os.path.exists(self.settings["chroot_path"]):
-			os.makedirs(self.settings["chroot_path"])
+			os.makedirs(self.settings["chroot_path"],0755)
 		
 		if self.settings.has_key("PKGCACHE"):	
 			if not os.path.exists(self.settings["pkgcache_path"]):
-				os.makedirs(self.settings["pkgcache_path"])
+				os.makedirs(self.settings["pkgcache_path"],0755)
 	
 		
 	def unpack_and_bind(self):
@@ -250,10 +250,10 @@ class generic_stage_target(generic_target):
 
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
-				os.makedirs(self.settings["chroot_path"]+x)
+				os.makedirs(self.settings["chroot_path"]+x,0755)
 			
 			if not os.path.exists(self.mountmap[x]):
-				os.makedirs(self.mountmap[x])
+				os.makedirs(self.mountmap[x],0755)
 			
 			src=self.mountmap[x]
 			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
