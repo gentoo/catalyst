@@ -12,7 +12,7 @@ livecd/archscript: examples/livecd/runscript/ppc-archscript.sh
 livecd/runscript: examples/livecd/runscript/default-runscript.sh
 livecd/cdtar: examples/livecd/cdtar/yaboot-1.3.11-cdtar.tar.bz2
 
-boot/kernel: G4 G5 G4-SMP G5-SMP fallback
+boot/kernel: G4 G5 G4-SMP G5-SMP
 boot/kernel/G4/sources: =sys-kernel/ppc-development-sources-2.6.3-r2
 boot/kernel/G4/config: /usr/src/configs/G4
 boot/kernel/G4/use: extlib
