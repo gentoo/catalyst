@@ -1,6 +1,6 @@
-# Distributed under the GNU General Public License version 2
-# Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.28 2004/10/06 01:34:29 zhen Exp $
+# Copyright 1999-2004 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.29 2004/10/15 02:27:58 zhen Exp $
 
 import sys,string,os,types,re
 

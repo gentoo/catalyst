@@ -1,6 +1,6 @@
-# Copyright 1999-2004 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/builder.py,v 1.6 2004/06/08 04:07:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/builder.py,v 1.7 2004/10/15 02:27:58 zhen Exp $
 
 class generic:
 	def __init__(self,myspec):

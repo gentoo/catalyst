@@ -1,6 +1,6 @@
-# Distributed under the GNU General Public License version 2
-# Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage3_target.py,v 1.2 2004/07/03 00:33:37 zhen Exp $
+# Copyright 1999-2004 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage3_target.py,v 1.3 2004/10/15 02:27:58 zhen Exp $
 
 """
 Builder class for a stage3 installation tarball build.
