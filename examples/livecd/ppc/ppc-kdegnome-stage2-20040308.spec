@@ -3,9 +3,9 @@ target: livecd-stage2
 
 rel_type: default
 rel_version: 2004.0
-snapshot: 20040225
-version_stamp: 20040225
-source_subpath: default-ppc-2004.0/livecd-stage1-ppc-20040225
+snapshot: 20040306
+version_stamp: 20040306
+source_subpath: default-ppc-2004.0/livecd-stage1-ppc-20040306
 
 livecd/cdfstype: gcloop
 livecd/archscript: examples/livecd/runscript/ppc-archscript.sh
