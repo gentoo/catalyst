@@ -100,7 +100,6 @@ grp/cd2/packages:
 	apache
 	cdrtools
 	cdrdao
-	aumix
 	ccache
 	chkrootkit
 	cups
