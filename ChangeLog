@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.153 2005/01/25 22:54:00 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.154 2005/01/26 15:34:28 wolf31o2 Exp $
+
+  26 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-preclean2-chroot.sh:
+  Fixed find line for new stage1 /var/db/pkg.
 
   25 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean2-chroot.sh:
