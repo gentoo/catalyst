@@ -16,6 +16,9 @@ subarches=["amd64", "hppa", "hppa1.1", "hppa2.0", "x86", "i386", "i486", "i586",
 """
 setting name			bash equivalent		defined how?
 ====================================================================
+snapdir				SNAPDIR			default (where snapshots are stored)
+sharedir			SHAREDIR		default (where the dir that holds targets is)
+storedir			STOREDIR		default (where to store all the stuff, ie snapshots, etc.)
 pkgdir				PKGDIR			default (package cache dir)
 distdir				DISTDIR			default (/usr/portage/distfiles)
 subarch				SUBARCH			user (from spec)
@@ -31,6 +34,7 @@ hostuse				HOSTUSE			auto
 chost				CHOST			auto
 mainarch			MAINARCH		auto
 makeopts			MAKEOPTS		auto (but overridable from catalyst.conf for distcc building and such)
+
 Config file sources:
 	1. defaults can come from /etc/catalyst.conf (since it's run as root, might as well put it in /etc
 		(these defaults can be things like pkgdir, distdir, but not rel_version or rel_type
@@ -74,15 +78,19 @@ class generic_target:
 		#export:
 		# CFLAGS, HOSTUSE, CHOST, MAINARCH, MAINVERSION, BUILDTYPE, MAKEOPTS, BASEDIR, CHROOTDIR, FEATURES
 		# auto    auto     auto   auto      spec         spec auto default  auto       default	
+		pass
 	def build(self):
 		#do the actual stage1 building
 		return execute_script("targets/stage1/build.sh")
 	def unpack(self):
 		#unpack stages
+		pass
 	def mount_all(self):
 		#mount mount points; let's handle this from python
+		pass
 	def umount_all(self):
 		#umount mount points; let's handle this from python
+		pass
 	def mount_safety_check(self,mypath):
 		#check and verify that none of our paths in mypath are mounted. We don't want to clean up with things still
 		#mounted, and this allows us to check. returns 1 on ok, 0 on "something is still mounted" case.
@@ -100,10 +108,13 @@ class generic_target:
 		return 1
 	def prep(self):
 		#prepare stage for packing up
+		pass
 	def clean(self):
 		#clean up temporary build directory
+		pass
 	def pack(self):
 		#tar up anything like a stage and put in right place
+		pass
 	def run(self):
 		self.mount_safety_check()
 		self.unpack()
@@ -129,23 +140,9 @@ class grp(generic_target):
 	def path(self):
 		return "stages/stage3-"+self.settings["subarch"]+"-"+self.settings["buildno"]+".tar.bz2"
 
-class livecd(target):
+class livecd(generic_target):
 	def path(self):
 		return "stages/stage3-"+self.settings["subarch"]+"-"+self.settings["buildno"]+".tar.bz2"
-
-class settings:
-	def __init__(self):
-		self.vals={}
-		self.debug=0
-	def __getitem__(self,myitem):
-		return self.vals[myitem]
-	def __setitem__(self,myitem,myval):
-		if self.debug:
-			sys.stderr.write("setting "+myitem+" to "+repr(myval)+"\n")
-		self.vals[myitem]=myval
-	def dump(self):
-		for x in self.vals.keys():
-			print x+":", self.vals[x]
 
 def verify_os(myset):
 	if sys.platform=="linux2":
@@ -255,6 +252,14 @@ modesdesc={ 	"snap":"Create a snapshot of the Portage tree for building",
 		"stage":"Build the specified stage tarball or package set",
 }
 
+def do_snapshot(snap_path,snap_temp_dir,snapball):
+	retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+snap_path+"/ "+snap_temp_dir+"/portage/")
+	if retval != 0:
+		die("snapshot failure.")
+	retval=os.system("( cd "+snap_temp_dir+"; tar cjf "+snapball+" portage )")
+	if retval != 0:
+		die("snapshot tarball creation failure.")
+
 def usage():
 	print "catalyst: Gentoo Linux stage/LiveCD/GRP building tool"
 	print
@@ -279,6 +284,29 @@ def read_settings(myset,myfn):
 		if valdict.has_key(x):
 			myset[x]=valdict[x]
 
+def global_settings_init(myset):
+	#now, we read in global configuration settings from /etc/catalyst.conf
+	if os.path.exists("/etc/catalyst.conf"):
+		read_settings(myset,"/etc/catalyst.conf")
+	#set reasonable defaults if none were provided in /etc/catalyst.conf
+	mydefaults={"storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/share/distfiles"}
+	for x in mydefaults.keys():
+		if not myset.has_key(x):
+			myset[x]=mydefaults[x]
+	if not myset.has_key("snapdir"):
+		myset["snapdir"]=myset["storedir"]+"/snapshots"
+
+def init_writable_dirs(myset):
+	#create the initial main directories that we need to write to.
+	for x in ["storedir","snapdir"]:
+		if not os.path.exists(myset[x]):
+			os.makedirs(myset[x])
+
+def dump_settings(myset):
+	for x in myset.keys():
+		print x+":",myset[x]
+	print "Done!"
+
 def mainloop():
 	global subarches
 	#argument processing
@@ -290,18 +318,12 @@ def mainloop():
 		die("This script requires root privileges to operate.")	
 	elif sys.argv[1] in modes:
 		#set up internal configuration settings dictionary
-		myset=settings()
+		#myset=settings()
+		myset={}
 		verify_os(myset)
-		#initial mode selection ok, now validate any additional arguments
-		#later, we will perform the specified actions
-		if os.environ.has_key("HOME"):
-			#reading ~/.catalystrc is more an example than anything
-			if os.path.exists(os.environ["HOME"]+"/.catalystrc"):
-				read_settings(myset,os.environ["HOME"]+"/.catalystrc")
-		else:
-			warn("HOME environment variable not defined, skipping ~/.catalystrc.")		
-		myset.dump()
-		print "Done!"
+		global_settings_init(myset)			
+		init_writable_dirs(myset)
+		dump_settings(myset)
 		sys.exit(0)
 	else:
 		usage()
