@@ -190,6 +190,7 @@ grp/cd2/packages:
 	xeasyconf
 	xemacs
 	xfree
+	xfce4
 	xmms
 	yaboot
 
