@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.93 2004/03/23 07:20:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.94 2004/03/24 17:24:47 iggy Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -30,6 +30,7 @@ class generic_stage_target(generic_target):
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
+				"s390"	: ["s390"],
 				"ppc" : ["ppc"],
 				"ppc64" : ["ppc64"],
 				"hppa" : ["hppa"],
@@ -45,6 +46,7 @@ class generic_stage_target(generic_target):
 				"ia64" : "ia64",
 				"alpha" : "alpha",
 				"sparc" : "sparc",
+				"s390"	: "s390",
 				"ppc" : "ppc",
 				"ppc64" : "ppc64",
 				"parisc" : "hppa",
