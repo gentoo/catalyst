@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.10 2004/08/02 23:48:15 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.11 2004/08/31 01:40:24 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -15,6 +15,19 @@ fi
 
 # fix /etc/issue for mingetty and friends
 echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
+
+# default programs that we always want to start
+rc-update del iptables default
+rc-update del netmount default
+# rc-update add hotplug default
+# rc-update add kudzu default
+rc-update add autoconfig default
+rc-update del keymaps
+rc-update del consolefont
+rc-update add metalog default
+rc-update add modules default
+rc-update add pwgen default
+[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 
 # switch the order of rcadd/ rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
@@ -36,19 +49,6 @@ then
 	fi
 fi
 	
-# always add the defaults
-rc-update del iptables default
-rc-update del netmount default
-# rc-update add hotplug default
-# rc-update add kudzu default
-rc-update add autoconfig default
-rc-update del keymaps
-rc-update del consolefont
-rc-update add metalog default
-rc-update add modules default
-rc-update add pwgen default
-[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
-
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/GMT /etc/localtime
 echo "livecd" > /etc/hostname

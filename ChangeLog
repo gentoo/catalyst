@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.78 2004/08/13 16:00:47 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.79 2004/08/31 01:40:24 zhen Exp $
+
+  30 Aug 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh, targets/grp/grp-chroot.sh:
+  bugfixes for #61537 and #61779
 
   13 Aug 2004; John Davis <zhen@gentoo.org> +files/catalyst.1,
   modules/generic_stage_target.py, modules/livecd_stage2_target.py,

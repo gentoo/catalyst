@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.5 2004/07/12 15:01:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.6 2004/08/31 01:40:24 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -9,7 +9,6 @@ source /etc/profile
 if [ -f /tmp/envscript ]
 then
 	source /tmp/envscript
-	rm -f /tmp/envscript
 fi
 
 if [ -n "${clst_CCACHE}" ]
