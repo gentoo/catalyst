@@ -155,12 +155,15 @@ class generic_stage_target(generic_target):
 				raise CatalystError, "Sed command failed: "+mycmd
 
 	def clean(self):
-		"do not call without first unbinding"
-		os.system("rm -f"+self.settings["chroot_path"]+"/etc/ld.so.preload")
-		retval=os.system("rm -f"+self.settings["chroot_path"]+"/etc/resolv.conf")
+		"do not call without first unbinding; this code needs a cleanup once it stabilizes"
+		os.system("rm -f "+self.settings["chroot_path"]+"/etc/ld.so.preload")
+		retval=os.system("rm -f "+self.settings["chroot_path"]+"/etc/resolv.conf")
 		if retval!=0:
 			raise CatalystError,"Could not clean up resolv.conf."
-		retval=os.system("rm -f"+self.settings["chroot_path"]+"/usr/portage")
+		retval=os.system("rm -rf "+self.settings["chroot_path"]+"/usr/portage")
+		if retval!=0:
+			raise CatalystError,"Could not clean up Portage tree."
+		retval=os.system("rm -rf "+self.settings["chroot_path"]+"/var/tmp/*")
 		if retval!=0:
 			raise CatalystError,"Could not clean up Portage tree."
 		retval=os.system(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean")

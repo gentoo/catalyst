@@ -18,8 +18,6 @@ import targets
 targetmap={}
 targets.register(targetmap)
 
-print "Available targets:",string.join(targetmap.keys())
-
 if os.getuid()!=0:
 	#non-root callers can't go any further than here. 
 	die("This script requires root privileges to operate.")	
@@ -33,8 +31,10 @@ myspec["distdir"]="/mnt/misc/distfiles"
 myspec["portdir"]="/usr/portage"
 myspec["options"]="ccache pkgcache"
 if "ccache" in string.split(myspec["options"]):
+	print "Compiler cache support enabled."
 	myspec["CCACHE"]="1"
 if "pkgcache" in string.split(myspec["options"]):
+	print "Package cache support enabled."
 	myspec["PKGCACHE"]="1"
 #determine target, call target constructor and hand it the rest of the arguments
 
@@ -44,11 +44,6 @@ try:
 	if not targetmap.has_key(myspec["target"]):
 		raise CatalystError,"Target \""+myspec["target"]+"\" not available."
 	mytarget=targetmap[myspec["target"]](myspec,addlargs)
-	
-	#let's display our spec information in all its glory
-	print
-	spec_dump(myspec)
-	print
 	
 	mytarget.run()
 except CatalystError:

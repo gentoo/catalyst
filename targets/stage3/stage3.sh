@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.3 2003/10/29 06:52:15 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/Attic/stage3.sh,v 1.4 2003/10/29 08:03:00 drobbins Exp $
 
 case $1 in
 enter)
@@ -40,7 +40,7 @@ clean)
 	source /etc/profile
 	if [ -n "${clst_CCACHE}" ]
 	then
-		emerge -C ccache || exit 1
+		emerge -C dev-util/ccache || exit 1
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1
@@ -49,3 +49,4 @@ EOF
 	exit 1
 	;;
 esac
+exit 0
