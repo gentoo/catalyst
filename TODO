@@ -1,17 +1,14 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.4 2004/02/11 03:31:55 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.5 2004/06/15 05:39:35 zhen Exp $
+
+finish catalyst howto
+
+re-do catalyst main script to be more robust
+
+Fix the hardcoded arch information in modules/generic_stage_target.py
 
 Add support for ~x86, etc builds
 
 Make sure to turn off grsec chroot restrictions before starting the build
 (hint: echo 0 > /proc/sys/kernel/grsecurity/chroot_*)
-
-Add rsync option for snapshot targets
-
-# completed by John Davis <zhen@gentoo.org>
--basic distcc support
-
-#completed by Daniel Robbins <drobbins@gentoo.org>
--add basic tinderbox support
-
