@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.1 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-kernel.sh,v 1.2 2004/10/06 16:00:09 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -44,5 +44,5 @@ USE="${@}" emerge ${KERNEL_SOURCES} || exit 1
 mkdir -p ${GK_BINARIES}
 
 genkernel --kerneldir=/usr/src/linux --kernel-config=/var/tmp/kernel.config \
-		--minkernpackage=${GK_BINARIES}/kernel.tar.bz2 \
+		--minkernpackage=${GK_BINARIES}/kernel-${clst_version_stamp}.tar.bz2 \
 		kernel || exit 1

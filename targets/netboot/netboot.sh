@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.1 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.2 2004/10/06 16:00:09 zhen Exp $
 
 export GK_BINARIES=/usr/portage/packages/gk_binaries
 export IMAGE_PATH=/image
@@ -56,8 +56,8 @@ case $1 in
 		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-image.sh ${IMAGE_PATH} /netboot-base.tar.bz2 ${@} || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-image.sh
 		exit 0
-
 	;;
+
 	finish)
 		[ ! -e ${clst_target_path} ] && mkdir -p ${clst_target_path}
 		cp ${clst_chroot_path}/ramdisk ${clst_chroot_path}/kernel ${clst_target_path}

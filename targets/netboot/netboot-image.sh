@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-image.sh,v 1.1 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-image.sh,v 1.2 2004/10/06 16:00:09 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -95,9 +95,7 @@ function copy_file() {
 	fi
 }
 
-
 # Copy the files needed in the chroot
-
 copy_libs ${IMAGE_PATH}/bin/busybox
 
 FILES="${@}"
@@ -106,24 +104,19 @@ do
 	copy_file ${f}
 done
 
-
 # Copy the kernel modules
-
 [ ! -e ${IMAGE_PATH}/lib ]  && mkdir -p ${IMAGE_PATH}/lib
 cp -Rv /lib/modules ${IMAGE_PATH}/lib
 #find ${IMAGE_PATH}/lib -name \*.o -o -name \*.ko | xargs strip -R .comment -R .note
 
 # Extract the base tarball
-
 tar xjvf ${TARBALL} -C ${IMAGE_PATH}/
 
 # Unpack the kernel
-
 tar xjvf ${GK_BINARIES}/kernel.tar.bz2 -C /
 mv -f /kernel-2.* /kernel
 
 # Create the ramdisk
-
 IMAGE_SIZE=`du -s ${IMAGE_PATH} | awk '{ print $1 }'`
 
 dd if=/dev/zero of=/ramdisk bs=1k count=$((IMAGE_SIZE + 500))

@@ -1,4 +1,4 @@
-.TH "CATALYST" "1" "August 12, 2004" "Catalyst 1.0.9" "Catalyst"
+.TH "CATALYST" "1" "August 12, 2004" "Catalyst 1.1.0" "Catalyst"
 
 .SH NAME
 catalyst \- The Gentoo Linux Release Engineering meta-tool
@@ -20,7 +20,7 @@ catalyst \- The Gentoo Linux Release Engineering meta-tool
 .SH DESCRIPTION
 \fBcatalyst\fR is the tool that the Gentoo Release Engineering team
 utilizes to build all Gentoo Linux releases. It is capable of building
-installation stages, bootable LiveCDs, and Gentoo Reference Platform (GRP)
+installation stages, bootable LiveCDs, netboot images, and Gentoo Reference Platform (GRP)
 sets. \fBcatalyst\fR is also capable of providing a simple tinderbox
 environment for ebuild/package testing.
 
@@ -30,16 +30,10 @@ on the web at <http://www.gentoo.org/proj/en/releng/catalyst>.
 .SH OPTIONS
 .TP
 
-.BR "\-\-help " (\fB\-h\fR)
-Print the help message and exit
-.TP
-
-.BR "\-\-version " (\fB\-v\fR)
-Print the version information and exit
-.TP
-
-.BR "\-\-debug " (\fB\-d\fR)
-Enable debugging mode
+.BR "\-\-cli " (\fB\-C\fR)
+This option is to be used in place of a specfile. All options are passed
+to \fBcatalyst\fR on the commandline. Please note that this option must
+be the last option passed to \fBcatalyst\fR for everything to work correctly.
 .TP
 
 .BR "\-\-config " (\fB\-c\fR)
@@ -47,28 +41,39 @@ Tell \fBcatalyst\fR to use a user-defined configuration file. A sample
 configuration file is installed at /etc/catalyst/catalyst.conf.
 .TP
 
-.BR "\-\-cli " (\fB\-C\fR)
-This option is to be used in place of a specfile. All options are passed
-to \fBcatalyst\fR on the commandline. Please note that this option must
-be the last option passed to \fBcatalyst\fR for everything to work correctly.
+.BR "\-\-debug " (\fB\-d\fR)
+Enable debugging mode
 .TP
 
 .BR "\-\-file " (\fB\-f\fR)
 Tell \fBcatalyst\fR to use the user supplied specfile.
 .TP
 
+.BR "\-\-help " (\fB\-h\fR)
+Print the help message and exit
+.TP
+
+.BR "\-\-snapshot " (\fB\-s\fR)
+Create a Portage snapshot using the specified identifier stamp.
+.TP
+
 .BR "\-\-verbose " (\fB\-V\fR)
 Enable verbose mode.
+
+.BR "\-\-version " (\fB\-v\fR)
+Print the version information and exit
+.TP
 
 .SH EXAMPLES
 .TP
 Using the commandline option (\-C, \-\-cli) to build a Portage snapshot:
-.LP
 catalyst \-C target=snapshot version_stamp=my_date
-.LP
+.TP
 Using the specfile option (\-f, \-\-file) to build a stage target:
-.LP
 catalyst \-f stage1\-specfile.spec
+.TP
+Using the snapshot option (\-s, \-\-snapshot) to package a Portage snapshot using the datestamp 20041006:
+catalyst \-s 20041006
 
 .SH FILES
 .TP
@@ -92,4 +97,4 @@ A more in-depth examination of Catalyst options and procedures can be found link
 John Davis <zhen@gentoo.org>
 
 .SH "CVS HEADER"
-$Id: catalyst.1,v 1.2 2004/09/18 19:32:13 zhen Exp $
+$Id: catalyst.1,v 1.3 2004/10/06 16:00:09 zhen Exp $

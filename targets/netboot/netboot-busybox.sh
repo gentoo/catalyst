@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-busybox.sh,v 1.1 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot-busybox.sh,v 1.2 2004/10/06 16:00:09 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -29,7 +29,7 @@ mkdir -pv ${IMAGE_PATH}
 ROOT=${IMAGE_PATH} emerge --nodeps ${clst_emergeopts} busybox || exit 1
 
 # Remove portage's unneeded files
-rm -R ${IMAGE_PATH}/etc
-rm -R ${IMAGE_PATH}/tmp
-rm -R ${IMAGE_PATH}/usr
-rm -R ${IMAGE_PATH}/var
+rm -rf ${IMAGE_PATH}/etc
+rm -rf ${IMAGE_PATH}/tmp
+rm -rf ${IMAGE_PATH}/usr
+rm -rf ${IMAGE_PATH}/var

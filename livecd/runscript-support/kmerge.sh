@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.10 2004/09/29 01:32:51 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.11 2004/10/06 16:00:09 zhen Exp $
 
 die() {
 	echo "$1"
@@ -101,10 +101,6 @@ then
 		echo "No kernel configuration change, skipping kernel build..."
 		echo
 		sleep 5
-
-		# copy over our config file so that kernel_merge packages like pcmcia don't complain
-		#cp /usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.config /usr/src/linux/.config
-		#emerge ${clst_kernel_merge}
 
 		# unpack our modules to the LiveCD fs
 		echo

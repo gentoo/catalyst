@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.89 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.90 2004/10/06 16:00:09 zhen Exp $
+
+  06 Oct 2004; John Davis <zhen@gentoo.org> files/catalyst.1,
+  livecd/runscript-support/kmerge.sh, targets/netboot/netboot-busybox.sh,
+  targets/netboot/netboot-image.sh, targets/netboot/netboot-kernel.sh,
+  targets/netboot/netboot.sh:
+  more code cleanup and maintenance
 
   05 Oct 2004; John Davis <zhen@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py, +modules/netboot.py,
