@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.151 2005/01/23 19:21:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.152 2005/01/24 23:03:05 wolf31o2 Exp $
+
+  24 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh:
+  Removed gpm changes, as it has been moved to livecd-tools and autoconfig,
+  added net.ethX symlinks, and added copying of files from
+  /usr/lib/hotplug/firmware into firmware tarball.
 
   23 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/livecdfs-update.sh:

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.28 2005/01/23 19:21:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.29 2005/01/24 23:03:05 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -81,13 +81,14 @@ echo "iface_eth1=\"dhcp\"" >> /etc/conf.d/net
 echo "iface_eth2=\"dhcp\"" >> /etc/conf.d/net
 echo "iface_eth3=\"dhcp\"" >> /etc/conf.d/net
 
+# setup links for ethernet devices
+cd /etc/init.d
+ln -sf net.eth0 net.eth1
+ln -sf net.eth0 net.eth2
+ln -sf net.eth0 net.eth3
+
 # add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
-
-# gpm fixes
-[ -e /etc/conf.d/gpm ] && sed -i -e 's:#MOUSE=imps2:MOUSE=imps2:' \
-	-e 's:#MOUSEDEV=/dev/input/mice:MOUSEDEV=/dev/input/mice:' \
-	/etc/conf.d/gpm
 
 # fstab tweaks
 echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
@@ -131,20 +132,20 @@ if [ "${clst_livecd_type}" = "gentoo-release-universal" ]
 then
 	cat /etc/generic.motd.txt /etc/universal.motd.txt \
 		/etc/minimal.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation LiveCD!:' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
 then
 	cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation LiveCD!:' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-release-environmental" ]
 then
 	cat /etc/generic.motd.txt /etc/universal.motd.txt \
 		/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
-	sed -i 's:^##GREETING:Welcome to the Gentoo Linux Live Environment!:' /etc/motd
+	sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD Environment!:' /etc/motd
 fi
 
 if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
@@ -182,9 +183,13 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-if [ -n "$(ls /lib/firmware)"]
+if [ -n "$(ls /lib/firmware)" ]
 then
 	cd /lib/firmware
+	if [ -n "$(ls /usr/lib/hotplug/firmware)" ]
+	then
+		cp /usr/lib/hotplug/firmware/* /lib/firmware
+	fi
 	tar cvjpf /lib/firmware.tar.bz2 .
 	rm -f /lib/firmware/*
 	mkdir -p /usr/lib/hotplug
