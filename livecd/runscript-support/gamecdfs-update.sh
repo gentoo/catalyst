@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/gamecdfs-update.sh,v 1.1 2004/07/23 16:35:04 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/gamecdfs-update.sh,v 1.2 2004/07/26 19:37:20 zhen Exp $
 
 # These variables are to be used for creating the menu entry and also to tell
 # the CD what to execute
@@ -11,7 +11,7 @@ GAME_EXECUTABLE="/usr/games/bin/ut2004demo"
 
 sed -i -e 's:localhost:localhost livecd:' /etc/hosts
 sed -i -e 's:GAME_NAME:${GAME_NAME}:' /etc/motd
-sed -i -e 's:GAME_EXECUTABLE:$GAME_EXECUTABLE:' /etc/X11/xinit/xinitrc
+sed -i -e 's:GAME_EXECUTABLE:${GAME_EXECUTABLE}:' /etc/X11/xinit/xinitrc
 
 [ -x /sbin/openglify ] && /sbin/openglify
 touch /etc/asound.state # /etc/startx
