@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.5 2004/10/15 02:27:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.6 2005/02/04 16:46:42 wolf31o2 Exp $
 
 """
 Builder class for snapshots.
@@ -37,12 +37,12 @@ class snapshot_target(generic_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 		
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+\
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exlude /local/ --exclude CVS/ "+\
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure")
 		
 		if self.settings.has_key("portdir_overlay"):
 			print "Adding Portage overlay to the snapshot..."
-			cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+\
+			cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ "+\
 				self.settings["portdir_overlay"]+"/ "+mytmp+"/portage/","Snapshot/ overlay addition failure")
 			
 		print "Compressing Portage snapshot tarball..."
