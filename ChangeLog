@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.47 2004/05/12 21:18:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.48 2004/05/17 01:21:17 zhen Exp $
+
+  16 May 2004; John Davis <zhen@gentoo.org> catalyst,
+  modules/catalyst_support.py, modules/embedded_target.py,
+  modules/generic_stage_target.py, modules/generic_target.py,
+  modules/grp_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/stage1_target.py,
+  modules/stage2_target.py, modules/stage3_target.py,
+  modules/tinderbox_target.py, targets/stage1/stage1-preclean2-chroot.sh:
+  finally parsed out targets.py. fixed gcc-config typo in stage1 the stage1 that
+  caused gcc profile problems.
 
   12 May 2004; John Davis <zhen@gentoo.org>
   livecd/runscript/default-runscript.sh, livecd/runscript-support/kmerge.sh,

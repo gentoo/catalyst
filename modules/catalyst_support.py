@@ -1,22 +1,16 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.19 2004/05/12 21:18:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.20 2004/05/17 01:21:17 zhen Exp $
 
 import sys,string,os,types
 
-def list_bashify(mylist):
-	if type(mylist)==types.StringType:
-		mypack=[mylist]
-	else:
-		mypack=mylist[:]
-	for x in range(0,len(mypack)):
-		#surround args with quotes for passing to bash, allows things like "<" to remain intact
-		mypack[x]="'"+mypack[x]+"'"
-	mypack=string.join(mypack)
-	#escape ">" and "<" for the shell (using backslash)
-	#mypack=string.replace(mypack,">","\\>")
-	#mypack=string.replace(mypack,"<","\\<")
-	return mypack
+# these should never be touched
+required_build_targets=["generic_target","generic_stage_target"]
+
+# new build types should be added here
+valid_build_targets=["stage1_target","stage2_target","stage3_target","grp_target",
+						"livecd_stage1_target","livecd_stage2_target","embedded_target",
+						"tinderbox_target"]
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
@@ -27,6 +21,30 @@ valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("options")
 
 verbosity=1
+
+"""
+# register the build target for catalyst to use here
+# (uses the values from valid_build_targets)
+def register_build_targets(targetlist):
+	targetlist.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
+		"grp":grp_target,"livecd-stage1":livecd_stage1_target,
+		"livecd-stage2":livecd_stage2_target,
+		"snapshot":snapshot_target,"tinderbox":tinderbox_target,
+		"embedded":embedded_target})
+	return targetlist
+"""
+
+def list_bashify(mylist):
+	if type(mylist)==types.StringType:
+		mypack=[mylist]
+	else:
+		mypack=mylist[:]
+	for x in range(0,len(mypack)):
+		# surround args with quotes for passing to bash,
+		# allows things like "<" to remain intact
+		mypack[x]="'"+mypack[x]+"'"
+	mypack=string.join(mypack)
+	return mypack
 
 class CatalystError(Exception):
 	def __init__(self, message):
@@ -48,7 +66,8 @@ def cmd(mycmd,myexc=""):
 		raise CatalystError,myexc
 
 def file_locate(settings,filelist,expand=1):
-	#if expand=1, non-absolute paths will be accepted and expanded to os.getcwd()+"/"+localpath if file exists
+	#if expand=1, non-absolute paths will be accepted and
+	# expanded to os.getcwd()+"/"+localpath if file exists
 	for myfile in filelist:
 		if not settings.has_key(myfile):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
