@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.4 2003/10/17 23:51:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.5 2003/10/27 04:08:31 drobbins Exp $
 
+  24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: major code rework in 
+  progress on the python parts.
+  
   17 Oct 2003; zhen <zhen@gentoo.org> files/grp/x86/x86.conf,
   files/grp/x86/x86.pkg.cd1, files/grp/x86/x86.pkg.cd2, files/grp/x86/x86.src,
   files/livecd/x86-basic/base.pkg, files/livecd/x86-basic/kern.pkg:
@@ -14,10 +17,10 @@
   that we can have at this point.
 
   14 Oct 2003; Daniel Robbins <drobins@gentoo.org>: new and improved ChangeLog;
-  snapshots now work ("./catalyst-util.py snap 20031014",) and snapshotting cleans
-  up after itself (temp files deleted,) something that should be continued as
-  much as reasonably possible in other parts of catalyst. Also, we have 
-  /etc/catalyst.conf config file reading stub code completed, and internal fall-backs
-  to reasonable global config defaults completed.
+  snapshots now work ("./catalyst-util.py snap 20031014",) and snapshotting
+  cleans up after itself (temp files deleted,) something that should be
+  continued as much as reasonably possible in other parts of catalyst. Also, we
+  have /etc/catalyst.conf config file reading stub code completed, and internal
+  fall-backs to reasonable global config defaults completed.
   
  
