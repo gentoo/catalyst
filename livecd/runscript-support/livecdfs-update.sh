@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.11 2004/08/31 01:40:24 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.12 2004/09/13 14:27:07 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -10,7 +10,6 @@ if [ -e /etc/sshd/sshd_config ]
 then
 	#allow root logins to the livecd by default
 	sed -i "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config
-	#mv /etc/ssh/sshd_config1 /etc/ssh/sshd_config
 fi
 
 # fix /etc/issue for mingetty and friends
@@ -108,3 +107,13 @@ then
 		exit 1
 	fi
 fi
+
+# tweak the livecd fstab so that users know not to edit it
+# http://bugs.gentoo.org/show_bug.cgi?id=60887
+mv /etc/fstab /etc/fstab.old
+echo "###############################################" >> /etc/fstab
+echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD" >> /etc/fstab     
+echo "## PLEASE EDIT THE FSTAB IN /mnt/gentoo/etc" >> /etc/fstab     
+echo "###############################################" >> /etc/fstab
+cat /etc/fstab.old >> /etc/fstab
+rm /etc/fstab.old

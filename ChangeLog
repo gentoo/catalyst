@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.82 2004/09/09 05:09:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.83 2004/09/13 14:27:07 zhen Exp $
+
+  13 Sep 2004; John Davis <zhen@gentoo.org> catalyst,
+  livecd/runscript-support/livecdfs-update.sh:
+  bugfixes for #60887 and #63338
 
   09 Sep 2004; John Davis <zhen@gentoo.org> catalyst:
   bugfixes for #63382 and #63338

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.46 2004/09/09 05:28:20 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.47 2004/09/13 14:27:07 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -193,25 +193,49 @@ if __name__ == "__main__":
 	myconfig=""
 	myspecfile=""
 	mycmdline=[]
-	
+	myopts=[]
+
+	# check preconditions
 	if len(opts) == 0:
-		print "!!! catalyst: please specify one of either -f or -C"
+		print "!!! catalyst: please specify one of either -f or -C\n"
+		usage()
 		sys.exit(2)
 	
+	# check to see if -f and -C are used together
+	for i in opts:
+		myopts.append(i[0])
+		
+	if ('-f' in myopts or '--file' in myopts) and ('-C' in myopts or '--cli' in myopts):
+		print "!!! catalyst: please specify one of either -f or -C\n"
+		usage()
+		sys.exit(2)
+
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
-			sys.exit(2)
+			sys.exit(1)
 		
 		if o in ("-v", "--version"):
 			print "Catalyst version "+__version__
-			sys.exit(2)
+			sys.exit(1)
 
 		if o in ("-d", "--debug"):
 			conf_values["DEBUG"]="1"
+			
+			# the debug option cannot be used alone
+			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
 
 		if o in ("-c", "--config"):
 			myconfig=a
+			
+			# the config file option cannot be used alone
+			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
 
 		if o in ("-C", "--cli"):
 			x=sys.argv.index(o)+1
@@ -224,7 +248,13 @@ if __name__ == "__main__":
 			
 		if o in ("-V", "--verbose"):
 			conf_values["VERBOSE"]="1"
-				
+			
+			# the verbosity option cannot be used alone
+			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
+	
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 	sys.path.append(conf_values["sharedir"]+"/modules")
