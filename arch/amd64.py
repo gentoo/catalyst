@@ -1,12 +1,7 @@
-import builder
+# Distributed under the GNU General Public License version 2
+# Copyright 2003-2004 Gentoo Technologies, Inc.
 
-# This module defines the various "builder" classes for the various x86
-# sub-arches. For example, we have a class to handle building of Pentium 4
-# sub-arches, one for i686, etc. We also have a function called register
-# that's called from the main catalyst program, which the main catalyst
-# program uses to become informed of the various sub-arches supported by
-# this module, as well as which classes should be used to build each 
-# particular sub-architecture.
+import builder
 
 class generic_amd64(builder.generic):
 	"abstract base class for all amd64 builders"

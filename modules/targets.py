@@ -1,3 +1,6 @@
+# Distributed under the GNU General Public License version 2
+# Copyright 2003-2004 Gentoo Technologies, Inc.
+
 import os,stat,string,imp,types
 from catalyst_support import *
 

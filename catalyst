@@ -3,12 +3,25 @@
 import os,sys,imp,string
 
 def usage():
-	print "usage: meep!"
+	print "Usage: catalyst [-f file] [variable=value ...]"
+	print " -h --help		print this usage and exit"
+	print " -v --version		display version information"
+	print " -f --file 		read specified file for build instructions"
+	print " variable=value		specify a variable/value pair"
+
+def vers():
+	print "Gentoo catalyst, version "+version
+	print "Copyright 2003-2004 Gentoo Technologies, Inc."
+	print "Distributed under the GNU General Public License version 2"
+
+version="1.0"
 
 if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()
 	sys.exit(1)
-
+elif sys.argv[1] in ["-v","--version"]:
+	vers()
+	sys.exit(1)
 if os.getuid()!=0:
 	#non-root callers can't go any further than here. 
 	die("This script requires root privileges to operate.")	
@@ -65,6 +78,3 @@ try:
 	mytarget.run()
 except CatalystError:
 	sys.exit(1)
-# Examples:
-# ./catalyst subarch=pentium4 version_stamp=20031016 target=stage3 rel_type=default rel_version=1.4 snapshot=20031016 source_subpath=default-x86-1.4/stage2-pentium4-20031016
-# ./catalyst target=snapshot version_stamp=20031028
