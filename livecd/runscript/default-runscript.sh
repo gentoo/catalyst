@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.14 2004/07/13 14:01:50 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.15 2004/07/13 15:15:22 zhen Exp $
 
 #return codes to be used by archscript
 die() {
@@ -140,6 +140,7 @@ case $1 in
 		if [ -n "${clst_livecd_fsscript}" ]
 		then
 			cp ${clst_livecd_fsscript} ${clst_chroot_path}/tmp/fsscript.sh
+			chmod 755 ${clst_chroot_path}/tmp/fsscript.sh
 			${clst_CHROOT} ${clst_chroot_path} /tmp/fsscript.sh || exit 1
 			rm -f ${clst_chroot_path}/tmp/fsscript.sh
 		fi
