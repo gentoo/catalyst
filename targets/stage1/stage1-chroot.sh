@@ -14,14 +14,7 @@ case $1 in
 		install -d $ROOT
 		if [ -n "${clst_PKGCACHE}" ]
 		then
-			echo 
-			echo "PKGCACHE IS SET"
-			echo
 			export EMERGE_OPTS="--usepkg --buildpkg"
-		else
-			echo 
-			echo "PKGCACHE IS NOT SET"
-			echo
 		fi
 		for x in $(/tmp/build.sh)
 		do

@@ -132,31 +132,44 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
-		#Ugly bunch of sed commands to get /etc/make.conf to hold the correct default values for the stage
-		#we're building. This way, when a user uses a pentium4 stage3, it is set up to compile for pentium4
-		#using the CFLAGS and USE settings we used. It's possible that this would look nicer written in
-		#python, even without using regexes which aren't really necessary.
-		mycmds=[]
-		mycmds.append("sed -i -e '/# catalyst start/,/# catalyst stop/d'")
-		mycmds.append("sed -i -e 's:^CFLAGS=:#&:' -e 's:^CXXFLAGS=:#&:' -e 's:^CHOST=:#&:' -e 's:^USE=:#&:'")
-		sedcmd="sed -i -e '5i\\' -e '# catalyst start\\' -e '# these settings were added by the catalyst build script"
-		sedcmd+=" that automatically built this stage\\' -e 'CFLAGS=\""+self.settings["CFLAGS"]+"\"\\'"
-		if self.settings.has_key("CXXFLAGS"):
-			sedcmd+=" -e 'CXXFLAGS=\""+self.settings["CXXFLAGS"]+"\"\\'"
-		else:
-			sedcmd+=" -e 'CXXFLAGS=\"${CFLAGS}\"\\'"
-		sedcmd+=" -e 'CHOST=\""+self.settings["CHOST"]+"\"\\'"
+		myconf=open(self.settings["chroot_path"]+"/etc/make.conf","r")
+		mylines=myconf.readlines()
+		myconf.close()
+		pos = 0
+		while pos < len(mylines):
+			if mylines[pos][:16]=="# catalyst start":
+				while (pos < len(mylines)) and mylines[pos][:14]!="# catalyst end":
+					del mylines[pos]
+			elif (mylines[pos][:7]=="CFLAGS=") or (mylines[pos][:6]=="CHOST=") or (mylines[pos][:4]=="USE="):
+				mylines[pos]="#"+mylines[pos]
+			pos += 1
+		pos = 0
+		while (pos < len(mylines)) and mylines[pos][0]=="#":
+			pos += 1
+		cmds=["","# catalyst start","# These settings were added by the catalyst build script that automatically built this stage",
+		'CFLAGS="'+self.settings["CFLAGS"]+'"',
+		'CHOST="'+self.settings["CHOST"]+'"']
 		if self.settings.has_key("HOSTUSE"):
-			sedcmd+=" -e 'USE=\""+string.join(self.settings["HOSTUSE"])+"\"\\'"
-		sedcmd+=" -e '# catalyst end\\' -e ''"
-		mycmds.append(sedcmd)
-		for x in mycmds:
-			mycmd=x+" "+self.settings["chroot_path"]+"/etc/make.conf"
-			cmd(mycmd,"Sed command failed: "+mycmd)
+			cmds.append('USE="'+self.settings["HOSTUSE"]+'"')
+		else:
+			cmds.append('USE=""')
+		if self.settings.has_key("CXXFLAGS"):
+			cmds.append('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"')
+		else:
+			cmds.append('CXXFLAGS="$CFLAGS"')
+		cmds.append("# catalyst end")
 
+		for x in cmds:
+			mylines.insert(pos,x+"\n")
+			pos += 1
+
+		myconf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
+		myconf.write(string.join(mylines))	
+		myconf.close()
+		
 	def clean(self):
 		destpath=self.settings["chroot_path"]
-		cleanables=["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*"]
+		cleanables=["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*","/root/.ccache"]
 		if self.settings["target"]=="stage1":
 			destpath+="/tmp/stage1root"
 			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
@@ -166,7 +179,11 @@ class generic_stage_target(generic_target):
 		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
-		cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
+		try:
+			cmd(self.settings["storedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
+		except:
+			self.unbind()
+			raise
 
 	def capture(self):
 		"""capture target in a tarball"""
