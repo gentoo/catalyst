@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.3 2004/01/07 18:01:46 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.4 2004/01/10 22:23:44 drobbins Exp $
 
 case $1 in
 enter)
@@ -34,11 +34,11 @@ run)
 	then
 		unset DISTDIR
 		export PKGDIR="/tmp/grp/$clst_grp_target"
-		emerge --usepkg --buildpkg --noreplace "$clst_grp_packages" || exit 1
+		emerge --usepkg --buildpkg --noreplace $clst_grp_packages || exit 1
 	else
 		export DISTDIR="/tmp/grp/$clst_grp_target"
 		unset PKGDIR
-		emerge --fetchonly "$clst_grp_packages" || exit 1
+		emerge --fetchonly $clst_grp_packages || exit 1
 	fi
 EOF
 	[ $? -ne 0 ] && exit 1

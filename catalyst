@@ -72,7 +72,7 @@ if sys.argv[1] in ["-f", "--file" ]:
 	try:
 		addlargs=read_spec(sys.argv[2])
 	except:
-		raise CatalystError,"Unable to read spec file",sys.argv[2]
+		raise CatalystError,"Unable to read spec file: "+sys.argv[2]
 	unparsedargs=sys.argv[3:]
 else:
 	addlargs={}

@@ -1,8 +1,9 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
 
-import os,stat,string,imp,types
+import os,string,imp,types,shutil
 from catalyst_support import *
+from stat import *
 
 class generic_target:
 
@@ -81,15 +82,19 @@ class generic_stage_target(generic_target):
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		elif self.settings["target"] == "livecd-stage2":
 			#we have a main directory and a tarball in this case
-			os.makedirs(st+"/builds/"+self.settings["target_subpath"])
+			#making these directories before we clean doesn't make sense:
+			#os.makedirs(st+"/builds/"+self.settings["target_subpath"])
+			self.settings["binaries_target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/binaries"
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/"+self.settings["target_subpath"]+".tar.bz2"
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		elif self.settings["target"]=="livecd-stage3":
-			# the loop-prep/ dir is for unpacking the chroot image, and will be used to prep it.
-			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+"/loop-prep"
 			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]+"/cdroot"
-			os.makedirs(self.settings["target_path"])
-			os.makedirs(self.settings["cdroot_path"])
+			#making these directories before we clean doesn't make sense:
+			#if not os.path.exists(self.settings["target_path"]):
+			#	os.makedirs(self.settings["target_path"])
+			#if not os.path.exists(self.settings["cdroot_path"]):
+			#	os.makedirs(self.settings["cdroot_path"])
+			self.settings["binaries_source_path"]=st+"/builds/"+self.settings["source_subpath"]+"/binaries"
 			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+"/"+self.settings["source_subpath"]+".tar.bz2"
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
@@ -111,7 +116,7 @@ class generic_stage_target(generic_target):
 			self.mountmap["/tmp/grp"]=self.settings["target_path"]
 		if self.settings["target"]=="livecd-stage2":
 			self.mounts.append("/tmp/binaries")
-			self.mountmap["/tmp/binaries"]=st+"/builds/"+self.settings["target_subpath"]+"/binaries"
+			self.mountmap["/tmp/binaries"]=self.settings["binaries_target_path"]
 			
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -147,8 +152,10 @@ class generic_stage_target(generic_target):
 	def unpack_and_bind(self):
 		print "Unpacking stage tarball..."
 		cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],"Error unpacking tarball")
-		print "Unpacking portage tree snapshot..."
-		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
+		if self.settings["target"] not in ["livecd-stage3"]:
+			#a livecd-stage2 isn't "cleaned up" so there's no need to re-extract the portage snapshot
+			print "Unpacking portage tree snapshot..."
+			cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
 		for x in self.mounts: 
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x)
@@ -212,26 +219,47 @@ class generic_stage_target(generic_target):
 		
 	def clean(self):
 		destpath=self.settings["chroot_path"]
-		cleanables=["/etc/resolv.conf","/usr/portage","/var/tmp/*","/tmp/*","/root/*","/root/.ccache"]
+		
+		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*","/root/.ccache"]
+		if self.settings["target"] not in ["livecd-stage2"]:
+			#we don't need to clean up a livecd-stage2
+			cleanables.append("/usr/portage")
 		if self.settings["target"]=="stage1":
 			destpath+="/tmp/stage1root"
 			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
 			cleanables.extend(["/usr/share/gettext","/usr/lib/python2.2/test","/usr/lib/python2.2/encodings","/usr/lib/python2.2/email","/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
-		if self.settings["target"]=="livecd-stage3":
-			if self.settings.has_key("livecd-stage3/clean"):
-				if type(self.settings["livecd-stage3/clean"])==types.StringType:
-					cleanables.append(self.settings["livecd-stage3/clean"])
-				else:
-					#a list of directories to clean
-					cleanables.extend(self.settings["livecd-stage3/clean"])
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
-		cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
+		if self.settings["target"]=="livecd-stage3":
+			if self.settings.has_key("livecd-stage3/empty"):
+				if type(self.settings["livecd-stage3/empty"])==types.StringType:
+					self.settings["livecd-stage3/empty"]=[self.settings["livecd-stage3/empty"]]
+				for x in self.settings["livecd-stage3/empty"]:
+					myemp=self.settings["chroot_path"]+x
+					if not os.path.isdir(myemp):
+						print x,"not a directory or does not exist, skipping 'empty' operation."
+						continue
+					print "Emptying directory",x
+					#stat the dir, delete the dir, recreate the dir and set the proper perms and ownership
+					mystat=os.stat(myemp)
+					shutil.rmtree(myemp)
+					os.makedirs(myemp)
+					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+					os.chmod(myemp,mystat[ST_MODE])
+			if self.settings.has_key("livecd-stage3/rm"):	
+				if type(self.settings["livecd-stage3/rm"])==types.StringType:
+					self.settings["livecd-stage3/rm"]=[self.settings["livecd-stage3/rm"]]
+				for x in self.settings["livecd-stage3/rm"]:
+					#we're going to shell out for all these cleaning operations, so we get easy glob handling
+					print "livecd: removing "+x
+					os.system("rm -rf "+self.settings["chroot_path"]+x)
+		if self.settings["target"]!="livecd-stage3":
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
 		try:
-			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh preclean","preclean script failed.")
 		except:
 			self.unbind()
 			raise
@@ -252,7 +280,7 @@ class generic_stage_target(generic_target):
 
 	def run_local(self):
 		try:
-			cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
@@ -268,9 +296,9 @@ class generic_stage_target(generic_target):
 		#modify the current environment. This is an ugly hack that should be fixed. We need this
 		#to use the os.system() call since we can't specify our own environ:
 		for x in self.settings.keys():
-			varname="clst_"+x
 			#"/" is replaced with "_", "-" is also replaced with "_"
-			string.replace(varname,"/-","__")
+			varname="clst_"+string.replace(x,"/","_")
+			varname=string.replace(varname,"-","_")
 			if type(self.settings[x])==types.StringType:
 				#prefix to prevent namespace clashes:
 				os.environ[varname]=self.settings[x]
@@ -280,8 +308,10 @@ class generic_stage_target(generic_target):
 		self.run_local()
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage3"]:
 			self.preclean()
+		if self.settings["target"] in ["livecd-stage3"]:
+			self.unmerge()
 		self.unbind()
-		if self.settings["target"] in ["stage1","stage2","stage3"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage3"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
 		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
@@ -355,8 +385,12 @@ class grp_target(generic_stage_target):
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
+			mypackages=self.settings["grp/"+pkgset+"/packages"]
+			for x in range(0,len(mypackages)):
+				mypackages[x]='"'+mypackages[x]+'"'
+			mypackages=string.join(mypackages)
 			try:
-				cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
+				cmd("/bin/bash "+self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+mypackages)
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
@@ -371,7 +405,7 @@ class tinderbox_target(generic_stage_target):
 		#tinderbox
 		#example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
-			cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
@@ -384,7 +418,7 @@ class livecd_stage1_target(generic_stage_target):
 
 	def run_local(self):
 		try:
-			cmd(self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"GRP build aborting due to error."
@@ -417,7 +451,7 @@ class livecd_stage2_target(generic_stage_target):
 			if retval!=0:
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
-			cmd(self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"GRP build aborting due to error."
@@ -426,7 +460,7 @@ class livecd_stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["boot/kernel","livecd-stage3/runscript"]
 		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["livecd-stage3/cdtar","livecd-stage3/clean"])
+		self.valid_values.extend(["livecd-stage3/cdtar","livecd-stage3/empty","livecd-stage3/rm","livecd-stage3/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
 		if self.settings.has_key("livecd-stage3/cdtar"):
 			if not os.path.exists(self.settings["livecd-stage3/cdtar"]):
@@ -434,24 +468,37 @@ class livecd_stage3_target(generic_stage_target):
 		if not os.path.exists(self.settings["livecd-stage3/runscript"]):
 				raise CatalystError, "Cannot locate specified livecd-stage3/runscript: "+self.settings["livecd-stage3/runscript"]
 
-
+	def unmerge(self):
+		if self.settings["target"]=="livecd-stage3" and self.settings.has_key("livecd-stage3/unmerge"):
+			if type(self.settings["livecd-stage3/unmerge"])==types.StringType:
+				self.settings["livecd-stage3/unmerge"]=[self.settings["livecd-stage3/unmerge"]]
+			myunmerge=self.settings["livecd-stage3/unmerge"][:]
+			for x in range(0,len(myunmerge)):
+				#surround args with quotes for passing to bash, allows things like "<" to remain intact
+				myunmerge[x]='"'+myunmerge[x]+'"'
+			myunmerge=string.join(myunmerge)
+			#before cleaning, unmerge stuff:
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/unmerge.sh "+myunmerge,"unmerge script failed.")
 
 	def run_local(self):
 		try:
-			cmd(self.settings["livecd-stage3/runscript"]+" run","runscript failed")
+			cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" run","runscript failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
 
 	def preclean(self):
 		try:
-			cmd(self.settings["livecd-stage3/runscript"]+" preclean","preclean runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" preclean","preclean runscript failed.")
 		except:
 			self.unbind()
 			raise
 
 	def cdroot_setup(self):
-		cmd(self.settings["livecd-stage3/runscript"]+" cdroot_setup","preclean runscript failed.")
+		if not os.path.exists(self.settings["cdroot_path"]):
+			os.makedirs(self.settings["cdroot_path"])
+		cmd("/bin/bash "+self.settings["livecd-stage3/runscript"]+" cdroot_setup","preclean runscript failed.")
+		print "livecd-stage3: complete!"
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
