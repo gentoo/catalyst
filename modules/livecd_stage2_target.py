@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.15 2004/07/14 17:23:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.16 2004/07/14 18:07:50 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -281,7 +281,8 @@ class livecd_stage2_target(generic_stage_target):
 		# this is the part that we want to resume on since it is the most time consuming
 		try:
 			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_kernel_script"):
+				and os.path.exists(self.settings["chroot_path"]+\
+					"/tmp/.clst_run_local_kernel_script"):
 				print "Resume point detected, skipping kernel build runscript..."
 			
 			else:
@@ -289,11 +290,13 @@ class livecd_stage2_target(generic_stage_target):
 				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_kernel_script")
 			
 			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_run_local_bootloader_script"):
+				and os.path.exists(self.settings["chroot_path"]+\
+					"/tmp/.clst_run_local_bootloader_script"):
 				print "Resume point detected, skipping bootloader runscript..."
 			
 			else:
-				cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","Bootloader runscript failed.")
+				cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader",\
+					"Bootloader runscript failed.")
 				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_bootloader_script")
 		
 		except CatalystError:
