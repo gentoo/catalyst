@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.13 2004/10/16 13:38:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.14 2004/10/19 03:39:36 zhen Exp $
 
 case $1 in
 	kernel)
@@ -60,7 +60,7 @@ case $1 in
 		echo "F2 help.msg" >> ${icfg}
 
 		# figure out what device manager we are using and handle it accordingly
-		if [ ${clst_livecd_devmanager} == "udev" ]
+		if [ "${clst_livecd_devmanager}" == "udev" ]
 		then
 			cmdline_opts="${cmdline_opts} udev nodevfs"
 		fi	
@@ -84,7 +84,6 @@ case $1 in
 				echo "  append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent" >> ${icfg}
 			fi
 			
-			echo "	append initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=ht ${cmdline_opts} ${custom_kopts} cdroot vga=791 splash=silent" >> ${icfg}
 			echo >> ${icfg}
 			echo "   ${x}" >> ${kmsg}
 			echo "label ${x}-nofb" >> ${icfg}

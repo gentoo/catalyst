@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.14 2004/10/18 15:23:14 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.15 2004/10/19 03:39:36 zhen Exp $
 
 die() {
 	echo "$1"
@@ -122,7 +122,7 @@ then
 		echo "Unpacking kernel modules from the previous build..."
 		echo
 		[ ! -d /lib/modules ] && mkdir /lib/modules
-		tar xvjpf /usr/portage/packages/gk_binaries/${clst_fudgeuname}-modules-${clst_version_stamp}.tar.bz2 \
+		tar xjpf /usr/portage/packages/gk_binaries/${clst_fudgeuname}-modules-${clst_version_stamp}.tar.bz2 \
 			-C / || die "Could not unpack kernel modules"
 	else
 		build_kernel ${clst_fudgeuname}

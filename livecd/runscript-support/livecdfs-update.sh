@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.15 2004/10/18 02:55:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.16 2004/10/19 03:39:36 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -26,6 +26,7 @@ rc-update del consolefont
 rc-update add metalog default
 rc-update add modules default
 rc-update add pwgen default
+[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 [ -e /etc/init.d/splash ] && rc-update add splash default
 
 # switch the order of rcadd/ rcdel
@@ -109,9 +110,9 @@ rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/g
 # setup splash/bootsplash (if called for)
 if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
 then
-	if [ -d "/etc/bootsplash/${clst_livecd_splash_theme}" ]
+	if [ -d /etc/bootsplash/${clst_livecd_splash_theme} ]
 	then
-		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/BOOTSPLASH_THEME=\"${clst_livecd_bootsplash}\"/' /etc/conf.d/bootsplash
+		sed -i 's/BOOTSPLASH_THEME=\"gentoo\"/BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\"/' /etc/conf.d/bootsplash
 		rm /etc/bootsplash/default
 		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" /etc/bootsplash/default
 	else
@@ -121,11 +122,11 @@ then
 
 elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 then
-	if [ -d "/etc/splash/${clst_livecd_splash_theme}" ]
+	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
-		sed -i 's/# SPLASH_THEME="gentoo"/SPLASH_THEME=\"${clst_livecd_bootsplash}\"/' /etc/conf.d/splash
+		sed -i 's/# SPLASH_THEME="gentoo"/SPLASH_THEME=\"${clst_livecd_splash_theme}\"/' /etc/conf.d/splash
 		rm /etc/splash/default
-		ln -s "/etc/splash/${clst_livecd_splash_theme}" /etc/splash/default
+		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else
 		echo "Error, cannot setup splash theme ${clst_livecd_splash_theme}"
 		exit 1
@@ -133,4 +134,5 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-tar cjpf /usr/lib/hotplug/firmware/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
+[ -n $(ls /usr/lib/hotplug/firmware) ] && tar cjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
+ln -sf /lib/firmware /usr/lib/hotplug/firmware
