@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.17 2004/11/23 00:02:57 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.18 2004/12/16 23:13:24 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -98,31 +98,16 @@ class generic_stage_target(generic_target):
 				self.settings[envvar] = os.environ[envvar]
 		
 		# define all of our core variables
-		self.settings["target_profile"]=self.settings["profile"]
-		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+self.settings["target"]+\
-			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
-			
-		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
-		if self.settings["target"] in ["grp","tinderbox"]:
-			# grp creates a directory of packages and sources rather than a compressed tarball
-			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
-			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
-		
-		elif self.settings["target"] == "livecd-stage2":
-			self.settings["source_path"]=st+"/tmp/"+self.settings["source_subpath"]
-			self.settings["cdroot_path"]=st+"/builds/"+self.settings["target_subpath"]
-			
-		elif self.settings["target"] == "netboot":
-			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
-			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
-		
-		else:
-			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
-			self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
-		
-		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
-		
+		self.set_target_profile()
+		self.set_target_subpath()
+		self.set_snapshot_path()
+		self.set_target_path()
+		self.set_source_path()
+		self.set_chroot_path()
+		self.set_action_sequence()
+		self.set_use()
+		self.set_stage_path()
+
 		# this next line checks to make sure that the specified variables exist on disk.
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
 		
@@ -134,14 +119,11 @@ class generic_stage_target(generic_target):
 		self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
 		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
 			"/usr/portage/distfiles":self.settings["distdir"]}
-		
-		if self.settings["target"]=="grp":
-			self.mounts.append("/tmp/grp")
-			self.mountmap["/tmp/grp"]=self.settings["target_path"]
+		self.set_mounts()
 
 		# configure any user specified options (either in catalyst.conf or on the cmdline)
 		if self.settings.has_key("PKGCACHE"):
-			self.settings["pkgcache_path"]=st+"/packages/"+self.settings["target_subpath"]
+			self.settings["pkgcache_path"]=self.settings["storedir"]+"/packages/"+self.settings["target_subpath"]
 			self.mounts.append("/usr/portage/packages")
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
@@ -158,7 +140,39 @@ class generic_stage_target(generic_target):
 			self.mountmap["/var/tmp/ccache"]=ccdir
 			# for the chroot:
 			os.environ["CCACHE_DIR"]="/var/tmp/ccache"	
-			
+		
+	def set_target_profile(self):
+		self.settings["target_profile"]=self.settings["profile"]
+	
+	def set_target_subpath(self):
+		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+self.settings["target"]+\
+			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
+
+	def set_target_path(self):
+		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+	
+	def set_source_path(self):
+		self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+	
+	def set_snapshot_path(self):
+		self.settings["snapshot_path"]=self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
+	
+	def set_chroot_path(self):
+		self.settings["chroot_path"]=self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]
+
+	def set_action_sequence(self):
+		#Default action sequence for run method
+		self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
+				"setup_environment","run_local","preclean","unbind","clean","capture"]
+	
+	def set_use(self):
+		pass
+
+	def set_stage_path(self):
+			self.settings["stage_path"]=self.settings["chroot_path"]
+	def set_mounts(self):
+		pass
+	
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
 		
@@ -193,7 +207,7 @@ class generic_stage_target(generic_target):
 		print "Setting up directories..."
 		self.mount_safety_check()
 		
-		if not self.settings["target"] == "livecd-stage2":
+		if os.path.exists(self.settings["chroot_path"]):
 			cmd("rm -rf "+self.settings["chroot_path"],\
 				"Could not remove existing directory: "+self.settings["chroot_path"])
 			
@@ -295,36 +309,22 @@ class generic_stage_target(generic_target):
 		myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
 		myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 		myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
-		
 		# figure out what our USE vars are for building
 		myusevars=[]
 		if self.settings.has_key("HOSTUSE"):
 			myusevars.extend(self.settings["HOSTUSE"])
-			
-		if self.settings["target"]=="grp":
-			myusevars.append("bindist")
-			myusevars.extend(self.settings["grp/use"])
+		
+		if self.settings.has_key("use"):
+			myusevars.extend(self.settings["use"])
 			myf.write('USE="'+string.join(myusevars)+'"\n')
-			
-		elif self.settings["target"]=="tinderbox":
-			myusevars.extend(self.settings["tinderbox/use"])
-			myf.write('USE="'+string.join(myusevars)+'"\n')
-			
-		elif self.settings["target"]=="livecd-stage1":
-			myusevars.extend(self.settings["livecd/use"])
-			myf.write('USE="'+string.join(myusevars)+'"\n')
-			
-		elif self.settings["target"]=="embedded":
-			myusevars.extend(self.settings["embedded/use"])
-			myf.write('USE="'+string.join(myusevars)+'"\n')
-			
+		
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		
 		else:
 			myf.write('CXXFLAGS="${CFLAGS}"\n')
 		myf.close()
-
+	
 	def clean(self):
 		destpath=self.settings["chroot_path"]
 		
@@ -371,17 +371,8 @@ class generic_stage_target(generic_target):
 			
 		print "Creating stage tarball..."
 		
-		if self.settings["target"]=="stage1":
-			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+\
-				"/tmp/stage1root .","Couldn't create stage tarball")
-		
-		elif self.settings["target"]=="embedded":
-			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+\
-				"/tmp/mergeroot .","Couldn't create stage tarball")
-		
-		else:
-			cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["chroot_path"]+\
-				" .","Couldn't create stage tarball")
+		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
+			" .","Couldn't create stage tarball")
 
 	def run_local(self):
 		try:
@@ -391,17 +382,8 @@ class generic_stage_target(generic_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Stage build aborting due to error."
-
-	def run(self):
-		self.dir_setup()
-		self.unpack_and_bind()
-		try:
-			self.chroot_setup()
-		
-		except:
-			self.unbind()
-			raise
-		
+	
+	def setup_environment(self):
 		# modify the current environment. This is an ugly hack that should be fixed. We need this
 		# to use the os.system() call since we can't specify our own environ:
 		for x in self.settings.keys():
@@ -413,24 +395,16 @@ class generic_stage_target(generic_target):
 				os.environ[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
 				os.environ[varname]=string.join(self.settings[x])
-			
-		self.run_local()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
-			self.preclean()
+	
+	def run(self):
 		
-		if self.settings["target"] in ["livecd-stage2"]:
-			self.unmerge()
-		
-		# unbind everything here so that we can clean()
-		self.unbind()
-		
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
-			# clean is for removing things after bind-mounts are 
-			# unmounted (general file removal and cleanup)
-			self.clean()
-		
-		if self.settings["target"] in ["stage1","stage2","stage3","embedded"]:
-			self.capture()
-		
-		if self.settings["target"] in ["livecd-stage2"]:
-			self.cdroot_setup()
+		for x in self.settings["action_sequence"]:
+			print "Running action sequence: "+x
+			if x == 'chroot_setup':
+				try:
+					self.chroot_setup()
+				except:
+					self.unbind()
+					raise
+			else:	
+				apply(getattr(self,x))

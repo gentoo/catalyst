@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.6 2004/10/15 02:27:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.7 2004/12/16 23:13:24 wolf31o2 Exp $
 
 """
 Builder class for a netboot build.
@@ -52,6 +52,9 @@ class netboot_target(generic_stage_target):
 		for envvar in "CFLAGS", "CXXFLAGS":
 			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
 				self.settings[envvar] = "-Os -pipe"
+	
+	def set_target_path(self):
+	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
 	
 	def run_local(self):
 		# setup our chroot
@@ -138,6 +141,10 @@ class netboot_target(generic_stage_target):
 		# end
 		print "netboot: build finished !"
 
+
+	def set_action_sequence(self):
+	    self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
+						"setup_environment","run_local","unbind"]
 
 def register(foo):
 	foo.update({"netboot":netboot_target})
