@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.10 2004/01/25 07:32:58 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.11 2004/01/26 18:15:50 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -99,7 +99,7 @@ case $1 in
 					emerge --noreplace $clst_ksource || exit 1
 				fi
 
-				genkernel --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
+				genkernel ${genkernel_args} --kerneldir=/usr/src/linux --kernel-config=/var/tmp/$clst_kname.config --minkernpackage=/tmp/binaries/$clst_kname.tar.bz2 all || exit 1
 				emerge -C genkernel $clst_ksource
 				# END OF SCRIPT TO BUILD EACH KERNEL
 EOF

@@ -1,9 +1,11 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-archscript.sh,v 1.3 2004/01/21 05:48:24 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-archscript.sh,v 1.4 2004/01/26 18:15:50 brad_mssw Exp $
 
 case $1 in
 	kernel)
+		genkernel_args=""
+		export genkernel_args
 	;;
 	
 	preclean)
