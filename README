@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.7 2004/02/11 21:11:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.8 2004/02/25 19:30:19 pvdabeel Exp $
 
 Licensing
 ========================
@@ -31,7 +31,7 @@ the very tools you install your system with.
 
 Catalyst is capable of:
 
--Building installation stages for every architecutre supported by Gentoo.
+-Building installation stages for every architecture supported by Gentoo.
 -Building bootable LiveCDs for every architecture supported by Gentoo.
 -Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo.
 -Setting up a Tinderbox target for test building.
