@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.19 2004/07/12 15:01:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.20 2004/08/02 23:23:34 zhen Exp $
 		
 /usr/sbin/env-update
 source /etc/profile
@@ -35,11 +35,10 @@ export ROOT=${1}
 install -d ${ROOT}
 		
 ## START BUILD
-for x in $(/tmp/build.sh)
-do
-	#echo $x >> /tmp/build.log
-	export clst_buildpkgs="${clst_buildpkgs} ${x}"
-done
+export clst_buildpkgs="$(/tmp/build.py)"
+STAGE1_USE="$(source /etc/make.profile/make.defaults ; echo ${STAGE1_USE})"
+
+USE="-* build ${STAGE1_USE}" emerge ${clst_myemergeopts} --noreplace ${clst_buildpkgs} || exit 1
 
 if [ -n "${clst_VERBOSE}" ]
 then

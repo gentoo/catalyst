@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.4 2004/06/18 18:06:21 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.5 2004/08/02 23:23:34 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -15,7 +15,7 @@ then
 fi
 
 if [ -n "${clst_DISTCC}" ]
-then   
+then
 	export clst_myfeatures="${clst_myfeatures} distcc"
 	export DISTCC_HOSTS="${clst_distcc_hosts}"
 
@@ -29,15 +29,13 @@ then
 	export EMERGE_OPTS="--usepkg --buildpkg"
 fi
 
-grep GRP_STAGE23_USE /etc/make.profile/make.defaults > /tmp/stage23
-source /tmp/stage23
-rm -f /tmp/stage23
+GRP_STAGE23_USE="$(source /etc/make.profile/make.defaults ; echo ${GRP_STAGE23_USE})"
 
 if [ -f /usr/portage/profiles/${clst_profile}/parent ]
 then
-    export clst_bootstrap="bootstrap-cascade.sh"
+	export clst_bootstrap="bootstrap-cascade.sh"
 else
-    export clst_bootstrap=bootstrap.sh
+	export clst_bootstrap=bootstrap.sh
 fi
 
 ## setup the environment

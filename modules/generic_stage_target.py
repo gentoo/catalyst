@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.7 2004/07/14 17:23:16 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.8 2004/08/02 23:23:34 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -88,6 +88,11 @@ class generic_stage_target(generic_target):
 		else:
 			print "Building on",self.settings["hostarch"],"for alternate machine type",\
 				self.settings["mainarch"]
+		
+		# grab build settings from the environment
+		for envvar in "CHOST", "CFLAGS", "CXXFLAGS":
+			if os.environ.has_key(envvar):
+			self.settings[envvar] = os.environ[envvar]
 		
 		# define all of our core variables
 		self.settings["target_profile"]=self.settings["profile"]

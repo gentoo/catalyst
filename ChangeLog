@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.73 2004/07/21 05:03:42 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.74 2004/08/02 23:23:34 zhen Exp $
+
+  02 Aug 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
+  +targets/stage1/build.py, -targets/stage1/build.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-preclean2-chroot.sh,
+  targets/stage1/stage1.sh, targets/stage2/stage2-chroot.sh,
+  targets/stage3/stage3-chroot.sh:
+  applied patch from bug #58840. it should fix up things for uclibc stages and
+  cascaded profiles. thanks to Mike Frysinger (vapier@gentoo.org) for the patch.
 
   21 Jul 2004; John Davis <zhen@gentoo.org> +livecd/files/gamecd-xinitrc,
   +livecd/files/gamecd.motd.txt, +livecd/files/generic-motd.txt,

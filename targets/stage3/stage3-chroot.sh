@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.7 2004/07/12 15:01:17 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.8 2004/08/02 23:23:34 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -29,9 +29,7 @@ then
 	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg"
 fi
 
-grep GRP_STAGE23_USE /etc/make.profile/make.defaults > /tmp/stage23
-source /tmp/stage23
-rm -f /tmp/stage23
+GRP_STAGE23_USE="$(source /etc/make.profile/make.defaults ; echo ${GRP_STAGE23_USE})"
 
 # setup the build environment
 export FEATURES="${clst_myfeatures}"

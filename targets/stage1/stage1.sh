@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.14 2004/07/03 00:33:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.15 2004/08/02 23:23:34 zhen Exp $
 
 case $1 in
 	enter)
@@ -10,7 +10,7 @@ case $1 in
 
 	run)
 		cp ${clst_sharedir}/targets/stage1/stage1-chroot.sh ${clst_chroot_path}/tmp
-		cp ${clst_sharedir}/targets/stage1/build.sh ${clst_chroot_path}/tmp
+		cp ${clst_sharedir}/targets/stage1/build.py ${clst_chroot_path}/tmp
 		
 		# set up "ROOT in chroot" dir
 		install -d ${clst_chroot_path}/tmp/stage1root/etc
@@ -39,7 +39,7 @@ case $1 in
 	
 	clean)
 		#clean runs after preclean with bind mounts unmounted
-		keepers="virtual/os-headers sys-devel/binutils sys-devel/gcc virtual/baselayout sys-libs/glibc virtual/libc virtual/kernel"
+		keepers="virtual/os-headers sys-devel/binutils sys-devel/gcc sys-apps/baselayout virtual/libc virtual/kernel"
 		# set everything to uid 999 (nouser)
 		cd ${clst_chroot_path}/tmp/stage1root
 		install -d var/db/pkg2 
