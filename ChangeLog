@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.67 2004/07/03 00:33:37 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.68 2004/07/11 21:22:07 zhen Exp $
+
+  11 Jul 2004; <zhen@gentoo.org> +catalyst, -catalyst.new.py,
+  modules/catalyst_support.py:
+  completely rewrote the catalyst main script so that it can actually utilize
+  more than one command line flag. new functionality included, but not active
+  yet (--debug and --verbose). arguments can still be passed on the commandline
+  through the use of the -C (--cli) flag. updated the arg_parse function in
+  catalyst_support.py to accomodate my changes.
 
   02 Jul 2004; John Davis <zhen@gentoo.org> modules/generic_stage_target.py,
   modules/generic_target.py, modules/grp_target.py,

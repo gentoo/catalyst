@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/catalyst.new.py,v 1.1 2004/07/07 01:46:31 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.40 2004/07/11 21:22:07 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -123,7 +123,7 @@ def import_modules():
 					conf_values.settings["sharedir"]+"/modules/"
 
 	except ImportError:
-		print "!!! catalyst: python modules not found in "+\
+		print "!!! catalyst: Python modules not found in "+\
 			conf_values["sharedir"]+"/modules; exiting."
 		sys.exit(1)
 
@@ -135,8 +135,16 @@ def do_spec(myspecfile):
 	except:
 		sys.exit(1)
 		
-	return addlargs	
-		
+	return addlargs
+
+def do_cli(cmdline):
+	try:
+		return arg_parse(cmdline)
+	
+	except CatalystError:
+		print "!!! catalyst: Could not parse commandline, exiting."
+		sys.exit(1)
+	
 def build_target(addlargs, targetmap):
 	try:
 		if not targetmap.has_key(addlargs["target"]):
@@ -165,7 +173,7 @@ if __name__ == "__main__":
 	# parse out the command line arguments
 	try:
 		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:V", ["help", "version", "debug",\
-			"config=", "commandline=", "file=", "verbose"])
+			"config=", "cli=", "file=", "verbose"])
 	
 	except getopt.GetoptError:
 		usage()
@@ -193,13 +201,12 @@ if __name__ == "__main__":
 		if o in ("-c", "--config"):
 			myconfig=a
 
-		# needs some work
 		if o in ("-C", "--cli"):
-			if type(a)==types.StringType:
-				mycmdline=[a]
-			else:
-				mycmdline=a
-		
+			x=sys.argv.index(o)+1
+			while x < len(sys.argv):
+				mycmdline.append(sys.argv[x])
+				x=x+1
+			
 		if o in ("-f", "--file"):
 			myspecfile=a
 			
@@ -216,6 +223,9 @@ if __name__ == "__main__":
 
 	if myspecfile:
 		addlargs=do_spec(myspecfile)
+	
+	if mycmdline:
+		addlargs=do_cli(mycmdline)
 
 	# everything is setup, so the build is a go
 	try:

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.24 2004/06/18 18:06:21 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.25 2004/07/11 21:22:07 zhen Exp $
 
 import sys,string,os,types
 
@@ -210,21 +210,22 @@ def ismount(path):
 			return 1
 	return 0
 
-def arg_parse(mydict,remaining,argv):
-	"grab settings from argv, storing 'target' in mydict, and everything in remaining for later parsing"
-	global required_config_file_values
-	for x in argv:
+def arg_parse(cmdline):
+	#global required_config_file_values
+	mydict={}
+	for x in cmdline:
 		foo=string.split(x,"=")
 		if len(foo)!=2:
 			raise CatalystError, "Invalid arg syntax: "+x
-		remaining[foo[0]]=foo[1]
-	if not remaining.has_key("target"):
-		raise CatalystError, "Required value \"target\" not specified."
-	mydict["target"]=remaining["target"]
-	for x in required_config_file_values:
-		if not mydict.has_key(x):
-			raise CatalystError, "Required config file value \""+x+"\" not found."
 
+		else:
+			mydict[foo[0]]=foo[1]
+	
+	if not mydict.has_key("target"):
+		raise CatalystError, "Required value \"target\" not specified."
+	
+	# if all is well, we should return (we should have bailed before here if not)
+	return mydict
 		
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
