@@ -446,9 +446,11 @@ class livecd_stage2_target(generic_stage_target):
 		for x in mynames:
 			args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
 			if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
+				self.unbind()
 				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 			retval=os.system("cp "+self.settings["boot/kernel/"+x+"/config"]+" "+self.settings["chroot_path"]+"/var/tmp/"+x+".config")
 			if retval!=0:
+				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage2/livecd-stage2.sh run "+args)
