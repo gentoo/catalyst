@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.149 2005/01/13 22:57:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.150 2005/01/16 15:05:50 zhen Exp $
+
+  16 Jan 2005; John Davis <zhen@gentoo.org> catalyst:
+  fix from pvdabeel@gentoo.org. patch fixes a small bug that caused grp to not
+  work when both -f and -C were used on the command line.
 
   13 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
