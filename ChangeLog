@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.123 2004/12/16 03:49:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.124 2004/12/16 15:26:22 wolf31o2 Exp $
+
+  16 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  +livecd/files/environmental.motd.txt,
+  targets/livecd-stage1/livecd-stage1.sh:
+  Added environmental.motd.txt for gentoo-release-environmental livecd/type.
 
   15 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/default-runscript.sh,
