@@ -13,22 +13,6 @@ def usage():
 if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
 	usage()
 	sys.exit(1)
-
-def arg_parse(mydict, myvalids):
-	"very wimpy argument parsing, just for the prototype"
-	for x in sys.argv[1:]:
-		foo=string.split(x,"=")
-		if len(foo)!=2:
-			die("Invalid arg syntax: "+x)
-		else:
-			if foo[0] not in myvalids:
-				die("Invalid arg name: "+foo[0])
-			mydict[foo[0]]=foo[1]
-			
-def spec_dump(myspec):
-	for x in myspec.keys():
-		print x+": "+repr(myspec[x])
-
 """
 Overview of catalyst operation
 ==============================
@@ -45,10 +29,6 @@ Overview of catalyst operation
 * These build variables are stored in an internal "spec" object, which will
   be a standard python dictionary. This spec dictionary contains all relevant
   build-related information.
-
-* The spec object is passed to the appropriate subarch builder constructor.
-  The subarch builder constructor updates the spec object with variables
-  relevant to the sub-arch (pentium4, g3, etc.)
 
 * The spec object is passed to the appropriate target constructor.
   The target constructor updates the spec object to contain data relevant
@@ -78,41 +58,6 @@ Overview of catalyst operation
 #map current machine information from uname() to the mainarch we are running
 #under
 
-machinemap={ 	"i386" : "x86",
-		"i486" : "x86",
-		"i586" : "x86",
-		"i686" : "x86",
-		"x86_64" : "amd64"
-	}
-
-# map the mainarch we are running under to the mainarches we support for
-# building stages and LiveCDs. (for example, on amd64, we can build stages for
-# x86 or amd64.
-
-targetmap={ 	"x86" : ["x86"],
-		"amd64" : ["x86","amd64"]
-	}
-		
-mymachine=os.uname()[4]
-if not machinemap.has_key(mymachine):
-	die("Unknown machine type: "+mymachine)
-hostarch=machinemap[mymachine]
-print "Host architecture:",hostarch
-print "Supported architectures for targets:",string.join(targetmap[hostarch])
-print "Loading plugins:",
-archmap={}
-subarchmap={}
-for x in targetmap[hostarch]:
-	fh=open("arch/"+x+".py")
-	#this next line loads the plugin as a module and assigns it to archmap[x]
-	archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
-	#this next line registers all the subarches supported in the plugin
-	archmap[x].register(subarchmap)
-	fh.close()	
-	print x,
-print
-print "Available subarches:",string.join(subarchmap.keys())
-
 import targets
 targetmap={}
 targets.register(targetmap)
@@ -123,32 +68,7 @@ if os.getuid()!=0:
 	#non-root callers can't go any further than here. 
 	die("This script requires root privileges to operate.")	
 
-#the spec begins!
-validspec=["version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
 myspec={}
-
-"""
-local variables from spec:
-
-version_stamp			20031016					user (from spec)
-target				stage3						user (from spec)
-subarch				pentium4					user (from spec)
-rel_type			default						user (from spec) (was BUILDTYPE)
-rel_version			1.4						user (from spec) (was MAINVERSION)
-snapshot			20031016					user (from spec)
-source_subpath			default-x86-1.4/stage2-pentium4-20031016	user (from spec)
-"""
-
-arg_parse(myspec,validspec)
-#need to verify that we have all required args here. Leaving this out for the prototype.
-if myspec["subarch"] not in subarchmap.keys():
-	die("Sub-arch "+myspec["subarch"]+" not available.")
-
-#call builder constructor:
-mybuilder=subarchmap[myspec["subarch"]](myspec)
-if myspec["target"] not in targetmap.keys():
-	die("Target "+myspec["target"]+" not available.")
-
 #these would come from /etc/catalyst.conf:
 myspec["storedir"]="/var/tmp/catalyst"
 myspec["sharedir"]="/usr/share/catalyst"
@@ -156,14 +76,17 @@ myspec["sharedir"]="/usr/share/catalyst"
 myspec["distdir"]="/usr/portage/distfiles"
 myspec["portdir"]="/usr/portage"
 
-#call target constructor:
-mytarget=targetmap[myspec["target"]](myspec)
-print
-spec_dump(myspec)
+#all the main program needs to do is figure out the target. The rest of the args go to the
+#target constructor
 
+#call target constructor, pass our "myspec" settings as well as cmdline arguments for parsing
+
+addlargs={}
+arg_parse(myspec,addlargs)
+if not targetmap.has_key(myspec["target"]):
+	raise CatalystError,"Target \""+myspec["target"]+"\" not available."
+mytarget=targetmap[myspec["target"]](myspec,addlargs)
 mytarget.run()
-
-#to test this program, type:
 
 # ./catalyst subarch=pentium4 version_stamp=20031016 target=stage3 rel_type=default rel_version=1.4 snapshot=20031016 source_subpath=default-x86-1.4/stage2-pentium4-20031016
 

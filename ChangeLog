@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.7 2003/10/28 14:00:56 drobbins Exp $
-
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.8 2003/10/28 17:09:28 drobbins Exp $
+ 
+  28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: Significant rework of code
+  structure. Everything is falling nicely into place.
+  
   28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: Exception handling fully-
   integrated into current prototype code.
   
