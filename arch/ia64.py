@@ -4,7 +4,7 @@
 import builder,os
 from catalyst_support import *
 
-class arch_ia64(build.generic):
+class arch_ia64(builder.generic):
 	"builder class for ia64"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
