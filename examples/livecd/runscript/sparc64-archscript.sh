@@ -1,20 +1,17 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-archscript.sh,v 1.3 2004/01/26 18:15:50 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/sparc64-archscript.sh,v 1.4 2004/02/13 05:23:20 zhen Exp $
 
 case $1 in
 	kernel)
 		genkernel_args=""
 		export genkernel_args
-		exit $RETURN_CONTINUE
 	;;
 
 	preclean)
-		exit $RETURN_CONTINUE
 	;;
 
 	clean)
-		exit $RETURN_CONTINUE
 	;;
 
 	bootloader)
@@ -40,12 +37,12 @@ case $1 in
 				#grab name of first kernel
 				first="$x"
 			fi
-			if [ ! -e "/tmp/binaries/$x.tar.bz2" ] 
+			if [ ! -e "$clst_chroot_path/tmp/binaries/$x.tar.bz2" ] 
 			then
-				echo "Can't find kernel tarball at /tmp/binaries/$x.tar.bz2"
+				echo "Can't find kernel tarball at $clst_chroot_path/tmp/binaries/$x.tar.bz2"
 				exit 1
 			fi
-			tar xjvf /tmp/binaries/$x.tar.bz2 -C \
+			tar xjvf $clst_chroot_path/tmp/binaries/$x.tar.bz2 -C \
 			    $clst_cdroot_path/boot
 			# change kernel name from "kernel" to "gentoo", for
 			# example
@@ -77,19 +74,15 @@ case $1 in
 
 		echo "image=\"cat /boot/silo.conf\"" >> $scfg
 		echo -e "label=\"config\"" >> $scfg
-		exit $RETURN_CONTINUE
 	;;
 
 	cdfs)
-		exit $RETURN_CONTINUE
 	;;
 
 	iso)
 		# this is for the livecd-final target, and calls the proper
 		# command to build the iso file
-		mkisofs -J -R -l -o ${clst_iso_path} -G /boot/isofs.b -B ... \
+		mkisofs -J -R -l -z -o ${clst_iso_path} -G /boot/isofs.b -B ... \
 		    $clst_cdroot_path
-		exit $RETURN_GOOD
 	;;
 esac
-exit $RETURN_CONTINUE

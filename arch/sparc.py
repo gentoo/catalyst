@@ -15,7 +15,7 @@ class arch_sparc(generic_sparc):
 	"builder class for generic sparc (sun4cdm)"
 	def __init__(self,myspec):
 		generic_sparc.__init__(self,myspec)
-		self.settings["CFLAGS"]=" -O2"
+		self.settings["CFLAGS"]="-O2"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):

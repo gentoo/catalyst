@@ -15,7 +15,7 @@ class arch_sparc64(generic_sparc64):
 	"builder class for generic sparc64 (sun4u)"
 	def __init__(self,myspec):
 		generic_sparc64.__init__(self,myspec)
-		self.settings["CFLAGS"]=" -O3 -mcpu=ultrasparc"
+		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):
