@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.2 2004/01/15 01:43:44 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.3 2004/01/15 02:52:27 brad_mssw Exp $
 
 # Section has been handled, do not execute additional scripts
 RETURN_GOOD=0
@@ -106,6 +106,7 @@ EOF
 			rc-update del keymaps
 			rc-update del consolefont
 			rc-update add metalog default
+			rc-update add modules default
 			rm -rf /etc/localtime
 			cp /usr/share/zoneinfo/GMT /etc/localtime
 			echo "livecd" > /etc/hostname
