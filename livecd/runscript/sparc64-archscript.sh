@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc64-archscript.sh,v 1.8 2004/10/29 21:14:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc64-archscript.sh,v 1.9 2004/12/12 16:39:11 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -76,7 +76,7 @@ case $1 in
 		# Seems silo 1.3.x+ breaks on newer machines
 		# when booting from CD (current as of silo 1.4.8)
 		mv ${clst_cdroot_path}/boot/mkisofs.sparc.fu /tmp
-		/tmp/mkisofs.sparc.fu -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -abstract 'Gentoo Linux Sparc' -copyright 'Gentoo Foundation' -P 'Gentoo Linux Sparc' -p 'Gentoo Linux Sparc' -V 'Gentoo Linux Sparc 2004.3' -A 'Gentoo Linux Sparc' ${clst_cdroot_path}
+		/tmp/mkisofs.sparc.fu -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -abstract 'Gentoo Linux Sparc' -copyright 'Gentoo Foundation' -P 'Gentoo Linux Sparc' -p 'Gentoo Linux Sparc' -V 'Gentoo Linux Sparc 2004.3' -A 'Gentoo Linux Sparc' ${clst_cdroot_path}  || die "Cannot make ISO image"
 		rm /tmp/mkisofs.sparc.fu
 	;;
 esac

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.6 2004/10/21 17:06:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.7 2004/12/12 16:39:11 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -73,6 +73,6 @@ case $1 in
 	iso)
 		# this is for the livecd-final target, and calls the proper
 		# command to build the iso file
-		mkisofs -J -R -l -o ${2} -G ${clst_cdroot_path}/boot/isofs.b -B ... ${clst_cdroot_path}
+		mkisofs -J -R -l -o ${2} -G ${clst_cdroot_path}/boot/isofs.b -B ... ${clst_cdroot_path}  || die "Cannot make ISO image"
 	;;
 esac
