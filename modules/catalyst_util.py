@@ -254,13 +254,26 @@ modesdesc={ 	"snap":"Create a snapshot of the Portage tree for building",
 		"stage":"Build the specified stage tarball or package set",
 }
 
-def do_snapshot(portdir,snap_temp_dir,snapball):
-	retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+portdir+"/ "+snap_temp_dir+"/portage/")
+def do_snapshot(portdir,snap_temp_dir,snapdir,snapversion):
+	print "Creating Portage tree snapshot "+snapversion+" from "+portdir+"..."
+	mytmp=snap_temp_dir+"/snap-"+snapversion
+	if os.path.exists(mytmp):
+		retval=os.system("rm -rf "+mytmp)
+		if retval != 0:
+			die("Could not remove existing directory: "+mytmp)
+	os.makedirs(mytmp)
+	retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+portdir+"/ "+mytmp+"/portage/")
 	if retval != 0:
 		die("snapshot failure.")
-	retval=os.system("( cd "+snap_temp_dir+"; tar cjf "+snapball+" portage )")
+	print "Compressing Portage snapshot tarball..."
+	retval=os.system("( cd "+mytmp+"; tar cjf "+snapdir+"/portage-"+snapversion+".tar.bz2 portage )")
 	if retval != 0:
 		die("snapshot tarball creation failure.")
+	print "Cleaning up temporary snapshot directory..."
+	#Be a good citizen and clean up after ourselves
+	retval=os.system("rm -rf "+mytmp)
+	if retval != 0:
+		die("Unable to clean up directory: "+mytmp)
 
 def usage():
 	print "catalyst: Gentoo Linux stage/LiveCD/GRP building tool"
@@ -327,11 +340,11 @@ def mainloop():
 		verify_os(myset)
 		global_settings_init(myset)			
 		init_writable_dirs(myset)
-		dump_settings(myset)
+		#dump_settings(myset)
 		if sys.argv[1]=="snap":
 			if len(sys.argv)!=3:
 				die("invalid number of arguments for snapshot.")
-			do_snapshot(myset["portdir"],myset["cat_tmpdir"],myset["snapdir"]+"/portage-"+sys.argv[2]+".tar.bz2")
+			do_snapshot(myset["portdir"],myset["cat_tmpdir"],myset["snapdir"],sys.argv[2])
 			#do snapshot here
 			sys.exit(0)
 		sys.exit(0)

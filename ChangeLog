@@ -1,0 +1,12 @@
+# ChangeLog for gentoo/src/catalyst 
+# Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.2 2003/10/15 04:30:02 drobbins Exp $
+
+  14 Oct 2003; Daniel Robbins <drobins@gentoo.org>: new and improved ChangeLog;
+  snapshots now work ("./catalyst-util.py snap 20031014",) and snapshotting cleans
+  up after itself (temp files deleted,) something that should be continued as
+  much as reasonably possible in other parts of catalyst. Also, we have 
+  /etc/catalyst.conf config file reading stub code completed, and internal fall-backs
+  to reasonable global config defaults completed.
+  
+ 

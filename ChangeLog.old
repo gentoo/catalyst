@@ -1,0 +1,106 @@
+# ChangeLog for gentoo-src/stager
+# Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog.old,v 1.1 2003/10/15 04:30:02 drobbins Exp $
+
+  12 Oct 2003; Daniel Robbins <drobins@gentoo.org>: subarch test outsourced to
+  python catalyst-subarches function.
+  
+  12 Oct 2003; zhen <zhen@gentoo.org> include/build_functions.sh: fixed the
+  entry in include/build_functions.sh for location of bootstrap.sh
+
+  12 Oct 2003; zhen <zhen@gentoo.org> catalyst:
+  removing dup enter_chroot
+
+  12 Oct 2003; Robin H. Johnson <robbat2@gentoo.org> catalyst:
+  document subarches checking
+
+  12 Oct 2003; Robin H. Johnson <robbat2@gentoo.org> catalyst:
+  Fix valid subarch test.
+
+  12 Oct 2003; zhen <zhen@gentoo.org> catalyst, include/build_functions.sh,
+  include/functions.sh:
+  thanks to robbat2, the cmdline argument handling is now fixed. I moved
+  start_build to build_functions.sh cleaning up the main catalyst script some
+  more.
+
+  11 Oct 2003; <zhen@gentoo.org> include/build_functions.sh:
+  fixed SRCBALL and DESTBALL, making it transparent for profiles
+
+  11 Oct 2003; <zhen@gentoo.org> catalyst, include/functions.sh:
+  added an exit condition to the cmd line argument case statement
+
+  09 Oct 2003; <zhen@gentoo.org> catalyst, bin/build.sh, bin/stage1,
+  files/catalyst.conf, include/build_functions.sh, include/functions.sh:
+  the changes that I made to the above files should make catalyst completely
+  transparent to no matter what profile we are using. check files/catalyst.conf
+  for the list of BUILDTYPEs that we support.
+
+  08 Oct 2003; zhen <zhen@gentoo.org> catalyst:
+  changed how cmd line arguments are handled
+
+  08 Oct 2003; zhen <zhen@gentoo.org> catalyst:
+  I changed the is_special handling so that it is cleaner and faster
+
+  08 Oct 2003; zhen <zhen@gentoo.org> catalyst, include/functions.sh,
+  livecd/foundations/x86-basic/base.pkg,
+  livecd/foundations/x86-basic/kern.pkg,
+  livecd/foundations/x86-basic/post-clean.sh,
+  livecd/foundations/x86-basic/pre-clean.sh,
+  livecd/foundations/x86-basic/settings:
+  I outsourced more functions to include/functions.sh. I made it a seperate file
+  from build_fucntions.sh so that we can keep our build and other functions
+  apart. I also added in the livecd stuffs from the stager side of things.
+
+  08 Oct 2003; zhen <zhen@gentoo.org> catalyst, include/build_functions.sh:
+  I outsourced all of the build functions to include/build_functions.sh. In the
+  future, this will happen more - the code needs cleaned up.
+
+  07 Oct 2003; zhen <zhen@gentoo.org> catalyst, bin/bootstrap.sh, bin/stage1:
+  I mucked with stage1 and bootstrap.sh to add support for ${BUILDTYPE} (profile
+  transparency). Also, I removed gettext from bootstrap, since mainline gentoo
+  does not use that anymore.
+
+  05 Oct 2003; zhen <zhen@gentoo.org> catalyst:
+  since we now have a default profile in portage, i massaged some errors
+  messages to reflect that.
+
+  04 Oct 2003; zhen <zhen@gentoo.org> catalyst, bin/bootstrap.sh, bin/stage1:
+  removed ccache support from catalyst stage1 build cause it breaks the build.
+  Additionally, I removed gettext support from bootstrap, because according to
+  our new default profile, we don't use that anymore.
+
+  02 Oct 2003; zhen <zhen@gentoo.org> catalyst, files/catalyst.conf:
+  added a new var, BUILDTYPE, adding more transparency for building.
+  In the future, we will be building both selinux and hardened sources.
+
+  02 Oct 2003; zhen <zhen@gentoo.org> catalyst:
+  fixed some formatting when catalyst prints out build info, additionally,
+  trying to make catalyst more transparent for future expansion of stages
+
+  21 Sep 2003; <zhen@gentoo.org> catalyst:
+  fixed the order/ way in which we handle cmd line arguments wrt to -h or
+  --help. I moved this functionality from the main program section to
+  prechecks().
+
+  21 Sep 2003; <zhen@gentoo.org> README.catalyst, catalyst:
+  I edited catalyst to change our naming convention from stage*-arch-h.* to
+  stage*-arch-etdyn-ssp.* re method's request. This will not be the first time
+  I change naming conventions, as catalyst will be eventually extended to
+  do selinux-* stages also.
+  
+  Additionally, I updated README.catalyst to include profile information.
+
+  10 Sep 2003; <zhen@gentoo.org> README.catalyst, README.stager, bin/catalyst,
+  bin/hardened-bootstrap.sh, bin/stage1:
+  I renamed README.stager to README.catalyst and have made some very minor
+  changes to it. bin/bootstrap.sh has been renamed to bin/hardened-bootstrap.sh.
+  I have hacked bootstrap to use the hardened profile, as well as utilize
+  hardened-gcc. bin/catalyst itself has undergone some more changes (nothing too
+  major). Additionally, bin/stage1 has been hacked to accept the hardened profile,
+  and use hardened-gcc.
+
+  09 September 2003; John Davis <zhen@gentoo.org>: Initial import of hardened stager.
+  I am forking this from the original stager code in order to better fit our needs.
+  The original stager code is still used by Gentoo, and is maintained by Daniel Robbins <drobbins@gentoo.org>.
+  I would like to thank him and the rest of the contributors that coded stager.
+
