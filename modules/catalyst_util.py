@@ -16,6 +16,8 @@ subarches=["amd64", "hppa", "hppa1.1", "hppa2.0", "x86", "i386", "i486", "i586",
 """
 setting name			bash equivalent		defined how?
 ====================================================================
+cat_tmpdir			CAT_TMPDIR		default (where to do actual building/snapshotting)
+portdir				PORTDIR			default (not set inside chroot)
 snapdir				SNAPDIR			default (where snapshots are stored)
 sharedir			SHAREDIR		default (where the dir that holds targets is)
 storedir			STOREDIR		default (where to store all the stuff, ie snapshots, etc.)
@@ -252,8 +254,8 @@ modesdesc={ 	"snap":"Create a snapshot of the Portage tree for building",
 		"stage":"Build the specified stage tarball or package set",
 }
 
-def do_snapshot(snap_path,snap_temp_dir,snapball):
-	retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+snap_path+"/ "+snap_temp_dir+"/portage/")
+def do_snapshot(portdir,snap_temp_dir,snapball):
+	retval=os.system("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude CVS/ "+portdir+"/ "+snap_temp_dir+"/portage/")
 	if retval != 0:
 		die("snapshot failure.")
 	retval=os.system("( cd "+snap_temp_dir+"; tar cjf "+snapball+" portage )")
@@ -289,16 +291,18 @@ def global_settings_init(myset):
 	if os.path.exists("/etc/catalyst.conf"):
 		read_settings(myset,"/etc/catalyst.conf")
 	#set reasonable defaults if none were provided in /etc/catalyst.conf
-	mydefaults={"storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/share/distfiles"}
+	mydefaults={"portdir":"/usr/portage","storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/share/distfiles"}
 	for x in mydefaults.keys():
 		if not myset.has_key(x):
 			myset[x]=mydefaults[x]
 	if not myset.has_key("snapdir"):
 		myset["snapdir"]=myset["storedir"]+"/snapshots"
+	if not myset.has_key("cat_tmpdir"):
+		myset["cat_tmpdir"]=myset["storedir"]+"/tmp"
 
 def init_writable_dirs(myset):
 	#create the initial main directories that we need to write to.
-	for x in ["storedir","snapdir"]:
+	for x in ["storedir","snapdir","cat_tmpdir"]:
 		if not os.path.exists(myset[x]):
 			os.makedirs(myset[x])
 
@@ -324,6 +328,12 @@ def mainloop():
 		global_settings_init(myset)			
 		init_writable_dirs(myset)
 		dump_settings(myset)
+		if sys.argv[1]=="snap":
+			if len(sys.argv)!=3:
+				die("invalid number of arguments for snapshot.")
+			do_snapshot(myset["portdir"],myset["cat_tmpdir"],myset["snapdir"]+"/portage-"+sys.argv[2]+".tar.bz2")
+			#do snapshot here
+			sys.exit(0)
 		sys.exit(0)
 	else:
 		usage()
