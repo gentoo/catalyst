@@ -218,7 +218,7 @@ class generic_stage_target(generic_target):
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
-		if self.settings["target"]=="livecd-stage3":
+		if self.settings["target"]=="livecd-stage2":
 			if self.settings.has_key("livecd/empty"):
 				if type(self.settings["livecd/empty"])==types.StringType:
 					self.settings["livecd/empty"]=[self.settings["livecd/empty"]]
@@ -241,7 +241,7 @@ class generic_stage_target(generic_target):
 					#we're going to shell out for all these cleaning operations, so we get easy glob handling
 					print "livecd: removing "+x
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
-		if self.settings["target"]!="livecd-stage3":
+		if self.settings["target"]!="livecd-stage2":
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh clean","clean script failed.")
 	
 	def preclean(self):
@@ -423,10 +423,10 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/unmerge"])
 		generic_stage_target.__init__(self,spec,addlargs)
-		if self.settings.has_key("livecd/cdtar"):
-			if not os.path.exists(self.settings["livecd/cdtar"]):
-				raise CatalystError, "Cannot locate specified livecd/cdtar: "+self.settings["livecd/cdtar"]
-		for myscript in ["livecd/archscript","livecd/runscript"]:
+		for myscript in ["livecd/cdtar","livecd/archscript","livecd/runscript"]:
+			if not self.settings.has_key(myscript):
+				#cdtar is optional, so we don't assume the variable is defined.
+				pass
 			if self.settings[myscript][0]=="/":
 				if not os.path.exists(self.settings[myscript]):
 					raise CatalystError, "Cannot locate specified "+myscript+": "+self.settings[myscript]
@@ -451,12 +451,15 @@ class livecd_stage2_target(generic_stage_target):
 			except CatalystError:
 				self.unbind()
 				raise
-	def setupfs(self):
+
+	def clean(self):
+		generic_stage_target.clean(self)
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
 		except:
 			self.unbind()
 			raise
+
 
 	def preclean(self):
 		try:
@@ -465,29 +468,17 @@ class livecd_stage2_target(generic_stage_target):
 			self.unbind()
 			raise
 
-	def clean(self):
-		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" clean","clean runscript failed.")
-		except:
-			self.unbind()
-			raise
-
 	def cdroot_setup(self):
-		if os.path.exists(self.settings["cdroot_path"]):
-			print "cleaning previous livecd-stage3 build"
-			cmd("rm -rf "+self.settings["cdroot_path"],"Could not remove existing directory: "+self.settings["cdroot_path"])
-
-		print "creating livecd-stage3 cdroot"
-		os.makedirs(self.settings["cdroot_path"])
-
-		cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
 		cmd("/bin/bash "+self.settings["livecd/runscript"]+" cdfs","cdfs runscript failed.")
 		print "livecd-stage3: complete!"
 
 	def run_local(self):
-		pass
-
-def run_local(self):
+		#first clean up any existing cdroot stuff
+		if os.path.exists(self.settings["cdroot_path"]):
+			print "cleaning previous livecd-stage2 build"
+			cmd("rm -rf "+self.settings["cdroot_path"],"Could not remove existing directory: "+self.settings["cdroot_path"])
+		os.makedirs(self.settings["cdroot_path"])
+		#now, start building the kernel
 		mynames=self.settings["boot/kernel"]
 		if type(mynames)==types.StringType:
 			mynames=[mynames]
@@ -505,6 +496,7 @@ def run_local(self):
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
 			cmd("/bin/bash "+self.settings["livecd/runscript"]+" kernel "+list_bashify(args),"runscript kernel build failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" bootloader","bootloader runscript failed.")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"livecd-stage2 build aborting due to error."

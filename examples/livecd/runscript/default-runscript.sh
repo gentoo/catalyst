@@ -1,15 +1,12 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.8 2004/01/20 22:24:39 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.9 2004/01/21 05:48:24 drobbins Exp $
 
 #return codes to be used by archscript
-RETURN_GOOD=0
-RETURN_BAD=1
-RETURN_CONTINUE=2
 
 die() {
 	echo "$1"
-	exit $RETURN_BAD
+	exit 1
 }
 
 case $clst_livecd_cdfstype in
@@ -23,14 +20,8 @@ noloop)
 	cmdline_opts="looptype=noloop"
 	;;
 esac
-export cmdline_opts
 
-/bin/bash ${clst_livecd_archscript} $*
-RET="$?"
-
-[ "${RET}" = "0" ] && exit 0
-[ "${RET}" = "1" ] && exit 1
-# if $RET is 2, then we continue and run the runscript portion as well.
+source ${clst_livecd_archscript}
 
 create_normal_loop()
 {
@@ -64,7 +55,6 @@ create_normal_loop()
 		rm -rf $clst_cdroot_path/loopmount
 		#now, $clst_cdroot_path should contain a proper bootable image for our iso, including
 		#boot loader and loopback filesystem.
-		return $RETURN_GOOD
 }
 
 create_zisofs()
@@ -72,14 +62,12 @@ create_zisofs()
 	rm -rf ${clst_cdroot_path}/zisofs > /dev/null 2>&1
 	echo "Creating zisofs..."
 	mkzftree -z 9 -p2 ${clst_chroot_path} ${clst_cdroot_path}/zisofs || die "Could not run mkzftree, did you emerge zisofs"
-	return $RETURN_GOOD
 }
 
 create_noloop()
 {
 	echo "Copying files for image (no loop)..."
 	cp -a $clst_chroot_path/* $clst_cdroot_path || die "Could not copy files to image (no loop)"
-	return $RETURN_GOOD
 }
 
 case $1 in
@@ -88,7 +76,6 @@ case $1 in
 		numkernels="$1"
 		shift
 		count=0
-		install -d /tmp/binaries
 		while [ $count -lt $numkernels ]
 		do
 			clst_kname="$1"
@@ -100,6 +87,7 @@ case $1 in
 				env-update
 				source /etc/profile
 				export CONFIG_PROTECT="-*"
+				install -d /tmp/binaries
 				emerge genkernel
 				rm -f /usr/src/linux
 				export USE="-* build"
@@ -113,10 +101,9 @@ case $1 in
 				emerge -C genkernel $clst_ksource
 				# END OF SCRIPT TO BUILD EACH KERNEL
 EOF
-			[ $? -ne 0 ] && exit $RETURN_BAD
+			[ $? -ne 0 ] && exit 1 
 			count=$(( $count + 1 ))
 		done
-		exit $RETURN_GOOD
 	;;
 
 	preclean)
@@ -140,18 +127,14 @@ EOF
 			sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 			# END OF SCRIPT TO UPDATE FILESYSTEM
 EOF
-		[ $? -ne 0 ] && exit $RETURN_BAD
-	
-		exit $RETURN_GOOD
+		[ $? -ne 0 ] && exit 1 
 	;;
 
 	clean)
 		find $clst_chroot_path/usr/lib -iname "*.pyc" -exec rm -f {} \;
-		exit $RETURN_GOOD
 	;;
 
 	bootloader)
-		exit $RETURN_GOOD
 	;;
 
 	cdfs)
@@ -173,7 +156,6 @@ EOF
 	;;
 
 	iso)
-		exit $RETURN_GOOD
 	;;
 esac
-exit $RETURN_GOOD
+exit 0 
