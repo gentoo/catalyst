@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.25 2004/07/11 21:22:07 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.26 2004/07/12 14:37:45 zhen Exp $
 
 import sys,string,os,types
 
@@ -20,6 +20,8 @@ valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("AUTORESUME")
 valid_config_file_values.append("options")
+valid_config_file_values.append("DEBUG")
+valid_config_file_values.append("VERBOSE")
 
 verbosity=1
 
