@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.168 2005/01/29 14:54:31 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.169 2005/01/30 00:48:03 wolf31o2 Exp $
+
+  29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/grp/grp.sh, targets/livecd-stage1/livecd-stage1.sh:
+  Added a conditional before killing gconfd-2. This is also going to be
+  catalyst 1.1.5, so let's hope we don't find any more bugs, at least for this
+  release.
 
   29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-preclean-chroot.sh, targets/grp/grp.sh,
