@@ -124,7 +124,7 @@ for x in targetmap[hostarch]:
 	fh.close()	
 	print x,
 print
-print "Sub-architectures:",string.join(subarchmap.keys())
+print "Available subarches:",string.join(subarchmap.keys())
 
 import targets
 targetmap={}
