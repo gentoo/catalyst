@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.47 2004/09/13 14:27:07 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.48 2004/10/04 13:10:32 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -13,7 +13,7 @@ __version__="1.0.9"
 conf_values={}
 
 def usage():
-	print "Usage catalyst [options] [-C variable=value...]"
+	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
 	print " -h --help		print this help message"
 	print " -v --version		display version information"
 	print " -d --debug		enable debugging"
@@ -21,11 +21,15 @@ def usage():
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
 	print " -f --file		read specfile"
 	print " -V --verbose		verbose output"
+	print " -s --snapshot		generate a Portage snapshot"
 	print
 	print "Usage examples:"
 	print
 	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
 	print "catalyst -C target=snapshot version_stamp=my_date"
+	print
+	print "Using the snapshot option (-s, --snapshot) to build a Portage snapshot:"
+	print "catalyst -s 2004.3"
 	print
 	print "Using the specfile option (-f, --file) to build a stage target:"
 	print "catalyst -f stage1-specfile.spec"
@@ -180,8 +184,8 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:V", ["help", "version", "debug",\
-			"config=", "cli=", "file=", "verbose"])
+		opts,args = getopt.getopt(sys.argv[1:], "hvdc:C:f:Vs:", ["help", "version", "debug",\
+			"config=", "cli=", "file=", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
 		usage()
@@ -220,22 +224,20 @@ if __name__ == "__main__":
 			sys.exit(1)
 
 		if o in ("-d", "--debug"):
-			conf_values["DEBUG"]="1"
-			
-			# the debug option cannot be used alone
-			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+			if len(sys.argv) < 3:
 				print "!!! catalyst: please specify one of either -f or -C\n"
 				usage()
 				sys.exit(2)
+			else:
+				conf_values["DEBUG"]="1"
 
 		if o in ("-c", "--config"):
-			myconfig=a
-			
-			# the config file option cannot be used alone
-			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+			if len(sys.argv) < 3:
 				print "!!! catalyst: please specify one of either -f or -C\n"
 				usage()
 				sys.exit(2)
+			else:
+				myconfig=a
 
 		if o in ("-C", "--cli"):
 			x=sys.argv.index(o)+1
@@ -247,13 +249,21 @@ if __name__ == "__main__":
 			myspecfile=a
 			
 		if o in ("-V", "--verbose"):
-			conf_values["VERBOSE"]="1"
-			
-			# the verbosity option cannot be used alone
-			if not ('-f' in myopts or '--file' in myopts) or ('-C' in myopts or '--cli' in myopts):
+			if len(sys.argv) < 3:
 				print "!!! catalyst: please specify one of either -f or -C\n"
 				usage()
 				sys.exit(2)
+			else:
+				conf_values["VERBOSE"]="1"
+
+		if o in ("-s", "--snapshot"):
+			if len(sys.argv) < 3:
+				print "!!! catalyst: missing snapshot identifier\n"
+				usage()
+				sys.exit(2)
+			else:
+				mycmdline.append("target=snapshot")
+				mycmdline.append("version_stamp="+a)
 	
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
@@ -268,7 +278,7 @@ if __name__ == "__main__":
 	
 	if mycmdline:
 		addlargs=do_cli(mycmdline)
-
+	
 	# everything is setup, so the build is a go
 	try:
 		build_target(addlargs, targetmap)

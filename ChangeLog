@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.86 2004/09/29 06:44:26 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.87 2004/10/04 13:10:32 zhen Exp $
+
+  04 Oct 2004; John Davis <zhen@gentoo.org> catalyst:
+  added a new -s/ --snapshot option. no more using --cli to create snapshots,
+  just do -s version_stamp
 
   29 Sep 2004; John Davis <zhen@gentoo.org> targets/stage2/stage2-chroot.sh:
   bugfix #60502 - the stage2 target can now resume the bootstrapping process
