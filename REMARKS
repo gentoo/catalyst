@@ -96,6 +96,10 @@ I still don't know what livecd-stage1, stage2 stage3 is supposed to do. Comments
 Building custom livecds such as the kde/gnome cd might involve running an extra script inside the live environment
 (to modify motd, issue, ...). See design remarks about targets and ppc livecd script.
 
+Update 25022004:
+----------------
+
+It should be possible to describe what livecd init.d services should be added/removed, in the spec file.  
 
 Pieter Van den Abeele
 pvdabeel@gentoo.org
