@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.194 2005/03/24 14:17:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.195 2005/03/24 15:37:54 wolf31o2 Exp $
+
+  24 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/arm.py, catalyst,
+  modules/generic_stage_target.py:
+  Applying arm patch from vapier and closing bug #86466. This is now catalyst
+  1.1.8, so enjoy.
 
   24 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> +livecd/files/mkvardb,
   livecd/runscript/default-runscript.sh,

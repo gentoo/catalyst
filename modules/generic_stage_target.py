@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.23 2005/01/10 01:05:59 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.24 2005/03/24 15:37:55 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -26,13 +26,14 @@ class generic_stage_target(generic_target):
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
-		targetmap={ 	"x86" : ["x86"],
+		targetmap={
+				"x86" : ["x86"],
 				"amd64" : ["x86","amd64"],
 				"sparc64" : ["sparc","sparc64"],
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
-				"s390"	: ["s390"],
+				"s390" : ["s390"],
 				"ppc" : ["ppc"],
 				"ppc64" : ["ppc","ppc64"],
 				"hppa" : ["hppa"],
@@ -40,7 +41,8 @@ class generic_stage_target(generic_target):
 				"arm" : ["arm"]
 		}
 		
-		machinemap={ 	"i386" : "x86",
+		machinemap={
+				"i386" : "x86",
 				"i486" : "x86",
 				"i586" : "x86",
 				"i686" : "x86",
@@ -49,7 +51,7 @@ class generic_stage_target(generic_target):
 				"ia64" : "ia64",
 				"alpha" : "alpha",
 				"sparc" : "sparc",
-				"s390"	: "s390",
+				"s390" : "s390",
 				"ppc" : "ppc",
 				"ppc64" : "ppc64",
 				"parisc" : "hppa",
@@ -57,9 +59,11 @@ class generic_stage_target(generic_target):
 				"mips" : "mips",
 				"mips64" : "mips",
 				"arm" : "arm",
-				"armv4l" : "arm"
+				"armv4l" : "arm",
+				"armeb" : "arm",
+				"armv5b" : "arm"
 		}
-	
+		
 		mymachine=os.uname()[4]
 		if not machinemap.has_key(mymachine):
 			raise CatalystError, "Unknown machine type "+mymachine
