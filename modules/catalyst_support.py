@@ -26,6 +26,89 @@ def cmd(mycmd,myexc=""):
 	if retval != 0:
 		raise CatalystError,myexc
 
+"""
+Spec file format:
+
+The spec file format is a very simple and easy-to-use format for storing data. Here's an example
+file:
+
+item1: value1
+item2: foo bar oni
+item3:
+	meep
+	bark
+	gleep moop
+	
+This file would be interpreted as defining three items: item1, item2 and item3. item1 would contain
+the string value "value1". Item2 would contain an ordered list [ "foo", "bar", "oni" ]. item3
+would contain an ordered list as well: [ "meep", "bark", "gleep", "moop" ]. It's important to note
+that the order of multiple-value items is preserved, but the order that the items themselves are
+defined are not preserved. In other words, "foo", "bar", "oni" ordering is preserved but "item1"
+"item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
+"""
+
+def parse_spec(mylines):
+	myspec={}
+	pos=0
+	while pos<len(mylines):
+		if len(mylines[pos])<=1:
+			#skip blanks
+			pos += 1
+			continue
+		if mylines[pos][0] in ["#"," ","\t"]:
+			#skip indented lines, comments
+			pos += 1
+			continue
+		else:
+			myline=mylines[pos].split()
+			
+			if (len(myline)==0) or (myline[0][-1] != ":"):
+				msg("Skipping invalid spec line "+repr(pos))
+			#strip colon:
+			myline[0]=myline[0][:-1]
+			if len(myline)==2:
+				#foo: bar  --> foo:"bar"
+				myspec[myline[0]]=myline[1]
+				pos += 1
+			elif len(myline)>2:
+				#foo: bar oni --> foo: [ "bar", "oni" ]
+				myspec[myline[0]]=myline[1:]
+				pos += 1
+			else:
+				#foo:
+				# bar
+				# oni meep
+				# --> foo: [ "bar", "oni", "meep" ]
+				accum=[]
+				pos += 1
+				while (pos<len(mylines)):
+					if len(mylines[pos])<=1:
+						#skip blanks
+						pos += 1
+						continue
+					if mylines[pos][0] == "#":
+						#skip comments
+						pos += 1
+						continue
+					if mylines[pos][0] in [" ","\t"]:
+						#indented line, add to accumulator
+						accum.extend(mylines[pos].split())
+						pos += 1
+					else:
+						#we've hit the next item, break out
+						break
+				myspec[myline[0]]=accum
+	return myspec
+
+def read_spec(myspecfile):
+	try:
+		myf=open(myspecfile,"r")
+	except:
+		raise CatalystError, "Could not open spec file "+myspecfile
+	mylines=myf.readlines()
+	myf.close()
+	return parse_spec(mylines)
+	
 def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
 		print mymsg
