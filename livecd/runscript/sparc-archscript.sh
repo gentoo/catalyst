@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.7 2004/12/12 16:39:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/sparc-archscript.sh,v 1.8 2005/01/28 20:53:39 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -45,6 +45,14 @@ case $1 in
 			# change initrd name from "initrd" to "gentoo.igz", for example
 			mv ${clst_cdroot_path}/boot/initrd* ${clst_cdroot_path}/boot/${x}.igz
 		done
+
+		# figure out what device manager we are using and handle it accordingly
+		if [ "${clst_livecd_devmanager}" == "udev" ]
+		then
+			cmdline_opts="${cmdline_opts} udev nodevfs"
+		else
+			cmdline_opts="${cmdline_opts} noudev devfs"
+		fi
 		
 		scfg=${clst_cdroot_path}/boot/silo.conf
 		echo "default=\"help\"" > ${scfg}

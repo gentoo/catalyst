@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.6 2004/12/12 16:39:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/hppa-archscript.sh,v 1.7 2005/01/28 20:53:39 wolf31o2 Exp $
 
 case $1 in
 	kernel)
@@ -39,6 +39,14 @@ case $1 in
 			[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 			tar xjvf ${kbinary} -C ${clst_cdroot_path}/boot
 		done
+
+		# figure out what device manager we are using and handle it accordingly
+		if [ "${clst_livecd_devmanager}" == "udev" ]
+		then
+			cmdline_opts="${cmdline_opts} udev nodevfs"
+		else
+			cmdline_opts="${cmdline_opts} noudev devfs"
+		fi
 		
 		# THIS SHOULD BE IMPROVED !
 		mv ${clst_cdroot_path}/boot/kernel* ${clst_cdroot_path}/vmlinux
