@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.6 2004/06/13 15:48:51 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.7 2004/07/13 14:06:44 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -33,20 +33,19 @@ then
 			rc-update del "${x%%:*}" "${x##*:}"
 		done
 	fi
-	
-else
-	# use the defaults if nothing else is specified
-	rc-update del iptables default
-	rc-update del netmount default
-	#rc-update add hotplug default
-	#rc-update add kudzu default
-	rc-update add autoconfig default
-	rc-update del keymaps
-	rc-update del consolefont
-	rc-update add metalog default
-	rc-update add modules default
-	[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 fi
+	
+# always add the defaults
+rc-update del iptables default
+rc-update del netmount default
+# rc-update add hotplug default
+# rc-update add kudzu default
+rc-update add autoconfig default
+rc-update del keymaps
+rc-update del consolefont
+rc-update add metalog default
+rc-update add modules default
+[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/GMT /etc/localtime
