@@ -2,7 +2,93 @@
 
 import os,sys,imp,string
 
-#map current machine information from uname() to the mainarch we are running under
+def die(msg=None):
+	if msg:
+		print "catalyst: "+msg
+	sys.exit(1)
+
+def warn(msg):
+	print "catalyst: "+msg
+
+def usage():
+	print "usage: meep!"
+
+if len(sys.argv)==1 or sys.argv[1] in ["-h","--help"]:
+	usage()
+	sys.exit(1)
+elif os.getuid()!=0:
+	#non-root callers can still get -h and --help to work.
+	die("This script requires root privileges to operate.")	
+
+"""
+Program flow:
+
+* catalyst starts
+* it detects what machine type it is running on
+* it determines what machine targets it can build for (amd64 can build for 
+  x86 *and* amd64, for example.)
+* it loads the appropriate plugins from the arch/ directory, as modules
+* it registers each modules' classes with the main program so it can get
+  to all the subarch classes supported by each module.
+
+todo:
+
+* it parses an incomplete spec file provided by the user
+* it generates a complete spec file and writes it to disk
+* it creates an instance of the appropriate subarch object, and passes the
+  spec to the subarch so that it can build. (?)
+* the subarch ("builder") class does all building, snapshotting, etc.
+
+
+Classes are to be used to reduce code duplication *and* help maintainability.
+That's about it.
+
+Class heirarchy (preliminary):
+
+generic_builder (in arch/generic_builder.py)
+	x86_generic_builder (in arch/x86.py)
+		x86_builder (in arch/x86.py)
+		pentium4_builder (in arch/x86.py)
+		pentium4_builder.stage1()
+		pentium4_builder.stage2()
+		pentium4_builder.stage3()
+		pentium4_builder.snapshot()
+
+stage1, stage2 and stage3 have almost identical set-up and break-down. What is
+different is what happens in the middle. steps are:
+
+* check for existing bind mounts at location (safety check)
+* clean chroot dir
+* chroot dir setup
+* unpack tarball to chroot dir 
+* do bind mounts
+* chroot
+* execute script (bash)
+* exit chroot
+* umount bind mounts
+* grab goodies (variant: which goodies to grab and how (grp and livecds differ)
+
+purpose of builder modules:
+	have code specific to each arch in its own file
+	have common code in a generic parent class as much as possible
+	(these both make maintenance easier)
+
+purpose of target modules:
+	each target is going to need specific tweaks to various parts of the build process
+	having a target module allows us to store these customizations in an organized way
+
+special things for targets:
+	specify auxilliary mount points and where to mount them (for GRP packages)
+	specify requirements?
+
+"""
+
+
+#This allows plugins to import modules in the /modules dir
+sys.path.append(os.getcwd()+"/modules")
+
+#map current machine information from uname() to the mainarch we are running
+#under
 
 machinemap={ 	"i386" : "x86",
 		"i486" : "x86",
@@ -10,9 +96,10 @@ machinemap={ 	"i386" : "x86",
 		"i686" : "x86",
 		"x86_64" : "amd64"
 	}
-	
-#map the mainarch we are running under to the mainarches we support for building
-#stages and LiveCDs. (for example, on amd64, we can build stages for x86 or amd64.
+
+# map the mainarch we are running under to the mainarches we support for
+# building stages and LiveCDs. (for example, on amd64, we can build stages for
+# x86 or amd64.
 
 targetmap={ 	"x86" : ["x86"],
 		"amd64" : ["x86","amd64"]
@@ -24,13 +111,22 @@ if not machinemap.has_key(mymachine):
 	sys.exit(1)
 hostarch=machinemap[mymachine]
 print "Host architecture:",hostarch
-print "Supported architecture targets:",string.join(targetmap[hostarch])
+print "Supported architectures for targets:",string.join(targetmap[hostarch])
 print "Loading plugins:",
 archmap={}
+subarchmap={}
 for x in targetmap[hostarch]:
 	fh=open("arch/"+x+".py")
+	#this next line loads the plugin as a module and assigns it to archmap[x]
 	archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
+	#this next line registers all the subarches supported in the plugin
+	archmap[x].register(subarchmap)
 	fh.close()	
 	print x,
 print
+print "Sub-architectures:",string.join(subarchmap.keys())
 
+import targets
+targetmap={}
+targets.register(targetmap)
+print "Available targets:",string.join(targetmap.keys())
