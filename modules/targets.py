@@ -417,7 +417,11 @@ class livecd_stage1_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
-		mypack=string.join(self.settings["livecd/packages"])
+		mypack=self.settings["livecd/packages"][:]
+		for x in range(0,len(mypack)):
+			#surround args with quotes for passing to bash, allows things like "<" to remain intact
+			mypack[x]="'"+mypack[x]+"'"
+		mypack=string.join(mypack)
 		#escape ">" and "<" for the shell (using backslash)
 		mypack=string.replace(mypack,">","\\>")
 		mypack=string.replace(mypack,"<","\\<")
