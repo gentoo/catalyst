@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.25 2004/12/29 15:51:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.26 2005/01/05 20:18:05 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -34,7 +34,17 @@ rc-update add pwgen default
 [ -e /etc/init.d/alsasound ] && rc-update add alsasound default
 [ -e /etc/init.d/hdparm ] && rc-update add hdparm default
 
-[ -e /etc/startx ] && rc-update add mkxf86config default
+# This was mistakenly added, but only works on x86 currently
+#[ -e /etc/startx ] && rc-update add mkxf86config default
+
+# Comment out current getty settings
+sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
+
+# Add our own getty settings
+for x in 1 2 3 4 5 6
+do
+	echo "c${x}:12345:respawn:/sbin/agetty -nl /bin/bashlogin 38400 tty${x} linux" >> /etc/inittab
+done
 
 # perform any rcadd then any rcdel
 if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]

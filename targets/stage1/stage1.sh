@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.16 2004/10/15 02:46:58 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1.sh,v 1.17 2005/01/05 20:18:05 wolf31o2 Exp $
 
 case $1 in
 	enter)
@@ -39,21 +39,21 @@ case $1 in
 	
 	clean)
 		#clean runs after preclean with bind mounts unmounted
-		keepers="virtual/os-headers sys-devel/binutils sys-devel/gcc sys-apps/baselayout virtual/libc virtual/kernel"
+		#keepers="virtual/os-headers sys-devel/binutils sys-devel/gcc sys-apps/baselayout virtual/libc virtual/kernel"
 		# set everything to uid 999 (nouser)
-		cd ${clst_chroot_path}/tmp/stage1root
-		install -d var/db/pkg2 
+		#cd ${clst_chroot_path}/tmp/stage1root
+		#install -d var/db/pkg2 
 		
-		for x in $keepers
-		do
-			category=${x%%/*}
-			package=${x##*/}
-			[ "`ls var/db/pkg/${x}* 2>/dev/null`" = "" ] && continue
-			install -d var/db/pkg2/${category}
-			mv var/db/pkg/${category}/${package}* var/db/pkg2/${category}
-		done
-		rm -rf var/db/pkg
-		mv var/db/pkg2 var/db/pkg
+		#for x in $keepers
+		#do
+		#	category=${x%%/*}
+		#	package=${x##*/}
+		#	[ "`ls var/db/pkg/${x}* 2>/dev/null`" = "" ] && continue
+		#	install -d var/db/pkg2/${category}
+		#	mv var/db/pkg/${category}/${package}* var/db/pkg2/${category}
+		#done
+		#rm -rf var/db/pkg
+		#mv var/db/pkg2 var/db/pkg
 
 		# clean out man, info and doc files
 		rm -rf usr/share/{man,doc,info}/*
