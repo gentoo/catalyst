@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.9 2003/11/06 04:33:15 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.10 2003/11/08 23:53:15 drobbins Exp $
  
+  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: support functions for spec
+  file parsing and reading added. Will get added to the code soon.
+  
   05 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Many bug fixes later, things
   seem to be working well for stage1/2/3 so I've added a README.
   
