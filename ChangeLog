@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.201 2005/04/05 21:33:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.202 2005/04/05 21:42:20 rocket Exp $
+
+  05 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Removed a few unnecessary comments
 
   05 Apr 2005; Eric Edgar <rocket@gentoo.org> :
   Removed obsolete files from the livecd directory as the functionality has
