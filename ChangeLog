@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.111 2004/11/18 01:05:52 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.112 2004/11/18 01:54:45 wolf31o2 Exp $
+
+  17 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/livecd-local.start:
+  Let's try actually making a proper edit on livecd/files/livecd-local.start
+  this time, shall we...
 
   17 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/livecd-local.start:

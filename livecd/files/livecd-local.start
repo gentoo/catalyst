@@ -3,4 +3,4 @@
 # This is a good place to load any misc.
 # programs on startup ( 1>&2 )
 
-[ -e /etc/startx ] && [ -x /usr/sbin/x-setup ] && /sbin/x-setup
+[ -e /etc/startx ] && [ -x /usr/sbin/x-setup ] && /usr/sbin/x-setup
