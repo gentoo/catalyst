@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1-preclean2-chroot.sh,v 1.8 2005/02/28 23:21:09 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/Attic/stage1-preclean2-chroot.sh,v 1.9 2005/03/02 02:37:56 wolf31o2 Exp $
 		
 # now, some finishing touches to initialize gcc-config....
 unset ROOT
@@ -21,4 +21,4 @@ else
 fi
 
 # this cleans out /var/db, but leaves behind files portage needs for removal
-find /var/db/pkg -type f | grep -v '\(COUNTER\|CONTENTS\|ebuild\)' | xargs rm -f
+find /var/db/pkg -type f | grep -v '\(COUNTER\|CONTENTS\|SLOT\|ebuild\)' | xargs rm -f
