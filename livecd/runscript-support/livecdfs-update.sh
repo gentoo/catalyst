@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.27 2005/01/11 13:12:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.28 2005/01/23 19:21:40 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -91,7 +91,7 @@ mkdir -p /etc/sysconfig
 
 # fstab tweaks
 echo "tmpfs		/				tmpfs	defaults	0 0" > /etc/fstab
-echo "tmpfs		/usr/lib/hotplug/firmware	tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs		/lib/firmware	tmpfs	defaults	0 0" >> /etc/fstab
 sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # tweak the livecd fstab so that users know not to edit it
@@ -182,5 +182,11 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-[ -n "$(ls /usr/lib/hotplug/firmware)" ] && cd /usr/lib/hotplug/firmware && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 . && rm -f /usr/lib/hotplug/firmware/*
-ln -sf /lib/firmware /usr/lib/hotplug/firmware
+if [ -n "$(ls /lib/firmware)"]
+then
+	cd /lib/firmware
+	tar cvjpf /lib/firmware.tar.bz2 .
+	rm -f /lib/firmware/*
+	mkdir -p /usr/lib/hotplug
+	ln -sf /lib/firmware /usr/lib/hotplug/firmware
+fi
