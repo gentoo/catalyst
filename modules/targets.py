@@ -209,7 +209,7 @@ class generic_stage_target(generic_target):
 		elif self.settings["target"]=="tinderbox":
 			myusevars.extend(self.settings["tinderbox/use"])
 		elif self.settings["target"]=="livecd-stage1":
-			myusevars.extend(self.settings["livecd-stage1/use"])
+			myusevars.extend(self.settings["livecd/use"])
 		myf.write('USE="'+string.join(myusevars)+'"\n')
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
@@ -412,13 +412,13 @@ class tinderbox_target(generic_stage_target):
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["livecd-stage1/packages","livecd-stage1/use"]
+		self.required_values=["livecd/packages","livecd/use"]
 		self.valid_values=self.required_values[:]
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
 		try:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd-stage1/packages"]))
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+string.join(self.settings["livecd/packages"]))
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"GRP build aborting due to error."
