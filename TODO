@@ -4,3 +4,5 @@ Add basic tinderbox support
 
 Add distcc support
 
+Make sure to turn off grsec chroot restrictions before starting the build
+(hint: echo 0 > /proc/sys/kernel/grsecurity/chroot_*)
