@@ -10,5 +10,42 @@ livecd/use:
 	-gtk
 livecd/packages:
 	>=sys-apps/baselayout-1.8.6.12-r4
+	kudzu
+	hotplug
 	irssi
 	aumix
+	metalog
+	pciutils
+	parted
+	mt-st
+	links
+	star
+	strace
+	raidtools
+	nfs-utils
+	jfsutils
+	usbutils
+	speedtouch
+	xfsprogs
+	e2fsprogs
+	reiserfsprogs
+	hdparm
+	nano
+	less
+	openssh
+	dhcpcd
+	mingetty
+	pwgen
+	popt
+	dialog
+	rp-pppoe
+	gpm
+	screen
+	mirrorselect
+	iputils
+	hwdata-knoppix
+	hwsetup
+	bootsplash
+	device-mapper
+	lvm2
+	

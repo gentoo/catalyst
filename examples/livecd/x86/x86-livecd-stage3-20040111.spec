@@ -11,7 +11,7 @@ livecd/cdtar: examples/livecd/cdtar/isolinux-2.08-cdtar.tar.bz2
 livecd/unmerge:
 	autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages
 	sash bison flex gettext texinfo ccache addpatches man groff lib-compat gcc python miscfiles ucl
-livecd/empty:
+livecd-stage3/empty:
 	/var/tmp
 	/var/cache
 	/var/db

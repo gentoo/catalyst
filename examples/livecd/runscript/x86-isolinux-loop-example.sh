@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.6 2004/01/13 03:55:49 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.7 2004/01/13 05:59:51 brad_mssw Exp $
 
 die() {
 	echo "$1"
@@ -60,6 +60,25 @@ EOF
 	[ $? -ne 0 ] && exit 1
 	count=$(( $count + 1 ))
 	done
+
+# Setup all runtime filesystem stuff
+	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
+env-update
+source /etc/profile
+rc-update del iptables default
+rc-update del netmount default
+rc-update add hotplug default
+rc-update add kudzu default
+rc-update del keymaps
+rc-update del consolefont
+rc-update add metalog default
+rm -rf /etc/localtime
+cp /usr/share/zoneinfo/GMT /etc/localtime
+echo "livecd" > /etc/hostname
+sed -i -e 's:^/dev/[RBS]*::' /etc/fstab
+sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
+EOF
+
 	;;
 preclean)
 	#preclean runs with bind mounts active -- for running any commands inside chroot.
@@ -139,12 +158,6 @@ cdroot_setup)
 	sync; sync; sleep 3 #try to work around 2.6.0+ loopback bug
 	echo "cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount"
 	cp -a $clst_chroot_path/* $clst_cdroot_path/loopmount 
-
-	# Filesystem stuff
-	echo "Setting up filesystem files"
-	echo "livecd" > $clst_cdroot_path/loopmount/etc/hostname
-	sed -i -e 's:^/dev/[RBS]*::' $clst_cdroot_path/loopmount/etc/fstab
-	sed -i -e '/dev-state/ s/^/#/' $clst_cdroot_path/loopmount/etc/devfsd.conf
 
 	[ $? -ne 0 ] && { umount $clst_cdroot_path/loopmount; die "Couldn't copy files to loopback ext2 filesystem"; }
 	umount $clst_cdroot_path/loopmount || die "Couldn't unmount loopback ext2 filesystem"
