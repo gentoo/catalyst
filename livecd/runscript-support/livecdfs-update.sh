@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.19 2004/10/22 04:23:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.20 2004/11/07 13:51:55 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -142,5 +142,5 @@ then
 fi
 
 # tar up the firmware so that it does not get clobbered by the livecd mounts
-[ -n $(ls /usr/lib/hotplug/firmware) ] && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
+[ -n "$(ls /usr/lib/hotplug/firmware)" ] && tar cvjpf /usr/lib/hotplug/firmware.tar.bz2 /usr/lib/hotplug/firmware/*
 ln -sf /lib/firmware /usr/lib/hotplug/firmware

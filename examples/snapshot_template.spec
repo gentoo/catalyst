@@ -3,7 +3,7 @@
 ## John Davis <zhen@gentoo.org>
 
 # lets catalyst know what it is building
-target: snaphost
+target: snapshot
 
 # marks the tarball and makes it unique. Usually, this is a date.
 # example:
