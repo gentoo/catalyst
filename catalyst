@@ -2,11 +2,6 @@
 
 import os,sys,imp,string
 
-#This allows plugins (and this code) to import modules in the /modules dir
-sys.path.append(os.getcwd()+"/modules")
-
-from catalyst_support import *
-
 def usage():
 	print "usage: meep!"
 
@@ -28,7 +23,8 @@ if os.path.exists("/etc/catalyst.conf"):
 	try:
 		execfile("/etc/catalyst.conf",myconf,myconf)
 	except:
-		raise CatalystError, "Unable to read config file (syntax error)"
+		print "catalyst: Unable to /etc/catalyst.conf config file (syntax error)"
+		sys.exit(1)
 
 confdefaults={ "storedir":"/var/tmp/catalyst","sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",
 "portdir":"/usr/portage","options":"ccache"}
@@ -40,6 +36,14 @@ for x in confdefaults.keys():
 	else:
 		print "Setting",x,"to default value \""+confdefaults[x]+"\""
 		myspec[x]=confdefaults[x]
+
+#This allows plugins (and this code) to import modules in the /modules dir
+sys.path.append(myspec["sharedir"]+"/modules")
+try:
+	from catalyst_support import *
+except ImportError:
+	print "catalyst: catalyst_support module not found in "+myspec["sharedir"]+"/modules; exiting."
+	sys.exit(1)
 
 if "ccache" in string.split(myspec["options"]):
 	print "Compiler cache support enabled."
