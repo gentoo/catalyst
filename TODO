@@ -1,6 +1,8 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.6 2004/06/15 05:41:31 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.7 2004/06/16 18:34:23 zhen Exp $
+
+catalyst man page
 
 resuming of builds (sucks having to unpack and repack seeds every time)
 
@@ -9,8 +11,3 @@ finish catalyst howto
 re-do catalyst main script to be more robust
 
 Fix the hardcoded arch information in modules/generic_stage_target.py
-
-Add support for ~x86, etc builds
-
-Make sure to turn off grsec chroot restrictions before starting the build
-(hint: echo 0 > /proc/sys/kernel/grsecurity/chroot_*)

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.22 2004/06/08 04:07:34 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.23 2004/06/16 18:34:23 zhen Exp $
 
 import sys,string,os,types
 
@@ -45,13 +45,52 @@ def die(msg=None):
 	sys.exit(1)
 
 def warn(msg):
-	print "catalyst: "+msg
+	print "!!! catalyst: "+msg
+
+def spawn(mystring,debug=0,fd_pipes=None):
+	"""
+	apparently, os.system mucks up return values, so this code
+	should fix that.
+
+	Taken from portage.py - thanks to carpaski@gentoo.org
+	"""
+	print "Running command \""+mystring+"\""
+	myargs=[]
+	mycommand = "/bin/bash"
+	if debug:
+		myargs=["bash","-x","-c",mystring]
+	else:
+		myargs=["bash","-c",mystring]
+	
+	mypid=os.fork()
+	if mypid==0:
+		if fd_pipes:
+			os.dup2(fd_pipes[0], 0) # stdin  -- (Read)/Write
+			os.dup2(fd_pipes[1], 1) # stdout -- Read/(Write)
+			os.dup2(fd_pipes[2], 2) # stderr -- Read/(Write)
+		try:
+			os.execvp(mycommand,myargs)
+		except Exception, e:
+			raise CatalystError,myexc
+		
+		# If the execve fails, we need to report it, and exit
+		# *carefully* --- report error here
+		os._exit(1)
+		sys.exit(1)
+		return # should never get reached
+	retval=os.waitpid(mypid,0)[1]
+	if (retval & 0xff)==0:
+		return (retval >> 8) # return exit code
+	else:
+		return ((retval & 0xff) << 8) # interrupted by signal
 
 def cmd(mycmd,myexc=""):
-	print "Running command \""+mycmd+"\""
-	retval=os.system(mycmd)
-	if retval != 0:
-		raise CatalystError,myexc
+	try:
+		retval=spawn(mycmd)
+		if retval != 0:
+			raise CatalystError,myexc
+	except KeyboardInterrupt:
+		raise CatalystError,"Build aborting due to user intervention"
 
 def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and
@@ -201,3 +240,10 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 def spec_dump(myspec):
 	for x in myspec.keys():
 		print x+": "+repr(myspec[x])
+
+def touch(myfile):
+	try:
+		myf=open(myfile,"w")
+		myf.close()
+	except IOError:
+		raise CatalystError, "Could not touch "+myfile+"."

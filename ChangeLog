@@ -1,6 +1,18 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.64 2004/06/13 15:48:51 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.65 2004/06/16 18:34:23 zhen Exp $
+
+  16 Jun 2004; John Davis <zhen@gentoo.org> TODO, modules/catalyst_support.py,
+  modules/generic_stage_target.py:
+  revamped the cmd() structure so that it could properly return error codes.
+  Please note that this might break catalyst until there is some further
+  testing. SO DO NOT USE IT FOR BUILDING ANYTHING IMPORTANT (yet). The benefit
+  of me doing this is that SIGINT (ctrl-c) makes catalyst die nice and proper
+  now. Additionally, catalyst will stop when there is an error with an ebuild
+  ... it didn't do this before, it just plowed along and packed things up.
+  
+  Much thanks to <carpaski@gentoo.org> for (writing) pointing me to the spawn() code in
+  portage.py and then answering my noob questions.
 
   13 Jun 2004; John Davis <zhen@gentoo.org>
   livecd/runscript/x86-archscript.sh, livecd/runscript-support/kmerge.sh,
