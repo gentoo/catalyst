@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.204 2005/04/05 21:49:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.205 2005/04/05 21:52:51 rocket Exp $
+
+  05 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst:
+  Fixed email address
 
   05 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS:
   Updated AUTHORS with new maintainers and updated contributors list.
