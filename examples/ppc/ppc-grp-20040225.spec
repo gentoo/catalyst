@@ -12,7 +12,7 @@ grp: src cd2
 grp/use: aalib 
 	accessibility 
 	altivec 
-	alsa 
+	-alsa 
 	apache2 
 	apm 
 	arts 
@@ -152,7 +152,7 @@ grp/cd2/packages:
 	nfs-utils
 	nmap
 	openbox
-	openoffice-ximian
+	openoffice-bin
 	openssh
 	parted
 	passook
