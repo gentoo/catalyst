@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.19 2004/10/28 15:05:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.20 2005/01/11 22:49:44 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -12,6 +12,7 @@ build_kernel() {
 	# default genkernel args
 	GK_ARGS="${clst_livecd_gk_mainargs} \
 			 ${clst_livecd_gk_kernargs} \
+			 --no-mountboot \
 			 --kerneldir=/usr/src/linux \
 			 --kernel-config=/var/tmp/${clst_kname}.config \
 			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all"
@@ -25,6 +26,11 @@ build_kernel() {
 	if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 	then
 		GK_ARGS="${GK_ARGS} --gensplash=${clst_livecd_splash_theme}"
+	fi
+
+	if [ -n "${clst_CCACHE}" ]
+	then
+		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
 	fi
 	
 	if [  -e "/var/tmp/${clst_kname}.postconf" ]
