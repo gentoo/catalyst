@@ -1,12 +1,12 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.12 2004/04/12 14:38:26 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/Attic/stage2.sh,v 1.13 2004/04/13 20:06:41 zhen Exp $
 
 case $1 in
 	enter)
 
-		$clst_CHROOT ${clst_chroot_path}
+		${clst_CHROOT} ${clst_chroot_path}
 	;;
 
 	run)
