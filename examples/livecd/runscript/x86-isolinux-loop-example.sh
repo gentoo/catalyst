@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.1 2004/01/10 22:09:03 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/x86-isolinux-loop-example.sh,v 1.2 2004/01/11 04:04:16 brad_mssw Exp $
 
 die() {
 	echo "$1"
@@ -84,7 +84,7 @@ cdroot_setup)
 		echo >> $icfg
 		echo "label $x" >> $icfg
 		echo "	kernel $x" >> $icfg
-		echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc" >> $icfg
+		echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc cdroot" >> $icfg
 	done
 	#OK, now we need to prepare the loopback filesystem that we'll be booting. This is
 	#tricky.
