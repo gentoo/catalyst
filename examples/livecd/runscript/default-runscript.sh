@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.14 2004/02/13 02:41:26 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.15 2004/02/14 21:05:28 brad_mssw Exp $
 
 #return codes to be used by archscript
 
@@ -18,6 +18,12 @@ normal)
 	;;
 noloop)
 	cmdline_opts="looptype=noloop"
+	;;
+squashfs)
+	cmdline_opts="looptype=squashfs loop=/livecd.squashfs"
+	;;
+gcloop)
+	cmdline_opts="looptype=gcloop loop=/livecd.gcloop"
 	;;
 esac
 
@@ -59,15 +65,29 @@ create_normal_loop()
 
 create_zisofs()
 {
-	rm -rf ${clst_cdroot_path}/zisofs > /dev/null 2>&1
+	rm -rf "${clst_cdroot_path}/zisofs" > /dev/null 2>&1
 	echo "Creating zisofs..."
-	mkzftree -z 9 -p2 ${clst_chroot_path} ${clst_cdroot_path}/zisofs || die "Could not run mkzftree, did you emerge zisofs"
+	mkzftree -z 9 -p2 "${clst_chroot_path}" "${clst_cdroot_path}/zisofs" || die "Could not run mkzftree, did you emerge zisofs"
 }
 
 create_noloop()
 {
 	echo "Copying files for image (no loop)..."
-	cp -a $clst_chroot_path/* $clst_cdroot_path || die "Could not copy files to image (no loop)"
+	cp -a "${clst_chroot_path}/*" "${clst_cdroot_path}" || die "Could not copy files to image (no loop)"
+}
+
+create_gcloop()
+{
+	create_normal_loop
+	compress_gcloop_ucl -b 131072 -c 10 "${clst_cdroot_path}/livecd.loop" "${clst_cdroot_path}/livecd.gcloop" || die "compress_gcloop_ucl failed, did you emerge gcloop?"
+	rm -f "${clst_cdroot_path}/livecd.loop"
+	# only a gcloop image should exist in cdroot path
+}
+
+create_squashfs()
+{
+	echo "Creating squashfs..."
+	mksquashfs -noappend "${clst_chroot_path}" "${clst_cdroot_path}/livecd.squashfs" || die "mksquashfs failed, did you emerge squashfs?"
 }
 
 case $1 in
@@ -192,6 +212,14 @@ EOF
 		elif [ "${clst_livecd_cdfstype}" = "noloop" ]
 		then
 			create_noloop
+			loopret=$?
+		elif [ "${clst_livecd_cdfstype}" = "gcloop" ]
+		then
+			create_gcloop
+			loopret=$?
+		elif [ "${clst_livecd_cdfstype}" = "squashfs" ]
+		then
+			create_squashfs
 			loopret=$?
 		fi		
 		exit $loopret
