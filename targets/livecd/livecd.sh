@@ -1,12 +1,10 @@
 #!/bin/bash  
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.4 2003/11/11 15:01:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd/Attic/livecd.sh,v 1.5 2003/11/12 00:29:19 zhen Exp $
 
 # Original work done by livewire@gentoo.org and drobbins@gentoo.org
-# Adapted to a catalyst plugin by zhen@gentoo.org
-
-# we need a specfile setup for this!!! there are a ton of options that need set.
+# Adapted to a catalyst plugin by zhen@gentoo.org and drobbins@gentoo.org
 
 #############################################################################################
 # Variables needed for livecd creation - make sure these get defined in the spec file		#
@@ -313,5 +311,18 @@ case $1 in
 
 	enter)
 		clst_CHROOT clst_chroot_path
+		exit 0
 	;;
 
+	run)
+		exit 1
+	;;
+
+	pre_clean)
+		exit 1
+	;;
+
+	clean)
+		chroot_clean
+		exit 0
+	;;
