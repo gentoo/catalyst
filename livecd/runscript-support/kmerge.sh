@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.21 2005/01/28 20:23:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.22 2005/01/28 21:00:08 wolf31o2 Exp $
 
 die() {
 	echo "$1"
@@ -53,7 +53,7 @@ build_kernel() {
 	then
 		GK_ARGS="${GK_ARGS} --udev"
 	else
-		GK_ARGS="${GK_ARGS} --devfs"
+		GK_ARGS="${GK_ARGS} --no-udev"
 	fi
 	
 	# build with genkernel using the set options
