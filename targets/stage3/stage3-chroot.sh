@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.10 2004/10/05 13:22:07 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.11 2004/10/12 18:01:22 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -24,7 +24,7 @@ fi
 
 if [ -n "${clst_PKGCACHE}" ]
 then
-	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg"
+	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
 fi
 
 GRP_STAGE23_USE="$(source /etc/make.profile/make.defaults ; echo ${GRP_STAGE23_USE})"

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.8 2004/10/05 13:22:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.9 2004/10/12 18:01:22 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -39,11 +39,11 @@ then
 
 	if [ -n "${clst_VERBOSE}" ]
 	then
-		emerge --usepkg --buildpkg --noreplace -vp ${clst_grp_packages} || exit 1
+		emerge --usepkg --buildpkg --noreplace --newuse -vp ${clst_grp_packages} || exit 1
 		sleep 15
 	fi
 	
-	emerge --usepkg --buildpkg --noreplace ${clst_grp_packages} || exit 1
+	emerge --usepkg --buildpkg --noreplace --newuse ${clst_grp_packages} || exit 1
 else
 	unset DISTDIR
 	#don't grab MS core fonts, etc.

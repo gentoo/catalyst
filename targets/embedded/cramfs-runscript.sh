@@ -11,10 +11,6 @@ die() {
 
 case $1 in
 	run)
-		# move this to preclean stage
-		# it's a hack because dhcpcd is lame
-		install -d $root_fs_path/var/lib/dhcpc
-	
 		install -d $clst_image_path
 		mkcramfs $root_fs_path $clst_image_path/root.img
 		imagesize=`du -sk $clst_image_path/root.img | cut -f1`

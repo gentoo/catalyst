@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.4 2004/10/11 15:54:48 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.5 2004/10/12 18:01:22 zhen Exp $
 
 export GK_BINARIES=/var/tmp/gk_binaries
 export IMAGE_PATH=/tmp/image
@@ -17,7 +17,7 @@ then
 fi
 if [ -n "${clst_PKGCACHE}" ]
 then
-	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg"
+	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
 fi
 
 scriptdir=${clst_sharedir}/targets/netboot

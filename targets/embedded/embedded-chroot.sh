@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.8 2004/10/05 13:22:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.9 2004/10/12 18:01:22 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -24,7 +24,7 @@ fi
 
 if [ -n "${clst_PKGCACHE}" ]
 then
-	export clst_myemergeopts="--usepkg --buildpkg"
+	export clst_myemergeopts="--usepkg --buildpkg --newuse"
 fi
 
 # setup the environment
