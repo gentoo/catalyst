@@ -1,0 +1,26 @@
+
+##GREETING
+
+The root password on this system has been auto-scrambled for security.
+
+If any ethernet adapters were detected at boot, they should be auto-configured
+if DHCP is available on your network.  Type "net-setup eth0" to specify eth0 IP
+address settings by hand. 
+
+/proc/config(.gz) for kernel configuration.
+
+To start an ssh server on this system, type "/etc/init.d/sshd start".  If you
+need to log in remotely as root, type "passwd root" to reset root's password to
+a known value.
+
+Stage tarball(s), distfiles and packages can be found in /mnt/cdrom/. 
+
+View installation instructions by typing "links
+/mnt/cdrom/docs/handbook/html/index.html" or "links
+http://www.gentoo.org/doc/en/handbook/handbook.xml" for the latest version from
+the gentoo.org Web site.
+
+Please report any bugs you find to http://bugs.gentoo.org. Be sure to include
+detailed information about how to reproduce the bug you are reporting. Thanks
+for using Gentoo Linux!
+
