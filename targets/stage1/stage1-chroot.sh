@@ -1,20 +1,24 @@
 #!/bin/bash
 		
-env-update
+/usr/sbin/env-update
 source /etc/profile
+
 if [ -n "${clst_ENVSCRIPT}" ]
 then
 	source /tmp/envscript
 	rm -f /tmp/envscript
 fi
+
 case $1 in
 	build)
+		
 		#emerge and enable ccache before we set ROOT
 		if [ -n "${clst_CCACHE}" ]
 		then
 			export FEATURES="ccache"	
 			emerge --oneshot --nodeps ccache || exit 1
 		fi
+		
 		if [ -n "${clst_DISTCC}" ]
         then   
         	export FEATURES="distcc"
@@ -24,17 +28,27 @@ case $1 in
         	/usr/bin/distcc-config --install 2>&1 > /dev/null
         	/usr/bin/distccd 2>&1 > /dev/null
         fi
+		
 		export ROOT=${2}
 		install -d $ROOT
+		
 		if [ -n "${clst_PKGCACHE}" ]
 		then
 			export EMERGE_OPTS="--usepkg --buildpkg"
 		fi
+		
 		for x in $(/tmp/build.sh)
 		do
 			echo $x >> /tmp/build.log
 			USE="-* build" emerge ${EMERGE_OPTS} --noreplace $x || exit 1
 		done
+
+		if [ ! -d /dev ]
+		then
+			mkdir -p /dev
+			cd /dev
+			MAKEDEV generic-i386
+		fi
 	;;
 
 	preclean)

@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.34 2004/04/02 21:09:10 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.35 2004/04/04 16:58:15 zhen Exp $
+
+  04 Apr 2004; John Davis <zhen@gentoo.org> targets/embedded/embedded.sh,
+  targets/grp/grp.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2.sh, targets/stage3/stage3.sh,
+  targets/tinderbox/tinderbox.sh:
+  fix to address missing /dev in stages, fixed path for env-update in all of the
+  targets
 
   02 Apr 2004; John Davis <zhen@gentoo.org> modules/targets.py:
   use broken for grp, livecd-stage1, tinderbox, etc. fixed

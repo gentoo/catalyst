@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/Attic/embedded.sh,v 1.1 2004/03/22 15:25:52 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/Attic/embedded.sh,v 1.2 2004/04/04 16:58:15 zhen Exp $
 
 case $1 in
 enter)
@@ -8,7 +8,7 @@ enter)
 	;;
 run)
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-	env-update
+	/usr/sbin/env-update
 	source /etc/profile
 	export USE="\${clst_embedded_use}"
 	rm -f /tmp/stage23

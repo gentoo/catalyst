@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.11 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.12 2004/04/04 16:58:15 zhen Exp $
 
 case $1 in
 enter)
@@ -14,7 +14,7 @@ run)
 	shift
 	export clst_grp_packages="$*"
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-	env-update
+	/usr/sbin/env-update
 	source /etc/profile
 	if [ -n "${clst_ENVSCRIPT}" ]
 	then

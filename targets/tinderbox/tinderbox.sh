@@ -1,13 +1,13 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.4 2004/03/26 17:03:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.5 2004/04/04 16:58:15 zhen Exp $
 
 case $1 in
 run)
 	shift
 	export clst_tinderbox_packages="$*"
 	$clst_CHROOT $clst_chroot_path /bin/bash << EOF
-	env-update
+	/usr/sbin/env-update
 	source /etc/profile
 	if [ -n "${clst_ENVSCRIPT}" ]
 	then
