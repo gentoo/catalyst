@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/amd64-archscript.sh,v 1.1 2004/04/14 05:14:17 jhuebel Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/amd64-archscript.sh,v 1.2 2004/04/14 05:20:36 jhuebel Exp $
 
 case $1 in
 	kernel)
@@ -72,12 +72,12 @@ case $1 in
 			echo "   ${x}-nofb" >> $kmsg
 		done
 
-		if [ -f ${clst_cdroot_path}/isolinux/memtest86 ]
+		if [ -f ${clst_cdroot_path}/isolinux/memtest86+ ]
 		then
 			echo >> $icfg
-			echo "   memtest86" >> $kmsg
-			echo "label memtest86" >> $icfg
-			echo "  kernel memtest86" >> $icfg
+			echo "   memtest86+" >> $kmsg
+			echo "label memtest86+" >> $icfg
+			echo "  kernel memtest86+" >> $icfg
 		fi
 	;;
 	
