@@ -14,28 +14,59 @@ subarches=["amd64", "hppa", "hppa1.1", "hppa2.0", "x86", "i386", "i486", "i586",
 
 #this target stuff is not completed, but I've added it as a general template.
 """
-setting name			bash equivalent		defined how?
-====================================================================
-cat_tmpdir			CAT_TMPDIR		default (where to do actual building/snapshotting)
-portdir				PORTDIR			default (not set inside chroot)
-snapdir				SNAPDIR			default (where snapshots are stored)
-sharedir			SHAREDIR		default (where the dir that holds targets is)
-storedir			STOREDIR		default (where to store all the stuff, ie snapshots, etc.)
-pkgdir				PKGDIR			default (package cache dir)
-distdir				DISTDIR			default (/usr/portage/distfiles)
-subarch				SUBARCH			user (from spec)
-rel_version			REL_VERSION		user (from spec) (was MAINVERSION)
-rel_type			REL_TYPE		user (from spec) (was BUILDTYPE)
-version_stamp			VERSION_STAMP		user (from spec)
-snapshot			SNAPSHOT		user (from spec)
-source_tarball			SOURCE_TARBALL		user (from spec)
-target				TARGET			user (from spec)
-cflags				CFLAGS			auto
-cxxflags			CXXFLAGS		auto
-hostuse				HOSTUSE			auto
-chost				CHOST			auto
-mainarch			MAINARCH		auto
-makeopts			MAKEOPTS		auto (but overridable from catalyst.conf for distcc building and such)
+setting name			default/example			defined how?
+=====================================================================================================================
+
+globals:
+
+storedir*			/var/tmp/catalyst			default (where to store all the stuff, ie snapshots, etc.)
+sharedir*			/usr/share/catalyst			default (where the dir that holds targets is)
+
+global external paths:
+
+distdir				/usr/portage/distfiles			default (/usr/portage/distfiles)
+portdir*			/usr/portage				default (not set inside chroot)
+
+locals from spec:
+
+version_stamp			20031016					user (from spec)
+target				stage3						user (from spec)
+subarch				pentium4					user (from spec)
+rel_type			default						user (from spec) (was BUILDTYPE)
+rel_version			1.4						user (from spec) (was MAINVERSION)
+snapshot			20031016					user (from spec)
+source				default-x86-1.4/stage2-pentium4-20031016	user (from spec)
+
+
+target_subpath			default-x86-1.4/stage3-pentium4-20031016
+				rel_type+"-"+mainarch+"-"+rel_version+"/"+target+"-"+subarch+"-"+version_stamp
+
+snapshot_path			/var/tmp/catalyst/snapshots/portage-20031016.tar.bz2	
+				storedir+"/snapshots/portage"+snapshot+".tar.bz2"
+
+target_path			/var/tmp/catalyst/builds/default-x86-1.4/stage3-pentium4-20031016.tar.bz2
+				storedir+"/builds/"+target_subpath+".tar.bz2"
+
+source_path			/var/tmp/catalyst/builds/default-x86-1.4/stage2-pentium4-20031016.tar.bz2
+				storedir+"/builds/"+source+".tar.bz2"
+
+chroot_path			/var/tmp/catalyst/tmp/default-x86-1.4/stage3-pentium4-20031016
+				storedir+"/tmp/"+target_subpath
+
+
+locals, auto-generated:
+
+pkgdir										default (package cache dir)
+mainarch			x86						auto
+catdirname			default-x86-1.4/stage3-pentium4-20031016	auto
+cflags				-O2						auto
+cxxflags			-O2						auto
+hostuse				mmx sse						auto
+chost				i686-pc-linux-gnu				auto
+makeopts			-j2						auto (but overridable from catalyst.conf)
+chroot				chroot						auto (linux32 chroot or chroot)
+
+
 
 Config file sources:
 	1. defaults can come from /etc/catalyst.conf (since it's run as root, might as well put it in /etc
