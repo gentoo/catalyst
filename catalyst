@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.45 2004/09/09 05:09:11 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.46 2004/09/09 05:28:20 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -22,7 +22,7 @@ def usage():
 	print " -f --file		read specfile"
 	print " -V --verbose		verbose output"
 	print
-	print "Build examples:"
+	print "Usage examples:"
 	print
 	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
 	print "catalyst -C target=snapshot version_stamp=my_date"
