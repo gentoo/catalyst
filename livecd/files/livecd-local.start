@@ -3,19 +3,4 @@
 # This is a good place to load any misc.
 # programs on startup ( 1>&2 )
 
-[ -x /sbin/x-setup ] && /sbin/x-setup
-
-# Experimental ALSA stuff
-if [ -d /proc/asound/card0 ] && [ -x /usr/bin/amixer ]; then
-	amixer scontrols > /etc/amixer
-	[ -n "`grep Master /etc/amixer`" ] && amixer set Master 75% \
-		&& amixer set Master unmute
-	[ -n "`grep PCM /etc/amixer`" ] && amixer set PCM 75% \
-		&& amixer set PCM unmute
-	[ -n "`grep Mic /etc/amixer`" ] && amixer set Mic 75% \
-		&& amixer set Mic cap
-	[ -n "`grep Wave /etc/amixer`" ] && amixer set Wave 75% \
-		&& amixer set Wave unmute
-	[ -n "`grep Capture /etc/amixer`" ] && amixer set Capture 75% \
-		&& amixer set Capture cap && amixer set Capture unmute
-fi
+[ -e /etc/startx ] && [ -x /usr/sbin/x-setup ] && /sbin/x-setup

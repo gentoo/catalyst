@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.110 2004/11/15 01:32:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.111 2004/11/18 01:05:52 wolf31o2 Exp $
+
+  17 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/livecd-local.start:
+  Fixing up livecd/files/livecd-local.start to remove ALSA config and make
+  x-setup check for /etc/startx.
 
   14 Nov 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript-support/gamecdfs-update.sh:
