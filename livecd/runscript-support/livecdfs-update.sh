@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.9 2004/07/21 05:03:42 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.10 2004/08/02 23:48:15 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -55,6 +55,7 @@ echo "livecd" > /etc/hostname
 
 sed -i -e '/\/dev\/[RBS]*/ s/^/#/' /etc/fstab
 echo "tmpfs		/	tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs		/usr/lib/hotplug/firmware	tmpfs	defaults	0 0" >> /etc/fstab
 sed -i -e '/dev-state/ s/^/#/' /etc/devfsd.conf
 
 echo "alias cp='cp -i'" >> /etc/profile
