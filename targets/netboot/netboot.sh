@@ -1,78 +1,94 @@
 #!/bin/bash
-# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.2 2004/10/06 16:00:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.3 2004/10/11 14:19:30 zhen Exp $
 
-export GK_BINARIES=/usr/portage/packages/gk_binaries
-export IMAGE_PATH=/image
+export GK_BINARIES=/var/tmp/gk_binaries
+export IMAGE_PATH=/tmp/image
 
-# Force usage of -Os for smaller size
-export CFLAGS="-Os -pipe"
-export CXXFLAGS="-Os -pipe"
+if [ -n "${clst_CCACHE}" ]
+then
+	export clst_myfeatures="${clst_myfeatures} ccache"
+fi
+if [ -n "${clst_DISTCC}" ]
+then   
+	export clst_myfeatures="${clst_myfeatures} distcc"
+	export DISTCC_HOSTS="${clst_distcc_hosts}"
+fi
+if [ -n "${clst_PKGCACHE}" ]
+then
+	export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg"
+fi
 
-case $1 in
-	enter)
-		${clst_CHROOT} ${clst_chroot_path}
+scriptdir=${clst_sharedir}/targets/netboot
+
+echo "NETBOOT.SH: $@"
+cmd=$1
+shift
+case ${cmd} in
+
+	setup)
+		cp ${scriptdir}/netboot-setup.sh ${clst_chroot_path}/tmp
+		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-setup.sh || exit 1
+		rm -f ${clst_chroot_path}/tmp/netboot-setup.sh
 	;;
-	packages)
-		shift
 	
-		cp ${clst_sharedir}/targets/netboot/netboot-packages.sh ${clst_chroot_path}/tmp
+	packages)
+		cp ${scriptdir}/netboot-packages.sh ${clst_chroot_path}/tmp
 		clst_packages="$*" ${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-packages.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-packages.sh
 	;;
+
 	busybox)
-		shift
+		# Custom busybox config support
+		if [ ! -z "${1}" ]
+		then
+			mkdir -p ${clst_chroot_path}/etc/busybox/${clst_CHOST}
+			cp ${1} ${clst_chroot_path}/etc/busybox/${clst_CHOST}/busybox.config
+		fi
 	
-		cp ${clst_sharedir}/targets/netboot/netboot-busybox.sh ${clst_chroot_path}/tmp
-		mkdir -p ${clst_chroot_path}/etc/busybox/${clst_CHOST}/
-		# Seems busybox doesn't have a CCHOST set when emerging
-		CCHOST=
-		cp ${1} ${clst_chroot_path}/etc/busybox/${CCHOST}/busybox.config
+		cp ${scriptdir}/netboot-busybox.sh ${clst_chroot_path}/tmp
 		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-busybox.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-busybox.sh
 	;;
 
 	kernel)
-		shift
-		SOURCES=${1}
-		shift
-		CONFIG=${1}
-		shift
-		
-		cp ${clst_sharedir}/targets/netboot/netboot-kernel.sh ${clst_chroot_path}/tmp
-		cp ${CONFIG} ${clst_chroot_path}/var/tmp/kernel.config
-		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-kernel.sh ${SOURCES} ${clst_netboot_kernel_use} || exit 1
+		KERNEL_TYPE=${1}
+		SOURCES=${2}
+		CONFIG=${3}
+		if [ "${KERNEL_TYPE}" == "kernel-sources" ]
+		then
+			cp ${scriptdir}/netboot-kernel.sh ${clst_chroot_path}/tmp
+			cp ${CONFIG} ${clst_chroot_path}/var/tmp/kernel.config || die
+			env SOURCES=${SOURCES} CONFIG=/var/tmp/kernel.config \
+				${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-kernel.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-kernel.sh
+		else
+			cp ${clst_netboot_kernel_prebuilt} ${clst_chroot_path}/kernel
+		fi
 	;;
 
 	image)
-		shift
-		TARBALL=${1}
-		shift
-
-		cp ${clst_sharedir}/targets/netboot/netboot-image.sh ${clst_chroot_path}/tmp
-		cp ${TARBALL} ${clst_chroot_path}/netboot-base.tar.bz2
-		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-image.sh ${IMAGE_PATH} /netboot-base.tar.bz2 ${@} || exit 1
+		cp ${scriptdir}/netboot-image.sh ${clst_chroot_path}/tmp
+		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-image.sh "$@" || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-image.sh
-		exit 0
 	;;
 
 	finish)
-		[ ! -e ${clst_target_path} ] && mkdir -p ${clst_target_path}
-		cp ${clst_chroot_path}/ramdisk ${clst_chroot_path}/kernel ${clst_target_path}
-		strip ${clst_target_path}/kernel > /dev/null 2>&1
-		gzip -9f ${clst_target_path}/ramdisk
-		exit 0
+		cp ${scriptdir}/netboot-combine.sh ${clst_chroot_path}/tmp
+		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-combine.sh || exit 1
+		rm -f ${clst_chroot_path}/tmp/netboot-combine.sh
+
+		mkdir -p ${clst_target_path}
+		cp \
+			${clst_chroot_path}/{initrd.gz,kernel,netboot.$clst_mainarch} \
+			${clst_target_path} || exit 1
 	;;
 
 	clean)
-		exit 0
-	;;
-
+		exit 0;;
 	*)
-		exit 1
-	;;
-
+		exit 1;;
 esac
+
 exit 0

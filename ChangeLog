@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.90 2004/10/06 16:00:09 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.91 2004/10/11 14:19:30 zhen Exp $
+
+  11 Oct 2004; <zhen@gentoo.org> modules/netboot.py,
+  targets/netboot/netboot-busybox.sh, targets/netboot/netboot-image.sh,
+  targets/netboot/netboot-kernel.sh, targets/netboot/netboot-packages.sh,
+  targets/netboot/netboot.sh:
+  sweeping updates and changes to the netboot code. the patches should fix the
+  arch specific code as well as some pkgcache issues, etc. Much thanks to Mike
+  Frysinger <spanky@gentoo.org> for writing and contributing the patches.
 
   06 Oct 2004; John Davis <zhen@gentoo.org> files/catalyst.1,
   livecd/runscript-support/kmerge.sh, targets/netboot/netboot-busybox.sh,

@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.1 2004/10/06 01:34:29 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.2 2004/10/11 14:19:30 zhen Exp $
 
 """
 Builder class for a netboot build.
@@ -12,65 +12,99 @@ from generic_stage_target import *
 
 class netboot_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["netboot/kernel/sources",\
-		"netboot/kernel/config","netboot/busybox_config"]
+		self.valid_values = [
+			"netboot/kernel/sources",
+			"netboot/kernel/config",
+			"netboot/kernel/prebuilt",
 
-		self.valid_values=["netboot/extra_files"]
-		if not addlargs.has_key("netboot/packages"):
-			raise CatalystError, "Required value netboot/packages not specified."
+			"netboot/busybox_config",
+
+			"netboot/extra_files",
+			"netboot/packages"
+		]
+		self.required_values=[]
 			
-		if type(addlargs["netboot/packages"]) == types.StringType:
-			loopy=[addlargs["netboot/packages"]]
-			
-		else:
-			loopy=addlargs["netboot/packages"]
+		try:
+			if addlargs.has_key("netboot/packages"):
+				if type(addlargs["netboot/packages"]) == types.StringType:
+					loopy=[addlargs["netboot/packages"]]
+			else:
+				loopy=addlargs["netboot/packages"]
 			
 		for x in loopy:
 			self.required_values.append("netboot/packages/"+x+"/files")
-		
-		self.valid_values.extend(self.required_values)
+		except:
+			raise CatalystError,"configuration error in netboot/packages."
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		
+		if addlargs.has_key("netboot/busybox_config"):
 		file_locate(self.settings, ["netboot/busybox_config"])
+
+		if addlargs.has_key("netboot/kernel/sources"):
 		file_locate(self.settings, ["netboot/kernel/config"])
-		file_locate(self.settings, ["netboot/base_tarball"])
+		elif addlargs.has_key("netboot/kernel/prebuilt"):
+			file_locate(self.settings, ["netboot/kernel/prebuilt"])
+		else:
+			raise CatalystError,"you must define netboot/kernel/config or netboot/kernel/prebuilt"
+
+		# unless the user wants specific CFLAGS/CXXFLAGS, let's use -Os
+		for envvar in "CFLAGS", "CXXFLAGS":
+			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
+				self.settings[envvar] = "-Os -pipe"
+
 	
 	def run_local(self):
-		# Build packages
+		# setup our chroot
+		try:
+			cmd("/bin/bash "+self.settings["sharedir"]+\
+				"/targets/netboot/netboot.sh setup")
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"couldn't setup netboot env."
+
+		# build packages
+		if self.settings.has_key("netboot/packages"):
 		mypack=list_bashify(self.settings["netboot/packages"])
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
 				"/targets/netboot/netboot.sh packages "+mypack)
-		
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-		# Build busybox
+		# build busybox
+		if self.settings.has_key("netboot/busybox_config"):
+			mycmd = self.settings["netboot/busybox_config"]
+		else:
+			mycmd = ""
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
-				"/targets/netboot/netboot.sh busybox "+ self.settings["netboot/busybox_config"])
-		
+				"/targets/netboot/netboot.sh busybox "+ mycmd)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-		# Build kernel
+		# build kernel
+		if self.settings.has_key("netboot/kernel/prebuilt"):
+			mycmd = "kernel-prebuilt " + \
+			        self.settings["netboot/kernel/prebuilt"]
+		else:
+			mycmd = "kernel-sources " + \
+			        self.settings["netboot/kernel/sources"] + " " + \
+			        self.settings["netboot/kernel/config"]
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
-				"/targets/netboot/netboot.sh kernel "+ self.settings["netboot/kernel/sources"] + " " +\
-				self.settings["netboot/kernel/config"])
-		
+			    "/targets/netboot/netboot.sh kernel " + mycmd)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-		# Create image
+		# create image
 		myfiles=[]
+		if self.settings.has_key("netboot/packages"):
 		if type(self.settings["netboot/packages"]) == types.StringType:
 			loopy=[self.settings["netboot/packages"]]
-		
 		else:
 			loopy=self.settings["netboot/packages"]
 		
@@ -81,6 +115,7 @@ class netboot_target(generic_stage_target):
 			else:
 				myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
+		if self.settings.has_key("netboot/extra_files"):
 		if type(self.settings["netboot/extra_files"]) == types.ListType:
 			myfiles.extend(self.settings["netboot/extra_files"])
 		else:
@@ -88,22 +123,20 @@ class netboot_target(generic_stage_target):
 
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
-				"/targets/netboot/netboot.sh image "+ self.settings["netboot/base_tarball"] + " " + list_bashify(myfiles))
-		
+				"/targets/netboot/netboot.sh image " + list_bashify(myfiles))
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-		# Copying images in the target_path
+		# finish it all up
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+\
 				"/targets/netboot/netboot.sh finish")
-		
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-		# End
+		# end
 		print "netboot: build finished !"
 
 
