@@ -385,10 +385,7 @@ class grp_target(generic_stage_target):
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-			mypackages=self.settings["grp/"+pkgset+"/packages"]
-			for x in range(0,len(mypackages)):
-				mypackages[x]='"'+mypackages[x]+'"'
-			mypackages=string.join(mypackages)
+			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
 				cmd("/bin/bash "+self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+mypackages)
 			except CatalystError:
@@ -405,7 +402,7 @@ class tinderbox_target(generic_stage_target):
 		#tinderbox
 		#example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+list_bashify(self.settings["tinderbox/packages"]))
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
@@ -417,14 +414,7 @@ class livecd_stage1_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
-		mypack=self.settings["livecd/packages"][:]
-		for x in range(0,len(mypack)):
-			#surround args with quotes for passing to bash, allows things like "<" to remain intact
-			mypack[x]="'"+mypack[x]+"'"
-		mypack=string.join(mypack)
-		#escape ">" and "<" for the shell (using backslash)
-		mypack=string.replace(mypack,">","\\>")
-		mypack=string.replace(mypack,"<","\\<")
+		mypack=list_bashify(self.settings["livecd/packages"])
 		try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/livecd-stage1/livecd-stage1.sh run "+mypack)
 		except CatalystError:
@@ -450,9 +440,11 @@ class livecd_stage2_target(generic_stage_target):
 		mynames=self.settings["boot/kernel"]
 		if type(mynames)==types.StringType:
 			mynames=[mynames]
-		args=`len(mynames)`
+		args=[]
+		args.append(`len(mynames)`)
 		for x in mynames:
-			args=args+" "+x+" "+self.settings["boot/kernel/"+x+"/sources"]
+			args.append(x)
+			args.append(self.settings["boot/kernel/"+x+"/sources"])
 			if not os.path.exists(self.settings["boot/kernel/"+x+"/config"]):
 				self.unbind()
 				raise CatalystError, "Can't find kernel config: "+self.settings["boot/kernel/"+x+"/config"]
@@ -461,7 +453,7 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+x+"/config"]
 		try:
-			cmd("/bin/bash "+self.settings["livecd/runscript"]+" run "+args,"runscript failed")
+			cmd("/bin/bash "+self.settings["livecd/runscript"]+" run "+list_bashify(args),"runscript failed")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"livecd-stage2 build aborting due to error."

@@ -1,7 +1,21 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
 
-import sys,string,os
+import sys,string,os,types
+
+def list_bashify(mylist):
+	if type(mylist)==types.StringType:
+		mypack=[mylist]
+	else:
+		mypack=mylist[:]
+	for x in range(0,len(mypack)):
+		#surround args with quotes for passing to bash, allows things like "<" to remain intact
+		mypack[x]="'"+mypack[x]+"'"
+	mypack=string.join(mypack)
+	#escape ">" and "<" for the shell (using backslash)
+	mypack=string.replace(mypack,">","\\>")
+	mypack=string.replace(mypack,"<","\\<")
+	return mypack
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
