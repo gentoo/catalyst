@@ -273,10 +273,9 @@ class snapshot_target(generic_target):
 		self.cleanup()
 
 	def cleanup(self):
-		mytmp=self.settings["tmp_path"]+"/"+self.settings["target_subpath"]
 		print "Cleaning up temporary snapshot directory..."
 		#Be a good citizen and clean up after ourselves
-		cmd("rm -rf "+mytmp,"Snapshot cleanup failure")
+		cmd("rm -rf "+self.settings["tmp_path"],"Snapshot cleanup failure")
 			
 class stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
