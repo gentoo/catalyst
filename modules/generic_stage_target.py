@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.11 2004/08/13 16:00:48 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.12 2004/09/07 14:04:24 zhen Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -362,7 +362,7 @@ class generic_stage_target(generic_target):
 		
 		except:
 			self.unbind()
-			raise
+			raise CatalystError, "Build failed, could not execute preclean"
 
 	def capture(self):
 		"""capture target in a tarball"""
@@ -425,18 +425,20 @@ class generic_stage_target(generic_target):
 				os.environ[varname]=string.join(self.settings[x])
 			
 		self.run_local()
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
 			self.preclean()
 		
 		if self.settings["target"] in ["livecd-stage2"]:
 			self.unmerge()
+		
+		# unbind everything here so that we can clean()
 		self.unbind()
 		
 		# kill distcc processes outside of the chroot
 		if self.settings.has_key("DISTCC"): 
 			cmd("/usr/bin/pkill -U 7980","could not kill distcc process(es)")
 
-		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage2"]:
+		if self.settings["target"] in ["stage1","stage2","stage3","livecd-stage1","livecd-stage2"]:
 			# clean is for removing things after bind-mounts are 
 			# unmounted (general file removal and cleanup)
 			self.clean()

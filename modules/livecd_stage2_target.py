@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.19 2004/09/06 04:52:06 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.20 2004/09/07 14:04:24 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -50,8 +50,18 @@ class livecd_stage2_target(generic_stage_target):
 			os.makedirs(self.settings["chroot_path"])
 				
 		print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
-		cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],"Error copying initial livecd-stage2")
+		cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
+			"Error copying initial livecd-stage2")
 	
+ 		if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
+ 			print "Cleaning up existing portage tree snapshot..."
+ 			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
+				"Error removing existing snapshot directory.")
+
+ 		print "Unpacking portage tree snapshot..."
+ 		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
+			self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
+
 		print "Configuring profile link..."
 		cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile","Error zapping profile link")
 		cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+" "
