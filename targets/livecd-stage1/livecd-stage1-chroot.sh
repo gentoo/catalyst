@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.13 2005/01/26 21:59:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-chroot.sh,v 1.14 2005/01/28 18:37:23 wolf31o2 Exp $
 
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 	| cut -d/ -f2 | cut -d- -f2,3`
@@ -55,7 +55,13 @@ export USE_ORDER="env:pkg:conf:defaults"
 if [ "${clst_VERBOSE}" ]
 then
 	emerge ${clst_emergeopts} -vp ${clst_packages}
-	sleep 15
+	echo "Press any key within 15 seconds to pause the build..."
+	read -s -t 15 -n 1
+	if [ $? -eq 0 ]
+	then
+		echo "Press any key to continue..."
+		read -s -n 1
+	fi
 fi
 
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \

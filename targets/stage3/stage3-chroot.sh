@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.16 2005/01/13 22:57:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.17 2005/01/28 18:37:23 wolf31o2 Exp $
 
 portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 	| cut -d/ -f2 | cut -d- -f2,3`
@@ -56,7 +56,13 @@ USE="build" emerge portage
 if [ -n "${clst_VERBOSE}" ]
 then
 	emerge -e ${clst_myemergeopts} -vp system || exit 1
-	sleep 15
+	echo "Press any key within 15 seconds to pause the build..."
+	read -s -t 15 -n 1
+	if [ $? -eq 0 ]
+	then
+		echo "Press any key to continue..."
+		read -s -n 1
+	fi
 fi
 
 emerge -e ${clst_myemergeopts} system || exit 1

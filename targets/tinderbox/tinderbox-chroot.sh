@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.9 2005/01/26 21:59:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.10 2005/01/28 18:37:23 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -38,7 +38,13 @@ do
 	if [ -n "${clst_VERBOSE}" ]
 	then
 		emerge --usepkg --buildpkg -vp $x
-		sleep 5
+		echo "Press any key within 15 seconds to pause the build..."
+		read -s -t 15 -n 1
+		if [ $? -eq 0 ]
+		then
+			echo "Press any key to continue..."
+			read -s -n 1
+		fi
 	fi
 	
 	emerge --usepkg --buildpkg $x
