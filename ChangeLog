@@ -1,6 +1,9 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.92 2004/10/11 14:27:45 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.93 2004/10/12 17:33:40 zhen Exp $
+
+  12 Oct 2004; John Davis <zhen@gentoo.org> modules/netboot.py:
+  small netboot fixups
 
   11 Oct 2004; <zhen@gentoo.org> modules/netboot.py,
   targets/netboot/netboot-busybox.sh, targets/netboot/netboot-image.sh,

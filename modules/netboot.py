@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.4 2004/10/11 15:41:23 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.5 2004/10/12 17:33:40 zhen Exp $
 
 """
 Builder class for a netboot build.
@@ -52,7 +52,6 @@ class netboot_target(generic_stage_target):
 		for envvar in "CFLAGS", "CXXFLAGS":
 			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
 				self.settings[envvar] = "-Os -pipe"
-
 	
 	def run_local(self):
 		# setup our chroot
