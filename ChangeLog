@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.165 2005/01/29 05:50:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.166 2005/01/29 14:33:00 wolf31o2 Exp $
+
+  29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript/x86-archscript.sh:
+  Removed acpi from x86-archscript.sh as it breaks acpi calls on the command
+  line.
 
   29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   Version 1.1.4
