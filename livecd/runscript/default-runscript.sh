@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.17 2004/10/15 02:40:00 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/default-runscript.sh,v 1.18 2004/12/12 16:17:02 wolf31o2 Exp $
 
 #return codes to be used by archscript
 die() {
@@ -81,7 +81,7 @@ create_gcloop() {
 
 create_squashfs() {
 	echo "Creating squashfs..."
-	mksquashfs "${clst_chroot_path}" "${clst_cdroot_path}/livecd.squashfs" -noappend || die "mksquashfs failed, did you emerge squashfs-utils?"
+	mksquashfs "${clst_chroot_path}" "${clst_cdroot_path}/livecd.squashfs" -noappend || die "mksquashfs failed, did you emerge squashfs-tools?"
 	
 }
 
