@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.80 2004/02/11 16:08:29 tigger Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/targets.py,v 1.81 2004/02/11 17:07:57 tigger Exp $
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -235,13 +235,9 @@ class generic_stage_target(generic_target):
 			destpath+="/tmp/stage1root"
 			#this next stuff can eventually be integrated into the python and glibc ebuilds themselves (USE="build"):
 			cleanables.extend(["/usr/share/gettext","/usr/lib/python2.2/test","/usr/lib/python2.2/encodings","/usr/lib/python2.2/email","/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
-		# turn on dotglobs so dot directories go too
-		cmd("shopt -s dotglob")
 		for x in cleanables: 
 			print "Cleaning chroot: "+x+"..."
 			cmd("rm -rf "+destpath+x,"Couldn't clean "+x)
-		# turn it off in case it breaks something
-		cmd("shopt -u dotglob")
 		if self.settings["target"]=="livecd-stage2":
 			if self.settings.has_key("livecd/empty"):
 				if type(self.settings["livecd/empty"])==types.StringType:
