@@ -102,8 +102,8 @@ class generic_stage_target(generic_target):
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
 		if self.settings.has_key("CCACHE"):
-			self.mounts.append("/root/.ccache")
-			self.mountmap["/root/.ccache"]="/root/.ccache"
+			self.mounts.append(os.environ["CCACHE_DIR"])
+			self.mountmap["/var/tmp/portage/.ccache"]=os.environ["CCACHE_DIR"]
 		
 		if self.settings["target"]=="grp":
 			self.mounts.append("/tmp/grp")
@@ -211,7 +211,7 @@ class generic_stage_target(generic_target):
 	def clean(self):
 		destpath=self.settings["chroot_path"]
 		
-		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*","/root/.ccache"]
+		cleanables=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*"]
 		if self.settings["target"] not in ["livecd-stage2"]:
 			#we don't need to clean up a livecd-stage2
 			cleanables.append("/usr/portage")
