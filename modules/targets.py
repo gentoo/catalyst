@@ -70,7 +70,7 @@ class generic_stage_target(generic_target):
 		self.settings["target_subpath"]=self.settings["target_profile"]+"/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
-		if self.settings["target"]=="grp":
+		if self.settings["target"] in ["grp","tinderbox"]:
 			#grp creates a directory of packages and sources rather than a compressed tarball
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
 			#since we have a directory here, we need to create it
@@ -82,8 +82,8 @@ class generic_stage_target(generic_target):
 		self.settings["source_path"]=st+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		self.settings["chroot_path"]=st+"/tmp/"+self.settings["target_subpath"]
 		
-		self.mounts=[ "/proc","/dev","/usr/portage/distfiles" ]
-		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/usr/portage/distfiles":self.settings["distdir"]}
+		self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
+		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts","/usr/portage/distfiles":self.settings["distdir"]}
 		if self.settings.has_key("PKGCACHE"):
 			self.settings["pkgcache_path"]=st+"/packages/"+self.settings["target_subpath"]
 			self.mounts.append("/usr/portage/packages")
@@ -147,7 +147,10 @@ class generic_stage_target(generic_target):
 	def unbind(self):
 		ouch=0
 		mypath=self.settings["chroot_path"]
-		for x in self.mounts:
+		myrevmounts=self.mounts[:]
+		myrevmounts.reverse()
+		#unmount in reverse order for nested bind-mounts
+		for x in myrevmounts:
 			if not os.path.exists(mypath+x):
 				continue
 			if not ismount(mypath+x):
@@ -177,6 +180,8 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			myusevars.append("bindist")
 			myusevars.extend(self.settings["grp/use"])
+		elif self.settings["target"]=="tinderbox":
+			myusevars.extend(self.settings["tinderbox/use"])
 		myf.write('USE="'+string.join(myusevars)+'"\n')
 		if self.settings.has_key("CXXFLAGS"):
 			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
@@ -234,18 +239,27 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				os.environ["clst_"+x]=string.join(self.settings[x])
 		try:
-			if self.settings["target"]!="grp":
+			if self.settings["target"] not in ["grp","tinderbox"]:
 				cmd(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+".sh run","build script failed")
-			else:
+			elif self.settings["target"]=="grp":
 				for pkgset in self.settings["grp"]:
 					#example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
 					cmd(self.settings["sharedir"]+"/targets/grp/grp.sh run "+self.settings["grp/"+pkgset+"/type"]+" "+pkgset+" "+string.join(self.settings["grp/"+pkgset+"/packages"]))
+			else:
+				#tinderbox
+				#example call: "grp.sh run xmms vim sys-apps/gleep"
+				try:
+					cmd(self.settings["sharedir"]+"/targets/tinderbox/tinderbox.sh run "+string.join(self.settings["tinderbox/packages"]))
+				except CatalystError:
+					self.unbind()
+					raise CatalystError,"Tinderbox aborting due to error."
+		
 		finally:
 			#pre-clean is for stuff that needs to run with bind-mounts still active
-			if self.settings["target"]!="grp":
+			if self.settings["target"] not in ["grp","tinderbox"]:
 				self.preclean()
 			self.unbind()
-		if self.settings["target"]!="grp":
+		if self.settings["target"] not in ["grp","tinderbox"]:
 			#clean is for removing things after bind-mounts are unmounted (general file removal and cleanup)
 			self.clean()
 			self.capture()
@@ -310,12 +324,21 @@ class grp_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.valid_values=self.required_values
 
+class tinderbox_target(generic_stage_target):
+	def __init__(self,spec,addlargs):
+		self.required_values=["tinderbox/packages","tinderbox/use","version_stamp","target","subarch","rel_type","rel_version","snapshot","source_subpath"]
+		for myarg in ["tinderbox/packages","tinderbox/use"]:
+			if not addlargs.has_key(myarg):
+				raise CatalystError,"Required value \""+myarg+"\" not specified in spec."
+		generic_stage_target.__init__(self,spec,addlargs)
+		self.valid_values=self.required_values
+
 class livecd_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		generic_target.__init__(self,spec,addlargs)
 
 def register(foo):
 	foo.update({"stage1":stage1_target,"stage2":stage2_target,"stage3":stage3_target,
-	"grp":grp_target,"livecd":livecd_target,"snapshot":snapshot_target})
+	"grp":grp_target,"livecd":livecd_target,"snapshot":snapshot_target,"tinderbox":tinderbox_target})
 	return foo
 	

@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.12 2003/11/09 01:52:16 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.13 2003/11/30 01:51:44 drobbins Exp $
  
+  29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Tinderbox target added. See
+  tinderbox examples in examples/ dir.
+  
   08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: spec file support integrated
   into catalyst. Use "-f/--file specfile" as argument; see examples dir for examples.
   "grp" target now functional. See examples/x86-grp-20031102.spec for an example of
