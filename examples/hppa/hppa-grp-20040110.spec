@@ -4,10 +4,11 @@ target: grp
 rel_type: default
 rel_version: 1.4
 snapshot: 20040110
-source_subpath: default-hppa-1.4/stage3-hppa-20040110
-grp: cd1 src
+source_subpath: default-hppa-1.4/stage3-hppa-20031231
+grp: cd1 cd2
 
 grp/use:
+	-*
 	berkdb
 	cdr
 	crypt
@@ -59,7 +60,12 @@ grp/cd1/packages:
 	hppa-dev-sources
 	gentoolkit
 	minicom
+	iptraf
+	gdb
+	strace
+	ifstat
 	lynx
+	mtr
 	rpm2targz
 	parted
 	rdate
@@ -75,15 +81,14 @@ grp/cd1/packages:
 	nfs-utils
 	mirrorselect
 	ufed
-	aumix
 	apache
 	app-cdr/cdrtools
+	aumix
 	cups
 	dev-db/mysql
 	dev-db/postgresql
 	dev-lang/ruby
 	vim
-	emacs
 	samba
 	nmap
 	irssi
@@ -96,6 +101,7 @@ grp/cd1/packages:
 	pure-ftpd
 	proftpd
 	squid
+	xfsprogs
 	
 grp/cd2/type: pkgset
 grp/cd2/packages:
@@ -118,3 +124,4 @@ grp/cd2/packages:
 	tetex
 	mod_php
 	emacs
+	mc
