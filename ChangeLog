@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.143 2005/01/11 14:10:18 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.144 2005/01/11 15:22:41 zhen Exp $
+
+  11 Jan 2005; John Davis <zhen@gentoo.org>
+  targets/netboot/netboot-busybox.sh, targets/netboot/netboot-combine.sh,
+  targets/netboot/netboot-image.sh, targets/netboot/netboot-kernel.sh,
+  targets/netboot/netboot.sh:
+  netboot path from gmsoft@gentoo.org. The patch addresses many bugs and adds
+  some feature enhancements.
 
   11 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,

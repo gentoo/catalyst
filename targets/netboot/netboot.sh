@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.5 2004/10/12 18:01:22 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/Attic/netboot.sh,v 1.6 2005/01/11 15:22:41 zhen Exp $
 
 export GK_BINARIES=/var/tmp/gk_binaries
 export IMAGE_PATH=/tmp/image
@@ -43,11 +43,11 @@ case ${cmd} in
 		if [ ! -z "${1}" ]
 		then
 			mkdir -p ${clst_chroot_path}/etc/busybox/${clst_CHOST}
-			cp ${1} ${clst_chroot_path}/etc/busybox/${clst_CHOST}/busybox.config
+			cp -v ${1} ${clst_chroot_path}/etc/busybox/${clst_CHOST}/busybox.config
 		fi
 	
 		cp ${scriptdir}/netboot-busybox.sh ${clst_chroot_path}/tmp
-		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-busybox.sh || exit 1
+		${clst_CHROOT} ${clst_chroot_path} /tmp/netboot-busybox.sh "${1}" || exit 1
 		rm -f ${clst_chroot_path}/tmp/netboot-busybox.sh
 	;;
 

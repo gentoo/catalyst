@@ -1,16 +1,21 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-image.sh,v 1.3 2004/10/11 14:19:30 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-image.sh,v 1.4 2005/01/11 15:22:41 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
 
-[ -f /tmp/envscript ] && source /tmp/envscript
+if [ -f /tmp/envscript ]
+then
+	source /tmp/envscript
+	rm -f /tmp/envscript
+fi
 
-export USE="-* netboot"
-
-emerge -k -b --nodeps genext2fs || exit 1
+#IMAGE_PATH=$1
+#shift
+#TARBALL=$1
+#shift
 
 if [ -z "${IMAGE_PATH}" ]
 then
@@ -21,73 +26,84 @@ fi
 # Install the netboot base system
 ROOT=${IMAGE_PATH} emerge -k -b --nodeps netboot-base || exit 1
 
-# Handle all strip calls here
-function do_strip() {
-	strip --strip-unneeded "$@"
-}
-
 # Copy libs of a executable in the chroot
 function copy_libs() {
-	local ldd file="${1}"
-	# Figure out what libraries this file needs
-	local libs="$(readelf -d "${file}" | grep '(NEEDED)' | awk '{print $NF}')"
 
-	# Check if it's a dynamix exec, bail if it isnt
-	[ -z "${libs}" ] && return 0
+	# Check if it's a dynamix exec
+	ldd ${1} > /dev/null 2>&1 || return
     
-	for lib in ${libs}
+	for lib in `ldd ${1} | awk '{ print $3 }'`
 	do
-		# readelf shows [libblah.so] so we have to trim []
-		lib=${lib:1:${#lib}-2}
-
-		# don't scan the lib if it's already been copied over
-		[ -e "${IMAGE_PATH}/lib/${lib}" ] && continue
-
-		# ldd changes output format over time
-		ldd="$(ldd "${file}" | grep ${lib})"
-		set -- ${ldd}
-		for ldd in "${@}" NF
-		do
-			[ "${ldd:0:1}" == "/" ] && break
-		done
-	
-		if [ "${ldd}" == "NF" ]
-	then
-			echo "copy_lib: could not locate '${lib}'"
-	else
-			copy_file ${ldd}
-	fi
+		if [ -e ${lib} ]
+		then
+			if [ ! -e ${IMAGE_PATH}/${lib} ]
+			then
+				copy_file ${lib}
+				[ -e "${IMAGE_PATH}/${lib}" ] && strip -R .comment -R .note ${IMAGE_PATH}/${lib} || echo "WARNING : Cannot strip lib ${IMAGE_PATH}/${lib} !"
+			fi
+		else
+			echo "WARNING : Some library was not found for ${lib} !"
+		fi
 	done
+
 }
+
+
+function copy_symlink() {
+
+	STACK=${2}
+	[ "${STACK}" = "" ] && STACK=16 || STACK=$((${STACK} - 1 ))
+
+	if [ ${STACK} -le 0 ] 
+	then
+		echo "WARNING : ${TARGET} : too many levels of symbolic links !"
+		return
+	fi
+
+	[ ! -e ${IMAGE_PATH}/`dirname ${1}` ] && mkdir -p ${IMAGE_PATH}/`dirname ${1}`
+	[ ! -e ${IMAGE_PATH}/${1} ] && cp -vfdp ${1} ${IMAGE_PATH}/${1}
+	
+	TARGET=`readlink -f ${1}`
+	if [ -h ${TARGET} ]
+	then
+		copy_symlink ${TARGET} ${STACK}
+	else
+		copy_file ${TARGET}
+	fi
+		
+
+}
+
 function copy_file() {
-	local f="${1}"
+
+	f="${1}"
 
 	if [ ! -e "${f}" ]
 	then
-		echo "copy_file: File '${f}' not found"
-		return 0
+		echo "WARNING : File not found : ${f}"
+		continue
 	fi
 
-	if [ -L "${f}" ]
+	[ ! -e ${IMAGE_PATH}/`dirname ${f}` ] && mkdir -p ${IMAGE_PATH}/`dirname ${f}`
+	[ ! -e ${IMAGE_PATH}/${f} ] && cp -vfdp ${f} ${IMAGE_PATH}/${f}
+	if [ -x ${f} -a ! -h ${f} ]
 	then
-		cp -dp "${f}" "${IMAGE_PATH}/lib/"
-		local l="$(readlink "${f}")"
-		if [ ! -e "${l}" ]
+		copy_libs ${f}
+		strip -R .comment -R .note ${IMAGE_PATH}/${f} > /dev/null 2>&1
+	elif [ -h ${f} ]
 	then
-			l="$(dirname "${f}")/${l}"
-		fi
-		f="${l}"
+		copy_symlink ${f}
 	fi
-	cp "${f}" "${IMAGE_PATH}/lib/"
-	do_strip "${IMAGE_PATH}/lib/$(basename "${f}")"
 }
 
+
 # Copy the files needed in the chroot
-loader="$(readelf -a ${IMAGE_PATH}/bin/busybox | grep 'ld-.*so' | awk '{print $NF}')"
-copy_file ${loader/]}
+
 copy_libs ${IMAGE_PATH}/bin/busybox
-for f in "$@" ; do
-	copy_libs ${f}
+
+FILES="${@}"
+for f in ${FILES}
+do  
 	copy_file ${f}
 done
 
@@ -101,8 +117,9 @@ cd ${IMAGE_PATH}
 rm -r var/db var/cache
 
 # Create the ramdisk
+emerge -k -b genext2fs
 IMAGE_SIZE=$(du -s -k ${IMAGE_PATH} | cut -f1)
-IMAGE_SIZE=$((IMAGE_SIZE + 200))
+IMAGE_SIZE=$((IMAGE_SIZE + 500))
 IMAGE_INODES=$(find ${IMAGE_PATH} | wc -l)
 IMAGE_INODES=$((IMAGE_INODES + 100))
 genext2fs -q -d "${IMAGE_PATH}" -b ${IMAGE_SIZE} -i ${IMAGE_INODES} /initrd || exit 1

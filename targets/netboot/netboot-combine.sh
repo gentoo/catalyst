@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.1 2004/10/11 14:28:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.2 2005/01/11 15:22:41 zhen Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -43,6 +43,10 @@ case ${clst_mainarch} in
 		#	|| exit 1
 		;;
 	hppa)
+		# We have to remove the previous image because the file is considered
+		# as a tape by palo and then not truncated but rewritten.
+		rm -f /netboot.hppa
+		
 		palo \
 			-k /kernel \
 			-r /initrd.gz \
