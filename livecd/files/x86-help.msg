@@ -8,7 +8,7 @@ to test local RAM for errors. To use memtest86, just type 'memtest86'.
 
 Options available to pass to your kernel of choice.
 - agpgart       loads agpgart (use if you have graphic problems,lockups)
-- acpi=on		loads support for ACPI firmware
+- acpi=on       loads support for ACPI firmware
 - ide=nodma     Force disabling of dma for malfunctioning ide devices
                 to umount /mnt/cdrom to mount another cdrom.
 - doscsi        scan for scsi devices (breaks some ethernet cards)
