@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.3 2004/10/11 15:31:39 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/Attic/netboot.py,v 1.4 2004/10/11 15:41:23 zhen Exp $
 
 """
 Builder class for a netboot build.
@@ -28,8 +28,8 @@ class netboot_target(generic_stage_target):
 			if addlargs.has_key("netboot/packages"):
 				if type(addlargs["netboot/packages"]) == types.StringType:
 					loopy=[addlargs["netboot/packages"]]
-			else:
-				loopy=addlargs["netboot/packages"]
+				else:
+					loopy=addlargs["netboot/packages"]
 			
 			for x in loopy:
 				self.required_values.append("netboot/packages/"+x+"/files")
