@@ -1,0 +1,6 @@
+Add support for ~x86, etc builds
+
+Add basic tinderbox support
+
+Add distcc support
+
