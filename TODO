@@ -1,7 +1,5 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.8 2004/07/11 21:31:40 zhen Exp $
-
-catalyst man page
+# $Header: /var/cvsroot/gentoo/src/catalyst/Attic/TODO,v 1.9 2004/09/29 01:32:50 zhen Exp $
 
 Fix the hardcoded arch information in modules/generic_stage_target.py

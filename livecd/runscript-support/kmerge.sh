@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.9 2004/09/08 15:58:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/kmerge.sh,v 1.10 2004/09/29 01:32:51 zhen Exp $
 
 die() {
 	echo "$1"
@@ -9,27 +9,32 @@ die() {
 }
 
 build_kernel() {
+	# default genkernel args
+	GK_ARGS="${clst_livecd_gk_mainargs} \
+			 ${clst_livecd_gk_kernargs} \
+			 --kerneldir=/usr/src/linux \
+			 --kernel-config=/var/tmp/${clst_kname}.config \
+			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all"
+	
+	# extra genkernel options that we have to test for
 	if [ -n "${clst_livecd_bootsplash}" ]
 	then
-		genkernel --bootsplash=${clst_livecd_bootsplash} \
-			--callback="emerge ${clst_kernel_merge}" ${clst_livecd_gk_mainargs} \
-			${clst_livecd_gk_kernargs} --kerneldir=/usr/src/linux \
-			--kernel-config=/var/tmp/${clst_kname}.config \
-			--minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all \
-				|| exit 1
-				
-		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
-			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
-	else
-		genkernel --callback="emerge ${clst_kernel_merge}" \
-			${clst_livecd_gk_mainargs} ${clst_livecd_gk_kernargs} \
-			--kerneldir=/usr/src/linux --kernel-config=/var/tmp/${clst_kname}.config \
-			--minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-${clst_version_stamp}.tar.bz2 all \
-				|| exit 1
-		
-		tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
-			/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+		GK_ARGS="${GK_ARGS} --bootsplash=${clst_livecd_bootsplash}"
 	fi
+	
+	if [ "${clst_livecd_devmanager}" == "udev" ]
+	then
+		GK_ARGS="${GK_ARGS} --udev"
+	fi
+	
+	# build with genkernel using the set options
+	# callback is put here to avoid escaping issues
+	genkernel ${GK_ARGS} --callback="emerge ${clst_kernel_merge}" || exit 1
+	
+	# pack up the modules for resuming
+	tar cjpf /usr/portage/packages/gk_binaries/${1}-modules-${clst_version_stamp}.tar.bz2 \
+		/lib/modules/"${1}" || die "Could not package kernel modules, exiting"
+
 }
 
 # Script to build each kernel, kernel-related packages

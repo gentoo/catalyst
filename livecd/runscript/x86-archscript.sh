@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.9 2004/09/08 15:58:12 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript/Attic/x86-archscript.sh,v 1.10 2004/09/29 01:32:51 zhen Exp $
 
 case $1 in
 	kernel)
@@ -58,6 +58,12 @@ case $1 in
 		echo "display boot.msg" >> ${icfg}
 		echo "F1 kernels.msg" >> ${icfg}
 		echo "F2 help.msg" >> ${icfg}
+
+		# figure out what device manager we are using and handle it accordingly
+		if [ ${clst_livecd_devmanager} == "udev" ]
+		then
+			cmdline_opts="${cmdline_opts} udev nodevfs"
+		fi	
 
 		echo "Available kernels:" > ${kmsg}
 		cp ${clst_sharedir}/livecd/files/x86-help.msg ${hmsg}

@@ -82,6 +82,18 @@ livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-2.08-memtest86-cdtar.tar.b
 # livecd-stage1.
 #livecd/bootsplash: livecd-2004.1
 
+# list of services to add to the specified runlevel
+#livecd/rcadd: mkxf86config:default alsasound:boot
+
+# list of services to delete from the specified runlevel
+#livecd/rcdel: net.eth0:boot
+
+# xinitrc to use on the livecd
+#livecd/xinitrc: /tmp/livecd_xinitrc
+
+# directory that is to be overlayed on the livecd rootfs (the booted fs)
+#livecd/root_overlay: /tmp/livecd-root-overlay
+
 # let catalyst know how many kernels to build, and what their names are
 boot/kernel: gentoo smp
 
