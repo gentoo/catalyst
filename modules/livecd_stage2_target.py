@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.5 2004/05/20 21:16:56 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.6 2004/05/21 15:28:05 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -156,8 +156,8 @@ class livecd_stage2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError, "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"]
 
-			# If we need to pass special options to the bootloader for this kernel
-			# put them into the environment.
+			# If we need to pass special options to the bootloader
+			# for this kernel put them into the environment.
 			if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
 				myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
 				if type(myopts) != types.StringType:
@@ -175,17 +175,15 @@ class livecd_stage2_target(generic_stage_target):
 
 		# what modules do we want to blacklist?
 		if self.settings.has_key("livecd/modblacklist"):
-			mylist=self.settings["livecd/modblacklist"]
-			if type(mylist)==types.StringType:
-				mylist=[mylist]
-				try:
-					myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
-				except:
-					self.unbind()
-					raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
-				myf.write("\n#Added by Catalyst:")
-				for x in mylist:
-					myf.write("\n"+x+"\n")
+			try:
+				myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
+			except:
+				self.unbind()
+				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
+			myf.write("\n#Added by Catalyst:")
+			for x in self.settings["livecd/modblacklist"]:
+				myf.write("\n"+x)
+			myf.close()
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})
