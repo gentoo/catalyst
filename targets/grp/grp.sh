@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.19 2005/01/28 19:36:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/Attic/grp.sh,v 1.20 2005/01/29 14:54:31 wolf31o2 Exp $
 
 case $1 in
 	enter)
@@ -20,6 +20,7 @@ case $1 in
 	;;
 
 	preclean)
+		killall -9 gconfd-2
 		cp ${clst_sharedir}/targets/grp/grp-preclean-chroot.sh ${clst_chroot_path}/tmp
 		${clst_CHROOT} ${clst_chroot_path} /tmp/grp-preclean-chroot.sh || exit 1
 		rm -f ${clst_chroot_path}/tmp/grp-preclean-chroot.sh

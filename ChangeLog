@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.167 2005/01/29 14:43:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.168 2005/01/29 14:54:31 wolf31o2 Exp $
+
+  29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/grp/grp-preclean-chroot.sh, targets/grp/grp.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh:
+  Moved killall -9 gconfd-2 to execute outside chroot.
 
   29 Jan 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/x86-help.msg:
