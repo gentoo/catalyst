@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.26 2004/12/17 21:18:06 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.27 2005/01/04 21:13:43 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -43,6 +43,7 @@ class livecd_stage2_target(generic_stage_target):
 			"gamecd/conf"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
+		self.set_cdroot_path()
 		file_locate(self.settings, ["livecd/cdtar","livecd/archscript","livecd/runscript"])
 		if self.settings.has_key("portage_confdir"):
 			file_locate(self.settings,["portage_confdir"],expand=0)
@@ -85,7 +86,31 @@ class livecd_stage2_target(generic_stage_target):
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount "+src
-			
+        
+	def set_target_path(self):
+	    pass 
+	    #self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+	    	
+	def set_source_path(self):
+	    self.settings["source_path"]=self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]
+	
+	def set_cdroot_path(self):
+	    self.settings["cdroot_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+
+        def dir_setup(self):
+                print "Setting up directories..."
+                self.mount_safety_check()
+
+                if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+                        os.makedirs(self.settings["chroot_path"]+"/tmp")
+
+                if not os.path.exists(self.settings["chroot_path"]):
+                        os.makedirs(self.settings["chroot_path"])
+
+                if self.settings.has_key("PKGCACHE"):
+                        if not os.path.exists(self.settings["pkgcache_path"]):
+                                os.makedirs(self.settings["pkgcache_path"])
+
 	def unmerge(self):
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unmerge"):
@@ -300,6 +325,10 @@ class livecd_stage2_target(generic_stage_target):
 		if self.settings.has_key("livecd/root_overlay"):
 			cmd("rsync -a "+self.settings["livecd/root_overlay"]+"/* "+\
 				self.settings["chroot_path"], "livecd/root_overlay copy failed.")
+	def set_action_sequence(self):
+		self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
+						"setup_environment","run_local","preclean","unmerge",\
+						"unbind","clean","cdroot_setup"]
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})
