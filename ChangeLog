@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.199 2005/04/04 17:48:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.200 2005/04/04 17:50:30 rocket Exp $
+
+  04 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  +targets/netboot/netboot-chroot.sh, +targets/netboot/netboot-controller.sh:
+  Additional catalyst 2.0.0 files
 
   04 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst, arch/arm.py,
   +livecd/cdtar/grub-memtest86+-cdtar.tar.bz2,
