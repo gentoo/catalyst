@@ -1,6 +1,26 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.6 2004/02/11 16:03:19 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.7 2004/02/11 21:11:27 zhen Exp $
+
+Licensing
+========================
+
+Catalyst is copyrighted by Gentoo Technolgies, Inc, and released
+under the terms of the GNU General Public License v.2.0 or later. For more
+information, please consult COPYING.
+
+Disclaimer
+========================
+
+Gentoo Linux extends no warranty or guarantee for catalyst. Use at
+your own risk.
+
+Requirements
+=======================
+
+-Python
+-Gentoo Linux Portage
+-GNU gcc, glibc, binutils
 
 What is Catalyst?
 ========================
@@ -9,154 +29,26 @@ Catalyst is the Gentoo Linux project's release building tool. With catalyst,
 you are able to completely customize your Gentoo install by customizing
 the very tools you install your system with.
 
-Copying, Licenses, etc
+Catalyst is capable of:
+
+-Building installation stages for every architecutre supported by Gentoo.
+-Building bootable LiveCDs for every architecture supported by Gentoo.
+-Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo.
+-Setting up a Tinderbox target for test building.
+
+Configuring catalyst
 ========================
 
-Catalyst is copyrighted by Gentoo Technolgies, Inc, and released
-under the GNU General Public License v.2.0 or later. For more
-information, please read COPYING.
+After emerging catalyst, the first thing (and probably only thing)
+that you will have to do is edit /etc/catalyst.conf to your liking.
 
-Authors and Contributors
-========================
+Example catalyst.conf:
 
-Catalyst is derived from the former Gentoo stage building tool named
-stager. After a rewrite into a Gentoo Hardened specific tool, catalyst
-was adopted by the Release Engineering team and recoded using Python.
-Instead of just building stages like its predecesor stager, Catalyst
-is able to build stages, GRP, LiveCDs, and a tinderbox target for all
-Gentoo supported architectures.
-
-Original Authors:
-John Davis <zhen@gentoo.org>
-Daniel Robbins <drobbins@gentoo.org>
-
-Contributors:
-
-Use
-========================
-
-Here's how you use catalyst.
-
-First, check out the gentoo/src/catalyst tree (which I'm guessing you
-have done.) Then, create an /etc/catalyst.conf file that looks like
-this:
-
-distdir="/mnt/misc/distfiles"
+distdir="/usr/portage/distfiles"
 options="ccache pkgcache"
-sharedir="/home/drobbins/cvs/gentoo/src/catalyst"
+sharedir="/usr/share/catalyst/modules"
 
-The "sharedir" variable tells catalyst where to find its various
-plugins, and should point to the main catalyst directory that you
-checked out. the "options" variable is used to turn on .tbz2 package
-caching, which is off by default (you'll likely want it on, however.)
-Also, "distdir" is used here to tell catalyst where to look/store
-distfiles. The default is "/usr/portage/distfiles".
-
-Here are other variables you can set, and their default values.
-Please remember that *strings must be quoted*, as /etc/catalyst.conf
-uses python syntax:
-
-storedir	/var/tmp/catalyst		(where to build/write stuff)
-sharedir	/usr/share/catalyst		(where our plugins/scripts are)
-distdir		/usr/portage/distfiles		(where our distfiles are)
-portdir		/usr/portage			(where to grab snapshots from)
-options		ccache				what catalyst options are enabled
-
-You may also want to create a /usr/bin/catalyst symlink that points
-to the real location of your catalyst executable script.
-
-Creating a Portage tree snapshot
-================================
-
-First, make sure that your Portage tree is up-to-date as of 06 Nov 2003
-at the earliest, and that portage-2.0.49-r15 or 16 is unmasked for your
-specific build. These ebuilds (as of 06 Nov 2003) contain important fixes
-to allow catalyst to build properly. If you're not using the default-x86-1.4
-profile for building, please take a look at this profile and ensure that
-you are relatively in-sync with it. In particular, make sure that the
-GRP_STAGE23_USE variable is set in make.defaults, since catalyst uses
-this variable for building stage2 and stage3.
-
-Before building anything, you need to generate a snapshot of the portage
-tree that catalyst should use for building. To do this, ensure that your
-to-be-snapshotted portage tree is at /usr/portage, or set the "portdir"
-variable in /etc/catalyst.conf to point to the appropriate location, and
-then type:
-
-# catalyst target=snapshot version_stamp=20031102
-
-This will create the following file, assuming a /var/tmp/catalyst "storedir"
-setting:
-
-/var/tmp/catalyst/snapshots/portage-20031102.tar.bz2
-
-Grabbing a "seed" stage
-=======================
-
-Now, you need to grab a "seed" stage1, 2 or 3 tarball from somewhere to
-use to build other stages. Put the stage in /var/tmp/catalyst/builds/<profile>/;
-
-For example, if I have a stage3-pentium4-20031102.tar.bz2 file, I'd put it in:
-
-/var/tmp/catalyst/builds/default-x86-1.4/stage3-pentium4-20031102.tar.bz2
-
-...since that pentium4 stage was built using the "default-x86-1.4" profile.
-
-Building your first stage
-=========================
-
-Once you have your seed stage, you're now ready to build your first new stage.
-Here is a guideline for what components you'll need to build each type of stage:
-
-stage1 requires "generic" (ie. "x86" or "ppc") stage2 or 3
-NOTE: you can't use a stage1 to build a stage1
-
-stage2 requires "generic" stage1 (the only kind you should have :)
-
-stage3 requires stage2 of same type (ie. to build a "pentium3" stage3, you need
-a "pentium3" stage2, etc.)
-
-** Currently, only "stage1", "stage2" and "stage3" targets are supported. **
-
-Of course, to build each stage you will also need the Portage tree snapshot
-that you created above.
-
-To build a stage, type a command like this:
-
-# catalyst subarch=x86 version_stamp=20031102 target=stage2 rel_type=default rel_version=1.4 snapshot=20031102 source_subpath=default-x86-1.4/stage1-x86-20031102
-
-Wow -- that's a huge command! What does it mean? Let's look at the various arguments:
-
-cmdline arg			meaning
------------             	-------
-subarch=x86			build "generic" x86 stage (could also be "pentium3", "athlon-xp", "g4", etc.)
-version_stamp=20031102		give this stage being built a version stamp of "20031102"
-target=stage2			the type of stage we want to build is a stage2
-rel_type=default		use a "default-<mainarch>-??" profile (other possibilities: "hardened", etc.)
-rel_version=1.4			use a "??-<mainarch>-1.4" profile (note: mainarch is auto-determined from the subarch you provide)
-snapshot=20031102		use the Portage tree snapshot you created that has the "20031102" version_stamp
-source_subpath=default-x86-1.4/stage1-x86-20031102
-				To build our stage2, use a stage1 found at /var/tmp/catalyst/builds/ + this path. You are responsible
-				for ensuring that you choose an appopriate source stage for building your desired target stage.
-
-After you type this command, building should begin, and hopefully complete
-successfully, at which point the following tarball will be created:
-
-/var/tmp/catalyst/builds/default-x86-1.4/stage2-x86-20031102.tar.bz2
-
-The build directory used to build this stage can be found at:
-
-/var/tmp/catalyst/tmp/default-x86-1.4/stage2-x86-20031102/
-
-Building x86 stages on amd64
-============================
-
-Catalyst currently supports building x86 stages on 64-bit AMD64 systems. To do
-this, simply use as you would on x86, but ensure that the linux32 ebuild is
-emerged before starting. Catalyst will detect that you are building a 32-bit
-stage and will use the linux32 tool automatically when setting up chroots.
-Everything should work identically to if you were using a 32-bit system.
-
-Questions, bug reports:
-drobbins@gentoo.org
-
+There are many more options that can be set, but those defaults are good
+for out of the box operation. For more documentation on what you can do
+with catalyst, please check the man page or the online documentation at
+<http://www.gentoo.org/proj/en/releng/catalyst>.
