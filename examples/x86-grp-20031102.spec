@@ -36,7 +36,6 @@ grp/cd1/packages:
 	rp-pppoe
 	ppp
 #	wvdial (not building correctly)
-	isdn4k-utils
 	speedtouch
 	pciutils
 	hdparm
@@ -58,8 +57,9 @@ grp/cd1/packages:
 	grub
 	gentoo-sources
 	xfs-sources
-	gaming-sources
+	aa-sources
 	vanilla-sources
+	development-sources
 	superadduser
 	gentoolkit
 #USE effects for these?:
@@ -134,6 +134,9 @@ grp/cd2/packages:
 
 grp/src/type: srcset
 grp/src/packages:
+#isdn4k-utils was a binary pkg in 1.4, so we will need to get docs updated
+#since it's kernel-dependent? maybe?
+	isdn4k-utils
 	nforce-net
 	nforce-audio
 	iproute
