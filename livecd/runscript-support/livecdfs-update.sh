@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.17 2004/10/21 17:06:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.18 2004/10/21 17:19:42 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -11,6 +11,8 @@ then
 	#allow root logins to the livecd by default
 	sed -i "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config
 fi
+
+sed -i 's/RC_DEVICE_TARBALL="yes"/RC_DEVICE_TARBALL="no"/' /etc/conf.d/rc
 
 # fix /etc/issue for mingetty and friends
 echo "This is \n.gentoo (\s \m \r) \t" > /etc/issue
