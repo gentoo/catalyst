@@ -2,9 +2,9 @@ import sys,string,os
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
-valid_config_file_values.append("CCACHE")
-valid_config_file_values.append("PKGCACHE")
 valid_config_file_values.append("options")
+
+verbosity=1
 
 class CatalystError(Exception):
 	def __init__(self, message):
@@ -23,6 +23,10 @@ def cmd(mycmd,myexc=""):
 	retval=os.system(mycmd)
 	if retval != 0:
 		raise CatalystError,myexc
+
+def msg(mymsg,verblevel=1):
+	if verbosity>=verblevel:
+		print mymsg
 
 def ismount(path):
 	"enhanced to handle bind mounts"
