@@ -9,17 +9,22 @@ check_portage_version(){
 	fi
 }
 
-#check_genkernel_version(){
-#	genkernel_version=`/usr/lib/portage/bin/portageq best_version / sys-kernel/genkernel \
-#		| cut -d/ -f2 | cut -d- -f2,3`
-#	if [ -n ${genkernel_version} -a `echo ${genkernel_version} | cut -d- -f1 | cut -d. -f3` -lt '3' ]
-#	then
-#		echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version"
-#		echo "XXXXXXXXXXXXXXX or greater is required."
-#		exit 1
-#	fi
-#}
-
+check_genkernel_version(){
+    genkernel_version=$(genkernel --version)
+    genkernel_version_major=${genkernel_version%%.*}
+    genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
+    genkernel_version_minor=${genkernel_version_minor_sub%%.*}
+    genkernel_version_sub=${genkernel_version##*.}
+    if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '2' ]
+    then
+	    echo "Genkernel version ${genkernel_version} found ... continuing"
+    else
+	    echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.2.0"
+	    echo "or greater is required."
+	    exit 1
+    fi
+}
+		
 setup_myfeatures(){
 
 	if [ -n "${clst_CCACHE}" ]

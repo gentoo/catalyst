@@ -4,6 +4,8 @@
 
 source /tmp/chroot-functions.sh
 
+check_genkernel_version
+
 PKGDIR=/usr/portage/packages/gk_binaries/${clst_kname}/ebuilds
 
 setup_gk_args() {
