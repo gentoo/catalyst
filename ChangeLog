@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.3 2003/10/15 05:33:03 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.4 2003/10/17 23:51:12 zhen Exp $
+
+  17 Oct 2003; zhen <zhen@gentoo.org> files/grp/x86/x86.conf,
+  files/grp/x86/x86.pkg.cd1, files/grp/x86/x86.pkg.cd2, files/grp/x86/x86.src,
+  files/livecd/x86-basic/base.pkg, files/livecd/x86-basic/kern.pkg:
+  for organiation's sake, I have moved the files, such as livecd foundations,
+  into catalyst/files. It will make it easier for us when ebuild time comes
+  around.
 
   15 Oct 2003; zhen <zhen@gentoo.org> targets/stage3/stage3.sh:
   All preliminary target build scripts are now added and coded to near as spec
