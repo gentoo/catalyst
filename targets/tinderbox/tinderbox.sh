@@ -1,6 +1,6 @@
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.1 2003/11/30 01:51:44 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/Attic/tinderbox.sh,v 1.2 2003/11/30 03:52:03 drobbins Exp $
 
 case $1 in
 run)
@@ -28,7 +28,7 @@ run)
 		then
 			echo "! \$x" >> /tmp/tinderbox.log	
 		else
-			echo "$x" >> /tmp/tinderbox.log
+			echo "\$x" >> /tmp/tinderbox.log
 		fi
 		echo "Syncing from original pristine tinderbox snapshot..."
 		rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude "/usr/portage/*" /tmp/rsync-bak/ /
