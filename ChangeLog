@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.10 2003/11/08 23:53:15 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.11 2003/11/09 01:51:30 drobbins Exp $
  
+  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: spec file support integrated
+  into catalyst. Use "-f/--file specfile" as argument; see examples dir for examples.
+  
   08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: support functions for spec
   file parsing and reading added. Will get added to the code soon.
   

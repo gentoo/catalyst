@@ -65,6 +65,9 @@ class generic_stage_target(generic_target):
 		if self.settings["target"]=="grp":
 			#grp creates a directory of packages and sources rather than a compressed tarball
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]
+			#since we have a directory here, we need to create it
+			if not os.path.exists(self.settings["target_path"]):
+				os.makedirs(self.settings["target_path"])
 		else:
 			self.settings["target_path"]=st+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 
@@ -171,7 +174,7 @@ class generic_stage_target(generic_target):
 		'CFLAGS="'+self.settings["CFLAGS"]+'"',
 		'CHOST="'+self.settings["CHOST"]+'"']
 		myusevars=[]
-		if self.setttings.has_key("HOSTUSE"):
+		if self.settings.has_key("HOSTUSE"):
 			myusevars.extend(self.settings["HOSTUSE"])
 		if self.settings["target"]=="grp":
 			myusevars.append("bindist")

@@ -24,7 +24,8 @@ elif sys.argv[1] in ["-v","--version"]:
 	sys.exit(1)
 if os.getuid()!=0:
 	#non-root callers can't go any further than here. 
-	die("This script requires root privileges to operate.")	
+	print "catalyst: This script requires root privileges to operate."
+	sys.exit(1)
 
 myspec={}
 myconf={}
@@ -66,11 +67,18 @@ if "ccache" in string.split(myspec["options"]):
 if "pkgcache" in string.split(myspec["options"]):
 	print "Package cache support enabled."
 	myspec["PKGCACHE"]="1"
-#determine target, call target constructor and hand it the rest of the arguments
 
-try:
+if sys.argv[1] in ["-f", "--file" ]:
+	try:
+		addlargs=read_spec(sys.argv[2])
+	except:
+		raise CatalystError,"Unable to read spec file",sys.argv[2]
+	unparsedargs=sys.argv[3:]
+else:
 	addlargs={}
-	arg_parse(myspec,addlargs)
+	unparsedargs=sys.argv[1:]
+try:
+	arg_parse(myspec,addlargs,unparsedargs)
 	if not targetmap.has_key(myspec["target"]):
 		raise CatalystError,"Target \""+myspec["target"]+"\" not available."
 	mytarget=targetmap[myspec["target"]](myspec,addlargs)
