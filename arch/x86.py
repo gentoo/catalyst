@@ -1,4 +1,4 @@
-import builder
+import builder,os
 
 # This module defines the various "builder" classes for the various x86
 # sub-arches. For example, we have a class to handle building of Pentium 4
@@ -14,6 +14,8 @@ class generic_x86(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="x86"
 		if self.settings["hostarch"]=="amd64":
+			if not os.path.exists("/usr/bin/linux32"):
+				raise CatalystError,"required /usr/bin/linux32 executable not found (\"emerge linux32\" to fix.)"
 			self.settings["CHROOT"]="linux32 chroot"
 		else:
 			self.settings["CHROOT"]="chroot"
