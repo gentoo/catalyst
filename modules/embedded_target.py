@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.3 2004/11/23 00:02:57 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.4 2004/12/16 20:01:38 wolf31o2 Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -22,10 +22,10 @@ class embedded_target(generic_stage_target):
     def __init__(self,spec,addlargs):
         self.required_values=[]
         self.valid_values=[]
-        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/runscript","embedded/mergeroot","embedded/packages","embedded/use","embedded/fstype"])
+        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/runscript","embedded/mergeroot","embedded/packages","embedded/use","embedded/fs-type"])
 
-        if addlargs.has_key("embedded/fstype"):
-            self.valid_values.append("embedded/fsops")
+        if addlargs.has_key("embedded/fs-type"):
+            self.valid_values.append("embedded/fs-ops")
 
         generic_stage_target.__init__(self,spec,addlargs)
 	self.settings["image_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/image"	
@@ -55,7 +55,7 @@ class embedded_target(generic_stage_target):
 
     def build_fs(self):
         try:
-            if self.settings.has_key("embedded/fstype"):
+            if self.settings.has_key("embedded/fs-type"):
                 cmd("/bin/bash "+self.settings["sharedir"]+"/targets/embedded/embedded.sh package","filesystem packaging failed")
         except CatalystError:
                 self.unbind()
