@@ -156,45 +156,25 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc","Could not copy resolv.conf into place.")
-		myconf=open(self.settings["chroot_path"]+"/etc/make.conf","r")
-		mylines=myconf.readlines()
-		myconf.close()
-		pos = 0
-		while pos < len(mylines):
-			if mylines[pos][:16]=="# catalyst start":
-				while (pos < len(mylines)) and mylines[pos][:14]!="# catalyst end":
-					del mylines[pos]
-			elif (mylines[pos][:7]=="CFLAGS=") or (mylines[pos][:6]=="CHOST=") or (mylines[pos][:4]=="USE="):
-				mylines[pos]="#"+mylines[pos]
-			pos += 1
-		pos = 0
-		while (pos < len(mylines)) and mylines[pos][0]=="#":
-			pos += 1
-		cmds=["","# catalyst start","# These settings were added by the catalyst build script that automatically built this stage",
-		'CFLAGS="'+self.settings["CFLAGS"]+'"',
-		'CHOST="'+self.settings["CHOST"]+'"']
+		if os.path.exists(self.settings["chroot_path"]+"/etc/make.conf"):
+			cmd("mv "+self.settings["chroot_path"]+"/etc/make.conf "+self.settings["chroot_path"]+"/etc/make.conf.orig")
+
+		myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
+		myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
+		myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
+		myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		myusevars=[]
 		if self.settings.has_key("HOSTUSE"):
 			myusevars.extend(self.settings["HOSTUSE"])
 		if self.settings["target"]=="grp":
 			myusevars.append("bindist")
 			myusevars.extend(self.settings["grp/use"])
-			
-		cmds.append('USE="'+string.join(myusevars)+'"')
-		
+		myf.write('USE="'+string.join(myusevars)+'"\n')
 		if self.settings.has_key("CXXFLAGS"):
-			cmds.append('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"')
+			myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		else:
-			cmds.append('CXXFLAGS="$CFLAGS"')
-		cmds.append("# catalyst end")
-
-		for x in cmds:
-			mylines.insert(pos,x+"\n")
-			pos += 1
-
-		myconf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
-		myconf.write(string.join(mylines))	
-		myconf.close()
+			myf.write('CXXFLAGS="$CFLAGS"\n')
+		myf.close()
 		
 	def clean(self):
 		destpath=self.settings["chroot_path"]

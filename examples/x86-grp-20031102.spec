@@ -103,7 +103,8 @@ grp/cd2/packages:
 	dev-db/postgresql
 	dev-lang/ruby
 	emacs
-	enlightenment
+#enlightenment has a build problem if USER!=root
+#	enlightenment
 	fluxbox
 	kde
 	libsdl
