@@ -1,6 +1,6 @@
 # Distributed under the GNU General Public License version 2
 # Copyright 2003-2004 Gentoo Technologies, Inc.
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.12 2004/07/06 13:48:00 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.13 2004/07/13 15:42:12 zhen Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -241,7 +241,6 @@ class livecd_stage2_target(generic_stage_target):
 				print "cleaning previous livecd-stage2 build"
 				cmd("rm -rf "+self.settings["cdroot_path"],
 					"Could not remove existing directory: "+self.settings["cdroot_path"])
-			else:
 				os.makedirs(self.settings["cdroot_path"])
 				touch(self.settings["chroot_path"]+"/tmp/.clst_run_local_cdroot_clean")
 				
