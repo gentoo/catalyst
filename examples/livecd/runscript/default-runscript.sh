@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.18 2004/02/26 04:35:07 brad_mssw Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.19 2004/03/01 01:27:54 drobbins Exp $
 
 #return codes to be used by archscript
 
@@ -122,6 +122,11 @@ EOF
 				source /etc/profile
 				[ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 				rm -f /usr/src/linux
+				
+				#set the timezone for the kernel build
+				rm /etc/localtime
+				ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
 				[ -e /var/tmp/$clst_kname.use ] && export USE="\$( cat /var/tmp/$clst_kname.use )" || unset USE
 				# Don't use pkgcache here, as the kernel source may get emerge with different USE variables
 				# (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
@@ -171,10 +176,39 @@ EOF
 	;;
 
 	preclean)
+		cat > $clst_chroot_path/etc/init.d/local << EOF
+#!/sbin/runscript
+# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo/src/catalyst/examples/livecd/runscript/Attic/default-runscript.sh,v 1.19 2004/03/01 01:27:54 drobbins Exp $
+
+depend() {
+	after *
+}
+
+start() {
+	ebegin "Auto-scrambling root password for security"
+	echo root:`pwgen -s 16` | chpasswd  > /dev/null 2>&1
+	eend $? "Failed to start local."
+}
+
+stop() {
+	ebegin "Stopping local"
+	eend $? "Failed to stop local."
+}
+EOF
+		
 		$clst_CHROOT $clst_chroot_path /bin/bash << EOF
 			# SCRIPT TO UPDATE FILESYSTEM SPECIFIC FOR LIVECD. THIS GETS EXECUTED IN CHROOT
 			env-update
 			source /etc/profile
+			if [ -e /etc/sshd/sshd_config ]
+				then
+					#allow root logins to the livecd by default
+					sed -e "s/^#PermitRootLogin\ yes/PermitRootLogin\ yes/" /etc/ssh/sshd_config > /etc/ssh/sshd_config1
+					mv /etc/ssh/sshd_config1 /etc/ssh/sshd_config
+			fi
+				
 			rc-update del iptables default
 			rc-update del netmount default
 #			rc-update add hotplug default
