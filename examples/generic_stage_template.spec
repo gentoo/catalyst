@@ -40,3 +40,12 @@ snapshot:
 # example:
 # default/stage3-x86-2004.1
 source_subpath:
+
+# hosts used as distcc slaves (distcc required in options (catalyst.conf)
+# example:
+# distcc_hosts: 127.0.0.1 192.168.0.1
+
+# optional directory containing portage configuration files
+# example:
+# portage_confdir: /etc/portage
+# portage_confdir:

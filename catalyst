@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.55 2004/12/17 21:18:06 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.56 2005/01/02 04:15:51 zhen Exp $
 
 # Maintained in full by John Davis <zhen@gentoo.org>
 
@@ -286,6 +286,7 @@ if __name__ == "__main__":
 	# everything is setup, so the build is a go
 	try:
 		build_target(addlargs, targetmap)
-	except:
-		print "!!! catalyst: could not complete build"
+	
+	except CatalystError:
+		raise CatalystError,"Could not complete build"
 		sys.exit(2)

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.33 2004/12/18 04:47:14 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.34 2005/01/02 04:15:51 zhen Exp $
 
 import sys,string,os,types,re,traceback
 
@@ -45,6 +45,7 @@ class CatalystError(Exception):
 			print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
+			print
 			
 def die(msg=None):
 	warn(msg)
