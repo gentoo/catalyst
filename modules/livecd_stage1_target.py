@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.4 2004/12/16 23:13:24 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.5 2004/12/17 21:18:06 wolf31o2 Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -24,13 +24,6 @@ class livecd_stage1_target(generic_stage_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"LiveCD stage1 build aborting due to error."
-	def set_action_sequence(self):
-		#self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
-		#			    "setup_environment","run_local","preclean","unbind","clean"]
-		self.settings["action_sequence"]=["chroot_setup"]
-
-	def set_use(self):
-	            self.settings["use"]=self.settings["livecd/use"]
 
 def register(foo):
 	foo.update({"livecd-stage1":livecd_stage1_target})

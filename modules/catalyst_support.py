@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.31 2004/12/16 23:13:24 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.32 2004/12/17 21:18:06 wolf31o2 Exp $
 
 import sys,string,os,types,re
 
@@ -43,9 +43,6 @@ class CatalystError(Exception):
 		if message:
 			print
 			print "!!! catalyst: "+message
-
-			#Uncomment the line below if you need more detailed debugging messages
-			#raise
 			
 def die(msg=None):
 	warn(msg)

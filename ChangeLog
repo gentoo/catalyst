@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.128 2004/12/17 21:06:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.129 2004/12/17 21:18:06 wolf31o2 Exp $
+
+  17 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/catalyst_support.py, modules/embedded_target.py,
+  modules/generic_stage_target.py, modules/grp_target.py,
+  modules/livecd_stage1_target.py, modules/livecd_stage2_target.py,
+  modules/netboot.py, modules/stage1_target.py, modules/tinderbox_target.py:
+  Reversing patch from Eric Edgar from bug #70663.
 
   17 Dec 2004; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/runscript/x86-archscript.sh:

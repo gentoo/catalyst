@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.5 2004/12/16 23:13:24 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.6 2004/12/17 21:18:06 wolf31o2 Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -74,15 +74,6 @@ class embedded_target(generic_stage_target):
 	    self.clean()
             self.build_fs()
 
-    def set_action_sequence(self):
-	self.settings["action_sequence"]=["dir_setup","unpack_and_bind","chroot_setup",\
-					"setup_environment","run_local","unbind","capture"]
-	
-    def set_use(self):
-        self.settings["use"]=self.settings["embedded/use"]
-    def set_stage_path(self):
-        self.settings["stage_path"]=self.settings["chroot_path"]+"/tmp/mergeroot"
-	print "embedded stage path is "self.settings["stage_path"]
 def register(foo):
         foo.update({"embedded":embedded_target})
         return foo
