@@ -2,13 +2,10 @@
 
 import os,sys,imp,string
 
-def die(msg=None):
-	if msg:
-		print "catalyst: "+msg
-	sys.exit(1)
+#This allows plugins (and this code) to import modules in the /modules dir
+sys.path.append(os.getcwd()+"/modules")
 
-def warn(msg):
-	print "catalyst: "+msg
+from catalyst_support import *
 
 def usage():
 	print "usage: meep!"
@@ -77,9 +74,6 @@ Overview of catalyst operation
   
 * The catalyst process is now complete :)
 """
-
-#This allows plugins to import modules in the /modules dir
-sys.path.append(os.getcwd()+"/modules")
 
 #map current machine information from uname() to the mainarch we are running
 #under
@@ -167,6 +161,11 @@ myspec["portdir"]="/usr/portage"
 mytarget=targetmap[myspec["target"]](myspec)
 print
 spec_dump(myspec)
+
+#set up build directories, etc.
+retval=mytarget.run()
+if not retval:
+	die("Target failed.")
 
 #to test this program, type:
 

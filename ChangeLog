@@ -1,7 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2003 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.5 2003/10/27 04:08:31 drobbins Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.6 2003/10/28 04:11:42 drobbins Exp $
 
+  27 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: beginning of exception
+  handling integration, got some of the target code nicely fleshed out.
+  
   24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: major code rework in 
   progress on the python parts.
   
