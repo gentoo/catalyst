@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.32 2005/03/02 02:14:34 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/livecd/runscript-support/Attic/livecdfs-update.sh,v 1.33 2005/03/06 14:35:37 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -75,7 +75,7 @@ echo "gentoo" > /etc/dnsdomainname
 echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
 
 # setup sudoers
-sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
+[ -e /etc/sudoers ] && sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 
 # setup dhcp on all detected ethernet devices
 echo "iface_eth0=\"dhcp\""> /etc/conf.d/net

@@ -1,6 +1,12 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.181 2005/03/05 05:12:58 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.182 2005/03/06 14:35:37 wolf31o2 Exp $
+
+  06 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh,
+  livecd/runscript-support/pre-kmerge.sh:
+  Change sudoers update to only run if /etc/sudoers exists and only reduce
+  splash to 1024x768 on minimal and universal install CD.
 
   05 Mar 2005; Chris Gianelloni <wolf31o2@gentoo.org> targets/grp/grp.sh,
   targets/livecd-stage1/livecd-stage1.sh:
