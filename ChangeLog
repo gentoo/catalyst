@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2004 Gentoo Technologies, Inc.; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.20 2004/02/18 21:56:27 zhen Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.21 2004/02/25 19:20:44 pvdabeel Exp $
+
+  25 Feb 2004; Pieter Van den Abeele <pvdabeel@gentoo.org>: 
+  added powerpc livecd support, preparing for 2004.0 release. Preliminary 
+  kde/gnome cd specs added.
 
   18 Feb 2004; John Davis <zhen@gentoo.org> files/catalyst.conf:
   fix in catalyst.conf for bug #42044
