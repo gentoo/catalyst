@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.211 2005/04/07 12:24:16 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.212 2005/04/07 23:02:20 rocket Exp $
+
+  07 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/catalyst_support.py, modules/generic_stage_target.py,
+  modules/stage1_target.py, targets/support/livecdfs-update.sh:
+  fix case bug in livecdfs-update.sh; fix bug in initial command line
+  arguement parsing; add cflags spec file support which is only allowed to
+  override in stage1
 
   07 Apr 2005; Eric Edgar <rocket@gentoo.org>
   targets/stage3/stage3-chroot.sh:

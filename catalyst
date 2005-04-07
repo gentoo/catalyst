@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.71 2005/04/05 21:52:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.72 2005/04/07 23:02:20 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -219,7 +219,7 @@ if __name__ == "__main__":
 		print "!!! catalyst: please specify one of either -f or -C\n"
 		usage()
 		sys.exit(2)
-	
+	run=0	
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
@@ -246,12 +246,14 @@ if __name__ == "__main__":
 				myconfig=a
 
 		if o in ("-C", "--cli"):
+			run=1	
 			x=sys.argv.index(o)+1
 			while x < len(sys.argv):
 				mycmdline.append(sys.argv[x])
 				x=x+1
 			
 		if o in ("-f", "--file"):
+			run=1	
 			myspecfile=a
 
 		if o in ("-F", "--fetchonly"):
@@ -280,6 +282,10 @@ if __name__ == "__main__":
 				mycmdline.append("version_stamp="+a)
 		if o in ("--purge"):
 				conf_values["PURGE"]="1"
+	if run != 1:
+		print "!!! catalyst: please specify one of either -f or -C\n"
+		usage()
+		sys.exit(2)
 
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)

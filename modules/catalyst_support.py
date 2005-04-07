@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.36 2005/04/07 00:08:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.37 2005/04/07 23:02:20 rocket Exp $
 
 import sys,string,os,types,re,traceback,md5
 
@@ -241,6 +241,28 @@ def parse_spec(mylines):
 				myspec[myline[0]]=accum
 	return myspec
 
+def parse_makeconf(mylines):
+	mymakeconf={}
+	pos=0
+	pat=re.compile("([a-zA-Z_]*)=(.*)")
+	while pos<len(mylines):
+		if len(mylines[pos])<=1:
+			#skip blanks
+			pos += 1
+			continue
+		if mylines[pos][0] in ["#"," ","\t"]:
+			#skip indented lines, comments
+			pos += 1
+			continue
+		else:
+			myline=mylines[pos]
+			mobj=pat.match(myline)
+			pos += 1
+			if mobj.group(2):
+			    clean_string = re.sub(r"\"",r"",mobj.group(2))
+			    mymakeconf[mobj.group(1)]=clean_string
+	return mymakeconf
+
 def read_spec(myspecfile):
 	try:
 		myf=open(myspecfile,"r")
@@ -249,6 +271,19 @@ def read_spec(myspecfile):
 	mylines=myf.readlines()
 	myf.close()
 	return parse_spec(mylines)
+
+def read_makeconf(mymakeconffile):
+	if os.path.exists(mymakeconffile):
+	    try:
+		    myf=open(mymakeconffile,"r")
+		    mylines=myf.readlines()
+		    myf.close()
+		    return parse_makeconf(mylines)
+	    except:
+		    raise CatalystError, "Could not open make.conf file "+myspecfile
+	else:
+	    makeconf={}
+	    return makeconf
 	
 def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
