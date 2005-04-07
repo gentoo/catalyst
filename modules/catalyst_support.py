@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.35 2005/04/04 17:48:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.36 2005/04/07 00:08:51 rocket Exp $
 
 import sys,string,os,types,re,traceback,md5
 
@@ -74,6 +74,18 @@ def list_bashify(mylist):
 		# surround args with quotes for passing to bash,
 		# allows things like "<" to remain intact
 		mypack[x]="'"+mypack[x]+"'"
+	mypack=string.join(mypack)
+	return mypack
+
+def list_to_string(mylist):
+	if type(mylist)==types.StringType:
+		mypack=[mylist]
+	else:
+		mypack=mylist[:]
+	for x in range(0,len(mypack)):
+		# surround args with quotes for passing to bash,
+		# allows things like "<" to remain intact
+		mypack[x]=mypack[x]
 	mypack=string.join(mypack)
 	return mypack
 

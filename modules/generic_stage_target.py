@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.25 2005/04/04 17:48:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.26 2005/04/07 00:08:51 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -20,7 +20,7 @@ class generic_stage_target(generic_target):
 			"profile","snapshot","source_subpath"])
 		
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
-			"snapshot","source_subpath","portage_confdir"])
+			"snapshot","source_subpath","portage_confdir","cflags","cxxflags","chost","hostuse"])
 		generic_target.__init__(self,addlargs,myspec)
 		
 		# map the mainarch we are running under to the mainarches we support for
@@ -101,7 +101,15 @@ class generic_stage_target(generic_target):
 		for envvar in "CHOST", "CFLAGS", "CXXFLAGS":
 			if os.environ.has_key(envvar):
 				self.settings[envvar] = os.environ[envvar]
-		
+		if self.settings.has_key("chost"):
+		    self.settings["CHOST"]=list_to_string(self.settings["chost"])
+		if self.settings.has_key("cflags"):
+		    self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
+		if self.settings.has_key("cxxflags"):
+		    self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
+		if self.settings.has_key("hostuse"):
+		    self.settings["hostuse"]=list_to_string(self.settings["hostuse"])
+
 		# define all of our core variables
 		self.set_target_profile()
 		self.set_target_subpath()
@@ -437,14 +445,14 @@ class generic_stage_target(generic_target):
 		
 		    if self.settings.has_key("CXXFLAGS"):
 			    myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
+		    else:
+			    myf.write('CXXFLAGS="${CFLAGS}"\n')
 			    
 		    if self.settings.has_key("portage_overlay"):
 				if type(self.settings["portage_overlay"])==types.StringType:
 					self.settings[self.settings["portage_overlay"]]=[self.settings["portage_overlay"]]
 					
 				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
-		    else:
-			    myf.write('CXXFLAGS="${CFLAGS}"\n')
 		    myf.close()
 	
 	def clean(self):

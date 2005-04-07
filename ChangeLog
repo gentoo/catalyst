@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.209 2005/04/06 23:23:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.210 2005/04/07 00:08:51 rocket Exp $
+
+  07 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py:
+  Changes to allow cflags, chost, cxxflags in a spec file
 
   06 Apr 2005; Eric Edgar <rocket@gentoo.org>
   targets/livecd-stage1/livecd-stage1-controller.sh,
