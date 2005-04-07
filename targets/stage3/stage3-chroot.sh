@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.18 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.19 2005/04/07 12:24:16 rocket Exp $
 
 . /tmp/chroot-functions.sh
 check_portage_version
@@ -14,9 +14,9 @@ setup_myemergeopts
 
 # setup the build environment
 export FEATURES="${clst_myfeatures}"
-export USE="-* ${clst_HOSTUSE} ${GRP_STAGE23_USE}"
 export CONFIG_PROTECT="-*"
 export GRP_STAGE23_USE="$(portageq envvar GRP_STAGE23_USE)"
+export USE="-* ${clst_HOSTUSE} ${GRP_STAGE23_USE}"
 
 
 ## START BUILD
