@@ -5,7 +5,7 @@
 /usr/sbin/env-update
 source /etc/profile
 
-CONFIG_PROTECT="-*" USE="livecd" emerge --oneshot --nodeps -u genkernel 
+CONFIG_PROTECT="-*" USE="livecd" emerge --oneshot --nodeps genkernel 
 
 install -d /usr/portage/packages/gk_binaries
 
