@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.213 2005/04/08 00:07:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.214 2005/04/08 22:39:45 wolf31o2 Exp $
+
+  08 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/gamecd.conf.example, -targets/support/gamecdfs-update.sh,
+  targets/support/livecdfs-update.sh:
+  Removed empty gamecdfs-update.sh, updated livecdfs-update.sh to work
+  properly with hotplug firmwares, and also updated gamecd.conf.example, since
+  the ut2004demo shell script has been renamed to ut2004-demo.
 
   08 Apr 2005; Eric Edgar <rocket@gentoo.org> targets/support/pre-kmerge.sh:
   let genkernel always reinstall itself
