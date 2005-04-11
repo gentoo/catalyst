@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.32 2005/04/11 20:05:40 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.33 2005/04/11 20:44:47 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -33,29 +33,35 @@ class livecd_stage2_target(generic_stage_target):
 	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
 	    	
 	def set_source_path(self):
-	    self.settings["source_path"]=self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]
+	    self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+	    if os.path.isfile(self.settings["source_path"]):
+		if os.path.exists(self.settings["source_path"]):
+		    self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+	    else:
+		self.settings["source_path"]=self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]
 	
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
 
 		
 	def unpack(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unpack"):
-			print "Resume point detected, skipping unpack operation..."
+		if not os.path.isdir(self.settings["source_path"]):
+			generic_stage_target.unpack(self)
 		else:
-									 
-			if not os.path.exists(self.settings["chroot_path"]):
-				os.makedirs(self.settings["chroot_path"])
+		    if self.settings.has_key("AUTORESUME") \
+			    and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unpack"):
+			    print "Resume point detected, skipping unpack operation..."
+		    else:
+			    if not os.path.exists(self.settings["chroot_path"]):
+				    os.makedirs(self.settings["chroot_path"])
 				
-			print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
-			cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
-				"Error copying initial livecd-stage2")
-			touch(self.settings["chroot_path"]+"/tmp/.clst_unpack")
+			    print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
+			    cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
+				    "Error copying initial livecd-stage2")
+			    touch(self.settings["chroot_path"]+"/tmp/.clst_unpack")
 
-			# Create the dir_setup autoresume point as the rsync --delete probably deleted it
-			touch(self.settings["chroot_path"]+"/tmp/.clst_dir_setup")
-
+			    # Create the dir_setup autoresume point as the rsync --delete probably deleted it
+			    touch(self.settings["chroot_path"]+"/tmp/.clst_dir_setup")
         
 	def run_local(self):
 		# first clean up any existing target stuff
