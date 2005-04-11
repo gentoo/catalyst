@@ -65,6 +65,7 @@ extract_cdtar() {
 }
 
 extract_kernels() {
+	# extract multiple kernels
 	#$1 = Destination
 	#${clst_target_path}/kernel is often a good choice for ${1}
 
@@ -112,11 +113,38 @@ extract_kernels() {
 extract_modules() {
 	#$1 = Destination
 	#$2 = kname	
-	kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-modules-${clst_version_stamp}.tar.bz2"
+	kmodules="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-modules-${clst_version_stamp}.tar.bz2"
 		
+	[ ! -e "${kmodules}" ] && die "Can't find kernel modules tarball at ${kmodules}"
+	mkdir -p ${1}/
+	tar xjf ${kmodules} -C ${1} lib
+}
+extract_kernel() {
+	#$1 = Destination
+	#$2 = kname	
+	
+	kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-kernel-initrd-${clst_version_stamp}.tar.bz2"
 	[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 	mkdir -p ${1}/
-	tar xjf ${kbinary} -C ${1}/ lib
+	tar xjf ${kbinary} -C ${1}/
+	# change config name from "config-*" to "gentoo", for example
+	#mv ${1}/config-* ${1}/${2}-config
+	rm ${1}/config-*
+
+	# change kernel name from "kernel" to "gentoo", for example
+	mv ${1}/kernel-* ${1}/${2}
+	
+	# change initrd name from "initrd" to "gentoo.igz", for example
+	if [ -e ${1}/initrd-* ]
+	then
+		mv ${1}/initrd-* ${1}/${2}.igz
+	fi
+	
+	# change initramfs name from "initramfs" to "gentoo.igz", for example
+	if [ -e ${1}/initramfs-* ]
+	then
+	    mv ${1}/initramfs-* ${1}/${2}.igz
+	fi
 }
 
 check_dev_manager(){

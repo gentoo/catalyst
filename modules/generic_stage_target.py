@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.27 2005/04/07 23:02:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.28 2005/04/11 20:05:40 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -96,6 +96,9 @@ class generic_stage_target(generic_target):
 		else:
 			print "Building on",self.settings["hostarch"],"for alternate machine type",\
 				self.settings["mainarch"]
+		# This should be first to be set as other set_ options depend on this
+		self.set_spec_prefix()
+		
 		
 		# define all of our core variables
 		self.set_target_profile()
@@ -114,8 +117,11 @@ class generic_stage_target(generic_target):
 		self.set_action_sequence()
 		self.set_use()
 		self.set_cleanables()
-		self.set_spec_prefix()
 		self.set_iso_volume_id()
+		self.set_build_kernel_vars(addlargs)	
+		self.set_fsscript()
+		self.set_rcadd()
+		self.set_rcdel()
 
 		# this next line checks to make sure that the specified variables exist on disk.
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
@@ -189,7 +195,22 @@ class generic_stage_target(generic_target):
 
 	def set_target_path(self):
 		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+
+	def set_fsscript(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/fsscript"):
+			self.settings["fsscript"]=self.settings[self.settings["spec_prefix"]+"/fsscript"]
+			del self.settings[self.settings["spec_prefix"]+"/fsscript"]
 	
+	def set_rcadd(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/rcadd"):
+			self.settings["rcadd"]=self.settings[self.settings["spec_prefix"]+"/rcadd"]
+			del self.settings[self.settings["spec_prefix"]+"/rcadd"]
+	
+	def set_rcdel(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/rcdel"):
+			self.settings["rcdel"]=self.settings[self.settings["spec_prefix"]+"/rcdel"]
+			del self.settings[self.settings["spec_prefix"]+"/rcdel"]
+
 	def set_source_path(self):
 		self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		if os.path.isfile(self.settings["source_path"]):
@@ -240,6 +261,35 @@ class generic_stage_target(generic_target):
 		# ROOT= variable for emerges
 		self.settings["root_path"]="/"
 
+	def set_build_kernel_vars(self,addlargs):
+		
+	    if addlargs.has_key("boot/kernel"):
+		if type(addlargs["boot/kernel"]) == types.StringType:
+			loopy=[addlargs["boot/kernel"]]
+		else:
+			loopy=addlargs["boot/kernel"]
+			    
+		for x in loopy:
+			self.required_values.append("boot/kernel/"+x+"/sources")
+			self.required_values.append("boot/kernel/"+x+"/config")
+			self.valid_values.append("boot/kernel/"+x+"/extraversion")
+			self.valid_values.append("boot/kernel/"+x+"/packages")
+			self.valid_values.append("boot/kernel/"+x+"/use")
+			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
+			self.valid_values.append("boot/kernel/"+x+"/gk_action")
+		    
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
+		self.settings["devmanager"]=self.settings[self.settings["spec_prefix"]+"/devmanager"]
+		del self.settings[self.settings["spec_prefix"]+"/devmanager"]
+	    
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/splashtype"):
+		self.settings["splashtype"]=self.settings[self.settings["spec_prefix"]+"/splashtype"]
+		del self.settings[self.settings["spec_prefix"]+"/splashtype"]
+	    
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/gk_mainargs"):
+		self.settings["gk_mainargs"]=self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
+		del self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
+	
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
 		
@@ -476,6 +526,16 @@ class generic_stage_target(generic_target):
 				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
 		    myf.close()
 	
+	def fsscript(self):
+		if self.settings.has_key("fsscript"):
+			if os.path.exists(self.settings["controller_file"]):
+		    		cmd("/bin/bash "+self.settings["controller_file"]+" fsscript","fsscript script failed.")
+	
+	def rcupdate(self):
+		if self.settings.has_key("rcadd") or self.settings.has_key("rcdel"):
+			if os.path.exists(self.settings["controller_file"]):
+		    		cmd("/bin/bash "+self.settings["controller_file"]+" rc-update","rc-update script failed.")
+
 	def clean(self):
 		for x in self.settings["cleanables"]: 
 			print "Cleaning chroot: "+x+"... "
@@ -657,19 +717,19 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
 				self.settings[self.settings["spec_prefix"]+"/iso"],"ISO creation script failed.")
         def build_packages(self):
-		
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_build_packages"):
-				print "Resume point detected, skipping build_packages operation..."
-		else:
-			mypack=list_bashify(self.settings[self.settings["spec_prefix"]+"/packages"])
-			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
-					" build_packages "+mypack)
-				touch(self.settings["chroot_path"]+"/tmp/.clst_build_packages")
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,self.settings["spec_prefix"] + "build aborting due to error."
+		if self.settings.has_key(self.settings["spec_prefix"]+"/packages"):
+			if self.settings.has_key("AUTORESUME") \
+				and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_build_packages"):
+					print "Resume point detected, skipping build_packages operation..."
+			else:
+				mypack=list_bashify(self.settings[self.settings["spec_prefix"]+"/packages"])
+				try:
+					cmd("/bin/bash "+self.settings["controller_file"]+\
+						" build_packages "+mypack)
+					touch(self.settings["chroot_path"]+"/tmp/.clst_build_packages")
+				except CatalystError:
+					self.unbind()
+					raise CatalystError,self.settings["spec_prefix"] + "build aborting due to error."
 	
 	def build_kernel(self):
 		if self.settings.has_key("boot/kernel"):
@@ -709,7 +769,7 @@ class generic_stage_target(generic_target):
 						os.putenv(kname+"_kernelopts", "")
 
 					if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
-						self.settings["boot/kernel/"+kname+"/extraversion"]="NULL_VALUE"
+						self.settings["boot/kernel/"+kname+"/extraversion"]=""
 
 					os.putenv("clst_kextraversion", self.settings["boot/kernel/"+kname+"/extraversion"])
 
@@ -720,23 +780,3 @@ class generic_stage_target(generic_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"build aborting due to kernel build error."
-
-	def set_build_kernel_vars(self,addlargs):
-		
-	    if not addlargs.has_key("boot/kernel"):
-		    raise CatalystError, "Required value boot/kernel not specified."
-				    
-		    if type(addlargs["boot/kernel"]) == types.StringType:
-			loopy=[addlargs["boot/kernel"]]
-		    else:
-			loopy=addlargs["boot/kernel"]
-			    
-		    for x in loopy:
-			self.required_values.append("boot/kernel/"+x+"/sources")
-			self.required_values.append("boot/kernel/"+x+"/config")
-			self.valid_values.append("boot/kernel/"+x+"/extraversion")
-			self.valid_values.append("boot/kernel/"+x+"/packages")
-			self.valid_values.append("boot/kernel/"+x+"/use")
-			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
-			self.valid_values.append("boot/kernel/"+x+"/gk_action")
-		    

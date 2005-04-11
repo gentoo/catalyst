@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.7 2005/04/04 17:48:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.8 2005/04/11 20:05:40 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -19,7 +19,7 @@ class livecd_stage1_target(generic_stage_target):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
-					"preclean","clear_autoresume","unmerge","unbind",\
+					"preclean","fsscript","clear_autoresume","unmerge","unbind",\
 					"remove","empty","clean"]
 
 

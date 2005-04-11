@@ -1,6 +1,16 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.215 2005/04/09 12:49:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.216 2005/04/11 20:05:40 rocket Exp $
+
+  11 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/stage4_target.py,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/stage4/stage4-controller.sh, +targets/stage4/unmerge.sh,
+  targets/support/functions.sh, targets/support/kmerge.sh,
+  targets/support/livecdfs-update.sh, +targets/support/rc-update.sh:
+  Generalized kernel support, fsscript, rcupdate, etc for stage4
 
   09 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/pre-kmerge.sh:

@@ -10,7 +10,7 @@ PKGDIR=/usr/portage/packages/gk_binaries/${clst_kname}/ebuilds
 
 setup_gk_args() {
 	# default genkernel args
-	GK_ARGS="${clst_livecd_gk_mainargs} \
+	GK_ARGS="${clst_gk_mainargs} \
 			 ${clst_kernel_gk_kernargs} \
 			 --no-mountboot \
 			 --no-install \
@@ -20,14 +20,14 @@ setup_gk_args() {
 			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 \
 			 --kerncache=/usr/portage/packages/gk_binaries/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2 all"
 	# extra genkernel options that we have to test for
-	if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
+	if [ "${clst_splash_type}" == "bootsplash" -a -n "${clst_splash_theme}" ]
 	then
-		GK_ARGS="${GK_ARGS} --bootsplash=${clst_livecd_splash_theme}"
+		GK_ARGS="${GK_ARGS} --bootsplash=${clst_splash_theme}"
 	fi
 	
-	if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+	if [ "${clst_splash_type}" == "gensplash" -a -n "${clst_splash_theme}" ]
 	then
-		GK_ARGS="${GK_ARGS} --gensplash=${clst_livecd_splash_theme}"
+		GK_ARGS="${GK_ARGS} --gensplash=${clst_splash_theme}"
 	fi
 
 	if [ -n "${clst_CCACHE}" ]
@@ -35,10 +35,8 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
 	fi
 	
-	if [ "${clst_livecd_devmanager}" == "udev" ]
+	if [ "${clst_devmanager}" == "devfs" ]
 	then
-		GK_ARGS="${GK_ARGS} --udev"
-	else
 		GK_ARGS="${GK_ARGS} --no-udev"
 	fi
 }
@@ -70,7 +68,6 @@ genkernel_compile(){
 			genkernel --postconf="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_postconf}" \
 				${GK_ARGS} || exit 1
 		else
-			echo "genkernel"
 			genkernel ${GK_ARGS} || exit 1
 		fi
 	else
@@ -89,7 +86,6 @@ genkernel_compile(){
 			genkernel --postconf="emerge ${clst_kernel_postconf}" \
 				${GK_ARGS} || exit 1
 		else
-			echo "genkernel"
 			genkernel ${GK_ARGS} || exit 1
 		fi
 	fi
@@ -161,7 +157,6 @@ then
 			#echo "EXTRAVERSION match"
 			EXTRAVERSION_MATCH=1
 		fi
-
 	fi
 fi
 
@@ -174,7 +169,7 @@ then
 	then 
 		if [ -n "${clst_KERNCACHE}" ]
 		then
-			echo "CONFIG match"
+			#echo "CONFIG match"
 			CONFIG_MATCH=1
 		fi
 
@@ -213,15 +208,17 @@ else
     	USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
 fi
 
-#if catalyst has set NULL_VALUE, extraversion wasn't specified so we skip this part
+#if catalyst has set to a empty string, extraversion wasn't specified so we skip this part
 if [ "${EXTRAVERSION_MATCH}" != "1" ]
 then
-    if [ "${clst_kextraversion}" != "NULL_VALUE" ]
+    if [ "${clst_kextraversion}" != "" ]
     then
 	echo "Setting extraversion to ${clst_kextraversion}"
 	sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+    	echo ${clst_kextraversion} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+    else 
+    	touch /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
     fi
-    echo ${clst_kextraversion} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 fi
 	
 

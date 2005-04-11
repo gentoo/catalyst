@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.6 2005/04/08 22:39:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.7 2005/04/11 20:05:40 rocket Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -14,55 +14,6 @@ fi
 
 # turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
-
-
-# default programs that we always want to start
-rc-update del iptables default
-rc-update del netmount default
-rc-update add autoconfig default
-rc-update del keymaps
-rc-update del serial
-rc-update del consolefont
-rc-update add modules default
-rc-update add pwgen default
-[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
-[ -e /etc/init.d/splash ] && rc-update add splash default
-[ -e /etc/init.d/sysklogd ] && rc-update add sysklogd default
-[ -e /etc/init.d/metalog ] && rc-update add metalog default
-[ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
-[ -e /etc/init.d/alsasound ] && rc-update add alsasound default
-[ -e /etc/init.d/hdparm ] && rc-update add hdparm default
-
-# Do some livecd_type specific rc-update changes
-case ${clst_livecd_type} in
-	gentoo-gamecd )
-		# we add spind to default here since we don't want the CD to spin down
-		rc-update add spind default
-		rc-update add x-setup default
-	;;
-	*)
-	;;
-esac
-
-# perform any rcadd then any rcdel
-if [ -n "${clst_livecd_rcadd}" ] || [ -n "${clst_livecd_rcdel}" ]
-then
-	if [ -n "${clst_livecd_rcadd}" ]
-	then
-		for x in ${clst_livecd_rcadd}
-		do
-			rc-update add "${x%%:*}" "${x##*:}"
-		done
-	fi
-	
-	if [ -n "${clst_livecd_rcdel}" ]
-	then
-		for x in ${clst_livecd_rcdel}
-		do
-			rc-update del "${x%%:*}" "${x##*:}"
-		done
-	fi
-fi
 
 # Comment out current getty settings
 sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.31 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.32 2005/04/11 20:05:40 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -15,7 +15,7 @@ class livecd_stage2_target(generic_stage_target):
 		self.required_values=["boot/kernel","livecd/cdfstype"]
 		
 		self.valid_values=[]
-		self.set_build_kernel_vars(addlargs)
+		
 		self.valid_values.extend(self.required_values)
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
@@ -25,9 +25,9 @@ class livecd_stage2_target(generic_stage_target):
 			"gamecd/conf","portage_overlay"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
+		
 		file_locate(self.settings, ["livecd/cdtar","controller_file"])
-		if self.settings.has_key("portage_confdir"):
-			file_locate(self.settings,["portage_confdir"],expand=0)
+		
 
 	def set_target_path(self):
 	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
@@ -92,7 +92,8 @@ class livecd_stage2_target(generic_stage_target):
 	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 			    "config_profile_link","setup_confdir","portage_overlay",\
 			    "bind","chroot_setup","setup_environment","run_local",\
-			    "root_overlay","build_kernel","bootloader","clear_autoresume",\
+			    "root_overlay","build_kernel","bootloader","preclean",\
+			    "fsscript","rcupdate","clear_autoresume",\
 			    "unmerge","unbind","remove","empty","target_setup",\
 			    "setup_overlay","create_iso"]
 

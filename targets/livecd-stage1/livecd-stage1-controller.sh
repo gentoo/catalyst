@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-controller.sh,v 1.3 2005/04/06 23:23:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-controller.sh,v 1.4 2005/04/11 20:05:40 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -53,12 +53,14 @@ case $1 in
 		
 		# now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
-		
-		# if the user has their own fs update script, execute it
-		if [ -n "${clst_livecd_fsscript}" ]
-		then
-			exec_in_chroot ${clst_livecd_fsscript}
-		fi
+		;;
+
+	rc-update)
+		exec_in_chroot  ${clst_sharedir}/targets/support/rc-update.sh
+		;;
+
+	fsscript)
+		exec_in_chroot ${clst_fsscript}
 		;;
 		
 	build_packages)
@@ -69,6 +71,6 @@ case $1 in
 
 	clean)
 		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
-	;;
+		;;
 esac
 exit 0 
