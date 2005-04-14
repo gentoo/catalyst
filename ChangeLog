@@ -1,6 +1,17 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.217 2005/04/11 20:44:47 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.218 2005/04/14 14:59:48 rocket Exp $
+
+  14 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/embedded_target.py, modules/generic_stage_target.py,
+  modules/grp_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/netboot_target.py,
+  modules/stage4_target.py, modules/tinderbox_target.py,
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-controller.sh,
+  targets/stage1/stage1-preclean-chroot.sh,
+  targets/support/chroot-functions.sh:
+  AUTORESUME PATCH; modified the chroot-functions.sh script so the chroot will
+  die properly on CTRL-C; fixed stage1 bug with gcc-setup
 
   11 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/livecd_stage2_target.py:

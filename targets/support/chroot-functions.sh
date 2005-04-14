@@ -1,3 +1,20 @@
+
+# Trap these signals and kill ourselves if recieved
+# Force ourselves to die if any of these signals are recieved
+# most likely our controlling terminal is gone
+trap "echo SIGTERM signal recieved killing $0 with pid $$;kill -9 $$" SIGTERM
+trap "echo SIGHUP signal recieved killing $0 with pid $$;kill -9 $$" SIGHUP
+trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
+
+#SIGINT           interrupt character (usually Ctrl-C)
+#	* example: high-level sequence of events
+#	* my process (call it "P") is running
+#	* user types ctrl-c
+#	* kernel recognizes this and generates SIGINT signal
+trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
+ 
+	
+
 check_portage_version(){
 	portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 		| cut -d/ -f2 | cut -d- -f2,3`
@@ -82,9 +99,8 @@ setup_portage(){
 setup_gcc(){
 	if [ -x /usr/bin/gcc-config ]
 	then
-	       gcc_current=`gcc-config -c`
-	       gcc-config 3 && source /etc/profile
-	       gcc-config ${gcc_current} && source /etc/profile
+        	mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
+		gcc-config ${mythang}; update_env_settings
 	fi
 }
 

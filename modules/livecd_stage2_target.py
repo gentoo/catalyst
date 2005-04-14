@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.33 2005/04/11 20:44:47 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.34 2005/04/14 14:59:48 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -49,7 +49,7 @@ class livecd_stage2_target(generic_stage_target):
 			generic_stage_target.unpack(self)
 		else:
 		    if self.settings.has_key("AUTORESUME") \
-			    and os.path.exists(self.settings["chroot_path"]+"/tmp/.clst_unpack"):
+			    and os.path.exists(self.settings["autoresume_path"]+"unpack"):
 			    print "Resume point detected, skipping unpack operation..."
 		    else:
 			    if not os.path.exists(self.settings["chroot_path"]):
@@ -58,11 +58,8 @@ class livecd_stage2_target(generic_stage_target):
 			    print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
 			    cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
 				    "Error copying initial livecd-stage2")
-			    touch(self.settings["chroot_path"]+"/tmp/.clst_unpack")
+			    touch(self.settings["autoresume_path"]+"unpack")
 
-			    # Create the dir_setup autoresume point as the rsync --delete probably deleted it
-			    touch(self.settings["chroot_path"]+"/tmp/.clst_dir_setup")
-        
 	def run_local(self):
 		# first clean up any existing target stuff
 		if os.path.exists(self.settings["target_path"]):
@@ -85,23 +82,14 @@ class livecd_stage2_target(generic_stage_target):
 				myf.write("\n"+x)
 			myf.close()
 
-	def bootloader(self):
-		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader",\
-				"Bootloader runscript failed.")
-		
-		except CatalystError:
-			self.unbind()
-			raise CatalystError,"Runscript aborting due to error."
-
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 			    "config_profile_link","setup_confdir","portage_overlay",\
 			    "bind","chroot_setup","setup_environment","run_local",\
 			    "root_overlay","build_kernel","bootloader","preclean",\
-			    "fsscript","rcupdate","clear_autoresume",\
-			    "unmerge","unbind","remove","empty","target_setup",\
-			    "setup_overlay","create_iso"]
+			    "fsscript","rcupdate","unmerge","unbind","remove",\
+			    "empty","target_setup",\
+			    "setup_overlay","create_iso","clear_autoresume"]
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})

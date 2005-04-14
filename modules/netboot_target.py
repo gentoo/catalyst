@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.1 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.2 2005/04/14 14:59:48 rocket Exp $
 
 """
 Builder class for a netboot build.
@@ -132,8 +132,8 @@ class netboot_target(generic_stage_target):
 	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",
 	    				"config_profile_link","setup_confdir","bind","chroot_setup",\
 						"setup_environment","build_packages","build_busybox",\
-						"build_kernel","copy_files_to_image","clear_autoresume",\
-						"clean","create_netboot_files","unbind"]
+						"build_kernel","copy_files_to_image",\
+						"clean","create_netboot_files","unbind","clear_autoresume"]
 
 def register(foo):
 	foo.update({"netboot":netboot_target})

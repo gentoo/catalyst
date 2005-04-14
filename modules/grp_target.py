@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.7 2005/04/04 17:48:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.8 2005/04/14 14:59:48 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -52,8 +52,9 @@ class grp_target(generic_stage_target):
 
 	
 	def set_use(self):
-	    self.settings["use"]=self.settings["grp/use"]
-	    self.settings["use"].append("bindlist")
+	    generic_stage_target.set_use(self)
+	    if self.settings.has_key("use"):
+	    	self.settings["use"].append("bindlist")
 
 	def set_mounts(self):
 	    self.mounts.append("/tmp/grp")

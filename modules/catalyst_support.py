@@ -1,10 +1,8 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.37 2005/04/07 23:02:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.38 2005/04/14 14:59:48 rocket Exp $
 
 import sys,string,os,types,re,traceback,md5
-
-
 # a function to turn a string of non-printable characters into a string of
 # hex characters
 def hexify(str):
@@ -136,11 +134,19 @@ def spawn(mystring,debug=0,fd_pipes=None):
 		os._exit(1)
 		sys.exit(1)
 		return # should never get reached
-	retval=os.waitpid(mypid,0)[1]
+	try:
+		retval=os.waitpid(mypid,0)[1]
+	except:
+	       	os.kill(mypid,signal.SIGTERM)
+		if os.waitpid(mypid,os.WNOHANG)[1] == 0:
+		# feisty bugger, still alive.
+			os.kill(mypid,signal.SIGKILL)
+
 	if (retval & 0xff)==0:
 		return (retval >> 8) # return exit code
 	else:
 		return ((retval & 0xff) << 8) # interrupted by signal
+	
 
 def cmd(mycmd,myexc=""):
 	try:
@@ -149,6 +155,7 @@ def cmd(mycmd,myexc=""):
 			raise CatalystError,myexc
 	except KeyboardInterrupt:
 		raise CatalystError,"Caught SIGINT, aborting."
+
 
 def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and

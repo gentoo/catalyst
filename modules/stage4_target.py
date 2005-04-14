@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.2 2005/04/11 20:05:40 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.3 2005/04/14 14:59:48 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -18,11 +18,6 @@ class stage4_target(generic_stage_target):
 					     "stage4/rcadd","stage4/rcdel"])
 		generic_stage_target.__init__(self,spec,addlargs)
 	
-	def set_use(self):
-		if self.settings.has_key("use"):
-			self.settings["use"]=self.settings["stage4/use"]
-		else:
-			pass
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/var/tmp/*","/tmp/*"]
 
@@ -31,8 +26,8 @@ class stage4_target(generic_stage_target):
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"build_kernel","root_overlay","preclean","rcupdate","fsscript",\
-					"clear_autoresume","unmerge","unbind","remove","empty",\
-					"clean","capture"]
+					"unmerge","unbind","remove","empty",\
+					"clean","capture","clear_autoresume"]
 
 def register(foo):
 	foo.update({"stage4":stage4_target})
