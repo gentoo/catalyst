@@ -45,45 +45,23 @@ genkernel_compile(){
 
 	setup_gk_args
 	
-	eval "clst_kernel_postconf=\$clst_boot_kernel_${clst_kname}_postconf"
 	eval "clst_kernel_merge=\$clst_boot_kernel_${clst_kname}_packages"
-	export clst_kernel_postconf
 	export clst_kernel_merge
 	# build with genkernel using the set options
-	# callback and postconf are put here to avoid escaping issues
+	# callback is put here to avoid escaping issues
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		if [ "$clst_kernel_postconf" != "" \
- 			-a "$clst_kernel_merge" != "" ]
+		if [ "$clst_kernel_merge" != "" ]
 		then
 			genkernel --callback="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_merge}" \
-				--postconf="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_postconf}" \
 					${GK_ARGS} || exit 1
-		elif [ "$clst_kernel_merge" != "" ]
-		then
-			genkernel --callback="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_merge}" \
-				${GK_ARGS} || exit 1
-		elif [ "$clst_kernel_postconf" != "" ]
-		then
-			genkernel --postconf="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_postconf}" \
-				${GK_ARGS} || exit 1
 		else
 			genkernel ${GK_ARGS} || exit 1
 		fi
 	else
-		if [ "$clst_kernel_postconf" != "" \
- 			-a "$clst_kernel_merge" != "" ]
+		if [ "$clst_kernel_merge" != "" ]
 		then
 			genkernel --callback="emerge ${clst_kernel_merge}" \
-				--postconf="emerge ${clst_kernel_postconf}" \
-				${GK_ARGS} || exit 1
-		elif [ "$clst_kernel_merge" != "" ]
-		then
-			genkernel --callback="emerge ${clst_kernel_merge}" \
-				${GK_ARGS} || exit 1
-		elif [ "$clst_kernel_postconf" != "" ]
-		then
-			genkernel --postconf="emerge ${clst_kernel_postconf}" \
 				${GK_ARGS} || exit 1
 		else
 			genkernel ${GK_ARGS} || exit 1

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.29 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.30 2005/04/14 17:09:07 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -287,7 +287,18 @@ class generic_stage_target(generic_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 			self.valid_values.append("boot/kernel/"+x+"/gk_action")
-		    
+	    		if self.settings.has_key("boot/kernel/"+x+"/postconf"):
+	   			print "boot/kernel/"+x+"/postconf is deprecated"
+				print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
+				print "\tPlease move them to boot/kernel/"+x+"/packages in your specfile"
+				if type(self.settings["boot/kernel/"+x+"/postconf"]) == types.StringType:
+					loop2=[self.settings["boot/kernel/"+x+"/postconf"]]
+				else:
+					loop2=self.settings["boot/kernel/"+x+"/postconf"]
+				
+				for y in loop2:
+					self.settings["boot/kernel/"+x+"/packages"].append(y)
+
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
 		self.settings["devmanager"]=self.settings[self.settings["spec_prefix"]+"/devmanager"]
 		del self.settings[self.settings["spec_prefix"]+"/devmanager"]

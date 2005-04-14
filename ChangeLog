@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.218 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.219 2005/04/14 17:09:07 rocket Exp $
+
+  14 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, targets/support/kmerge.sh:
+  Removed support for postconf as genkernel no longer has that option
 
   14 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/embedded_target.py, modules/generic_stage_target.py,
