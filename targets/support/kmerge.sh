@@ -33,7 +33,7 @@ setup_gk_args() {
 
 	if [ -n "${clst_initramfs_overlay}" ]
 	then
-		GK_ARGS="${GK_ARGS} --initramfs_overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
+		GK_ARGS="${GK_ARGS} --initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
 	fi
 	if [ -n "${clst_CCACHE}" ]
 	then
@@ -47,11 +47,15 @@ setup_gk_args() {
 }
 
 genkernel_compile(){
-
-	setup_gk_args
 	
+	eval "clst_initramfs_overlay=\$clst_boot_kernel_${clst_kname}_initramfs_overlay"
 	eval "clst_kernel_merge=\$clst_boot_kernel_${clst_kname}_packages"
+	
+	setup_gk_args
+	#echo "The GK_ARGS are"
+	#echo ${GK_ARGS}	
 	export clst_kernel_merge
+	export clst_initramfs_overlay
 	# build with genkernel using the set options
 	# callback is put here to avoid escaping issues
 	if [ -n "${clst_KERNCACHE}" ]

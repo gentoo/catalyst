@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.221 2005/04/15 04:43:17 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.222 2005/04/15 16:49:45 rocket Exp $
+
+  15 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, targets/support/kmerge.sh:
+  Fixes for initramfs overlay support.
 
   15 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh,

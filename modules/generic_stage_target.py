@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.31 2005/04/15 04:40:24 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.32 2005/04/15 16:49:45 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -873,8 +873,10 @@ class generic_stage_target(generic_target):
 					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
 					    if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
 						print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
+						
 						cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
 							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+						
 						cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
 							self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
 							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
@@ -886,8 +888,7 @@ class generic_stage_target(generic_target):
 					
 					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
 						print "Cleaning up temporary overlay dir"
-						cmd("rm -R"+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
-							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+						cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/")
 
 				touch(self.settings["autoresume_path"]+"build_kernel")
 			
