@@ -1,13 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.220 2005/04/15 04:40:24 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.221 2005/04/15 04:43:17 rocket Exp $
 
   15 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh,
   targets/support/pre-kmerge.sh:
   Fix ctrl-c error if pre-kmerge.sh is running by sourcing
   /tmp/chroot-functions.sh and removed extra equal sign to fix a genkernel
-  caching bug
+  caching bug; Also adding preliminary support for initramfs_overlay from genkernel
 
   14 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh:
