@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.30 2005/04/14 17:09:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.31 2005/04/15 04:40:24 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -287,6 +287,7 @@ class generic_stage_target(generic_target):
 			self.valid_values.append("boot/kernel/"+x+"/use")
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 			self.valid_values.append("boot/kernel/"+x+"/gk_action")
+			self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
 	    		if self.settings.has_key("boot/kernel/"+x+"/postconf"):
 	   			print "boot/kernel/"+x+"/postconf is deprecated"
 				print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
@@ -453,6 +454,7 @@ class generic_stage_target(generic_target):
 				print "Copying overlay dir " +x
 				cmd("mkdir -p "+self.settings["chroot_path"]+x)
 				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x)
+	
 	def root_overlay(self):
 	    # copy over the root_overlay
 	    # Always copy over the overlay incase it has changed
@@ -868,10 +870,24 @@ class generic_stage_target(generic_target):
 						self.settings["boot/kernel/"+kname+"/extraversion"]=""
 
 					os.putenv("clst_kextraversion", self.settings["boot/kernel/"+kname+"/extraversion"])
-
+					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+					    if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
+						print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
+						cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
+							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+						cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
+							self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
+							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+	
+					    
 					# execute the script that builds the kernel
 					cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
 			    		"Runscript kernel build failed")
+					
+					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+						print "Cleaning up temporary overlay dir"
+						cmd("rm -R"+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
+							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
 
 				touch(self.settings["autoresume_path"]+"build_kernel")
 			

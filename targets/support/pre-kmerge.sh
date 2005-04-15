@@ -2,8 +2,10 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+. /tmp/chroot-functions.sh
 /usr/sbin/env-update
-source /etc/profile
+
+. /etc/profile
 
 CONFIG_PROTECT="-*" USE="livecd" emerge --oneshot --nodeps genkernel 
 

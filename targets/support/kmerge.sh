@@ -12,6 +12,7 @@ setup_gk_args() {
 	# default genkernel args
 	GK_ARGS="${clst_gk_mainargs} \
 			 ${clst_kernel_gk_kernargs} \
+			 --cachedir=/usr/portage/packages/gk_binaries/${clst_kname}-genkernel_cache-${clst_version_stamp} \
 			 --no-mountboot \
 			 --no-install \
 			 --kerneldir=/usr/src/linux \
@@ -30,6 +31,10 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --gensplash=${clst_splash_theme}"
 	fi
 
+	if [ -n "${clst_initramfs_overlay}" ]
+	then
+		GK_ARGS="${GK_ARGS} --initramfs_overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
+	fi
 	if [ -n "${clst_CCACHE}" ]
 	then
 		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
