@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.8 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.9 2005/04/18 14:11:23 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -22,6 +22,9 @@ class grp_target(generic_stage_target):
 		self.required_values.extend(["grp","grp/use"])
 		if type(addlargs["grp"])==types.StringType:
 			addlargs["grp"]=[addlargs["grp"]]
+
+		if type(addlargs["grp/use"])==types.StringType:
+			addlargs["grp/use"]=[addlargs["grp/use"]]
 			
 		for x in addlargs["grp"]:
 			self.required_values.append("grp/"+x+"/packages")
