@@ -1,51 +1,60 @@
-## generic installation stage specfile
-## used to build a stage1, stage2, or stage3 installation tarball
+# generic installation stage specfile
+# used to build a stage1, stage2, or stage3 installation tarball
 
-## John Davis <zhen@gentoo.org>
-
-# subarch can be any of the supported Catalyst subarches (like athlon-xp). Refer
-# to the catalyst reference manual (http://www.gentoo.org/proj/en/releng/catalyst) for supported arches.
+# The subarch can be any of the supported catalyst subarches (like athlon-xp).
+# Refer to the catalyst reference manual for suppurted subarches.
+# http://www.gentoo.org/proj/en/releng/catalyst/reference.xml
 # example:
 # subarch: athlon-xp
 subarch:
 
-# version stamp is an identifier for the build. can be anything you want it to be, but it
-# is usually a date.
+# The version stamp is an identifier for the build.  It can be anything you wish
+# it to be, but it is usually a date.
 # example:
-# version_stamp: 2004.2
+# version_stamp: 2005.0
 version_stamp: 
 
-# target specifies what type of build Catalyst is to do. check the catalyst reference manual
-# for supported targets.
+# The target specifies what target we want catalyst to do. For stages, the
+# supported targets are: stage1 stage2 stage3
 # example:
 # target: stage2
 target:
 
-# rel_type defines what kind of build we are doing. usually, default will suffice.
+# The rel_type defines what kind of build we are doing.  This is merely another
+# identifier, but it useful for allowing multiple concurrent builds.  Usually,
+# default will suffice.
 # example:
 # rel_type: default
 rel_type:
 
-# system profile used to build the media
+# This is the system profile to be used by catalyst to build this target.  It is
+# specified as a relative path from /usr/portage/profiles.
 # example:
-# profile: default-x86-2004.0
+# profile: default-linux/x86/2005.0
 profile:
 
-# which snapshot to use
+# This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 20040614
+# snapshot: 20050324
 snapshot:
 
-# where the seed stage comes from, path is relative to $clst_sharedir (catalyst.conf)
+# This specifies where the seed stage comes from for this target,  The path is
+# relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix
+# for the seed.
 # example:
-# default/stage3-x86-2004.1
+# default/stage3-x86-2004.3
 source_subpath:
 
-# hosts used as distcc slaves (distcc required in options (catalyst.conf)
+# These are the hosts used as distcc slaves when distcc is enabled in your 
+# catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
+# is entirely optional.
 # example:
 # distcc_hosts: 127.0.0.1 192.168.0.1
+distcc_hosts:
 
-# optional directory containing portage configuration files
+# This is an optional directory containing portage configuration files.  It
+# follows the same syntax as /etc/portage and should be consistent across all
+# targets to minimize problems.
 # example:
 # portage_confdir: /etc/portage
-# portage_confdir:
+portage_confdir:

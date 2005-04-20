@@ -1,98 +1,74 @@
-## livecd-stage1 example specfile
-## used to build a livecd-stage1
+# livecd-stage1 example specfile
+# used to build a livecd-stage1
 
-## John Davis <zhen@gentoo.org>
-
-# subarch can be any of the supported Catalyst subarches (like athlon-xp). Refer
-# to the catalyst reference manual (http://www.gentoo.org/proj/en/releng/catalyst) for supported arches.
+# The subarch can be any of the supported catalyst subarches (like athlon-xp).
+# Refer to the catalyst reference manual for suppurted subarches.
+# http://www.gentoo.org/proj/en/releng/catalyst/reference.xml
 # example:
 # subarch: athlon-xp
 subarch:
 
-# version stamp is an identifier for the build. can be anything you want it to be, but it
-# is usually a date.
+# The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
 # example:
-# version_stamp: 2004.2
-version_stamp: 
+# version_stamp: 2005.0
+version_stamp:
 
-# target specifies what type of build Catalyst is to do. check the catalyst reference manual
-# for supported targets.
+# The target specifies what target we want catalyst to do.  For building a CD,
+# we start with livecd-stage1 as our target.
 # example:
-# target: stage2
-target: livecd-stage1
+# target: livecd-stage1
+target:
 
-# rel_type defines what kind of build we are doing. usually, default will suffice.
+# The rel_type defines what kind of build we are doing.  This is merely another
+# identifier, but it useful for allowing multiple concurrent builds.  Usually,
+# default will suffice.
 # example:
 # rel_type: default
 rel_type:
 
-# system profile used to build the media
+# This is the system profile to be used by catalyst to build this target.  It is# specified as a relative path from /usr/portage/profiles.
 # example:
-# profile: default-x86-2004.0
+# profile: default-linux/x86/2005.0
 profile:
 
-# which snapshot to use
+# This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 20040614
+# snapshot: 20050324
 snapshot:
 
-# where the seed stage comes from, path is relative to $clst_sharedir (catalyst.conf)
+# This specifies where the seed stage comes from for this target,  The path is
+# relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
 # example:
-# default/stage3-x86-2004.1
+# default/stage3-x86-2004.3
 source_subpath:
 
-# use variables that we would like to use when building the LiveCD packages
-livecd/use:
-	-X
-	-gtk
-	-svga
-	ipv6
-	socks5
-	livecd
-	fbcon
+# These are the hosts used as distcc slaves when distcc is enabled in your
+# catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
+# is entirely optional.
+# example:
+# distcc_hosts: 127.0.0.1 192.168.0.1
+distcc_hosts:
 
-# list of packages to be merged into the LiveCD fs.
+# This is an optional directory containing portage configuration files.  It
+# follows the same syntax as /etc/portage and should be consistent across all
+# targets to minimize problems.
+# example:
+# portage_confdir: /etc/portage
+portage_confdir:
+
+# The livecd-stage1 target is where you will build packages for your CD.  These
+# packages can be built with customized USE settings.  The settings here are
+# additive to the default USE configured by the profile.  For building release
+# media, the first thing we do is disable all default USE flags with -* and then
+# begin to set our own.
+# example:
+# livecd/use: -* ipv6 socks5 livecd fbcon ncurses readline ssl
+livecd/use:
+
+# This is the set of packages that we will merge into the CD's filesystem.  They
+# will be built with the USE flags configured above.  These packages must not
+# depend on a configured kernel.  If the package requires a configured kernel,
+# then it will be defined elsewhere.
+# example:
+# livecd/packages: livecd-tools dhcpcd acpid apmd gentoo-sources kudzu-knoppix hotplug coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 livecd/packages:
-	baselayout
-	livecd-tools
-	kudzu-knoppix
-	module-init-tools
-	hotplug
-	irssi
-	aumix
-	metalog
-	udev
-	parted
-	links
-	strace
-	raidtools
-	nfs-utils
-	jfsutils
-	usbutils
-	xfsprogs
-	xfsdump
-	e2fsprogs
-	reiserfsprogs
-	hdparm
-	dhcpcd
-	pwgen
-	popt
-	dialog
-	rp-pppoe
-	gpm
-	screen
-	mirrorselect
-	penggy
-	iputils
-	hwdata-knoppix
-	hwsetup
-	bootsplash
-	device-mapper
-	lvm2
-	evms
-	vim
-	pwgen
-	pptpclient
-	mdadm
-	ethtool
-	wireless-tools

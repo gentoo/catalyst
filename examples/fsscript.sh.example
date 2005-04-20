@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# This is an example fsscript for use with the livecd-stage2 target via the
-# spec file option livecd/fsscript.  Basically, this file is copied to the
-# livecd rootfs at livecd creation time and then executed from within the
-# chroot.
+# This is an example fsscript for use with the livecd-stage2 target (key
+# livecd/fsscript).  This file is copied into the rootfs of the CD after the
+# kernel(s) and any external modules have been compiled and is then executed
+# within the context of the chroot.
 
-# Example, I want to add specific nameservers to the LiveCD's resolv.conf:
+# Example, I want to add specific nameservers to the CD's resolv.conf:
 echo "192.168.0.1" >> /etc/resolv.conf

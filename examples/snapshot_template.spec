@@ -1,17 +1,17 @@
-## portage snapshot example specfile
+# portage snapshot example specfile
 
-## John Davis <zhen@gentoo.org>
-
-# lets catalyst know what it is building
-target: snapshot
-
-# marks the tarball and makes it unique. Usually, this is a date.
+# Thsi is the target for creating a snapshot.
 # example:
-# version_stamp: 20040611
+# target: snapshot
+target:
+
+# The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
+# example:
+# version_stamp: 2005.0
 version_stamp:
 
-# portdir_overlay (optional) specifies the path to a portage overlay for inclusion
-# in the portage snapshot
+# This option specifies the location to a portage overlay that you would like to
+# have included in this snapshot.
 # example:
 # portdir_overlay: /usr/local/portdir_overlay
 portdir_overlay:

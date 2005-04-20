@@ -1,188 +1,100 @@
-## generic GRP (Gentoo Reference Platform) specfile
-## used to build a GRP set
+# generic GRP (Gentoo Reference Platform) specfile
+# used to build a GRP set
 
-## John Davis <zhen@gentoo.org>
-
-# subarch can be any of the supported Catalyst subarches (like athlon-xp). Refer
-# to the catalyst reference manual (http://www.gentoo.org/proj/en/releng/catalyst) for supported arches.
+# The subarch can be any of the supported catalyst subarches (like athlon-xp).
+# Refer to the catalyst reference manual for suppurted subarches.
+# http://www.gentoo.org/proj/en/releng/catalyst/reference.xml
 # example:
 # subarch: athlon-xp
 subarch:
 
-# version stamp is an identifier for the build. can be anything you want it to be, but it
-# is usually a date.
+# The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
 # example:
-# version_stamp: 2004.2
-version_stamp: 
+# version_stamp: 2005.0
+version_stamp:
 
-# target specifies what type of build Catalyst is to do. check the catalyst reference manual
-# for supported targets.
+# The target specifies what target we want catalyst to do. For GRP, the
+# supported targets are: grp
 # example:
 # target: grp
 target: grp 
 
-# rel_type defines what kind of build we are doing. usually, default will suffice.
+# The rel_type defines what kind of build we are doing.  This is merely another
+# identifier, but it useful for allowing multiple concurrent builds.  Usually,
+# default will suffice.
 # example:
 # rel_type: default
 rel_type:
 
-# system profile used to build the media
+# This is the system profile to be used by catalyst to build this target.  It is# specified as a relative path from /usr/portage/profiles.
 # example:
-# profile: default-x86-2004.0
+# profile: default-linux/x86/2005.0
 profile:
 
-# which snapshot to use
+# This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 20040614
+# snapshot: 20050324
 snapshot:
 
-# where the seed stage comes from, path is relative to $clst_sharedir (catalyst.conf)
+# This specifies where the seed stage comes from for this target,  The path is
+# relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
 # example:
-# default/stage3-x86-2004.1
+# default/stage3-x86-2004.3
+source_subpath:
 
-# directories to organize the GRP into
+# These are the hosts used as distcc slaves when distcc is enabled in your
+# catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
+# is entirely optional.
+# example:
+# distcc_hosts: 127.0.0.1 192.168.0.1
+distcc_hosts:
+
+# This is an optional directory containing portage configuration files.  It
+# follows the same syntax as /etc/portage and should be consistent across all
+# targets to minimize problems.
+# example:
+# portage_confdir: /etc/portage
+portage_confdir:
+
+# Since GRP is capable of building packages/source sets for more than one CD,
+# this defines the layout for the directories under $clst_sharedir/builds.
+# example:
+# grp: src cd2
 grp: src cd2
 
-# use variables to use when building the GRP set
-grp/use: 
-	gtk2 
-	gnome 
-	kde 
-	qt 
-	bonobo 
-	cdr 
-	esd 
-	gtkhtml 
-	mozilla
-	mysql
-	perl
-	ruby
-	tcltk
-	acl
-	cups
-	ldap
-	ssl
-	tcpd
-	-svga
+# GRP is also able to build packages with customized USE settings.  However, it
+# is very possible to cause quite a few problems with these, so be careful with
+# whatever USE flags you add here.  This is generally used for adding some
+# functionality that we do not want on by default for all Gentoo users, but that
+# we want on by default in our binaries.  Some examples would be things like the
+# socks5 USE flag.
+# example:
+# grp/use: gtk2 gnome kde qt bonobo cdr esd gtkhtml mozilla mysql perl ruby tcltk cups ldap ssl tcpd -svga
+grp/use:
 
-# okay, two things here. first, we know we are building stuff to go into the "src" directory
-# because of the grp/src line (first part before the / is the build type, second part is
-# directory specified in the grp: key). It is identified as a "srcset" which means that these
-# packages will be *fetched only* and not compiled.
-grp/src/type: srcset
+# This tells catalyst what type of GRP set this list of packages will create.
+# Valid options here are srcset or pkgset to either download the source, or to
+# build packages, respectively.
+# example:
+# grp/src/type: srcset
+grp/src/type:
+
+# Since this is a srcset, these ebuilds will have their distfiles fetched and
+# the distfiles will be stored in the src directory under $clst_sharedir/builds.
+# Packages will not be made out of this list.  We use this for grabbing things
+# that need a compiled kernel to build, or things listed in the Handbook that
+# should be available before the first reboot during an install.
+# example:
+# grp/src/packages: gentoo-sources udev vanilla-sources rp-pppoe speedtouch fcdsl fritzcapi globespan-adsl pptpclient slmodem lvm2 evms iputils vixie-cron fcron dcron sysklogd metalog syslog-ng raidtools jfsutils xfsprogs reiserfsprogs dosfstools ntfsprogs lilo grub isdn4k-utils iproute2 wireless-tools wpa_supplicant pcmcia-cs hotplug coldplug dhcpcd slocate genkernel ipw2100 ipw2200 fxload logrotate
 grp/src/packages:
-	gentoo-sources
-	gentoo-dev-sources
-	vanilla-sources
-	development-sources
-	iptables
-	gpm
-	rp-pppoe
-	ppp
-	speedtouch
-	pciutils
-	hdparm
-	hotplug
-	aumix
-	xfree
-	iputils
-	vixie-cron
-	sysklogd
-	metalog
-	syslog-ng
-	raidtools
-	jfsutils
-	xfsprogs
-	reiserfsprogs
-	lvm-user
-	dosfstools
-	lilo
-	grub
-	superadduser
-	gentoolkit
-	chkrootkit
-	minicom
-	lynx
-	rpm2targz
-	parted
-	rdate
-	whois
-	tcpdump
-	cvs
-	unzip
-	zip
-	netcat
-	isdn4k-utils
-	nforce-net
-	nforce-audio
-	iproute
-	nvidia-kernel
-	nvidia-glx
-	ati-drivers
-	e100
-	e1000
-	wireless-tools
-	pcmcia-cs
-	emu10k1
-	evms
-	linux-wlan-ng
-	sys-apps/eject
-	genkernel
 
-# same as above, but this time we have a "pkgset". this means that we will fetch and compile
-# the desired package
-grp/cd2/type: pkgset
+# This is mostly here for completeness.  This is the pkgset definition.
+# example:
+# grp/cd2/type: pkgset
+grp/cd2/type:
+
+# This is our list of packages that will comprise our package set.  These are
+# fetched, compiled, and the packages are stored under $clst_sharedir/builds.
+# example:
+# grp/cd2/packages: dante tsocks sys-apps/eject minicom links acpid apmd parted whois tcpdump cvs zip unzip netcat partimage app-admin/sudo app-cdr/cdrtools gnome emacs dev-lang/ruby enlightenment kde mozilla-firefox mozilla-thunderbird xfce4 openbox fluxbox sylpheed openoffice-bin gimp xemacs xmms abiword gaim xchat pan tetex xcdroast k3b samba nmap gradm ettercap ethereal mplayer
 grp/cd2/packages:
-	pciutils
-	hdparm
-	hotplug
-	aumix
-	xfree
-	dante
-	tsocks
-	chkrootkit
-	minicom
-	lynx
-	rpm2targz
-	parted
-	rdate
-	whois
-	tcpdump
-	cvs
-	unzip
-	zip
-	netcat
-	partimage
-	DirectFB
-	apache
-	app-cdr/cdrtools
-	gnome
-	evolution
-	cups
-	dev-db/mysql
-	dev-lang/ruby
-	emacs
-	enlightenment
-	fluxbox
-	kde
-	libsdl
-	mozilla
-	xfce4
-	openbox
-	openoffice
-	sylpheed
-	vim
-	xemacs
-	xmms
-	mozilla-firefox
-	abiword
-	gaim
-	tetex
-	xcdroast
-	samba
-	nmap
-	gradm
-	ettercap
-	xchat
-	dante
-	tsocks

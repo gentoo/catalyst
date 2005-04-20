@@ -1,9 +1,6 @@
 #!/bin/bash
-# Copyright 1999-2004 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/examples/gamecd.conf.example,v 1.2 2005/04/08 22:39:45 wolf31o2 Exp $
 
 # these variables are to be used for creating the menu entry and also to tell
-# the CD what to execute
+# the CD what to execute once X starts
 GAME_NAME="Unreal Tournament 2004 Demo"
 GAME_EXECUTABLE="/usr/games/bin/ut2004-demo"

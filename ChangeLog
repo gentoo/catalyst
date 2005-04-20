@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.223 2005/04/18 14:11:23 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.224 2005/04/20 18:34:22 wolf31o2 Exp $
+
+  20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/fsscript.sh.example, examples/gamecd.conf.example,
+  examples/generic_stage_template.spec, examples/grp_template.spec,
+  examples/livecd-stage1_template.spec,
+  examples/livecd-stage2_template.spec, examples/netboot_template.spec,
+  examples/snapshot_template.spec:
+  Imported example files from catalyst 1.1.9 to make them more verbose.
 
   18 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/grp_target.py:
   Fix grp/use bug #89365
