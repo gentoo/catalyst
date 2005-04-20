@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.8 2005/04/20 19:48:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.9 2005/04/20 20:29:03 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -54,8 +54,24 @@ case ${clst_livecd_type} in
 		;;
 esac
 
+# Add any users
+if [ -n "${clst_livecd_users}" ]
+then
+	for x in ${clst_livecd_users}
+	do
+		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" -m $x
+	done
+fi
+
 # setup sudoers
 sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
+
+# we want the first user to be used when auto-starting X
+if [ -n "${clst_livecd_users}" -a -e /etc/startx ]
+then
+	first_user=$(echo ${clst_livecd_users} | cut -d' ' -f1)
+	sed -i "s/startx/su - $first_user -c startx/" /root/.bashrc
+fi
 
 # setup dhcp on all detected ethernet devices
 echo "iface_eth0=\"dhcp\""> /etc/conf.d/net

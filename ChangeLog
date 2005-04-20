@@ -1,6 +1,11 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.225 2005/04/20 19:48:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.226 2005/04/20 20:29:03 wolf31o2 Exp $
+
+  20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/livecd_stage2_target.py, targets/support/livecdfs-update.sh:
+  Added livecd/users option to create non-root users. The first user listed
+  will also be used for auto-starting X, if X is merged onto the CD.
 
   20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-controller.sh,
