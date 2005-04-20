@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.9 2005/04/20 20:29:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.10 2005/04/20 21:31:15 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -220,10 +220,33 @@ case ${clst_livecd_type} in
 		    echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
 		fi
 
+		# This is my hack to reduce tmpfs usage
+		mkdir -p /usr/livecd/db/pkg/x11-base
+		mv -f /var/db/pkg/x11-base/xorg* /usr/livecd/db/pkg/x11-base
+		rm -rf /var/db
+
 		touch /etc/startx
-	;;
+		;;
+	gentoo-release-livecd )
+		# first we setup the livecd-kernel package
+		if [ -e /opt/installer/misc/mkvardb ]
+		then
+			chmod +x /opt/installer/misc/mkvardb
+			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v 2005.0 /boot/kernel* /boot/initrd* $(for i in $(find "/lib/modules/$(uname -r)" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
+		fi
+
+		# This is my hack to reduce tmpfs usage
+		mkdir -p /usr/livecd
+		mv -f /usr/portage/profiles /usr/livecd
+		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
+		mv -f /etc/gconf /usr/livecd
+		mv -f /var/db /usr/livecd
 	generic-livecd )
+		# This is my hack to reduce tmpfs usage
+		mkdir -p /usr/livecd
+		mv -f /etc/gconf /usr/livecd
+
 		touch /etc/startx
-	;;
+		;;
 esac
 

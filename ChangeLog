@@ -1,6 +1,14 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.229 2005/04/20 21:14:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.230 2005/04/20 21:31:15 wolf31o2 Exp $
+
+  20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  Moved xinitrc to after livecdfs-update to allow for changing the xinitrc to
+  a custom one if livecd/type is gentoo-gamecd. Added more default setup to
+  livecdfs-update.sh for livecd/type: gentoo-gamecd, gentoo-release-livecd,
+  and generic-livecd.
 
   20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh,
