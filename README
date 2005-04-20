@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.12 2005/04/20 20:42:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.13 2005/04/20 20:45:47 wolf31o2 Exp $
 
 Licensing
 ========================
@@ -46,7 +46,7 @@ that you will have to do is edit /etc/catalyst/catalyst.conf to your liking.
 Example catalyst.conf:
 
 distdir="/usr/portage/distfiles"
-options="ccache pkgcache"
+options="pkgcache kerncache"
 sharedir="/usr/lib/catalyst"
 
 There are many more options that can be set, but those defaults are good
