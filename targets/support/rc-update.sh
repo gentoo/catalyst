@@ -24,12 +24,20 @@ then
     # Do some livecd_type specific rc-update changes
     case ${clst_livecd_type} in
 	    gentoo-gamecd )
-		# we add spind to default here since we don't want the CD to spin down
-		rc-update add spind default
-		rc-update add x-setup default
-	    ;;
+			rc-update add spind default
+			rc-update add x-setup default
+	    	;;
+		gentoo-release-livecd )
+			rc-update add spind default
+			rc-update add x-setup default
+			rc-update add xdm default
+			;;
+		generic-livecd )
+			rc-update add spind default
+			rc-update add x-setup default
+			;;
 	    *)
-	    ;;
+	    	;;
     esac
 fi
 
