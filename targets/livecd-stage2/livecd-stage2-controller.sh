@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.4 2005/04/11 20:05:40 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.5 2005/04/20 19:48:29 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -29,7 +29,7 @@ case $1 in
 			cp -a ${clst_sharedir}/livecd/files/generic.motd.txt \
 				${clst_sharedir}/livecd/files/universal.motd.txt \
 				${clst_sharedir}/livecd/files/minimal.motd.txt \
-				${clst_sharedir}/livecd/files/environmental.motd.txt \
+				${clst_sharedir}/livecd/files/livecd.motd.txt \
 				${clst_sharedir}/livecd/files/gamecd.motd.txt \
 				${clst_chroot_path}/etc
 		fi

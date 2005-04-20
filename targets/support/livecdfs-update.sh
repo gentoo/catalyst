@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.7 2005/04/11 20:05:40 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.8 2005/04/20 19:48:29 wolf31o2 Exp $
 
 /usr/sbin/env-update
 source /etc/profile
@@ -41,8 +41,13 @@ case ${clst_livecd_type} in
 	gnap)
 		echo "gentoo" > /etc/dnsdomainname
 		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
-	;;
-	*)
+		;;
+	gentoo-gamecd)
+		echo "gamecd" > /etc/hostname
+		echo "gentoo" > /etc/dnsdomainname
+		echo "127.0.0.1 gamecd.gentoo gamecd localhost" > /etc/hosts
+		;;
+	gentoo-*)
 		echo "livecd" > /etc/hostname
 		echo "gentoo" > /etc/dnsdomainname
 		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
@@ -125,21 +130,18 @@ case ${clst_livecd_type} in
 		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
-	gentoo-release-environmental )
+	gentoo-release-livecd )
 		cat /etc/generic.motd.txt /etc/universal.motd.txt \
-			/etc/minimal.motd.txt /etc/environmental.motd.txt > /etc/motd
-		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD Environment!:' /etc/motd
+			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
 	;;
 	gentoo-gamecd )
 		cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
 	;;
-	* )
-		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
-		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
 esac
 
-rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/environmental.motd.txt /etc/gamecd.motd.txt
+rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt /etc/gamecd.motd.txt
 
 # setup splash/bootsplash (if called for)
 if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
@@ -204,7 +206,7 @@ case ${clst_livecd_type} in
 
 		touch /etc/startx
 	;;
-	gentoo-release-environmental )
+	generic-livecd )
 		touch /etc/startx
 	;;
 esac

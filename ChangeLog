@@ -1,6 +1,13 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.224 2005/04/20 18:34:22 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.225 2005/04/20 19:48:29 wolf31o2 Exp $
+
+  20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  Updated all instances of livecd/type: gentoo-release-environmental to
+  gentoo-release-livecd and added generic-livecd.
 
   20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/fsscript.sh.example, examples/gamecd.conf.example,
