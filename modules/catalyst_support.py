@@ -1,8 +1,8 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.38 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.39 2005/04/21 14:23:11 rocket Exp $
 
-import sys,string,os,types,re,traceback,md5
+import sys,string,os,types,re,signal,traceback,md5
 # a function to turn a string of non-printable characters into a string of
 # hex characters
 def hexify(str):

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.7 2005/04/20 21:31:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.8 2005/04/21 14:23:11 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -56,10 +56,12 @@ case $1 in
 			exit 1
 		    fi
 		fi
-
+		;;
+	livecd-update)
 		# now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
-
+		
+		
 		# move over the xinitrc (if applicable)
 		# this is moved here, so we can override any default xinitrc
 		if [ -n "${clst_livecd_xinitrc}" ]
@@ -67,7 +69,6 @@ case $1 in
 			cp -a ${clst_livecd_xinitrc} ${clst_chroot_path}/etc/X11/xinit/xinitrc
 		fi
 		;;
-
 	rc-update)
 		exec_in_chroot  ${clst_sharedir}/targets/support/rc-update.sh
 		;;
@@ -80,19 +81,21 @@ case $1 in
 		;;
 
 	bootloader)
+		shift
 		# Here is where we poke in our identifier
-		touch ${clst_target_path}/livecd
+		touch $1/livecd
 		
-		${clst_sharedir}/targets/livecd-stage2/livecd-stage2-bootloader.sh
+		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
 
-	cdfs)
-		${clst_sharedir}/targets/livecd-stage2/livecd-stage2-cdfs.sh
+	target_image_setup)
+		shift
+		${clst_sharedir}/targets/support/target_image_setup.sh $1
 		;;
 
 	iso)
 		shift
-		${clst_sharedir}/targets/livecd-stage2/livecd-stage2-iso.sh $1
+		${clst_sharedir}/targets/support/create-iso.sh $1
 		;;
 esac
 exit 0 

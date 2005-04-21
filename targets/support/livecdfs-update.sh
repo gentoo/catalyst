@@ -1,10 +1,10 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.10 2005/04/20 21:31:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.11 2005/04/21 14:23:12 rocket Exp $
 
-/usr/sbin/env-update
-source /etc/profile
+. /tmp/chroot-functions.sh
+update_env_settings
 
 # allow root logins to the livecd by default
 if [ -e /etc/sshd/sshd_config ]
@@ -52,6 +52,11 @@ case ${clst_livecd_type} in
 		echo "gentoo" > /etc/dnsdomainname
 		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
 		;;
+	*)
+		echo "catalyst-livecd" > /etc/hostname
+		echo "gentoo" > /etc/dnsdomainname
+		echo "127.0.0.1	catalyst-livecd.gentoo livecd localhost" > /etc/hosts
+		;;
 esac
 
 # Add any users
@@ -64,7 +69,10 @@ then
 fi
 
 # setup sudoers
-sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
+if [ -f /etc/sudoers ]
+then
+	sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
+fi
 
 # we want the first user to be used when auto-starting X
 if [ -n "${clst_livecd_users}" -a -e /etc/startx ]
@@ -241,6 +249,7 @@ case ${clst_livecd_type} in
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		mv -f /var/db /usr/livecd
+		;;
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd

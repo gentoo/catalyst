@@ -27,18 +27,23 @@ check_portage_version(){
 }
 
 check_genkernel_version(){
-    genkernel_version=$(genkernel --version)
-    genkernel_version_major=${genkernel_version%%.*}
-    genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
-    genkernel_version_minor=${genkernel_version_minor_sub%%.*}
-    genkernel_version_sub=${genkernel_version##*.}
-    if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '2' ]
+    if [ -x `which genkernel` ]
     then
-	    echo "Genkernel version ${genkernel_version} found ... continuing"
+    	genkernel_version=$(genkernel --version)
+    	genkernel_version_major=${genkernel_version%%.*}
+    	genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
+    	genkernel_version_minor=${genkernel_version_minor_sub%%.*}
+    	genkernel_version_sub=${genkernel_version##*.}
+    	if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '2' ]
+    	then
+	    	echo "Genkernel version ${genkernel_version} found ... continuing"
+    	else
+	    	echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.2.0"
+	    	echo "or greater is required."
+	    	exit 1
+    	fi
     else
-	    echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.2.0"
-	    echo "or greater is required."
-	    exit 1
+    	exit 1
     fi
 }
 		
@@ -126,7 +131,6 @@ make_destpath() {
         		install -d ${ROOT}
 		fi
 	fi
-	echo "ROOT=${ROOT} emerge ...."
 }
 
 run_emerge() {
@@ -137,6 +141,7 @@ run_emerge() {
 	
     if [ -n "${clst_VERBOSE}" ]
 	then
+		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -vpt $@" || exit 1
 		emerge ${clst_myemergeopts} -vpt $@ || exit 3
 		echo "Press any key within 15 seconds to pause the build..."
 		read -s -t 15 -n 1
@@ -146,6 +151,7 @@ run_emerge() {
 			read -s -n 1
 		fi
 	fi
+	echo "emerge ${clst_myemergeopts} $@" || exit 1
 	emerge ${clst_myemergeopts} $@ || exit 1
 }
 

@@ -1,14 +1,13 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/Attic/livecd-stage2-bootloader.sh,v 1.1 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.1 2005/04/21 14:23:12 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
-#. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
 
-#source ${clst_livecd_archscript}
-## START RUNSCRIPT
-extract_cdtar
-extract_kernels ${clst_target_path}/boot
+# $1 is the destination root
+
+extract_cdtar $1
+extract_kernels $1/boot
 check_dev_manager
 check_filesystem_type
 
@@ -16,7 +15,7 @@ default_append_line="initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmd
 
 case ${clst_mainarch} in
 	alpha)
-		acfg=${clst_target_path}/etc/aboot.conf
+		acfg=$1/etc/aboot.conf
 		bctr=0
 		for x in ${clst_boot_kernel}
 		do
@@ -30,9 +29,9 @@ case ${clst_mainarch} in
 	arm)
 		;;
 	hppa)
-		icfg=${clst_target_path}/boot/palo.conf
-		kmsg=${clst_target_path}/boot/kernels.msg
-		hmsg=${clst_target_path}/boot/help.msg
+		icfg=$1/boot/palo.conf
+		kmsg=$1/boot/kernels.msg
+		hmsg=$1/boot/help.msg
 		echo "--commandline=0/${first} initrd=${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${x}.igz" >> ${icfg}
@@ -70,7 +69,7 @@ case ${clst_mainarch} in
 		# but the following suffices for now:
 		;;
 	sparc*)
-		scfg=${clst_target_path}/boot/silo.conf
+		scfg=$1/boot/silo.conf
 		echo "default=\"help\"" > ${scfg}
 		echo "message=\"/boot/boot.msg\"" >> ${scfg}
 
@@ -91,12 +90,12 @@ case ${clst_mainarch} in
 		echo -e "label=\"help\"" >> ${scfg}
 		;;
 	x86)
-		if [ -e ${clst_target_path}/boot/isolinux.bin ]
+		if [ -e $1/boot/isolinux.bin ]
 		then
 			# the rest of this function sets up the config file for isolinux
-			icfg=${clst_target_path}/boot/isolinux.cfg
-			kmsg=${clst_target_path}/boot/kernels.msg
-			hmsg=${clst_target_path}/boot/help.msg
+			icfg=$1/boot/isolinux.cfg
+			kmsg=$1/boot/kernels.msg
+			hmsg=$1/boot/help.msg
 			echo "default ${first}" > ${icfg}
 			echo "timeout 150" >> ${icfg}
 			echo "prompt 1" >> ${icfg}
@@ -131,7 +130,7 @@ case ${clst_mainarch} in
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
 
-			if [ -f ${clst_target_path}/boot/memtest86 ]
+			if [ -f $1/boot/memtest86 ]
 			then
 				echo >> $icfg
 				echo "   memtest86" >> $kmsg
@@ -140,10 +139,10 @@ case ${clst_mainarch} in
 			fi
 		fi
 
-		if [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
+		if [ -e $1/boot/grub/stage2_eltorito ]
 		then
-			icfg=${clst_target_path}/boot/grub/grub.conf
-			hmsg=${clst_target_path}/boot/grub/help.msg
+			icfg=$1/boot/grub/grub.conf
+			hmsg=$1/boot/grub/help.msg
 			echo "default 1" > ${icfg}
 			echo "timeout 150" >> ${icfg}
 			echo >> ${icfg}
@@ -163,7 +162,7 @@ case ${clst_mainarch} in
 					echo "kernel /boot/${x} ${default_append_line} vga=791 dokeymap splash=silent" >> ${icfg}
 				fi
 
-				if [ -e ${clst_target_path}/boot/${x}.igz ]
+				if [ -e $1/boot/${x}.igz ]
 				then
 					echo "initrd /boot/${x}.igz" >> ${icfg}
 				fi
@@ -171,13 +170,13 @@ case ${clst_mainarch} in
 				echo >> ${icfg}
 				echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
 				echo "kernel ${x} /boot/${x} ${default_append_line}" >> ${icfg}
-				if [ -e ${clst_target_path}/boot/${x}.igz ]
+				if [ -e $1/boot/${x}.igz ]
 				then
 					echo "initrd /boot/${x}.igz" >> ${icfg}
 				fi
 			done
 
-			if [ -f ${clst_target_path}/boot/memtest86 ]
+			if [ -f $1/boot/memtest86 ]
 			then
 				echo >> ${icfg}
 				echo "title memtest86" >> ${icfg}

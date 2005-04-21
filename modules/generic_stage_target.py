@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.32 2005/04/15 16:49:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.33 2005/04/21 14:23:11 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -105,14 +105,14 @@ class generic_stage_target(generic_target):
 		self.set_target_subpath()
 	
 		# set paths
+		self.set_autoresume_path()
 		self.set_snapshot_path()
-		self.set_target_path()
 		self.set_source_path()
 		self.set_chroot_path()
-		self.set_autoresume_path()
 		self.set_root_path()
 		self.set_dest_path()
 		self.set_stage_path()
+		self.set_target_path()
 		
 		self.set_controller_file()
 		self.set_action_sequence()
@@ -121,8 +121,17 @@ class generic_stage_target(generic_target):
 		self.set_iso_volume_id()
 		self.set_build_kernel_vars(addlargs)	
 		self.set_fsscript()
+		self.set_install_mask()
 		self.set_rcadd()
 		self.set_rcdel()
+		self.set_cdtar()
+		self.set_fstype()
+		self.set_fsops()
+		self.set_iso()
+		self.set_packages()
+		self.set_target_file()
+		self.set_target_iso_path()
+		
 
 		# this next line checks to make sure that the specified variables exist on disk.
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
@@ -183,7 +192,12 @@ class generic_stage_target(generic_target):
 		if self.makeconf.has_key("CXXFLAGS"):
 		    print "Using CXXFLAGS setting from seed stage"
 		    self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
-
+	
+	def set_install_mask(self):
+		if self.settings.has_key("install_mask"):
+			if type(self.settings["install_mask"]) != types.StringType:
+				self.settings["install_mask"]=string.join(self.settings["install_mask"])
+	
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]=self.settings["target"]
 
@@ -195,7 +209,31 @@ class generic_stage_target(generic_target):
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 
 	def set_target_path(self):
-		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+		if self.settings.has_key("AUTORESUME") \
+			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+			print "Resume point detected, skipping target path setup operation..."
+		else:
+			# first clean up any existing target stuff
+			if os.path.exists(self.settings["target_path"]):
+				cmd("rm -rf "+self.settings["target_path"],
+					"Could not remove existing directory: "+self.settings["target_path"])
+		    	touch(self.settings["autoresume_path"]+"setup_target_path")
+		
+		if not os.path.exists(self.settings["target_path"]):
+			os.makedirs(self.settings["target_path"])
+	
+	def set_target_file(self):
+		if not os.path.exists(self.settings["target_path"]+"/tarball/"):
+			os.makedirs(self.settings["target_path"]+"/tarball/")
+		self.settings["target_file"]=self.settings["target_path"]+"/tarball/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]+".tar.bz2"
+	
+	def set_target_iso_path(self):
+		if self.settings.has_key("iso"):
+			print "setting up iso path"
+			if not os.path.exists(self.settings["target_path"]+"/iso/"):
+				os.makedirs(self.settings["target_path"]+"/iso/")
+			self.settings["target_iso_path"]=self.settings["target_path"]+"/iso/"
 
 	def set_fsscript(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/fsscript"):
@@ -212,6 +250,43 @@ class generic_stage_target(generic_target):
 			self.settings["rcdel"]=self.settings[self.settings["spec_prefix"]+"/rcdel"]
 			del self.settings[self.settings["spec_prefix"]+"/rcdel"]
 
+	def set_cdtar(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/cdtar"):
+			self.settings["cdtar"]=self.settings[self.settings["spec_prefix"]+"/cdtar"]
+			del self.settings[self.settings["spec_prefix"]+"/cdtar"]
+	
+	def set_iso(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/iso"):
+			self.settings["iso"]=self.settings[self.settings["spec_prefix"]+"/iso"]
+			del self.settings[self.settings["spec_prefix"]+"/iso"]
+
+	def set_fstype(self):	
+		if self.settings.has_key(self.settings["spec_prefix"]+"/cdfstype"):
+			print "\n\n\nWarning!!!"+self.settings["spec_prefix"]+"/cdfstype" + "is deprecated and may be removed."
+			print "\tUse "+self.settings["spec_prefix"]+"/fstype" + "instead.\n\n\n"
+			self.settings["fstype"]=self.settings[self.settings["spec_prefix"]+"/cdfstype"]
+			del self.settings[self.settings["spec_prefix"]+"/cdfstype"]
+		
+		if self.settings.has_key(self.settings["spec_prefix"]+"/fstype"):
+			self.settings["fstype"]=self.settings[self.settings["spec_prefix"]+"/fstype"]
+			del self.settings[self.settings["spec_prefix"]+"/fstype"]
+
+		if not self.settings.has_key("fstype"):
+			self.settings["fstype"]="normal"
+
+	def set_fsops(self):
+		if self.settings.has_key("fstype"):
+			self.valid_values.append("fsops")
+			if self.settings.has_key(self.settings["spec_prefix"]+"/fs-ops"):
+				print "\n\n\nWarning!!!"+self.settings["spec_prefix"]+"/fs-ops" + "is deprecated and may be removed."
+				print "\tUse "+self.settings["spec_prefix"]+"/fsops" + "instead.\n\n\n"
+				self.settings["fsops"]=self.settings[self.settings["spec_prefix"]+"/fs-ops"]
+				del self.settings[self.settings["spec_prefix"]+"/fs-ops"]
+			
+			if self.settings.has_key(self.settings["spec_prefix"]+"/fsops"):
+				self.settings["fsops"]=self.settings[self.settings["spec_prefix"]+"/fsops"]
+				del self.settings[self.settings["spec_prefix"]+"/fsops"]
+	
 	def set_source_path(self):
 		self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 		if os.path.isfile(self.settings["source_path"]):
@@ -266,6 +341,10 @@ class generic_stage_target(generic_target):
 	
 	def set_mounts(self):
 		pass
+
+	def set_packages(self):
+		if self.settings.has_key("iso")
+			self.settings[self.settings["spec_prefix"]+"/packages"].append("livecd-tools")
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -684,7 +763,7 @@ class generic_stage_target(generic_target):
 
 		print "Creating stage tarball..."
 		
-		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
+		cmd("tar cjf "+self.settings["target_file"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball")
 		touch(self.settings["autoresume_path"]+"capture")
 
@@ -781,7 +860,8 @@ class generic_stage_target(generic_target):
 		and os.path.exists(self.settings["autoresume_path"]+"target_setup"):
 		    print "Resume point detected, skipping target_setup operation..."
 	    else:
-		cmd("/bin/bash "+self.settings["controller_file"]+" cdfs","CDFS script failed.")
+		print "Setting up filesystems per filesystem type"
+		cmd("/bin/bash "+self.settings["controller_file"]+" target_image_setup "+ self.settings["target_iso_path"],"target_image_setup script failed.")
 		touch(self.settings["autoresume_path"]+"target_setup")
 	
 	def setup_overlay(self):	
@@ -791,7 +871,7 @@ class generic_stage_target(generic_target):
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay"):
 			cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/* "+\
-			self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.")
+			self.settings["target_iso_path"], self.settings["spec_prefix"]+"overlay copy failed.")
 		touch(self.settings["autoresume_path"]+"setup_overlay")
 	
 	def create_iso(self):
@@ -800,10 +880,10 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping create_iso operation..."
 	    else:
 		# create the ISO - this is the preferred method (the iso scripts do not always work)
-		if self.settings.has_key(self.settings["spec_prefix"]+"/iso"):
+		if self.settings.has_key("iso"):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
-				self.settings[self.settings["spec_prefix"]+"/iso"],"ISO creation script failed.")
-		touch(self.settings["autoresume_path"]+"create_iso")
+				self.settings["iso"],"ISO creation script failed.")
+			touch(self.settings["autoresume_path"]+"create_iso")
 
         def build_packages(self):
 	    if self.settings.has_key("AUTORESUME") \
@@ -823,7 +903,6 @@ class generic_stage_target(generic_target):
 				except CatalystError:
 					self.unbind()
 					raise CatalystError,self.settings["spec_prefix"] + "build aborting due to error."
-		touch(self.settings["autoresume_path"]+"build_packages")
 	
 	def build_kernel(self):
 	    if self.settings.has_key("AUTORESUME") \
@@ -902,10 +981,25 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping bootloader operation..."
 	    else:
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader",\
+			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader " + self.settings["target_iso_path"],\
 				"Bootloader runscript failed.")
 			touch(self.settings["autoresume_path"]+"bootloader")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Runscript aborting due to error."
 
+        def livecd_update(self):
+	    if self.settings.has_key("AUTORESUME") \
+		and os.path.exists(self.settings["autoresume_path"]+"livecd_update"):
+		    print "Resume point detected, skipping build_packages operation..."
+	    else:
+		try:
+			self.bind()
+			cmd("/bin/bash "+self.settings["controller_file"]+" livecd-update",\
+				"livecd-update failed.")
+			self.unbind()
+			touch(self.settings["autoresume_path"]+"livecd_update")
+		
+		except CatalystError:
+			self.unbind()
+			raise CatalystError,"build aborting due to livecd_update error."

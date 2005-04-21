@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.8 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.9 2005/04/21 14:23:11 rocket Exp $
 
 """
 builder class for the tinderbox target
@@ -27,9 +27,6 @@ class tinderbox_target(generic_stage_target):
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
 	
-	def set_target_path(self):
-	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
-
 def register(foo):
 	foo.update({"tinderbox":tinderbox_target})
 	return foo

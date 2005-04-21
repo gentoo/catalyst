@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.9 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.10 2005/04/21 14:23:11 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -19,8 +19,7 @@ class livecd_stage1_target(generic_stage_target):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
-					"preclean","fsscript","unmerge","unbind",\
-					"remove","empty","clean","clear_autoresume"]
+					"unbind", "clean","clear_autoresume"]
 
         def set_spec_prefix(self):
 	                self.settings["spec_prefix"]="livecd"

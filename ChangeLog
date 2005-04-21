@@ -1,6 +1,26 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.230 2005/04/20 21:31:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.231 2005/04/21 14:23:11 rocket Exp $
+
+  21 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/embedded_target.py, modules/generic_stage_target.py,
+  modules/grp_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/netboot_target.py,
+  modules/stage4_target.py, modules/tinderbox_target.py,
+  targets/embedded/embedded-chroot.sh,
+  targets/embedded/embedded-controller.sh,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  -targets/livecd-stage2/livecd-stage2-bootloader.sh,
+  -targets/livecd-stage2/livecd-stage2-cdfs.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  -targets/livecd-stage2/livecd-stage2-iso.sh,
+  targets/stage4/stage4-chroot.sh, targets/stage4/stage4-controller.sh,
+  +targets/support/bootloader-setup.sh, targets/support/chroot-functions.sh,
+  +targets/support/create-iso.sh, targets/support/filesystem-functions.sh,
+  targets/support/functions.sh, targets/support/livecdfs-update.sh,
+  +targets/support/target_image_setup.sh:
+  embedded target cleanups ... iso,bootloader,target_setup generalizations,
+  minor code fixes
 
   20 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh,

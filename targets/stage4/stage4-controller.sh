@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.2 2005/04/11 20:05:40 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.3 2005/04/21 14:23:11 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 
@@ -38,6 +38,30 @@ case $1 in
 		exec_in_chroot ${clst_fsscript}
 	;;
 
+	livecd-update)
+		# now, finalize and tweak the livecd fs (inside of the chroot)
+		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
+	;;
+
+        bootloader)
+		shift
+		# Here is where we poke in our identifier
+		touch $1/livecd
+		
+		${clst_sharedir}/targets/support/bootloader-setup.sh $1
+	;;
+	
+	target_image_setup)
+		shift
+		#${clst_sharedir}/targets/livecd-stage2/livecd-stage2-cdfs.sh
+		${clst_sharedir}/targets/support/target_image_setup.sh $1
+	;;
+
+	iso)
+	
+		shift
+		${clst_sharedir}/targets/support/create-iso.sh $1
+	;;
 
 	clean)
 		exit 0

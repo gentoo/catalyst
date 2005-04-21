@@ -1,10 +1,10 @@
 # Dont forget to update functions.sh  check_looptype
-
+# $1 is the target directory for the filesystem
 
 create_normal_loop() {
-    export source_path="${clst_chroot_path}"
-    export destination_path="${clst_target_path}"
-    export loopname="livecd.loop"
+    export source_path="${clst_destpath}"
+    export destination_path="$1"
+    export loopname="image.loop"
 
     #We get genkernel-built kernels and initrds in place, create the loopback fs on 
     #$clst_target_path, mount it, copy our bootable filesystem over, umount it, and 
@@ -34,30 +34,52 @@ create_normal_loop() {
 
 
 create_zisofs() {
-	rm -rf "${clst_target_path}/zisofs" > /dev/null 2>&1
+	rm -rf "$1/zisofs" > /dev/null 2>&1
 	echo "Creating zisofs..."
-	mkzftree -z 9 -p2 "${clst_chroot_path}" "${clst_target_path}/zisofs" || die "Could not run mkzftree, did you emerge zisofs"
+	mkzftree -z 9 -p2 "${clst_destpath}" "$1/zisofs" || die "Could not run mkzftree, did you emerge zisofs"
 
 }
 
 create_noloop() {
 	echo "Copying files for image (no loop)..."
-	cp -a "${clst_chroot_path}"/* "${clst_target_path}" || die "Could not copy files to image (no loop)"
+	cp -a "${clst_destpath}"/* "$1" || die "Could not copy files to image (no loop)"
 	
 }
 
 create_gcloop() {
 	echo "Creating gcloop..."
+	export loopname="image.gloop"
 	create_normal_loop
-	compress_gcloop_ucl -b 131072 -c 10 "${clst_target_path}/livecd.loop" "${clst_target_path}/livecd.gcloop" || die "compress_gcloop_ucl failed, did you emerge gcloop?"
-	rm -f "${clst_target_path}/livecd.loop"
+	compress_gcloop_ucl -b 131072 -c 10 "$1/livecd.loop" "$1/livecd.gcloop" || die "compress_gcloop_ucl failed, did you emerge gcloop?"
+	rm -f "$1/livecd.loop"
 	# only a gcloop image should exist in target path
 	
 }
 
 create_squashfs() {
 	echo "Creating squashfs..."
-	mksquashfs "${clst_chroot_path}" "${clst_target_path}/livecd.squashfs" -noappend || die "mksquashfs failed, did you emerge squashfs-tools?"
+	export loopname="image.squashfs"
+	mksquashfs "${clst_destpath}" "$1/${loopname}" ${clst_fs_ops} -noappend || die "mksquashfs failed, did you emerge squashfs-tools?"
 	
 }
 
+create_jffs() {
+	echo "Creating jffs..."
+	export loopname="image.jffs"
+	#fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
+	mkfs.jffs -d ${clst_destpath} -o $1/${loopname} ${clst_fs_ops} || die "Could not create a jffs filesystem"
+}
+
+create_jffs2(){
+	echo "Creating jffs2..."
+	export loopname="image.jffs"
+	#fs_check /usr/sbin/mkfs.jffs2 jffs2 sys-fs/mtd
+	mkfs.jffs2 --root=${clst_destpath} --output=$1/${loopname} ${clst_fs_ops} || die "Could not create a jffs2 filesystem"
+}
+
+create_cramfs(){
+	echo "Creating cramfs..."
+	export loopname="image.cramfs"
+	#fs_check /sbin/mkcramfs cramfs sys-fs/cramfs
+	mkcramfs ${clst_fs_ops} ${clst_destpath} $1/${loopname} || die "Could not create a cramfs filesystem"
+}

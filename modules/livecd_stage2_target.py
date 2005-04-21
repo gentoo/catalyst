@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.35 2005/04/20 20:29:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.36 2005/04/21 14:23:11 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -12,7 +12,7 @@ from generic_stage_target import *
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/cdfstype"]
+		self.required_values=["boot/kernel","livecd/fstype"]
 		
 		self.valid_values=[]
 		
@@ -25,13 +25,12 @@ class livecd_stage2_target(generic_stage_target):
 			"gamecd/conf","livecd/users","portage_overlay"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
-		
-		file_locate(self.settings, ["livecd/cdtar","controller_file"])
-		
+	
+		if not self.settings.has_key("livecd/type"):
+		    self.settings["livecd/type"] = "generic-livecd"
 
-	def set_target_path(self):
-	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
-	    	
+		file_locate(self.settings, ["cdtar","controller_file"])
+		
 	def set_source_path(self):
 	    self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
 	    if os.path.isfile(self.settings["source_path"]):
@@ -61,15 +60,6 @@ class livecd_stage2_target(generic_stage_target):
 			    touch(self.settings["autoresume_path"]+"unpack")
 
 	def run_local(self):
-		# first clean up any existing target stuff
-		if os.path.exists(self.settings["target_path"]):
-			print "cleaning previous livecd-stage2 build"
-			cmd("rm -rf "+self.settings["target_path"],
-				"Could not remove existing directory: "+self.settings["target_path"])
-			
-		if not os.path.exists(self.settings["target_path"]):
-			os.makedirs(self.settings["target_path"])
-				
 		# what modules do we want to blacklist?
 		if self.settings.has_key("livecd/modblacklist"):
 			try:
@@ -88,7 +78,7 @@ class livecd_stage2_target(generic_stage_target):
 			    "bind","chroot_setup","setup_environment","run_local",\
 			    "root_overlay","build_kernel","bootloader","preclean",\
 			    "fsscript","rcupdate","unmerge","unbind","remove",\
-			    "empty","target_setup",\
+			    "empty","livecd_update","target_setup",\
 			    "setup_overlay","create_iso","clear_autoresume"]
 
 def register(foo):

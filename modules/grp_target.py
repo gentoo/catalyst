@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.9 2005/04/18 14:11:23 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.10 2005/04/21 14:23:11 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -32,9 +32,6 @@ class grp_target(generic_stage_target):
 			
 		generic_stage_target.__init__(self,spec,addlargs)
 	
-	def set_target_path(self):
-	    self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
-	
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
@@ -51,7 +48,7 @@ class grp_target(generic_stage_target):
 	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 	    			"config_profile_link","setup_confdir","bind","chroot_setup",\
 	    				    "setup_environment","run_local","unmerge","unbind",\
-					    "remove","empty"]
+					    "remove","empty","clear_autoresume"]
 
 	
 	def set_use(self):

@@ -59,9 +59,9 @@ extract_cdtar() {
 	# which will normally contains a pre-built binary
 	# boot-loader/filesystem skeleton for the ISO.
 
-	cdtar=${clst_livecd_cdtar}
-	[ -z "${cdtar}" ] && die "Required key livecd/cdtar not defined, exiting"
-	tar xjpf ${cdtar} -C ${clst_target_path} || die "Couldn't extract cdtar ${cdtar}"
+	cdtar=${clst_cdtar}
+	[ -z "${cdtar}" ] && die "Required key cdtar not defined, exiting"
+	tar xjpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
 }
 
 extract_kernels() {
@@ -149,18 +149,18 @@ extract_kernel() {
 
 check_dev_manager(){
 	# figure out what device manager we are using and handle it accordingly
-	if [ "${clst_livecd_devmanager}" == "udev" ]
+	if [ "${clst_livecd_devmanager}" == "devfs" ]
 	then
-		cmdline_opts="${cmdline_opts} udev nodevfs"
-	else
 		cmdline_opts="${cmdline_opts} noudev devfs"
+	else
+		cmdline_opts="${cmdline_opts} udev nodevfs"
 	fi
 }
 
 check_filesystem_type(){
-	case ${clst_livecd_cdfstype} in
+	case ${clst_fstype} in
        	normal)
-		cmdline_opts="${cmdline_opts} looptype=normal loop=/livecd.loop"
+		cmdline_opts="${cmdline_opts} looptype=normal loop=/image.loop"
 	        ;;
 	zisofs)
 		cmdline_opts="${cmdline_opts} looptype=zisofs loop=/zisofs"
@@ -168,10 +168,19 @@ check_filesystem_type(){
 	noloop)
 		;;
 	gcloop)
-		cmdline_opts="${cmdline_opts} looptype=gcloop loop=/livecd.gcloop"
+		cmdline_opts="${cmdline_opts} looptype=gcloop loop=/image.gcloop"
 		;;
 	squashfs)
-		cmdline_opts="${cmdline_opts} looptype=squashfs loop=/livecd.squashfs"
-	;;
+		cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"
+		;;
+	jffs)
+		cmdline_opts="${cmdline_opts} looptype=jffs loop=/image.jffs"
+		;;
+	jffs2)
+		cmdline_opts="${cmdline_opts} looptype=jffs2 loop=/image.jffs2"
+		;;
+	cramfs)
+		cmdline_opts="${cmdline_opts} looptype=cramfs loop=/image.cramfs"
+		;;
 	esac
 }																														
