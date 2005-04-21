@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.35 2005/04/21 14:45:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.36 2005/04/21 17:45:31 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -98,7 +98,6 @@ class generic_stage_target(generic_target):
 				self.settings["mainarch"]
 		# This should be first to be set as other set_ options depend on this
 		self.set_spec_prefix()
-		
 		
 		# define all of our core variables
 		self.set_target_profile()
@@ -428,10 +427,8 @@ class generic_stage_target(generic_target):
 		    print "Setting up directories..."
 		    self.mount_safety_check()
 		
-		    if os.path.exists(self.settings["chroot_path"]):
-			    cmd("rm -rf "+self.settings["chroot_path"],\
-				    "Could not remove existing directory: "+self.settings["chroot_path"])
-			
+		    self.clear_chroot()
+
 		    if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
 			    os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 			
@@ -793,23 +790,7 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				os.environ[varname]=string.join(self.settings[x])
 	
-	def purge(self):
-		if self.settings.has_key("PKGCACHE"):
-		    print "purging the pkgcache ..."
-
-		    myemp=self.settings["pkgcache_path"]
-		    if not os.path.isdir(myemp):
-			print myemp,"not a directory or does not exist, skipping 'pkgcache purge' operation."
-		    else:
-			print "Emptying directory",myemp
-			# stat the dir, delete the dir, recreate the dir and set
-			# the proper perms and ownership
-			mystat=os.stat(myemp)
-			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
-		    
 	def run(self):
-		
 		for x in self.settings["action_sequence"]:
 			print "Running action sequence: "+x
 			try:
@@ -1002,3 +983,41 @@ class generic_stage_target(generic_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"build aborting due to livecd_update error."
+
+	def clear_chroot(self):
+		myemp=self.settings["chroot_path"]
+		if not os.path.isdir(myemp):
+		    print myemp,"not a directory or does not exist, skipping 'chroot purge' operation."
+		else:
+		    print "Emptying directory",myemp
+		    # stat the dir, delete the dir, recreate the dir and set
+		    # the proper perms and ownership
+		    mystat=os.stat(myemp)
+		    shutil.rmtree(myemp)
+		    os.makedirs(myemp,0755)
+	
+	def clear_packages(self):
+	    if self.settings.has_key("PKGCACHE"):
+		print "purging the pkgcache ..."
+
+		myemp=self.settings["pkgcache_path"]
+		if not os.path.isdir(myemp):
+		    print myemp,"not a directory or does not exist, skipping 'pkgcache purge' operation."
+		else:
+		    print "Emptying directory",myemp
+		    # stat the dir, delete the dir, recreate the dir and set
+		    # the proper perms and ownership
+		    mystat=os.stat(myemp)
+		    shutil.rmtree(myemp)
+		    os.makedirs(myemp,0755)
+	
+	def purge(self):
+	    if self.settings.has_key("PURGE"):
+		print "clearing autoresume ..."
+		self.clear_autoresume
+		
+		print "clearing chroot ..."
+		self.clear_chroot
+		
+		print "clearing package cache ..."
+		self.clear_packages

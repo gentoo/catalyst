@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.40 2005/04/21 14:45:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.41 2005/04/21 17:45:31 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5
 # a function to turn a string of non-printable characters into a string of
@@ -56,6 +56,7 @@ valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("AUTORESUME")
+valid_config_file_values.append("CLEAR_AUTORESUME")
 valid_config_file_values.append("options")
 valid_config_file_values.append("DEBUG")
 valid_config_file_values.append("VERBOSE")

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.73 2005/04/21 14:45:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.74 2005/04/21 17:45:31 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -17,12 +17,14 @@ conf_values={}
 
 def usage():
 	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
+	print " -a --clear_autoresume	clear autoresume flags"
 	print " -c --config		use specified configuration file"
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
 	print " -d --debug		enable debugging"
 	print " -f --file		read specfile"
 	print " -F --fetchonly		fetch files only"
 	print " -h --help		print this help message"
+	print " -p --purge		clear tmp dirs,package cache and autoresume flags"
 	print " -s --snapshot		generate a Portage snapshot"
 	print " -v --version		display version information"
 	print " -V --verbose		verbose output"
@@ -116,6 +118,11 @@ def parse_config(myconfig):
 		print "Purge support enabled."
 		conf_values["PURGE"]="1"
 	
+	if "clear_autoresume" in string.split(conf_values["options"]):
+		print "Cleaning autoresume flags support enabled."
+		conf_values["CLEAR_AUTORESUME"]="1"
+	
+	
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
@@ -175,8 +182,13 @@ def build_target(addlargs, targetmap):
 			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
 		
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
+		
+		if conf_values.has_key("CLEAR_AUTORESUME"):
+		    mytarget.clear_autoresume()
+		
 		if conf_values.has_key("PURGE"):
 		    mytarget.purge()
+		
 		mytarget.run()
 
 	except CatalystError:
@@ -198,8 +210,8 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "xhvdc:C:f:FVs:", ["purge","help", "version", "debug",\
-			"config=", "cli=", "file=", "fetch", "verbose","snapshot="])
+		opts,args = getopt.getopt(sys.argv[1:], "apxhvdc:C:f:FVs:", ["purge","help", "version", "debug",\
+			"clear_autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
 		usage()
@@ -280,8 +292,21 @@ if __name__ == "__main__":
 			else:
 				mycmdline.append("target=snapshot")
 				mycmdline.append("version_stamp="+a)
-		if o in ("--purge"):
+		
+		if o in ("-p", "--purge"):
+			if len(sys.argv) < 3:
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
+			else:
 				conf_values["PURGE"]="1"
+		if o in ("-a", "--clear_autoresume"):
+			if len(sys.argv) < 3:
+				print "!!! catalyst: please specify one of either -f or -C\n"
+				usage()
+				sys.exit(2)
+			else:
+				conf_values["CLEAR_AUTORESUME"]="1"
 	if run != 1:
 		print "!!! catalyst: please specify one of either -f or -C\n"
 		usage()
