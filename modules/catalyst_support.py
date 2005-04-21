@@ -1,8 +1,8 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.41 2005/04/21 17:45:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.42 2005/04/21 18:18:46 rocket Exp $
 
-import sys,string,os,types,re,signal,traceback,md5
+import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
 # hex characters
 def hexify(str):
@@ -358,3 +358,16 @@ def touch(myfile):
 		myf.close()
 	except IOError:
 		raise CatalystError, "Could not touch "+myfile+"."
+
+def countdown(secs=5, doing="Starting"):
+        if secs:
+		print ">>> Waiting",secs,"seconds before starting..."
+		print ">>> (Control-C to abort)...\n"+doing+" in: ",
+		ticks=range(secs)
+		ticks.reverse()
+		for sec in ticks:
+			sys.stdout.write(str(sec+1)+" ")
+			sys.stdout.flush()
+			time.sleep(1)
+		print
+

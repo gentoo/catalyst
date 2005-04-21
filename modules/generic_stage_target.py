@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.36 2005/04/21 17:45:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.37 2005/04/21 18:18:46 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1012,6 +1012,7 @@ class generic_stage_target(generic_target):
 		    os.makedirs(myemp,0755)
 	
 	def purge(self):
+	    countdown(10,"Purging Caches ...")
 	    if self.settings.has_key("PURGE"):
 		print "clearing autoresume ..."
 		self.clear_autoresume
