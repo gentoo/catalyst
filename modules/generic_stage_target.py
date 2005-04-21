@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.33 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.34 2005/04/21 14:31:51 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -343,7 +343,7 @@ class generic_stage_target(generic_target):
 		pass
 
 	def set_packages(self):
-		if self.settings.has_key("iso")
+		if self.settings.has_key("iso"):
 			self.settings[self.settings["spec_prefix"]+"/packages"].append("livecd-tools")
 
 	def set_root_path(self):

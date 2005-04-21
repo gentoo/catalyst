@@ -1,6 +1,10 @@
 # ChangeLog for gentoo/src/catalyst 
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.231 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.232 2005/04/21 14:31:51 rocket Exp $
+
+  21 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  fixed python syntax in set_packages so catalyst will run
 
   21 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/embedded_target.py, modules/generic_stage_target.py,
