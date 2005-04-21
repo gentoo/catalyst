@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.39 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.40 2005/04/21 14:45:09 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5
 # a function to turn a string of non-printable characters into a string of
@@ -331,9 +331,6 @@ def arg_parse(cmdline):
 
 		else:
 			mydict[foo[0]]=foo[1]
-	
-	if not mydict.has_key("target"):
-		raise CatalystError, "Required value \"target\" not specified."
 	
 	# if all is well, we should return (we should have bailed before here if not)
 	return mydict

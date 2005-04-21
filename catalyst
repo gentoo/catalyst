@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.72 2005/04/07 23:02:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.73 2005/04/21 14:45:09 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -303,6 +303,9 @@ if __name__ == "__main__":
 	if mycmdline:
 		addlargs.update(do_cli(mycmdline))
 	
+	if not addlargs.has_key("target"):
+		raise CatalystError, "Required value \"target\" not specified."
+
 	# everything is setup, so the build is a go
 	try:
 		build_target(addlargs, targetmap)
