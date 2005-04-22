@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.11 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.12 2005/04/22 18:33:06 rocket Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -32,9 +32,11 @@ class embedded_target(generic_stage_target):
 
     def set_action_sequence(self):
 	self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
-					"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
-					"setup_environment","build_kernel","build_packages","bootloader","unmerge","unbind",\
-					"remove","empty","clean","livecd_update","target_setup","create_iso","clear_autoresume"]
+					"config_profile_link","setup_confdir",\
+					"portage_overlay","bind","chroot_setup",\
+					"setup_environment","build_kernel","build_packages",\
+					"bootloader","root_overlay","fsscript","unmerge",\
+					"unbind","remove","empty","clean","capture","clear_autoresume"]
 
     def set_stage_path(self):
         self.settings["stage_path"]=self.settings["chroot_path"]+"/tmp/mergeroot"

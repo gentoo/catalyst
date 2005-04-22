@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.4 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.5 2005/04/22 18:33:06 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -25,9 +25,9 @@ class stage4_target(generic_stage_target):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
-					"build_kernel","bootloader","root_overlay","preclean","rcupdate",\
-					"fsscript","unmerge","unbind","remove","empty",\
-					"clean","capture","livecd_update","target_setup","create_iso",\
+					"build_kernel","bootloader","root_overlay","fsscript",
+					"preclean","rcupdate","unmerge","unbind","remove","empty",\
+					"clean","capture", "livecd_update","target_setup","create_iso",\
 					"clear_autoresume"]
 
 def register(foo):

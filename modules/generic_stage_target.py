@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.37 2005/04/21 18:18:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.38 2005/04/22 18:33:06 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -974,10 +974,8 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping build_packages operation..."
 	    else:
 		try:
-			self.bind()
 			cmd("/bin/bash "+self.settings["controller_file"]+" livecd-update",\
 				"livecd-update failed.")
-			self.unbind()
 			touch(self.settings["autoresume_path"]+"livecd_update")
 		
 		except CatalystError:
