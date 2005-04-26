@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.239 2005/04/26 18:28:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.240 2005/04/26 18:30:50 rocket Exp $
+
+  26 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst:
+  Remove bind mounts before rm operations happen at startup
 
   26 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

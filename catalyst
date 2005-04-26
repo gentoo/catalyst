@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.75 2005/04/21 18:18:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.76 2005/04/26 18:30:50 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -183,6 +183,9 @@ def build_target(addlargs, targetmap):
 		
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
 		
+		# Check for mounts right away and abort if we cannot unmount them.
+		mytarget.mount_safety_check()
+
 		if conf_values.has_key("CLEAR_AUTORESUME"):
 		    mytarget.clear_autoresume()
 		
