@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.39 2005/04/26 14:58:04 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.40 2005/04/26 18:28:26 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -722,12 +722,6 @@ class generic_stage_target(generic_target):
 		    self.unbind()
 		    raise
 
-	def clear_autoresume(self):
-		# clean resume points since they are no longer needed
-		if self.settings.has_key("AUTORESUME"):
-			print "Removing AutoResume Points: ..."
-			cmd("rm -rf "+self.settings["autoresume_path"],\
-				"Couldn't remove resume points")
 	
 	def preclean(self):
 	    if self.settings.has_key("AUTORESUME") \
@@ -1008,7 +1002,21 @@ class generic_stage_target(generic_target):
 		    mystat=os.stat(myemp)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
-	
+        def clear_autoresume(self):
+		# clean resume points since they are no longer needed
+		if self.settings.has_key("AUTORESUME"):
+			print "Removing AutoResume Points: ..."
+			myemp=self.settings["autoresume_path"]
+			if not os.path.isdir(myemp):
+		    		print myemp,"not a directory or does not exist, skipping 'pkgcache purge' operation."
+			else:
+		    		print "Emptying directory",myemp
+		    		# stat the dir, delete the dir, recreate the dir and set
+		    		# the proper perms and ownership
+		    		mystat=os.stat(myemp)
+		    		shutil.rmtree(myemp)
+		    		os.makedirs(myemp,0755)
+
 	def purge(self):
 	    countdown(10,"Purging Caches ...")
 	    if self.settings.has_key("PURGE"):
