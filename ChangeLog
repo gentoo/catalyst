@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.237 2005/04/22 18:33:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.238 2005/04/26 14:58:04 rocket Exp $
+
+  26 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py:
+  fix minor bug in the purge code so that it actually runs the commands
 
   22 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/embedded_target.py,
   modules/generic_stage_target.py, modules/livecd_stage2_target.py,

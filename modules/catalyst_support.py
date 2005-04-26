@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.42 2005/04/21 18:18:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.43 2005/04/26 14:58:04 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
@@ -210,7 +210,7 @@ def parse_spec(mylines):
 			continue
 		else:
 			myline=mylines[pos].split()
-			
+		
 			if (len(myline)==0) or (myline[0][-1] != ":"):
 				msg("Skipping invalid spec line "+repr(pos+1))
 			#strip colon:
