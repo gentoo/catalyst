@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.241 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.242 2005/04/27 17:59:35 rocket Exp $
+
+  27 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/stage4_target.py:
+  Remove iso creation code from stage4
 
   27 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py, modules/livecd_stage1_target.py,
