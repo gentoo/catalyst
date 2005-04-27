@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.44 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.45 2005/04/27 21:04:02 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
@@ -142,11 +142,12 @@ def spawn(mystring,debug=0,fd_pipes=None):
 		else:
 			return ((retval & 0xff) << 8) # interrupted by signal
 	
-	except:
+	except:	
 	       	os.kill(mypid,signal.SIGTERM)
 		if os.waitpid(mypid,os.WNOHANG)[1] == 0:
 		# feisty bugger, still alive.
 			os.kill(mypid,signal.SIGKILL)
+		raise
 
 
 def cmd(mycmd,myexc=""):
@@ -154,8 +155,8 @@ def cmd(mycmd,myexc=""):
 		retval=spawn(mycmd)
 		if retval != 0:
 			raise CatalystError,myexc
-	except KeyboardInterrupt:
-		raise CatalystError,"Caught SIGINT, aborting."
+	except:
+		raise
 
 
 def file_locate(settings,filelist,expand=1):

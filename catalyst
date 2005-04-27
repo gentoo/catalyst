@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.76 2005/04/26 18:30:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.77 2005/04/27 21:04:02 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -195,6 +195,7 @@ def build_target(addlargs, targetmap):
 		mytarget.run()
 
 	except CatalystError:
+		mytarget.mount_safety_check()
 		sys.exit(1)
 	
 if __name__ == "__main__":
@@ -342,5 +343,8 @@ if __name__ == "__main__":
 		raise CatalystError,"Could not complete build"
 		sys.exit(2)
 	except KeyboardInterrupt:
-		print "\nCatalyst build aborted due to user interrupt"
+		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
+		sys.exit(2)
+	except:
+		print "Catalyst aborting ...."
 		sys.exit(2)

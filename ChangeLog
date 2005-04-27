@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.242 2005/04/27 17:59:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.243 2005/04/27 21:04:01 rocket Exp $
+
+  27 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/catalyst_support.py:
+  Fix exception handling to remove extraneous prints of None
 
   27 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/stage4_target.py:
   Remove iso creation code from stage4
