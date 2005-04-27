@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.40 2005/04/26 18:28:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.41 2005/04/27 17:44:58 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -104,10 +104,10 @@ class generic_stage_target(generic_target):
 		self.set_target_subpath()
 	
 		# set paths
-		self.set_autoresume_path()
 		self.set_snapshot_path()
 		self.set_source_path()
 		self.set_chroot_path()
+		self.set_autoresume_path()
 		self.set_root_path()
 		self.set_dest_path()
 		self.set_stage_path()
@@ -128,8 +128,6 @@ class generic_stage_target(generic_target):
 		self.set_fsops()
 		self.set_iso()
 		self.set_packages()
-		self.set_target_file()
-		self.set_target_iso_path()
 		
 
 		# this next line checks to make sure that the specified variables exist on disk.
@@ -208,32 +206,20 @@ class generic_stage_target(generic_target):
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 
 	def set_target_path(self):
-		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 			print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
-			if os.path.exists(self.settings["target_path"]):
-				cmd("rm -rf "+self.settings["target_path"],
-					"Could not remove existing directory: "+self.settings["target_path"])
-		    	touch(self.settings["autoresume_path"]+"setup_target_path")
+			if os.path.isfile(self.settings["target_path"]):
+				cmd("rm -f "+self.settings["target_path"],
+					"Could not remove existing file: "+self.settings["target_path"])
+		    		touch(self.settings["autoresume_path"]+"setup_target_path")
 		
-		if not os.path.exists(self.settings["target_path"]):
-			os.makedirs(self.settings["target_path"])
+			if not os.path.exists(self.settings["storedir"]+"/builds/"):
+				os.makedirs(self.settings["storedir"]+"/builds/")
 	
-	def set_target_file(self):
-		if not os.path.exists(self.settings["target_path"]+"/tarball/"):
-			os.makedirs(self.settings["target_path"]+"/tarball/")
-		self.settings["target_file"]=self.settings["target_path"]+"/tarball/"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]+".tar.bz2"
-	
-	def set_target_iso_path(self):
-		if self.settings.has_key("iso"):
-			print "setting up iso path"
-			if not os.path.exists(self.settings["target_path"]+"/iso/"):
-				os.makedirs(self.settings["target_path"]+"/iso/")
-			self.settings["target_iso_path"]=self.settings["target_path"]+"/iso/"
-
 	def set_fsscript(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/fsscript"):
 			self.settings["fsscript"]=self.settings[self.settings["spec_prefix"]+"/fsscript"]
@@ -305,7 +291,7 @@ class generic_stage_target(generic_target):
 		    self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"])
 	
 	def set_chroot_path(self):
-		self.settings["chroot_path"]=self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]
+		self.settings["chroot_path"]=self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]+"/"
 	
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"]=self.settings["storedir"]+"/tmp/"+self.settings["rel_type"]+"/"+\
@@ -753,7 +739,7 @@ class generic_stage_target(generic_target):
 
 		print "Creating stage tarball..."
 		
-		cmd("tar cjf "+self.settings["target_file"]+" -C "+self.settings["stage_path"]+\
+		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball")
 		touch(self.settings["autoresume_path"]+"capture")
 
@@ -807,10 +793,8 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping unmerge operation..."
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/unmerge"):
-		    print "has key unmerge"
 		    if type(self.settings[self.settings["spec_prefix"]+"/unmerge"])==types.StringType:
 			self.settings[self.settings["spec_prefix"]+"/unmerge"]=[self.settings[self.settings["spec_prefix"]+"/unmerge"]]
-			print "key is a string"
 		    myunmerge=self.settings[self.settings["spec_prefix"]+"/unmerge"][:]
 		    
 		    for x in range(0,len(myunmerge)):
@@ -835,7 +819,7 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping target_setup operation..."
 	    else:
 		print "Setting up filesystems per filesystem type"
-		cmd("/bin/bash "+self.settings["controller_file"]+" target_image_setup "+ self.settings["target_iso_path"],"target_image_setup script failed.")
+		cmd("/bin/bash "+self.settings["controller_file"]+" target_image_setup "+ self.settings["target_path"],"target_image_setup script failed.")
 		touch(self.settings["autoresume_path"]+"target_setup")
 	
 	def setup_overlay(self):	
@@ -843,10 +827,11 @@ class generic_stage_target(generic_target):
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
 		    print "Resume point detected, skipping setup_overlay operation..."
 	    else:
-		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay"):
-			cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/* "+\
-			self.settings["target_iso_path"], self.settings["spec_prefix"]+"overlay copy failed.")
-		touch(self.settings["autoresume_path"]+"setup_overlay")
+		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay") \
+			and os.path.exists(self.settings["spec_prefix"]+"/overlay"):
+				cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/* "+\
+				self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.")
+				touch(self.settings["autoresume_path"]+"setup_overlay")
 	
 	def create_iso(self):
 	    if self.settings.has_key("AUTORESUME") \
@@ -940,6 +925,7 @@ class generic_stage_target(generic_target):
 			    		"Runscript kernel build failed")
 					
 					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+					    if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
 						print "Cleaning up temporary overlay dir"
 						cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/")
 
@@ -955,7 +941,7 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping bootloader operation..."
 	    else:
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader " + self.settings["target_iso_path"],\
+			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader " + self.settings["target_path"],\
 				"Bootloader runscript failed.")
 			touch(self.settings["autoresume_path"]+"bootloader")
 		except CatalystError:
@@ -985,8 +971,11 @@ class generic_stage_target(generic_target):
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
 		    mystat=os.stat(myemp)
+		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
+		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+		    os.chmod(myemp,mystat[ST_MODE])
 	
 	def clear_packages(self):
 	    if self.settings.has_key("PKGCACHE"):
@@ -1000,9 +989,13 @@ class generic_stage_target(generic_target):
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
 		    mystat=os.stat(myemp)
+		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
-        def clear_autoresume(self):
+		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+		    os.chmod(myemp,mystat[ST_MODE])
+        
+	def clear_autoresume(self):
 		# clean resume points since they are no longer needed
 		if self.settings.has_key("AUTORESUME"):
 			print "Removing AutoResume Points: ..."
@@ -1014,8 +1007,11 @@ class generic_stage_target(generic_target):
 		    		# stat the dir, delete the dir, recreate the dir and set
 		    		# the proper perms and ownership
 		    		mystat=os.stat(myemp)
+		    		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
 		    		shutil.rmtree(myemp)
 		    		os.makedirs(myemp,0755)
+				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+				os.chmod(myemp,mystat[ST_MODE])
 
 	def purge(self):
 	    countdown(10,"Purging Caches ...")

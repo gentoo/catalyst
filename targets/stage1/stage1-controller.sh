@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.2 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.3 2005/04/27 17:44:58 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -42,5 +42,5 @@ case $1 in
 	;;
 
 esac
-exit 0
+exit $?
 

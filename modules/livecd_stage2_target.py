@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.37 2005/04/22 18:33:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.38 2005/04/27 17:44:58 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -42,7 +42,20 @@ class livecd_stage2_target(generic_stage_target):
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
 
-		
+	def set_target_path(self):
+		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+		if self.settings.has_key("AUTORESUME") \
+			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+				print "Resume point detected, skipping target path setup operation..."
+		else:
+			# first clean up any existing target stuff
+			if os.path.isdir(self.settings["target_path"]):
+				cmd("rm -rf "+self.settings["target_path"],
+				"Could not remove existing directory: "+self.settings["target_path"])
+				touch(self.settings["autoresume_path"]+"setup_target_path")
+			if not os.path.exists(self.settings["target_path"]):
+				os.makedirs(self.settings["target_path"])
+
 	def unpack(self):
 		if not os.path.isdir(self.settings["source_path"]):
 			generic_stage_target.unpack(self)

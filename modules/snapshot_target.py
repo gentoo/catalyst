@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.8 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.9 2005/04/27 17:44:58 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -27,7 +27,10 @@ class snapshot_target(generic_target):
 		x=self.settings["storedir"]+"/snapshots"
 		if not os.path.exists(x):
 			os.makedirs(x)
-
+	
+	def mount_safety_check(self):
+		pass
+		
 	def run(self):
 		self.setup()
 		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-controller.sh,v 1.6 2005/04/21 14:23:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-controller.sh,v 1.7 2005/04/27 17:44:58 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -17,4 +17,4 @@ case $1 in
 		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
 		;;
 esac
-exit 0 
+exit $?

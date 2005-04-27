@@ -41,4 +41,8 @@ case ${clst_fstype} in
 		loopret=$?
 	;;
 esac
+if [ ${loopret} = "1" ]
+then
+	die "Filesystem not setup"
+fi
 exit $loopret

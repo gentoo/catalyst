@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.43 2005/04/26 14:58:04 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.44 2005/04/27 17:44:58 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
@@ -137,17 +137,17 @@ def spawn(mystring,debug=0,fd_pipes=None):
 		return # should never get reached
 	try:
 		retval=os.waitpid(mypid,0)[1]
+		if (retval & 0xff)==0:
+			return (retval >> 8) # return exit code
+		else:
+			return ((retval & 0xff) << 8) # interrupted by signal
+	
 	except:
 	       	os.kill(mypid,signal.SIGTERM)
 		if os.waitpid(mypid,os.WNOHANG)[1] == 0:
 		# feisty bugger, still alive.
 			os.kill(mypid,signal.SIGKILL)
 
-	if (retval & 0xff)==0:
-		return (retval >> 8) # return exit code
-	else:
-		return ((retval & 0xff) << 8) # interrupted by signal
-	
 
 def cmd(mycmd,myexc=""):
 	try:

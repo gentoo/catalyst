@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-controller.sh,v 1.1 2005/04/04 17:48:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-controller.sh,v 1.2 2005/04/27 17:44:58 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 case $1 in
@@ -21,7 +21,6 @@ case $1 in
 
 	preclean)
 		exec_in_chroot ${clst_sharedir}/targets/grp/grp-preclean-chroot.sh
-		exit 0
 	;;
 
 	clean)
@@ -33,4 +32,4 @@ case $1 in
 	;;
 
 esac
-exit 0
+exit $?

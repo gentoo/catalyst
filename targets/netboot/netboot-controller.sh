@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.1 2005/04/04 17:50:30 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.2 2005/04/27 17:44:58 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -72,4 +72,4 @@ case ${1} in
 		exit 1;;
 esac
 
-exit 0
+exit $?

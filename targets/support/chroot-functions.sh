@@ -52,25 +52,26 @@ setup_myfeatures(){
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
-		if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_ccache ]
-		then
-		    echo "CCACHE Autoresume point found not emerging ccache"
-		else
-		    emerge --oneshot --nodeps -b -k ccache && touch /tmp/.clst_ccache || exit 1
-		    touch /tmp/.clst_ccache
-		fi
+		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_ccache ]
+		#then
+		#    echo "CCACHE Autoresume point found not emerging ccache"
+		#else
+		    emerge --oneshot --nodeps -b -k ccache || exit 1
+		#    touch /tmp/.clst_ccache
+		#fi
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
-		if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_distcc ]
-		then
-		    echo "DISTCC Autoresume point found not emerging distcc"
-		else
-		    USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc && touch /tmp/.clst_distcc || exit 1 
-		fi
+		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_distcc ]
+		#then
+		#    echo "DISTCC Autoresume point found not emerging distcc"
+		#else
+		    USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
+		    #touch /tmp/.clst_distcc
+		#fi
 	fi
 }
 

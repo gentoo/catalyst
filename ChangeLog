@@ -1,5 +1,30 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.240 2005/04/26 18:30:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.241 2005/04/27 17:44:58 rocket Exp $
+
+  27 Apr 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/snapshot_target.py,
+  targets/embedded/embedded-controller.sh, targets/grp/grp-controller.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/netboot/netboot-controller.sh,
+  targets/stage1/stage1-controller.sh, targets/stage2/stage2-controller.sh,
+  targets/stage3/stage3-controller.sh, targets/stage4/stage4-controller.sh,
+  targets/support/bootloader-setup.sh, targets/support/chroot-functions.sh,
+  targets/support/create-iso.sh, targets/support/kmerge.sh,
+  targets/support/target_image_setup.sh,
+  targets/tinderbox/tinderbox-controller.sh:
+  Fix some exception handling in catalyst_support.py
+  remove intermediate destination folder of iso and tarball
+  Add additional tests for folders not found on host but defined
+          in spec file.  Keep catalyst from erroring in this case.
+  Change exit code on shell scripts so that errors are reported to catalyst
+          and causes catalyst to die on errors
+  Fix bug in livecd-stage1-chroot.sh so that it uses USE flags properly
+  Added additional check for mkisofs.  Informs user of where to get the program.
+  Removed autoresume code from ccache and distcc installation until I can figure
+          out a way to have the autoresume flag go someplace outside the chroot.
 
   26 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst:
   Remove bind mounts before rm operations happen at startup
