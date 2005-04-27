@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.243 2005/04/27 21:04:01 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.244 2005/04/27 21:31:05 rocket Exp $
+
+  27 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  change the portage_overlay to an array so it always works
 
   27 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/catalyst_support.py:
