@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.43 2005/04/28 13:46:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.44 2005/04/28 16:45:43 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -970,9 +970,7 @@ class generic_stage_target(generic_target):
 
 	def clear_chroot(self):
 		myemp=self.settings["chroot_path"]
-		if not os.path.isdir(myemp):
-		    print myemp,"not a directory or does not exist, skipping 'chroot purge' operation."
-		else:
+		if os.path.isdir(myemp):
 		    print "Emptying directory",myemp
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
@@ -988,9 +986,7 @@ class generic_stage_target(generic_target):
 		print "purging the pkgcache ..."
 
 		myemp=self.settings["pkgcache_path"]
-		if not os.path.isdir(myemp):
-		    print myemp,"not a directory or does not exist, skipping 'pkgcache purge' operation."
-		else:
+		if os.path.isdir(myemp):
 		    print "Emptying directory",myemp
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
@@ -1006,9 +1002,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("AUTORESUME"):
 			print "Removing AutoResume Points: ..."
 			myemp=self.settings["autoresume_path"]
-			if not os.path.isdir(myemp):
-		    		print myemp,"not a directory or does not exist, skipping 'pkgcache purge' operation."
-			else:
+			if os.path.isdir(myemp):
 		    		print "Emptying directory",myemp
 		    		# stat the dir, delete the dir, recreate the dir and set
 		    		# the proper perms and ownership
