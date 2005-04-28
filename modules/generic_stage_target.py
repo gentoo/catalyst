@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.42 2005/04/27 21:31:05 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.43 2005/04/28 13:46:48 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -247,8 +247,11 @@ class generic_stage_target(generic_target):
 
 	def set_fstype(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/cdfstype"):
-			print "\n\n\nWarning!!!"+self.settings["spec_prefix"]+"/cdfstype" + "is deprecated and may be removed."
-			print "\tUse "+self.settings["spec_prefix"]+"/fstype" + "instead.\n\n\n"
+			print "\nWarning!!!  "
+			print self.settings["spec_prefix"]+"/cdfstype" + " is deprecated and may be removed."
+			print "\tUse "+self.settings["spec_prefix"]+"/fstype" + " instead."
+			print "\tConverting to "+self.settings["spec_prefix"]+"/fstype" + " internally."
+			print "\tContinuing ....\n"
 			self.settings["fstype"]=self.settings[self.settings["spec_prefix"]+"/cdfstype"]
 			del self.settings[self.settings["spec_prefix"]+"/cdfstype"]
 		
@@ -258,6 +261,9 @@ class generic_stage_target(generic_target):
 
 		if not self.settings.has_key("fstype"):
 			self.settings["fstype"]="normal"
+			for x in self.valid_values:
+				if x ==  self.settings["spec_prefix"]+"/fstype" or x == self.settings["spec_prefix"]+"/cdfstype":
+					print "\n"+self.settings["spec_prefix"]+"/fstype is being set to the default of \"normal\"\n"
 
 	def set_fsops(self):
 		if self.settings.has_key("fstype"):
@@ -507,7 +513,6 @@ class generic_stage_target(generic_target):
 	    # copy over the portage overlays
 	    # Always copy over the overlay incase it has changed
 	    if self.settings.has_key("portage_overlay"):
-	    	print self.settings["portage_overlay"]
 	    	if type(self.settings["portage_overlay"])==types.StringType:
 			self.settings["portage_overlay"]=[self.settings["portage_overlay"]]
 		

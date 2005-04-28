@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.38 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.39 2005/04/28 13:46:48 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -12,7 +12,7 @@ from generic_stage_target import *
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel","livecd/fstype"]
+		self.required_values=["boot/kernel"]
 		
 		self.valid_values=[]
 		
@@ -22,7 +22,7 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/splash_theme",\
 			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
 			"livecd/root_overlay","livecd/devmanager","livecd/splash_type",\
-			"gamecd/conf","livecd/users","portage_overlay"])
+			"gamecd/conf","livecd/users","portage_overlay","livecd/cdfstype"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 	
