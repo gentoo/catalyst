@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.246 2005/04/28 13:46:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.247 2005/04/28 16:42:14 rocket Exp $
+
+  28 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  livecd/cdtar/isolinux-2.13-cdtar.tar.bz2,
+  livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2:
+  updated isolinux-2.13 cdtars to have files under boot/ rather than isolinux/
 
   28 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, modules/livecd_stage2_target.py:
