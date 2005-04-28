@@ -27,7 +27,7 @@ check_portage_version(){
 }
 
 check_genkernel_version(){
-    if [ -x `which genkernel` ]
+    if [ -x /usr/bin/genkernel ]
     then
     	genkernel_version=$(genkernel --version)
     	genkernel_version_major=${genkernel_version%%.*}
