@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.12 2005/04/29 14:40:25 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.13 2005/04/29 14:43:18 rocket Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -39,6 +39,7 @@ cp /usr/share/zoneinfo/UTC /etc/localtime
 # setup the hostname
 case ${clst_livecd_type} in
 	gnap)
+		echo "livecd" > /etc/hostname
 		echo "gentoo" > /etc/dnsdomainname
 		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
 		;;
@@ -48,14 +49,14 @@ case ${clst_livecd_type} in
 		echo "127.0.0.1 gamecd.gentoo gamecd localhost" > /etc/hosts
 		;;
 	gentoo-*)
+		echo "gentoo-livecd" > /etc/hostname
+		echo "gentoo" > /etc/dnsdomainname
+		echo "127.0.0.1	gentoo-livecd.gentoo gentoo-livecd localhost" > /etc/hosts
+		;;
+	*)
 		echo "livecd" > /etc/hostname
 		echo "gentoo" > /etc/dnsdomainname
 		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
-		;;
-	*)
-		echo "catalyst-livecd" > /etc/hostname
-		echo "gentoo" > /etc/dnsdomainname
-		echo "127.0.0.1	catalyst-livecd catalyst-livecd.gentoo livecd localhost" > /etc/hosts
 		;;
 esac
 
