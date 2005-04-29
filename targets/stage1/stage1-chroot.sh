@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.31 2005/04/14 14:59:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.32 2005/04/29 21:31:32 rocket Exp $
 	
 
 . /tmp/chroot-functions.sh
@@ -9,7 +9,7 @@
 check_portage_version
 
 update_env_settings
-setup_gcc
+#setup_gcc
 
 setup_myfeatures
 setup_myemergeopts

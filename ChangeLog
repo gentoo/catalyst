@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.253 2005/04/29 18:10:22 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.254 2005/04/29 21:31:32 rocket Exp $
+
+  29 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-preclean-chroot.sh:
+  Remove using gcc-config to set things up as we should all be using 2005.0
+  seed stages now.
 
   29 Apr 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/livecd-stage2_template.spec:
