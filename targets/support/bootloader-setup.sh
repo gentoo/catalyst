@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.3 2005/04/29 13:32:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.4 2005/04/29 14:40:25 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -142,12 +142,19 @@ case ${clst_mainarch} in
 		if [ -e $1/boot/grub/stage2_eltorito ]
 		then
 			icfg=$1/boot/grub/grub.conf
-			hmsg=$1/boot/grub/help.msg
 			echo "default 1" > ${icfg}
 			echo "timeout 150" >> ${icfg}
+			
+			
+			# Setup help message	
+			hmsg=${clst_sharedir}/livecd/files/x86-help.msg
+			hmsg_txt=$(cat ${hmsg})
+			
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}
-			echo "cat /boot/grub/help.msg" >> ${icfg}
+			echo "pause ${hmsg_txt}" >> ${icfg}
+			
+			
 			for x in ${clst_boot_kernel}
 			do
 				eval custom_kopts=\$${x}_kernelopts
