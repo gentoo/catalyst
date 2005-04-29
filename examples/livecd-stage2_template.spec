@@ -179,7 +179,6 @@ livecd/rcdel:
 # livecd/overlay: /tmp/overlay-minimal
 livecd/overlay:
 
-
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
 # would want within your CD filesystem.  Files added here are available when
@@ -205,6 +204,14 @@ livecd/devmanager:
 # example:
 # livecd/xinitrc:
 livecd/xinitrc:
+
+# This option is used to create non-root users on your CD.  It takes a space
+# separated list of user names.  These users will be added to the following
+# groups: users,wheel,audio,games,cdrom,usb
+# If this is specified in your spec file, then the first user is also the user # used to start X. Since this is not used on the release media, it is blank.
+# example:
+# livecd/users:
+livecd/users:
 
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
