@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.2 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.3 2005/04/29 13:32:51 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 #. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
@@ -72,18 +72,26 @@ case ${clst_mainarch} in
 		#
 		if [ -e ${clst_target_path}/boot/isolinux.bin ]
 		then
+			echo "Creating ISO using ISOLINUX bootloader"
+			if [ -d ${clst_target_path}/isolinux ]
+			then
+				rm -r ${clst_target_path}/isolinux
+			fi
+			mv ${clst_target_path}/boot ${clst_target_path}/isolinux
+			
 			case ${clst_fstype} in
 				zisofs)
 					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b boot/isolinux.bin -c boot/boot.cat -no-emul-boot \
 					-boot-load-size 4 -boot-info-table -z ${clst_target_path} || die "Cannot make ISO image"
 				;;
 				*)
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b boot/isolinux.bin -c boot/boot.cat -no-emul-boot \
+					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot \
 					-boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
 				;;
 			esac
 		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
 		then
+			echo "Creating ISO using GRUB bootloader"
 			case ${clst_fstype} in
 				zisofs)
 					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot \

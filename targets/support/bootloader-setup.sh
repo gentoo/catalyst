@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.2 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.3 2005/04/29 13:32:51 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -113,7 +113,7 @@ case ${clst_mainarch} in
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
 				echo "label ${x}" >> ${icfg}
-				echo "	kernel ${x}" >> ${icfg}
+				echo "  kernel ${x}" >> ${icfg}
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
 					echo "  append ${default_append_line} vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
@@ -124,8 +124,8 @@ case ${clst_mainarch} in
 				echo >> ${icfg}
 				echo "   ${x}" >> ${kmsg}
 				echo "label ${x}-nofb" >> ${icfg}
-				echo "	kernel ${x}" >> ${icfg}
-				echo "	append ${default_append_line} " >> ${icfg}
+				echo "  kernel ${x}" >> ${icfg}
+				echo "  append ${default_append_line} " >> ${icfg}
 				echo >> ${icfg}
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
@@ -134,8 +134,8 @@ case ${clst_mainarch} in
 			then
 				echo >> $icfg
 				echo "   memtest86" >> $kmsg
-				echo "   title memtest86" >> $icfg
-				echo "   kernel memtest86" >> $icfg
+				echo "label memtest86" >> $icfg
+				echo "  kernel memtest86" >> $icfg
 			fi
 		fi
 
