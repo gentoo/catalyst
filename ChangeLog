@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.249 2005/04/29 13:32:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.250 2005/04/29 13:51:39 rocket Exp $
+
+  29 Apr 2005; Eric Edgar <rocket@gentoo.org>
+  modules/livecd_stage2_target.py:
+  Clear autoresume flags when build is done
 
   29 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/livecd_stage2_target.py, targets/support/bootloader-setup.sh,
