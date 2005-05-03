@@ -24,7 +24,6 @@ do
     if [ -d /proc/$i ]
     then
 	# Search for exe containing string inside ${clst_chroot_path}
-	P_NAME=$(ls -la --color=never /proc/$i 2>&1 |grep exe|grep ${clst_chroot_path}|awk '{print $11}')
 	ls -la --color=never /proc/$i 2>&1 |grep exe|grep ${clst_chroot_path} > /dev/null
 
 	# If found
