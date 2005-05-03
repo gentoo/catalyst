@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.254 2005/04/29 21:31:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.255 2005/05/03 14:58:51 rocket Exp $
+
+  03 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py,
+  +targets/support/kill-chroot-pids.sh:
+  User info about runscript and archscript. Added checks for processes running
+  in the chroot and created a script to kill them. Should fix the unmounting
+  issues with gconfd or any other running application in the chroot
 
   29 Apr 2005; Eric Edgar <rocket@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/stage1/stage1-preclean-chroot.sh:

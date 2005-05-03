@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.44 2005/04/28 16:45:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.45 2005/05/03 14:58:52 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -120,6 +120,8 @@ class generic_stage_target(generic_target):
 		self.set_iso_volume_id()
 		self.set_build_kernel_vars(addlargs)	
 		self.set_fsscript()
+		self.set_archscript()
+		self.set_runscript()
 		self.set_install_mask()
 		self.set_rcadd()
 		self.set_rcdel()
@@ -219,7 +221,15 @@ class generic_stage_target(generic_target):
 		
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
 				os.makedirs(self.settings["storedir"]+"/builds/")
-	
+	def set_archscript(self):
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/archscript"):
+		print "\nWarning!!!  "
+		print "\t"+self.settings["spec_prefix"]+"/archscript" + " is deprecated and no longer used.\n"
+	def set_runscript(self):
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/runscript"):
+		print "\nWarning!!!  "
+		print "\t"+self.settings["spec_prefix"]+"/runscript" + " is deprecated and no longer used.\n"
+
 	def set_fsscript(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/fsscript"):
 			self.settings["fsscript"]=self.settings[self.settings["spec_prefix"]+"/fsscript"]
@@ -380,6 +390,13 @@ class generic_stage_target(generic_target):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/gk_mainargs"):
 		self.settings["gk_mainargs"]=self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
 		del self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
+
+	def kill_chroot_pids(self):
+	    # Force environment variables to be exported so script can see them
+	    self.setup_environment()
+
+	    if os.path.exists(self.settings["sharedir"]+"/targets/support/kill-chroot-pids.sh"):
+			    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/support/kill-chroot-pids.sh","kill-chroot-pids script failed.")
 	
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -391,7 +408,7 @@ class generic_stage_target(generic_target):
 		"""
 		if not os.path.exists(mypath):
 			return
-			
+		
 		for x in self.mounts:
 			if not os.path.exists(mypath+x):
 				continue
@@ -519,8 +536,8 @@ class generic_stage_target(generic_target):
 		for x in self.settings["portage_overlay"]: 
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
-				cmd("mkdir -p "+self.settings["chroot_path"]+x)
-				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x)
+				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir")
+				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay")
 	
 	def root_overlay(self):
 	    # copy over the root_overlay
@@ -561,9 +578,16 @@ class generic_stage_target(generic_target):
 			retval=os.system("umount "+mypath+x)
 			
 			if retval!=0:
-				ouch=1
-				warn("Couldn't umount bind mount: "+mypath+x)
-				# keep trying to umount the others, to minimize damage if developer makes a mistake
+				warn("First attempt to unmount: "+mypath+x+" failed.")
+				warn("Killing any pids still running in the chroot")
+				
+				self.kill_chroot_pids()
+				
+				retval2=os.system("umount "+mypath+x)
+				if retval2!=0:
+				    ouch=1
+				    warn("Couldn't umount bind mount: "+mypath+x)
+				    # keep trying to umount the others, to minimize damage if developer makes a mistake
 		
 		if ouch:
 			"""
@@ -601,7 +625,7 @@ class generic_stage_target(generic_target):
 		    self.override_cflags()
 		    self.override_cxxflags()	
 		    # modify and write out make.conf (for the chroot)
-		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf")
+		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf")
 		    myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 		    myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
 		    myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
@@ -863,7 +887,7 @@ class generic_stage_target(generic_target):
 				mypack=list_bashify(self.settings[self.settings["spec_prefix"]+"/packages"])
 				try:
 					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" build_packages "+mypack)
+						" build_packages "+mypack,"Error in attempt to build packages")
 					touch(self.settings["autoresume_path"]+"build_packages")
 				except CatalystError:
 					self.unbind()
