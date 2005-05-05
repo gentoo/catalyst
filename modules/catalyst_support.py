@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.45 2005/04/27 21:04:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.46 2005/05/05 21:16:06 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
@@ -200,54 +200,72 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
 def parse_spec(mylines):
 	myspec={}
 	pos=0
+	colon_optional_spaces=re.compile(":")
+	trailing_comment=re.compile("#.*\n")
+	newline=re.compile("\n")
+	leading_white_space=re.compile("\s+")
 	while pos<len(mylines):
+		# Force the line to be clean 
+		# Remove Comments ( anything following # )
+		mylines[pos]=trailing_comment.sub("",mylines[pos])
+		
+		# Remove newline character \n
+		mylines[pos]=newline.sub("",mylines[pos])
+
+		# Remove leading white space
+		mylines[pos]=leading_white_space.sub("",mylines[pos])
+		
+		# Skip any blank lines
 		if len(mylines[pos])<=1:
-			#skip blanks
 			pos += 1
 			continue
-		if mylines[pos][0] in ["#"," ","\t"]:
-			#skip indented lines, comments
-			pos += 1
-			continue
+		msearch=colon_optional_spaces.search(mylines[pos])
+		
+		# If semicolon found assume its a new key
+		# This may cause problems if : are used for key values but works for now
+		if msearch:
+			# Split on the first semicolon creating two strings in the array mobjs
+			mobjs = colon_optional_spaces.split(mylines[pos],1)
+			# Start a new array using the first element of mobjs
+			newarray=[mobjs[0]]
+			if mobjs[1]:
+				# split on white space creating additional array elements
+				subarray=mobjs[1].split()
+				if len(subarray)>0:
+					
+					if len(subarray)==1:
+						# Store as a string if only one element is found.
+						# this is to keep with original catalyst behavior 
+						# eventually this may go away if catalyst just works
+						# with arrays.
+						newarray.append(subarray[0])
+					else:
+						newarray.append(mobjs[1].split())
+		
+		# Else add on to the last key we were working on
 		else:
 			myline=mylines[pos].split()
-		
-			if (len(myline)==0) or (myline[0][-1] != ":"):
-				msg("Skipping invalid spec line "+repr(pos+1))
-			#strip colon:
-			myline[0]=myline[0][:-1]
-			if len(myline)==2:
-				#foo: bar  --> foo:"bar"
-				myspec[myline[0]]=myline[1]
-				pos += 1
-			elif len(myline)>2:
-				#foo: bar oni --> foo: [ "bar", "oni" ]
-				myspec[myline[0]]=myline[1:]
-				pos += 1
-			else:
-				#foo:
-				# bar
-				# oni meep
-				# --> foo: [ "bar", "oni", "meep" ]
-				accum=[]
-				pos += 1
-				while (pos<len(mylines)):
-					if len(mylines[pos])<=1:
-						#skip blanks
-						pos += 1
-						continue
-					if mylines[pos][0] == "#":
-						#skip comments
-						pos += 1
-						continue
-					if mylines[pos][0] in [" ","\t"]:
-						#indented line, add to accumulator
-						accum.extend(mylines[pos].split())
-						pos += 1
-					else:
-						#we've hit the next item, break out
-						break
-				myspec[myline[0]]=accum
+			newarray.append(myline)
+			
+		pos += 1
+		if len(newarray)==2:
+			myspec[newarray[0]]=newarray[1]
+		else: 
+			myspec[newarray[0]]=newarray[1:]
+
+	for x in myspec.keys():
+		# Convert myspec[x] to an array of strings
+		newarray=[]
+		if type(myspec[x])!=types.StringType:
+			for y in myspec[x]:
+				newarray.append(y[0])
+			myspec[x]=newarray
+		# Delete empty key pairs
+		if len(myspec[x])==0:
+			print "\n\tWARNING: No value set for key: "+x
+			print "\tdeleting key: "+x+"\n"
+			del myspec[x]
+	
 	return myspec
 
 def parse_makeconf(mylines):

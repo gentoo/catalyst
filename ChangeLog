@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.256 2005/05/03 15:57:37 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.257 2005/05/05 21:16:06 rocket Exp $
+
+  05 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/catalyst_support.py:
+  Fix bug 65284. More flexible spec parsing. Should handle cases where no
+  spaces are after :. Better handling of comments ( ie preprocessed and
+  stripped off ). Unset empty keys.
 
   03 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   targets/support/kill-chroot-pids.sh:
