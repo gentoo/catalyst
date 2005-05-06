@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.257 2005/05/05 21:16:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.258 2005/05/06 17:48:59 rocket Exp $
+
+  06 May 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py:
+  Bug fixes in parse_spec, fix issues detecting list or string.
 
   05 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/catalyst_support.py:

@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.46 2005/05/05 21:16:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.47 2005/05/06 17:48:59 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 # a function to turn a string of non-printable characters into a string of
@@ -200,10 +200,11 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
 def parse_spec(mylines):
 	myspec={}
 	pos=0
-	colon_optional_spaces=re.compile(":")
+	colon=re.compile(":")
 	trailing_comment=re.compile("#.*\n")
 	newline=re.compile("\n")
-	leading_white_space=re.compile("\s+")
+	leading_white_space=re.compile("^\s+")
+	white_space=re.compile("\s+")
 	while pos<len(mylines):
 		# Force the line to be clean 
 		# Remove Comments ( anything following # )
@@ -219,13 +220,13 @@ def parse_spec(mylines):
 		if len(mylines[pos])<=1:
 			pos += 1
 			continue
-		msearch=colon_optional_spaces.search(mylines[pos])
+		msearch=colon.search(mylines[pos])
 		
 		# If semicolon found assume its a new key
 		# This may cause problems if : are used for key values but works for now
 		if msearch:
 			# Split on the first semicolon creating two strings in the array mobjs
-			mobjs = colon_optional_spaces.split(mylines[pos],1)
+			mobjs = colon.split(mylines[pos],1)
 			# Start a new array using the first element of mobjs
 			newarray=[mobjs[0]]
 			if mobjs[1]:
@@ -244,28 +245,32 @@ def parse_spec(mylines):
 		
 		# Else add on to the last key we were working on
 		else:
-			myline=mylines[pos].split()
-			newarray.append(myline)
-			
+			mobjs = white_space.split(mylines[pos])
+			for i in mobjs:
+				newarray.append(i)
+		
 		pos += 1
 		if len(newarray)==2:
 			myspec[newarray[0]]=newarray[1]
 		else: 
 			myspec[newarray[0]]=newarray[1:]
-
+	
 	for x in myspec.keys():
 		# Convert myspec[x] to an array of strings
 		newarray=[]
 		if type(myspec[x])!=types.StringType:
 			for y in myspec[x]:
-				newarray.append(y[0])
+				if type(y)==types.ListType:
+					newarray.append(y[0])
+				if type(y)==types.StringType:
+					newarray.append(y)
 			myspec[x]=newarray
 		# Delete empty key pairs
 		if len(myspec[x])==0:
 			print "\n\tWARNING: No value set for key: "+x
 			print "\tdeleting key: "+x+"\n"
 			del myspec[x]
-	
+	#print myspec
 	return myspec
 
 def parse_makeconf(mylines):
