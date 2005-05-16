@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.9 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.10 2005/05/16 14:26:51 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -53,6 +53,9 @@ class snapshot_target(generic_target):
 			"Snapshot creation failure")
 		self.cleanup()
 		print "snapshot: complete!"
+	
+	def kill_chroot_pids(self):
+		pass
 
 	def cleanup(self):
 		print "Cleaning up..."
