@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.259 2005/05/16 14:26:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.260 2005/05/18 18:09:14 rocket Exp $
+
+  18 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/generic_stage_target.py:
+  Fix print statement so it shows when kill_chroot_pids is run correctly
 
   16 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/snapshot_target.py:

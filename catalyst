@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.81 2005/05/16 14:26:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.82 2005/05/18 18:09:14 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -184,7 +184,6 @@ def build_target(addlargs, targetmap):
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
 	
 		# Kill any pids in the chroot 
-		print "Checking for processes running in chroot and killing them."
 		mytarget.kill_chroot_pids()
 
 		# Check for mounts right away and abort if we cannot unmount them.
