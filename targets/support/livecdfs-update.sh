@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.13 2005/04/29 14:43:18 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.14 2005/05/20 17:12:29 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -138,8 +138,7 @@ then
 fi
 
 # setup opengl in /etc (if configured)
-#[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
-mkdir -p /etc/opengl
+[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
 
 # touch /etc/asound.state
 touch /etc/asound.state
