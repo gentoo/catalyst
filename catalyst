@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.82 2005/05/18 18:09:14 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.83 2005/05/20 19:16:47 wolf31o2 Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
 # Chris Gianelloni <wolf31o2@gentoo.org>
-# John Davis <zhen@gentoo.org>
 
 import os,sys,imp,string,getopt
 

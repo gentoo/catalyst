@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.261 2005/05/20 17:12:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.262 2005/05/20 19:16:47 wolf31o2 Exp $
+
+  20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
+  files/catalyst.conf:
+  Retired zhen and added storedir to default catalyst.conf.
 
   20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
