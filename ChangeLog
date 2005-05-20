@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.260 2005/05/18 18:09:14 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.261 2005/05/20 17:12:29 wolf31o2 Exp $
+
+  20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Uncommented openglify, since it is needed for both opengl-update-livecd and
+  opengl-update.
 
   18 May 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/generic_stage_target.py:
