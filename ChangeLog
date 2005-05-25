@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.262 2005/05/20 19:16:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.263 2005/05/25 19:15:17 wolf31o2 Exp $
+
+  25 May 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS,
+  examples/livecd-stage2_template.spec, modules/livecd_stage2_target.py,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/stage4/stage4-controller.sh, targets/support/kmerge.sh:
+  Added mutex to AUTHORS and added livecd/linuxrc support to embedded, stage4,
+  and livecd-stage2 targets.
 
   20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
   files/catalyst.conf:

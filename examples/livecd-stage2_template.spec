@@ -126,6 +126,14 @@ livecd/splash_theme:
 # livecd/gk_mainargs: --lvm2 --dmraid
 livecd/gk_mainargs:
 
+# This option allows you to specify your own linuxrc script for genkernel to use
+# when building your CD.  This is not checked for functionality, so it is up to
+# you to debug your own script.  We do not use one for the official release
+# media, so there will not be one listed below.
+# example:
+# livecd/linuxrc:
+livecd/linuxrc:
+
 # This option controls quite a bit of catalyst internals and sets up several
 # defaults.  Each type behaves slightly differently and is explained below.
 # gentoo-release-minimal - This creates an official minimal InstallCD.

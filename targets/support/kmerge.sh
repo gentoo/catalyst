@@ -44,6 +44,11 @@ setup_gk_args() {
 	then
 		GK_ARGS="${GK_ARGS} --no-udev"
 	fi
+
+	if [ -n "${clst_livecd_linuxrc}" ]
+	then
+		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"
+	fi
 }
 
 genkernel_compile(){
