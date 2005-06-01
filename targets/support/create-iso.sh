@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.3 2005/04/29 13:32:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.4 2005/06/01 13:41:12 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 #. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
@@ -17,10 +17,61 @@ then
 	echo
 fi
 
+# If not volume ID is set, make up a sensible default
+if [ -z "${clst_iso_volume_id}" ]
+then
+	case ${clst_livecd_type} in
+		gentoo-*)
+			case ${clst_mainarch} in
+				alpha)
+					clst_iso_volume_id="Gentoo Linux - Alpha"
+				;;
+				amd64)
+					clst_iso_volume_id="Gentoo Linux - AMD64"
+				;;
+				arm)
+					clst_iso_volume_id="Gentoo Linux - ARM"
+				;;
+				hppa)
+					clst_iso_volume_id="Gentoo Linux - HPPA"
+				;;
+				ia64)
+					clst_iso_volume_id="Gentoo Linux - IA64"
+				;;
+				m68k)
+					clst_iso_volume_id="Gentoo Linux - M68K"
+				;;
+				mips)
+					clst_iso_volume_id="Gentoo Linux - MIPS"
+				;;
+				ppc)
+					clst_iso_volume_id="Gentoo Linux - PPC"
+				;;
+				ppc64)
+					clst_iso_volume_id="Gentoo Linux - PPC64"
+				;;
+				s390)
+					clst_iso_volume_id="Gentoo Linux - S390"
+				;;
+				sh)
+					clst_iso_volume_id="Gentoo Linux - SH"
+				;;
+				sparc)
+					clst_iso_volume_id="Gentoo Linux - SPARC"
+				;;
+				x86)
+					clst_iso_volume_id="Gentoo Linux - X86"
+				;;
+			esac
+		*)
+			clst_iso_volume_id="Catalyst LiveCD"
+		;;
+	esac
+fi
+
+# Here we actually create the ISO images for each architecture
 case ${clst_mainarch} in
 	alpha)
-		# this is for the livecd-final target, and calls the proper
-		# command to build the iso file
 		case ${clst_fstype} in
 			zisofs)
 				mkisofs -J -R -l -z -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}  || die "Cannot make ISO image"
@@ -31,28 +82,18 @@ case ${clst_mainarch} in
 		esac
 		isomarkboot ${1} /boot/bootlx
 	;;
-
 	arm)
-		;;
-	hppa)
-                #this is for the livecd-stage2 target, and calls the proper command to build the iso file
-	        mkisofs -J -R -l -V "${clst_iso_volume_id}" -o  ${1} ${clst_target_path}  || die "Cannot make ISO image"
-	        palo -f boot/palo.conf -C ${1}
-
 	;;
-	ppc)
-		# The name of the iso should be retrieved from the specs. For now, asssume GentooPPC_2004.0
-		mkisofs -J -r -l -netatalk -hfs -probe -map ${clst_target_path}/boot/map.hfs -part -no-desktop -hfs-iso_volume_id \
-			"${clst_iso_volume_id}" -hfs-bless ${clst_target_path}/boot -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}
+	hppa)
+		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o  ${1} ${clst_target_path}  || die "Cannot make ISO image"
+		palo -f boot/palo.conf -C ${1}
+	;;
+	ppc*)
+		mkisofs -J -r -l -netatalk -hfs -probe -map ${clst_target_path}/boot/map.hfs -part -no-desktop -hfs-volid \
+		"${clst_iso_volume_id}" -hfs-bless ${clst_target_path}/boot -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} \
+			|| die "Cannot make ISO image"
 	;;
 	sparc)
-		# this is for the livecd-final target, and calls the proper
-		# command to build the iso file
-		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -G ${clst_target_path}/boot/isofs.b -B ... ${clst_target_path} \
-			|| die "Cannot make ISO image"
-
-	;;
-	sparc64)
 		# Old silo + patched mkisofs fubar magic
 		# Only silo 1.2.x seems to work for most hardware
 		# Seems silo 1.3.x+ breaks on newer machines
@@ -66,10 +107,7 @@ case ${clst_mainarch} in
 															
 	;;
 	
-	x86)
-		#this is for the livecd-stage2 target, and calls the proper command
-		# to build the iso file
-		#
+	x86|amd64)
 		if [ -e ${clst_target_path}/boot/isolinux.bin ]
 		then
 			echo "Creating ISO using ISOLINUX bootloader"

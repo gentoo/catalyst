@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.264 2005/05/25 19:28:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.265 2005/06/01 13:41:12 wolf31o2 Exp $
+
+  01 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/create-iso.sh:
+  General cleanup of ISO code and added default livecd/volid when it is not set.
 
   25 May 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-controller.sh:
