@@ -221,6 +221,11 @@ livecd/xinitrc:
 # livecd/users:
 livecd/users:
 
+# This option sets the volume ID of the CD created.
+# example:
+# livecd/volid: Gentoo Linux 2005.0 X86
+livecd/volid:
+
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
 # the GameCD scripts to set some specific options for the game.  This is not
