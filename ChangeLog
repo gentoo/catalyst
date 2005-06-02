@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.266 2005/06/01 16:20:58 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.267 2005/06/02 20:30:59 wolf31o2 Exp $
+
+  02 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-preclean-chroot.sh,
+  targets/support/chroot-functions.sh:
+  Added setup_binutils function and force both of them to run during stage1
+  cleanup.
 
   01 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/livecd-stage2_template.spec:

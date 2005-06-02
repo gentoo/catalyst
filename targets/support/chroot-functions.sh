@@ -105,8 +105,24 @@ setup_portage(){
 setup_gcc(){
 	if [ -x /usr/bin/gcc-config ]
 	then
-        	mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
+		mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
+		if [ -z "${mythang}" ]
+		then
+			mythang=1
+		fi
 		gcc-config ${mythang}; update_env_settings
+	fi
+}
+
+setup_binutils(){
+	if [ -x /usr/bin/binutils-config ]
+	then
+		mythang=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
+		if [ -z "${mythang}" ]
+		then
+			mythang=1
+		fi
+		binutils-config ${mythang}; update_env_settings
 	fi
 }
 
