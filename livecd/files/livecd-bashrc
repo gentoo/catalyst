@@ -3,8 +3,7 @@
 if [ -e /usr/bin/X ]; then
 	if [ -e /etc/startx ]; then
 		rm -f /etc/startx
-		export BASHRC_READ=1
-		#startx
+		startx
 		cat /etc/motd
 	fi
 fi

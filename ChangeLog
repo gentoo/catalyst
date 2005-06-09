@@ -1,5 +1,15 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.267 2005/06/02 20:30:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.268 2005/06/09 17:42:05 wolf31o2 Exp $
+
+  09 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/files/README.txt, -livecd/files/environmental.motd.txt,
+  -livecd/files/gentoo.png, +livecd/files/livecd.motd.txt,
+  livecd/files/livecd-bash_profile, livecd/files/livecd-bashrc,
+  livecd/files/minimal.motd.txt, livecd/files/universal.motd.txt,
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Removed gentoo.png and creation of face directory. Changed
+  livecd-bash_profile to source root's .bashrc. Sync motd files with catalyst
+  1.1.10_pre4.
 
   02 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean-chroot.sh,

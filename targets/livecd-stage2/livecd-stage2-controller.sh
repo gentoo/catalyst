@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.10 2005/05/25 19:15:17 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.11 2005/06/09 17:42:05 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -46,9 +46,6 @@ case $1 in
 			${clst_chroot_path}/root/.bash_profile
 		cp ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
-		mkdir -p /usr/share/faces
-		cp ${clst_sharedir}/livecd/files/gentoo.png \
-			${clst_chroot_path}/usr/share/faces
 		
 		# execute copy gamecd.conf if we're a gamecd
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
