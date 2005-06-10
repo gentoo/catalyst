@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.14 2005/05/20 17:12:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.15 2005/06/10 14:41:23 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -14,15 +14,6 @@ fi
 
 # turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
-
-# Comment out current getty settings
-sed -i -e '/^c[0-9]/ s/^/#/' /etc/inittab
-
-# Add our own getty settings
-for x in 1 2 3 4 5 6
-do
-	echo "c${x}:12345:respawn:/sbin/agetty -nl /bin/bashlogin 38400 tty${x} linux" >> /etc/inittab
-done
 
 # Do some livecd_type specific inittab changes
 case ${clst_livecd_type} in
