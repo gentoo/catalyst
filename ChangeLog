@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.270 2005/06/10 14:41:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.271 2005/06/14 19:43:26 wolf31o2 Exp $
+
+  14 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage2/stage2-chroot.sh:
+  Added a -p bootstrap when catalyst is called with -V (verbose).
 
   10 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
