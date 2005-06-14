@@ -96,9 +96,10 @@ setup_portage(){
  
     if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
     then
-	echo "Portage Autoresume point found not emerging portage"
+		echo "Portage Autoresume point found not emerging portage"
     else
-	USE="build" emerge portage && touch /tmp/.clst_portage || exit 1
+		USE="build" emerge --oneshot --nodeps portage
+		touch /tmp/.clst_portage || exit 1
     fi
 }
 
