@@ -1,6 +1,7 @@
-# Copyright 1999-2004 Gentoo Foundation
+#!/bin/bash
+# Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.4 2005/04/29 14:40:25 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.5 2005/06/16 13:40:01 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -89,7 +90,7 @@ case ${clst_mainarch} in
 		echo "image=\"cat /boot/help.msg\"" >> ${scfg}
 		echo -e "label=\"help\"" >> ${scfg}
 		;;
-	x86)
+	x86|amd64)
 		if [ -e $1/boot/isolinux.bin ]
 		then
 			# the rest of this function sets up the config file for isolinux
@@ -148,7 +149,7 @@ case ${clst_mainarch} in
 			
 			# Setup help message	
 			hmsg=${clst_sharedir}/livecd/files/x86-help.msg
-			hmsg_txt=$(cat ${hmsg})
+			hmsg_txt="$(cat ${hmsg})"
 			
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}

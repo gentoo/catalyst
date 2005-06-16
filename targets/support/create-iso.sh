@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.4 2005/06/01 13:41:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.5 2005/06/16 13:40:01 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 #. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
@@ -119,7 +119,7 @@ case ${clst_mainarch} in
 			
 			case ${clst_fstype} in
 				zisofs)
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b boot/isolinux.bin -c boot/boot.cat -no-emul-boot \
+					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot \
 					-boot-load-size 4 -boot-info-table -z ${clst_target_path} || die "Cannot make ISO image"
 				;;
 				*)
