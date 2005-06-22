@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.273 2005/06/16 13:40:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.274 2005/06/22 13:29:13 wolf31o2 Exp $
+
+  22 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Updated hostname/domainname creation for new baselayout.
 
   16 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh, targets/support/create-iso.sh:

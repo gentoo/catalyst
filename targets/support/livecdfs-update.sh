@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.15 2005/06/10 14:41:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.16 2005/06/22 13:29:13 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -28,28 +28,16 @@ rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
 
 # setup the hostname
-case ${clst_livecd_type} in
-	gnap)
-		echo "livecd" > /etc/hostname
-		echo "gentoo" > /etc/dnsdomainname
-		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
-		;;
-	gentoo-gamecd)
-		echo "gamecd" > /etc/hostname
-		echo "gentoo" > /etc/dnsdomainname
-		echo "127.0.0.1 gamecd.gentoo gamecd localhost" > /etc/hosts
-		;;
-	gentoo-*)
-		echo "gentoo-livecd" > /etc/hostname
-		echo "gentoo" > /etc/dnsdomainname
-		echo "127.0.0.1	gentoo-livecd.gentoo gentoo-livecd localhost" > /etc/hosts
-		;;
-	*)
-		echo "livecd" > /etc/hostname
-		echo "gentoo" > /etc/dnsdomainname
-		echo "127.0.0.1	livecd.gentoo livecd localhost" > /etc/hosts
-		;;
-esac
+if [ "${clst_livecd_type}" == "gentoo-gamecd" ]
+then
+	echo 'HOSTNAME="gamecd"' > /etc/conf.d/hostname
+	echo "127.0.0.1 gamecd.gentoo gamecd localhost" > /etc/hosts
+else
+	echo 'HOSTNAME="livecd"' > /etc/conf.d/hostname
+	echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
+fi
+echo 'OVERRIDE=0' > /etc/conf.d/domainname
+echo 'DNSDOMAIN="gentoo"' >> /etc/conf.d/domainname
 
 # Add any users
 if [ -n "${clst_livecd_users}" ]
