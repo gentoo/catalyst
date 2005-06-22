@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.275 2005/06/22 13:46:58 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.276 2005/06/22 18:53:49 rocket Exp $
+
+  22 Jun 2005; Eric Edgar <rocket@gentoo.org> :
+  Fix issue where -s on the command line would not run
 
   22 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/generic.motd.txt:
