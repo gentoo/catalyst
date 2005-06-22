@@ -4,9 +4,8 @@
 The root password on this system has been auto-scrambled for security.
 
 If any ethernet adapters were detected at boot, they should be auto-configured
-if DHCP is available on your network.
+if DHCP is available on your network.  Type "net-setup eth0" to specify eth0 IP
+address settings by hand. 
 
-Type "net-setup eth0" to specify eth0 IP address settings by hand. 
-
-/proc/config(.gz) for kernel configuration.
+Check /boot/config-* for kernel configuration.
 
