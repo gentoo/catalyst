@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.83 2005/05/20 19:16:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.84 2005/06/22 18:51:44 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -296,6 +296,7 @@ if __name__ == "__main__":
 				usage()
 				sys.exit(2)
 			else:
+				run=1
 				mycmdline.append("target=snapshot")
 				mycmdline.append("version_stamp="+a)
 		
