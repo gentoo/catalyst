@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.276 2005/06/22 18:53:49 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.277 2005/06/23 15:42:50 rocket Exp $
+
+  23 Jun 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/livecd_stage1_target.py,
+  modules/stage4_target.py:
+  Allow changing the location of the pkg_cache in stage4 or livecd-stage1
 
   22 Jun 2005; Eric Edgar <rocket@gentoo.org> :
   Fix issue where -s on the command line would not run

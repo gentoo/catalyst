@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.46 2005/05/18 18:09:14 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.47 2005/06/23 15:42:50 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -147,7 +147,8 @@ class generic_stage_target(generic_target):
 
 		# configure any user specified options (either in catalyst.conf or on the cmdline)
 		if self.settings.has_key("PKGCACHE"):
-			self.settings["pkgcache_path"]=self.settings["storedir"]+"/packages/"+self.settings["target_subpath"]
+			self.set_pkgcache_path()
+			print "Location of the package cache is" + self.settings["pkgcache_path"]
 			self.mounts.append("/usr/portage/packages")
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
@@ -206,6 +207,10 @@ class generic_stage_target(generic_target):
 	def set_target_subpath(self):
 		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+self.settings["target"]+\
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
+
+	def set_pkgcache_path(self):
+		self.settings["pkgcache_path"]=self.settings["storedir"]+"/packages/"+\
+			self.settings["target_subpath"]
 
 	def set_target_path(self):
 		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"

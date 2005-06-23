@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.12 2005/04/27 17:44:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.13 2005/06/23 15:42:50 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -45,6 +45,13 @@ class livecd_stage1_target(generic_stage_target):
 	    generic_stage_target.set_packages(self)
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/packages"):
 		self.settings[self.settings["spec_prefix"]+"/packages"].append("livecd-tools")
+
+	def set_pkgcache_path(self):
+	    if self.settings.has_key("pkgcache_path"):
+		if type(self.settings["pkgcache_path"]) != types.StringType:
+		    self.settings["pkgcache_path"]=string.join(self.settings["pkgcache_path"])
+	    else:
+		generic_stage_target.set_pkgcache_path(self)
 
 def register(foo):
 	foo.update({"livecd-stage1":livecd_stage1_target})
