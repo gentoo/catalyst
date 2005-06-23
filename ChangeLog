@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.277 2005/06/23 15:42:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.278 2005/06/23 19:11:32 wolf31o2 Exp $
+
+  23 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Added call to update-pciids to download the latest pci.ids file.
 
   23 Jun 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, modules/livecd_stage1_target.py,
