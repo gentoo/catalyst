@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.5 2005/06/16 13:40:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.6 2005/06/24 22:09:40 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -107,6 +107,12 @@ case ${clst_mainarch} in
 			echo "Available kernels:" > ${kmsg}
 			cp ${clst_sharedir}/livecd/files/x86-help.msg ${hmsg}
 
+			case ${clst_livecd_type} in
+			gentoo-*)
+				keymap="dokeymap"
+				;;
+			esac
+
 			for x in ${clst_boot_kernel}
 			do
 
@@ -117,16 +123,16 @@ case ${clst_mainarch} in
 				echo "  kernel ${x}" >> ${icfg}
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
-					echo "  append ${default_append_line} vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} ${keymap}" >> ${icfg}
 				else
-					echo "  append ${default_append_line} vga=791 dokeymap splash=silent" >> ${icfg}
+					echo "  append ${default_append_line} vga=791 splash=silent ${keymap}" >> ${icfg}
 				fi
 			
 				echo >> ${icfg}
 				echo "   ${x}" >> ${kmsg}
 				echo "label ${x}-nofb" >> ${icfg}
 				echo "  kernel ${x}" >> ${icfg}
-				echo "  append ${default_append_line} " >> ${icfg}
+				echo "  append ${default_append_line} ${keymap}" >> ${icfg}
 				echo >> ${icfg}
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
