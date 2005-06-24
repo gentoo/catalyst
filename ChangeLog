@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.278 2005/06/23 19:11:32 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.279 2005/06/24 22:09:40 wolf31o2 Exp $
+
+  24 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Removed dokeymap from non-Gentoo releases.
 
   23 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
