@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.279 2005/06/24 22:09:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.280 2005/06/27 16:14:49 rocket Exp $
+
+  27 Jun 2005; Eric Edgar <rocket@gentoo.org>
+  targets/stage4/stage4-controller.sh:
+  Fix stage4 so it doesnt run the bootloader stuff
 
   24 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.5 2005/05/25 19:15:18 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.6 2005/06/27 16:14:49 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 
@@ -50,11 +50,7 @@ case $1 in
 	;;
 
         bootloader)
-		shift
-		# Here is where we poke in our identifier
-		touch $1/livecd
-		
-		${clst_sharedir}/targets/support/bootloader-setup.sh $1
+		exit 0
 	;;
 	
 	target_image_setup)
