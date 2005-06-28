@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.280 2005/06/27 16:14:49 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.281 2005/06/28 17:32:35 wolf31o2 Exp $
+
+  28 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/livecd_stage2_target.py, targets/support/bootloader-setup.sh,
+  targets/support/functions.sh:
+  Added livecd/bootargs and added the option to the bootloader-setup.sh script
+  to allow it to work on all arches that dynamically build their bootloader
+  configuration.
 
   27 Jun 2005; Eric Edgar <rocket@gentoo.org>
   targets/stage4/stage4-controller.sh:

@@ -152,8 +152,20 @@ check_dev_manager(){
 	if [ "${clst_livecd_devmanager}" == "devfs" ]
 	then
 		cmdline_opts="${cmdline_opts} noudev devfs"
-	else
+	elif [ "${clst_livecd_devmanager}" == "devfs" ]
+	then
 		cmdline_opts="${cmdline_opts} udev nodevfs"
+	fi
+}
+
+check_bootargs(){
+	# Add any additional options
+	if [ -z "${clst_livecd_bootargs}" ]
+	then
+		for x in ${clst_livecd_bootargs}
+		do
+			cmdline_opts="${cmdline_opts} ${x}"
+		done
 	fi
 }
 
