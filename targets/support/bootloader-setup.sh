@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.7 2005/06/28 17:32:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.8 2005/06/30 16:07:46 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -124,7 +124,7 @@ case ${clst_mainarch} in
 				echo "  kernel ${x}" >> ${icfg}
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
-					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} ${keymap}" >> ${icfg}
+					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet ${keymap}" >> ${icfg}
 				else
 					echo "  append ${default_append_line} vga=791 splash=silent ${keymap}" >> ${icfg}
 				fi

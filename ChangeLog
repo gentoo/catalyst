@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.282 2005/06/28 22:47:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.283 2005/06/30 16:07:46 wolf31o2 Exp $
+
+  30 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/pre-kmerge.sh:
+  Changed sed line for 1024x768-only splash for x86 and amd64 only, as we
+  control the framebuffer size there. Also, added CONSOLE=/dev/tty1 quiet to
+  splash command line.
 
   28 Jun 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/create-iso.sh:
