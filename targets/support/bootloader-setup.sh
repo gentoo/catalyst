@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.8 2005/06/30 16:07:46 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.9 2005/07/05 17:20:05 plasmaroo Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -90,6 +90,29 @@ case ${clst_mainarch} in
 		echo -e "label=\"video\"" >> ${scfg}
 		echo "image=\"cat /boot/help.msg\"" >> ${scfg}
 		echo -e "label=\"help\"" >> ${scfg}
+		;;
+	ia64)
+		iacfg=$1/boot/elilo.conf
+		echo 'prompt' > ${iacfg}
+		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
+		echo 'chooser=simple' >> ${iacfg}
+		echo 'timeout=50' >> ${iacfg}
+		echo >> ${iacfg}
+		for x in ${clst_boot_kernel}
+		do
+			echo "image=/efi/boot/${x}" >> ${iacfg}
+			echo "  label=${x}" >> ${iacfg}
+			echo '  append="'${default_append_line}'"' >> ${iacfg}
+			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
+			echo >> ${iacfg}
+			echo "image=/efi/boot/${x}" >> ${iacfg}
+			echo "  label=${x}-serial">> ${iacfg}
+			echo '  append="'${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
+			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
+			echo >> ${iacfg}
+		done
+		cp ${iacfg} $1/boot/efi/boot
+		mv $1/boot/${x}{,.igz} $1/boot/efi/boot
 		;;
 	x86|amd64)
 		if [ -e $1/boot/isolinux.bin ]

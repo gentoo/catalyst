@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.6 2005/06/28 22:47:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.7 2005/07/05 17:20:05 plasmaroo Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 #. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
@@ -118,7 +118,34 @@ case ${clst_mainarch} in
 		rm /tmp/mkisofs.sparc.fu
 															
 	;;
-	
+	ia64)
+		if [ ! -e ${clst_target_path}/gentoo.efimg ]
+		then
+			iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
+			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
+			iaSize=$((${iaSizeB}+32)) # Add slack
+
+			dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k count=${iaSize}
+			mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
+
+			mkdir ${clst_target_path}/gentoo.efimg.mountPoint
+			mount -t vfat -o loop ${clst_target_path}/gentoo.efimg ${clst_target_path}/gentoo.efimg.mountPoint
+
+			echo '>> Populating EFI image...'
+			cp -av ${clst_target_path}/boot/* ${clst_target_path}/gentoo.efimg.mountPoint
+
+			umount ${clst_target_path}/gentoo.efimg.mountPoint
+			rmdir ${clst_target_path}/gentoo.efimg.mountPoint
+		else
+			echo ">> Found populated EFI image at ${clst_target_path}/gentoo.efimg"
+		fi
+		echo '>> Removing /boot...'
+		rm -rf ${clst_target_path}/boot
+
+		echo '>> Generating ISO...'
+		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot \
+			${clst_target_path} || die "Cannot make ISO image" 
+	;;	
 	x86|amd64)
 		if [ -e ${clst_target_path}/boot/isolinux.bin ]
 		then
