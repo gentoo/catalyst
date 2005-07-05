@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.9 2005/07/05 17:20:05 plasmaroo Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.10 2005/07/05 17:48:21 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -13,7 +13,7 @@ check_dev_manager
 check_bootargs
 check_filesystem_type
 
-default_append_line="initrd=${x}.igz root=/dev/ram0 init=/linuxrc acpi=off ${cmdline_opts} ${custom_kopts} cdroot"
+default_append_line="initrd=${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
 
 case ${clst_mainarch} in
 	alpha)
