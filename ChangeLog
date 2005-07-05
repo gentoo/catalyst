@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.285 2005/07/05 17:55:30 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.286 2005/07/05 18:58:20 wolf31o2 Exp $
+
+  05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> ChangeLog:
+  Added profile sanity check for bug #97867.
 
   05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
