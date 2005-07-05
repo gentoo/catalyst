@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.47 2005/06/23 15:42:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.48 2005/07/05 20:49:48 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -102,7 +102,7 @@ class generic_stage_target(generic_target):
 		# define all of our core variables
 		self.set_target_profile()
 		self.set_target_subpath()
-	
+
 		# set paths
 		self.set_snapshot_path()
 		self.set_source_path()
@@ -165,7 +165,7 @@ class generic_stage_target(generic_target):
 			self.mountmap["/var/tmp/ccache"]=ccdir
 			# for the chroot:
 			os.environ["CCACHE_DIR"]="/var/tmp/ccache"	
-		
+	
 	def override_chost(self):
 		if os.environ.has_key("CHOST"):
 		    self.settings["CHOST"] = os.environ["CHOST"]
@@ -810,6 +810,7 @@ class generic_stage_target(generic_target):
 	def run(self):
 		for x in self.settings["action_sequence"]:
 			print "Running action sequence: "+x
+			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))
 			except:

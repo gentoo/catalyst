@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.286 2005/07/05 18:58:20 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.287 2005/07/05 20:49:48 rocket Exp $
+
+  05 Jul 2005; <eje001@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py:
+  add additional logging output. Use standard os redirection methods to log to
+  a file
 
   05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> ChangeLog:
   Added profile sanity check for bug #97867.
