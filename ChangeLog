@@ -1,5 +1,44 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.288 2005/07/05 21:41:22 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.289 2005/07/05 21:53:41 wolf31o2 Exp $
+
+  05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
+  arch/amd64.py, arch/hppa.py, arch/ia64.py, arch/mips.py, arch/ppc.py,
+  arch/ppc64.py, arch/s390.py, arch/sparc.py, arch/sparc64.py, arch/x86.py,
+  catalyst, files/catalyst.conf, modules/builder.py,
+  modules/catalyst_support.py, modules/embedded_target.py,
+  modules/generic_stage_target.py, modules/generic_target.py,
+  modules/grp_target.py, modules/livecd_stage1_target.py,
+  modules/livecd_stage2_target.py, modules/netboot_target.py,
+  modules/snapshot_target.py, modules/stage1_target.py,
+  modules/stage2_target.py, modules/stage3_target.py,
+  modules/stage4_target.py, modules/tinderbox_target.py,
+  targets/embedded/embedded-chroot.sh,
+  targets/embedded/embedded-fs-runscript.sh,
+  targets/embedded/embedded-preclean-chroot.sh, targets/embedded/unmerge.sh,
+  targets/grp/grp-chroot.sh, targets/grp/grp-controller.sh,
+  targets/grp/grp-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/livecd-stage2/unmerge.sh, targets/netboot/netboot-chroot.sh,
+  targets/netboot/netboot-combine.sh, targets/netboot/netboot-controller.sh,
+  targets/netboot/netboot-image.sh, targets/stage1/build.py,
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-controller.sh,
+  targets/stage1/stage1-preclean-chroot.sh, targets/stage2/stage2-chroot.sh,
+  targets/stage2/stage2-controller.sh,
+  targets/stage2/stage2-preclean-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage3/stage3-controller.sh,
+  targets/stage3/stage3-preclean-chroot.sh, targets/stage4/stage4-chroot.sh,
+  targets/stage4/stage4-controller.sh,
+  targets/stage4/stage4-preclean-chroot.sh, targets/stage4/unmerge.sh,
+  targets/support/create-iso.sh, targets/support/functions.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/post-kmerge.sh, targets/support/pre-kmerge.sh,
+  targets/support/target_image_setup.sh,
+  targets/tinderbox/tinderbox-chroot.sh,
+  targets/tinderbox/tinderbox-controller.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  Big honkin' copyright update.
 
   05 Jul 2005; <eje001@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py:
