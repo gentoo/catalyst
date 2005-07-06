@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.85 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.86 2005/07/06 18:28:12 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
 # Chris Gianelloni <wolf31o2@gentoo.org>
 
 import os,sys,imp,string,getopt
-
+import pdb
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0.0_pre2"
 
@@ -344,13 +344,20 @@ if __name__ == "__main__":
 	
 	except CatalystError:
 		raise CatalystError,"Could not complete build"
+		print
+		print "Catalyst aborting...."
 		sys.exit(2)
 	except KeyboardInterrupt:
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
-		sys.exit(2)
+		print
+		print "Catalyst aborting...."
 	except KeyError:
 		print "\nproblem with command line or spec file ( Key Error )"
+		print
+		print "Catalyst aborting...."
 		sys.exit(2)
+	except UnboundLocalError:
+		pass
 	except:
 		print "Catalyst aborting...."
 		raise

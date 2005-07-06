@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.49 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.50 2005/07/06 18:28:13 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -20,6 +20,10 @@ except:
 # pids this process knows of.
 spawned_pids = []
 
+try:
+        import urllib
+except SystemExit, e:
+        raise
 
 def cleanup(pids,block_exceptions=True):
         """function to go through and reap the list of pids passed to it"""
@@ -137,8 +141,10 @@ def list_to_string(mylist):
 class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
-			print
-			print traceback.print_exc(file=sys.stdout)
+			(type,value)=sys.exc_info()[:2]
+			if value!=None:
+			    print
+			    print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
 			print
@@ -500,7 +506,6 @@ def file_locate(settings,filelist,expand=1):
 			settings[myfile]=os.getcwd()+"/"+settings[myfile]
 		else:
 			raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]+" (2nd try)"
-
 """
 Spec file format:
 

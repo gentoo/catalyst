@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.49 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.50 2005/07/06 18:28:13 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -11,7 +11,7 @@ import os,string,imp,types,shutil
 from catalyst_support import *
 from generic_target import *
 from stat import *
-
+import pdb
 class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
@@ -131,10 +131,10 @@ class generic_stage_target(generic_target):
 		self.set_iso()
 		self.set_packages()
 		
-
 		# this next line checks to make sure that the specified variables exist on disk.
+		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
-		
+
 		# if we are using portage_confdir, check that as well
 		if self.settings.has_key("portage_confdir"):
 			file_locate(self.settings,["portage_confdir"],expand=0)
@@ -849,6 +849,7 @@ class generic_stage_target(generic_target):
 		    except CatalystError:
 			self.unbind()
 			raise
+
 		touch(self.settings["autoresume_path"]+"unmerge")
 
 	def target_setup(self):
