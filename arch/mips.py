@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/mips.py,v 1.4 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/mips.py,v 1.5 2005/07/06 18:50:25 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -25,56 +25,56 @@ class arch_mips1(generic_mips):
 	"Builder class for MIPS I [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips1 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips1 -mabi=32"
 
 class arch_mips2(generic_mips):
 	"Builder class for MIPS II [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips2 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips2 -mabi=32"
 
 class arch_mips3(generic_mips):
 	"Builder class for MIPS III [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32"
 
 class arch_mips4(generic_mips):
 	"Builder class for MIPS IV [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32"
 
 class arch_mips4n32(generic_mips):
 	"Builder class for MIPS IV [Big-endian N32]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32"
 		self.settings["CHOST"]="mips64-unknown-linux-gnu"
 
 class arch_mipsel1(generic_mipsel):
 	"Builder class for all MIPS I [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips1 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips1 -mabi=32"
 
 class arch_mipsel2(generic_mipsel):
 	"Builder class for all MIPS II [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips2 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips2 -mabi=32"
 
 class arch_mipsel3(generic_mipsel):
 	"Builder class for all MIPS III [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32"
 
 class arch_mipsel4(generic_mipsel):
 	"Builder class for all MIPS IV [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -fomit-frame-pointer"
+		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32"
 
 
 

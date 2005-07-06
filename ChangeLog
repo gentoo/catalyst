@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.293 2005/07/06 18:48:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.294 2005/07/06 18:50:25 wolf31o2 Exp $
+
+  06 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/mips.py,
+  arch/x86.py:
+  Removed -fomit-frame-pointer from default CFLAGS, since it isn't necessary.
 
   06 Jul 2005; <eje001@gentoo.org> modules/generic_stage_target.py:
   Minor cosmetic print statement fixes for readability
