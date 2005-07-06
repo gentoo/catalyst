@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.50 2005/07/06 18:28:13 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.51 2005/07/06 18:48:03 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -148,7 +148,7 @@ class generic_stage_target(generic_target):
 		# configure any user specified options (either in catalyst.conf or on the cmdline)
 		if self.settings.has_key("PKGCACHE"):
 			self.set_pkgcache_path()
-			print "Location of the package cache is" + self.settings["pkgcache_path"]
+			print "Location of the package cache is " + self.settings["pkgcache_path"]
 			self.mounts.append("/usr/portage/packages")
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
 
@@ -473,7 +473,7 @@ class generic_stage_target(generic_target):
 				and self.settings["source_path_md5sum"] == clst_unpack_md5sum:
 				    print "Valid Resume point detected, skipping unpack  ..."
 			else:
-		    		print "Unpacking ..."
+		    		print "Unpacking stage..."
 				if not os.path.exists(self.settings["chroot_path"]):
 				    os.makedirs(self.settings["chroot_path"])
 
