@@ -1,7 +1,7 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.291 2005/07/06 18:28:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.292 2005/07/06 18:39:28 rocket Exp $
 
-  06 Jul 2005; <eje001@gentoo.org> catalyst, modules/catalyst_support.py,
+  06 Jul 2005; Eric Edgar <rocket@gentoo.org> catalyst, modules/catalyst_support.py,
   modules/generic_stage_target.py:
   Fix None None bug and exception reporting
 
