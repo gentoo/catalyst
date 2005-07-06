@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.295 2005/07/06 20:33:46 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.296 2005/07/06 22:07:46 wolf31o2 Exp $
+
+  06 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc.py:
+  Changed to use linux32 for ppc32 support when build host is ppc64.
 
   06 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/mips.py,
   arch/x86.py:
