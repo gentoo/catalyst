@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.8 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.9 2005/07/06 14:10:03 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 #. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
@@ -62,10 +62,10 @@ then
 				x86)
 					clst_iso_volume_id="Gentoo Linux - X86"
 				;;
-			esac
-		*)
-			clst_iso_volume_id="Catalyst LiveCD"
-		;;
+				*)
+					clst_iso_volume_id="Catalyst LiveCD"
+				;;
+				esac
 	esac
 fi
 

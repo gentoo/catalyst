@@ -1,6 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.289 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.290 2005/07/06 14:10:03 rocket Exp $
 
+  06 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
+  Fix iso creation script.  Case statement out of place
+  
   05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
   arch/amd64.py, arch/hppa.py, arch/ia64.py, arch/mips.py, arch/ppc.py,
   arch/ppc64.py, arch/s390.py, arch/sparc.py, arch/sparc64.py, arch/x86.py,
@@ -40,7 +43,7 @@
   targets/tinderbox/tinderbox-preclean-chroot.sh:
   Big honkin' copyright update.
 
-  05 Jul 2005; <eje001@gentoo.org> modules/catalyst_support.py,
+  05 Jul 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py:
   add additional logging output. Use standard os redirection methods to log to
   a file
