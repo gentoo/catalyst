@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.16 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.17 2005/07/07 18:18:15 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -17,7 +17,6 @@ setup_myfeatures
 # setup the environment
 export FEATURES="${clst_myfeatures}"
 export CONFIG_PROTECT="-*"
-
 ## START BUILD
 setup_portage
 
@@ -50,7 +49,7 @@ then
 else
 	unset DISTDIR
 	#don't grab MS core fonts, etc.
-	export USE="${USE} bindist"
+	export USE="${USE} ${clst_grp_use} bindist"
 	
 	DISTDIR="/tmp/grp/${clst_grp_target}" emerge --fetchonly ${clst_grp_packages} || exit 1
 	unset PKGDIR
