@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.13 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.14 2005/07/07 17:21:08 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -13,7 +13,6 @@ setup_myemergeopts
 
 ## setup the environment
 export FEATURES="${clst_myfeatures}"
-GRP_STAGE23_USE="$(portageq envvar GRP_STAGE23_USE)"
 
 if [ "${clst_VERBOSE}" ]
 then

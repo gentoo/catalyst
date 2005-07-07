@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.297 2005/07/07 14:27:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.298 2005/07/07 17:21:08 rocket Exp $
+
+  07 Jul 2005; Eric Edgar <rocket@gentoo.org>
+  targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh:
+  Remove unnecessary GRP_STAGE23_USE from stage2 and stage3 builds
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/support/rc-update.sh:
   fix bug 98165. Change the separator on rcadd/rcdel from : to | This will
