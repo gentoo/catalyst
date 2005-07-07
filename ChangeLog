@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.303 2005/07/07 21:35:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.304 2005/07/07 22:19:08 wolf31o2 Exp $
+
+  07 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage3/stage3-chroot.sh:
+  Fixing USE for stage3.
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   targets/support/chroot-functions.sh:
