@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.50 2005/07/06 18:28:13 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.51 2005/07/07 21:35:00 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -106,6 +106,7 @@ valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("AUTORESUME")
+valid_config_file_values.append("FETCH")
 valid_config_file_values.append("CLEAR_AUTORESUME")
 valid_config_file_values.append("options")
 valid_config_file_values.append("DEBUG")
