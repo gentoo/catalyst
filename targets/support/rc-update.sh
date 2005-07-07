@@ -48,7 +48,7 @@ then
     then
 	for x in ${clst_rcadd}
 	do
-	    rc-update add "${x%%:*}" "${x##*:}"
+	    rc-update add "${x%%|*}" "${x##*|}"
 	done
     fi
 
@@ -56,7 +56,7 @@ then
     then
 	for x in ${clst_rcdel}
 	do
-	    rc-update del "${x%%:*}" "${x##*:}"
+	    rc-update del "${x%%|*}" "${x##*|}"
 	done
     fi
 fi
