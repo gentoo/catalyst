@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.301 2005/07/07 18:57:13 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.302 2005/07/07 19:57:17 wolf31o2 Exp $
+
+  07 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> modules/grp_target.py,
+  targets/grp/grp-chroot.sh:
+  Fix bindist invcation.
 
   07 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-chroot.sh:
