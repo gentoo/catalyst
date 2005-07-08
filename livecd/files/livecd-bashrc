@@ -3,7 +3,7 @@
 if [ -e /usr/bin/X ]; then
 	if [ -e /etc/startx ]; then
 		rm -f /etc/startx
-		startx
+		##STARTX
 		cat /etc/motd
 	fi
 fi

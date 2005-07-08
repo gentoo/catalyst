@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.305 2005/07/08 15:07:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.306 2005/07/08 18:57:39 wolf31o2 Exp $
+
+  08 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/livecd-bashrc, targets/support/livecdfs-update.sh:
+  Fixing sed line for startx to auto-start X. Thanks to Christophe PEREZ
+  <christophe.perez@novazur.com> on the gentoo-catalyst mailing list for
+  finding this bug.
 
   08 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
