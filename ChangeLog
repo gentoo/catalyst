@@ -1,5 +1,15 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.306 2005/07/08 18:57:39 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.307 2005/07/12 21:48:32 wolf31o2 Exp $
+
+  12 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/isolinux-2.11-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.11-memtest86+-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.13-cdtar.tar.bz2,
+  -livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2,
+  +livecd/cdtar/isolinux-3.09-cdtar.tar.bz2,
+  +livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2:
+  Updated x86/amd64 isolinux cdtar to 3.09 and removing older versions, as
+  they are known to cause booting problems.
 
   08 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/livecd-bashrc, targets/support/livecdfs-update.sh:
