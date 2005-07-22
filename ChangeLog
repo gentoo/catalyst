@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.308 2005/07/19 21:44:14 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.309 2005/07/22 16:05:18 rocket Exp $
+
+  22 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/support/rc-update.sh:
+  Add automatic creation/deletion of runlevels based on rcadd rcdel
 
   19 Jul 2005; Eric Edgar <rocket@gentoo.org> modules/grp_target.py:
   Fix grp so that grp/use is not required anymore

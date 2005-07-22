@@ -48,6 +48,12 @@ then
     then
 	for x in ${clst_rcadd}
 	do
+	    echo "Adding ${x%%|*} to ${x##*|}"
+	    if [ ! -d /etc/runlevels/${x%%|*} ]
+	    then
+		echo "Runlevel ${x##*|} doesn't exist .... creating it"
+		mkdir -p "/etc/runlevels/${x##*|}"
+	    fi
 	    rc-update add "${x%%|*}" "${x##*|}"
 	done
     fi
@@ -58,6 +64,16 @@ then
 	do
 	    rc-update del "${x%%|*}" "${x##*|}"
 	done
+	for x in $(ls /etc/runlevels)
+	do
+	    CONTENTS=$(find /etc/runlevels/${x} -type f)
+	    if [ -z "${CONTENTS}" ]
+	    then
+	    	echo "${x}: Empty runlevel found.... deleting"
+		rmdir "/etc/runlevels/${x}"
+	    fi
+	done
+		    
     fi
 fi
 
