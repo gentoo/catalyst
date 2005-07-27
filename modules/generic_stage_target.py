@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.51 2005/07/06 18:48:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.52 2005/07/27 20:30:50 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -105,6 +105,7 @@ class generic_stage_target(generic_target):
 
 		# set paths
 		self.set_snapshot_path()
+		self.set_snapcache_path()
 		self.set_source_path()
 		self.set_chroot_path()
 		self.set_autoresume_path()
@@ -140,9 +141,16 @@ class generic_stage_target(generic_target):
 			file_locate(self.settings,["portage_confdir"],expand=0)
 		
 		# setup our mount points
-		self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
-		self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
-			"/usr/portage/distfiles":self.settings["distdir"]}
+		if self.settings.has_key("SNAPCACHE"):
+			self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage","/usr/portage/distfiles" ]
+			self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
+				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
+				"/usr/portage/distfiles":self.settings["distdir"]}
+		else:
+			self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
+			self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
+				"/usr/portage/distfiles":self.settings["distdir"]}
+
 		self.set_mounts()
 
 		# configure any user specified options (either in catalyst.conf or on the cmdline)
@@ -310,6 +318,11 @@ class generic_stage_target(generic_target):
 		self.settings["snapshot_path"]=self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
 		if os.path.exists(self.settings["snapshot_path"]):
 		    self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"])
+	
+	def set_snapcache_path(self):
+		if self.settings.has_key("SNAPCACHE"):
+		    self.settings["snapshot_cache_path"]=self.settings["snapshot_cache"]+"/"+self.settings["snapshot"]+"/"
+		    print "Caching snapshot to " + self.settings["snapshot_cache_path"]
 	
 	def set_chroot_path(self):
 		self.settings["chroot_path"]=self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]+"/"
@@ -485,7 +498,41 @@ class generic_stage_target(generic_target):
 				    myf.write(self.settings["source_path_md5sum"])
 				    myf.close()
 	
-	def unpack_snapshot(self):			
+	def unpack_snapshot(self):		
+
+		if self.settings.has_key("SNAPCACHE"):
+			if os.path.exists(self.settings["snapshot_cache_path"]+"catalyst-md5sum"):
+				snapshot_cache_md5sum=read_from_clst(self.settings["snapshot_cache_path"]+"catalyst-md5sum")
+				if self.settings["snapshot_path_md5sum"] == snapshot_cache_md5sum:
+				    print "Valid snapshot cache, skipping unpack of portage tree..."
+				else:
+				    print "Cleaning up invalid cache at "+self.settings["snapshot_cache_path"]
+
+				    cmd("rm -rf "+self.settings["snapshot_cache_path"],\
+					   "Error removing existing snapshot directory.")
+				    if not os.path.exists(self.settings["snapshot_cache_path"]):
+					os.makedirs(self.settings["snapshot_cache_path"],0755)
+				    print "Unpacking portage tree to snapshot cache ..."
+				    cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
+					self.settings["snapshot_cache_path"],"Error unpacking snapshot")
+				    myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
+				    myf.write(self.settings["snapshot_path_md5sum"])
+				    myf.close()
+			else:
+		    	    if os.path.exists(self.settings["snapshot_cache_path"]):
+				print "Cleaning up existing snapshot cache  ..."
+				cmd("rm -rf "+self.settings["snapshot_cache_path"],\
+					   "Error removing existing snapshot directory.")
+		    	    
+		    	    if not os.path.exists(self.settings["snapshot_cache_path"]):
+				os.makedirs(self.settings["snapshot_cache_path"],0755)
+			    print "Unpacking portage tree to snapshot cache ..."
+			    cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
+				self.settings["snapshot_cache_path"],"Error unpacking snapshot")
+			    myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
+			    myf.write(self.settings["snapshot_path_md5sum"])
+			    myf.close()
+		else:
 		    	if os.path.exists(self.settings["autoresume_path"]+"unpack_portage"):
 			    clst_unpack_portage_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack_portage")
 			
@@ -497,8 +544,8 @@ class generic_stage_target(generic_target):
 			else:
 		    		if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
 			   		print "Cleaning up existing portage tree ..."
-			   	cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
-				    	"Error removing existing snapshot directory.")
+					cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
+					   "Error removing existing snapshot directory.")
 			
 		    		print "Unpacking portage tree ..."
 		    		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
@@ -567,6 +614,7 @@ class generic_stage_target(generic_target):
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount "+src
+			    
 	
 	def unbind(self):
 		ouch=0

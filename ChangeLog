@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.310 2005/07/27 19:17:18 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.311 2005/07/27 20:30:50 rocket Exp $
+
+  27 Jul 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/catalyst_support.py, modules/generic_stage_target.py:
+  Add support to cache the snapshot dir. add snapcache to options. add
+  snapshot_cache= to override the default location of the cache in
+  catalyst.conf (eg snapshot_cache="/mnt/catalyst/snapshot")
 
   27 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   +livecd/files/Getting_Online.txt, +livecd/files/README.txt:

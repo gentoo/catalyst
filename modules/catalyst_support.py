@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.51 2005/07/07 21:35:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.52 2005/07/27 20:30:50 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -112,6 +112,8 @@ valid_config_file_values.append("options")
 valid_config_file_values.append("DEBUG")
 valid_config_file_values.append("VERBOSE")
 valid_config_file_values.append("PURGE")
+valid_config_file_values.append("SNAPCACHE")
+valid_config_file_values.append("snapshot_cache")
 
 verbosity=1
 
@@ -410,62 +412,6 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                         mypid.pop(-1)
         cleanup(mypid)
         return 0
-
-
-
-
-
-
-
-
-
-
-
-#def spawn(mystring,debug=0,fd_pipes=None):
-#	"""
-#	apparently, os.system mucks up return values, so this code
-#	should fix that.
-#
-#	Taken from portage.py - thanks to carpaski@gentoo.org
-#	"""
-#	print "Running command \""+mystring+"\""
-#	myargs=[]
-#	mycommand = "/bin/bash"
-#	if debug:
-#		myargs=["bash","-x","-c",mystring]
-#	else:
-#		myargs=["bash","-c",mystring]
-#	
-#	mypid=os.fork()
-#	if mypid==0:
-#		if fd_pipes:
-#			os.dup2(fd_pipes[0], 0) # stdin  -- (Read)/Write
-#			os.dup2(fd_pipes[1], 1) # stdout -- Read/(Write)
-#			os.dup2(fd_pipes[2], 2) # stderr -- Read/(Write)
-#		try:
-#			os.execvp(mycommand,myargs)
-#		except Exception, e:
-#			raise CatalystError,myexc
-#		
-		# If the execve fails, we need to report it, and exit
-		# *carefully* --- report error here
-#		os._exit(1)
-#		sys.exit(1)
-#		return # should never get reached
-#	try:
-#		retval=os.waitpid(mypid,0)[1]
-#		if (retval & 0xff)==0:
-#			return (retval >> 8) # return exit code
-#		else:
-#			return ((retval & 0xff) << 8) # interrupted by signal
-#	
-#	except:	
-#	       	os.kill(mypid,signal.SIGTERM)
-#		if os.waitpid(mypid,os.WNOHANG)[1] == 0:
-#		# feisty bugger, still alive.
-#			os.kill(mypid,signal.SIGKILL)
-#		raise
-#
 
 def cmd(mycmd,myexc=""):
 	try:

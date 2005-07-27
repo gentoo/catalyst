@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.86 2005/07/06 18:28:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.87 2005/07/27 20:30:50 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -52,7 +52,8 @@ def parse_config(myconfig):
 
 	confdefaults={ "storedir":"/var/tmp/catalyst",\
 		"sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",\
-		"portdir":"/usr/portage","options":""}
+		"portdir":"/usr/portage","options":"",\
+		"snapshot_cache":"/var/tmp/catalyst/snapshot_cache" }
 		
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
@@ -100,6 +101,10 @@ def parse_config(myconfig):
 	if "pkgcache" in string.split(conf_values["options"]):
 		print "Package cache support enabled."
 		conf_values["PKGCACHE"]="1"
+	
+	if "snapcache" in string.split(conf_values["options"]):
+		print "Snapshot cache support enabled."
+		conf_values["SNAPCACHE"]="1"
 
 	if "kerncache" in string.split(conf_values["options"]):
 		print "Kernel cache support enabled."
