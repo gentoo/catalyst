@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.55 2005/08/09 19:25:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.56 2005/08/09 21:44:45 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -496,7 +496,7 @@ class generic_stage_target(generic_target):
 			self.mount_safety_check()
 			
 			if invalid_snapshot:
-				print "InValid Resume point detected, cleaning up  ..."
+				print "No Valid Resume point detected, cleaning up  ..."
 				#os.remove(self.settings["autoresume_path"]+"dir_setup")	
 				self.clear_autoresume()
 				self.clear_chroot()

@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.315 2005/08/09 19:25:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.316 2005/08/09 21:44:45 rocket Exp $
+
+  09 Aug 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, targets/support/functions.sh:
+  fix bug in exec_in_chroot for stage1 target
 
   09 Aug 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py:

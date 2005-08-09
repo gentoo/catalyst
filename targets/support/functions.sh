@@ -40,13 +40,13 @@ exec_in_chroot(){
 		chroot_path=${clst_chroot_path}${subdir}
 		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh ${subdir}/tmp/
 		echo "Running ${file_name} in chroot ${chroot_path}" 
-		${clst_CHROOT} ${chroot_path} ${subdir}/tmp/${file_name} || exit 1
+		${clst_CHROOT} ${chroot_path} /tmp/${file_name} || exit 1
 	else
 		copy_to_chroot ${1} tmp/
 		chroot_path=${clst_chroot_path}
 		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh tmp/
 		echo "Running ${file_name} in chroot ${chroot_path}" 
-		${clst_CHROOT} ${chroot_path}/ tmp/${file_name} || exit 1
+		${clst_CHROOT} ${chroot_path}/ /tmp/${file_name} || exit 1
 	fi
 
 	rm -f ${chroot_path}/tmp/${file_name}
