@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.7 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.8 2005/08/09 19:02:31 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 
@@ -15,13 +15,13 @@ case $1 in
 		shift
 		export clst_kname="$1"
 		# if we have our own linuxrc, copy it in
-		if [ -n "${clst_livecd_linuxrc}" ]
+		if [ -n "${clst_linuxrc}" ]
 		then
-			cp -a ${clst_livecd_linuxrc} ${clst_chroot_path}/tmp/linuxrc
+			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
-		rm -f ${clst_chroot_path}/tmp/linuxrc
+		delete_from_chroot tmp/linuxrc
 		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
 		extract_modules ${clst_chroot_path} ${clst_kname}
 		extract_kernel ${clst_chroot_path}/boot ${clst_kname}

@@ -1,9 +1,15 @@
 #!/bin/bash
 
-if [ -e /usr/bin/X ]; then
-	if [ -e /etc/startx ]; then
-		rm -f /etc/startx
-		##STARTX
-		cat /etc/motd
+if [ ! $(grep nox /proc/cmdline) ]
+then
+    if [ -x /usr/bin/X ]
+    then
+	if [ -e /etc/startx ]
+	then
+	    rm -f /etc/startx
+	    ##STARTX
+	    [ -f /etc/motd ] && cat /etc/motd
 	fi
+    fi
 fi
+

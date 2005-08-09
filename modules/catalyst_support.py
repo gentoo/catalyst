@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.53 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.54 2005/08/09 19:02:31 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -627,12 +627,12 @@ def ismount(path):
 	"enhanced to handle bind mounts"
 	if os.path.ismount(path):
 		return 1
-	a=open("/proc/mounts","r")
+	a=popen("mount")
 	mylines=a.readlines()
 	a.close()
 	for line in mylines:
 		mysplit=line.split()
-		if pathcompare(path,mysplit[1]):
+		if pathcompare(path,mysplit[2]):
 			return 1
 	return 0
 

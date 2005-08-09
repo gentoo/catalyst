@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.46 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.47 2005/08/09 19:02:31 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -19,11 +19,12 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values.extend(self.required_values)
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
-			"livecd/motd","livecd/overlay","livecd/modblacklist","livecd/splash_theme",\
+			"livecd/readme","livecd/motd","livecd/overlay",\
+			"livecd/modblacklist","livecd/splash_theme","livecd/splash_type",\
 			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
-			"livecd/root_overlay","livecd/devmanager","livecd/splash_type",\
+			"livecd/root_overlay","livecd/devmanager","livecd/users",\
 			"gamecd/conf","livecd/users","portage_overlay","livecd/cdfstype",\
-			"livecd/linuxrc","livecd/bootargs"])
+			"livecd/linuxrc","livecd/bootargs","gamecd/conf"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):

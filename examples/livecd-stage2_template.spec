@@ -63,7 +63,6 @@ portage_confdir:
 # zisofs - This uses in-kernel compression and is supported on all platforms.
 # normal - This creates a loop without compression.
 # noloop - This copies the files to the CD directly, withuot using a loopback.
-# gcloop - This is deprecated and only provided for backwards compatibility.
 # example:
 # livecd/cdfstype: squashfs
 livecd/cdfstype:
@@ -119,12 +118,26 @@ livecd/splash_type:
 # livecd/splash_theme: livecd-2005.0
 livecd/splash_theme:
 
+# This is a set of arguments that get passed to the bootloader for your CD.  It
+# is used on the x86/amd64 release media to enable keymap selection.
+# example:
+# livecd/bootargs: dokeymap
+livecd/bootargs:
+
 # This is a set of arguments that will be passed to genkernel for all kernels
 # defined in this target.  It is useful for passing arguments to genkernel that
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm2 --dmraid
 livecd/gk_mainargs:
+
+# This option allows you to specify your own linuxrc script for genkernel to use
+# when building your CD.  This is not checked for functionality, so it is up to
+# you to debug your own script.  We do not use one for the official release
+# media, so there will not be one listed below.
+# example:
+# livecd/linuxrc:
+livecd/linuxrc:
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -145,6 +158,14 @@ livecd/linuxrc:
 # livecd/type: gentoo-release-minimal
 livecd/type:
 
+# This is for the README.txt on the root of the CD.  For Gentoo releases, we
+# use a default README.txt, and this will be used on your CD if you do not
+# provide one yourself.  Since we do not use this for the official releases, it
+# is left blank below.
+# example:
+# livecd/readme:
+livecd/readme:
+
 # This is for the CD's message of the day.  It is not required for official
 # release media, as catalyst builds a default motd when the livecd/type is set
 # to one of the gentoo-* options.  This setting overrides the default motd even
@@ -162,10 +183,11 @@ livecd/motd:
 livecd/modblacklist:
 
 # This is for adding init scripts to runlevels.  The syntax for the init script
-# is the script name, followed by a colon, followed by the runlevel in which you
-# want the script to run.  It looks like spind:default and is space delimited.
+# is the script name, followed by a pipe, followed by the runlevel in which you
+# want the script to run.  It looks like spind|default and is space delimited.
 # We do not use this on the official media, as catalyst sets up the runlevels
 # correctly for us.  Since we do not use this, it is left blank below.
+# This option will automatically create missing runlevels
 # example:
 # livecd/rcadd:
 livecd/rcadd:
@@ -216,7 +238,8 @@ livecd/xinitrc:
 # This option is used to create non-root users on your CD.  It takes a space
 # separated list of user names.  These users will be added to the following
 # groups: users,wheel,audio,games,cdrom,usb
-# If this is specified in your spec file, then the first user is also the user # used to start X. Since this is not used on the release media, it is blank.
+# If this is specified in your spec file, then the first user is also the user
+# used to start X. Since this is not used on the release media, it is blank.
 # example:
 # livecd/users:
 livecd/users:
@@ -276,13 +299,6 @@ boot/kernel/gentoo/use:
 # example:
 # boot/kernel/gentoo/extraversion:
 boot/kernel/gentoo/extraversion:
-
-# This option is a list of packages which genkernel will emerge after the kernel
-# has been configured, but before it is compiled.  This option is used for the
-# exclusive purpose of including our gensplash theme into the kernel bzImage.
-# example:
-# boot/kernel/gentoo/postconf: splashutils splash-themes-livecd
-boot/kernel/gentoo/postconf:
 
 # This option is for merging kernel-dependent packages and external modules that
 # are configured against this kernel label.

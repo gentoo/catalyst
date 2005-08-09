@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/hppa.py,v 1.5 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/hppa.py,v 1.6 2005/08/09 19:02:31 rocket Exp $
 
 import builder,os
 from catalyst_support import *
@@ -12,7 +12,7 @@ class generic_hppa(builder.generic):
 		self.settings["mainarch"]="hppa"
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
-		self.settings["CXXFLAGS"]="-O1 -pipe"
+		self.settings["CXXFLAGS"]="-O2 -pipe"
 
 class arch_hppa(generic_hppa):
 	"Builder class for hppa systems"

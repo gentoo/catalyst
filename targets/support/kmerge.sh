@@ -45,7 +45,7 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --no-udev"
 	fi
 
-	if [ -n "${clst_livecd_linuxrc}" ]
+	if [ -n "${clst_linuxrc}" ]
 	then
 		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"
 	fi

@@ -1,6 +1,6 @@
 # portage snapshot example specfile
 
-# Thsi is the target for creating a snapshot.
+# This is the target for creating a snapshot.
 # example:
 # target: snapshot
 target:
@@ -13,5 +13,5 @@ version_stamp:
 # This option specifies the location to a portage overlay that you would like to
 # have included in this snapshot.
 # example:
-# portdir_overlay: /usr/local/portdir_overlay
+# portdir_overlay: /usr/local/portage
 portdir_overlay:

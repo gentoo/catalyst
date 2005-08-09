@@ -46,16 +46,6 @@ create_noloop() {
 	
 }
 
-create_gcloop() {
-	echo "Creating gcloop..."
-	export loopname="image.gloop"
-	create_normal_loop
-	compress_gcloop_ucl -b 131072 -c 10 "$1/livecd.loop" "$1/livecd.gcloop" || die "compress_gcloop_ucl failed, did you emerge gcloop?"
-	rm -f "$1/livecd.loop"
-	# only a gcloop image should exist in target path
-	
-}
-
 create_squashfs() {
 	echo "Creating squashfs..."
 	export loopname="image.squashfs"

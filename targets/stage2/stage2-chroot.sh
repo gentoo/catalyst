@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.14 2005/07/07 17:21:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.15 2005/08/09 19:02:31 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -12,7 +12,7 @@ setup_myemergeopts
 
 
 ## setup the environment
-export FEATURES="${clst_myfeatures}"
+export FEATURES="${clst_myfeatures} nodoc noman noinfo"
 
 if [ "${clst_VERBOSE}" ]
 then
@@ -28,3 +28,4 @@ fi
 
 ## START BUILD
 /usr/portage/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
+

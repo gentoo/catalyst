@@ -20,10 +20,6 @@ case ${clst_fstype} in
 		create_noloop $1
 		loopret=$?
 	;;
-	gcloop)
-		create_gcloop $1
-		loopret=$?
-	;;
 	squashfs)
 		create_squashfs $1
 		loopret=$?

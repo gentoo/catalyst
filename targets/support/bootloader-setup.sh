@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.10 2005/07/05 17:48:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.11 2005/08/09 19:02:31 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -34,27 +34,9 @@ case ${clst_mainarch} in
 		icfg=$1/boot/palo.conf
 		kmsg=$1/boot/kernels.msg
 		hmsg=$1/boot/help.msg
-		echo "--commandline=0/${first} initrd=${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
+		echo "--commandline=0/${first} initrd=${first}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
-		echo "--ramdisk=boot/${x}.igz" >> ${icfg}
-
-#		for x in $clst_boot_kernel
-#		do
-#
-#			eval custom_kopts=\$${x}_kernelopts
-#			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-#			echo >> $icfg
-#			echo "label $x" >> $icfg
-#			echo "	kernel $x" >> $icfg
-#			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot vga=0x317 splash=silent" >> $icfg
-#			echo >> $icfg
-#			echo "   $x" >> $kmsg
-#			echo "label $x-nofb" >> $icfg
-#			echo "	kernel $x" >> $icfg
-#			echo "	append initrd=$x.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot" >> $icfg
-#			echo >> $icfg
-#			echo "   ${x}-nofb" >> $kmsg
-#		done
+		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		;;
 	ppc)
 		# PPC requirements: 
@@ -69,6 +51,33 @@ case ${clst_mainarch} in
 		# For now we supply a prebuilt file, prebuilt configuration 
 		# and prebuilt boot message. This can be enhanced later on
 		# but the following suffices for now:
+		
+		# this sets up the config file for yaboot
+		icfg=$1/boot/yaboot.conf
+		kmsg=$1/boot/boot.msg
+		echo "default ${first}" > ${icfg}
+		echo "timeout 300" >> ${icfg}
+		echo "device=cd:" >> ${icfg}
+		echo "root=/dev/ram" >> ${icfg}
+		echo "fgcolor=white" >> ${icfg}
+		echo "bgcolor=black" >> ${icfg}
+		echo "message=/boot/boot.msg" >> ${icfg}
+		for x in ${clst_boot_kernel}
+		do
+			eval custom_kopts=\$${x}_kernelopts
+			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
+			echo >> ${icfg}
+			echo "image=/boot/${x}" >> ${icfg}
+			echo "initrd=/boot/${x}.igz" >> ${icfg}
+			echo "label=${x}" >> ${icfg}
+			echo "read-write" >> ${icfg}
+			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+			then
+			    echo "append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+			else
+			    echo "append ${default_append_line} vga=791 splash=silent ${keymap}" >> ${icfg}
+			fi
+		done
 		;;
 	sparc*)
 		scfg=$1/boot/silo.conf

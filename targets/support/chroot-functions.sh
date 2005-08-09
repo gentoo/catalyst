@@ -72,6 +72,9 @@ setup_myfeatures(){
 		    USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
 		    #touch /tmp/.clst_distcc
 		#fi
+		mkdir -p /etc/distcc
+		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
+
 	fi
 }
 

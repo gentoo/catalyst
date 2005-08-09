@@ -1,11 +1,9 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.9 2005/07/06 14:10:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.10 2005/08/09 19:02:31 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
-#. ${clst_sharedir}/targets/${clst_target}/${clst_mainarch}-archscript.sh
 
-#source ${clst_livecd_archscript}
 ## START RUNSCRIPT
 
 if [ ! -f /usr/bin/mkisofs ]
@@ -111,10 +109,17 @@ case ${clst_mainarch} in
 		# Seems silo 1.3.x+ breaks on newer machines
 		# when booting from CD (current as of silo 1.4.8)
 		mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
-		/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' \
-		-s '/boot/silo.conf' -abstract 'Gentoo Linux Sparc' -copyright 'Gentoo Foundation' \
-		-P 'Gentoo Linux Sparc' -p 'Gentoo Linux Sparc' -V "${clst_iso_volume_id}" \
-		-A 'G entoo Linux Sparc' ${clst_target_path}  || die "Cannot make ISO image"
+		case ${clst_livecd_cdfstype} in
+		    zisofs)
+			/tmp/mkisofs.sparc.fu -z -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
+			-V "${iso_volume_id}" ${clst_cdroot_path}  || die "Cannot make ISO image"
+		    ;;
+		    *)
+			/tmp/mkisofs.sparc.fu -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
+			-V "${iso_volume_id}" ${clst_cdroot_path}  || die "Cannot make ISO image"
+		    ;;
+		esac
+
 		rm /tmp/mkisofs.sparc.fu
 															
 	;;

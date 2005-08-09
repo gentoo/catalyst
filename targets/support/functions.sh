@@ -19,8 +19,11 @@ copy_to_chroot(){
 }
 
 delete_from_chroot(){
-	echo "removing ${clst_chroot_path}${1} from the chroot"
-	rm -f ${clst_chroot_path}${1}
+	if [ -e ${clst_chroot_path}${1} ]
+	then
+	    echo "removing ${clst_chroot_path}${1} from the chroot"
+	    rm -f ${clst_chroot_path}${1}
+	fi
 }
 
 exec_in_chroot(){
@@ -189,9 +192,6 @@ check_filesystem_type(){
 		cmdline_opts="${cmdline_opts} looptype=zisofs loop=/zisofs"
 		;;
 	noloop)
-		;;
-	gcloop)
-		cmdline_opts="${cmdline_opts} looptype=gcloop loop=/image.gcloop"
 		;;
 	squashfs)
 		cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.19 2005/07/08 18:57:39 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.20 2005/08/09 19:02:31 rocket Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -184,12 +184,21 @@ then
 	then
 		cp /usr/lib/hotplug/firmware/* /lib/firmware
 	fi
-	tar cvjpf /lib/firmware.tar.bz2 .
+	/bin/tar cjpf /lib/firmware.tar.bz2 .
 	rm -f /lib/firmware/*
 	mkdir -p /usr/lib/hotplug
 	rm -rf /usr/lib/hotplug/firmware
 	ln -sf /lib/firmware /usr/lib/hotplug/firmware
 fi
+
+
+# Clear out locales
+case ${clst_livecd_type} in
+       gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
+               rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
+       ;;
+esac
+
 
 # Post configuration
 case ${clst_livecd_type} in

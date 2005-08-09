@@ -81,6 +81,8 @@
      * Regular Ethernet users should continue with Default: Using net-setup
      * ADSL users should continue with Alternative: Using RP-PPPoE
      * PPTP users should continue with Alternative: Using PPTP
+     * Speedtouch USB users should continue with Alternative: Using Speedtouch
+       USB
 
    Default: Using net-setup
 
@@ -147,6 +149,41 @@
 
    Now continue with Preparing the Disks.
 
+   Alternative: Using Speedtouch USB
+
+   First, you need to help hotplug in finding the Alcatel Speedtouch USB
+   modem. Add the following line to /etc/hotplug/usb.usermap:
+
+   Code Listing 10: Adding Alcatel Speedtouch support
+   speedtouch 0x0003 0x06b9 0x4061 0x0000 0x00 0x00 0x00 0x00 0x00 0x00 0x00000000 "Alcatel SpeedTouch USB"
+   
+   Next, create /etc/ppp/peers/adsl and enter the following information:
+
+   Code Listing 11: Editing /etc/ppp/peers/adsl
+   noipdefault
+   defaultroute
+   # Change this to the login for your ISP.
+   user "user@provider.com"
+   passive
+   persist
+   holdoff 4
+   maxfail 25
+   plugin pppoatm.so
+   # Changes by country - http://www.linux-usb.org/SpeedTouch/faq/index.html#q12
+   0.38
+   
+   If your ISP provides the name servers, add "usepeerdns" to it as well.
+
+   Now add your login and password to the /etc/ppp/chap-secrets file:
+
+   Code Listing 12: Setting the user name and password
+   "user@provider.com"  *  "yourpassword"
+
+   Now you are all set: start up your internet connection using pppd:
+
+   Code Listing 13: Starting the Internet connection
+   # pppd call adsl
+   
    c. Manual Network Configuration
 
    Loading the Appropriate Network Modules
@@ -162,20 +199,20 @@
 
    To find out what kernel modules we provide for networking, use ls:
 
-   Code Listing 10: Searching for provided modules                            
+   Code Listing 14: Searching for provided modules                            
    # ls /lib/modules/`uname -r`/kernel/drivers/net                            
 
    If you find a driver for your network card, use modprobe to load the
    kernel module:
 
-   Code Listing 11: Using modprobe to load a kernel module                    
+   Code Listing 15: Using modprobe to load a kernel module                    
    (As an example, we load the pcnet32 module)                                
    # modprobe pcnet32                                                         
 
    To check if your network card is now detected, use ifconfig. A detected
    network card would result in something like this:
 
-   Code Listing 12: Testing availability of your network card, successful     
+   Code Listing 16: Testing availability of your network card, successful     
    # ifconfig eth0                                                            
    eth0      Link encap:Ethernet  HWaddr FE:FD:00:00:00:00                    
              BROADCAST NOARP MULTICAST  MTU:1500  Metric:1                    
@@ -187,7 +224,7 @@
    If however you receive the following error, the network card is not
    detected:
 
-   Code Listing 13: Testing availability of your network card, failed         
+   Code Listing 17: Testing availability of your network card, failed         
    # ifconfig eth0                                                            
    eth0: error fetching interface information: Device not found               
 
@@ -219,7 +256,7 @@
    service). To have a network interface receive this information
    automatically, use dhcpcd:
 
-   Code Listing 14: Using dhcpcd                                              
+   Code Listing 18: Using dhcpcd                                              
    # dhcpcd eth0                                                              
    Some network admins require that you use the                               
    hostname and domainname provided by the DHCP server.                       
@@ -241,7 +278,7 @@
    settings on your card, you can use iwconfig. Running iwconfig might show
    something like:
 
-Code Listing 15: Showing the current wireless settings                           
+Code Listing 19: Showing the current wireless settings                           
 # iwconfig eth0                                                                  
 eth0      IEEE 802.11-DS  ESSID:"GentooNode"                                     
           Mode:Managed  Frequency:2.442GHz  Access Point: 00:09:5B:11:CC:F2      
@@ -262,7 +299,7 @@ eth0      IEEE 802.11-DS  ESSID:"GentooNode"
    you are not using WEP, then your wireless is working. If you need to
    change your ESSID, or add a WEP key, you can issue the following commands:
 
-   Code Listing 16: Changing ESSID and/or adding WEP key                      
+   Code Listing 20: Changing ESSID and/or adding WEP key                      
    (This sets the network name to "GentooNode")                               
    # iwconfig eth0 essid GentooNode                                           
                                                                               
@@ -295,7 +332,7 @@ eth0      IEEE 802.11-DS  ESSID:"GentooNode"
    255. Well, at least that is how we perceive it. In reality, such an IP
    address consists of 32 bits (ones and zeros). Let's view an example:
 
-   Code Listing 17: Example of an IP address                                  
+   Code Listing 21: Example of an IP address                                  
    IP Address (numbers):   192.168.0.2                                        
    IP Address (bits):      11000000 10101000 00000000 00000010                
                            -------- -------- -------- --------                
@@ -312,7 +349,7 @@ eth0      IEEE 802.11-DS  ESSID:"GentooNode"
    on the ones is the network-part, the other one is the host-part. As usual,
    the netmask can be written down as an IP-address.
 
-   Code Listing 18: Example of network/host separation                        
+   Code Listing 22: Example of network/host separation                        
    IP-address:    192      168      0         2                               
                11000000 10101000 00000000 00000010                            
    Netmask:    11111111 11111111 11111111 00000000                            
@@ -327,7 +364,7 @@ eth0      IEEE 802.11-DS  ESSID:"GentooNode"
    network, but with only ones as host-part. Every host on your network
    listens to this IP address. It is truly meant for broadcasting packets.
 
-   Code Listing 19: Broadcast address                                         
+   Code Listing 23: Broadcast address                                         
    IP-address:    192      168      0         2                               
                11000000 10101000 00000000 00000010                            
    Broadcast:  11000000 10101000 00000000 11111111                            
@@ -369,26 +406,26 @@ eth0      IEEE 802.11-DS  ESSID:"GentooNode"
    with your IP address, ${BROADCAST} with your broadcast address and
    ${NETMASK} with your netmask:
 
-   Code Listing 20: Using ifconfig                                            
+   Code Listing 24: Using ifconfig                                            
    # ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up    
 
    Now set up routing using route. Substitute ${GATEWAY} with your gateway IP
    address:
 
-   Code Listing 21: Using route                                               
+   Code Listing 25: Using route                                               
    # route add default gw ${GATEWAY}                                          
 
    Now open /etc/resolv.conf with your favorite editor (in our example, we
    use nano):
 
-   Code Listing 22: Creating /etc/resolv.conf                                 
+   Code Listing 26: Creating /etc/resolv.conf                                 
    # nano -w /etc/resolv.conf                                                 
 
    Now fill in your nameserver(s) using the following as a template. Make
    sure you substitute ${NAMESERVER1} and ${NAMESERVER2} with the appropriate
    nameserver addresses:
 
-   Code Listing 23: /etc/resolv.conf template                                 
+   Code Listing 27: /etc/resolv.conf template                                 
    nameserver ${NAMESERVER1}                                                  
    nameserver ${NAMESERVER2}                                                  
 

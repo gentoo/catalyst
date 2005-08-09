@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.20 2005/07/07 19:57:17 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.21 2005/08/09 19:02:31 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -24,6 +24,7 @@ setup_portage
 export USE_ORDER="env:pkg:conf:defaults"
 
 unset DISTDIR
+
 #don't grab MS core fonts, etc.
 export USE="${USE} ${clst_grp_use}"
 	
