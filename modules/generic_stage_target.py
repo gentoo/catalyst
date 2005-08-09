@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.53 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.54 2005/08/09 14:24:45 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -511,7 +511,6 @@ class generic_stage_target(generic_target):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 			
 			print display_msg
-			print unpack_cmd
 			cmd(unpack_cmd,error_msg)
 
 			if self.settings.has_key("source_path_md5sum"):
