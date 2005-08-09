@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.314 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.315 2005/08/09 19:25:08 rocket Exp $
+
+  09 Aug 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py:
+  fix missing os. in os.popen. and clear the autoresume flags if the chroot is
+  invalid. Fix SEEDCACHE unpack issue when needing to use tarball.
 
   09 Aug 2005; Eric Edgar <rocket@gentoo.org> AUTHORS, arch/hppa.py,
   catalyst, examples/livecd-stage2_template.spec,

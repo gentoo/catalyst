@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.54 2005/08/09 14:24:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.55 2005/08/09 19:25:08 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -472,12 +472,14 @@ class generic_stage_target(generic_target):
 
 		clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
 		
-		if self.settings.has_key("SNAPCACHE"): 
+		if self.settings.has_key("SEEDCACHE") and os.path.isdir(self.settings["source_path"]): 
 			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
 			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 		else:
+			display_msg="\nStarting tar extract from "+self.settings["source_path"]+"\nto "+\
+				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 		
@@ -496,7 +498,7 @@ class generic_stage_target(generic_target):
 			if invalid_snapshot:
 				print "InValid Resume point detected, cleaning up  ..."
 				#os.remove(self.settings["autoresume_path"]+"dir_setup")	
-				os.remove(self.settings["autoresume_path"]+"unpack")	
+				self.clear_autoresume()
 				self.clear_chroot()
 				#self.dir_setup()	
 			
