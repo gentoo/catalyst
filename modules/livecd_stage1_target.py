@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.14 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.15 2005/08/09 14:12:26 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -16,12 +16,12 @@ class livecd_stage1_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_action_sequence(self):
-		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"unbind", "clean","clear_autoresume"]
         def set_target_path(self):
-		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
@@ -49,7 +49,7 @@ class livecd_stage1_target(generic_stage_target):
 	def set_pkgcache_path(self):
 	    if self.settings.has_key("pkgcache_path"):
 		if type(self.settings["pkgcache_path"]) != types.StringType:
-		    self.settings["pkgcache_path"]=string.join(self.settings["pkgcache_path"])
+		    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
 	    else:
 		generic_stage_target.set_pkgcache_path(self)
 

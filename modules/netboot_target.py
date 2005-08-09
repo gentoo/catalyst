@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.4 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.5 2005/08/09 14:12:26 rocket Exp $
 
 """
 Builder class for a netboot build.
@@ -59,7 +59,7 @@ class netboot_target(generic_stage_target):
 
 	def set_dest_path(self):
 		#destpath=self.settings["chroot_path"]+self.settings["root_path"]
-		destpath=self.settings["chroot_path"]+"/tmp/image"
+		destpath=normpath(self.settings["chroot_path"]+"/tmp/image")
 
 #	def build_packages(self):
 #		# build packages
@@ -127,7 +127,7 @@ class netboot_target(generic_stage_target):
 
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",
+	    self.settings["action_sequence"]=["unpack","unpack_snapshot",
 	    				"config_profile_link","setup_confdir","bind","chroot_setup",\
 						"setup_environment","build_packages","build_busybox",\
 						"build_kernel","copy_files_to_image",\

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.8 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.9 2005/08/09 14:12:26 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -21,7 +21,7 @@ class stage4_target(generic_stage_target):
 	def set_pkgcache_path(self):
 	    if self.settings.has_key("pkgcache_path"):	
 		if type(self.settings["pkgcache_path"]) != types.StringType:
-		    self.settings["pkgcache_path"]=string.join(self.settings["pkgcache_path"])
+		    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
 	    else:
 		generic_stage_target.set_pkgcache_path(self)
 
@@ -29,7 +29,7 @@ class stage4_target(generic_stage_target):
 		self.settings["cleanables"]=["/var/tmp/*","/tmp/*"]
 
 	def set_action_sequence(self):
-		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"build_kernel","bootloader","root_overlay","fsscript",

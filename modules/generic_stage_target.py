@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.52 2005/07/27 20:30:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.53 2005/08/09 14:12:26 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -12,6 +12,7 @@ from catalyst_support import *
 from generic_target import *
 from stat import *
 import pdb
+import catalyst_lock
 class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
@@ -106,10 +107,10 @@ class generic_stage_target(generic_target):
 		# set paths
 		self.set_snapshot_path()
 		self.set_snapcache_path()
+		self.set_root_path()
 		self.set_source_path()
 		self.set_chroot_path()
 		self.set_autoresume_path()
-		self.set_root_path()
 		self.set_dest_path()
 		self.set_stage_path()
 		self.set_target_path()
@@ -217,11 +218,12 @@ class generic_stage_target(generic_target):
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 
 	def set_pkgcache_path(self):
-		self.settings["pkgcache_path"]=self.settings["storedir"]+"/packages/"+\
-			self.settings["target_subpath"]
+		self.settings["pkgcache_path"]=normpath(self.settings["storedir"]+"/packages/"+\
+			self.settings["target_subpath"]+"/")
 
 	def set_target_path(self):
-		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+".tar.bz2"
+		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
+			self.settings["target_subpath"]+".tar.bz2")
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 			print "Resume point detected, skipping target path setup operation..."
@@ -234,6 +236,7 @@ class generic_stage_target(generic_target):
 		
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
 				os.makedirs(self.settings["storedir"]+"/builds/")
+
 	def set_archscript(self):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/archscript"):
 		print "\nWarning!!!  "
@@ -260,12 +263,12 @@ class generic_stage_target(generic_target):
 
 	def set_cdtar(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/cdtar"):
-			self.settings["cdtar"]=self.settings[self.settings["spec_prefix"]+"/cdtar"]
+			self.settings["cdtar"]=normpath(self.settings[self.settings["spec_prefix"]+"/cdtar"])
 			del self.settings[self.settings["spec_prefix"]+"/cdtar"]
 	
 	def set_iso(self):	
 		if self.settings.has_key(self.settings["spec_prefix"]+"/iso"):
-			self.settings["iso"]=self.settings[self.settings["spec_prefix"]+"/iso"]
+			self.settings["iso"]=normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
 			del self.settings[self.settings["spec_prefix"]+"/iso"]
 
 	def set_fstype(self):	
@@ -302,51 +305,66 @@ class generic_stage_target(generic_target):
 				del self.settings[self.settings["spec_prefix"]+"/fsops"]
 	
 	def set_source_path(self):
-		self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
-		if os.path.isfile(self.settings["source_path"]):
-			if os.path.exists(self.settings["source_path"]):
-				 self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+		if self.settings.has_key("SEEDCACHE") and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")):
+			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
+		else:
+			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+			
+			if os.path.isfile(self.settings["source_path"]):
+				if os.path.exists(self.settings["source_path"]):
+				 	self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+		if os.path.isdir(self.settings["source_path"]):
+			print "Source path set to "+self.settings["source_path"]
+			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
+			print "\tthe source path with then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
+		else:
+			print "Source path set to "+self.settings["source_path"]
+
 	
 	def set_dest_path(self):
-		self.settings["destpath"]=self.settings["chroot_path"]
+		self.settings["destpath"]=normpath(self.settings["chroot_path"])
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*",\
 						"/usr/portage"]
 
 	def set_snapshot_path(self):
-		self.settings["snapshot_path"]=self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2"
+		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
 		if os.path.exists(self.settings["snapshot_path"]):
-		    self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"])
+			self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"])
 	
 	def set_snapcache_path(self):
 		if self.settings.has_key("SNAPCACHE"):
-		    self.settings["snapshot_cache_path"]=self.settings["snapshot_cache"]+"/"+self.settings["snapshot"]+"/"
-		    print "Caching snapshot to " + self.settings["snapshot_cache_path"]
+			self.settings["snapshot_cache_path"]=normpath(self.settings["snapshot_cache"]+"/"+self.settings["snapshot"]+"/")
+			self.snapcache_lock=catalyst_lock.LockDir(self.settings["snapshot_cache_path"])
+			print "Caching snapshot to " + self.settings["snapshot_cache_path"]
 	
 	def set_chroot_path(self):
-		self.settings["chroot_path"]=self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]+"/"
+		# Note the trailing slash is very important and things would break without it
+		self.settings["chroot_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["target_subpath"]+"/")
+		self.chroot_lock=catalyst_lock.LockDir(self.settings["chroot_path"])
 	
 	def set_autoresume_path(self):
-		self.settings["autoresume_path"]=self.settings["storedir"]+"/tmp/"+self.settings["rel_type"]+"/"+\
-			".autoresume-"+self.settings["target"]+"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]+"/"
+		self.settings["autoresume_path"]=normpath(self.settings["storedir"]+"/tmp/"+\
+			self.settings["rel_type"]+"/"+".autoresume-"+self.settings["target"]+\
+			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]+"/")
 		print "The autoresume path is " + self.settings["autoresume_path"]
 		if not os.path.exists(self.settings["autoresume_path"]):
-		    os.makedirs(self.settings["autoresume_path"],0755)
+			os.makedirs(self.settings["autoresume_path"],0755)
 	
 	def set_controller_file(self):
-		self.settings["controller_file"]=self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+"-controller.sh"
+		self.settings["controller_file"]=normpath(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+"-controller.sh")
 	def set_iso_volume_id(self):
                 if self.settings.has_key(self.settings["spec_prefix"]+"/volid"):
-		    self.settings["iso_volume_id"] = string.join(self.settings[self.settings["spec_prefix"]+"/volid"])
-		    if len(self.settings["iso_volume_id"])>32:
-			raise CatalystError,"ISO VOLUME ID: volid must not exceed 32 characters."
+			self.settings["iso_volume_id"] = string.join(self.settings[self.settings["spec_prefix"]+"/volid"])
+			if len(self.settings["iso_volume_id"])>32:
+				raise CatalystError,"ISO VOLUME ID: volid must not exceed 32 characters."
 		else:
-		    self.settings["iso_volume_id"] = "catalyst " + self.settings["snapshot"] 
+			self.settings["iso_volume_id"] = "catalyst " + self.settings["snapshot"] 
 															
 	def set_action_sequence(self):
 		#Default action sequence for run method
-		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"config_profile_link","setup_confdir","bind","chroot_setup",\
 				"setup_environment","run_local","preclean","unbind","clean","capture","clear_autoresume"]
 	
@@ -356,7 +374,7 @@ class generic_stage_target(generic_target):
 			del self.settings[self.settings["spec_prefix"]+"/use"]
 
 	def set_stage_path(self):
-			self.settings["stage_path"]=self.settings["chroot_path"]
+			self.settings["stage_path"]=normpath(self.settings["chroot_path"])
 	
 	def set_mounts(self):
 		pass
@@ -448,113 +466,120 @@ class generic_stage_target(generic_target):
 				except CatalystError:
 					raise CatalystError, "Unable to auto-unbind "+x
 		
-	def dir_setup(self):
-		if self.settings.has_key("AUTORESUME") \
-			and os.path.exists(self.settings["autoresume_path"]+"dir_setup"):
-			print "Resume point detected, skipping dir_setup operation..."
-		else:
-		    print "Setting up directories..."
-		    self.mount_safety_check()
-		
-		    self.clear_chroot()
-
-		    if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-			    os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
-			
-		    if not os.path.exists(self.settings["chroot_path"]):
-			    os.makedirs(self.settings["chroot_path"],0755)
-		
-		    if self.settings.has_key("PKGCACHE"):	
-			    if not os.path.exists(self.settings["pkgcache_path"]):
-				    os.makedirs(self.settings["pkgcache_path"],0755)
-	
-		    touch(self.settings["autoresume_path"]+"dir_setup")
-		
 	def unpack(self):
-			if os.path.exists(self.settings["autoresume_path"]+"unpack"):
-				clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
-			
-			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["autoresume_path"]+"unpack") \
-				and self.settings["source_path_md5sum"] != clst_unpack_md5sum:
-				    print "InValid Resume point detected, cleaning up  ..."
-				    os.remove(self.settings["autoresume_path"]+"dir_setup")	
-				    os.remove(self.settings["autoresume_path"]+"unpack")	
-				    self.dir_setup()	
-			if self.settings.has_key("AUTORESUME") \
-				and os.path.exists(self.settings["autoresume_path"]+"unpack") \
-				and self.settings["source_path_md5sum"] == clst_unpack_md5sum:
-				    print "Valid Resume point detected, skipping unpack  ..."
-			else:
-		    		print "Unpacking stage..."
-				if not os.path.exists(self.settings["chroot_path"]):
-				    os.makedirs(self.settings["chroot_path"])
+		unpack=True
+		invalid_snapshot=False
 
-		    		cmd("tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"],\
-			    		"Error unpacking ")
-
-				if self.settings.has_key("source_path_md5sum"):
-				    myf=open(self.settings["autoresume_path"]+"unpack","w")
-				    myf.write(self.settings["source_path_md5sum"])
-				    myf.close()
-	
-	def unpack_snapshot(self):		
-
-		if self.settings.has_key("SNAPCACHE"):
-			if os.path.exists(self.settings["snapshot_cache_path"]+"catalyst-md5sum"):
-				snapshot_cache_md5sum=read_from_clst(self.settings["snapshot_cache_path"]+"catalyst-md5sum")
-				if self.settings["snapshot_path_md5sum"] == snapshot_cache_md5sum:
-				    print "Valid snapshot cache, skipping unpack of portage tree..."
-				else:
-				    print "Cleaning up invalid cache at "+self.settings["snapshot_cache_path"]
-
-				    cmd("rm -rf "+self.settings["snapshot_cache_path"],\
-					   "Error removing existing snapshot directory.")
-				    if not os.path.exists(self.settings["snapshot_cache_path"]):
-					os.makedirs(self.settings["snapshot_cache_path"],0755)
-				    print "Unpacking portage tree to snapshot cache ..."
-				    cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
-					self.settings["snapshot_cache_path"],"Error unpacking snapshot")
-				    myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
-				    myf.write(self.settings["snapshot_path_md5sum"])
-				    myf.close()
-			else:
-		    	    if os.path.exists(self.settings["snapshot_cache_path"]):
-				print "Cleaning up existing snapshot cache  ..."
-				cmd("rm -rf "+self.settings["snapshot_cache_path"],\
-					   "Error removing existing snapshot directory.")
-		    	    
-		    	    if not os.path.exists(self.settings["snapshot_cache_path"]):
-				os.makedirs(self.settings["snapshot_cache_path"],0755)
-			    print "Unpacking portage tree to snapshot cache ..."
-			    cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
-				self.settings["snapshot_cache_path"],"Error unpacking snapshot")
-			    myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
-			    myf.write(self.settings["snapshot_path_md5sum"])
-			    myf.close()
+		clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
+		
+		if self.settings.has_key("SNAPCACHE"): 
+			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
+			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
+				self.settings["chroot_path"]+" (This may take some time) ...\n"
+			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 		else:
-		    	if os.path.exists(self.settings["autoresume_path"]+"unpack_portage"):
-			    clst_unpack_portage_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack_portage")
+			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
+			error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+		
+		
+		if self.settings.has_key("AUTORESUME") and self.settings.has_key("SNAPCACHE") \
+			and os.path.exists(self.settings["autoresume_path"]+"unpack"):
+			print "Resume point detected, skipping unpack operation..."
+			unpack=False
+		elif self.settings.has_key("AUTORESUME") and self.settings.has_key("source_path_md5sum"):
+			if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+				invalid_snapshot=True
 			
+		if unpack:
+			self.mount_safety_check()
+			
+			if invalid_snapshot:
+				print "InValid Resume point detected, cleaning up  ..."
+				#os.remove(self.settings["autoresume_path"]+"dir_setup")	
+				os.remove(self.settings["autoresume_path"]+"unpack")	
+				self.clear_chroot()
+				#self.dir_setup()	
+			
+			if not os.path.exists(self.settings["chroot_path"]):
+				os.makedirs(self.settings["chroot_path"])
+
+			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+			
+			if self.settings.has_key("PKGCACHE"):	
+				if not os.path.exists(self.settings["pkgcache_path"]):
+					os.makedirs(self.settings["pkgcache_path"],0755)
+			
+			print display_msg
+			print unpack_cmd
+			cmd(unpack_cmd,error_msg)
+
+			if self.settings.has_key("source_path_md5sum"):
+				myf=open(self.settings["autoresume_path"]+"unpack","w")
+				myf.write(self.settings["source_path_md5sum"])
+				myf.close()
+			else:
+				touch(self.settings["autoresume_path"]+"unpack")
+	
+
+	def unpack_snapshot(self):
+		unpack=True
+		snapshot_cache_md5sum=read_from_clst(self.settings["snapshot_cache_path"]+"catalyst-md5sum")
+		snapshot_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack_portage")
+		
+		if self.settings.has_key("SNAPCACHE"): 
+			destdir=self.settings["snapshot_cache_path"]
+			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+destdir
+			unpack_errmsg="Error unpacking snapshot"
+		    	cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+self.settings["snapshot_cache_path"]+" (This can take a long time)..."
+			cleanup_errmsg="Error removing existing snapshot cache directory."
+			self.snapshot_lock_object=self.snapcache_lock
+			
+			if self.settings["snapshot_path_md5sum"] == snapshot_cache_md5sum:
+				print "Valid snapshot cache, skipping unpack of portage tree ..."
+				unpack=False
+		
+		else:
+			destdir=normpath(self.settings["chroot_path"]+"/usr/portage")
+			cleanup_errmsg="Error removing existing snapshot directory."
+		   	cleanup_msg="Cleaning up existing portage tree (This can take a long time) ..."
+			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+self.settings["chroot_path"]+"/usr"
+			unpack_errmsg="Error unpacking snapshot"
+			self.snapshot_lock_object=self.snapshot_lock
+		
 			if self.settings.has_key("AUTORESUME") \
 		    	and os.path.exists(self.settings["chroot_path"]+"/usr/portage/") \
 		    	and os.path.exists(self.settings["autoresume_path"]+"unpack_portage") \
 			and self.settings["snapshot_path_md5sum"] == clst_unpack_portage_md5sum:
 				print "Valid Resume point detected, skipping unpack of portage tree..."
-			else:
-		    		if os.path.exists(self.settings["chroot_path"]+"/usr/portage"):
-			   		print "Cleaning up existing portage tree ..."
-					cmd("rm -rf "+self.settings["chroot_path"]+"/usr/portage",\
-					   "Error removing existing snapshot directory.")
+				unpack=False
+				    
+		
+		
+		if unpack:
+			self.snapshot_lock_object.write_lock()
+		    	if os.path.exists(destdir):
+				print cleanup_msg
+				cleanup_cmd="rm -rf "+destdir
+				cmd(cleanup_cmd,cleanup_errmsg)
+		    	if not os.path.exists(destdir):
+				os.makedirs(destdir,0755)
+		    	
+			print "Unpacking portage tree (This can take a long time) ..."
+			cmd(unpack_cmd,unpack_errmsg)
+
+			if self.settings.has_key("SNAPCACHE"): 
+				myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
+				myf.write(self.settings["snapshot_path_md5sum"])
+				myf.close()
 			
-		    		print "Unpacking portage tree ..."
-		    		cmd("tar xjpf "+self.settings["snapshot_path"]+" -C "+\
-				    self.settings["chroot_path"]+"/usr","Error unpacking snapshot")
-				
+			else:	
 				print "Setting snapshot autoresume point"
 				myf=open(self.settings["autoresume_path"]+"unpack_portage","w")
 				myf.write(self.settings["snapshot_path_md5sum"])
 				myf.close()
+			
+			self.snapshot_lock_object.unlock()
 
 	def config_profile_link(self):
 		if self.settings.has_key("AUTORESUME") \
@@ -598,7 +623,7 @@ class generic_stage_target(generic_target):
 	    # Always copy over the overlay incase it has changed
 		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
 		    print "Copying root overlay ..."
-		    cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/root_overlay"]+"/* "+\
+		    cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/root_overlay"]+"/ "+\
 			self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay copy failed.")
 
 	def bind(self):
@@ -610,6 +635,8 @@ class generic_stage_target(generic_target):
 				os.makedirs(self.mountmap[x],0755)
 			
 			src=self.mountmap[x]
+			if self.settings.has_key("SNAPCACHE") and x == "/usr/portage":
+				self.snapshot_lock_object.read_lock()
 			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
 			if retval!=0:
 				self.unbind()
@@ -644,6 +671,8 @@ class generic_stage_target(generic_target):
 				    warn("Couldn't umount bind mount: "+mypath+x)
 				    # keep trying to umount the others, to minimize damage if developer makes a mistake
 		
+			if self.settings.has_key("SNAPCACHE") and x == "/usr/portage":
+				self.snapshot_lock_object.unlock()
 		if ouch:
 			"""
 			if any bind mounts really failed, then we need to raise
@@ -787,7 +816,7 @@ class generic_stage_target(generic_target):
 		try:
 		    if os.path.exists(self.settings["controller_file"]):
 			    cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
-				"Clean runscript failed.")
+				"Clean  failed.")
 			    touch(self.settings["autoresume_path"]+"remove")
 		except:
 		    self.unbind()
@@ -856,6 +885,8 @@ class generic_stage_target(generic_target):
 				os.environ[varname]=string.join(self.settings[x])
 	
 	def run(self):
+		self.chroot_lock.write_lock()
+
 		for x in self.settings["action_sequence"]:
 			print "Running action sequence: "+x
 			sys.stdout.flush()
@@ -864,14 +895,8 @@ class generic_stage_target(generic_target):
 			except:
 				self.unbind()
 				raise
-			#if x == 'chroot_setup':
-			#	try:
-			#		self.chroot_setup()
-			#	except:
-			#		self.unbind()
-			#		raise
-			#else:	
-			#	apply(getattr(self,x))
+		
+		self.chroot_lock.unlock()
 
         def unmerge(self):
 	    if self.settings.has_key("AUTORESUME") \
@@ -916,7 +941,7 @@ class generic_stage_target(generic_target):
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay") \
 			and os.path.exists(self.settings["spec_prefix"]+"/overlay"):
-				cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/* "+\
+				cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/ "+\
 				self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.")
 				touch(self.settings["autoresume_path"]+"setup_overlay")
 	
@@ -1105,3 +1130,4 @@ class generic_stage_target(generic_target):
 		
 		print "clearing package cache ..."
 		self.clear_packages()
+#vim: ts=4 sw=4 sta et sts=4 ai

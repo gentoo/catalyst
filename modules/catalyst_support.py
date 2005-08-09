@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.52 2005/07/27 20:30:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.53 2005/08/09 14:12:26 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -82,7 +82,8 @@ def read_from_clst(file):
 	try:
 		myf=open(file,"r")
 	except:
-		raise CatalystError, "Could not open file "+file
+		return -1
+		#raise CatalystError, "Could not open file "+file
 	for line in myf.readlines():
 	    line = string.replace(line, "\n", "") # drop newline
 	    myline = myline + line
@@ -114,6 +115,7 @@ valid_config_file_values.append("VERBOSE")
 valid_config_file_values.append("PURGE")
 valid_config_file_values.append("SNAPCACHE")
 valid_config_file_values.append("snapshot_cache")
+valid_config_file_values.append("SEEDCACHE")
 
 verbosity=1
 
@@ -152,6 +154,17 @@ class CatalystError(Exception):
 			print "!!! catalyst: "+message
 			print
 			
+class LockInUse(Exception):
+	def __init__(self, message):
+		if message:
+			#(type,value)=sys.exc_info()[:2]
+			#if value!=None:
+			    #print
+			    #kprint traceback.print_exc(file=sys.stdout)
+			print
+			print "!!! catalyst lock file in use: "+message
+			print
+
 def die(msg=None):
 	warn(msg)
 	sys.exit(1)
@@ -671,3 +684,16 @@ def countdown(secs=5, doing="Starting"):
 			sys.stdout.flush()
 			time.sleep(1)
 		print
+
+def normpath(mypath):
+	TrailingSlash=False
+        if mypath[-1] == "/":
+	    TrailingSlash=True
+        newpath = os.path.normpath(mypath)
+        if len(newpath) > 1:
+                if newpath[:2] == "//":
+                        newpath = newpath[1:]
+	if TrailingSlash:
+	    newpath=newpath+'/'
+        return newpath
+

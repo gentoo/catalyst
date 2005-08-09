@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.11 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.12 2005/08/09 14:12:26 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -19,12 +19,12 @@ class snapshot_target(generic_target):
 		self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=st+"/snapshots/portage-"+self.settings["version_stamp"]\
-			+".tar.bz2"
-		self.settings["tmp_path"]=st+"/tmp/"+self.settings["target_subpath"]
+		self.settings["snapshot_path"]=normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
+			+".tar.bz2")
+		self.settings["tmp_path"]=normpath(st+"/tmp/"+self.settings["target_subpath"])
 
 	def setup(self):
-		x=self.settings["storedir"]+"/snapshots"
+		x=normpath(self.settings["storedir"]+"/snapshots")
 		if not os.path.exists(x):
 			os.makedirs(x)
 	

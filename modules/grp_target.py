@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.13 2005/07/19 21:44:14 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.14 2005/08/09 14:12:26 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -46,7 +46,7 @@ class grp_target(generic_stage_target):
 				raise CatalystError,"GRP build aborting due to error."
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 	    			"config_profile_link","setup_confdir","bind","chroot_setup",\
 	    				    "setup_environment","run_local","unmerge","unbind",\
 					    "remove","empty","clear_autoresume"]

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.45 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.46 2005/08/09 14:12:26 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -32,18 +32,19 @@ class livecd_stage2_target(generic_stage_target):
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
 	def set_source_path(self):
-	    self.settings["source_path"]=self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2"
+	    self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 	    if os.path.isfile(self.settings["source_path"]):
-		if os.path.exists(self.settings["source_path"]):
-		    self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+		self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
 	    else:
-		self.settings["source_path"]=self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]
+		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"])
+		if not os.path.exists(self.settings["source_path"]):
+		    raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 	
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
 
 	def set_target_path(self):
-		self.settings["target_path"]=self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]
+		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
@@ -56,21 +57,21 @@ class livecd_stage2_target(generic_stage_target):
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
 
-	def unpack(self):
-		if not os.path.isdir(self.settings["source_path"]):
-			generic_stage_target.unpack(self)
-		else:
-		    if self.settings.has_key("AUTORESUME") \
-			    and os.path.exists(self.settings["autoresume_path"]+"unpack"):
-			    print "Resume point detected, skipping unpack operation..."
-		    else:
-			    if not os.path.exists(self.settings["chroot_path"]):
-				    os.makedirs(self.settings["chroot_path"])
-				
-			    print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
-			    cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
-				    "Error copying initial livecd-stage2")
-			    touch(self.settings["autoresume_path"]+"unpack")
+#	def unpack(self):
+#		if not os.path.isdir(self.settings["source_path"]):
+#			generic_stage_target.unpack(self)
+#		else:
+#		    if self.settings.has_key("AUTORESUME") \
+#			    and os.path.exists(self.settings["autoresume_path"]+"unpack"):
+#			    print "Resume point detected, skipping unpack operation..."
+#		    else:
+#			    if not os.path.exists(self.settings["chroot_path"]):
+#				    os.makedirs(self.settings["chroot_path"])
+#				
+#			    print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
+#			    cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
+#				    "Error copying initial livecd-stage2")
+#			    touch(self.settings["autoresume_path"]+"unpack")
 
 	def run_local(self):
 		# what modules do we want to blacklist?
@@ -86,7 +87,7 @@ class livecd_stage2_target(generic_stage_target):
 			myf.close()
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
+	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 			    "config_profile_link","setup_confdir","portage_overlay",\
 			    "bind","chroot_setup","setup_environment","run_local",\
 			    "build_kernel","bootloader","preclean","livecd_update",

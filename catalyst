@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.87 2005/07/27 20:30:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.88 2005/08/09 14:12:26 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -16,7 +16,7 @@ conf_values={}
 
 def usage():
 	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
-	print " -a --clear_autoresume	clear autoresume flags"
+	print " -a --clear-autoresume	clear autoresume flags"
 	print " -c --config		use specified configuration file"
 	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
 	print " -d --debug		enable debugging"
@@ -105,6 +105,10 @@ def parse_config(myconfig):
 	if "snapcache" in string.split(conf_values["options"]):
 		print "Snapshot cache support enabled."
 		conf_values["SNAPCACHE"]="1"
+	
+	if "seedcache" in string.split(conf_values["options"]):
+		print "Seed cache support enabled."
+		conf_values["SEEDCACHE"]="1"
 
 	if "kerncache" in string.split(conf_values["options"]):
 		print "Kernel cache support enabled."
@@ -122,10 +126,9 @@ def parse_config(myconfig):
 		print "Purge support enabled."
 		conf_values["PURGE"]="1"
 	
-	if "clear_autoresume" in string.split(conf_values["options"]):
+	if "clear-autoresume" in string.split(conf_values["options"]):
 		print "Cleaning autoresume flags support enabled."
 		conf_values["CLEAR_AUTORESUME"]="1"
-	
 	
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."
@@ -312,7 +315,7 @@ if __name__ == "__main__":
 				sys.exit(2)
 			else:
 				conf_values["PURGE"]="1"
-		if o in ("-a", "--clear_autoresume"):
+		if o in ("-a", "--clear-autoresume"):
 			if len(sys.argv) < 3:
 				print "!!! catalyst: please specify one of either -f or -C\n"
 				usage()
@@ -356,13 +359,20 @@ if __name__ == "__main__":
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
 		print "Catalyst aborting...."
-	except KeyError:
-		print "\nproblem with command line or spec file ( Key Error )"
+	#except KeyError:
+	#	print "\nproblem with command line or spec file ( Key Error )"
+	#	print "Key: "+str(sys.exc_value)+" was not found"
+	#	print "Catalyst aborting...."
+	#	sys.exit(2)
+	except UnboundLocalError:
+		print
+		print "UnboundLocalError: "+str(sys.exc_value)+" was not found"
 		print
 		print "Catalyst aborting...."
 		sys.exit(2)
-	except UnboundLocalError:
-		pass
+	except LockInUse:
+		print "Catalyst aborting...."
+		sys.exit(2)
 	except:
 		print "Catalyst aborting...."
 		raise
