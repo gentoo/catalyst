@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.55 2005/08/09 19:25:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.56 2005/08/29 19:38:48 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -640,7 +640,7 @@ def arg_parse(cmdline):
 	#global required_config_file_values
 	mydict={}
 	for x in cmdline:
-		foo=string.split(x,"=")
+		foo=string.split(x,"=",1)
 		if len(foo)!=2:
 			raise CatalystError, "Invalid arg syntax: "+x
 
