@@ -97,10 +97,12 @@ docache		This caches the entire runtime portion of the CD into RAM, which
 		allows you to umount /mnt/cdrom and mount another CDROM.  This
 		option requires that you have at least twice as much available
 		RAM as the size of the CD.
+doload=X	This causes the initial ramdisk to load any module listed, as
+		well as dependencies.  Replace X with the module name.  Multiple
+		modules can be specified by a comma-separated list.
 noload=X	This causes the initial ramdisk to skip the loading of a
-		specific driver that may be causing a problem.  Replace X with
-		the driver name.  Multiple drivers can be specified by a
-		comma-separated list.
+		specific module that may be causing a problem.  Syntax matches
+		that of doload.
 nox		This causes an X-enabled LiveCD to not automatically start X,
 		but rather, to drop to the command line instead.
 scandelay	This causes the CD to pause for 10 seconds during certain

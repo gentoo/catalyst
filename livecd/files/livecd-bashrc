@@ -2,14 +2,13 @@
 
 if [ ! $(grep nox /proc/cmdline) ]
 then
-    if [ -x /usr/bin/X ]
-    then
-	if [ -e /etc/startx ]
+	if [ -x /usr/bin/X ]
 	then
-	    rm -f /etc/startx
-	    ##STARTX
-	    [ -f /etc/motd ] && cat /etc/motd
+		if [ -e /etc/startx ]
+		then
+			rm -f /etc/startx
+			##STARTX
+			[ -f /etc/motd ] && cat /etc/motd
+		fi
 	fi
-    fi
 fi
-

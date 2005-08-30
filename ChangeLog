@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.318 2005/08/30 14:06:09 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.319 2005/08/30 14:45:25 wolf31o2 Exp $
+
+  30 Aug 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/README.txt, livecd/files/generic.motd.txt,
+  livecd/files/livecd.motd.txt, livecd/files/livecd-bashrc,
+  livecd/files/livecd-local.start:
+  Updated files from latest used to build LiveCD.
 
   30 Aug 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
   Added sse to HOSTUSE for athlon-xp, since it supports SSE instructions.

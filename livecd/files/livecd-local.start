@@ -23,4 +23,3 @@ if [ -d /usr/livecd/eclass ]
 then
 	ln -sf /usr/livecd/eclass /usr/portage/eclass
 fi
-

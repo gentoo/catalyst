@@ -1,4 +1,3 @@
-
 To (re)start X Windows, please type "startx" at the prompt below.
 
 Please report any bugs you find to http://bugs.gentoo.org. Be sure to include
