@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.11 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.12 2005/08/30 15:20:21 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -75,7 +75,7 @@ case ${clst_mainarch} in
 			then
 			    echo "append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
 			else
-			    echo "append ${default_append_line} vga=791 splash=silent ${keymap}" >> ${icfg}
+			    echo "append ${default_append_line} vga=791 splash=silent" >> ${icfg}
 			fi
 		done
 		;;
@@ -129,22 +129,24 @@ case ${clst_mainarch} in
 			# the rest of this function sets up the config file for isolinux
 			icfg=$1/boot/isolinux.cfg
 			kmsg=$1/boot/kernels.msg
-			hmsg=$1/boot/help.msg
 			echo "default ${first}" > ${icfg}
 			echo "timeout 150" >> ${icfg}
 			echo "prompt 1" >> ${icfg}
 			echo "display boot.msg" >> ${icfg}
 			echo "F1 kernels.msg" >> ${icfg}
-			echo "F2 help.msg" >> ${icfg}
+			echo "F2 F2.msg" >> ${icfg}
+			echo "F3 F3.msg" >> ${icfg}
+			echo "F4 F4.msg" >> ${icfg}
+			echo "F5 F5.msg" >> ${icfg}
+			echo "F6 F6.msg" >> ${icfg}
+			echo "F7 F7.msg" >> ${icfg}
 
 			echo "Available kernels:" > ${kmsg}
-			cp ${clst_sharedir}/livecd/files/x86-help.msg ${hmsg}
-
-			case ${clst_livecd_type} in
-			gentoo-*)
-				keymap="dokeymap"
-				;;
-			esac
+			for i in 2 3 4 5 6 7
+			do
+				cp ${clst_sharedir}/livecd/files/x86-F$i.msg \
+					$1/isolinux/F$i.msg
+			done
 
 			for x in ${clst_boot_kernel}
 			do
@@ -156,16 +158,16 @@ case ${clst_mainarch} in
 				echo "  kernel ${x}" >> ${icfg}
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
-					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet ${keymap}" >> ${icfg}
+					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 				else
-					echo "  append ${default_append_line} vga=791 splash=silent ${keymap}" >> ${icfg}
+					echo "  append ${default_append_line} vga=791 splash=silent" >> ${icfg}
 				fi
 			
 				echo >> ${icfg}
 				echo "   ${x}" >> ${kmsg}
 				echo "label ${x}-nofb" >> ${icfg}
 				echo "  kernel ${x}" >> ${icfg}
-				echo "  append ${default_append_line} ${keymap}" >> ${icfg}
+				echo "  append ${default_append_line}" >> ${icfg}
 				echo >> ${icfg}
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
@@ -184,17 +186,17 @@ case ${clst_mainarch} in
 			icfg=$1/boot/grub/grub.conf
 			echo "default 1" > ${icfg}
 			echo "timeout 150" >> ${icfg}
-			
-			
-			# Setup help message	
-			hmsg=${clst_sharedir}/livecd/files/x86-help.msg
-			hmsg_txt="$(cat ${hmsg})"
-			
+
+			# Setup help message
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}
-			echo "pause ${hmsg_txt}" >> ${icfg}
-			
-			
+			for i in 2 3 4 5 6 7
+			do
+				cp ${clst_sharedir}/livecd/files/README.txt
+					$1/boot/help.msg
+				echo "cat /boot/help.msg" >> ${icfg}
+			done
+
 			for x in ${clst_boot_kernel}
 			do
 				eval custom_kopts=\$${x}_kernelopts
@@ -204,9 +206,9 @@ case ${clst_mainarch} in
 				
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
-					echo "kernel /boot/${x} ${default_append_line} vga=791 dokeymap splash=silent,theme:${clst_livecd_splash_theme}" >> ${icfg}
+					echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 				else
-					echo "kernel /boot/${x} ${default_append_line} vga=791 dokeymap splash=silent" >> ${icfg}
+					echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
 				fi
 
 				if [ -e $1/boot/${x}.igz ]
