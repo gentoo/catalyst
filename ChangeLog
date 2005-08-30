@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.319 2005/08/30 14:45:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.320 2005/08/30 14:49:36 wolf31o2 Exp $
+
+  30 Aug 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  +livecd/files/x86-F2.msg, +livecd/files/x86-F3.msg,
+  +livecd/files/x86-F4.msg, +livecd/files/x86-F5.msg,
+  +livecd/files/x86-F6.msg, +livecd/files/x86-F7.msg:
+  Added F2->F7 help messages for isolinux.
 
   30 Aug 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/README.txt, livecd/files/generic.motd.txt,
