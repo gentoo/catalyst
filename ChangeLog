@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.322 2005/08/30 15:47:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.323 2005/09/01 15:00:56 wolf31o2 Exp $
+
+  01 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Added split to use section for bug #104414.
 
   30 Aug 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/x86-F3.msg, livecd/files/x86-F4.msg, livecd/files/x86-F5.msg,

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.56 2005/08/09 21:44:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.57 2005/09/01 15:00:56 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -728,7 +728,7 @@ class generic_stage_target(generic_target):
 			    myusevars.extend(self.settings["HOSTUSE"])
 		
 		    if self.settings.has_key("use"):
-			    myusevars.extend(self.settings["use"])
+			    myusevars.extend(self.settings["use"].split())
 			    myf.write('USE="'+string.join(myusevars)+'"\n')
 
 		    # setup the portage overlay	
