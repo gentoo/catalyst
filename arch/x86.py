@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.17 2005/08/30 14:06:09 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.18 2005/09/06 21:37:05 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -45,6 +45,7 @@ class arch_i586(generic_x86):
 class arch_pentium_mmx(arch_i586):
 	def __init__(self,myspec):
 		arch_i586.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=pentium-mmx"
 		self.settings["HOSTUSE"]=["mmx"]
 	
 class arch_i686(generic_x86):

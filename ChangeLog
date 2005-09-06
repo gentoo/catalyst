@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.323 2005/09/01 15:00:56 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.324 2005/09/06 21:37:05 wolf31o2 Exp $
+
+  06 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
+  Changed pentium-mmx to use -march=pentium-mmx and closing bug #102366.
 
   01 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
