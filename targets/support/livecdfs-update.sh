@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.20 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.21 2005/09/08 20:59:07 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -135,7 +135,7 @@ case ${clst_livecd_type} in
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
 	gentoo-release-livecd )
-		cat /etc/generic.motd.txt /etc/universal.motd.txt \
+		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
 	;;

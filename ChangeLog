@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.327 2005/09/08 20:20:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.328 2005/09/08 20:59:07 wolf31o2 Exp $
+
+  08 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh:
+  Add code to dump grppkgs.txt file on livecd-stage1 and kernelpkgs.txt file
+  on livecd-stage2 and removing universal motd for livecd/type of
+  gentoo-release-livecd.
 
   08 Sep 2005; Eric Edgar <rocket@gentoo.org>
   modules/livecd_stage1_target.py:

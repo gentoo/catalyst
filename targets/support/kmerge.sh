@@ -77,6 +77,11 @@ genkernel_compile(){
 		then
 			genkernel --callback="emerge ${clst_kernel_merge}" \
 				${GK_ARGS} || exit 1
+			if [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
+			then
+				mkdir -p /usr/livecd
+				echo "${clst_kernel_merge}" > /usr/livecd/kernelpkgs.txt
+			fi
 		else
 			genkernel ${GK_ARGS} || exit 1
 		fi
