@@ -23,6 +23,8 @@ dmraid=X	This allows for passing options to the device-mapper RAID
 		subsystem.  Options should be encapsulated in quotes.
 doapm		This loads APM driver support.  This requires you to also use
 		acpi=off.
+dobladecenter	This adds some extra pauses into the boot process for the slow
+		USB CDROM of the IBM BladeCenter.
 dopcmcia	This loads support for PCMCIA and Cardbus hardware and also
 		causes the pcmcia cardmgr to be started by the CD on boot.
 		This is only required when booting from a PCMCIA/Cardbus device.

@@ -1,4 +1,7 @@
 Hardware options (Page 2):
+doscsi          This loads support for most SCSI controllers.  This is also a
+                requirement for booting most USB devices, as they use the SCSI
+                subsystem of the kernel.
 hda=stroke      This allows you to partition the whole hard disk even when your
                 BIOS is unable to handle large disks.  This option is only used
                 on machines with an older BIOS.  Replace hda with the device
@@ -11,13 +14,10 @@ ide=nodma       This forces the disabling of DMA in the kernel and is required
 noapic          This disables the Advanced Programmable Interrupt Controller
                 that is present on newer motherboards.  It has been known to
                 cause some problems on older hardware.
-nodetect        This disables all of the autodetection done by the CD, including
-                device autodetection and DHCP probing.  This is useful for doing
-                debugging of a failing CD or driver.
+nodetect        This disables all of the autodetection done by the CD,
+                including device autodetection and DHCP probing.  This is
+                useful for doing debugging of a failing CD or driver.
 nodhcp          This disables DHCP probing on detected network cards.  This is
                 useful on networks with only static addresses.
 nodmraid        Disables support for device-mapper RAID, such as that used for
                 on-board IDE/SATA RAID controllers.
-nofirewire      This disables the loading of Firewire modules.  This should only
-                be necessary if your Firewire hardware is causing a problem with
-                booting the CD.
