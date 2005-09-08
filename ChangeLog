@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.326 2005/09/08 19:54:13 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.327 2005/09/08 20:20:03 rocket Exp $
+
+  08 Sep 2005; Eric Edgar <rocket@gentoo.org>
+  modules/livecd_stage1_target.py:
+  Add optional livecd/type env var for scripts to add optional items to the
+  scripts
 
   08 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/files/x86-help.msg:
