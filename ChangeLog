@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.325 2005/09/08 15:11:19 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.326 2005/09/08 19:54:13 wolf31o2 Exp $
+
+  08 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/files/x86-help.msg:
+  Removing x86-help.msg as it is no longer used.
 
   08 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/README.txt, livecd/files/x86-F3.msg, livecd/files/x86-F4.msg,
