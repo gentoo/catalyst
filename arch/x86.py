@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.18 2005/09/06 21:37:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.19 2005/09/12 17:17:21 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -22,7 +22,7 @@ class arch_x86(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mcpu=i686"
-		self.settings["CHOST"]="i386-pc-linux-gnu"
+		self.settings["CHOST"]="i686-pc-linux-gnu"
 
 class arch_i386(generic_x86):
 	def __init__(self,myspec):
