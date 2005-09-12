@@ -1,5 +1,13 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.330 2005/09/12 17:17:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.331 2005/09/12 18:49:44 wolf31o2 Exp $
+
+  12 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/livecd-stage2_template.spec, modules/livecd_stage2_target.py,
+  targets/support/livecdfs-update.sh:
+  Added livecd/xdm and livecd/xsession options. These are used to setup the
+  default display manager and X session, respectively. Added supporting
+  documentation to example spec files. Imported more work from my fsscript for
+  the official LiveCD.
 
   12 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
   Changing default CHOST for x86 from i386-pc-linux to i686-pc-linux. For

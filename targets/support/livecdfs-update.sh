@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.21 2005/09/08 20:59:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.22 2005/09/12 18:49:44 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -45,6 +45,12 @@ then
 	for x in ${clst_livecd_users}
 	do
 		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" -m $x
+		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
+		then
+			echo "[Desktop]" > /home/$x/.dmrc
+			echo "Session=${clst_livecd_xsession}" >> /home/$x/.dmrc
+			chown -R $x:users /home/$x
+		fi
 	done
 fi
 
@@ -119,6 +125,21 @@ fi
 
 # setup opengl in /etc (if configured)
 [ -x /usr/sbin/openglify ] && /usr/sbin/openglify
+
+# Setup configured display manager
+if [ -n "${clst_livecd_xdm}" ]
+then
+	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
+		/etc/rc.conf
+	rc-update add xdm default
+fi
+
+# Setup configured default X Session
+if [ -n "${clst_livecd_xsession}" ]
+then
+	sed -i "s:#XSESSION=\"Gnome\":XSESSION=\"${clst_livecd_xsession}\":" \
+		/etc/rc.conf
+fi
 
 # touch /etc/asound.state
 touch /etc/asound.state
@@ -199,7 +220,6 @@ case ${clst_livecd_type} in
        ;;
 esac
 
-
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-gamecd )
@@ -229,7 +249,7 @@ case ${clst_livecd_type} in
 		if [ -e /opt/installer/misc/mkvardb ]
 		then
 			chmod +x /opt/installer/misc/mkvardb
-			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v 2005.0 /boot/kernel* /boot/initrd* $(for i in $(find "/lib/modules/$(uname -r)" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
+			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
 		fi
 
 		# This is my hack to reduce tmpfs usage
@@ -238,6 +258,9 @@ case ${clst_livecd_type} in
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		mv -f /var/db /usr/livecd
+
+		# This gives us our list of system packages for the installer
+		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
 		;;
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
