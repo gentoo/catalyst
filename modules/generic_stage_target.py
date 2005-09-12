@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.57 2005/09/01 15:00:56 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.58 2005/09/12 15:31:57 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -34,6 +34,7 @@ class generic_stage_target(generic_target):
 				"ia64" : ["ia64"],
 				"alpha" : ["alpha"],
 				"sparc" : ["sparc"],
+				"sh" : ["sh"],
 				"s390" : ["s390"],
 				"ppc" : ["ppc"],
 				"ppc64" : ["ppc","ppc64"],
@@ -52,6 +53,10 @@ class generic_stage_target(generic_target):
 				"ia64" : "ia64",
 				"alpha" : "alpha",
 				"sparc" : "sparc",
+				"sh3" : "sh",
+				"sh4" : "sh",
+				"sh3eb" : "sh",
+				"sh4eb" : "sh",
 				"s390" : "s390",
 				"ppc" : "ppc",
 				"ppc64" : "ppc64",
