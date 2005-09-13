@@ -39,7 +39,7 @@ snapshot:
 # This specifies where the seed stage comes from for this target,  The path is
 # relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
 # example:
-# default/stage3-x86-2004.3
+# default/livecd-stage1-x86-2004.3
 source_subpath:
 
 # These are the hosts used as distcc slaves when distcc is enabled in your
