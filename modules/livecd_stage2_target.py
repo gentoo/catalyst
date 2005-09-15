@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.48 2005/09/12 18:49:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.49 2005/09/15 14:31:58 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -38,7 +38,7 @@ class livecd_stage2_target(generic_stage_target):
 	    if os.path.isfile(self.settings["source_path"]):
 		self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
 	    else:
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"])
+		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
 		    raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 	
@@ -46,7 +46,7 @@ class livecd_stage2_target(generic_stage_target):
 	    self.settings["spec_prefix"]="livecd"
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
+		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
