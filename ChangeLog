@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.333 2005/09/15 14:31:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.334 2005/09/15 15:17:27 rocket Exp $
+
+  15 Sep 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  fix bug 106004 split strings into a list for empty and rm operation
 
   15 Sep 2005; Eric Edgar <rocket@gentoo.org>
   modules/livecd_stage2_target.py:

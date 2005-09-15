@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.58 2005/09/12 15:31:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.59 2005/09/15 15:17:27 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -790,7 +790,7 @@ class generic_stage_target(generic_target):
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/empty"):
 		    if type(self.settings[self.settings["spec_prefix"]+"/empty"])==types.StringType:
-			self.settings[self.settings["spec_prefix"]+"/empty"]=[self.settings[self.settings["spec_prefix"]+"/empty"]]
+			self.settings[self.settings["spec_prefix"]+"/empty"]=self.settings[self.settings["spec_prefix"]+"/empty"].split()
 		    for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
 			myemp=self.settings["destpath"]+x
 			if not os.path.isdir(myemp):
@@ -813,7 +813,7 @@ class generic_stage_target(generic_target):
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
 		    if type(self.settings[self.settings["spec_prefix"]+"/rm"])==types.StringType:
-			self.settings[self.settings["spec_prefix"]+"/rm"]=[self.settings[self.settings["spec_prefix"]+"/rm"]]
+			self.settings[self.settings["spec_prefix"]+"/rm"]=self.settings[self.settings["spec_prefix"]+"/rm"].split()
 		    for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 			# we're going to shell out for all these cleaning operations,
 			# so we get easy glob handling
