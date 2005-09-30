@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.334 2005/09/15 15:17:27 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.335 2005/09/30 20:16:50 wolf31o2 Exp $
+
+  30 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  files/catalyst.conf:
+  Updating default configuration for catalyst and updating version stamp,
+  since we're beginning internal testing for release.
 
   15 Sep 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
