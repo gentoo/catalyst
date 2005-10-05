@@ -129,9 +129,13 @@ extract_modules() {
 	#$2 = kname	
 	kmodules="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-modules-${clst_version_stamp}.tar.bz2"
 		
-	[ ! -e "${kmodules}" ] && die "Can't find kernel modules tarball at ${kmodules}"
-	mkdir -p ${1}/
-	tar xjf ${kmodules} -C ${1} lib
+	if [ ! -e "${kmodules}" ]
+	then
+	    mkdir -p ${1}/
+	    tar xjf ${kmodules} -C ${1} lib
+	else
+	    echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
+	fi
 }
 extract_kernel() {
 	#$1 = Destination

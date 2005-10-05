@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.335 2005/09/30 20:16:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.336 2005/10/05 19:05:50 rocket Exp $
+
+  05 Oct 2005; Eric Edgar <rocket@gentoo.org> targets/support/functions.sh:
+  Fix extract_modules to just echo a warning that it is missing
 
   30 Sep 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   files/catalyst.conf:
