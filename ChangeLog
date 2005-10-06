@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.340 2005/10/06 17:26:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.341 2005/10/06 20:55:42 rocket Exp $
+
+  06 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/tinderbox_target.py:
+  Stop tinderbox from trying to create a tarball of itself
 
   06 Oct 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
