@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.337 2005/10/06 15:21:30 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.338 2005/10/06 15:45:28 rocket Exp $
+
+  06 Oct 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/catalyst_support.py:
+  allow file_check to proceed if key is not in use
 
   06 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_lock.py:
   Recursively make the missing directories

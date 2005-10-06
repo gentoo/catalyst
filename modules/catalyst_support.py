@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.56 2005/08/29 19:38:48 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.57 2005/10/06 15:45:28 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,time
 selinux_capable = False
@@ -457,15 +457,16 @@ def file_locate(settings,filelist,expand=1):
 		if not settings.has_key(myfile):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
-		if len(settings[myfile])==0:
-			raise CatalystError, "File variable \""+myfile+"\" has a length of zero (not specified.)"
-		if settings[myfile][0]=="/":
-			if not os.path.exists(settings[myfile]):
-				raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]
-		elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
-			settings[myfile]=os.getcwd()+"/"+settings[myfile]
 		else:
-			raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]+" (2nd try)"
+		    if len(settings[myfile])==0:
+			    raise CatalystError, "File variable \""+myfile+"\" has a length of zero (not specified.)"
+		    if settings[myfile][0]=="/":
+			    if not os.path.exists(settings[myfile]):
+				    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]
+		    elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
+			    settings[myfile]=os.getcwd()+"/"+settings[myfile]
+		    else:
+			    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]+" (2nd try)"
 """
 Spec file format:
 
