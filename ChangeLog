@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.339 2005/10/06 15:50:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.340 2005/10/06 17:26:51 rocket Exp $
+
+  06 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix catalyst so it fully disables snapcache when its not specified in the
+  config file
 
   06 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   examples/livecd-stage2_template.spec:
