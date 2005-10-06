@@ -56,7 +56,7 @@ distcc_hosts:
 # portage_confdir: /etc/portage
 portage_confdir:
 
-# The cdfstype is used to determine what sort of CD we should build.  This is
+# The fstype is used to determine what sort of CD we should build.  This is
 # used to set the type of loopback filesystem that we will use on our CD.
 # Possible options are as follows:
 # squashfs - This gives the best compression, but requires a kernel patch.
@@ -64,21 +64,8 @@ portage_confdir:
 # normal - This creates a loop without compression.
 # noloop - This copies the files to the CD directly, withuot using a loopback.
 # example:
-# livecd/cdfstype: squashfs
-livecd/cdfstype:
-
-# The archscript is for architecture-dependent configuration.  Not all Gentoo
-# architectures use their own archscript.  Some share with other architectures
-# that are similar.
-# example:
-# livecd/archscript: /usr/lib/catalyst/livecd/runscript/x86-archscript.sh
-livecd/archscript:
-
-# The runscript is the "brains" of the livecd-stage2 target and is designed to
-# be architecturer agnostic.  It is best not to change this.
-# example:
-# livecd/runscript: /usr/lib/catalyst/livecd/runscript/default-runscript.sh
-livecd/runscript:
+# livecd/fstype: squashfs
+livecd/fstype:
 
 # The cdtar is essentially the bootloader for the CD.  It also holds the main
 # configuration for the bootloader.  On x86/amd64, it also can include a small

@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.338 2005/10/06 15:45:28 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.339 2005/10/06 15:50:02 wolf31o2 Exp $
+
+  06 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  examples/livecd-stage2_template.spec:
+  Removed livecd/runscript and livecd/archscript from livecd-stage2 example
+  spec template and updating version stamp.
 
   06 Oct 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/catalyst_support.py:
