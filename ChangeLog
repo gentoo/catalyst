@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.341 2005/10/06 20:55:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.342 2005/10/06 20:56:54 wolf31o2 Exp $
+
+  06 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/tinderbox/tinderbox-chroot.sh,
+  targets/tinderbox/tinderbox-controller.sh:
+  Fixing problem with bind mounted portage and final rsync on tinderbox target
+  and adding additional logging.
 
   06 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/tinderbox_target.py:
   Stop tinderbox from trying to create a tarball of itself

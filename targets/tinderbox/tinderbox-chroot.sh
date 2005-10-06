@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.12 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.13 2005/10/06 20:56:54 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -35,7 +35,9 @@ do
 			read -s -n 1
 		fi
 	fi
-	
+
+	mkdir -p /tmp/packages/$x
+	export PORT_LOGDIR="/tmp/packages/$x"
 	emerge --usepkg --buildpkg $x
 	
 	if [ "$?" != "0" ]
@@ -45,5 +47,5 @@ do
 		echo "$x" >> /tmp/tinderbox.log
 	fi
 	echo "Syncing from original pristine tinderbox snapshot..."
-	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude "/usr/portage/*" /tmp/rsync-bak/ /
+	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude "/usr/portage/" /tmp/rsync-bak/ /
 done
