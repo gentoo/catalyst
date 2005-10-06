@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.342 2005/10/06 20:56:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.343 2005/10/06 21:00:03 rocket Exp $
+
+  06 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/tinderbox_target.py:
+  Tinderbox no longer cleans /tmp/*
 
   06 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/tinderbox/tinderbox-chroot.sh,

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.11 2005/10/06 20:55:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.12 2005/10/06 21:00:03 rocket Exp $
 
 """
 builder class for the tinderbox target
@@ -26,7 +26,9 @@ class tinderbox_target(generic_stage_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
-	
+	def set_cleanables(self):
+	    self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",\
+					"/usr/portage"]
 	def set_action_sequence(self):
                 #Default action sequence for run method
                 self.settings["action_sequence"]=["unpack","unpack_snapshot",\
