@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.336 2005/10/05 19:05:50 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.337 2005/10/06 15:21:30 rocket Exp $
+
+  06 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_lock.py:
+  Recursively make the missing directories
 
   05 Oct 2005; Eric Edgar <rocket@gentoo.org> targets/support/functions.sh:
   Fix extract_modules to just echo a warning that it is missing

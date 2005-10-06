@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_lock.py,v 1.2 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_lock.py,v 1.3 2005/10/06 15:21:30 rocket Exp $
 import os
 import fcntl
 import errno
@@ -75,7 +75,7 @@ class LockDir:
 
     def set_lockdir(self,lockdir):
 	if not os.path.exists(lockdir):
-	    os.mkdir(lockdir)
+	    os.makedirs(lockdir)
 	if os.path.isdir(lockdir):
 	    if not self.islocked():
     		if lockdir[-1] == "/":
