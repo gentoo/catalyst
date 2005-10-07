@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.60 2005/10/06 17:26:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.61 2005/10/07 14:45:42 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -473,7 +473,6 @@ class generic_stage_target(generic_target):
 		
 	def unpack(self):
 		unpack=True
-		invalid_snapshot=False
 
 		clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
 		
@@ -482,11 +481,13 @@ class generic_stage_target(generic_target):
 			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+			invalid_snapshot=False
 		else:
 			display_msg="\nStarting tar extract from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+			invalid_snapshot=True
 		
 		
 		if self.settings.has_key("AUTORESUME") and self.settings.has_key("SNAPCACHE") \
@@ -555,7 +556,7 @@ class generic_stage_target(generic_target):
 			if self.settings.has_key("AUTORESUME") \
 		    	and os.path.exists(self.settings["chroot_path"]+"/usr/portage/") \
 		    	and os.path.exists(self.settings["autoresume_path"]+"unpack_portage") \
-			and self.settings["snapshot_path_md5sum"] == clst_unpack_portage_md5sum:
+			and self.settings["snapshot_path_md5sum"] == snapshot_md5sum:
 				print "Valid Resume point detected, skipping unpack of portage tree..."
 				unpack=False
 				    
