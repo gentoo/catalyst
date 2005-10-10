@@ -5,5 +5,10 @@
 /usr/sbin/env-update
 source /etc/profile
 
-/sbin/depscan.sh
-find /lib/modules -name modules.dep -exec touch {} \;
+case ${clst_mainarch} in
+   mips)   ;;
+   *)
+	/sbin/depscan.sh
+	find /lib/modules -name modules.dep -exec touch {} \;
+	;;
+esac
