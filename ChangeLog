@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.350 2005/10/10 20:16:52 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.351 2005/10/10 20:38:03 rocket Exp $
+
+  10 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  update autoresume logic when dealing with rsync unpack operations
 
   10 Oct 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/post-kmerge.sh:
