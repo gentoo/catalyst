@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.345 2005/10/10 19:02:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.346 2005/10/10 19:05:24 wolf31o2 Exp $
+
+  10 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/functions.sh:
+  Fix module unpacking and make it actually optional.
 
   10 Oct 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

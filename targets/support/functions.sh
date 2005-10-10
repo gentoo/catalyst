@@ -129,7 +129,7 @@ extract_modules() {
 	#$2 = kname	
 	kmodules="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-modules-${clst_version_stamp}.tar.bz2"
 		
-	if [ ! -e "${kmodules}" ]
+	if [ -f "${kmodules}" ]
 	then
 	    mkdir -p ${1}/
 	    tar xjf ${kmodules} -C ${1} lib
