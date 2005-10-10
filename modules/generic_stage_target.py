@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.63 2005/10/10 19:14:18 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.64 2005/10/10 19:22:26 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -490,7 +490,7 @@ class generic_stage_target(generic_target):
 			invalid_snapshot=True
 		
 		
-		if self.settings.has_key("AUTORESUME")
+		if self.settings.has_key("AUTORESUME"):
 		    if self.settings.has_key("SEEDCACHE") and \
 			    os.path.exists(self.settings["autoresume_path"]+"unpack"):
 				print "Resume point detected, skipping unpack operation..."
