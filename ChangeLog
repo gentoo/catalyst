@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.352 2005/10/11 22:12:19 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.353 2005/10/11 22:26:17 wolf31o2 Exp $
+
+  11 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
+  Reverted default CHOST for x86 back to i386-pc-linux-gnu.
 
   11 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/post-kmerge.sh:
