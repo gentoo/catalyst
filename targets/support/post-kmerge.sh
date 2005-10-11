@@ -5,10 +5,17 @@
 /usr/sbin/env-update
 source /etc/profile
 
-case ${clst_mainarch} in
-   mips)   ;;
-   *)
+# Only run depscan.sh if modules exist
+if [ -n "$(ls /lib/modules)" ]
+then
 	/sbin/depscan.sh
 	find /lib/modules -name modules.dep -exec touch {} \;
-	;;
-esac
+fi
+
+#case ${clst_mainarch} in
+#   mips)   ;;
+#   *)
+#	/sbin/depscan.sh
+#	find /lib/modules -name modules.dep -exec touch {} \;
+#	;;
+#esac
