@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.353 2005/10/11 22:26:17 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.354 2005/10/13 17:13:35 rocket Exp $
+
+  13 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Print a warning if livecd/iso is not defined
 
   11 Oct 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
   Reverted default CHOST for x86 back to i386-pc-linux-gnu.

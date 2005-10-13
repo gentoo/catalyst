@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.65 2005/10/10 20:38:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.66 2005/10/13 17:13:35 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -964,6 +964,10 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
 				self.settings["iso"],"ISO creation script failed.")
 			touch(self.settings["autoresume_path"]+"create_iso")
+		else:
+			print "WARNING livecd/iso was not defined."
+			print "A CD Image will not be created, skipping create-iso.sh..."
+
 
         def build_packages(self):
 	    if self.settings.has_key("AUTORESUME") \
