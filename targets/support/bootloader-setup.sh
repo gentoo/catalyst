@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.12 2005/08/30 15:20:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.13 2005/10/13 19:01:21 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -232,6 +232,64 @@ case ${clst_mainarch} in
 				echo "kernel /boot/memtest86" >> ${icfg}
 			fi
 		fi
+		;;
+	mips)
+		# Mips is an interesting arch -- where most archs will
+		# use ${1} as the root of the LiveCD, an SGI LiveCD lacks
+		# such a root.  Instead, we will use ${1} as a scratch
+		# directory to build the components we need for the
+		# CD image, and then pass these components to the
+		# `sgibootcd` tool which outputs a final CD image
+		scratch="${1}"
+		mkdir ${scratch}/kernels
+		mkdir ${scratch}/kernels/misc
+		mkdir ${scratch}/arcload
+		echo "" > ${scratch}/arc.cf
+
+		# Move kernel binaries to ${scratch}/kernels, and
+		# move everything else to ${scratch}/kernels/misc
+		for x in ${clst_boot_kernel}; do
+			mv ${1}/boot/${x} ${scratch}/kernels
+			mv ${1}/boot/${x}.igz ${scratch}/kernels/misc
+		done
+		rmdir ${1}/boot
+
+		# Source the bashified arcload config
+		source ${clst_sharedir}/targets/support/mips-arcload_conf.sh
+
+		# Generate top portions of the config
+		echo -e "${topofconfig}${s9600}${s38400}${dbg}${cmt1}" >> ${scratch}/arc.cf
+
+		# Next, figure out what kernels were specified in the
+		# spec file, and generate the appropriate arcload conf
+		# blocks specific to each system
+		ip22="$(echo ${clst_boot_kernel} | tr " " "\n" | grep "ip22" | tr "\n" " ")"
+		ip27="$(echo ${clst_boot_kernel} | tr " " "\n" | grep "ip27" | tr "\n" " ")"
+		ip28="$(echo ${clst_boot_kernel} | tr " " "\n" | grep "ip28" | tr "\n" " ")"
+		ip30="$(echo ${clst_boot_kernel} | tr " " "\n" | grep "ip30" | tr "\n" " ")"
+		ip32="$(echo ${clst_boot_kernel} | tr " " "\n" | grep "ip32" | tr "\n" " ")"
+
+		if [ -n "${ip22}" ]; then
+			echo -e "${ip22base}" >> ${scratch}/arc.cf
+			for x in ${ip22}; do echo -e "${!x}" >> ${scratch}/arc.cf; done
+			echo -e "${ip22vid}${ip22x}" >> ${scratch}/arc.cf
+		fi
+
+		[ -n "${ip27}" ] && echo -e "${ip27base}" >> ${scratch}/arc.cf
+		[ -n "${ip28}" ] && echo -e "${ip28base}" >> ${scratch}/arc.cf
+		[ -n "${ip30}" ] && echo -e "${ip30base}" >> ${scratch}/arc.cf
+
+		if [ -n "${ip32}" ]; then
+			echo -e "${ip32base}" >> ${scratch}/arc.cf
+			for x in ${ip32}; do echo -e "${!x}" >> ${scratch}/arc.cf; done
+			echo -e "${ip32vid}${ip32x}" >> ${scratch}/arc.cf
+		fi
+
+		# Finish off the config
+		echo -e "${cmt2}" >> ${scratch}/arc.cf
+
+		# Move the bootloader binaries & config to their destination
+		mv ${1}/sashARCS ${1}/sash64 ${1}/arc.cf ${scratch}/arcload
 		;;
 esac
 exit $?

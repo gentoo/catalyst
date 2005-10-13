@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.355 2005/10/13 17:15:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.356 2005/10/13 19:01:21 rocket Exp $
+
+  13 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/create-iso.sh,
+  +targets/support/mips-arcload_conf.sh:
+  Application of Kumbas patches for MIPS support
 
   13 Oct 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
   Check for the correct arch specific cd building tool
