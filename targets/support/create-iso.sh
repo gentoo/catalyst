@@ -1,19 +1,23 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.10 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.11 2005/10/13 17:15:57 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
 ## START RUNSCRIPT
 
-if [ ! -f /usr/bin/mkisofs ]
-then
-	echo
-	echo
-	die "        /usr/bin/mkisofs is not found.  Have you merged cdrtools?"
-	echo
-	echo
-fi
+# Check for our CD ISO creation tools
+case ${clst_mainarch} in
+   mips)   cdmaker="sgibootcd";    cdmakerpkg="sys-boot/sgibootcd" ;;
+   *)	cdmaker="mkisofs";  cdmakerpkg="app-cdr/cdrtools"   ;;
+esac
+
+[ ! -f /usr/bin/${cdmaker} ] \
+   && echo && echo \
+   && die "!!! /usr/bin/${cdmaker} is not found.  Have you merged ${cdmakerpkg}?" \
+   && echo && echo
+
+
 
 # If not volume ID is set, make up a sensible default
 if [ -z "${clst_iso_volume_id}" ]
