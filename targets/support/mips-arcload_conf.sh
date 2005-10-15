@@ -7,15 +7,32 @@
 topofconfig="# Gentoo/MIPS LiveCD Prototype\n# ARCLoad Configuration\n\ndetect;\n\n\
 # Global options\ncomment\t\t\"Global Options (not bootable):\\\n\\\r\\\n\\\r\";\n\n"
 
-s9600="serial=9600 {\n\
-\tdescription\t\"Serial Console - 9600 baud\";\n\
-\timage\t\t\"\";\n\
-\tappend\t\t\"console=ttyS0,9600\";\n}\n\n"
-
-s38400="serial=38400 {\n\
-\tdescription\t\"Serial Console - 38400 baud\";\n\
-\timage\t\t\"\";\n\
-\tappend\t\t\"console=ttyS0,38400\";\n}\n\n"
+serial="serial {\n\
+\tbaud=9600 {\n\
+\t\tport1 {\n\
+\t\t\tdescription\t\"Serial Console, Port 1, 9600 Baud\";\n\
+\t\t\timage\t\t\"\";\n\
+\t\t\tappend\t\t\"console=ttyS0,9600\";\n\
+\t\t}\n\n\
+\t\tport2 {\n\
+\t\t\tdescription\t\"Serial Console, Port 2, 9600 Baud\";\n\
+\t\t\timage\t\t\"\";\n\
+\t\t\tappend\t\t\"console=ttyS1,9600\";\n\
+\t\t}\n\
+\t}\n\n\
+\tbaud=38400 {\n\
+\t\tport1 {\n\
+\t\t\tdescription\t\"Serial Console, Port 1, 38400 Baud\";\n\
+\t\t\timage\t\t\"\";\n\
+\t\t\tappend\t\t\"console=ttyS0,38400\";\n\
+\t\t}\n\n\
+\t\tport2 {\n\
+\t\t\tdescription\t\"Serial Console, Port 2, 38400 Baud\";\n\
+\t\t\timage\t\t\"\";\n\
+\t\t\tappend\t\t\"console=ttyS1,38400\";\n\
+\t\t}\n\
+\t}\n\
+}\n\n\n"
 
 dbg="debug {\n\
 \tdescription\t\"Debug Shell\";\n\
