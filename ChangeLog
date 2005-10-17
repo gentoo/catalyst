@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.357 2005/10/15 01:15:53 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.358 2005/10/17 17:11:33 rocket Exp $
+
+  17 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  MIPS bootloader patch
 
   15 Oct 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/mips-arcload_conf.sh:

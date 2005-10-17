@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.13 2005/10/13 19:01:21 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.14 2005/10/17 17:11:33 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -258,7 +258,7 @@ case ${clst_mainarch} in
 		source ${clst_sharedir}/targets/support/mips-arcload_conf.sh
 
 		# Generate top portions of the config
-		echo -e "${topofconfig}${s9600}${s38400}${dbg}${cmt1}" >> ${scratch}/arc.cf
+		echo -e "${topofconfig}${serial}${dbg}${cmt1}" >> ${scratch}/arc.cf
 
 		# Next, figure out what kernels were specified in the
 		# spec file, and generate the appropriate arcload conf
