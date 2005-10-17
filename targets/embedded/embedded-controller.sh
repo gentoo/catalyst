@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.5 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.6 2005/10/17 19:01:06 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -29,6 +29,15 @@ case $1 in
 	
 #	;;
 
+        pre-kmerge)
+                # Sets up the build environment before any kernels are compiled
+                exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+                ;;
+        post-kmerge)
+                # Cleans up the build environment after the kernels are compiled
+                exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+                ;;
+
 	kernel)
 		shift
 		export clst_kname="$1"
@@ -37,11 +46,8 @@ case $1 in
 		then
 			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
-		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
 		delete_from_chroot tmp/linuxrc
-		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
-	
 	;;
 
 	target_image_setup)

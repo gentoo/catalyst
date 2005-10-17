@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.3 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.4 2005/10/17 19:01:06 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -33,6 +33,15 @@ case ${1} in
 		clst_packages="busybox" \
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
 	;;
+
+        pre-kmerge)
+                # Sets up the build environment before any kernels are compiled
+                #exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+                ;;
+        post-kmerge)
+                # Cleans up the build environment after the kernels are compiled
+                #exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+                ;;
 
 	kernel)
 		shift
