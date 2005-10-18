@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.359 2005/10/17 19:01:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.360 2005/10/18 21:12:45 rocket Exp $
+
+  18 Oct 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Correct a rsync issue when the directory doesnt exist
 
   17 Oct 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/embedded/embedded-controller.sh,

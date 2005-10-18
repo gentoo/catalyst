@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.67 2005/10/17 19:01:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.68 2005/10/18 21:12:45 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -476,7 +476,7 @@ class generic_stage_target(generic_target):
 
 		clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
 		
-		if self.settings.has_key("SEEDCACHE") or os.path.isdir(self.settings["source_path"]): 
+		if self.settings.has_key("SEEDCACHE") and os.path.isdir(self.settings["source_path"]): 
 			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
 			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
