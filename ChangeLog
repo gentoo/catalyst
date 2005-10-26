@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.360 2005/10/18 21:12:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.361 2005/10/26 15:42:48 rocket Exp $
+
+  26 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/netboot_target.py:
+  Fix ordering problem so self.settings is defined
 
   18 Oct 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.5 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.6 2005/10/26 15:42:48 rocket Exp $
 
 """
 Builder class for a netboot build.
@@ -38,9 +38,9 @@ class netboot_target(generic_stage_target):
 		
 		
 		
-		self.set_build_kernel_vars(addlargs)
 
 		generic_stage_target.__init__(self,spec,addlargs)
+		self.set_build_kernel_vars(addlargs)
 		if addlargs.has_key("netboot/busybox_config"):
 			file_locate(self.settings, ["netboot/busybox_config"])
 
