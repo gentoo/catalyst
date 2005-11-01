@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.361 2005/10/26 15:42:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.362 2005/11/01 22:36:23 wolf31o2 Exp $
+
+  01 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  +catalyst-2.0_pre20051101-slot.patch, catalyst:
+  Updated version stamp and added slot patch.
 
   26 Oct 2005; Eric Edgar <rocket@gentoo.org> modules/netboot_target.py:
   Fix ordering problem so self.settings is defined
