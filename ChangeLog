@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.362 2005/11/01 22:36:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.363 2005/11/02 21:49:15 rocket Exp $
+
+  02 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  +examples/stage4_template.spec:
+  Preliminary stage4_template.spec file
 
   01 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   +catalyst-2.0_pre20051101-slot.patch, catalyst:
