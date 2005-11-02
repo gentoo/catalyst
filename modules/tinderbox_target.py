@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.12 2005/10/06 21:00:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.13 2005/11/02 21:54:29 rocket Exp $
 
 """
 builder class for the tinderbox target
@@ -11,8 +11,9 @@ from generic_stage_target import *
 
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=["tinderbox/packages","tinderbox/use"]
+		self.required_values=["tinderbox/packages"]
 		self.valid_values=self.required_values[:]
+		self.valid_values.extend(["tinderbox/use"])
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
