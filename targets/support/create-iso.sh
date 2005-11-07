@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.12 2005/10/13 19:01:21 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.13 2005/11/07 18:58:06 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -87,21 +87,21 @@ case ${clst_mainarch} in
 	hppa)
 		case ${clst_livecd_cdfstype} in
 			zisofs)
-				mkisofs -J -R -l -z -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path}  || die "Cannot make ISO image"
+				mkisofs -J -R -l -z -V "${iso_volume_id}" -o ${1} ${clst_cdroot_path}  || die "Cannot make ISO image"
 			;;
 			*)
-				mkisofs -J -R -l -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path}  || die "Cannot make ISO image"
+				mkisofs -J -R -l -V "${iso_volume_id}" -o ${1} ${clst_cdroot_path}  || die "Cannot make ISO image"
 			;;
 		esac
-		palo -f boot/palo.conf -C ${2}
+		palo -f boot/palo.conf -C ${1}
 	;;
 	ppc*)
 		case ${clst_livecd_cdfstype} in
 			zisofs)
-				mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe -map ${clst_cdroot_path}/boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ${clst_cdroot_path}/boot -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path} || die "Cannot make ISO image"
+				mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe -map ${clst_cdroot_path}/boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ${clst_cdroot_path}/boot -V "${iso_volume_id}" -o ${1} ${clst_cdroot_path} || die "Cannot make ISO image"
 			;;
 			*)
-				mkisofs -J -r -l -chrp-boot -netatalk -hfs -probe -map ${clst_cdroot_path}/boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ${clst_cdroot_path}/boot -V "${iso_volume_id}" -o ${2} ${clst_cdroot_path} || die "Cannot make ISO image"
+				mkisofs -J -r -l -chrp-boot -netatalk -hfs -probe -map ${clst_cdroot_path}/boot/map.hfs -part -no-desktop -hfs-volid "${iso_volume_id}" -hfs-bless ${clst_cdroot_path}/boot -V "${iso_volume_id}" -o ${1} ${clst_cdroot_path} || die "Cannot make ISO image"
 			;;
 		esac
 	;;
@@ -113,11 +113,11 @@ case ${clst_mainarch} in
 		mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
 		case ${clst_livecd_cdfstype} in
 		    zisofs)
-			/tmp/mkisofs.sparc.fu -z -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
+			/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
 			-V "${iso_volume_id}" ${clst_cdroot_path}  || die "Cannot make ISO image"
 		    ;;
 		    *)
-			/tmp/mkisofs.sparc.fu -o ${2} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
+			/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
 			-V "${iso_volume_id}" ${clst_cdroot_path}  || die "Cannot make ISO image"
 		    ;;
 		esac
