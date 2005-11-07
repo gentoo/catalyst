@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.70 2005/11/07 16:25:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.71 2005/11/07 16:36:40 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -411,6 +411,7 @@ class generic_stage_target(generic_target):
 		for x in loopy:
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
+			self.valid_values.append("boot/kernel/"+x+"/aliases")
 			self.valid_values.append("boot/kernel/"+x+"/extraversion")
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")
