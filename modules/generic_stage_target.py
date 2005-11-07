@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.73 2005/11/07 19:46:04 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.74 2005/11/07 20:26:37 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -11,7 +11,6 @@ import os,string,imp,types,shutil
 from catalyst_support import *
 from generic_target import *
 from stat import *
-import pdb
 import catalyst_lock
 class generic_stage_target(generic_target):
 

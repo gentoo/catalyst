@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.370 2005/11/07 19:46:04 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.371 2005/11/07 20:26:37 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/stage1_target.py:
+  Fix modules has no attribute register
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
