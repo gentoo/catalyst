@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.371 2005/11/07 20:26:37 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.372 2005/11/07 21:23:46 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
+  Change variables from cat1 format to cat2
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, modules/stage1_target.py:
