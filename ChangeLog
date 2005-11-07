@@ -1,5 +1,14 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.363 2005/11/02 21:49:15 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.364 2005/11/07 15:46:05 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix rc-update to automatically run default options for livecds. Removed an
+  erroneous key check.
+
+  02 Nov 2005; Eric Edgar <rocket@gentoo.org> modules/embedded_target.py,
+  modules/livecd_stage1_target.py, modules/tinderbox_target.py:
+  Make use spec key optional to default to profile defaults
 
   02 Nov 2005; Eric Edgar <rocket@gentoo.org>
   +examples/stage4_template.spec:

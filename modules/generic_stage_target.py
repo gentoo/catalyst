@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.68 2005/10/18 21:12:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.69 2005/11/07 15:46:05 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -763,10 +763,9 @@ class generic_stage_target(generic_target):
 			and os.path.exists(self.settings["autoresume_path"]+"rcupdate"):
 			print "Resume point detected, skipping rcupdate operation..."
 		else:
-		    if self.settings.has_key("rcadd") or self.settings.has_key("rcdel"):
-			    if os.path.exists(self.settings["controller_file"]):
-				  cmd("/bin/bash "+self.settings["controller_file"]+" rc-update","rc-update script failed.")
-			    touch(self.settings["autoresume_path"]+"rcupdate")
+		    if os.path.exists(self.settings["controller_file"]):
+			cmd("/bin/bash "+self.settings["controller_file"]+" rc-update","rc-update script failed.")
+			touch(self.settings["autoresume_path"]+"rcupdate")
 
 	def clean(self):
 		if self.settings.has_key("AUTORESUME") \
