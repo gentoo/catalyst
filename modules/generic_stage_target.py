@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.72 2005/11/07 18:58:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.73 2005/11/07 19:46:04 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -412,20 +412,6 @@ class generic_stage_target(generic_target):
 			self.required_values.append("boot/kernel/"+x+"/sources")
 			self.required_values.append("boot/kernel/"+x+"/config")
 			self.valid_values.append("boot/kernel/"+x+"/aliases")
-			    if type(self.settings["boot/kernel/"+x+"/aliases"]) == types.StringType:
-				aliases=[self.settings["boot/kernel/"+x+"/aliases"]]
-			    else:  	
-				aliases=self.settings["boot/kernel/"+x+"/aliases"]
-			
-			self.valid_values.append("boot/kernel/"+x+"/console-types")
-			    if type(self.settings["boot/kernel/"+x+"/console-types"]) == types.StringType:
-				consoles=[self.settings["boot/kernel/"+x+"/console-types"]]
-
-			    else:  	
-				consoles=self.settings["boot/kernel/"+x+"/console-types"]
-			#19:49 <dostrow_work> boot/kernel/pseries/console-types: none serial hvc hvsi
-			#19:49 <dostrow_work> boot/kernel/pseries/console/serial: ttyS0,9600
-
 			self.valid_values.append("boot/kernel/"+x+"/extraversion")
 			self.valid_values.append("boot/kernel/"+x+"/packages")
 			self.valid_values.append("boot/kernel/"+x+"/use")

@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.369 2005/11/07 19:34:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.370 2005/11/07 19:46:04 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix broken aliases code that was just proof of concept
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
   Output mkisofs command line options to assist in debugging
