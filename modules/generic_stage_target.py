@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.69 2005/11/07 15:46:05 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.70 2005/11/07 16:25:06 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -206,6 +206,15 @@ class generic_stage_target(generic_target):
 		if self.makeconf.has_key("CXXFLAGS"):
 		    print "Using CXXFLAGS setting from seed stage"
 		    self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
+	
+	def override_ldflags(self):
+		if os.environ.has_key("LDFLAGS"):
+		    self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
+		if self.settings.has_key("ldflags"):
+		    self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
+		if self.makeconf.has_key("LDFLAGS"):
+		    print "Using LDFLAGS setting from seed stage"
+		    self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
 	
 	def set_install_mask(self):
 		if self.settings.has_key("install_mask"):
@@ -717,6 +726,7 @@ class generic_stage_target(generic_target):
 		    self.override_chost()	
 		    self.override_cflags()
 		    self.override_cxxflags()	
+		    self.override_ldflags()	
 		    # modify and write out make.conf (for the chroot)
 		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf")
 		    myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
@@ -729,6 +739,9 @@ class generic_stage_target(generic_target):
 			    myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 		    else:
 			    myf.write('CXXFLAGS="${CFLAGS}"\n')
+		    
+		    if self.settings.has_key("LDFLAGS"):
+			    myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
 		    
 		    # figure out what our USE vars are for building
 		    myusevars=[]

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.10 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.11 2005/11/07 16:25:06 rocket Exp $
 
 """
 Builder class for a stage1 installation tarball build.
@@ -46,6 +46,12 @@ class stage1_target(generic_stage_target):
 	    if self.settings.has_key("cxxflags"):
 		self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
 
-def register(foo):
+        def override_ldflags(self):
+                if os.environ.has_key("LDFLAGS"):
+                    self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
+                if self.settings.has_key("ldflags"):
+                    self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
+
+def reg(foo):
 	foo.update({"stage1":stage1_target})
 	return foo

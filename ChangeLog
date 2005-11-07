@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.364 2005/11/07 15:46:05 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.365 2005/11/07 16:25:06 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/stage1_target.py:
+  Allow LDFLAGS to be specified as an ENV variable for stage1
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
