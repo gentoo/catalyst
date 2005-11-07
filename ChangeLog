@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.365 2005/11/07 16:25:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.366 2005/11/07 16:27:54 rocket Exp $
+
+  07 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/livecd_stage2_target.py:
+  Remove large section of commented code
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, modules/stage1_target.py:

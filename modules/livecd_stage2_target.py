@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.49 2005/09/15 14:31:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.50 2005/11/07 16:27:54 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -58,22 +58,6 @@ class livecd_stage2_target(generic_stage_target):
 				touch(self.settings["autoresume_path"]+"setup_target_path")
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
-
-#	def unpack(self):
-#		if not os.path.isdir(self.settings["source_path"]):
-#			generic_stage_target.unpack(self)
-#		else:
-#		    if self.settings.has_key("AUTORESUME") \
-#			    and os.path.exists(self.settings["autoresume_path"]+"unpack"):
-#			    print "Resume point detected, skipping unpack operation..."
-#		    else:
-#			    if not os.path.exists(self.settings["chroot_path"]):
-#				    os.makedirs(self.settings["chroot_path"])
-#				
-#			    print "Copying livecd-stage1 result to new livecd-stage2 work directory..."
-#			    cmd("rsync -a --delete "+self.settings["source_path"]+"/* "+self.settings["chroot_path"],\
-#				    "Error copying initial livecd-stage2")
-#			    touch(self.settings["autoresume_path"]+"unpack")
 
 	def run_local(self):
 		# what modules do we want to blacklist?
