@@ -1,5 +1,5 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.374 2005/11/11 23:46:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.375 2005/11/11 23:53:04 wolf31o2 Exp $
 
   11 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS:
   Added Joshua Kinard to authors for his mips contributions.
@@ -81,7 +81,7 @@
   13 Oct 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/bootloader-setup.sh, targets/support/create-iso.sh,
   +targets/support/mips-arcload_conf.sh:
-  Application of Kumbas patches for MIPS support
+  Application of Kumba's patches for MIPS support
 
   13 Oct 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
   Check for the correct arch specific cd building tool
@@ -2039,7 +2039,7 @@
   14 Jan 2004; zhen <zhen@gentoo.org> arch/mips.py, modules/targets.py:
   adding Kumba's patches for MIPS
 
-  16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py :
+  16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py:
   Added hppa specific code.
 
   29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Tinderbox target added. See
