@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.372 2005/11/07 21:23:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.373 2005/11/11 19:57:02 wolf31o2 Exp $
+
+  11 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/livecd-stage2_template.spec:
+  Fixed duplicate linuxrc entry in livecd-stage2_template.spec file. Blame
+  Paul Kessler on gentoo-catalyst. ;]
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
   Change variables from cat1 format to cat2
