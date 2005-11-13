@@ -1,5 +1,5 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.375 2005/11/11 23:53:04 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.376 2005/11/13 13:47:35 rocket Exp $
 
   11 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS:
   Added Joshua Kinard to authors for his mips contributions.
@@ -25,7 +25,7 @@
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/create-iso.sh:
-  Fix  to  for the correct -o option
+  Fix the -o option
 
   07 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
