@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.14 2005/10/17 19:01:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.15 2005/11/14 19:20:30 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -74,7 +74,7 @@ case $1 in
 		# this is moved here, so we can override any default xinitrc
 		if [ -n "${clst_livecd_xinitrc}" ]
 		then
-			cp -a ${clst_livecd_xinitrc} ${clst_chroot_path}/etc/X11/xinit/xinitrc
+			cp -f ${clst_livecd_xinitrc} ${clst_chroot_path}/etc/X11/xinit/xinitrc
 		fi
 		;;
 	rc-update)
@@ -93,8 +93,21 @@ case $1 in
 		# Here is where we poke in our identifier
 		touch $1/livecd
 		
-		# Here we copy our nifty README.txt
-		cp ${clst_sharedir}/livecd/files/README.txt ${clst_cdroot_path}
+		# move over the readme (if applicable)
+		if [ -n "${clst_livecd_readme}" ]
+		then
+			cp -f ${clst_livecd_readme} $1/README.txt
+		else
+			cp -f ${clst_sharedir}/livecd/files/README.txt $1
+		fi
+
+		# move over Getting_Online.txt for minimal/GameCD
+		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
+		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
+		|| [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
+		then
+			cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
+		fi
 		
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;

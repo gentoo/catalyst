@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.376 2005/11/13 13:47:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.377 2005/11/14 19:20:30 wolf31o2 Exp $
+
+  14 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Fixed livecd/readme functionality, as reported to gentoo-catalyst mailing
+  list by Paul Kessler <kessler@co.wabasha.mn.us> and forward-ported copying
+  of Getting_Online.txt from catalyst 1.1.10.10.
 
   11 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS:
   Added Joshua Kinard to authors for his mips contributions.
