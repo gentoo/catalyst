@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.50 2005/11/07 16:27:54 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.51 2005/11/15 21:03:04 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -71,6 +71,57 @@ class livecd_stage2_target(generic_stage_target):
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\n"+x)
 			myf.close()
+        def unpack(self):
+                unpack=True
+
+                clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
+
+                if os.path.isdir(self.settings["source_path"]):
+                        unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
+                        display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
+                                self.settings["chroot_path"]+" (This may take some time) ...\n"
+                        error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+                        invalid_snapshot=False
+
+                if self.settings.has_key("AUTORESUME"):
+                    if os.path.isdir(self.settings["source_path"]) and \
+                            os.path.exists(self.settings["autoresume_path"]+"unpack"):
+                                print "Resume point detected, skipping unpack operation..."
+                                unpack=False
+                    elif self.settings.has_key("source_path_md5sum"):
+                        if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+                                invalid_snapshot=True
+
+                if unpack:
+                        self.mount_safety_check()
+
+                        if invalid_snapshot:
+                                print "No Valid Resume point detected, cleaning up  ..."
+                                #os.remove(self.settings["autoresume_path"]+"dir_setup")
+                                self.clear_autoresume()
+                                self.clear_chroot()
+                                #self.dir_setup()
+
+                        if not os.path.exists(self.settings["chroot_path"]):
+                                os.makedirs(self.settings["chroot_path"])
+
+                        if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+                                os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+
+                        if self.settings.has_key("PKGCACHE"):
+                                if not os.path.exists(self.settings["pkgcache_path"]):
+                                        os.makedirs(self.settings["pkgcache_path"],0755)
+
+                        print display_msg
+                        cmd(unpack_cmd,error_msg)
+
+                        if self.settings.has_key("source_path_md5sum"):
+                                myf=open(self.settings["autoresume_path"]+"unpack","w")
+                                myf.write(self.settings["source_path_md5sum"])
+                                myf.close()
+                        else:
+                                touch(self.settings["autoresume_path"]+"unpack")
+
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
