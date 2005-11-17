@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.380 2005/11/17 20:27:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.381 2005/11/17 20:39:53 rocket Exp $
+
+  17 Nov 2005; Eric Edgar <rocket@gentoo.org> targets/support/kmerge.sh:
+  Keep unnecessary programs from installing into kerncache
 
   17 Nov 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/generic_stage_target.py:

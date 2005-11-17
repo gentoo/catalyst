@@ -187,7 +187,7 @@ mkdir -p /usr/portage/packages/gk_binaries/${clst_kname}
 	
 if [ -n "${clst_KERNCACHE}" ]
 then
-   	ROOT=/usr/portage/packages/gk_binaries/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge -ukb  "${clst_ksource}" || exit 1
+   	ROOT=/usr/portage/packages/gk_binaries/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -ukb  "${clst_ksource}" || exit 1
 	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
 	if [ ! -e /etc/portage/profile/package.provided ]
 	then
