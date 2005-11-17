@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.97 2005/11/17 20:27:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.98 2005/11/17 22:04:26 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -190,27 +190,11 @@ def build_target(addlargs, targetmap):
 		
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
 	
-		# Kill any pids in the chroot 
-		mytarget.kill_chroot_pids()
-
-		# Check for mounts right away and abort if we cannot unmount them.
-		mytarget.mount_safety_check()
-
-		if conf_values.has_key("CLEAR_AUTORESUME"):
-		    mytarget.clear_autoresume()
-		
-		if conf_values.has_key("PURGE"):
-		    mytarget.purge()
-		
 		mytarget.run()
 
-	except CatalystError:
-		try:
-		    mytarget.mount_safety_check()
-		except:
-		    pass
-		sys.exit(1)
-	
+	except:
+		raise
+
 if __name__ == "__main__":
 	targetmap={}
 	

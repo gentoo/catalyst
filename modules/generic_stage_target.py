@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.76 2005/11/17 20:56:16 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.77 2005/11/17 22:04:26 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -478,14 +478,14 @@ class generic_stage_target(generic_target):
 			if ismount(mypath+x):
 				#something is still mounted
 				try:
-					print x+" is still mounted; performing auto-bind-umount..."
+					print x+" is still mounted; performing auto-bind-umount...",
 					# try to umount stuff ourselves
 					self.unbind()
 					if ismount(mypath+x):
 						raise CatalystError, "Auto-unbind failed for "+x
 					
 					else:
-						print "Auto-unbind successful, continuing..."
+						print "Auto-unbind successful..."
 				
 				except CatalystError:
 					raise CatalystError, "Unable to auto-unbind "+x
@@ -923,13 +923,24 @@ class generic_stage_target(generic_target):
 	def run(self):
 		self.chroot_lock.write_lock()
 
+                # Kill any pids in the chroot
+                self.kill_chroot_pids()
+
+                # Check for mounts right away and abort if we cannot unmount them.
+                self.mount_safety_check()
+
+                if self.settings.has_key("CLEAR_AUTORESUME"):
+                        self.clear_autoresume()
+                if self.settings.has_key("PURGE"):
+                        self.purge()
+
 		for x in self.settings["action_sequence"]:
 			print "Running action sequence: "+x
 			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))
 			except:
-				self.unbind()
+				self.mount_safety_check()
 				raise
 		
 		self.chroot_lock.unlock()
