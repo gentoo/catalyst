@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.75 2005/11/17 20:27:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.76 2005/11/17 20:56:16 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -700,7 +700,12 @@ class generic_stage_target(generic_target):
 				    # keep trying to umount the others, to minimize damage if developer makes a mistake
 		
 			if self.settings.has_key("SNAPCACHE") and x == "/usr/portage":
-				self.snapshot_lock_object.unlock()
+				try:
+				    # Its possible the snapshot lock object isnt created yet
+				    # this is because mount safety check calls unbind before the target is fully initialized		
+				    self.snapshot_lock_object.unlock()
+				except:
+				    pass
 		if ouch:
 			"""
 			if any bind mounts really failed, then we need to raise
