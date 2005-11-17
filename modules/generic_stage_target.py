@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.74 2005/11/07 20:26:37 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.75 2005/11/17 20:27:57 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -90,8 +90,18 @@ class generic_stage_target(generic_target):
 				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 		
 		# call arch constructor, pass our settings
-		self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
-		
+                try:
+                        self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
+                except:
+                        print "Invalid subarch: "+self.settings["subarch"]
+                        print "Choose one of the following:",
+                        for x in self.subarchmap:
+                                print x,
+                        print
+                        print
+                        print "Catalyst aborting...."
+                        sys.exit(2)
+	
 		print "Using target:",self.settings["target"]
 		# self.settings["mainarch"] should now be set by our arch constructor, so we print
 		# a nice informational message:

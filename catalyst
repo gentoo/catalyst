@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.96 2005/11/15 22:20:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.97 2005/11/17 20:27:57 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -352,7 +352,7 @@ if __name__ == "__main__":
 	# everything is setup, so the build is a go
 	try:
 		build_target(addlargs, targetmap)
-	
+			
 	except CatalystError:
 		print
 		print "Catalyst aborting...."
@@ -361,18 +361,6 @@ if __name__ == "__main__":
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
 		print "Catalyst aborting...."
-	except KeyError:
-		print "\nproblem with command line or spec file ( Key Error )"
-		print "Key: "+str(sys.exc_value)+" was not found"
-		print "Catalyst aborting...."
-		sys.exit(2)
-	except UnboundLocalError:
-		print
-		print "UnboundLocalError: "+str(sys.exc_value)+" was not found"
-		raise
-		print
-		print "Catalyst aborting...."
-		sys.exit(2)
 	except LockInUse:
 		print "Catalyst aborting...."
 		sys.exit(2)
@@ -380,3 +368,20 @@ if __name__ == "__main__":
 		print "Catalyst aborting...."
 		raise
 		sys.exit(2)
+
+	#except CatalystError:
+	#	print
+	#	print "Catalyst aborting...."
+	#	sys.exit(2)
+	#except KeyError:
+	#	print "\nproblem with command line or spec file ( Key Error )"
+	#	print "Key: "+str(sys.exc_value)+" was not found"
+	#	print "Catalyst aborting...."
+	#	sys.exit(2)
+	#except UnboundLocalError:
+	#	print
+	#	print "UnboundLocalError: "+str(sys.exc_value)+" was not found"
+	#	raise
+	#	print
+	#	print "Catalyst aborting...."
+	#	sys.exit(2)

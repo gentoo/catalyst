@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.379 2005/11/15 22:20:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.380 2005/11/17 20:27:57 rocket Exp $
+
+  17 Nov 2005; Eric Edgar <rocket@gentoo.org> catalyst,
+  modules/generic_stage_target.py:
+  Turn on more tracebacks at this point to better debug .. will need to turn
+  them down as we find errors and build appropriate error handlers
 
   15 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   Changed version marker to 2.0_pre20051115 for new ebuild.
