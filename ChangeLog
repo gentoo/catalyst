@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.383 2005/11/17 22:04:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.384 2005/11/17 22:27:13 wolf31o2 Exp $
+
+  17 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Added call to update-usbids to download the latest usb.ids file.
 
   17 Nov 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/generic_stage_target.py:

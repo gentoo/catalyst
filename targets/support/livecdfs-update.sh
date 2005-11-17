@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.22 2005/09/12 18:49:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.23 2005/11/17 22:27:13 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -113,8 +113,9 @@ echo "alias rm='rm -i'" >> /etc/profile
 echo "alias ls='ls --color=auto'" >> /etc/profile
 echo "alias grep='grep --color=auto'" >> /etc/profile
 
-# make sure we have the latest pci and hotplug ids
+# make sure we have the latest pci,usb and hotplug ids
 [ -x /sbin/update-pciids ] && /sbin/update-pciids
+[ -x /sbin/update-usbids ] && /sbin/update-usbids
 if [ -d /usr/share/hwdata ]
 then
 	[ -f /usr/share/hwdata/pci.ids ] && rm -f /usr/share/hwdata/pci.ids
