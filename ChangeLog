@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.388 2005/11/18 22:06:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.389 2005/11/18 22:09:55 wolf31o2 Exp $
+
+  18 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Removing for loop for grub on amd64/x86 as it was totally useless.
 
   18 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:

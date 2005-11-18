@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.17 2005/11/18 22:06:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.18 2005/11/18 22:09:55 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -192,12 +192,9 @@ case ${clst_mainarch} in
 			# Setup help message
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}
-			for i in 2 3 4 5 6 7
-			do
-				cp ${clst_sharedir}/livecd/files/README.txt
-					$1/boot/help.msg
-				echo "cat /boot/help.msg" >> ${icfg}
-			done
+			cp ${clst_sharedir}/livecd/files/README.txt \
+				$1/boot/help.msg
+			echo "cat /boot/help.msg" >> ${icfg}
 
 			for x in ${clst_boot_kernel}
 			do
