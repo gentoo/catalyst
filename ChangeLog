@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.390 2005/11/18 22:12:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.391 2005/11/18 22:30:22 rocket Exp $
+
+  18 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix split error if use is specified
 
   18 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/cdtar/palo-1.2_pre20030630-cdtar.tar.bz2,
