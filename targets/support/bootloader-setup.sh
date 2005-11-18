@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.14 2005/10/17 17:11:33 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.15 2005/11/18 02:25:44 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -124,11 +124,13 @@ case ${clst_mainarch} in
 		mv $1/boot/${x}{,.igz} $1/boot/efi/boot
 		;;
 	x86|amd64)
-		if [ -e $1/boot/isolinux.bin ]
+		if [ -e $1/isolinux/isolinux.bin ]
 		then
+			mv $1/boot/* $1/isolinux
+			rmdir $1/boot
 			# the rest of this function sets up the config file for isolinux
-			icfg=$1/boot/isolinux.cfg
-			kmsg=$1/boot/kernels.msg
+			icfg=$1/isolinux/isolinux.cfg
+			kmsg=$1/isolinux/kernels.msg
 			echo "default ${first}" > ${icfg}
 			echo "timeout 150" >> ${icfg}
 			echo "prompt 1" >> ${icfg}
@@ -172,7 +174,7 @@ case ${clst_mainarch} in
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
 
-			if [ -f $1/boot/memtest86 ]
+			if [ -f $1/isolinux/memtest86 ]
 			then
 				echo >> $icfg
 				echo "   memtest86" >> $kmsg

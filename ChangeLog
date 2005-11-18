@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.384 2005/11/17 22:27:13 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.385 2005/11/18 02:25:44 rocket Exp $
+
+  18 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/livecd_stage1_target.py,
+  targets/support/bootloader-setup.sh:
+  fix the bootloader script for isolinux so that it actually makes a cfg file,
+  remove extra unneeded catalyst aborting print statement, reorganize rm code
+  to make sure is splits properly and is an array even from the cmdline
 
   17 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:

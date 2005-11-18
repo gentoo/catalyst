@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.77 2005/11/17 22:04:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.78 2005/11/18 02:25:44 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -97,9 +97,7 @@ class generic_stage_target(generic_target):
                         print "Choose one of the following:",
                         for x in self.subarchmap:
                                 print x,
-                        print
-                        print
-                        print "Catalyst aborting...."
+			print
                         sys.exit(2)
 	
 		print "Using target:",self.settings["target"]
@@ -146,7 +144,8 @@ class generic_stage_target(generic_target):
 		self.set_fsops()
 		self.set_iso()
 		self.set_packages()
-		
+		self.set_rm()
+	
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
@@ -392,9 +391,12 @@ class generic_stage_target(generic_target):
 				"setup_environment","run_local","preclean","unbind","clean","capture","clear_autoresume"]
 	
 	def set_use(self):
-		if self.settings.has_key("use"):
+		if self.settings.has_key(self.settings["spec_prefix"]+"/use"):
 			self.settings["use"]=self.settings[self.settings["spec_prefix"]+"/use"]
 			del self.settings[self.settings["spec_prefix"]+"/use"]
+		if self.settings.has_key("use"):
+		    if type(self.settings["use"])==types.StringType:
+			self.settings["use"]=self.settings["use"].split()
 
 	def set_stage_path(self):
 			self.settings["stage_path"]=normpath(self.settings["chroot_path"])
@@ -404,6 +406,11 @@ class generic_stage_target(generic_target):
 
 	def set_packages(self):
 		pass
+
+	def set_rm(self):
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
+		if type(self.settings[self.settings["spec_prefix"]+"/rm"])==types.StringType:
+		    self.settings[self.settings["spec_prefix"]+"/rm"]=self.settings[self.settings["spec_prefix"]+"/rm"].split()
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -842,8 +849,6 @@ class generic_stage_target(generic_target):
 		print "Resume point detected, skipping remove operation..."
 	    else:
 		if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
-		    if type(self.settings[self.settings["spec_prefix"]+"/rm"])==types.StringType:
-			self.settings[self.settings["spec_prefix"]+"/rm"]=self.settings[self.settings["spec_prefix"]+"/rm"].split()
 		    for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 			# we're going to shell out for all these cleaning operations,
 			# so we get easy glob handling
