@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.389 2005/11/18 22:09:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.390 2005/11/18 22:12:38 wolf31o2 Exp $
+
+  18 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/palo-1.2_pre20030630-cdtar.tar.bz2,
+  +livecd/cdtar/palo-1.5_pre20040515-cdtar.tar.bz2:
+  Updated palo version from catalyst 1.x for HPPA.
 
   18 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:
