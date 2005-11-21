@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.391 2005/11/18 22:30:22 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.392 2005/11/21 17:14:32 rocket Exp $
+
+  21 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/functions.sh:
+  Fix pegasos kernelz rename;fix default_append_line to not include initrd= as
+  too many arches dont use it by default, test for an initrd in the yaboot
+  config.
 
   18 Nov 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

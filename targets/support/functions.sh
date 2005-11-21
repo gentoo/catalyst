@@ -109,7 +109,16 @@ extract_kernels() {
 		rm ${1}/config-* 
 		
 		# change kernel name from "kernel" to "gentoo", for example
-		mv ${1}/kernel-* ${1}/${x}
+		if [ -e ${1}/kernel-* ]
+		then
+		    mv ${1}/kernel-* ${1}/${x}
+		fi
+		
+		# change kernel name from "kernelz" to "gentoo", for example
+		if [ -e ${1}/kernelz-* ]
+		then
+		    mv ${1}/kernelz-* ${1}/${x}
+		fi
 
 		# change initrd name from "initrd" to "gentoo.igz", for example
 		if [ -e ${1}/initrd-* ]

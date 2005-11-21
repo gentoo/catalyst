@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.18 2005/11/18 22:09:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.19 2005/11/21 17:14:32 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -13,7 +13,7 @@ check_dev_manager
 check_bootargs
 check_filesystem_type
 
-default_append_line="initrd=${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
+default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
 
 case ${clst_mainarch} in
 	alpha)
@@ -68,7 +68,12 @@ case ${clst_mainarch} in
 			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 			echo >> ${icfg}
 			echo "image=/boot/${x}" >> ${icfg}
-			echo "initrd=/boot/${x}.igz" >> ${icfg}
+			
+			if [ -e "/boot/${x}.igz" ]
+			then
+			    echo "initrd=/boot/${x}.igz" >> ${icfg}
+			fi
+			
 			echo "label=${x}" >> ${icfg}
 			echo "read-write" >> ${icfg}
 			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
@@ -111,12 +116,12 @@ case ${clst_mainarch} in
 		do
 			echo "image=/efi/boot/${x}" >> ${iacfg}
 			echo "  label=${x}" >> ${iacfg}
-			echo '  append="'${default_append_line}'"' >> ${iacfg}
+			echo '  append="'initrd=${x}.igz ${default_append_line}'"' >> ${iacfg}
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
 			echo >> ${iacfg}
 			echo "image=/efi/boot/${x}" >> ${iacfg}
 			echo "  label=${x}-serial">> ${iacfg}
-			echo '  append="'${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
+			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
 			echo >> ${iacfg}
 		done
@@ -160,16 +165,16 @@ case ${clst_mainarch} in
 				echo "  kernel ${x}" >> ${icfg}
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
-					echo "  append ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+					echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 				else
-					echo "  append ${default_append_line} vga=791 splash=silent" >> ${icfg}
+					echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 				fi
 			
 				echo >> ${icfg}
 				echo "   ${x}" >> ${kmsg}
 				echo "label ${x}-nofb" >> ${icfg}
 				echo "  kernel ${x}" >> ${icfg}
-				echo "  append ${default_append_line}" >> ${icfg}
+				echo "  append ${default_append_line} initrd=${x}.igz" >> ${icfg}
 				echo >> ${icfg}
 				echo "   ${x}-nofb" >> ${kmsg}
 			done
