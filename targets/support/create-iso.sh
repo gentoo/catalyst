@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.15 2005/11/07 21:23:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.16 2005/11/21 23:16:41 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -173,7 +173,7 @@ case ${clst_mainarch} in
 			${clst_target_path} || die "Cannot make ISO image" 
 	;;	
 	x86|amd64)
-		if [ -e ${clst_target_path}/boot/isolinux.bin ]
+		if [ -e ${clst_target_path}/isolinux/isolinux.bin ]
 		then
 			echo "Creating ISO using ISOLINUX bootloader"
 			if [ -d ${clst_target_path}/isolinux ]

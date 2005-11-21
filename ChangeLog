@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.392 2005/11/21 17:14:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.393 2005/11/21 23:16:41 wolf31o2 Exp $
+
+  21 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/create-iso.sh:
+  Changed check for /boot/isolinux.bin to /isolinux/isolinux.bin
 
   21 Nov 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/bootloader-setup.sh, targets/support/functions.sh:
