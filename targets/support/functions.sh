@@ -15,7 +15,6 @@ copy_to_chroot(){
 		cp -a ${1} ${clst_chroot_path}/tmp
 		chmod 755 ${clst_chroot_path}/tmp/${file_name}
 	fi
-
 }
 
 delete_from_chroot(){
@@ -58,7 +57,6 @@ exec_in_chroot(){
 		delete_from_chroot tmp/chroot-functions.sh
 		delete_from_chroot tmp/${file_name}
 	fi
-
 }
 
 #return codes
@@ -113,7 +111,7 @@ extract_kernels() {
 		then
 		    mv ${1}/kernel-* ${1}/${x}
 		fi
-		
+
 		# change kernel name from "kernelz" to "gentoo", for example
 		if [ -e ${1}/kernelz-* ]
 		then
@@ -160,13 +158,13 @@ extract_kernel() {
 
 	# change kernel name from "kernel" to "gentoo", for example
 	mv ${1}/kernel-* ${1}/${2}
-	
+
 	# change initrd name from "initrd" to "gentoo.igz", for example
 	if [ -e ${1}/initrd-* ]
 	then
 		mv ${1}/initrd-* ${1}/${2}.igz
 	fi
-	
+
 	# change initramfs name from "initramfs" to "gentoo.igz", for example
 	if [ -e ${1}/initramfs-* ]
 	then
