@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.396 2005/11/22 20:36:17 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.397 2005/11/22 20:47:35 wolf31o2 Exp $
+
+  22 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/grp_template.spec, examples/livecd-stage1_template.spec,
+  examples/stage4_template.spec, +examples/tinderbox_template.spec:
+  Added tinderbox_template.spec to examples and cleaned up pkgcache_path
+  definitions in the examples to fit in 80 columns.
 
   22 Nov 2005; Eric Edgar <rocket@gentoo.org> examples/grp_template.spec,
   examples/livecd-stage1_template.spec, examples/stage4_template.spec,

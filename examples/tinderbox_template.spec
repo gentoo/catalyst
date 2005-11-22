@@ -1,5 +1,4 @@
-# livecd-stage1 example specfile
-# used to build a livecd-stage1
+# generic tinderbox specfile
 
 # The subarch can be any of the supported catalyst subarches (like athlon-xp).
 # Refer to the catalyst reference manual for suppurted subarches.
@@ -13,11 +12,10 @@ subarch:
 # version_stamp: 2005.0
 version_stamp:
 
-# The target specifies what target we want catalyst to do.  For building a CD,
-# we start with livecd-stage1 as our target.
+# The target specifies what target we want catalyst to do.
 # example:
-# target: livecd-stage1
-target:
+# target: tinderbox
+target: tinderbox 
 
 # The rel_type defines what kind of build we are doing.  This is merely another
 # identifier, but it useful for allowing multiple concurrent builds.  Usually,
@@ -64,19 +62,19 @@ portage_confdir:
 # pkgcache_path: /tmp/packages
 pkgcache_path:
 
-# The livecd-stage1 target is where you will build packages for your CD.  These
-# packages can be built with customized USE settings.  The settings here are
-# additive to the default USE configured by the profile.  For building release
-# media, the first thing we do is disable all default USE flags with -* and then
-# begin to set our own.
+# The tinderbox target can build packages with any USE settings.  However, it
+# should be noted that these settings are additive to the settings in the
+# chosen profile.  This is extremely useful when testing possible changed to a
+# profile or package.
 # example:
-# livecd/use: -* ipv6 socks5 livecd fbcon ncurses readline ssl
-livecd/use:
+# tinderbox/use: gtk2 gnome kde qt bonobo cdr esd gtkhtml mozilla mysql perl ruby tcltk cups ldap ssl tcpd -svga
+tinderbox/use:
 
-# This is the set of packages that we will merge into the CD's filesystem.  They
-# will be built with the USE flags configured above.  These packages must not
-# depend on a configured kernel.  If the package requires a configured kernel,
-# then it will be defined elsewhere.
-# example:
-# livecd/packages: livecd-tools dhcpcd acpid apmd gentoo-sources kudzu-knoppix hotplug coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
-livecd/packages:
+# This is the list of packages that will be built by the tinderbox target.
+# Each of these is considered a separate target to test, and catalyst will use
+# rsync to reset the build area to the default from the source_subpath before
+# each package.  This allows for testing USE changes on individual packages as
+# well as for dependency issues.
+# exampleL
+# tinderbox/packages: dante tsocks sys-apps/eject minicom links acpid apmd parted whois tcpdump cvs zip unzip netcat partimage app-admin/sudo app-cdr/cdrtools gnome emacs dev-lang/ruby enlightenment kde mozilla-firefox mozilla-thunderbird xfce4 openbox fluxbox sylpheed openoffice-bin gimp xemacs xmms abiword gaim xchat pan tetex xcdroast k3b samba nmap gradm ettercap ethereal mplayer
+tinderbox/packages:
