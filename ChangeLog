@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.397 2005/11/22 20:47:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.398 2005/11/22 21:00:53 rocket Exp $
+
+  22 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  +livecd/cdtar/ppc-yaboot-cdtar.tar.bz2:
+  Added ppc-yaboot-cdtar.tar.bz2 to have an Apple/IBM bootable cdrom
 
   22 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/grp_template.spec, examples/livecd-stage1_template.spec,
