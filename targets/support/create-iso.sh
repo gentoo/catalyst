@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.16 2005/11/21 23:16:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.17 2005/11/22 15:37:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -176,12 +176,15 @@ case ${clst_mainarch} in
 		if [ -e ${clst_target_path}/isolinux/isolinux.bin ]
 		then
 			echo "Creating ISO using ISOLINUX bootloader"
-			if [ -d ${clst_target_path}/isolinux ]
+			if [ -d ${clst_target_path}/boot ]
 			then
-				rm -r ${clst_target_path}/isolinux
+				if [ -n "$(ls ${clst_target_path}/boot)" ]
+				then
+					mv ${clst_target_path}/boot/* ${clst_target_path}/isolinux
+				fi
+				rm -r ${clst_target_path}/boot
 			fi
-			mv ${clst_target_path}/boot ${clst_target_path}/isolinux
-			
+
 			case ${clst_fstype} in
 				zisofs)
 					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -z ${clst_target_path}"

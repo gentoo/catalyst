@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.393 2005/11/21 23:16:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.394 2005/11/22 15:37:03 wolf31o2 Exp $
+
+  22 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/create-iso.sh:
+  Fixed a few lines which were causing the isolinux directory to be removed
+  when using an isolinux cdtar on x86/amd64. This is 2.0_pre20051122.
 
   21 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/create-iso.sh:
