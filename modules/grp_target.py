@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.14 2005/08/09 14:12:26 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.15 2005/11/22 20:36:18 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -44,6 +44,13 @@ class grp_target(generic_stage_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
+
+        def set_pkgcache_path(self):
+            if self.settings.has_key("pkgcache_path"):
+                if type(self.settings["pkgcache_path"]) != types.StringType:
+                    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+            else:
+                generic_stage_target.set_pkgcache_path(self)
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\

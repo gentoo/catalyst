@@ -1,5 +1,13 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.395 2005/11/22 19:30:10 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.396 2005/11/22 20:36:17 rocket Exp $
+
+  22 Nov 2005; Eric Edgar <rocket@gentoo.org> examples/grp_template.spec,
+  examples/livecd-stage1_template.spec, examples/stage4_template.spec,
+  modules/grp_target.py, modules/tinderbox_target.py,
+  targets/tinderbox/tinderbox-chroot.sh:
+  Tinderbox script: added newuse, tinderbox and grp targets added support for
+  overriding the pkgcache location via pkgcache_path - pkgcache_path:
+  /path/to/cache in the spec file, updated example specs to note pkgcache_path
 
   22 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
   Added portdir example to catalyst.conf for bug #113272.
