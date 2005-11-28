@@ -78,7 +78,7 @@ stage4/use:
 # depend on a configured kernel.  If the package requires a configured kernel,
 # then it will be defined elsewhere.
 # example:
-# stage4/packages: livecd-tools dhcpcd acpid apmd gentoo-sources kudzu-knoppix hotplug coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
+# stage4/packages: livecd-tools dhcpcd acpid apmd gentoo-sources coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 stage4/packages:
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
