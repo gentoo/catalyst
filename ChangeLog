@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.404 2005/11/29 20:20:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.405 2005/11/29 20:30:42 wolf31o2 Exp $
+
+  29 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/netboot/netboot-controller.sh:
+  Changed to clst_use from clst_embedded_use and clst_netboot_use and
+  clst_grp_use. This is catalyst-2.0_rc1.
 
   29 Nov 2005; Eric Edgar <rocket@gentoo.org>
   targets/netboot/netboot-controller.sh:

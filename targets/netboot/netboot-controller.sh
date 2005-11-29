@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.5 2005/11/29 20:20:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.6 2005/11/29 20:30:42 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -23,12 +23,12 @@ case ${1} in
 		then
 			mkdir -p ${clst_chroot_path}/etc/busybox/${clst_CHOST}
 			cp -v ${clst_netboot_busybox_config} ${clst_chroot_path}/etc/busybox/${clst_CHOST}/busybox.config
-			clst_netboot_use="savedconfig" 
+			clst_use="savedconfig" 
 		fi
 		
 		# Main Busybox emerge
 		clst_root_path="/" \
-		clst_netboot_use="${clst_use} netboot" \
+		clst_use="${clst_use} netboot" \
 		clst_myemergeopts="${clst_myemergeopts} -O" \
 		clst_packages="busybox" \
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh

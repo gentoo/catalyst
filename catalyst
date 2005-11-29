@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.101 2005/11/29 15:24:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.102 2005/11/29 20:30:42 wolf31o2 Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -10,7 +10,7 @@
 import os,sys,imp,string,getopt
 import pdb
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="2.0_pre20051129"
+__version__="2.0_rc1"
 
 conf_values={}
 
