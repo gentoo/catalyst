@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.402 2005/11/29 19:59:27 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.403 2005/11/29 20:15:48 wolf31o2 Exp $
+
+  29 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/stage4/stage4-chroot.sh:
+  Changed to clst_use from clst_stage4_use and clst_livecd_use.
 
   29 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage4/stage4-chroot.sh:
