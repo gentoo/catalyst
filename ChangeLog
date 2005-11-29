@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.399 2005/11/28 13:44:13 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.400 2005/11/29 15:24:43 wolf31o2 Exp $
+
+  29 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  This is version 2.0_pre20051129.
 
   28 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/livecd-stage1_template.spec, examples/stage4_template.spec:
