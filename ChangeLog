@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.405 2005/11/29 20:30:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.406 2005/11/29 20:47:25 rocket Exp $
+
+  29 Nov 2005; Eric Edgar <rocket@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Bumped genkernel detection to require 3.3.0 or higher
 
   29 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,

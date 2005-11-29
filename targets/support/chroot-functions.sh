@@ -34,11 +34,11 @@ check_genkernel_version(){
     	genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
     	genkernel_version_minor=${genkernel_version_minor_sub%%.*}
     	genkernel_version_sub=${genkernel_version##*.}
-    	if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '2' ]
+    	if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '3' ]
     	then
 	    	echo "Genkernel version ${genkernel_version} found ... continuing"
     	else
-	    	echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.2.0"
+	    	echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.3.0"
 	    	echo "or greater is required."
 	    	exit 1
     	fi
