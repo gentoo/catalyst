@@ -64,16 +64,15 @@ portage_confdir:
 # pkgcache_path: /tmp/packages
 pkgcache_path:
 
-# The stage4-stage1 target is where you will build packages for your CD.  These
-# packages can be built with customized USE settings.  The settings here are
-# additive to the default USE configured by the profile.  For building release
-# media, the first thing we do is disable all default USE flags with -* and then
-# begin to set our own.
+# The stage4 target is where you will build packages for basically updated stage3.
+# These packages can be built with customized USE settings.  The settings here are
+# additive to the default USE configured by the profile.  
+# Leaving this blank will default to the system use flags
 # example:
-# stage4/use: -* ipv6 socks5 livecd fbcon ncurses readline ssl
+# stage4/use: ipv6 socks5 fbcon ncurses readline ssl
 stage4/use:
 
-# This is the set of packages that we will merge into the CD's filesystem.  They
+# This is the set of packages that we will merge into the stage4 tarball.  They
 # will be built with the USE flags configured above.  These packages must not
 # depend on a configured kernel.  If the package requires a configured kernel,
 # then it will be defined elsewhere.
@@ -81,7 +80,7 @@ stage4/use:
 # stage4/packages: livecd-tools dhcpcd acpid apmd gentoo-sources coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 stage4/packages:
 
-# A fsscript is simply a shell script that is copied into the chroot of the CD
+# A fsscript is simply a shell script that is copied into the chroot of the stage4
 # after the kernel(s) and any external modules have been compiled and is 
 # executed within the chroot.  It can contain any commands that are available
 # via the packages installed by our stages or by the packages installed during
@@ -120,26 +119,7 @@ stage4/gk_mainargs:
 # stage4/linuxrc:
 stage4/linuxrc:
 
-# This option controls quite a bit of catalyst internals and sets up several
-# defaults.  Each type behaves slightly differently and is explained below.
-# gentoo-release-minimal - This creates an official minimal InstallCD.
-# gentoo-release-universal - This creates an official universal InstallCD.
-# gentoo-release-stage4 - This creates an official LiveCD environment.
-# gentoo-gamecd - This creates an official Gentoo GameCD.
-# generic-stage4 - This should be used for all non-official media.
-# example:
-# stage4/type: gentoo-release-minimal
-stage4/type:
-
-# This is for the README.txt on the root of the CD.  For Gentoo releases, we
-# use a default README.txt, and this will be used on your CD if you do not
-# provide one yourself.  Since we do not use this for the official releases, it
-# is left blank below.
-# example:
-# stage4/readme:
-stage4/readme:
-
-# This is for the CD's message of the day.  It is not required for official
+# This is for the message of the day.  It is not required 
 # release media, as catalyst builds a default motd when the stage4/type is set
 # to one of the gentoo-* options.  This setting overrides the default motd even
 # on official media.  Since we do not use this for the official releases, it is
@@ -175,7 +155,7 @@ stage4/rcdel:
 
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
-# would want within your CD filesystem.  Files added here are available when
+# would want within your stage4 filesystem.  Files added here are available when
 # docache is used.  We do not use this on the official media, so we will leave
 # it blank below.
 # example:

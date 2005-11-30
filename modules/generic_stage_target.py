@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.79 2005/11/18 22:30:22 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.80 2005/11/30 21:37:58 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1046,59 +1046,66 @@ class generic_stage_target(generic_target):
 				   "Runscript pre-kmerge failed")
 		
 				for kname in mynames:
-					try:
-						if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
-							self.unbind()
-							raise CatalystError, "Can't find kernel config: " \
-								+self.settings["boot/kernel/"+kname+"/config"]
-			
-					except TypeError:
-						raise CatalystError, "Required value boot/kernel/config not specified"
-			
-					try:
-						cmd("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+ \
-							self.settings["chroot_path"]+"/var/tmp/"+kname+".config", \
-							"Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"])
-		
-					except CatalystError:
-						self.unbind()
-
-					# If we need to pass special options to the bootloader
-					# for this kernel put them into the environment.
-					if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
-						myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
-				
-						if type(myopts) != types.StringType:
-							myopts = string.join(myopts)
-						os.putenv(kname+"_kernelopts", myopts)
-
+					if self.settings.has_key("AUTORESUME") \
+					    and os.path.exists(self.settings["autoresume_path"]+"build_kernel_"+kname):
+						print "Resume point detected, skipping build_kernel for "+kname+" operation..."
 					else:
-						os.putenv(kname+"_kernelopts", "")
+				    
+					    try:
+						    if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
+							    self.unbind()
+							    raise CatalystError, "Can't find kernel config: " \
+								    +self.settings["boot/kernel/"+kname+"/config"]
+			
+					    except TypeError:
+						    raise CatalystError, "Required value boot/kernel/config not specified"
+			
+					    try:
+						    cmd("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+ \
+							    self.settings["chroot_path"]+"/var/tmp/"+kname+".config", \
+							    "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"])
+		
+					    except CatalystError:
+						    self.unbind()
 
-					if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
-						self.settings["boot/kernel/"+kname+"/extraversion"]=""
+					    # If we need to pass special options to the bootloader
+					    # for this kernel put them into the environment.
+					    if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
+						    myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
+				
+						    if type(myopts) != types.StringType:
+							    myopts = string.join(myopts)
+						    os.putenv(kname+"_kernelopts", myopts)
 
-					os.putenv("clst_kextraversion", self.settings["boot/kernel/"+kname+"/extraversion"])
-					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
-					    if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
-						print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
+					    else:
+						    os.putenv(kname+"_kernelopts", "")
+
+					    if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
+						    self.settings["boot/kernel/"+kname+"/extraversion"]=""
+
+					    os.putenv("clst_kextraversion", self.settings["boot/kernel/"+kname+"/extraversion"])
+					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+						if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
+						    print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
 						
-						cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
-							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+						    cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
+							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
 						
-						cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
-							self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
-							self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+						    cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
+							    self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
+							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
 	
 					    
-					# execute the script that builds the kernel
-					cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
-			    		"Runscript kernel build failed")
+					    # execute the script that builds the kernel
+					    cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
+						"Runscript kernel build failed")
 					
-					if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
-					    if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
-						print "Cleaning up temporary overlay dir"
-						cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/")
+					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+						if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
+						    print "Cleaning up temporary overlay dir"
+						    cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/")
+					    
+					    touch(self.settings["autoresume_path"]+"build_kernel_"+kname)
 
 				# execute the script that cleans up the kernel build environment
 				cmd("/bin/bash "+self.settings["controller_file"]+" post-kmerge ",\

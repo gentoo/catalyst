@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.407 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.408 2005/11/30 21:37:58 rocket Exp $
+
+  30 Nov 2005; Eric Edgar <rocket@gentoo.org> examples/stage4_template.spec,
+  files/catalyst.conf, modules/generic_stage_target.py,
+  modules/livecd_stage1_target.py:
+  Fix livecd-stage1 livecd use flag bug; stage4 doc cleanups;autoresume points
+  after each successful kernel build;add autoresume documentation to
+  catalyst.conf
 
   30 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc.py,
   targets/embedded/embedded-controller.sh,
