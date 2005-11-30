@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.19 2005/11/21 17:14:32 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.20 2005/11/30 21:34:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -51,7 +51,7 @@ case ${clst_mainarch} in
 		# For now we supply a prebuilt file, prebuilt configuration 
 		# and prebuilt boot message. This can be enhanced later on
 		# but the following suffices for now:
-		
+
 		# this sets up the config file for yaboot
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
@@ -68,19 +68,19 @@ case ${clst_mainarch} in
 			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 			echo >> ${icfg}
 			echo "image=/boot/${x}" >> ${icfg}
-			
+
 			if [ -e "/boot/${x}.igz" ]
 			then
-			    echo "initrd=/boot/${x}.igz" >> ${icfg}
+				echo "initrd=/boot/${x}.igz" >> ${icfg}
 			fi
-			
+
 			echo "label=${x}" >> ${icfg}
 			echo "read-write" >> ${icfg}
 			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 			then
-			    echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
 			else
-			    echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+				echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
 			fi
 		done
 		;;
@@ -169,7 +169,7 @@ case ${clst_mainarch} in
 				else
 					echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 				fi
-			
+
 				echo >> ${icfg}
 				echo "   ${x}" >> ${kmsg}
 				echo "label ${x}-nofb" >> ${icfg}
@@ -207,7 +207,7 @@ case ${clst_mainarch} in
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
 				echo "title ${x}" >> ${icfg}
-				
+
 				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 				then
 					echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
@@ -219,7 +219,7 @@ case ${clst_mainarch} in
 				then
 					echo "initrd /boot/${x}.igz" >> ${icfg}
 				fi
-				
+
 				echo >> ${icfg}
 				echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
 				echo "kernel ${x} /boot/${x} ${default_append_line}" >> ${icfg}

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.17 2005/11/22 15:37:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.18 2005/11/30 21:34:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -8,7 +8,7 @@
 
 # Check for our CD ISO creation tools
 case ${clst_mainarch} in
-   mips)   cdmaker="sgibootcd";    cdmakerpkg="sys-boot/sgibootcd" ;;
+   mips)   cdmaker="sgibootcd";	cdmakerpkg="sys-boot/sgibootcd" ;;
    *)	cdmaker="mkisofs";  cdmakerpkg="app-cdr/cdrtools"   ;;
 esac
 
@@ -124,20 +124,20 @@ case ${clst_mainarch} in
 		# when booting from CD (current as of silo 1.4.8)
 		mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
 		case ${clst_livecd_cdfstype} in
-		    zisofs)
+			zisofs)
 			echo "Running mkisofs.sparc.fu to create iso image...."
 			echo "/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
 			echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
 			/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
 			-V "${clst_iso_volume_id}" ${clst_target_path}  || die "Cannot make ISO image"
-		    ;;
-		    *)
+			;;
+			*)
 			echo "Running mkisofs.sparc.fu to create iso image...."
 			echo "/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
 			echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
 			/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'\
 			-V "${clst_iso_volume_id}" ${clst_target_path}  || die "Cannot make ISO image"
-		    ;;
+			;;
 		esac
 
 		rm /tmp/mkisofs.sparc.fu

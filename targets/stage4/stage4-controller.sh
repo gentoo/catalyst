@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.9 2005/10/17 19:01:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.10 2005/11/30 21:34:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 
@@ -11,14 +11,14 @@ case $1 in
 	enter)
 		${clst_CHROOT} ${clst_chroot_path}
 	;;
-        pre-kmerge)
-                # Sets up the build environment before any kernels are compiled
-                exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
-                ;;
-        post-kmerge)
-                # Cleans up the build environment after the kernels are compiled
-                exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
-                ;;
+	pre-kmerge)
+		# Sets up the build environment before any kernels are compiled
+		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+	;;
+	post-kmerge)
+		# Cleans up the build environment after the kernels are compiled
+		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+	;;
 	kernel)
 		shift
 		export clst_kname="$1"
@@ -55,7 +55,7 @@ case $1 in
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 	;;
 
-        bootloader)
+		bootloader)
 		exit 0
 	;;
 	

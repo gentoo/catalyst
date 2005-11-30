@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.6 2005/10/17 19:01:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.7 2005/11/30 21:34:03 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -29,14 +29,14 @@ case $1 in
 	
 #	;;
 
-        pre-kmerge)
-                # Sets up the build environment before any kernels are compiled
-                exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
-                ;;
-        post-kmerge)
-                # Cleans up the build environment after the kernels are compiled
-                exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
-                ;;
+	pre-kmerge)
+		# Sets up the build environment before any kernels are compiled
+		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+	;;
+	post-kmerge)
+		# Cleans up the build environment after the kernels are compiled
+		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+	;;
 
 	kernel)
 		shift
@@ -55,8 +55,8 @@ case $1 in
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 
 	;;
-        livecd-update)
-	        # now, finalize and tweak the livecd fs (inside of the chroot)
+		livecd-update)
+			# now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 	;;
 

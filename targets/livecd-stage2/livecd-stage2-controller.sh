@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.15 2005/11/14 19:20:30 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.16 2005/11/30 21:34:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -56,13 +56,13 @@ case $1 in
 		# execute copy gamecd.conf if we're a gamecd
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
 		then
-		    if [ -n "${clst_gamecd_conf}" ]
-		    then
-			cp ${clst_gamecd_conf} ${clst_chroot_path}/tmp/gamecd.conf
-		    else
-			echo "gamecd/conf is required for a gamecd!"
-			exit 1
-		    fi
+			if [ -n "${clst_gamecd_conf}" ]
+			then
+				cp ${clst_gamecd_conf} ${clst_chroot_path}/tmp/gamecd.conf
+			else
+				echo "gamecd/conf is required for a gamecd!"
+				exit 1
+			fi
 		fi
 		;;
 	livecd-update)

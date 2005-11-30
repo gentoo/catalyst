@@ -1,5 +1,18 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.406 2005/11/29 20:47:25 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.407 2005/11/30 21:34:03 wolf31o2 Exp $
+
+  30 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc.py,
+  targets/embedded/embedded-controller.sh,
+  targets/embedded/embedded-fs-runscript.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/netboot/netboot-combine.sh, targets/netboot/netboot-controller.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage4/stage4-controller.sh,
+  targets/support/bootloader-setup.sh, targets/support/chroot-functions.sh,
+  targets/support/create-iso.sh, targets/support/filesystem-functions.sh,
+  targets/support/functions.sh, targets/support/kill-chroot-pids.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/rc-update.sh:
+  Changed multiple spaces to tabs to satisfy my OCD.
 
   29 Nov 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/chroot-functions.sh:

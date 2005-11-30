@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.23 2005/11/17 22:27:13 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.24 2005/11/30 21:34:03 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -100,8 +100,8 @@ sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 # http://bugs.gentoo.org/show_bug.cgi?id=60887
 mv /etc/fstab /etc/fstab.old
 echo "####################################################" >> /etc/fstab
-echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD     ##" >> /etc/fstab     
-echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab     
+echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	 ##" >> /etc/fstab
+echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab	 
 echo "####################################################" >> /etc/fstab
 cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
@@ -216,9 +216,9 @@ fi
 
 # Clear out locales
 case ${clst_livecd_type} in
-       gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
-               rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
-       ;;
+	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
+		rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
+	;;
 esac
 
 # Post configuration
@@ -228,14 +228,14 @@ case ${clst_livecd_type} in
 		if [ -e /tmp/gamecd.conf ]
 		then
 
-		    source /tmp/gamecd.conf || exit 1
-		    rm /tmp/gamecd.conf
+			source /tmp/gamecd.conf || exit 1
+			rm /tmp/gamecd.conf
 
-		    # here we replace out game information into several files
-		    sed -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
+			# here we replace out game information into several files
+			sed -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
 
-		    # here we setup our xinitrc
-		    echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
+			# here we setup our xinitrc
+			echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
 		fi
 
 		# This is my hack to reduce tmpfs usage

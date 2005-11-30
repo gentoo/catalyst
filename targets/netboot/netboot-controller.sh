@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.6 2005/11/29 20:30:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.7 2005/11/30 21:34:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -34,22 +34,22 @@ case ${1} in
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
 	;;
 
-        pre-kmerge)
-                # Sets up the build environment before any kernels are compiled
-                #exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
-                ;;
-        post-kmerge)
-                # Cleans up the build environment after the kernels are compiled
-                #exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
-                ;;
+		pre-kmerge)
+				# Sets up the build environment before any kernels are compiled
+				#exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+				;;
+		post-kmerge)
+				# Cleans up the build environment after the kernels are compiled
+				#exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+				;;
 
 	kernel)
 		shift
-                export clst_kname="$1"
+				export clst_kname="$1"
 		export clst_root_path="/"
-                #exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
-                #exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
-                #exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+				#exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+				#exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
+				#exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
 		#extract_kernels kernels
 		
 	;;

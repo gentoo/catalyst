@@ -20,8 +20,8 @@ copy_to_chroot(){
 delete_from_chroot(){
 	if [ -e ${clst_chroot_path}${1} ]
 	then
-	    echo "removing ${clst_chroot_path}${1} from the chroot"
-	    rm -f ${clst_chroot_path}${1}
+		echo "removing ${clst_chroot_path}${1} from the chroot"
+		rm -f ${clst_chroot_path}${1}
 	fi
 }
 
@@ -67,7 +67,7 @@ die() {
 
 extract_cdtar() {
 	# Create a filesystem tree for the ISO at
-        # $clst_target_path. We extract the "cdtar" to this directory,
+	# $clst_target_path. We extract the "cdtar" to this directory,
 	# which will normally contains a pre-built binary
 	# boot-loader/filesystem skeleton for the ISO.
 
@@ -83,7 +83,7 @@ extract_kernels() {
 
 	# Takes the relative desination dir for the kernel as an arguement
 	# i.e boot or isolinux
-       [ -z "$clst_boot_kernel" ] && die "Required key boot/kernel not defined, exiting"
+	   [ -z "$clst_boot_kernel" ] && die "Required key boot/kernel not defined, exiting"
 	# install the kernels built in kmerge.sh
 	for x in ${clst_boot_kernel}
 	do
@@ -109,13 +109,13 @@ extract_kernels() {
 		# change kernel name from "kernel" to "gentoo", for example
 		if [ -e ${1}/kernel-* ]
 		then
-		    mv ${1}/kernel-* ${1}/${x}
+			mv ${1}/kernel-* ${1}/${x}
 		fi
 
 		# change kernel name from "kernelz" to "gentoo", for example
 		if [ -e ${1}/kernelz-* ]
 		then
-		    mv ${1}/kernelz-* ${1}/${x}
+			mv ${1}/kernelz-* ${1}/${x}
 		fi
 
 		# change initrd name from "initrd" to "gentoo.igz", for example
@@ -138,10 +138,10 @@ extract_modules() {
 		
 	if [ -f "${kmodules}" ]
 	then
-	    mkdir -p ${1}/
-	    tar xjf ${kmodules} -C ${1} lib
+		mkdir -p ${1}/
+		tar xjf ${kmodules} -C ${1} lib
 	else
-	    echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
+		echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
 	fi
 }
 extract_kernel() {
@@ -168,7 +168,7 @@ extract_kernel() {
 	# change initramfs name from "initramfs" to "gentoo.igz", for example
 	if [ -e ${1}/initramfs-* ]
 	then
-	    mv ${1}/initramfs-* ${1}/${2}.igz
+		mv ${1}/initramfs-* ${1}/${2}.igz
 	fi
 }
 
@@ -196,9 +196,9 @@ check_bootargs(){
 
 check_filesystem_type(){
 	case ${clst_fstype} in
-       	normal)
+	   	normal)
 		cmdline_opts="${cmdline_opts} looptype=normal loop=/image.loop"
-	        ;;
+		;;
 	zisofs)
 		cmdline_opts="${cmdline_opts} looptype=zisofs loop=/zisofs"
 		;;

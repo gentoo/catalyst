@@ -132,13 +132,13 @@ then
 		#echo "USE Flags match"
 		USE_MATCH=1 
 	else
-	    if [ -n "${clst_KERNCACHE}" ]
-	    then
+		if [ -n "${clst_KERNCACHE}" ]
+		then
 		[ -d /usr/portage/packages/gk_binaries/${clst_kname}/ebuilds ] && \
 			rm -r /usr/portage/packages/gk_binaries/${clst_kname}/ebuilds
 		[ -e /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux/.config ] && \
 			rm /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux/.config
-	    fi
+		fi
 	fi
 fi
 
@@ -199,23 +199,23 @@ then
 			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
 		fi
 	fi
-    	[ -d /usr/src/linux ] && rm /usr/src/linux
+		[ -d /usr/src/linux ] && rm /usr/src/linux
 	ln -s /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux /usr/src/linux
 else
-    	USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
+		USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
 fi
 
 #if catalyst has set to a empty string, extraversion wasn't specified so we skip this part
 if [ "${EXTRAVERSION_MATCH}" != "1" ]
 then
-    if [ "${clst_kextraversion}" != "" ]
-    then
+	if [ "${clst_kextraversion}" != "" ]
+	then
 	echo "Setting extraversion to ${clst_kextraversion}"
 	sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
-    	echo ${clst_kextraversion} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
-    else 
-    	touch /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
-    fi
+		echo ${clst_kextraversion} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+	else 
+		touch /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+	fi
 fi
 	
 

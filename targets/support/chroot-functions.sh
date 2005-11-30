@@ -6,15 +6,13 @@ trap "echo SIGTERM signal recieved killing $0 with pid $$;kill -9 $$" SIGTERM
 trap "echo SIGHUP signal recieved killing $0 with pid $$;kill -9 $$" SIGHUP
 trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 
-#SIGINT           interrupt character (usually Ctrl-C)
+#SIGINT interrupt character (usually Ctrl-C)
 #	* example: high-level sequence of events
 #	* my process (call it "P") is running
 #	* user types ctrl-c
 #	* kernel recognizes this and generates SIGINT signal
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
  
-	
-
 check_portage_version(){
 	portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
 		| cut -d/ -f2 | cut -d- -f2,3`
@@ -27,26 +25,26 @@ check_portage_version(){
 }
 
 check_genkernel_version(){
-    if [ -x /usr/bin/genkernel ]
-    then
-    	genkernel_version=$(genkernel --version)
-    	genkernel_version_major=${genkernel_version%%.*}
-    	genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
-    	genkernel_version_minor=${genkernel_version_minor_sub%%.*}
-    	genkernel_version_sub=${genkernel_version##*.}
-    	if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '3' ]
-    	then
-	    	echo "Genkernel version ${genkernel_version} found ... continuing"
-    	else
-	    	echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.3.0"
-	    	echo "or greater is required."
-	    	exit 1
-    	fi
-    else
-    	exit 1
-    fi
+	if [ -x /usr/bin/genkernel ]
+	then
+		genkernel_version=$(genkernel --version)
+		genkernel_version_major=${genkernel_version%%.*}
+		genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
+		genkernel_version_minor=${genkernel_version_minor_sub%%.*}
+		genkernel_version_sub=${genkernel_version##*.}
+		if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '3' ]
+		then
+			echo "Genkernel version ${genkernel_version} found ... continuing"
+		else
+			echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.3.0"
+			echo "or greater is required."
+			exit 1
+		fi
+	else
+		exit 1
+	fi
 }
-		
+
 setup_myfeatures(){
 
 	if [ -n "${clst_CCACHE}" ]
@@ -54,10 +52,10 @@ setup_myfeatures(){
 		export clst_myfeatures="${clst_myfeatures} ccache"
 		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_ccache ]
 		#then
-		#    echo "CCACHE Autoresume point found not emerging ccache"
+		#	echo "CCACHE Autoresume point found not emerging ccache"
 		#else
-		    emerge --oneshot --nodeps -b -k ccache || exit 1
-		#    touch /tmp/.clst_ccache
+			emerge --oneshot --nodeps -b -k ccache || exit 1
+		#	touch /tmp/.clst_ccache
 		#fi
 	fi
 
@@ -67,14 +65,13 @@ setup_myfeatures(){
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_distcc ]
 		#then
-		#    echo "DISTCC Autoresume point found not emerging distcc"
+		#	echo "DISTCC Autoresume point found not emerging distcc"
 		#else
-		    USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
-		    #touch /tmp/.clst_distcc
+			USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
+			#touch /tmp/.clst_distcc
 		#fi
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
-
 	fi
 }
 
@@ -82,22 +79,22 @@ setup_myemergeopts(){
 	if [ -n "${clst_PKGCACHE}" ]
 	then
 		export clst_myemergeopts="--usepkg --buildpkg --newuse"
-        	export bootstrap_opts="-r"
+		export bootstrap_opts="-r"
 	fi
 }
 
 
 setup_portage(){
-    # portage needs to be merged manually with USE="build" set to avoid frying our
-    # make.conf. emerge system could merge it otherwise.
+	# portage needs to be merged manually with USE="build" set to avoid frying our
+	# make.conf. emerge system could merge it otherwise.
  
-    if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
-    then
+	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
+	then
 		echo "Portage Autoresume point found not emerging portage"
-    else
+	else
 		USE="build" emerge --oneshot --nodeps portage
 		touch /tmp/.clst_portage || exit 1
-    fi
+	fi
 }
 
 setup_gcc(){
@@ -125,14 +122,14 @@ setup_binutils(){
 }
 
 update_env_settings(){
-    /usr/sbin/env-update
-    source /etc/profile
-    [ -f /tmp/envscript ] && source /tmp/envscript
+	/usr/sbin/env-update
+	source /etc/profile
+	[ -f /tmp/envscript ] && source /tmp/envscript
 }
 
 die() {
-    echo "$1"
-    exit 1
+	echo "$1"
+	exit 1
 }
 
 make_destpath() {
@@ -143,18 +140,18 @@ make_destpath() {
 		export ROOT=${1}
 		if [ ! -d ${ROOT} ]
 		then
-        		install -d ${ROOT}
+			install -d ${ROOT}
 		fi
 	fi
 }
 
 run_emerge() {
 
-    # Sets up the ROOT= parameter
-    # with no options ROOT=/
-    make_destpath ${clst_root_path}
+	# Sets up the ROOT= parameter
+	# with no options ROOT=/
+	make_destpath ${clst_root_path}
 	
-    if [ -n "${clst_VERBOSE}" ]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -vpt $@" || exit 1
 		emerge ${clst_myemergeopts} -vpt $@ || exit 3
@@ -168,13 +165,13 @@ run_emerge() {
 	fi
 
 	echo "emerge ${clst_myemergeopts} $@" || exit 1
-	
+
 	if [ -n "${clst_FETCH}" ]
 	then
-	        export bootstrap_opts="-f"
+		export bootstrap_opts="-f"
 		emerge ${clst_myemergeopts} -f $@ || exit 1
 	fi
-	
+
 	emerge ${clst_myemergeopts} $@ || exit 1
 }
 
@@ -185,7 +182,7 @@ function copy_libs() {
 	# Check if it's a dynamix exec
 
 	ldd ${1} > /dev/null 2>&1 || return
-    
+	
 	for lib in `ldd ${1} | awk '{ print $3 }'`
 	do
 		echo ${lib}
@@ -200,7 +197,6 @@ function copy_libs() {
 			echo "WARNING : Some library was not found for ${lib} !"
 		fi
 	done
-
 }
 
 function copy_symlink() {
@@ -224,7 +220,7 @@ function copy_symlink() {
 	else
 		copy_file ${TARGET}
 	fi
-    }		
+	}		
 
 function copy_file() {
 
@@ -247,5 +243,3 @@ function copy_file() {
 		copy_symlink ${f}
 	fi
 }
-
-
