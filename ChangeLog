@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.408 2005/11/30 21:37:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.409 2005/11/30 21:42:19 wolf31o2 Exp $
+
+  30 Nov 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  This is catalyst-2.0_rc2.
 
   30 Nov 2005; Eric Edgar <rocket@gentoo.org> examples/stage4_template.spec,
   files/catalyst.conf, modules/generic_stage_target.py,
