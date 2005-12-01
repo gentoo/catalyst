@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.15 2005/11/22 20:36:18 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.16 2005/12/01 21:29:30 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -32,7 +32,21 @@ class grp_target(generic_stage_target):
 			self.required_values.append("grp/"+x+"/type")
 			
 		generic_stage_target.__init__(self,spec,addlargs)
-	
+
+        def set_target_path(self):
+                self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
+                if self.settings.has_key("AUTORESUME") \
+                        and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+                                print "Resume point detected, skipping target path setup operation..."
+                else:
+                        # first clean up any existing target stuff
+                        if os.path.isdir(self.settings["target_path"]):
+                                cmd("rm -rf "+self.settings["target_path"],
+                                "Could not remove existing directory: "+self.settings["target_path"])
+                                touch(self.settings["autoresume_path"]+"setup_target_path")
+                        if not os.path.exists(self.settings["target_path"]):
+                                os.makedirs(self.settings["target_path"])
+
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
@@ -55,8 +69,8 @@ class grp_target(generic_stage_target):
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 	    			"config_profile_link","setup_confdir","bind","chroot_setup",\
-	    				    "setup_environment","run_local","unmerge","unbind",\
-					    "remove","empty","clear_autoresume"]
+	    				    "setup_environment","run_local","unbind",\
+					    "clear_autoresume"]
 
 	
 	def set_use(self):
