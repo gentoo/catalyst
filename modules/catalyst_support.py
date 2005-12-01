@@ -1,8 +1,8 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.57 2005/10/06 15:45:28 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.58 2005/12/01 19:18:27 rocket Exp $
 
-import sys,string,os,types,re,signal,traceback,md5,time
+import sys,string,os,types,re,signal,traceback,md5,sha,time
 selinux_capable = False
 #userpriv_capable = (os.getuid() == 0)
 #fakeroot_capable = False
@@ -75,7 +75,18 @@ def calc_md5(file):
     print "MD5 (%s) = %s" % (file, md5sum)
     return md5sum
 # calc_md5
-    
+   
+def calc_sha(file):
+    m = sha.new()
+    f = open(file, 'r')
+    for line in f.readlines():
+	m.update(line)
+    f.close()
+    shaval = hexify(m.digest())
+    #shaval = sha.new(file(file).read()).hexdigest() # loads all into memory first
+    print "SHA (%s) = %s" % (file, shaval)
+    return shaval
+   
 def read_from_clst(file):
 	line = ''
 	myline = ''
@@ -107,6 +118,8 @@ valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("AUTORESUME")
+valid_config_file_values.append("SHA")
+valid_config_file_values.append("MD5")
 valid_config_file_values.append("FETCH")
 valid_config_file_values.append("CLEAR_AUTORESUME")
 valid_config_file_values.append("options")

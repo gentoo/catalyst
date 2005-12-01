@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.80 2005/11/30 21:37:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.81 2005/12/01 19:18:27 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -335,6 +335,7 @@ class generic_stage_target(generic_target):
 			if os.path.isfile(self.settings["source_path"]):
 				if os.path.exists(self.settings["source_path"]):
 				 	self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+				 	self.settings["source_path_sha"]=calc_sha(self.settings["source_path"])
 		if os.path.isdir(self.settings["source_path"]):
 			print "Source path set to "+self.settings["source_path"]
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
@@ -354,6 +355,7 @@ class generic_stage_target(generic_target):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"])
+			self.settings["snapshot_path_sha"]=calc_sha(self.settings["snapshot_path"])
 	
 	def set_snapcache_path(self):
 		if self.settings.has_key("SNAPCACHE"):
@@ -896,6 +898,21 @@ class generic_stage_target(generic_target):
 		
 		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball")
+
+		if self.settings.has_key("MD5") \
+		    and os.path.exists(self.settings["target_path"]):
+		 	md5=calc_md5(self.settings["target_path"])
+			myf=open(self.settings["target_path"]+".digests","w")
+			myf.write("MD5: "+md5+"\n")
+			myf.close()
+		
+		if self.settings.has_key("SHA") \
+		    and os.path.exists(self.settings["target_path"]):
+			sha=calc_sha(self.settings["target_path"])
+			myf=open(self.settings["target_path"]+".digests","w")
+			myf.write("SHA: "+sha+"\n")
+			myf.close()
+
 		touch(self.settings["autoresume_path"]+"capture")
 
 	def run_local(self):
@@ -1007,6 +1024,21 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
 				self.settings["iso"],"ISO creation script failed.")
 			touch(self.settings["autoresume_path"]+"create_iso")
+		
+		if self.settings.has_key("MD5") \
+		    and os.path.exists(self.settings["iso"]):
+		 	md5=calc_md5(self.settings["iso"])
+			myf=open(self.settings["iso"]+".digests","w")
+			myf.write("MD5: "+md5+"\n")
+			myf.close()
+		
+		if self.settings.has_key("SHA") \
+		    and os.path.exists(self.settings["iso"]):
+			sha=calc_sha(self.settings["iso"])
+			myf=open(self.settings["iso"]+".digests","w")
+			myf.write("SHA: "+sha+"\n")
+			myf.close()
+
 		else:
 			print "WARNING livecd/iso was not defined."
 			print "A CD Image will not be created, skipping create-iso.sh..."
