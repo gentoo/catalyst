@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.20 2005/11/30 21:37:58 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.21 2005/12/02 17:05:56 wolf31o2 Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -23,7 +23,7 @@ class livecd_stage1_target(generic_stage_target):
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"unbind", "clean","clear_autoresume"]
-        def set_target_path(self):
+		def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
@@ -37,30 +37,30 @@ class livecd_stage1_target(generic_stage_target):
 			
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
-        
+		
 	
 	def set_target_path(self):
 		pass
 	def set_spec_prefix(self):
-	                self.settings["spec_prefix"]="livecd"
+					self.settings["spec_prefix"]="livecd"
 	
 	def set_use(self):
-	    generic_stage_target.set_use(self)
-	    self.settings["use"].append("livecd")
+		generic_stage_target.set_use(self)
+		self.settings["use"].append("livecd")
 
 	def set_packages(self):
-	    generic_stage_target.set_packages(self)
-	    if self.settings.has_key(self.settings["spec_prefix"]+"/packages"):
+		generic_stage_target.set_packages(self)
+		if self.settings.has_key(self.settings["spec_prefix"]+"/packages"):
 		if type(self.settings[self.settings["spec_prefix"]+"/packages"]) == types.StringType:
-		    self.settings[self.settings["spec_prefix"]+"/packages"] = \
+			self.settings[self.settings["spec_prefix"]+"/packages"] = \
 			self.settings[self.settings["spec_prefix"]+"/packages"].split()
 		self.settings[self.settings["spec_prefix"]+"/packages"].append("livecd-tools")
 
 	def set_pkgcache_path(self):
-	    if self.settings.has_key("pkgcache_path"):
+		if self.settings.has_key("pkgcache_path"):
 		if type(self.settings["pkgcache_path"]) != types.StringType:
-		    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
-	    else:
+			self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+		else:
 		generic_stage_target.set_pkgcache_path(self)
 
 def register(foo):

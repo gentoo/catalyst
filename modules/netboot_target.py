@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.6 2005/10/26 15:42:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.7 2005/12/02 17:05:56 wolf31o2 Exp $
 
 """
 Builder class for a netboot build.
@@ -53,7 +53,7 @@ class netboot_target(generic_stage_target):
 				self.settings[envvar] = "-Os -pipe"
 	
 
-#        def set_root_path(self):
+#		def set_root_path(self):
 #		# ROOT= variable for emerges
 #		self.settings["root_path"]="/tmp/image"
 
@@ -95,10 +95,10 @@ class netboot_target(generic_stage_target):
 		
 		for x in loopy:
 			if self.settings.has_key("netboot/packages/"+x+"/files"):
-			    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
-				    myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
-			    else:
-				    myfiles.append(self.settings["netboot/packages/"+x+"/files"])
+				if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+					myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
+				else:
+					myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 		if self.settings.has_key("netboot/extra_files"):
 			if type(self.settings["netboot/extra_files"]) == types.ListType:
@@ -127,8 +127,8 @@ class netboot_target(generic_stage_target):
 
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",
-	    				"config_profile_link","setup_confdir","bind","chroot_setup",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",
+						"config_profile_link","setup_confdir","bind","chroot_setup",\
 						"setup_environment","build_packages","build_busybox",\
 						"build_kernel","copy_files_to_image",\
 						"clean","create_netboot_files","unbind","clear_autoresume"]
