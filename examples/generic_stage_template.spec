@@ -58,3 +58,32 @@ distcc_hosts:
 # example:
 # portage_confdir: /etc/portage
 portage_confdir:
+
+# These options are only available when building a stage1 target and are all
+# optional.
+
+# This option is used to change the CHOST from what is default in the profile
+# to whatever you specify.  This is useful for building NPTL, for example.
+# example:
+# chost: i686-pc-linux-gnu
+chost:
+
+# This option allows you to change the default CFLAGS that will be used in
+# building this stage.  This really should remain generic, as putting
+# optimizations flags here will build a stage1 tarball that is no longer
+# generic.
+# example:
+# cflags: -Os -pipe -fomit-frame-pointer -mcpu=i686
+cflags:
+
+# This is for setting the CXXFLAGS.  Generally, this would be set to the same
+# as CFLAGS.  In fact, it will mirror CFLAGS by default.
+# example:
+# cxxflags: -Os -pipe -fomit-frame-pointer -mcpu=i686
+cxxflags:
+
+# Setting this option sets LDFLAGS in make.conf in your stage.  This would be
+# useful for setting up an embedded or hardened system.
+# example:
+# ldflags: -Wl,-O1 -Wl,-z,now
+ldflags:

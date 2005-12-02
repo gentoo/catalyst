@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.421 2005/12/02 21:39:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.422 2005/12/02 21:59:46 wolf31o2 Exp $
+
+  02 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/generic_stage_template.spec:
+  Added chost/cflags/cxxflags/ldflags to example spec template.
 
   02 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:
