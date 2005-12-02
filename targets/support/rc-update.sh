@@ -41,6 +41,11 @@ then
 	esac
 fi
 
+if [ -n "${clst_livecd_xdm}" ]
+then
+	rc-update add xdm default
+fi
+
 # perform any rcadd then any rcdel
 if [ -n "${clst_rcadd}" ] || [ -n "${clst_rcdel}" ]
 then
