@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.412 2005/12/02 01:58:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.413 2005/12/02 15:14:26 rocket Exp $
+
+  02 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/grp_target.py:
+  Add more verbosity to digests if -V is enabled, add more print messages to
+  grp digesting code
 
   02 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
   modules/generic_stage_target.py, modules/grp_target.py:

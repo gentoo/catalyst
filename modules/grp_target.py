@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.17 2005/12/02 01:58:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.18 2005/12/02 15:14:27 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -82,7 +82,7 @@ class grp_target(generic_stage_target):
 		for pkgset in self.settings["grp"]:
 		    if self.settings["grp/"+pkgset+"/type"] == "pkgset":
 			destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
-			
+			print "Digesting files in the pkgset....."			
 			digests=glob.glob(destdir+'/*.digests')
 			for i in digests:
 			    if os.path.exists(i):
@@ -96,6 +96,7 @@ class grp_target(generic_stage_target):
 				self.gen_digest_file(normpath(destdir+"/"+i))
 		    else:
 			destdir=normpath(self.settings["target_path"]+"/"+pkgset)
+			print "Digesting files in the srcset....."			
 			
 			digests=glob.glob(destdir+'/*.digests')
 			for i in digests:

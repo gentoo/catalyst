@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.82 2005/12/02 01:58:02 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.83 2005/12/02 15:14:27 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1205,11 +1205,17 @@ class generic_stage_target(generic_target):
                     myf=open(file+".digests","w")
 
                     if self.settings.has_key("MD5"):
-                        md5=calc_md5(file)
+			if self.settings.has_key("VERBOSE"):
+			    md5=calc_md5(file,True)
+			else:
+			    md5=calc_md5(file)
                         myf.write("MD5: "+md5+"\n")
 
                     if self.settings.has_key("SHA"):
-                        sha=calc_sha(file)
+			if self.settings.has_key("VERBOSE"):
+			    sha=calc_sha(file,True)
+			else:
+			    sha=calc_sha(file)
                         myf.write("SHA: "+sha+"\n")
 
                     myf.close()
