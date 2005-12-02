@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.414 2005/12/02 15:15:29 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.415 2005/12/02 15:21:05 rocket Exp $
+
+  02 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  remove gnap livecd-type per Koon's request
 
   02 Dec 2005; Eric Edgar <rocket@gentoo.org> targets/support/rc-update.sh:
   change rc-update add modules default to rc-update add modules boot

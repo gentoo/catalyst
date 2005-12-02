@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.24 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.25 2005/12/02 15:21:05 rocket Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -14,14 +14,6 @@ fi
 
 # turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
-
-# Do some livecd_type specific inittab changes
-case ${clst_livecd_type} in
-	gnap)
-		sed -i "s/^#c1:/c1:/" /etc/inittab
-		sed -i "/^.*bashlogin.*$/ d" /etc/inittab
-	;;
-esac
 
 # clean up the time and set to UTC
 rm -rf /etc/localtime
