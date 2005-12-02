@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.53 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.54 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,7 +29,7 @@ class livecd_stage2_target(generic_stage_target):
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):
-			self.settings["livecd/type"] = "generic-livecd"
+		    self.settings["livecd/type"] = "generic-livecd"
 
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
@@ -71,7 +71,7 @@ class livecd_stage2_target(generic_stage_target):
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\n"+x)
 			myf.close()
-        def unpack(self):
+	def unpack(self):
                 unpack=True
 
                 clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")

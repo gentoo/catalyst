@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_lock.py,v 1.5 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_lock.py,v 1.6 2005/12/02 20:09:03 wolf31o2 Exp $
 import os
 import fcntl
 import errno
@@ -11,8 +11,8 @@ import time
 from catalyst_support import *
 
 def writemsg(mystr):
-        sys.stderr.write(mystr)
-        sys.stderr.flush()
+	sys.stderr.write(mystr)
+	sys.stderr.flush()
 
 #def normpath(mypath):
 #newpath = os.path.normpath(mypath)
@@ -30,8 +30,8 @@ class LockDir:
 	self.clean_my_hardlocks()
 	self.delete_lock_from_path_list()
 	if self.islocked():
-		self.fcntl_unlock()
-	def __init__(self,lockdir):
+	    self.fcntl_unlock()
+    def __init__(self,lockdir):
 	self.locked=False
 	self.myfd=None
 	self.set_gid(250)

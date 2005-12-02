@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.17 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.18 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -19,7 +19,7 @@ from stat import *
 
 class embedded_target(generic_stage_target):
 
-	def __init__(self,spec,addlargs):
+    def __init__(self,spec,addlargs):
         self.required_values=[]
         self.valid_values=[]
         self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel"])
@@ -50,5 +50,5 @@ class embedded_target(generic_stage_target):
 	self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
 		
 def register(foo):
-        foo.update({"embedded":embedded_target})
-        return foo
+	foo.update({"embedded":embedded_target})
+	return foo

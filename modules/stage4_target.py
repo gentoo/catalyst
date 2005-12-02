@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.11 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.12 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -19,10 +19,10 @@ class stage4_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_pkgcache_path(self):
-		if self.settings.has_key("pkgcache_path"):	
+	    if self.settings.has_key("pkgcache_path"):	
 		if type(self.settings["pkgcache_path"]) != types.StringType:
-			self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
-		else:
+		    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+	    else:
 		generic_stage_target.set_pkgcache_path(self)
 
 	def set_cleanables(self):
@@ -39,3 +39,4 @@ class stage4_target(generic_stage_target):
 def register(foo):
 	foo.update({"stage4":stage4_target})
 	return foo
+

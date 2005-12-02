@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.61 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.62 2005/12/02 20:09:03 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,sha,time
 selinux_capable = False
@@ -56,12 +56,12 @@ def cleanup(pids,block_exceptions=True):
 # a function to turn a string of non-printable characters into a string of
 # hex characters
 def hexify(str):
-	hexStr = string.hexdigits
-	r = ''
-	for ch in str:
+    hexStr = string.hexdigits
+    r = ''
+    for ch in str:
 	i = ord(ch)
 	r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
-	return r
+    return r
 # hexify()
 
 # A function to calculate the md5 sum of a file
@@ -188,7 +188,7 @@ def warn(msg):
 
 
 def find_binary(myc):
-        """look through the environmental path for an executable file named whatever myc is"""
+	"""look through the environmental path for an executable file named whatever myc is"""
         # this sucks. badly.
         p=os.getenv("PATH")
         if p == None:

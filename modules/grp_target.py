@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.20 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.21 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -24,8 +24,8 @@ class grp_target(generic_stage_target):
 			addlargs["grp"]=[addlargs["grp"]]
 		
 		if addlargs.has_key("grp/use"):
-			if type(addlargs["grp/use"])==types.StringType:
-				addlargs["grp/use"]=[addlargs["grp/use"]]
+		    if type(addlargs["grp/use"])==types.StringType:
+			    addlargs["grp/use"]=[addlargs["grp/use"]]
 			
 		for x in addlargs["grp"]:
 			self.required_values.append("grp/"+x+"/packages")
@@ -33,7 +33,7 @@ class grp_target(generic_stage_target):
 			
 		generic_stage_target.__init__(self,spec,addlargs)
 
-        def set_target_path(self):
+	def set_target_path(self):
                 self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
                 if self.settings.has_key("AUTORESUME") \
                         and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):

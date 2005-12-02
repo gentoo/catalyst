@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.86 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.87 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -90,7 +90,7 @@ class generic_stage_target(generic_target):
 				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 		
 		# call arch constructor, pass our settings
-                try:
+		try:
                         self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
                 except:
                         print "Invalid subarch: "+self.settings["subarch"]
@@ -190,7 +190,7 @@ class generic_stage_target(generic_target):
 	
 	def override_chost(self):
 		if os.environ.has_key("CHOST"):
-			self.settings["CHOST"] = os.environ["CHOST"]
+		    self.settings["CHOST"] = os.environ["CHOST"]
 		if self.settings.has_key("chost"):
 		    self.settings["CHOST"]=list_to_string(self.settings["chost"])
 		if self.makeconf.has_key("CHOST"):

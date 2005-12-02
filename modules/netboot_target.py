@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.8 2005/12/02 19:37:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.9 2005/12/02 20:09:03 wolf31o2 Exp $
 
 """
 Builder class for a netboot build.
@@ -53,7 +53,7 @@ class netboot_target(generic_stage_target):
 				self.settings[envvar] = "-Os -pipe"
 	
 
-#		def set_root_path(self):
+#	def set_root_path(self):
 #		# ROOT= variable for emerges
 #		self.settings["root_path"]="/tmp/image"
 
