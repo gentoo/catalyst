@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.83 2005/12/02 15:14:27 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.84 2005/12/02 16:32:32 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -515,18 +515,22 @@ class generic_stage_target(generic_target):
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-			invalid_snapshot=True
+			invalid_snapshot=False
+			unpack=False
 		
 		
 		if self.settings.has_key("AUTORESUME"):
 		    if os.path.isdir(self.settings["source_path"]) and \
 			    os.path.exists(self.settings["autoresume_path"]+"unpack"):
-				print "Resume point detected, skipping unpack operation..."
 				unpack=False
 		    elif self.settings.has_key("source_path_md5sum"):
 			if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
 				invalid_snapshot=True
-			
+				unpack=True
+		
+		if not unpack:
+		    print "Resume point detected, skipping unpack operation..."
+
 		if unpack:
 			self.mount_safety_check()
 			
