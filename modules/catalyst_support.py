@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.58 2005/12/01 19:18:27 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.59 2005/12/02 01:58:02 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,sha,time
 selinux_capable = False
@@ -65,26 +65,27 @@ def hexify(str):
 # hexify()
 
 # A function to calculate the md5 sum of a file
-def calc_md5(file):
+def calc_md5(file,verbose=False):
     m = md5.new()
     f = open(file, 'r')
     for line in f.readlines():
 	m.update(line)
     f.close()
     md5sum = hexify(m.digest())
-    print "MD5 (%s) = %s" % (file, md5sum)
+    if verbose:
+	print "MD5 (%s) = %s" % (file, md5sum)
     return md5sum
 # calc_md5
    
-def calc_sha(file):
+def calc_sha(file,verbose=False):
     m = sha.new()
     f = open(file, 'r')
     for line in f.readlines():
 	m.update(line)
     f.close()
     shaval = hexify(m.digest())
-    #shaval = sha.new(file(file).read()).hexdigest() # loads all into memory first
-    print "SHA (%s) = %s" % (file, shaval)
+    if verbose:
+	print "SHA (%s) = %s" % (file, shaval)
     return shaval
    
 def read_from_clst(file):

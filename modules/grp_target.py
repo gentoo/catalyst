@@ -1,12 +1,12 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.16 2005/12/01 21:29:30 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.17 2005/12/02 01:58:02 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
 """
 
-import os,types
+import os,types,glob
 from catalyst_support import *
 from generic_stage_target import *
 
@@ -40,12 +40,13 @@ class grp_target(generic_stage_target):
                                 print "Resume point detected, skipping target path setup operation..."
                 else:
                         # first clean up any existing target stuff
-                        if os.path.isdir(self.settings["target_path"]):
-                                cmd("rm -rf "+self.settings["target_path"],
-                                "Could not remove existing directory: "+self.settings["target_path"])
-                                touch(self.settings["autoresume_path"]+"setup_target_path")
+                        #if os.path.isdir(self.settings["target_path"]):
+                                #cmd("rm -rf "+self.settings["target_path"],
+                                #"Could not remove existing directory: "+self.settings["target_path"])
                         if not os.path.exists(self.settings["target_path"]):
                                 os.makedirs(self.settings["target_path"])
+                        
+			touch(self.settings["autoresume_path"]+"setup_target_path")
 
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
@@ -66,13 +67,6 @@ class grp_target(generic_stage_target):
             else:
                 generic_stage_target.set_pkgcache_path(self)
 
-	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-	    			"config_profile_link","setup_confdir","bind","chroot_setup",\
-	    				    "setup_environment","run_local","unbind",\
-					    "clear_autoresume"]
-
-	
 	def set_use(self):
 	    generic_stage_target.set_use(self)
 	    if self.settings.has_key("use"):
@@ -83,6 +77,44 @@ class grp_target(generic_stage_target):
 	def set_mounts(self):
 	    self.mounts.append("/tmp/grp")
             self.mountmap["/tmp/grp"]=self.settings["target_path"]
+	
+	def generate_digests(self):
+		for pkgset in self.settings["grp"]:
+		    if self.settings["grp/"+pkgset+"/type"] == "pkgset":
+			destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
+			
+			digests=glob.glob(destdir+'/*.digests')
+			for i in digests:
+			    if os.path.exists(i):
+				os.remove(i)
+			
+			files=os.listdir(destdir)
+			#ignore files starting with '.' using list comprehension
+			files=[filename for filename in files if filename[0] != '.']
+			for i in files:
+			    if os.path.isfile(normpath(destdir+"/"+i)):
+				self.gen_digest_file(normpath(destdir+"/"+i))
+		    else:
+			destdir=normpath(self.settings["target_path"]+"/"+pkgset)
+			
+			digests=glob.glob(destdir+'/*.digests')
+			for i in digests:
+			    if os.path.exists(i):
+				os.remove(i)
+
+			files=os.listdir(destdir)
+			#ignore files starting with '.' using list comprehension
+			files=[filename for filename in files if filename[0] != '.']
+			for i in files:
+			    if os.path.isfile(normpath(destdir+"/"+i)):
+				self.gen_digest_file(normpath(destdir+"/"+i))
+
+		    
+	def set_action_sequence(self):
+	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+					    "config_profile_link","setup_confdir","bind","chroot_setup",\
+	    				    "setup_environment","run_local","unbind",\
+					    "generate_digests","clear_autoresume"]
 
 def register(foo):
 	foo.update({"grp":grp_target})

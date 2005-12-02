@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.411 2005/12/01 21:29:30 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.412 2005/12/02 01:58:02 rocket Exp $
+
+  02 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py,
+  modules/generic_stage_target.py, modules/grp_target.py:
+  Add sha/md5 digests support for grp and cleanup other sha/md5 code
 
   01 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/grp_target.py:
   Fix folder name for grp build dir to not have .tar.bz2 at the end
