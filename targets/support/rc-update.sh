@@ -11,7 +11,7 @@ then
 	rc-update del keymaps
 	rc-update del serial
 	rc-update del consolefont
-	rc-update add modules default
+	rc-update add modules boot
 	rc-update add pwgen default
 	[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
 	[ -e /etc/init.d/splash ] && rc-update add splash default
