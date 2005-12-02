@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.15 2005/12/02 17:05:56 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.16 2005/12/02 19:37:02 wolf31o2 Exp $
 
 """
 builder class for the tinderbox target
@@ -28,21 +28,21 @@ class tinderbox_target(generic_stage_target):
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
 
-		def set_pkgcache_path(self):
-			if self.settings.has_key("pkgcache_path"):
-				if type(self.settings["pkgcache_path"]) != types.StringType:
-					self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
-			else:
-				generic_stage_target.set_pkgcache_path(self)
+        def set_pkgcache_path(self):
+            if self.settings.has_key("pkgcache_path"):
+                if type(self.settings["pkgcache_path"]) != types.StringType:
+                    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+            else:
+                generic_stage_target.set_pkgcache_path(self)
 	
 	def set_cleanables(self):
-		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",\
+	    self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",\
 					"/usr/portage"]
 	def set_action_sequence(self):
-				#Default action sequence for run method
-				self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-								"config_profile_link","setup_confdir","bind","chroot_setup",\
-								"setup_environment","run_local","preclean","unbind","clean",\
+                #Default action sequence for run method
+                self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+                                "config_profile_link","setup_confdir","bind","chroot_setup",\
+                                "setup_environment","run_local","preclean","unbind","clean",\
 				"clear_autoresume"]
 	
 def register(foo):

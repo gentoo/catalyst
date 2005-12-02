@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.52 2005/12/02 17:05:56 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.53 2005/12/02 19:37:02 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -34,16 +34,16 @@ class livecd_stage2_target(generic_stage_target):
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
 	def set_source_path(self):
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
-		if os.path.isfile(self.settings["source_path"]):
+	    self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+	    if os.path.isfile(self.settings["source_path"]):
 		self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
-		else:
+	    else:
 		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
-			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
+		    raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 	
 	def set_spec_prefix(self):
-		self.settings["spec_prefix"]="livecd"
+	    self.settings["spec_prefix"]="livecd"
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
@@ -71,66 +71,66 @@ class livecd_stage2_target(generic_stage_target):
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\n"+x)
 			myf.close()
-		def unpack(self):
-				unpack=True
+        def unpack(self):
+                unpack=True
 
-				clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
+                clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
 
-				if os.path.isdir(self.settings["source_path"]):
-						unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
-						display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
-								self.settings["chroot_path"]+" (This may take some time) ...\n"
-						error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-						invalid_snapshot=False
+                if os.path.isdir(self.settings["source_path"]):
+                        unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
+                        display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
+                                self.settings["chroot_path"]+" (This may take some time) ...\n"
+                        error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+                        invalid_snapshot=False
 
-				if self.settings.has_key("AUTORESUME"):
-					if os.path.isdir(self.settings["source_path"]) and \
-							os.path.exists(self.settings["autoresume_path"]+"unpack"):
-								print "Resume point detected, skipping unpack operation..."
-								unpack=False
-					elif self.settings.has_key("source_path_md5sum"):
-						if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
-								invalid_snapshot=True
+                if self.settings.has_key("AUTORESUME"):
+                    if os.path.isdir(self.settings["source_path"]) and \
+                            os.path.exists(self.settings["autoresume_path"]+"unpack"):
+                                print "Resume point detected, skipping unpack operation..."
+                                unpack=False
+                    elif self.settings.has_key("source_path_md5sum"):
+                        if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+                                invalid_snapshot=True
 
-				if unpack:
-						self.mount_safety_check()
+                if unpack:
+                        self.mount_safety_check()
 
-						if invalid_snapshot:
-								print "No Valid Resume point detected, cleaning up  ..."
-								#os.remove(self.settings["autoresume_path"]+"dir_setup")
-								self.clear_autoresume()
-								self.clear_chroot()
-								#self.dir_setup()
+                        if invalid_snapshot:
+                                print "No Valid Resume point detected, cleaning up  ..."
+                                #os.remove(self.settings["autoresume_path"]+"dir_setup")
+                                self.clear_autoresume()
+                                self.clear_chroot()
+                                #self.dir_setup()
 
-						if not os.path.exists(self.settings["chroot_path"]):
-								os.makedirs(self.settings["chroot_path"])
+                        if not os.path.exists(self.settings["chroot_path"]):
+                                os.makedirs(self.settings["chroot_path"])
 
-						if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-								os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+                        if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+                                os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 
-						if self.settings.has_key("PKGCACHE"):
-								if not os.path.exists(self.settings["pkgcache_path"]):
-										os.makedirs(self.settings["pkgcache_path"],0755)
+                        if self.settings.has_key("PKGCACHE"):
+                                if not os.path.exists(self.settings["pkgcache_path"]):
+                                        os.makedirs(self.settings["pkgcache_path"],0755)
 
-						print display_msg
-						cmd(unpack_cmd,error_msg)
+                        print display_msg
+                        cmd(unpack_cmd,error_msg)
 
-						if self.settings.has_key("source_path_md5sum"):
-								myf=open(self.settings["autoresume_path"]+"unpack","w")
-								myf.write(self.settings["source_path_md5sum"])
-								myf.close()
-						else:
-								touch(self.settings["autoresume_path"]+"unpack")
+                        if self.settings.has_key("source_path_md5sum"):
+                                myf=open(self.settings["autoresume_path"]+"unpack","w")
+                                myf.write(self.settings["source_path_md5sum"])
+                                myf.close()
+                        else:
+                                touch(self.settings["autoresume_path"]+"unpack")
 
 
 	def set_action_sequence(self):
-		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"config_profile_link","setup_confdir","portage_overlay",\
-				"bind","chroot_setup","setup_environment","run_local",\
-				"build_kernel","bootloader","preclean","livecd_update",
-				"root_overlay","fsscript","rcupdate","unmerge",\
-				"unbind","remove","empty","target_setup",\
-				"setup_overlay","create_iso","clear_autoresume"]
+	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+			    "config_profile_link","setup_confdir","portage_overlay",\
+			    "bind","chroot_setup","setup_environment","run_local",\
+			    "build_kernel","bootloader","preclean","livecd_update",
+			    "root_overlay","fsscript","rcupdate","unmerge",\
+			    "unbind","remove","empty","target_setup",\
+			    "setup_overlay","create_iso","clear_autoresume"]
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})
