@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.21 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.22 2005/12/05 18:13:12 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -42,7 +42,7 @@ class grp_target(generic_stage_target):
                         # first clean up any existing target stuff
                         #if os.path.isdir(self.settings["target_path"]):
                                 #cmd("rm -rf "+self.settings["target_path"],
-                                #"Could not remove existing directory: "+self.settings["target_path"])
+                                #"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
                         if not os.path.exists(self.settings["target_path"]):
                                 os.makedirs(self.settings["target_path"])
                         
@@ -54,7 +54,7 @@ class grp_target(generic_stage_target):
 			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
-					+" "+pkgset+" "+mypackages)
+					+" "+pkgset+" "+mypackages,env=self.env)
 			
 			except CatalystError:
 				self.unbind()

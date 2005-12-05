@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.87 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.88 2005/12/05 18:13:12 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -189,8 +189,8 @@ class generic_stage_target(generic_target):
 			os.environ["CCACHE_DIR"]="/var/tmp/ccache"	
 	
 	def override_chost(self):
-		if os.environ.has_key("CHOST"):
-		    self.settings["CHOST"] = os.environ["CHOST"]
+		#if os.environ.has_key("CHOST"):
+		#    self.settings["CHOST"] = os.environ["CHOST"]
 		if self.settings.has_key("chost"):
 		    self.settings["CHOST"]=list_to_string(self.settings["chost"])
 		if self.makeconf.has_key("CHOST"):
@@ -198,8 +198,8 @@ class generic_stage_target(generic_target):
 		    self.settings["CHOST"]=self.makeconf["CHOST"]
 	
 	def override_cflags(self):
-		if os.environ.has_key("CFLAGS"):
-		    self.settings["CFLAGS"] = os.environ["CFLAGS"]
+		#if os.environ.has_key("CFLAGS"):
+		#    self.settings["CFLAGS"] = os.environ["CFLAGS"]
 		if self.settings.has_key("cflags"):
 		    self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
 		if self.makeconf.has_key("CFLAGS"):
@@ -207,8 +207,8 @@ class generic_stage_target(generic_target):
 		    self.settings["CFLAGS"]=self.makeconf["CFLAGS"]
 
 	def override_cxxflags(self):	
-		if os.environ.has_key("CXXFLAGS"):
-		    self.settings["CXXFLAGS"] = os.environ["CXXFLAGS"]
+		#if os.environ.has_key("CXXFLAGS"):
+		#    self.settings["CXXFLAGS"] = os.environ["CXXFLAGS"]
 		if self.settings.has_key("cxxflags"):
 		    self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
 		if self.makeconf.has_key("CXXFLAGS"):
@@ -216,8 +216,8 @@ class generic_stage_target(generic_target):
 		    self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
 	
 	def override_ldflags(self):
-		if os.environ.has_key("LDFLAGS"):
-		    self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
+		#if os.environ.has_key("LDFLAGS"):
+		#    self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
 		if self.settings.has_key("ldflags"):
 		    self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 		if self.makeconf.has_key("LDFLAGS"):
@@ -253,7 +253,7 @@ class generic_stage_target(generic_target):
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
 				cmd("rm -f "+self.settings["target_path"],
-					"Could not remove existing file: "+self.settings["target_path"])
+					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
 		    		touch(self.settings["autoresume_path"]+"setup_target_path")
 		
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
@@ -467,7 +467,8 @@ class generic_stage_target(generic_target):
 	    self.setup_environment()
 
 	    if os.path.exists(self.settings["sharedir"]+"/targets/support/kill-chroot-pids.sh"):
-			    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/support/kill-chroot-pids.sh","kill-chroot-pids script failed.")
+			    cmd("/bin/bash "+self.settings["sharedir"]+"/targets/support/kill-chroot-pids.sh",\
+			    			"kill-chroot-pids script failed.",env=self.env)
 	
 	def mount_safety_check(self):
 		mypath=self.settings["chroot_path"]
@@ -552,7 +553,7 @@ class generic_stage_target(generic_target):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 			
 			print display_msg
-			cmd(unpack_cmd,error_msg)
+			cmd(unpack_cmd,error_msg,env=self.env)
 
 			if self.settings.has_key("source_path_md5sum"):
 				myf=open(self.settings["autoresume_path"]+"unpack","w")
@@ -601,12 +602,12 @@ class generic_stage_target(generic_target):
 		    	if os.path.exists(destdir):
 				print cleanup_msg
 				cleanup_cmd="rm -rf "+destdir
-				cmd(cleanup_cmd,cleanup_errmsg)
+				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
 		    	if not os.path.exists(destdir):
 				os.makedirs(destdir,0755)
 		    	
 			print "Unpacking portage tree (This can take a long time) ..."
-			cmd(unpack_cmd,unpack_errmsg)
+			cmd(unpack_cmd,unpack_errmsg,env=self.env)
 
 			if self.settings.has_key("SNAPCACHE"): 
 				myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
@@ -629,9 +630,9 @@ class generic_stage_target(generic_target):
 		else:
 			print "Configuring profile link..."
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile",\
-					"Error zapping profile link")
+					"Error zapping profile link",env=self.env)
 	    		cmd("ln -sf ../usr/portage/profiles/"+self.settings["target_profile"]+\
-		    		" "+self.settings["chroot_path"]+"/etc/make.profile","Error creating profile link")
+		    		" "+self.settings["chroot_path"]+"/etc/make.profile","Error creating profile link",env=self.env)
 		    	touch(self.settings["autoresume_path"]+"config_profile_link")
 				       
 	def setup_confdir(self):	
@@ -641,9 +642,9 @@ class generic_stage_target(generic_target):
 		else:
 	    		if self.settings.has_key("portage_confdir"):
 				print "Configuring /etc/portage..."
-				cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage","Error zapping /etc/portage")
+				cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage","Error zapping /etc/portage",env=self.env)
 				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+self.settings["chroot_path"]+\
-					"/etc/portage","Error copying /etc/portage")
+					"/etc/portage","Error copying /etc/portage",env=self.env)
 		    		touch(self.settings["autoresume_path"]+"setup_confdir")
 	
 	def portage_overlay(self):	
@@ -656,8 +657,8 @@ class generic_stage_target(generic_target):
 		for x in self.settings["portage_overlay"]: 
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
-				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir")
-				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay")
+				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir",env=self.env)
+				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay",env=self.env)
 	
 	def root_overlay(self):
 	    # copy over the root_overlay
@@ -665,7 +666,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
 		    print "Copying root overlay ..."
 		    cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/root_overlay"]+"/ "+\
-			self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay copy failed.")
+			self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay copy failed.",env=self.env)
 
 	def bind(self):
 		for x in self.mounts: 
@@ -737,26 +738,27 @@ class generic_stage_target(generic_target):
 		    self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
 		    
 		    cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
-			    "Could not copy resolv.conf into place.")
+			    "Could not copy resolv.conf into place.",env=self.env)
 		
 		    # copy over the envscript, if applicable
 		    if self.settings.has_key("ENVSCRIPT"):
 			    if not os.path.exists(self.settings["ENVSCRIPT"]):
 				   raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
 			    cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
-				    "Could not copy envscript into place.")
+				    "Could not copy envscript into place.",env=self.env)
 
 		    # copy over /etc/hosts from the host in case there are any specialties in there
 		    if os.path.exists("/etc/hosts"):
 			    cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
-				    "/etc/hosts.bck", "Could not backup /etc/hosts")
-			    cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts")
+				    "/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
+			    cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
 		    self.override_chost()	
 		    self.override_cflags()
 		    self.override_cxxflags()	
 		    self.override_ldflags()	
 		    # modify and write out make.conf (for the chroot)
-		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf")
+		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf",\
+		    		env=self.env)
 		    myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 		    myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
 		    myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
@@ -796,7 +798,7 @@ class generic_stage_target(generic_target):
 		else:
 		    if self.settings.has_key("fsscript"):
 			if os.path.exists(self.settings["controller_file"]):
-			    cmd("/bin/bash "+self.settings["controller_file"]+" fsscript","fsscript script failed.")
+			    cmd("/bin/bash "+self.settings["controller_file"]+" fsscript","fsscript script failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"fsscript")
 
 	def rcupdate(self):
@@ -805,7 +807,7 @@ class generic_stage_target(generic_target):
 			print "Resume point detected, skipping rcupdate operation..."
 		else:
 		    if os.path.exists(self.settings["controller_file"]):
-			cmd("/bin/bash "+self.settings["controller_file"]+" rc-update","rc-update script failed.")
+			cmd("/bin/bash "+self.settings["controller_file"]+" rc-update","rc-update script failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"rcupdate")
 
 	def clean(self):
@@ -815,15 +817,15 @@ class generic_stage_target(generic_target):
 		else:
 		    for x in self.settings["cleanables"]: 
 			    print "Cleaning chroot: "+x+"... "
-			    cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+x)
+			    cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+x,env=self.env)
 
 		    # put /etc/hosts back into place
 		    if os.path.exists("/etc/hosts.bck"):
 			    cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+\
-					  "/etc/hosts", "Could not replace /etc/hosts")
+					  "/etc/hosts", "Could not replace /etc/hosts",env=self.env)
 	
 		    if os.path.exists(self.settings["controller_file"]):
-			cmd("/bin/bash "+self.settings["controller_file"]+" clean","clean script failed.")
+			cmd("/bin/bash "+self.settings["controller_file"]+" clean","clean script failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"clean")
 	
 	def empty(self):		
@@ -863,7 +865,7 @@ class generic_stage_target(generic_target):
 		try:
 		    if os.path.exists(self.settings["controller_file"]):
 			    cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
-				"Clean  failed.")
+				"Clean  failed.",env=self.env)
 			    touch(self.settings["autoresume_path"]+"remove")
 		except:
 		    self.unbind()
@@ -877,7 +879,7 @@ class generic_stage_target(generic_target):
 	    else:
 		try:
 			if os.path.exists(self.settings["controller_file"]):
-		    		cmd("/bin/bash "+self.settings["controller_file"]+" preclean","preclean script failed.")
+		    		cmd("/bin/bash "+self.settings["controller_file"]+" preclean","preclean script failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"preclean")
 		
 		except:
@@ -901,7 +903,7 @@ class generic_stage_target(generic_target):
 		print "Creating stage tarball..."
 		
 		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
-			" .","Couldn't create stage tarball")
+			" .","Couldn't create stage tarball",env=self.env)
 
 		self.gen_digest_file(self.settings["target_path"]+".digests")
 
@@ -914,7 +916,7 @@ class generic_stage_target(generic_target):
 	    else:
 		try:
 			if os.path.exists(self.settings["controller_file"]):
-		    		cmd("/bin/bash "+self.settings["controller_file"]+" run","run script failed.")
+		    		cmd("/bin/bash "+self.settings["controller_file"]+" run","run script failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"run_local")
 
 		except CatalystError:
@@ -924,15 +926,18 @@ class generic_stage_target(generic_target):
 	def setup_environment(self):
 		# modify the current environment. This is an ugly hack that should be fixed. We need this
 		# to use the os.system() call since we can't specify our own environ:
+		self.env={}
 		for x in self.settings.keys():
 			# "/" is replaced with "_", "-" is also replaced with "_"
 			varname="clst_"+string.replace(x,"/","_")
 			varname=string.replace(varname,"-","_")
 			if type(self.settings[x])==types.StringType:
 				# prefix to prevent namespace clashes:
-				os.environ[varname]=self.settings[x]
+				#os.environ[varname]=self.settings[x]
+				self.env[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
-				os.environ[varname]=string.join(self.settings[x])
+				#os.environ[varname]=string.join(self.settings[x])
+				self.env[varname]=string.join(self.settings[x])
 	
 	def run(self):
 		self.chroot_lock.write_lock()
@@ -978,7 +983,7 @@ class generic_stage_target(generic_target):
 		    #before cleaning, unmerge stuff:
 		    try:
 			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/" \
-				+self.settings["target"]+"/unmerge.sh "+myunmerge,"Unmerge script failed.")
+				+self.settings["target"]+"/unmerge.sh "+myunmerge,"Unmerge script failed.",env=self.env)
 			print "unmerge shell script"
 		    except CatalystError:
 			self.unbind()
@@ -992,7 +997,8 @@ class generic_stage_target(generic_target):
 		    print "Resume point detected, skipping target_setup operation..."
 	    else:
 		print "Setting up filesystems per filesystem type"
-		cmd("/bin/bash "+self.settings["controller_file"]+" target_image_setup "+ self.settings["target_path"],"target_image_setup script failed.")
+		cmd("/bin/bash "+self.settings["controller_file"]+" target_image_setup "+ self.settings["target_path"],\
+				"target_image_setup script failed.",env=self.env)
 		touch(self.settings["autoresume_path"]+"target_setup")
 	
 	def setup_overlay(self):	
@@ -1003,7 +1009,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay") \
 			and os.path.exists(self.settings["spec_prefix"]+"/overlay"):
 				cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/ "+\
-				self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.")
+				self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_overlay")
 	
 	def create_iso(self):
@@ -1014,7 +1020,7 @@ class generic_stage_target(generic_target):
 		# create the ISO - this is the preferred method (the iso scripts do not always work)
 		if self.settings.has_key("iso"):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
-				self.settings["iso"],"ISO creation script failed.")
+				self.settings["iso"],"ISO creation script failed.",env=self.env)
 			self.gen_digest_file(self.settings["iso"])
 			touch(self.settings["autoresume_path"]+"create_iso")
 		
@@ -1037,7 +1043,7 @@ class generic_stage_target(generic_target):
 				mypack=list_bashify(self.settings[self.settings["spec_prefix"]+"/packages"])
 				try:
 					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" build_packages "+mypack,"Error in attempt to build packages")
+						" build_packages "+mypack,"Error in attempt to build packages",env=self.env)
 					touch(self.settings["autoresume_path"]+"build_packages")
 				except CatalystError:
 					self.unbind()
@@ -1055,7 +1061,7 @@ class generic_stage_target(generic_target):
 					mynames=[mynames]
 				# execute the script that sets up the kernel build environment
 				cmd("/bin/bash "+self.settings["controller_file"]+" pre-kmerge ",\
-				   "Runscript pre-kmerge failed")
+				   "Runscript pre-kmerge failed",env=self.env)
 		
 				for kname in mynames:
 					if self.settings.has_key("AUTORESUME") \
@@ -1075,7 +1081,8 @@ class generic_stage_target(generic_target):
 					    try:
 						    cmd("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+ \
 							    self.settings["chroot_path"]+"/var/tmp/"+kname+".config", \
-							    "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"])
+							    "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"],\
+							    env=self.env)
 		
 					    except CatalystError:
 						    self.unbind()
@@ -1101,27 +1108,28 @@ class generic_stage_target(generic_target):
 						    print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
 						
 						    cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
-							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"],env=self.env)
 						
 						    cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
 							    self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
-							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"])
+							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"],\
+							    env=self.env)
 	
 					    
 					    # execute the script that builds the kernel
 					    cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
-						"Runscript kernel build failed")
+						"Runscript kernel build failed",env=self.env)
 					
 					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
 						if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
 						    print "Cleaning up temporary overlay dir"
-						    cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/")
+						    cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/",env=self.env)
 					    
 					    touch(self.settings["autoresume_path"]+"build_kernel_"+kname)
 
 				# execute the script that cleans up the kernel build environment
 				cmd("/bin/bash "+self.settings["controller_file"]+" post-kmerge ",\
-				   "Runscript post-kmerge failed")
+				   "Runscript post-kmerge failed",env=self.env)
 				
 				touch(self.settings["autoresume_path"]+"build_kernel")
 			
@@ -1136,7 +1144,7 @@ class generic_stage_target(generic_target):
 	    else:
 		try:
 			cmd("/bin/bash "+self.settings["controller_file"]+" bootloader " + self.settings["target_path"],\
-				"Bootloader runscript failed.")
+				"Bootloader runscript failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"bootloader")
 		except CatalystError:
 			self.unbind()
@@ -1149,7 +1157,7 @@ class generic_stage_target(generic_target):
 	    else:
 		try:
 			cmd("/bin/bash "+self.settings["controller_file"]+" livecd-update",\
-				"livecd-update failed.")
+				"livecd-update failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"livecd_update")
 		
 		except CatalystError:
@@ -1163,7 +1171,7 @@ class generic_stage_target(generic_target):
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
 		    mystat=os.stat(myemp)
-		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
+		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
 		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
@@ -1179,12 +1187,12 @@ class generic_stage_target(generic_target):
 		    # stat the dir, delete the dir, recreate the dir and set
 		    # the proper perms and ownership
 		    mystat=os.stat(myemp)
-		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
+		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
 		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 		    os.chmod(myemp,mystat[ST_MODE])
-        
+	
 	def clear_autoresume(self):
 		# clean resume points since they are no longer needed
 		if self.settings.has_key("AUTORESUME"):
@@ -1195,7 +1203,7 @@ class generic_stage_target(generic_target):
 		    		# stat the dir, delete the dir, recreate the dir and set
 		    		# the proper perms and ownership
 		    		mystat=os.stat(myemp)
-		    		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp)
+		    		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
 		    		shutil.rmtree(myemp)
 		    		os.makedirs(myemp,0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
@@ -1235,4 +1243,5 @@ class generic_stage_target(generic_target):
 		
 		print "clearing package cache ..."
 		self.clear_packages()
+
 #vim: ts=4 sw=4 sta et sts=4 ai

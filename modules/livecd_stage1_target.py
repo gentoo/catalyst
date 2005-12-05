@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.23 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.24 2005/12/05 18:13:12 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -32,7 +32,7 @@ class livecd_stage1_target(generic_stage_target):
 			# first clean up any existing target stuff
 			if os.path.exists(self.settings["target_path"]):
 				cmd("rm -rf "+self.settings["target_path"],\
-					"Could not remove existing directory: "+self.settings["target_path"])
+					"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
 			
 			if not os.path.exists(self.settings["target_path"]):

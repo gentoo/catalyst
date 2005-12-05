@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.62 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.63 2005/12/05 18:13:12 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,md5,sha,time
 selinux_capable = False
@@ -401,8 +401,8 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                                         print "caught exception",e," in forked func",mycommand[0]
                                 sys.exit(0)
 
-			os.execvp(myc,myargs)
-                        #os.execve(myc,myargs,env)
+			#os.execvp(myc,myargs)
+                        os.execve(myc,myargs,env)
                 except SystemExit, e:
                         raise
                 except Exception, e:
@@ -440,10 +440,10 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
         cleanup(mypid)
         return 0
 
-def cmd(mycmd,myexc=""):
+def cmd(mycmd,myexc="",env={}):
 	try:
 		sys.stdout.flush()
-		retval=spawn_bash(mycmd)
+		retval=spawn_bash(mycmd,env)
 		if retval != 0:
 			raise CatalystError,myexc
 	except:

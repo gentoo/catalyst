@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.9 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.10 2005/12/05 18:13:12 rocket Exp $
 
 """
 Builder class for a netboot build.
@@ -66,7 +66,7 @@ class netboot_target(generic_stage_target):
 #		if self.settings.has_key("netboot/packages"):
 #			mypack=list_bashify(self.settings["netboot/packages"])
 #		try:
-#			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack)
+#			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack,env=self.env)
 #		except CatalystError:
 #			self.unbind()
 #			raise CatalystError,"netboot build aborting due to error."
@@ -78,7 +78,7 @@ class netboot_target(generic_stage_target):
 		else:
 			mycmd = ""
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" busybox "+ mycmd)
+			cmd("/bin/bash "+self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
@@ -108,7 +108,7 @@ class netboot_target(generic_stage_target):
 
 		try:
 			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" image " + list_bashify(myfiles))
+				" image " + list_bashify(myfiles),env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
@@ -117,7 +117,7 @@ class netboot_target(generic_stage_target):
 	def create_netboot_files(self):
 		# finish it all up
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" finish")
+			cmd("/bin/bash "+self.settings["controller_file"]+" finish",env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.17 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.18 2005/12/05 18:13:12 rocket Exp $
 
 """
 builder class for the tinderbox target
@@ -22,7 +22,7 @@ class tinderbox_target(generic_stage_target):
 		try:
 			if os.path.exists(self.settings["controller_file"]):
 			    cmd("/bin/bash "+self.settings["controller_file"]+" run "+\
-				list_bashify(self.settings["tinderbox/packages"]),"run script failed.")
+				list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
 		
 		except CatalystError:
 			self.unbind()
