@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.88 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.89 2005/12/05 19:24:48 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -22,7 +22,7 @@ class generic_stage_target(generic_target):
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
 			"snapshot","source_subpath","portage_confdir","cflags","cxxflags","chost","hostuse"])
 		generic_target.__init__(self,addlargs,myspec)
-		
+		self.env={}		
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
@@ -252,7 +252,7 @@ class generic_stage_target(generic_target):
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
-				cmd("rm -f "+self.settings["target_path"],
+				cmd("rm -f "+self.settings["target_path"],\
 					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
 		    		touch(self.settings["autoresume_path"]+"setup_target_path")
 		
