@@ -21,6 +21,7 @@ export USE_ORDER="env:pkg:conf:defaults"
 
 echo "Bringing system up to date using profile specific use flags"
 export USE="${USE} ${clst_HOSTUSE}"
+export EMERGE_WARNING_DELAY=0
 run_emerge -u system
 
 
