@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.25 2005/12/02 15:21:05 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.26 2005/12/07 17:27:28 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -79,6 +79,7 @@ mkdir -p /etc/sysconfig
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs	/lib/firmware			tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs	/usr/portage			tmpfs	defaults	0 0" >> /etc/fstab
 # if /usr/lib/X11/xkb/compiled then make it tmpfs
 if [ -d /usr/lib/X11/xkb/compiled ]
 then
@@ -103,6 +104,7 @@ echo "alias cp='cp -i'" >> /etc/profile
 echo "alias mv='mv -i'" >> /etc/profile
 echo "alias rm='rm -i'" >> /etc/profile
 echo "alias ls='ls --color=auto'" >> /etc/profile
+echo "alias ll='ls -l'" >> /etc/profile
 echo "alias grep='grep --color=auto'" >> /etc/profile
 
 # make sure we have the latest pci,usb and hotplug ids

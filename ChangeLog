@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.428 2005/12/07 16:19:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.429 2005/12/07 17:27:28 wolf31o2 Exp $
+
+  07 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Forward-porting portage tmpfs mounting from catalyst 1.x, otherwise we break
+  the Installer.
 
   07 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   Changed version stamp to 2.0_rc6.
