@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.429 2005/12/07 17:27:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.430 2005/12/07 21:01:35 rocket Exp $
+
+  07 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/generic_target.py:
+  self.env should be a part of the super class generic_target so it applies to
+  snapshots as well; removing redundant pass in the generic_target class as
+  its not needed. There is code there to fill the statements
 
   07 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:

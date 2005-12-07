@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.90 2005/12/07 07:11:44 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.91 2005/12/07 21:01:35 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -76,7 +76,6 @@ class generic_stage_target(generic_target):
 		self.settings["hostarch"]=machinemap[mymachine]
 		self.archmap={}
 		self.subarchmap={}
-		self.env={}
 		
 		for x in targetmap[self.settings["hostarch"]]:
 			try:
