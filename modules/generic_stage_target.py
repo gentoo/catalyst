@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.89 2005/12/05 19:24:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.90 2005/12/07 07:11:44 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -22,7 +22,7 @@ class generic_stage_target(generic_target):
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
 			"snapshot","source_subpath","portage_confdir","cflags","cxxflags","chost","hostuse"])
 		generic_target.__init__(self,addlargs,myspec)
-		self.env={}		
+		
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
@@ -68,7 +68,7 @@ class generic_stage_target(generic_target):
 				"armeb" : "arm",
 				"armv5b" : "arm"
 		}
-
+		
 		mymachine=os.uname()[4]
 		if not machinemap.has_key(mymachine):
 			raise CatalystError, "Unknown machine type "+mymachine
@@ -76,6 +76,7 @@ class generic_stage_target(generic_target):
 		self.settings["hostarch"]=machinemap[mymachine]
 		self.archmap={}
 		self.subarchmap={}
+		self.env={}
 		
 		for x in targetmap[self.settings["hostarch"]]:
 			try:
@@ -118,9 +119,9 @@ class generic_stage_target(generic_target):
 
 		# set paths
 		self.set_snapshot_path()
-		self.set_snapcache_path()
 		self.set_root_path()
 		self.set_source_path()
+		self.set_snapcache_path()
 		self.set_chroot_path()
 		self.set_autoresume_path()
 		self.set_dest_path()
@@ -252,7 +253,7 @@ class generic_stage_target(generic_target):
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
-				cmd("rm -f "+self.settings["target_path"],\
+				cmd("rm -f "+self.settings["target_path"], \
 					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
 		    		touch(self.settings["autoresume_path"]+"setup_target_path")
 		
@@ -372,7 +373,8 @@ class generic_stage_target(generic_target):
 		self.settings["autoresume_path"]=normpath(self.settings["storedir"]+"/tmp/"+\
 			self.settings["rel_type"]+"/"+".autoresume-"+self.settings["target"]+\
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]+"/")
-		print "The autoresume path is " + self.settings["autoresume_path"]
+		if self.settings.has_key("AUTORESUME"):
+			print "The autoresume path is " + self.settings["autoresume_path"]
 		if not os.path.exists(self.settings["autoresume_path"]):
 			os.makedirs(self.settings["autoresume_path"],0755)
 	
@@ -510,37 +512,67 @@ class generic_stage_target(generic_target):
 			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-			invalid_snapshot=False
 		else:
 			display_msg="\nStarting tar extract from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-			invalid_snapshot=False
-			unpack=False
 		
 		
 		if self.settings.has_key("AUTORESUME"):
-		    if os.path.isdir(self.settings["source_path"]) and \
-			    os.path.exists(self.settings["autoresume_path"]+"unpack"):
+			# Autoresume is Valid, SeedCache is Valid
+			if os.path.isdir(self.settings["source_path"]) and os.path.exists(self.settings["autoresume_path"]+"unpack"):
 				unpack=False
-		    elif self.settings.has_key("source_path_md5sum"):
-			if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+				invalid_snapshot=False
+			
+			# Autoresume is Valid, Tarball is Valid
+			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_md5sum"] == clst_unpack_md5sum:
+				unpack=False
 				invalid_snapshot=True
+			
+			# Autoresume is InValid, SeedCache
+			elif os.path.isdir(self.settings["source_path"]) and not os.path.exists(self.settings["autoresume_path"]+"unpack"):
 				unpack=True
-		
-		if not unpack:
-		    print "Resume point detected, skipping unpack operation..."
+				invalid_snapshot=False
+			
+			# Autoresume is InValid, Tarball
+			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+				unpack=True
+				invalid_snapshot=True
+		else:
+			# No Autoresume,SeedCache
+			if self.settings.has_key("SEEDCACHE"):
+				
+				# Seed cache so lets run rsync and rsync can clean up extra junk
+				if os.path.isdir(self.settings["source_path"]):
+					unpack=True
+					invalid_snapshot=False
+                
+				# Tarball so we better unpack and remove anything already there
+				elif os.path.isfile(self.settings["source_path"]):
+					unpack=True
+					invalid_snapshot=True
+			
+			# No Autoresume,No SeedCache
+			else:
+				
+				# Tarball so we better unpack and remove anything already there
+				if os.path.isfile(self.settings["source_path"]):
+					unpack=True
+					invalid_snapshot=True
+				# Should never reach this if so something is very wrong
+				elif os.path.isdir(self.settings["source_path"]):
+					raise CatalystError,"source path is a dir but seedcache is not enabled"
 
 		if unpack:
 			self.mount_safety_check()
 			
 			if invalid_snapshot:
-				print "No Valid Resume point detected, cleaning up  ..."
-				#os.remove(self.settings["autoresume_path"]+"dir_setup")	
+				if self.settings.has_key("AUTORESUME"):
+					print "No Valid Resume point detected, cleaning up  ..."
+				
 				self.clear_autoresume()
 				self.clear_chroot()
-				#self.dir_setup()	
 			
 			if not os.path.exists(self.settings["chroot_path"]):
 				os.makedirs(self.settings["chroot_path"])
@@ -561,6 +593,8 @@ class generic_stage_target(generic_target):
 				myf.close()
 			else:
 				touch(self.settings["autoresume_path"]+"unpack")
+		else:
+		    print "Resume point detected, skipping unpack operation..."
 	
 
 	def unpack_snapshot(self):
