@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.427 2005/12/07 07:11:44 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.428 2005/12/07 16:19:55 wolf31o2 Exp $
+
+  07 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  Changed version stamp to 2.0_rc6.
 
   07 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
