@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.434 2005/12/08 03:38:10 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.435 2005/12/08 14:48:58 wolf31o2 Exp $
+
+  08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  files/catalyst.1:
+  Fixed up the man page, which has been suffering for some time, and also
+  reversed -v/-V in the help message.
 
   08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:

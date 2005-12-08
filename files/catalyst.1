@@ -1,4 +1,4 @@
-.TH "CATALYST" "1" "August 12, 2004" "Catalyst 1.1.0" "Catalyst"
+.TH "CATALYST" "1" "December 8, 2005" "Catalyst 2.0" "Catalyst"
 
 .SH NAME
 catalyst \- The Gentoo Linux Release Engineering meta-tool
@@ -7,7 +7,7 @@ catalyst \- The Gentoo Linux Release Engineering meta-tool
 .TP
 
 .BR catalyst
-[\fIoptions\fR] [\fI\-f file\fR | \fI\-C keys\fR] ...
+[\fIoptions\fR] [\fI\-f file\fR | \fI\-C keys\fR | \fI\-s version_stamp\fR] ...
 .TP
 
 .BR catalyst
@@ -15,19 +15,24 @@ catalyst \- The Gentoo Linux Release Engineering meta-tool
 .TP
 
 .BR catalyst
-\fI\-\-version \-v\fR
+\fI\-\-version \-V\fR
 
 .SH DESCRIPTION
 \fBcatalyst\fR is the tool that the Gentoo Release Engineering team
 utilizes to build all Gentoo Linux releases. It is capable of building
-installation stages, bootable LiveCDs, netboot images, and Gentoo Reference Platform (GRP)
-sets. \fBcatalyst\fR is also capable of providing a simple tinderbox
-environment for ebuild/package testing.
+installation stages, bootable LiveCDs, netboot images, and Gentoo Reference
+Platform (GRP) sets. \fBcatalyst\fR is also capable of providing a simple
+tinderbox environment for ebuild/package testing.
 
 For more information, please visit the \fBcatalyst\fR project page
 on the web at <http://www.gentoo.org/proj/en/releng/catalyst>.
 
 .SH OPTIONS
+.TP
+
+.BR "\-\-clear\-autoresume " (\fB\-a\fR)
+This option is to be used to clear any autoresume points that have been saved
+for this target. It is used in conjunction with \-f, \-C, or both.
 .TP
 
 .BR "\-\-cli " (\fB\-C\fR)
@@ -45,12 +50,22 @@ configuration file is installed at /etc/catalyst/catalyst.conf.
 Enable debugging mode
 .TP
 
+.BR "\-\-fetchonly " (\fB\-F\fR)
+This tells \fBcatalyst\fR to only fetch distfiles for the given packages without
+performing any building.
+.TP
+
 .BR "\-\-file " (\fB\-f\fR)
 Tell \fBcatalyst\fR to use the user supplied specfile.
 .TP
 
 .BR "\-\-help " (\fB\-h\fR)
 Print the help message and exit
+.TP
+
+.BR "\-\-purge " (\fB\-p\fR)
+Tell \fBcatalyst\fR to clear all temporary directories, package caches, and
+autoresume flags for the given target.
 .TP
 
 .BR "\-\-snapshot " (\fB\-s\fR)
@@ -72,29 +87,38 @@ catalyst \-C target=snapshot version_stamp=my_date
 Using the specfile option (\-f, \-\-file) to build a stage target:
 catalyst \-f stage1\-specfile.spec
 .TP
-Using the snapshot option (\-s, \-\-snapshot) to package a Portage snapshot using the datestamp 20041006:
-catalyst \-s 20041006
+Using the snapshot option (\-s, \-\-snapshot) to package a Portage snapshot
+using the datestamp 20051208:
+catalyst \-s 20051208
 
 .SH FILES
 .TP
-Example specfiles can be found in /usr/share/doc/catalyst-<version>/examples. An example configuration file can be found at /etc/catalyst/catalyst.conf.
+Example specfiles can be found in /usr/share/doc/catalyst-<version>/examples.
+An example configuration file can be found at /etc/catalyst/catalyst.conf.
 
 .SH BUGS
 .TP
-An up-to-date list of Catalyst bugs can always be found listed on the Gentoo Linux bug-tracking system at <http://bugs.gentoo.org>.
+An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
+Linux bug-tracking system at <http://bugs.gentoo.org>.
 
 .SH SEE ALSO
 .TP
-A more in-depth examination of Catalyst options and procedures can be found linked from the \fBcatalyst\fR project page, which is located at <http://www.gentoo.org/proj/en/releng/catalyst>.
+A more in-depth examination of Catalyst options and procedures can be found
+linked from the \fBcatalyst\fR project page, which is located at
+<http://www.gentoo.org/proj/en/releng/catalyst>.
 
 .SH NOTES
 .TP
-\fBCatalyst\fR is conceptually derived from the Gentoo livecd-ng and Gentoo stager projects, both of which were used to create pre-1.4 Gentoo releases.
+\fBCatalyst\fR is conceptually derived from the Gentoo livecd-ng and Gentoo
+stager projects, both of which were used to create pre-1.4 Gentoo releases.
 .LP
-\fBCatalyst\fR was originally conceived and coded by both Daniel Robbins and John Davis.
+\fBCatalyst\fR was originally conceived and coded by both Daniel Robbins and
+John Davis. It is currently maintained by Chris Gianelloni and Eric Edgar and
+hass been mostly re-written.
 
 .SH AUTHOR
 John Davis <zhen@gentoo.org>
+Chris Gianelloni <wolf31o2@gentoo.org>
 
 .SH "CVS HEADER"
-$Id: catalyst.1,v 1.4 2005/12/05 18:13:12 rocket Exp $
+$Id: catalyst.1,v 1.5 2005/12/08 14:48:58 wolf31o2 Exp $

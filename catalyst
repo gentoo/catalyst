@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.110 2005/12/07 21:33:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.111 2005/12/08 14:48:58 wolf31o2 Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -25,8 +25,8 @@ def usage():
 	print " -h --help		print this help message"
 	print " -p --purge		clear tmp dirs,package cache and autoresume flags"
 	print " -s --snapshot		generate a Portage snapshot"
-	print " -V --version		display version information"
-	print " -v --verbose		verbose output"
+	print " -v --version		display version information"
+	print " -V --verbose		verbose output"
 	print
 	print "Usage examples:"
 	print
@@ -34,7 +34,7 @@ def usage():
 	print "catalyst -C target=snapshot version_stamp=my_date"
 	print
 	print "Using the snapshot option (-s, --snapshot) to build a Portage snapshot:"
-	print "catalyst -s 2005.0"
+	print "catalyst -s 20051208"
 	print
 	print "Using the specfile option (-f, --file) to build a stage target:"
 	print "catalyst -f stage1-specfile.spec"
