@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.432 2005/12/07 21:57:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.433 2005/12/08 03:17:11 wolf31o2 Exp $
+
+  08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
+  Turning off autoresume of doom until I can get more testing. I've had
+  several issues with it. I'll be reporting/fixing these as I come across them
+  but for now wish to turn it off by default as I don't want this one feature
+  to stop the possible 2.0 final release.
 
   07 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/unmerge.sh:
