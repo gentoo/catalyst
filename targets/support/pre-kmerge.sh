@@ -7,7 +7,8 @@
 
 . /etc/profile
 
-CONFIG_PROTECT="-*" USE="livecd" emerge --oneshot genkernel 
+export USE="livecd"
+run_emerge --oneshot genkernel
 
 install -d /usr/portage/packages/gk_binaries
 

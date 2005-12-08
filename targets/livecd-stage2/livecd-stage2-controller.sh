@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.16 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.17 2005/12/08 15:16:48 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -111,6 +111,12 @@ case $1 in
 		
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
+    
+    unmerge)
+        shift
+        export clst_packages="$*"
+        exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh
+    ;;
 
 	target_image_setup)
 		shift

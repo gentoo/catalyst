@@ -151,6 +151,10 @@ run_emerge() {
 	# with no options ROOT=/
 	make_destpath ${clst_root_path}
 	
+	export EMERGE_WARNING_DELAY=0 	
+	export CLEAN_DELAY=0
+	export CONFIG_PROTECT="-*"
+
 	if [ -n "${clst_VERBOSE}" ]
 	then
 		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -vpt $@" || exit 1

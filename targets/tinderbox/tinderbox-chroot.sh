@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.14 2005/11/22 20:36:18 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.15 2005/12/08 15:16:48 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -11,7 +11,6 @@ setup_myfeatures
 
 # setup the environment
 export FEATURES="${clst_myfeatures}"
-export CONFIG_PROTECT="-*"
 
 # START THE BUILD
 setup_portage
@@ -26,7 +25,7 @@ for x in ${clst_tinderbox_packages}
 do
 	if [ -n "${clst_VERBOSE}" ]
 	then
-		emerge --usepkg --buildpkg --newuse -vp $x
+		run_emerge --usepkg --buildpkg --newuse -vp $x
 		echo "Press any key within 15 seconds to pause the build..."
 		read -s -t 15 -n 1
 		if [ $? -eq 0 ]
@@ -38,7 +37,7 @@ do
 
 	mkdir -p /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
-	emerge --usepkg --buildpkg --newuse $x
+	run_emerge --usepkg --buildpkg --newuse $x
 	
 	if [ "$?" != "0" ]
 	then

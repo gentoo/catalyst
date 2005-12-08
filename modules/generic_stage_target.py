@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.91 2005/12/07 21:01:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.92 2005/12/08 15:16:48 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1015,8 +1015,10 @@ class generic_stage_target(generic_target):
 		    
 		    #before cleaning, unmerge stuff:
 		    try:
-			cmd("/bin/bash "+self.settings["sharedir"]+"/targets/" \
-				+self.settings["target"]+"/unmerge.sh "+myunmerge,"Unmerge script failed.",env=self.env)
+			cmd("/bin/bash "+self.settings["controller_file"]+" unmerge "+ myunmerge,\
+				"Unmerge script failed.",env=self.env)
+			#cmd("/bin/bash "+self.settings["sharedir"]+"/targets/" \
+			#	+self.settings["target"]+"/unmerge.sh "+myunmerge,"Unmerge script failed.",env=self.env)
 			print "unmerge shell script"
 		    except CatalystError:
 			self.unbind()

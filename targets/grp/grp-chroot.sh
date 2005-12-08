@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.22 2005/11/29 20:30:42 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.23 2005/12/08 15:16:48 rocket Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -16,7 +16,6 @@ setup_myfeatures
 
 # setup the environment
 export FEATURES="${clst_myfeatures}"
-export CONFIG_PROTECT="-*"
 ## START BUILD
 setup_portage
 

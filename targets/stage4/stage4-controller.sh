@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.10 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.11 2005/12/08 15:16:48 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 
 
@@ -63,6 +63,12 @@ case $1 in
 		shift
 		#${clst_sharedir}/targets/livecd-stage2/livecd-stage2-cdfs.sh
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
+	;;
+	
+	unmerge)
+		shift
+		export clst_packages="$*"
+		exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh 
 	;;
 
 	iso)
