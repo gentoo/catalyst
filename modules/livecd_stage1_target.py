@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.24 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage1_target.py,v 1.25 2005/12/08 22:02:05 rocket Exp $
 
 """
 Builder class for LiveCD stage1.
@@ -45,8 +45,11 @@ class livecd_stage1_target(generic_stage_target):
 	                self.settings["spec_prefix"]="livecd"
 	
 	def set_use(self):
-	    generic_stage_target.set_use(self)
-	    self.settings["use"].append("livecd")
+		generic_stage_target.set_use(self)
+		if self.settings.has_key("use"):
+			self.settings["use"].append("livecd")
+		else:
+			self.settings["use"]=["livecd"]
 
 	def set_packages(self):
 	    generic_stage_target.set_packages(self)
