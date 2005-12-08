@@ -14,9 +14,10 @@ trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
  
 check_portage_version(){
-	portage_version=`/usr/lib/portage/bin/portageq best_version / sys-apps/portage \
-		| cut -d/ -f2 | cut -d- -f2,3`
-	if [ -n ${portage_version} -a `echo ${portage_version} | cut -d- -f1 | cut -d. -f3` -lt '51' ]
+	portage_version=`/usr/lib/portage/bin/portageq best_version / \
+		sys-apps/portage | cut -d/ -f2 | cut -d- -f2,3`
+	if [ -n "${portage_version}" -a `echo ${portage_version} | cut -d- -f1 \
+		| cut -d. -f3` -lt '51' ]
 	then
 		echo "ERROR: Your portage version is too low in your seed stage.  Portage version"
 		echo "2.0.51 or greater is required."
