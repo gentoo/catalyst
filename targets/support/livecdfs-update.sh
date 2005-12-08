@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.26 2005/12/07 17:27:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.27 2005/12/08 03:38:10 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -245,6 +245,36 @@ case ${clst_livecd_type} in
 		then
 			chmod +x /opt/installer/misc/mkvardb
 			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
+		fi
+
+		if [ "${clst_livecd_xsession}" == "gnome" ]
+		then
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/gtk_key_theme Crux
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/gtk_theme Crux
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/icon_theme Crux
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/theme Crux
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /apps/metacity/general/theme Crux
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/gtk_key_theme \
+				Clearlooks
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/gtk_theme \
+				Clearlooks
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/font_name "Sans 9"
 		fi
 
 		# This is my hack to reduce tmpfs usage

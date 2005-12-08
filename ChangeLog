@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.433 2005/12/08 03:17:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.434 2005/12/08 03:38:10 wolf31o2 Exp $
+
+  08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Added fun gnome theme stuff to livecdfs-update.sh for the official Gentoo
+  LiveCD.
 
   08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
   Turning off autoresume of doom until I can get more testing. I've had
