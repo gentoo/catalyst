@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.94 2005/12/09 16:13:56 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.95 2005/12/09 16:18:23 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1241,8 +1241,8 @@ class generic_stage_target(generic_target):
 		   		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
 		   		shutil.rmtree(myemp)
 		   		os.makedirs(myemp,0755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
+				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+				os.chmod(myemp,mystat[ST_MODE])
 
         def gen_digest_file(self,file):
             if os.path.exists(file+".digests"):

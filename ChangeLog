@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.443 2005/12/09 16:13:56 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.444 2005/12/09 16:18:23 rocket Exp $
+
+  09 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix indentation error the last commit caused
 
   09 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
