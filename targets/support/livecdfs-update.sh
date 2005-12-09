@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.27 2005/12/08 03:38:10 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.28 2005/12/09 14:46:38 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -279,7 +279,7 @@ case ${clst_livecd_type} in
 
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
-		mv -f /usr/portage/profiles /usr/livecd
+		cp -r /usr/portage/profiles /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		mv -f /var/db /usr/livecd

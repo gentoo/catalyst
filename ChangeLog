@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.441 2005/12/08 23:03:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.442 2005/12/09 14:46:38 wolf31o2 Exp $
+
+  09 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Changed mv -f in livecdfs-update.sh to a cp -r, as it was seriously breaking
+  snapshot caching after a successful gentoo-release-livecd run.
 
   08 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:
