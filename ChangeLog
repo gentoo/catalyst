@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.444 2005/12/09 16:18:23 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.445 2005/12/09 17:22:57 wolf31o2 Exp $
+
+  09 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
+  Added warning about breaking snapshot cache and re-enable autoresume, since
+  the errors I was getting were elsewhere.
 
   09 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
