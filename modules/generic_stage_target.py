@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.93 2005/12/08 22:23:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.94 2005/12/09 16:13:56 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1231,17 +1231,18 @@ class generic_stage_target(generic_target):
 		# clean resume points since they are no longer needed
 		if self.settings.has_key("AUTORESUME"):
 			print "Removing AutoResume Points: ..."
-			myemp=self.settings["autoresume_path"]
-			if os.path.isdir(myemp):
-		    		print "Emptying directory",myemp
-		    		# stat the dir, delete the dir, recreate the dir and set
-		    		# the proper perms and ownership
-		    		mystat=os.stat(myemp)
-		    		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
-		    		shutil.rmtree(myemp)
-		    		os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+		myemp=self.settings["autoresume_path"]
+		if os.path.isdir(myemp):
+				if self.settings.has_key("AUTORESUME"):
+					print "Emptying directory",myemp
+		   		# stat the dir, delete the dir, recreate the dir and set
+		   		# the proper perms and ownership
+		   		mystat=os.stat(myemp)
+		   		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
+		   		shutil.rmtree(myemp)
+		   		os.makedirs(myemp,0755)
+			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+			os.chmod(myemp,mystat[ST_MODE])
 
         def gen_digest_file(self,file):
             if os.path.exists(file+".digests"):
