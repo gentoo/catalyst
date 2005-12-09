@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.112 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.113 2005/12/09 22:38:43 wolf31o2 Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -25,8 +25,8 @@ def usage():
 	print " -h --help		print this help message"
 	print " -p --purge		clear tmp dirs,package cache and autoresume flags"
 	print " -s --snapshot		generate a Portage snapshot"
-	print " -v --version		display version information"
-	print " -V --verbose		verbose output"
+	print " -V --version		display version information"
+	print " -v --verbose		verbose output"
 	print
 	print "Usage examples:"
 	print
