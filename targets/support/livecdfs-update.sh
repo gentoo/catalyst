@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.29 2005/12/09 17:26:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.30 2005/12/09 19:03:07 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -169,7 +169,7 @@ then
 	if [ -d /etc/bootsplash/${clst_livecd_splash_theme} ]
 	then
 		sed -i 's:BOOTSPLASH_THEME=\"gentoo\":BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/bootsplash
-		rm /etc/bootsplash/default
+		rm -f /etc/bootsplash/default
 		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" /etc/bootsplash/default
 	else
 		echo "Error, cannot setup bootsplash theme ${clst_livecd_splash_theme}"
@@ -181,7 +181,7 @@ then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
 		sed -i 's:# SPLASH_THEME="gentoo":SPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/splash
-		rm /etc/splash/default
+		rm -f /etc/splash/default
 		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else
 		echo "Error, cannot setup splash theme ${clst_livecd_splash_theme}"

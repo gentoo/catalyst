@@ -4,7 +4,6 @@
 
 . /tmp/chroot-functions.sh
 
-check_portage_version
 update_env_settings
 
 setup_myfeatures

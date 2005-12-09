@@ -1,14 +1,14 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.5 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.6 2005/12/09 19:03:07 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/chroot-functions.sh
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
 update_env_settings
-check_portage_version
+
 setup_myfeatures
 setup_myemergeopts
 

@@ -14,7 +14,6 @@ setup_gk_args() {
 			 ${clst_kernel_gk_kernargs} \
 			 --cachedir=/usr/portage/packages/gk_binaries/${clst_kname}-genkernel_cache-${clst_version_stamp} \
 			 --no-mountboot \
-			 --no-install \
 			 --kerneldir=/usr/src/linux \
 			 --kernel-config=/var/tmp/${clst_kname}.config \
 			 --modulespackage=/usr/portage/packages/gk_binaries/${clst_kname}-modules-${clst_version_stamp}.tar.bz2 \

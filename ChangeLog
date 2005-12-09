@@ -1,5 +1,18 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.446 2005/12/09 17:26:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.447 2005/12/09 19:03:07 wolf31o2 Exp $
+
+  09 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage4/stage4-chroot.sh, targets/support/chroot-functions.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/unmerge.sh:
+  Made sure we use -f on removing the default links for splash. Removed
+  check_portage_version as it really isn't needed anymore. Removed
+  --no-install from genkernel commands in kmerge.sh so users must manually
+  remove kernels from /boot. This is 2.0_rc8.
 
   09 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
