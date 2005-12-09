@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.28 2005/12/09 14:46:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.29 2005/12/09 17:26:21 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 update_env_settings
@@ -87,7 +87,7 @@ then
 fi
 
 # devfs tweaks
-sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
+[ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # tweak the livecd fstab so that users know not to edit it
 # http://bugs.gentoo.org/show_bug.cgi?id=60887
