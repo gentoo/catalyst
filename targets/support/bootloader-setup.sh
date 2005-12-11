@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.20 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.21 2005/12/11 20:34:42 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -13,7 +13,14 @@ check_dev_manager
 check_bootargs
 check_filesystem_type
 
+eval "clst_kernel_softlevel=\$clst_boot_kernel_${clst_kname}_softlevel"
+
 default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
+
+if ${clst_kernel_softlevel}
+then
+	default_append_line="${default_append_line} softlevel=${clst_kernel_softlevel}"
+fi
 
 case ${clst_mainarch} in
 	alpha)

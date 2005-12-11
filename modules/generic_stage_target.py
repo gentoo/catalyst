@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.96 2005/12/09 20:47:05 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.97 2005/12/11 20:34:42 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -437,6 +437,7 @@ class generic_stage_target(generic_target):
 			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 			self.valid_values.append("boot/kernel/"+x+"/gk_action")
 			self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
+			self.valid_values.append("boot/kernel/"+x+"/softlevel")
 	    		if self.settings.has_key("boot/kernel/"+x+"/postconf"):
 	   			print "boot/kernel/"+x+"/postconf is deprecated"
 				print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
@@ -691,7 +692,9 @@ class generic_stage_target(generic_target):
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
 				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir",env=self.env)
-				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay",env=self.env)
+				cmd("rsync -a --delete "+x+"/* "+self.settings["chroot_path"]+x,\
+						"Could not copy portage_overlay",env=self.env)
+				#cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay",env=self.env)
 	
 	def root_overlay(self):
 	    # copy over the root_overlay
