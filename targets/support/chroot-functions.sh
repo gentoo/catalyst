@@ -81,7 +81,7 @@ setup_portage(){
 	then
 		echo "Portage Autoresume point found not emerging portage"
 	else
-		USE="build" emerge --oneshot --nodeps portage
+		USE="build" run_emerge --oneshot --nodeps portage
 		touch /tmp/.clst_portage || exit 1
 	fi
 }
