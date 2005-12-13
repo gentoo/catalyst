@@ -1,5 +1,13 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.451 2005/12/13 19:31:13 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.452 2005/12/13 20:32:43 rocket Exp $
+
+  13 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/snapshot_target.py,
+  modules/stage1_target.py, modules/stage2_target.py,
+  modules/stage3_target.py:
+  allow portdir_overlay to be part of all specs not including snapshot spec.
+  Add warnings for stage1,2 and 3 in case someone uses this feature there.
+  Remove overlay support from the snapshot spec but added a warning.
 
   13 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/stage1_target.py,
   modules/stage2_target.py:

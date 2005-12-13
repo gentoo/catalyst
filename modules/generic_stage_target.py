@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.97 2005/12/11 20:34:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.98 2005/12/13 20:32:43 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -145,7 +145,7 @@ class generic_stage_target(generic_target):
 		self.set_iso()
 		self.set_packages()
 		self.set_rm()
-	
+		self.set_portage_overlay()	
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
@@ -390,7 +390,7 @@ class generic_stage_target(generic_target):
 	def set_action_sequence(self):
 		#Default action sequence for run method
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"config_profile_link","setup_confdir","bind","chroot_setup",\
+				"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
 				"setup_environment","run_local","preclean","unbind","clean","capture","clear_autoresume"]
 	
 	def set_use(self):
@@ -414,6 +414,11 @@ class generic_stage_target(generic_target):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
 		if type(self.settings[self.settings["spec_prefix"]+"/rm"])==types.StringType:
 		    self.settings[self.settings["spec_prefix"]+"/rm"]=self.settings[self.settings["spec_prefix"]+"/rm"].split()
+
+	def set_portage_overlay(self):
+	    if self.settings.has_key("portage_overlay"):
+	    	if type(self.settings["portage_overlay"])==types.StringType:
+			self.settings["portage_overlay"]=[self.settings["portage_overlay"]]
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -685,9 +690,6 @@ class generic_stage_target(generic_target):
 	    # copy over the portage overlays
 	    # Always copy over the overlay incase it has changed
 	    if self.settings.has_key("portage_overlay"):
-	    	if type(self.settings["portage_overlay"])==types.StringType:
-			self.settings["portage_overlay"]=[self.settings["portage_overlay"]]
-		
 		for x in self.settings["portage_overlay"]: 
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
