@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.16 2005/12/04 17:09:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.17 2005/12/13 19:31:13 rocket Exp $
 
 """
 Builder class for a stage1 installation tarball build.
@@ -27,30 +27,6 @@ class stage1_target(generic_stage_target):
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/usr/share/gettext","/usr/lib/python2.2/test", "/usr/lib/python2.2/encodings","/usr/lib/python2.2/email", "/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
-
-	def override_chost(self):
-	    if os.environ.has_key("CHOST"):
-		self.settings["CHOST"] = os.environ["CHOST"]
-	    if self.settings.has_key("chost"):
-		self.settings["CHOST"]=list_to_string(self.settings["chost"])
-
-	def override_cflags(self):
-	    if os.environ.has_key("CFLAGS"):
-		self.settings["CFLAGS"] = os.environ["CFLAGS"]
-	    if self.settings.has_key("cflags"):
-		self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
-
-	def override_cxxflags(self):
-	    if os.environ.has_key("CXXFLAGS"):
-		self.settings["CXXFLAGS"] = os.environ["CXXFLAGS"]
-	    if self.settings.has_key("cxxflags"):
-		self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
-
-        def override_ldflags(self):
-	    if os.environ.has_key("LDFLAGS"):
-		self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
-	    if self.settings.has_key("ldflags"):
-		self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
 def register(foo):
 	foo.update({"stage1":stage1_target})
