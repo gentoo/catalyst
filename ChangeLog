@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.454 2005/12/13 22:23:23 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.455 2005/12/13 22:52:21 wolf31o2 Exp $
+
+  13 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  examples/generic_stage_template.spec:
+  Changed example specs to match that cflags/cxxflags/chost/ldflags are now
+  only configurable when building a stage2 tarball, to match the current state
+  of portage. This is 2.0_rc9.
 
   13 Dec 2005; Eric Edgar <rocket@gentoo.org>
   targets/support/chroot-functions.sh:
