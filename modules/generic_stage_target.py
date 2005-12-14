@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.98 2005/12/13 20:32:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.99 2005/12/14 15:04:22 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -782,6 +782,15 @@ class generic_stage_target(generic_target):
 		    if self.settings.has_key("ENVSCRIPT"):
 			    if not os.path.exists(self.settings["ENVSCRIPT"]):
 				   raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
+			    
+				print "\nWarning!!!!"
+				print "\tOverriding certain env variables may cause catastrophic failure."
+				print "\tIf your build fails look here first as the possible problem."
+				print "\tCatalyst assumes you know what you are doing when setting"
+				print "\t\tthese variables."
+				print "\tCatalyst Maintainers use VERY minimal envscripts if used at all"
+				print "\tYou have been warned\n"
+
 			    cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
 				    "Could not copy envscript into place.",env=self.env)
 
