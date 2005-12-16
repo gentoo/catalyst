@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.461 2005/12/16 19:14:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.462 2005/12/16 19:32:31 wolf31o2 Exp $
+
+  16 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Fixed up spacing/coding style on livecd-stage*.
 
   16 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-chroot.sh, targets/grp/grp-controller.sh,

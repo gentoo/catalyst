@@ -1,6 +1,7 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.17 2005/12/08 15:16:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.18 2005/12/16 19:32:31 wolf31o2 Exp $
+
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -20,7 +21,7 @@ case $1 in
 		# if we have our own linuxrc, copy it in
 		if [ -n "${clst_linuxrc}" ]
 		then
-			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
+			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
 		delete_from_chroot tmp/linuxrc
@@ -32,12 +33,12 @@ case $1 in
 		;;
 
 	preclean)
-		# move over the motd (if applicable)
+		# Move over the motd (if applicable)
 		if [ -n "${clst_livecd_motd}" ]
 		then
-			cp -a ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
+			cp -pPR ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
 		else
-			cp -a ${clst_sharedir}/livecd/files/generic.motd.txt \
+			cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
 				${clst_sharedir}/livecd/files/universal.motd.txt \
 				${clst_sharedir}/livecd/files/minimal.motd.txt \
 				${clst_sharedir}/livecd/files/livecd.motd.txt \
@@ -66,15 +67,16 @@ case $1 in
 		fi
 		;;
 	livecd-update)
-		# now, finalize and tweak the livecd fs (inside of the chroot)
+		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 		
 		
-		# move over the xinitrc (if applicable)
-		# this is moved here, so we can override any default xinitrc
+		# Move over the xinitrc (if applicable)
+		# Tthis is moved here, so we can override any default xinitrc
 		if [ -n "${clst_livecd_xinitrc}" ]
 		then
-			cp -f ${clst_livecd_xinitrc} ${clst_chroot_path}/etc/X11/xinit/xinitrc
+			cp -f ${clst_livecd_xinitrc} \
+				${clst_chroot_path}/etc/X11/xinit/xinitrc
 		fi
 		;;
 	rc-update)
@@ -83,17 +85,15 @@ case $1 in
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
 		;;
-
 	clean)
 		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
 		;;
-
 	bootloader)
 		shift
 		# Here is where we poke in our identifier
 		touch $1/livecd
 		
-		# move over the readme (if applicable)
+		# Move over the readme (if applicable)
 		if [ -n "${clst_livecd_readme}" ]
 		then
 			cp -f ${clst_livecd_readme} $1/README.txt
@@ -101,7 +101,7 @@ case $1 in
 			cp -f ${clst_sharedir}/livecd/files/README.txt $1
 		fi
 
-		# move over Getting_Online.txt for minimal/GameCD
+		# Move over Getting_Online.txt for minimal/GameCD
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
 		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
 		|| [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
@@ -111,18 +111,15 @@ case $1 in
 		
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
-    
     unmerge)
         shift
         export clst_packages="$*"
         exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh
     ;;
-
 	target_image_setup)
 		shift
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 		;;
-
 	iso)
 		shift
 		${clst_sharedir}/targets/support/create-iso.sh $1
