@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.55 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.56 2005/12/16 14:42:07 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -29,18 +29,18 @@ class livecd_stage2_target(generic_stage_target):
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):
-		    self.settings["livecd/type"] = "generic-livecd"
+			self.settings["livecd/type"] = "generic-livecd"
 
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
 	def set_source_path(self):
 	    self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
-	    if os.path.isfile(self.settings["source_path"]):
-		self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
-	    else:
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
+		if os.path.isfile(self.settings["source_path"]):
+			self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+		else:
+			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
-		    raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
+			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 	
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
@@ -67,10 +67,12 @@ class livecd_stage2_target(generic_stage_target):
 			except:
 				self.unbind()
 				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
+			
 			myf.write("\n#Added by Catalyst:")
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\n"+x)
 			myf.close()
+	
 	def unpack(self):
                 unpack=True
 
@@ -94,7 +96,6 @@ class livecd_stage2_target(generic_stage_target):
 
                 if unpack:
                         self.mount_safety_check()
-
                         if invalid_snapshot:
                                 print "No Valid Resume point detected, cleaning up  ..."
                                 #os.remove(self.settings["autoresume_path"]+"dir_setup")

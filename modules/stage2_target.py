@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.9 2005/12/13 20:32:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.10 2005/12/16 14:42:07 rocket Exp $
 
 """
 Builder class for a stage2 installation tarball build.
@@ -57,11 +57,12 @@ class stage2_target(generic_stage_target):
                 self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
         def set_portage_overlay(self):
-                generic_stage_target.set_portage_overlay(self)
-                print "\nWARNING !!!!!"
-                print "\tUsing an overlay for earlier stages could cause build issues."
-                print "\tIf you break it, you buy it. Don't complain to us about it."
-                print "\tDont say we did not warn you\n"
+			generic_stage_target.set_portage_overlay(self)
+			if self.settings.has_key("portage_overlay"):
+				print "\nWARNING !!!!!"
+				print "\tUsing an portage overlay for earlier stages could cause build issues."
+				print "\tIf you break it, you buy it. Don't complain to us about it."
+				print "\tDont say we did not warn you\n"
 
 
 def register(foo):
