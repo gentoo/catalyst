@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.458 2005/12/16 14:53:29 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.459 2005/12/16 18:57:57 wolf31o2 Exp $
+
+  16 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py,
+  targets/support/bootloader-setup.sh, targets/support/chroot-functions.sh,
+  targets/support/create-iso.sh, targets/support/filesystem-functions.sh,
+  targets/support/functions.sh:
+  Removing extra line from x86.py, fixing up comments, spacing, and coding
+  style in targets/support through functions.sh
 
   16 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, modules/livecd_stage2_target.py:

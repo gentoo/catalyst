@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.20 2005/10/11 22:26:17 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.21 2005/12/16 18:57:57 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -87,4 +87,4 @@ def register(foo):
 	"Inform main catalyst program of the contents of this plugin."
 	foo.update({"pentium4":arch_pentium4,"x86":arch_x86,"i386":arch_i386,"i486":arch_i486,"i586":arch_i586,"i686":arch_i686,"athlon":arch_athlon,
 	"athlon-xp":arch_athlon_xp,"athlon-mp":arch_athlon_xp,"pentium3":arch_pentium3,"pentium-mmx":arch_pentium_mmx})
-		
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.21 2005/12/11 20:34:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.22 2005/12/16 18:57:57 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -34,7 +34,6 @@ case ${clst_mainarch} in
 			((bctr=${bctr}+1))
 		done
 		;;
-
 	arm)
 		;;
 	hppa)
@@ -164,7 +163,6 @@ case ${clst_mainarch} in
 
 			for x in ${clst_boot_kernel}
 			do
-
 				eval custom_kopts=\$${x}_kernelopts
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}

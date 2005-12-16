@@ -35,7 +35,6 @@ check_genkernel_version(){
 }
 
 setup_myfeatures(){
-
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
@@ -74,9 +73,8 @@ setup_myemergeopts(){
 
 
 setup_portage(){
-	# portage needs to be merged manually with USE="build" set to avoid frying our
-	# make.conf. emerge system could merge it otherwise.
- 
+	# portage needs to be merged manually with USE="build" set to avoid frying
+	# our make.conf. emerge system could merge it otherwise.
 	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
 	then
 		echo "Portage Autoresume point found not emerging portage"
@@ -135,7 +133,6 @@ make_destpath() {
 }
 
 run_emerge() {
-
 	# Sets up the ROOT= parameter
 	# with no options ROOT=/
 	make_destpath ${clst_root_path}
@@ -173,11 +170,9 @@ run_emerge() {
 # Functions
 # Copy libs of a executable in the chroot
 function copy_libs() {
-
 	# Check if it's a dynamix exec
-
 	ldd ${1} > /dev/null 2>&1 || return
-	
+
 	for lib in `ldd ${1} | awk '{ print $3 }'`
 	do
 		echo ${lib}
@@ -186,7 +181,9 @@ function copy_libs() {
 			if [ ! -e ${clst_root_path}/${lib} ]
 			then
 				copy_file ${lib}
-				[ -e "${clst_root_path}/${lib}" ] && strip -R .comment -R .note ${clst_root_path}/${lib} || echo "WARNING : Cannot strip lib ${clst_root_path}/${lib} !"
+				[ -e "${clst_root_path}/${lib}" ] && \
+				strip -R .comment -R .note ${clst_root_path}/${lib} \
+				|| echo "WARNING : Cannot strip lib ${clst_root_path}/${lib} !"
 			fi
 		else
 			echo "WARNING : Some library was not found for ${lib} !"
@@ -195,7 +192,6 @@ function copy_libs() {
 }
 
 function copy_symlink() {
-
 	STACK=${2}
 	[ "${STACK}" = "" ] && STACK=16 || STACK=$((${STACK} - 1 ))
 
@@ -205,8 +201,10 @@ function copy_symlink() {
 		return
 	fi
 
-	[ ! -e ${clst_root_path}/`dirname ${1}` ] && mkdir -p ${clst_root_path}/`dirname ${1}`
-	[ ! -e ${clst_root_path}/${1} ] && cp -vfdp ${1} ${clst_root_path}/${1}
+	[ ! -e ${clst_root_path}/`dirname ${1}` ] && \
+		mkdir -p ${clst_root_path}/`dirname ${1}`
+	[ ! -e ${clst_root_path}/${1} ] && \
+		cp -vfdp ${1} ${clst_root_path}/${1}
 	
 	TARGET=`readlink -f ${1}`
 	if [ -h ${TARGET} ]
@@ -215,10 +213,9 @@ function copy_symlink() {
 	else
 		copy_file ${TARGET}
 	fi
-	}		
+}
 
 function copy_file() {
-
 	f="${1}"
 
 	if [ ! -e "${f}" ]
@@ -227,8 +224,10 @@ function copy_file() {
 		continue
 	fi
 
-	[ ! -e ${clst_root_path}/`dirname ${f}` ] && mkdir -p ${clst_root_path}/`dirname ${f}`
-	[ ! -e ${clst_root_path}/${f} ] && cp -vfdp ${f} ${clst_root_path}/${f}
+	[ ! -e ${clst_root_path}/`dirname ${f}` ] && \
+		mkdir -p ${clst_root_path}/`dirname ${f}`
+	[ ! -e ${clst_root_path}/${f} ] && \
+		cp -vfdp ${f} ${clst_root_path}/${f}
 	if [ -x ${f} -a ! -h ${f} ]
 	then
 		copy_libs ${f}
