@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.7 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.8 2005/12/16 19:08:59 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -22,17 +22,19 @@ case $1 in
 #		export root_fs_path="${clst_chroot_path}/tmp/mergeroot"
 #		install -d ${clst_image_path}
 		
-#		${clst_sharedir}/targets/embedded/embedded-fs-runscript.sh ${clst_embedded_fs_type} || exit 1
+#		${clst_sharedir}/targets/embedded/embedded-fs-runscript.sh \
+#			${clst_embedded_fs_type} || exit 1
 #		imagesize=`du -sk ${clst_image_path}/root.img | cut -f1`
-#		echo "Created ${clst_embedded_fs_type} image at ${clst_image_path}/root.img"
+#		echo "Created ${clst_embedded_fs_type} image at \
+#			${clst_image_path}/root.img"
 #		echo "Image size: ${imagesize}k"
-	
 #	;;
 
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 	;;
+
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
@@ -44,7 +46,7 @@ case $1 in
 		# if we have our own linuxrc, copy it in
 		if [ -n "${clst_linuxrc}" ]
 		then
-			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
+			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
 		delete_from_chroot tmp/linuxrc
@@ -55,8 +57,8 @@ case $1 in
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 
 	;;
-		livecd-update)
-			# now, finalize and tweak the livecd fs (inside of the chroot)
+	livecd-update)
+		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 	;;
 
@@ -72,7 +74,6 @@ case $1 in
 		shift
 		${clst_sharedir}/targets/support/create-iso.sh $1
 	;;
-
 
 	clean)
 	;;

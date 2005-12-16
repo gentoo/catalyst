@@ -16,26 +16,28 @@ fs_check() {
 
 case $1 in
 	jffs)
-	fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
-	mkfs.jffs -d ${root_fs_path} -o ${clst_image_path}/root.img \
-		${clst_embedded_fs_ops} || die "Could not create a jffs filesystem"
+		fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
+		mkfs.jffs -d ${root_fs_path} -o ${clst_image_path}/root.img \
+			${clst_embedded_fs_ops} || die "Could not create a jffs filesystem"
 	;;
 	jffs2)
-	fs_check /usr/sbin/mkfs.jffs2 jffs2 sys-fs/mtd
-	mkfs.jffs2 --root=${root_fs_path} --output=${clst_image_path}/root.img\
-		${clst_embedded_fs_ops} || die "Could not create a jffs2 filesystem"
+		fs_check /usr/sbin/mkfs.jffs2 jffs2 sys-fs/mtd
+		mkfs.jffs2 --root=${root_fs_path} --output=${clst_image_path}/root.img\
+			${clst_embedded_fs_ops} || die "Could not create a jffs2 filesystem"
 	;;
 
 	cramfs)
-	fs_check /sbin/mkcramfs cramfs sys-fs/cramfs
-	mkcramfs ${clst_embedded_fs_ops} ${root_fs_path} \
-		${clst_image_path}/root.img || die "Could not create a cramfs filesystem"
+		fs_check /sbin/mkcramfs cramfs sys-fs/cramfs
+		mkcramfs ${clst_embedded_fs_ops} ${root_fs_path} \
+			${clst_image_path}/root.img || \
+			die "Could not create a cramfs filesystem"
 	;;
 
 	squashfs)
-	fs_check /usr/bin/mksquashfs squashfs sys-fs/squashfs-tools
-	mksquashfs ${root_fs_path} ${clst_image_path}/root.img \
-		${clst_embedded_fs_ops} || die "Could not create a squashfs filesystem"
+		fs_check /usr/bin/mksquashfs squashfs sys-fs/squashfs-tools
+		mksquashfs ${root_fs_path} ${clst_image_path}/root.img \
+			${clst_embedded_fs_ops} || \
+			die "Could not create a squashfs filesystem"
 	;;
 	*)
 	;;

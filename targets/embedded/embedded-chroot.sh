@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.19 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-chroot.sh,v 1.20 2005/12/16 19:08:59 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -11,7 +11,7 @@ setup_myfeatures
 setup_myemergeopts
 
 
-# setup the environment
+# Setup the environment
 export FEATURES="${clst_myfeatures}"
 #export clst_myemergeopts="${clst_myemergeopts} -O"
 export USE="${clst_use}"
