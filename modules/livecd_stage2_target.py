@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.56 2005/12/16 14:42:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.57 2005/12/16 14:53:29 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -34,7 +34,7 @@ class livecd_stage2_target(generic_stage_target):
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
 	def set_source_path(self):
-	    self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
 			self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
 		else:

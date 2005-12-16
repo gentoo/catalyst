@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.457 2005/12/16 14:42:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.458 2005/12/16 14:53:29 rocket Exp $
+
+  16 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py:
+  Fix more tab/spacing issues .. trying to make everything use tabs
 
   16 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/livecd_stage1_target.py, modules/livecd_stage2_target.py,

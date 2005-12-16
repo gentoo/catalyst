@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.99 2005/12/14 15:04:22 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.100 2005/12/16 14:53:29 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -771,17 +771,17 @@ class generic_stage_target(generic_target):
 			and os.path.exists(self.settings["autoresume_path"]+"chroot_setup"):
 			print "Resume point detected, skipping chroot_setup operation..."
 		else:
-		    print "Setting up chroot..."
-		    
-		    self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
-		    
-		    cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
-			    "Could not copy resolv.conf into place.",env=self.env)
+			print "Setting up chroot..."
+			
+			self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
+			
+			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
+				"Could not copy resolv.conf into place.",env=self.env)
 		
 		    # copy over the envscript, if applicable
-		    if self.settings.has_key("ENVSCRIPT"):
-			    if not os.path.exists(self.settings["ENVSCRIPT"]):
-				   raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
+			if self.settings.has_key("ENVSCRIPT"):
+				if not os.path.exists(self.settings["ENVSCRIPT"]):
+					raise CatalystError, "Can't find envscript "+self.settings["ENVSCRIPT"]
 			    
 				print "\nWarning!!!!"
 				print "\tOverriding certain env variables may cause catastrophic failure."
@@ -790,53 +790,53 @@ class generic_stage_target(generic_target):
 				print "\t\tthese variables."
 				print "\tCatalyst Maintainers use VERY minimal envscripts if used at all"
 				print "\tYou have been warned\n"
-
-			    cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
-				    "Could not copy envscript into place.",env=self.env)
+				
+				cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
+					"Could not copy envscript into place.",env=self.env)
 
 		    # copy over /etc/hosts from the host in case there are any specialties in there
-		    if os.path.exists("/etc/hosts"):
-			    cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
-				    "/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
-			    cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
-		    self.override_chost()	
-		    self.override_cflags()
-		    self.override_cxxflags()	
-		    self.override_ldflags()	
-		    # modify and write out make.conf (for the chroot)
-		    cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf",\
-		    		env=self.env)
-		    myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
-		    myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
-		    myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
-		    myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
-		    myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
+			if os.path.exists("/etc/hosts"):
+				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
+					"/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
+				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
+			self.override_chost()	
+			self.override_cflags()
+			self.override_cxxflags()	
+			self.override_ldflags()	
+			# modify and write out make.conf (for the chroot)
+			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf",\
+				env=self.env)
+			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
+			myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
+			myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
+			myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
+			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		    
-		    if self.settings.has_key("CXXFLAGS"):
-			    myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
-		    else:
-			    myf.write('CXXFLAGS="${CFLAGS}"\n')
+			if self.settings.has_key("CXXFLAGS"):
+				myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
+			else:
+				myf.write('CXXFLAGS="${CFLAGS}"\n')
 		    
-		    if self.settings.has_key("LDFLAGS"):
-			    myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
+			if self.settings.has_key("LDFLAGS"):
+				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
 		    
 		    # figure out what our USE vars are for building
-		    myusevars=[]
-		    if self.settings.has_key("HOSTUSE"):
-			    myusevars.extend(self.settings["HOSTUSE"])
+			myusevars=[]
+			if self.settings.has_key("HOSTUSE"):
+				myusevars.extend(self.settings["HOSTUSE"])
 		
-		    if self.settings.has_key("use"):
-			    myusevars.extend(self.settings["use"])
-			    myf.write('USE="'+string.join(myusevars)+'"\n')
+			if self.settings.has_key("use"):
+				myusevars.extend(self.settings["use"])
+				myf.write('USE="'+string.join(myusevars)+'"\n')
 
 		    # setup the portage overlay	
-		    if self.settings.has_key("portage_overlay"):
+			if self.settings.has_key("portage_overlay"):
 				if type(self.settings["portage_overlay"])==types.StringType:
 					self.settings[self.settings["portage_overlay"]]=[self.settings["portage_overlay"]]
 					
 				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
-		    myf.close()
-		    touch(self.settings["autoresume_path"]+"chroot_setup")
+			myf.close()
+			touch(self.settings["autoresume_path"]+"chroot_setup")
 	
 	def fsscript(self):
 		if self.settings.has_key("AUTORESUME") \
