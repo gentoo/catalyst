@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.24 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/grp/grp-chroot.sh,v 1.25 2005/12/16 19:14:46 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -11,19 +11,19 @@ update_env_settings
 
 setup_myfeatures
 
-# setup the environment
+# Setup the environment
 export FEATURES="${clst_myfeatures}"
 ## START BUILD
 setup_portage
 
-#turn off auto-use:
+# Turn off auto-use:
 export USE_ORDER="env:pkg:conf:defaults"
 
 unset DISTDIR
 
-#don't grab MS core fonts, etc.
+# Don't grab MS core fonts, etc.
 export USE="${USE} ${clst_use}"
-	
+
 if [ "${clst_grp_type}" = "pkgset" ]
 then
 	unset DISTDIR
@@ -36,7 +36,8 @@ then
 
 	if [ -n "${clst_VERBOSE}" ]
 	then
-		emerge --usepkg --buildpkg --noreplace --newuse -vp ${clst_myemergeopts} ${clst_grp_packages} || exit 1
+		emerge --usepkg --buildpkg --noreplace --newuse -vp \
+			${clst_myemergeopts} ${clst_grp_packages} || exit 1
 		echo "Press any key within 15 seconds to pause the build..."
 		read -s -t 15 -n 1
 		if [ $? -eq 0 ]
@@ -45,8 +46,10 @@ then
 			read -s -n 1
 		fi
 	fi
-	emerge --usepkg --buildpkg --noreplace --newuse ${clst_myemergeopts} ${clst_grp_packages} || exit 1
+	emerge --usepkg --buildpkg --noreplace --newuse ${clst_myemergeopts} \
+		${clst_grp_packages} || exit 1
 else
-	DISTDIR="/tmp/grp/${clst_grp_target}" emerge --fetchonly ${clst_grp_packages} || exit 1
+	DISTDIR="/tmp/grp/${clst_grp_target}" emerge --fetchonly \
+		${clst_grp_packages} || exit 1
 	unset PKGDIR
 fi
