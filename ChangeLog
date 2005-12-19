@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.469 2005/12/19 19:10:04 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.470 2005/12/19 20:53:13 rocket Exp $
+
+  19 Dec 2005; Eric Edgar <rocket@gentoo.org> catalyst, files/catalyst.conf,
+  modules/catalyst_support.py, modules/generic_stage_target.py,
+  modules/livecd_stage2_target.py, modules/stage2_target.py:
+  Change the internal hash checking to be quicker and more memory efficient.
+  Add additional hash digests options.
 
   19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/tinderbox/tinderbox-chroot.sh,

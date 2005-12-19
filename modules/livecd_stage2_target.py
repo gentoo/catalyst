@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.57 2005/12/16 14:53:29 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.58 2005/12/19 20:53:13 rocket Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -36,7 +36,7 @@ class livecd_stage2_target(generic_stage_target):
 	def set_source_path(self):
 		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
-			self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+			self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
@@ -76,7 +76,7 @@ class livecd_stage2_target(generic_stage_target):
 	def unpack(self):
                 unpack=True
 
-                clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
+                clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
 
                 if os.path.isdir(self.settings["source_path"]):
                         unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
@@ -90,8 +90,8 @@ class livecd_stage2_target(generic_stage_target):
                             os.path.exists(self.settings["autoresume_path"]+"unpack"):
                                 print "Resume point detected, skipping unpack operation..."
                                 unpack=False
-                    elif self.settings.has_key("source_path_md5sum"):
-                        if self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+                    elif self.settings.has_key("source_path_hash"):
+                        if self.settings["source_path_hash"] != clst_unpack_hash:
                                 invalid_snapshot=True
 
                 if unpack:
@@ -116,9 +116,9 @@ class livecd_stage2_target(generic_stage_target):
                         print display_msg
                         cmd(unpack_cmd,error_msg,env=self.env)
 
-                        if self.settings.has_key("source_path_md5sum"):
+                        if self.settings.has_key("source_path_hash"):
                                 myf=open(self.settings["autoresume_path"]+"unpack","w")
-                                myf.write(self.settings["source_path_md5sum"])
+                                myf.write(self.settings["source_path_hash"])
                                 myf.close()
                         else:
                                 touch(self.settings["autoresume_path"]+"unpack")

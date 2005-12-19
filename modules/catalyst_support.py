@@ -1,8 +1,9 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.63 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.64 2005/12/19 20:53:13 rocket Exp $
 
-import sys,string,os,types,re,signal,traceback,md5,sha,time
+import sys,string,os,types,re,signal,traceback,time
+#import md5,sha
 selinux_capable = False
 #userpriv_capable = (os.getuid() == 0)
 #fakeroot_capable = False
@@ -64,30 +65,46 @@ def hexify(str):
     return r
 # hexify()
 
-# A function to calculate the md5 sum of a file
-def calc_md5(file,verbose=False):
-    m = md5.new()
-    f = open(file, 'r')
-    for line in f.readlines():
-	m.update(line)
-    f.close()
-    md5sum = hexify(m.digest())
-    if verbose:
-	print "MD5 (%s) = %s" % (file, md5sum)
-    return md5sum
-# calc_md5
-   
-def calc_sha(file,verbose=False):
-    m = sha.new()
-    f = open(file, 'r')
-    for line in f.readlines():
-	m.update(line)
-    f.close()
-    shaval = hexify(m.digest())
-    if verbose:
-	print "SHA (%s) = %s" % (file, shaval)
-    return shaval
-   
+def generate_hash(file,hash_function="crc32",verbose=False):
+	try:
+		return hash_map[hash_function][0](file,hash_map[hash_function][1],hash_map[hash_function][2],verbose)
+	except:
+		raise CatalystError,"Error generating hash, is appropriate utility installed on your system?"
+
+def calc_hash(file,cmd,id_string="MD5",verbose=False):
+	a=os.popen(cmd+" "+file)
+	mylines=a.readlines()
+	a.close()
+	mylines=mylines[0].split()
+	result=mylines[0]
+	if verbose:
+		print id_string+" (%s) = %s" % (file, result)
+	return result
+
+def calc_hash2(file,cmd,id_string="MD5",verbose=False):
+	a=os.popen(cmd+" "+file)
+	a.readline()
+	mylines=a.readline().split()
+	a.close()
+	result=mylines[0]
+	if verbose:
+		print id_string+" (%s) = %s" % (file, result)
+	return result
+
+#This has map must be defined after the function calc_hash
+#It is possible to call different functions from this but they must be defined before hash_map
+hash_map={"md5":[calc_hash,"md5sum","MD5"],\
+	 "crc32":[calc_hash,"crc32","CRC32"],\
+	 "sha1":[calc_hash,"sha1sum","SHA1"],\
+	 "sha224":[calc_hash2,"shash -a SHA224","SHA224"],\
+	 "sha256":[calc_hash2,"shash -a SHA256","SHA256"],\
+	 "sha384":[calc_hash2,"shash -a SHA384","SHA384"],\
+	 "sha512":[calc_hash2,"shash -a SHA512","SHA512"],\
+	 "ripemd128":[calc_hash2,"shash -a RIPEMD128","RIPEMD128"],\
+	 "ripemd160":[calc_hash2,"shash -a RIPEMD160","RIPEMD160"],\
+	 "ripemd256":[calc_hash2,"shash -a RIPEMD256","RIPEMD256"],\
+	 "ripemd320":[calc_hash2,"shash -a RIPEMD320","RIPEMD320"]}
+
 def read_from_clst(file):
 	line = ''
 	myline = ''
@@ -119,8 +136,6 @@ valid_config_file_values.append("CCACHE")
 valid_config_file_values.append("DISTCC")
 valid_config_file_values.append("ENVSCRIPT")
 valid_config_file_values.append("AUTORESUME")
-valid_config_file_values.append("SHA")
-valid_config_file_values.append("MD5")
 valid_config_file_values.append("FETCH")
 valid_config_file_values.append("CLEAR_AUTORESUME")
 valid_config_file_values.append("options")
@@ -129,6 +144,8 @@ valid_config_file_values.append("VERBOSE")
 valid_config_file_values.append("PURGE")
 valid_config_file_values.append("SNAPCACHE")
 valid_config_file_values.append("snapshot_cache")
+valid_config_file_values.append("hash_function")
+valid_config_file_values.append("digests")
 valid_config_file_values.append("SEEDCACHE")
 
 verbosity=1

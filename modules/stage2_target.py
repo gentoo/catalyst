@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.10 2005/12/16 14:42:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.11 2005/12/19 20:53:13 rocket Exp $
 
 """
 Builder class for a stage2 installation tarball build.
@@ -31,7 +31,7 @@ class stage2_target(generic_stage_target):
                 self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
                 if os.path.isfile(self.settings["source_path"]):
                         if os.path.exists(self.settings["source_path"]):
-                                 self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"])
+                                 self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
         def override_chost(self):
             if os.environ.has_key("CHOST"):
                 self.settings["CHOST"] = os.environ["CHOST"]

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.100 2005/12/16 14:53:29 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.101 2005/12/19 20:53:13 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -149,7 +149,6 @@ class generic_stage_target(generic_target):
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
-
 		# if we are using portage_confdir, check that as well
 		if self.settings.has_key("portage_confdir"):
 			file_locate(self.settings,["portage_confdir"],expand=0)
@@ -334,8 +333,8 @@ class generic_stage_target(generic_target):
 			
 			if os.path.isfile(self.settings["source_path"]):
 				if os.path.exists(self.settings["source_path"]):
-				 	self.settings["source_path_md5sum"]=calc_md5(self.settings["source_path"],True)
-				 	self.settings["source_path_sha"]=calc_sha(self.settings["source_path"],True)
+				 	self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
+							hash_function=self.settings["hash_function"],verbose=False)
 		if os.path.isdir(self.settings["source_path"]):
 			print "Source path set to "+self.settings["source_path"]
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
@@ -354,8 +353,8 @@ class generic_stage_target(generic_target):
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
 		if os.path.exists(self.settings["snapshot_path"]):
-			self.settings["snapshot_path_md5sum"]=calc_md5(self.settings["snapshot_path"],True)
-			self.settings["snapshot_path_sha"]=calc_sha(self.settings["snapshot_path"],True)
+			self.settings["snapshot_path_hash"]=generate_hash(self.settings["snapshot_path"],\
+					hash_function=self.settings["hash_function"],verbose=False)
 	
 	def set_snapcache_path(self):
 		if self.settings.has_key("SNAPCACHE"):
@@ -510,7 +509,7 @@ class generic_stage_target(generic_target):
 	def unpack(self):
 		unpack=True
 
-		clst_unpack_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack")
+		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
 		
 		if self.settings.has_key("SEEDCACHE") and os.path.isdir(self.settings["source_path"]): 
 			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
@@ -531,7 +530,7 @@ class generic_stage_target(generic_target):
 				invalid_snapshot=False
 			
 			# Autoresume is Valid, Tarball is Valid
-			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_md5sum"] == clst_unpack_md5sum:
+			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_hash"] == clst_unpack_hash:
 				unpack=False
 				invalid_snapshot=True
 			
@@ -541,7 +540,7 @@ class generic_stage_target(generic_target):
 				invalid_snapshot=False
 			
 			# Autoresume is InValid, Tarball
-			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_md5sum"] != clst_unpack_md5sum:
+			elif os.path.isfile(self.settings["source_path"]) and self.settings["source_path_hash"] != clst_unpack_hash:
 				unpack=True
 				invalid_snapshot=True
 		else:
@@ -592,9 +591,9 @@ class generic_stage_target(generic_target):
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)
 
-			if self.settings.has_key("source_path_md5sum"):
+			if self.settings.has_key("source_path_hash"):
 				myf=open(self.settings["autoresume_path"]+"unpack","w")
-				myf.write(self.settings["source_path_md5sum"])
+				myf.write(self.settings["source_path_hash"])
 				myf.close()
 			else:
 				touch(self.settings["autoresume_path"]+"unpack")
@@ -604,10 +603,10 @@ class generic_stage_target(generic_target):
 
 	def unpack_snapshot(self):
 		unpack=True
-		snapshot_md5sum=read_from_clst(self.settings["autoresume_path"]+"unpack_portage")
+		snapshot_hash=read_from_clst(self.settings["autoresume_path"]+"unpack_portage")
 		
 		if self.settings.has_key("SNAPCACHE"): 
-			snapshot_cache_md5sum=read_from_clst(self.settings["snapshot_cache_path"]+"catalyst-md5sum")
+			snapshot_cache_hash=read_from_clst(self.settings["snapshot_cache_path"]+"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
 			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
@@ -615,7 +614,7 @@ class generic_stage_target(generic_target):
 			cleanup_errmsg="Error removing existing snapshot cache directory."
 			self.snapshot_lock_object=self.snapcache_lock
 			
-			if self.settings["snapshot_path_md5sum"] == snapshot_cache_md5sum:
+			if self.settings["snapshot_path_hash"] == snapshot_cache_hash:
 				print "Valid snapshot cache, skipping unpack of portage tree ..."
 				unpack=False
 		
@@ -629,7 +628,7 @@ class generic_stage_target(generic_target):
 			if self.settings.has_key("AUTORESUME") \
 		    	and os.path.exists(self.settings["chroot_path"]+"/usr/portage/") \
 		    	and os.path.exists(self.settings["autoresume_path"]+"unpack_portage") \
-			and self.settings["snapshot_path_md5sum"] == snapshot_md5sum:
+			and self.settings["snapshot_path_hash"] == snapshot_hash:
 				print "Valid Resume point detected, skipping unpack of portage tree..."
 				unpack=False
 				    
@@ -649,14 +648,14 @@ class generic_stage_target(generic_target):
 			cmd(unpack_cmd,unpack_errmsg,env=self.env)
 
 			if self.settings.has_key("SNAPCACHE"): 
-				myf=open(self.settings["snapshot_cache_path"]+"catalyst-md5sum","w")
-				myf.write(self.settings["snapshot_path_md5sum"])
+				myf=open(self.settings["snapshot_cache_path"]+"catalyst-hash","w")
+				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 			
 			else:	
 				print "Setting snapshot autoresume point"
 				myf=open(self.settings["autoresume_path"]+"unpack_portage","w")
-				myf.write(self.settings["snapshot_path_md5sum"])
+				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 			
 			if self.settings.has_key("SNAPCACHE"): 
@@ -952,7 +951,7 @@ class generic_stage_target(generic_target):
 		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball",env=self.env)
 
-		self.gen_digest_file(self.settings["target_path"]+".digests")
+		self.gen_digest_file(self.settings["target_path"])
 
 		touch(self.settings["autoresume_path"]+"capture")
 
@@ -1259,27 +1258,19 @@ class generic_stage_target(generic_target):
 				os.chmod(myemp,mystat[ST_MODE])
 
         def gen_digest_file(self,file):
-            if os.path.exists(file+".digests"):
-                os.remove(file+".digests")
-            if self.settings.has_key("SHA") or self.settings.has_key("MD5"):
-                if os.path.exists(file):
-                    myf=open(file+".digests","w")
+		if os.path.exists(file+".digests"):
+			os.remove(file+".digests")
+		if self.settings.has_key("digests"):
+			if os.path.exists(file):
+                    		myf=open(file+".digests","w")
+				for i in self.settings["digests"].split():
 
-                    if self.settings.has_key("MD5"):
-			if self.settings.has_key("VERBOSE"):
-			    md5=calc_md5(file,True)
-			else:
-			    md5=calc_md5(file)
-                        myf.write("MD5: "+md5+"\n")
-
-                    if self.settings.has_key("SHA"):
-			if self.settings.has_key("VERBOSE"):
-			    sha=calc_sha(file,True)
-			else:
-			    sha=calc_sha(file)
-                        myf.write("SHA: "+sha+"\n")
-
-                    myf.close()
+					if self.settings.has_key("VERBOSE"):
+			    			hash=generate_hash(file,hash_function=i,verbose=True)
+					else:
+			    			hash=generate_hash(file,hash_function=i)
+					myf.write(hash_map[i][2]+": "+hash+"\n")
+                    		myf.close()
 
 	def purge(self):
 	    countdown(10,"Purging Caches ...")

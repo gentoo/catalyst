@@ -1,7 +1,7 @@
 #!/usr/bin/python -OO
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.115 2005/12/19 15:48:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.116 2005/12/19 20:53:13 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -9,6 +9,7 @@
 
 import os,sys,imp,string,getopt
 import pdb
+
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0_rc9"
 
@@ -53,7 +54,8 @@ def parse_config(myconfig):
 	confdefaults={ "storedir":"/var/tmp/catalyst",\
 		"sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",\
 		"portdir":"/usr/portage","options":"",\
-		"snapshot_cache":"/var/tmp/catalyst/snapshot_cache" }
+		"snapshot_cache":"/var/tmp/catalyst/snapshot_cache",\
+		"hash_function":"crc32"}
 		
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
@@ -134,13 +136,8 @@ def parse_config(myconfig):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
 	
-	if "md5" in string.split(conf_values["options"]):
-		print "MD5 .digests file creation support enabled."
-		conf_values["MD5"]="1"
-	
-	if "sha" in string.split(conf_values["options"]):
-		print "SHA .digests file creation support enabled."
-		conf_values["SHA"]="1"
+	if myconf.has_key("digests"):
+		conf_values["digests"]=myconf["digests"]
 
 def import_modules():
 	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
@@ -326,7 +323,15 @@ if __name__ == "__main__":
 	parse_config(myconfig)
 	sys.path.append(conf_values["sharedir"]+"/modules")
 	from catalyst_support import *
-		
+	
+	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
+	if conf_values.has_key("digests"):
+		for i in conf_values["digests"].split():
+			if not hash_map.has_key(i):
+				print "Valid digest entries:"
+				print hash_map.keys()
+				raise CatalystError, i+" is not a valid digest entry"
+	
 	# import the rest of the catalyst modules
 	targetmap=import_modules()
 
