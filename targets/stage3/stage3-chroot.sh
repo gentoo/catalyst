@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.25 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage3/stage3-chroot.sh,v 1.26 2005/12/19 15:28:42 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -10,8 +10,7 @@ update_env_settings
 setup_myfeatures
 setup_myemergeopts
 
-
-# setup the build environment
+# Setup the build environment
 export FEATURES="${clst_myfeatures}"
 export USE="${USE} ${clst_HOSTUSE}"
 

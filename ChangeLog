@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.464 2005/12/19 15:23:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.465 2005/12/19 15:28:42 wolf31o2 Exp $
+
+  19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage2/stage2-chroot.sh, targets/stage2/stage2-controller.sh,
+  targets/stage2/stage2-preclean-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage3/stage3-controller.sh,
+  targets/stage3/stage3-preclean-chroot.sh:
+  Fixed up spacing/coding style on stages 2 and 3
 
   19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/stage1/stage1-controller.sh,

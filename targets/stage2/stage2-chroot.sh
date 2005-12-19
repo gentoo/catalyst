@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.17 2005/12/08 15:16:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-chroot.sh,v 1.18 2005/12/19 15:28:42 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -10,8 +10,7 @@ update_env_settings
 setup_myfeatures
 setup_myemergeopts
 
-
-## setup the environment
+# Setup the environment
 export FEATURES="${clst_myfeatures} nodoc noman noinfo"
 
 if [ "${clst_VERBOSE}" ]
