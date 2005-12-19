@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.64 2005/12/19 20:53:13 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.65 2005/12/19 22:18:54 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -67,12 +67,13 @@ def hexify(str):
 
 def generate_hash(file,hash_function="crc32",verbose=False):
 	try:
-		return hash_map[hash_function][0](file,hash_map[hash_function][1],hash_map[hash_function][2],verbose)
+		return hash_map[hash_function][0](file,hash_map[hash_function][1],hash_map[hash_function][2],\
+			hash_map[hash_function][3],verbose)
 	except:
 		raise CatalystError,"Error generating hash, is appropriate utility installed on your system?"
 
-def calc_hash(file,cmd,id_string="MD5",verbose=False):
-	a=os.popen(cmd+" "+file)
+def calc_hash(file,cmd,cmd_args,id_string="MD5",verbose=False):
+	a=os.popen(cmd+" "+cmd_args+" "+file)
 	mylines=a.readlines()
 	a.close()
 	mylines=mylines[0].split()
@@ -81,8 +82,8 @@ def calc_hash(file,cmd,id_string="MD5",verbose=False):
 		print id_string+" (%s) = %s" % (file, result)
 	return result
 
-def calc_hash2(file,cmd,id_string="MD5",verbose=False):
-	a=os.popen(cmd+" "+file)
+def calc_hash2(file,cmd,cmd_args,id_string="MD5",verbose=False):
+	a=os.popen(cmd+" "+cmd_args+" "+file)
 	a.readline()
 	mylines=a.readline().split()
 	a.close()
@@ -93,17 +94,18 @@ def calc_hash2(file,cmd,id_string="MD5",verbose=False):
 
 #This has map must be defined after the function calc_hash
 #It is possible to call different functions from this but they must be defined before hash_map
-hash_map={"md5":[calc_hash,"md5sum","MD5"],\
-	 "crc32":[calc_hash,"crc32","CRC32"],\
-	 "sha1":[calc_hash,"sha1sum","SHA1"],\
-	 "sha224":[calc_hash2,"shash -a SHA224","SHA224"],\
-	 "sha256":[calc_hash2,"shash -a SHA256","SHA256"],\
-	 "sha384":[calc_hash2,"shash -a SHA384","SHA384"],\
-	 "sha512":[calc_hash2,"shash -a SHA512","SHA512"],\
-	 "ripemd128":[calc_hash2,"shash -a RIPEMD128","RIPEMD128"],\
-	 "ripemd160":[calc_hash2,"shash -a RIPEMD160","RIPEMD160"],\
-	 "ripemd256":[calc_hash2,"shash -a RIPEMD256","RIPEMD256"],\
-	 "ripemd320":[calc_hash2,"shash -a RIPEMD320","RIPEMD320"]}
+# 	Key,function,cmd,cmd_args,Print string
+hash_map={"md5":[calc_hash,"md5sum","","MD5"],\
+	 "crc32":[calc_hash,"crc32","","CRC32"],\
+	 "sha1":[calc_hash,"sha1sum","","SHA1"],\
+	 "sha224":[calc_hash2,"shash","-a SHA224","SHA224"],\
+	 "sha256":[calc_hash2,"shash","-a SHA256","SHA256"],\
+	 "sha384":[calc_hash2,"shash","-a SHA384","SHA384"],\
+	 "sha512":[calc_hash2,"shash","-a SHA512","SHA512"],\
+	 "ripemd128":[calc_hash2,"shash","-a RIPEMD128","RIPEMD128"],\
+	 "ripemd160":[calc_hash2,"shash","-a RIPEMD160","RIPEMD160"],\
+	 "ripemd256":[calc_hash2,"shash","-a RIPEMD256","RIPEMD256"],\
+	 "ripemd320":[calc_hash2,"shash","-a RIPEMD320","RIPEMD320"]}
 
 def read_from_clst(file):
 	line = ''
@@ -179,8 +181,8 @@ class CatalystError(Exception):
 		if message:
 			(type,value)=sys.exc_info()[:2]
 			if value!=None:
-			    print
-			    print traceback.print_exc(file=sys.stdout)
+				print 
+				print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
 			print
