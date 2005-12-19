@@ -3,9 +3,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 . /tmp/chroot-functions.sh
-/usr/sbin/env-update
 
-. /etc/profile
+update_env_settings
 
 export USE="livecd"
 run_emerge --oneshot genkernel

@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.467 2005/12/19 15:48:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.468 2005/12/19 16:52:01 wolf31o2 Exp $
+
+  19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kill-chroot-pids.sh, targets/support/kmerge.sh,
+  targets/support/livecdfs-update.sh, targets/support/post-kmerge.sh,
+  targets/support/pre-kmerge.sh, targets/support/rc-update.sh,
+  targets/support/target_image_setup.sh, targets/support/unmerge.sh:
+  Fixed up spacing/coding style on support.
 
   19 Dec 2005; Eric Edgar <rocket@gentoo.org> catalyst:
   Optimize catalyst bytecode and set a sane sys.exit for keyboard interrupts

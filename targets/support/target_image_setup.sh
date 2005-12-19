@@ -1,5 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -37,6 +38,7 @@ case ${clst_fstype} in
 		loopret=$?
 	;;
 esac
+
 if [ ${loopret} = "1" ]
 then
 	die "Filesystem not setup"

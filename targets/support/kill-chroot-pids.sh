@@ -17,7 +17,7 @@ fi
 
 j=0
 declare -a pids
-# get files and dirs in /proc
+# Get files and dirs in /proc
 for i in `ls /proc`
 do
 	# Test for directories

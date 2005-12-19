@@ -1,25 +1,27 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.30 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.31 2005/12/19 16:52:01 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
+
 update_env_settings
 
-# allow root logins to the livecd by default
+# Allow root logins to the livecd by default
 if [ -e /etc/sshd/sshd_config ]
 then
-	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' /etc/ssh/sshd_config
+	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
+		/etc/ssh/sshd_config
 fi
 
-# turn off udev tarball
+# Turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
 
-# clean up the time and set to UTC
+# Clean up the time and set to UTC
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
 
-# setup the hostname
+# Setup the hostname
 if [ "${clst_livecd_type}" == "gentoo-gamecd" ]
 then
 	echo 'HOSTNAME="gamecd"' > /etc/conf.d/hostname
@@ -36,7 +38,8 @@ if [ -n "${clst_livecd_users}" ]
 then
 	for x in ${clst_livecd_users}
 	do
-		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" -m $x
+		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" \
+			-m $x
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then
 			echo "[Desktop]" > /home/$x/.dmrc
@@ -46,50 +49,51 @@ then
 	done
 fi
 
-# setup sudoers
+# Setup sudoers
 if [ -f /etc/sudoers ]
 then
 	sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 fi
 
-# we want the first user to be used when auto-starting X
+# We want the first user to be used when auto-starting X
 if [ -n "${clst_livecd_users}" -a -e /etc/startx ]
 then
 	first_user=$(echo ${clst_livecd_users} | cut -d' ' -f1)
 	sed -i "s/##STARTX/su - $first_user -c startx/" /root/.bashrc
 fi
 
-# setup dhcp on all detected ethernet devices
+# Setup DHCP on all detected ethernet devices
 echo "iface_eth0=\"dhcp\""> /etc/conf.d/net
 echo "iface_eth1=\"dhcp\"" >> /etc/conf.d/net
 echo "iface_eth2=\"dhcp\"" >> /etc/conf.d/net
 echo "iface_eth3=\"dhcp\"" >> /etc/conf.d/net
 echo "iface_eth4=\"dhcp\"" >> /etc/conf.d/net
 
-# setup links for ethernet devices
+# Setup links for ethernet devices
 cd /etc/init.d
 ln -sf net.eth0 net.eth1
 ln -sf net.eth0 net.eth2
 ln -sf net.eth0 net.eth3
 ln -sf net.eth0 net.eth4
 
-# add this for hwsetup/mkx86config
+# Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
 
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" > /etc/fstab
 echo "tmpfs	/lib/firmware			tmpfs	defaults	0 0" >> /etc/fstab
 echo "tmpfs	/usr/portage			tmpfs	defaults	0 0" >> /etc/fstab
-# if /usr/lib/X11/xkb/compiled then make it tmpfs
+# If /usr/lib/X11/xkb/compiled then make it tmpfs
 if [ -d /usr/lib/X11/xkb/compiled ]
 then
-	echo "tmpfs	/usr/lib/X11/xkb/compiled	tmpfs	defaults	0 0" >> /etc/fstab
+	echo "tmpfs	/usr/lib/X11/xkb/compiled	tmpfs	defaults	0 0" >> \
+		/etc/fstab
 fi
 
 # devfs tweaks
 [ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
-# tweak the livecd fstab so that users know not to edit it
+# Tweak the livecd fstab so that users know not to edit it
 # http://bugs.gentoo.org/show_bug.cgi?id=60887
 mv /etc/fstab /etc/fstab.old
 echo "####################################################" >> /etc/fstab
@@ -99,7 +103,7 @@ echo "####################################################" >> /etc/fstab
 cat /etc/fstab.old >> /etc/fstab
 rm /etc/fstab.old
 
-# add some helpful aliases
+# Add some helpful aliases
 echo "alias cp='cp -i'" >> /etc/profile
 echo "alias mv='mv -i'" >> /etc/profile
 echo "alias rm='rm -i'" >> /etc/profile
@@ -107,7 +111,7 @@ echo "alias ls='ls --color=auto'" >> /etc/profile
 echo "alias ll='ls -l'" >> /etc/profile
 echo "alias grep='grep --color=auto'" >> /etc/profile
 
-# make sure we have the latest pci,usb and hotplug ids
+# Make sure we have the latest pci,usb and hotplug ids
 [ -x /sbin/update-pciids ] && /sbin/update-pciids
 [ -x /sbin/update-usbids ] && /sbin/update-usbids
 if [ -d /usr/share/hwdata ]
@@ -118,7 +122,7 @@ then
 	ln -s /usr/share/misc/usb.ids /usr/share/hwdata/usb.ids
 fi
 
-# setup opengl in /etc (if configured)
+# Setup opengl in /etc (if configured)
 [ -x /usr/sbin/openglify ] && /usr/sbin/openglify
 
 # Setup configured display manager
@@ -139,7 +143,7 @@ fi
 # touch /etc/asound.state
 touch /etc/asound.state
 
-# tweak the motd for gentoo releases 
+# Tweak the MOTD for Gentoo releases 
 case ${clst_livecd_type} in
 	gentoo-release-universal )
 		cat /etc/generic.motd.txt /etc/universal.motd.txt \
@@ -163,20 +167,22 @@ esac
 
 rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt /etc/gamecd.motd.txt
 
-# setup splash/bootsplash (if called for)
-if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n "${clst_livecd_splash_theme}" ]
+# Setup splash/bootsplash (if called for)
+if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n \
+	"${clst_livecd_splash_theme}" ]
 then
 	if [ -d /etc/bootsplash/${clst_livecd_splash_theme} ]
 	then
 		sed -i 's:BOOTSPLASH_THEME=\"gentoo\":BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/bootsplash
 		rm -f /etc/bootsplash/default
-		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" /etc/bootsplash/default
+		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" \
+			/etc/bootsplash/default
 	else
 		echo "Error, cannot setup bootsplash theme ${clst_livecd_splash_theme}"
 		exit 1
 	fi
-
-elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n \
+	"${clst_livecd_splash_theme}" ]
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
@@ -207,7 +213,6 @@ then
 	ln -sf /lib/firmware /usr/lib/hotplug/firmware
 fi
 
-
 # Clear out locales
 case ${clst_livecd_type} in
 	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
@@ -218,17 +223,16 @@ esac
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-gamecd )
-		# we grab our configuration
+		# We grab our configuration
 		if [ -e /tmp/gamecd.conf ]
 		then
-
 			source /tmp/gamecd.conf || exit 1
 			rm /tmp/gamecd.conf
 
-			# here we replace out game information into several files
+			# Here we replace out game information into several files
 			sed -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
 
-			# here we setup our xinitrc
+			# Here we setup our xinitrc
 			echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
 		fi
 
@@ -240,7 +244,7 @@ case ${clst_livecd_type} in
 		touch /etc/startx
 		;;
 	gentoo-release-livecd )
-		# first we setup the livecd-kernel package
+		# First we setup the livecd-kernel package
 		if [ -e /opt/installer/misc/mkvardb ]
 		then
 			chmod +x /opt/installer/misc/mkvardb

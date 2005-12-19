@@ -51,23 +51,22 @@ setup_gk_args() {
 }
 
 genkernel_compile(){
-	
 	eval "clst_initramfs_overlay=\$clst_boot_kernel_${clst_kname}_initramfs_overlay"
 	eval "clst_kernel_merge=\$clst_boot_kernel_${clst_kname}_packages"
-	
+
 	setup_gk_args
 	#echo "The GK_ARGS are"
 	#echo ${GK_ARGS}	
 	export clst_kernel_merge
 	export clst_initramfs_overlay
-	# build with genkernel using the set options
+	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
 	if [ -n "${clst_KERNCACHE}" ]
 	then
 		if [ "$clst_kernel_merge" != "" ]
 		then
-			genkernel --callback="PKGDIR=${PKGDIR} emerge -kb ${clst_kernel_merge}" \
-					${GK_ARGS} || exit 1
+			genkernel --callback="PKGDIR=${PKGDIR} emerge -kb \
+				${clst_kernel_merge}" ${GK_ARGS} || exit 1
 		else
 			genkernel ${GK_ARGS} || exit 1
 		fi
@@ -92,8 +91,6 @@ build_kernel() {
 	genkernel_compile
 }
 
-
-
 # Script to build each kernel, kernel-related packages
 /usr/sbin/env-update
 source /etc/profile
@@ -104,7 +101,7 @@ setup_myemergeopts
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 export CONFIG_PROTECT="-*"
 
-#set the timezone for the kernel build
+# Set the timezone for the kernel build
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
@@ -114,16 +111,13 @@ export USE=$clst_kernel_use
 eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${clst_kname}_gk_kernargs"
 eval "clst_ksource=\$clst_boot_kernel_${clst_kname}_sources"
 
-
-
-# Don't use pkgcache here, as the kernel source may get emerge with different USE variables
-# (and thus different patches enabled/disabled.) Also, there's no real benefit in using the
-# pkgcache for kernel source ebuilds.
+# Don't use pkgcache here, as the kernel source may get emerged with different
+# USE variables (and thus different patches enabled/disabled.) Also, there's no
+# real benefit in using the pkgcache for kernel source ebuilds.
 
 USE_MATCH=0 
 if [ -e /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
 then
-
 	STR1=$(for i in `cat /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
 	STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
 	if [ "${STR1}" = "${STR2}" ]
@@ -168,7 +162,6 @@ then
 			#echo "CONFIG match"
 			CONFIG_MATCH=1
 		fi
-
 	fi
 fi
 
@@ -204,7 +197,8 @@ else
 		USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
 fi
 
-#if catalyst has set to a empty string, extraversion wasn't specified so we skip this part
+# If catalyst has set to a empty string, extraversion wasn't specified so we
+# skip this part
 if [ "${EXTRAVERSION_MATCH}" != "1" ]
 then
 	if [ "${clst_kextraversion}" != "" ]
@@ -216,7 +210,6 @@ then
 		touch /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	fi
 fi
-	
 
 build_kernel
 # grep out the kernel version so that we can do our modules magic
