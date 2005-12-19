@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.463 2005/12/19 15:03:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.464 2005/12/19 15:23:50 wolf31o2 Exp $
+
+  19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-controller.sh,
+  targets/stage1/stage1-preclean-chroot.sh:
+  Fixed up spacing/coding style on stage1. Also changed
+  gcc-config/binutils-config to be outside the chroot.
 
   19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,
