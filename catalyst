@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python -OO
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.114 2005/12/13 22:52:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.115 2005/12/19 15:48:00 rocket Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -353,6 +353,7 @@ if __name__ == "__main__":
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
 		print "Catalyst aborting...."
+		sys.exit(2)
 	except LockInUse:
 		print "Catalyst aborting...."
 		sys.exit(2)

@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.466 2005/12/19 15:36:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.467 2005/12/19 15:48:00 rocket Exp $
+
+  19 Dec 2005; Eric Edgar <rocket@gentoo.org> catalyst:
+  Optimize catalyst bytecode and set a sane sys.exit for keyboard interrupts
 
   19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage4/stage4-chroot.sh, targets/stage4/stage4-controller.sh,
