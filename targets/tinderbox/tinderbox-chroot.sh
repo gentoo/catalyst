@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.15 2005/12/08 15:16:48 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.16 2005/12/19 19:10:04 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -9,17 +9,18 @@ update_env_settings
 
 setup_myfeatures
 
-# setup the environment
+# Setup the environment
 export FEATURES="${clst_myfeatures}"
 
 # START THE BUILD
 setup_portage
 
-#turn off auto-use:
+# Turn off auto-use:
 export USE_ORDER="env:pkg:conf:defaults"	
-#back up pristine system
+# Backup pristine system
 
-rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / /tmp/rsync-bak/ 
+rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / \
+	/tmp/rsync-bak/ 
 
 for x in ${clst_tinderbox_packages}
 do
@@ -38,7 +39,7 @@ do
 	mkdir -p /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
 	run_emerge --usepkg --buildpkg --newuse $x
-	
+
 	if [ "$?" != "0" ]
 	then
 		echo "! $x" >> /tmp/tinderbox.log	
@@ -46,5 +47,6 @@ do
 		echo "$x" >> /tmp/tinderbox.log
 	fi
 	echo "Syncing from original pristine tinderbox snapshot..."
-	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude "/usr/portage/" /tmp/rsync-bak/ /
+	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude \
+		"/usr/portage/" /tmp/rsync-bak/ /
 done

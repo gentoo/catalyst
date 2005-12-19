@@ -1,5 +1,11 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.468 2005/12/19 16:52:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.469 2005/12/19 19:10:04 wolf31o2 Exp $
+
+  19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/tinderbox/tinderbox-chroot.sh,
+  targets/tinderbox/tinderbox-controller.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  Fixed up spacing/coding style on tinderbox.
 
   19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kill-chroot-pids.sh, targets/support/kmerge.sh,
