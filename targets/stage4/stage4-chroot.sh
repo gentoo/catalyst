@@ -9,18 +9,17 @@ update_env_settings
 setup_myfeatures
 setup_myemergeopts
 
-## setup the environment
+# Setup the environment
 export FEATURES="${clst_myfeatures}"
 
 ## START BUILD
 setup_portage
-#turn off auto-use:
+# Turn off auto-use:
 export USE_ORDER="env:pkg:conf:defaults"	
 
 echo "Bringing system up to date using profile specific use flags"
 export USE="${USE} ${clst_HOSTUSE}"
 run_emerge -u system
-
 
 echo "Emerging packages using stage4 use flags"
 if [ -n "${clst_use}" ]

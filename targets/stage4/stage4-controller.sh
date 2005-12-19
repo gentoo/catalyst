@@ -1,9 +1,9 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.11 2005/12/08 15:16:48 rocket Exp $
-. ${clst_sharedir}/targets/support/functions.sh
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.12 2005/12/19 15:36:02 wolf31o2 Exp $
 
+. ${clst_sharedir}/targets/support/functions.sh
 
 # Only put commands in this section that you want every target to execute.
 # This is a global default file and will affect every target
@@ -22,7 +22,7 @@ case $1 in
 	kernel)
 		shift
 		export clst_kname="$1"
-		# if we have our own linuxrc, copy it in
+		# If we have our own linuxrc, copy it in
 		if [ -n "${clst_linuxrc}" ]
 		then
 			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
@@ -37,54 +37,41 @@ case $1 in
 		export clst_packages="$*"
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
 	;;
-
 	preclean)
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh ${clst_root_path}
 	;;
-	
 	rc-update)
 		exec_in_chroot  ${clst_sharedir}/targets/support/rc-update.sh
 	;;
-	
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
 	;;
-
 	livecd-update)
-		# now, finalize and tweak the livecd fs (inside of the chroot)
+		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
 	;;
-
-		bootloader)
+	bootloader)
 		exit 0
 	;;
-	
 	target_image_setup)
 		shift
 		#${clst_sharedir}/targets/livecd-stage2/livecd-stage2-cdfs.sh
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 	;;
-	
 	unmerge)
 		shift
 		export clst_packages="$*"
 		exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh 
 	;;
-
 	iso)
-	
 		shift
 		${clst_sharedir}/targets/support/create-iso.sh $1
 	;;
-
 	clean)
 		exit 0
 	;;
-	
 	*)
 		exit 1
 	;;
-
 esac
-
 exit $?
