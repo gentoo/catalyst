@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.13 2005/04/20 20:45:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.14 2005/12/19 21:19:11 wolf31o2 Exp $
 
 Licensing
 ========================
@@ -18,9 +18,12 @@ your own risk.
 Requirements
 =======================
 
-- Python 2.3 or greater
-- A portage snapshot
+- Python 2.4 or greater (may still work with 2.3)
+- A portage snapshot (or portage tree to make your own)
 - A Gentoo seed stage tarball
+- md5sum/sha1sum for simple digesting (MD5/SHA1)
+- Archive-Zip for CRC32 checking
+- shash for advanced digesting (SHA224 RIPEMD128 RIPEMD320 SHA384 RIPEMD256 SHA256 SHA512 RIPEMD160
 
 What is Catalyst?
 ========================
