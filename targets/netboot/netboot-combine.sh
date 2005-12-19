@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.6 2005/12/09 19:03:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-combine.sh,v 1.7 2005/12/19 15:03:25 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/chroot-functions.sh
 . ${clst_sharedir}/targets/support/functions.sh
@@ -12,19 +12,32 @@ update_env_settings
 setup_myfeatures
 setup_myemergeopts
 
-# setup our environment
+# Ssetup our environment
 export FEATURES="${clst_myfeatures}"
 
 # First install the boot package that we need
 booter=""
 case ${clst_mainarch} in
-	alpha)	booter="";;
-	arm)	booter="";;
-	hppa)	booter=palo;;
-	sparc*)	booter=sparc-utils;;
-	x86)	booter=netboot;;
-	*)		exit 1;;
+	alpha)
+		booter=""
+	;;
+	arm)
+		booter=""
+	;;
+	hppa)
+		booter=palo
+	;;
+	sparc*)
+		booter=sparc-utils
+	;;
+	x86|amd64)
+		booter=netboot
+	;;
+	*)
+		exit 1
+	;;
 esac
+
 #if [ ! -z "${booter}" ] ; then
 #	run_emerge ${booter} || exit 1
 #fi
@@ -34,18 +47,15 @@ extract_kernels ${clst_chroot_path}/tmp
 # Then generate the netboot image ! :D
 for kname in ${clst_boot_kernel}
 do
-
 	mkdir -p ${clst_chroot_path}/tmp/staging/initrd-${kname}
 	cp -r ${clst_chroot_path}/tmp/image ${clst_chroot_path}/tmp/staging/initrd-${kname}
 	extract_modules ${clst_chroot_path}/tmp/staging/initrd-${kname} ${kname}
 	create_normal_loop ${clst_chroot_path}/tmp/staging/initrd-${kname} ${clst_target_path} initrd-${kname}.igz
 	rm -r ${clst_chroot_path}/tmp/staging/initrd-${kname}
 
-
-
 	case ${clst_mainarch} in
 		alpha)
-		   # Until aboot is patched this is broken currently.
+			# Until aboot is patched this is broken currently.
 			# please use catalyst 1.1.5 or older
 		
 			#TEST TEST TEST TEST
@@ -69,11 +79,11 @@ do
 			#	|| exit 1
 			;;
 		hppa)
-			# We have to remove the previous image because the file is considered
-			# as a tape by palo and then not truncated but rewritten.
+			# We have to remove the previous image because the file is
+			# considered as a tape by palo and then not truncated but rewritten.
 			#TEST TEST TEST TEST
 			rm -f /netboot-${kname}.hppa
-		
+
 			palo \
 				-k /${clst_chroot_path}/tmp/${kname} \
 				-r /${clst_target_path}/initrd-${kname}.igz \
@@ -91,7 +101,6 @@ do
 			#${piggy} /netboot-${kname}.${clst_mainarch} /usr/src/linux/System.map /initrd-${kname}.igz
 			;;
 		x86)
-			
 			mknbi-linux \
 				-k /${clst_chroot_path}/tmp/${kname} \
 				-r /${clst_target_path}/initrd-${kname}.igz \
@@ -100,6 +109,8 @@ do
 				-a "root=/dev/ram0 ${cmdline_opts}" \
 				|| exit 1
 			;;
-		*)	exit 1;;
+		*)
+			exit 1
+			;;
 	esac
 done

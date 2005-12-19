@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.462 2005/12/16 19:32:31 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.463 2005/12/19 15:03:25 wolf31o2 Exp $
+
+  19 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,
+  targets/netboot/netboot-controller.sh, targets/netboot/netboot-image.sh:
+  Fixed up spacing/coding style on netboot.
 
   16 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-chroot.sh,
