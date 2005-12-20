@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.480 2005/12/20 22:44:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.481 2005/12/20 22:51:00 rocket Exp $
+
+  20 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Catalyst should die if source_subpath is not a string
 
   20 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

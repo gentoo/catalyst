@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.104 2005/12/20 22:44:45 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.105 2005/12/20 22:51:00 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -241,15 +241,9 @@ class generic_stage_target(generic_target):
 		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+self.settings["target"]+\
 			"-"+self.settings["subarch"]+"-"+self.settings["version_stamp"]
 	
-        def set_source_subpath(self):
-                if type(self.settings["source_subpath"]) != types.StringType:
-			print "WARNING WARNING WARNING"
-			print "source_subpath should have been a string perhaps you have something wrong"
-			print "\tin your spec file"
-			print "\tUsing first element of array .. continuing .. other values may not"
-			print "\tbe set as we are discarding extraneous specfile data"
-			print "WARNING WARNING WARNING"
-                        self.settings["source_subpath"]=self.settings["source_subpath"][0]
+	def set_source_subpath(self):
+		if type(self.settings["source_subpath"]) != types.StringType:
+			raise CatalystError, "source_subpath should have been a string. Perhaps you have something wrong in your spec file?"
 
 	def set_pkgcache_path(self):
 		self.settings["pkgcache_path"]=normpath(self.settings["storedir"]+"/packages/"+\
