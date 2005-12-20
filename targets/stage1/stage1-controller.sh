@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.6 2005/12/19 15:23:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.7 2005/12/20 17:05:39 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -28,22 +28,22 @@ case $1 in
 		# We run gcc-config here this way so it works on all arches.
 		if [ -x /usr/bin/gcc-config ]
 		then
-			mythang=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
+			mythang=$( cd /tmp/stage1root/etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
 			if [ -z "${mythang}" ]
 			then
 				mythang=1
 			fi
-			ROOT=/tmp/stage1root gcc-config ${mythang}
+			ROOT=/tmp/stage1root/ gcc-config ${mythang}
 		fi
 		# We run binutils-config here so it works on all arches.
 		if [ -x /usr/bin/binutils-config ]
 		then
-			mythang=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
+			mythang=$( cd /tmp/stage1root/etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
 			if [ -z "${mythang}" ]
 			then
 				mythang=1
 			fi
-			ROOT=/tmp/stage1root binutils-config ${mythang}
+			ROOT=/tmp/stage1root/ binutils-config ${mythang}
 		fi
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
 	;;

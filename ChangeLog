@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.475 2005/12/20 16:32:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.476 2005/12/20 17:05:39 wolf31o2 Exp $
+
+  20 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/stage1/stage1-controller.sh:
+  Fixed gcc-config calls.  This is 2.0_rc11.
 
   20 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0_rc10.
