@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.477 2005/12/20 20:30:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.478 2005/12/20 20:53:49 rocket Exp $
+
+  20 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/stage1_target.py,
+  modules/stage2_target.py:
+  Disable reading of CHOST/CFLAGS/CXXFLAGS/LDFLAGS from the environment. Allow
+  stage1 to be overridden again.
 
   20 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-controller.sh:
