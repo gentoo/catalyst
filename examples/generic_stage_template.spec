@@ -59,8 +59,11 @@ distcc_hosts:
 # portage_confdir: /etc/portage
 portage_confdir:
 
-# These options are only available when building a stage2 target and are all
-# optional.  These allow for emulating the changes possible during a bootstrap.
+# These options are only available when building a stage1 or stage2 target and
+# are all optional.  These allow for emulating the changes possible during ai
+# bootstrap.  Some possible uses of these would be building embedded stages
+# requiring a different CHOST or building a stage2 with NPTL support from a
+# stage1 tarball that is built without it.
 # If left blank, then the catalyst defaults from arch.py are used.
 
 # This option is used to change the CHOST from what is default in the profile
