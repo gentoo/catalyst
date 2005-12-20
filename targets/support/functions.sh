@@ -183,7 +183,7 @@ check_dev_manager(){
 
 check_bootargs(){
 	# Add any additional options
-	if [ -z "${clst_livecd_bootargs}" ]
+	if [ -n "${clst_livecd_bootargs}" ]
 	then
 		for x in ${clst_livecd_bootargs}
 		do

@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.472 2005/12/19 22:18:54 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.473 2005/12/20 16:25:18 wolf31o2 Exp $
+
+  20 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/functions.sh:
+  Changed from -z to -n for bug #116180.
 
   19 Dec 2005; Eric Edgar <rocket@gentoo.org> catalyst,
   modules/catalyst_support.py, modules/generic_stage_target.py:
