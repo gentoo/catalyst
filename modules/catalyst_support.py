@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.65 2005/12/19 22:18:54 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.66 2005/12/21 06:32:09 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -95,17 +95,35 @@ def calc_hash2(file,cmd,cmd_args,id_string="MD5",verbose=False):
 #This has map must be defined after the function calc_hash
 #It is possible to call different functions from this but they must be defined before hash_map
 # 	Key,function,cmd,cmd_args,Print string
-hash_map={"md5":[calc_hash,"md5sum","","MD5"],\
-	 "crc32":[calc_hash,"crc32","","CRC32"],\
-	 "sha1":[calc_hash,"sha1sum","","SHA1"],\
+hash_map={
+	 "adler32":[calc_hash2,"shash","-a ADLER32","ADLER32"],\
+	 "crc32":[calc_hash2,"shash","-a CRC32","CRC32"],\
+	 "crc32b":[calc_hash2,"shash","-a CRC32B","CRC32B"],\
+	 "gost":[calc_hash2,"shash","-a GOST","GOST"],\
+	 "haval128":[calc_hash2,"shash","-a HAVAL128","HAVAL128"],\
+	 "haval160":[calc_hash2,"shash","-a HAVAL160","HAVAL160"],\
+	 "haval192":[calc_hash2,"shash","-a HAVAL192","HAVAL192"],\
+	 "haval224":[calc_hash2,"shash","-a HAVAL224","HAVAL224"],\
+	 "haval256":[calc_hash2,"shash","-a HAVAL256","HAVAL256"],\
+	 "md2":[calc_hash2,"shash","-a MD2","MD2"],\
+	 "md4":[calc_hash2,"shash","-a MD4","MD4"],\
+	 "md5":[calc_hash2,"shash","-a MD5","MD5"],\
+	 "ripemd128":[calc_hash2,"shash","-a RIPEMD128","RIPEMD128"],\
+	 "ripemd160":[calc_hash2,"shash","-a RIPEMD160","RIPEMD160"],\
+	 "ripemd256":[calc_hash2,"shash","-a RIPEMD256","RIPEMD256"],\
+	 "ripemd320":[calc_hash2,"shash","-a RIPEMD320","RIPEMD320"],\
+	 "sha1":[calc_hash2,"shash","-a SHA1","SHA1"],\
 	 "sha224":[calc_hash2,"shash","-a SHA224","SHA224"],\
 	 "sha256":[calc_hash2,"shash","-a SHA256","SHA256"],\
 	 "sha384":[calc_hash2,"shash","-a SHA384","SHA384"],\
 	 "sha512":[calc_hash2,"shash","-a SHA512","SHA512"],\
-	 "ripemd128":[calc_hash2,"shash","-a RIPEMD128","RIPEMD128"],\
-	 "ripemd160":[calc_hash2,"shash","-a RIPEMD160","RIPEMD160"],\
-	 "ripemd256":[calc_hash2,"shash","-a RIPEMD256","RIPEMD256"],\
-	 "ripemd320":[calc_hash2,"shash","-a RIPEMD320","RIPEMD320"]}
+	 "snefru128":[calc_hash2,"shash","-a SNEFRU128","SNEFRU128"],\
+	 "snefru256":[calc_hash2,"shash","-a SNEFRU256","SNEFRU256"],\
+	 "tiger":[calc_hash2,"shash","-a TIGER","TIGER"],\
+	 "tiger128":[calc_hash2,"shash","-a TIGER128","TIGER128"],\
+	 "tiger160":[calc_hash2,"shash","-a TIGER160","TIGER160"],\
+	 "whirlpool":[calc_hash2,"shash","-a WHIRLPOOL","WHIRLPOOL"],\
+	 }
 
 def read_from_clst(file):
 	line = ''

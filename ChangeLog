@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.481 2005/12/20 22:51:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.482 2005/12/21 06:32:09 rocket Exp $
+
+  21 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py:
+  Remove requirement on md5sum,sha1sum,crc32 .. only need to have shash
+  installed. Supports all of shashs algorithms as of 12_21_2005
 
   20 Dec 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
