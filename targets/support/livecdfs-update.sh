@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.31 2005/12/19 16:52:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.32 2005/12/21 16:56:01 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -290,6 +290,8 @@ case ${clst_livecd_type} in
 
 		# This gives us our list of system packages for the installer
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
+		# This gives us a proper cache for portage
+		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
 		;;
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
