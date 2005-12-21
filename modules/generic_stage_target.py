@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.105 2005/12/20 22:51:00 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.106 2005/12/21 15:12:37 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -244,7 +244,7 @@ class generic_stage_target(generic_target):
 	def set_source_subpath(self):
 		if type(self.settings["source_subpath"]) != types.StringType:
 			raise CatalystError, "source_subpath should have been a string. Perhaps you have something wrong in your spec file?"
-
+	
 	def set_pkgcache_path(self):
 		self.settings["pkgcache_path"]=normpath(self.settings["storedir"]+"/packages/"+\
 			self.settings["target_subpath"]+"/")
@@ -359,6 +359,7 @@ class generic_stage_target(generic_target):
 
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
+		
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"]=generate_hash(self.settings["snapshot_path"],\
 					hash_function=self.settings["hash_function"],verbose=False)
@@ -1269,14 +1270,18 @@ class generic_stage_target(generic_target):
 			os.remove(file+".digests")
 		if self.settings.has_key("digests"):
 			if os.path.exists(file):
-                    		myf=open(file+".digests","w")
+				myf=open(file+".digests","w")
+				keys={}
 				for i in self.settings["digests"].split():
-
+					keys[i]=1
+				array=keys.keys()
+				array.sort()
+				for i in array:
 					if self.settings.has_key("VERBOSE"):
 			    			hash=generate_hash(file,hash_function=i,verbose=True)
 					else:
 			    			hash=generate_hash(file,hash_function=i)
-					myf.write(hash_map[i][3]+": "+hash+"\n")
+					myf.write(hash_map[i][3]+" "+hash+" "+os.path.split(file)[1]+"\n")
                     		myf.close()
 
 	def purge(self):
