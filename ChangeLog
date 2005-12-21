@@ -1,5 +1,8 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.487 2005/12/21 17:40:00 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.488 2005/12/21 19:39:34 rocket Exp $
+
+  21 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/snapshot_target.py:
+  Fix incorrect warning message.  portdir_overlay -> portage_overlay
 
   21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-controller.sh,

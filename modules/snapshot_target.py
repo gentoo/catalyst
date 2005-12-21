@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.14 2005/12/13 20:32:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.15 2005/12/21 19:39:34 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -25,7 +25,7 @@ class snapshot_target(generic_target):
 		if self.settings.has_key("portdir_overlay"):
 			print "\nWarning!!!!"
 			print "\tThis feature is deprecated no overlay will be added to the snapshot."
-			print "\tIf you need an overlay feature please use portdir_overlay in the other spec files"
+			print "\tIf you need an overlay feature please use portage_overlay in the other spec files"
 			print "\tOtherwise add your files to the normal snapshot and redigest .. you should know what"
 			print "\t\tto do."
 			print "\tThis was removed due to digesting issues that are incompatible with portage."
