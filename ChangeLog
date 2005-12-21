@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.485 2005/12/21 16:56:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.486 2005/12/21 17:18:28 wolf31o2 Exp $
+
+  21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/stage1_target.py:
+  Make stage1 clean up python 2.3 and 2.4, also.
 
   21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org> README,
   targets/support/livecdfs-update.sh:

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.20 2005/12/20 20:53:49 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.21 2005/12/21 17:18:28 wolf31o2 Exp $
 
 """
 Builder class for a stage1 installation tarball build.
@@ -26,7 +26,14 @@ class stage1_target(generic_stage_target):
                 self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
-		self.settings["cleanables"].extend(["/usr/share/gettext","/usr/lib/python2.2/test", "/usr/lib/python2.2/encodings","/usr/lib/python2.2/email", "/usr/lib/python2.2/lib-tk","/usr/share/zoneinfo"])
+		self.settings["cleanables"].extend(["/usr/share/gettext",\
+		"/usr/lib/python2.2/test", "/usr/lib/python2.2/encodings",\
+		"/usr/lib/python2.2/email", "/usr/lib/python2.2/lib-tk",\
+		"/usr/lib/python2.3/test", "/usr/lib/python2.3/encodings",\
+		"/usr/lib/python2.3/email", "/usr/lib/python2.3/lib-tk",\
+		"/usr/lib/python2.4/test", "/usr/lib/python2.4/encodings",\
+		"/usr/lib/python2.4/email", "/usr/lib/python2.4/lib-tk",\
+		"/usr/share/zoneinfo"])
 
         def override_chost(self):
             #if os.environ.has_key("CHOST"):
