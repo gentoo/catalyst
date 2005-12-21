@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.8 2005/12/20 20:30:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.9 2005/12/21 15:04:09 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -18,14 +18,8 @@ case $1 in
 		copy_to_chroot ${clst_chroot_path}/etc/make.conf /${clst_root_path}/etc
 		copy_to_chroot ${clst_chroot_path}/etc/make.profile \
 			/${clst_root_path}/etc
-		
-		# Enter chroot, execute our build script
-		exec_in_chroot \
-			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh \
-			|| exit 1
-	;;
-	preclean)
-		# We run gcc-config here this way so it works on all arches.
+
+		# Before we enter the chroot, we need to run gcc-config/binutils-config
 		if [ -x /usr/bin/gcc-config ]
 		then
 			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
@@ -35,7 +29,6 @@ case $1 in
 			fi
 			ROOT=${clst_chroot_path}/tmp/stage1root/ gcc-config ${mythang}
 		fi
-		# We run binutils-config here so it works on all arches.
 		if [ -x /usr/bin/binutils-config ]
 		then
 			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
@@ -45,6 +38,13 @@ case $1 in
 			fi
 			ROOT=${clst_chroot_path}/tmp/stage1root/ binutils-config ${mythang}
 		fi
+
+		# Enter chroot, execute our build script
+		exec_in_chroot \
+			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh \
+			|| exit 1
+	;;
+	preclean)
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
 	;;
 	clean)

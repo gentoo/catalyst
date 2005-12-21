@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.482 2005/12/21 06:32:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.483 2005/12/21 15:04:09 wolf31o2 Exp $
+
+  21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-controller.sh:
+  Moved gcc-config/binutils-config to before the chroot.
 
   21 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/catalyst_support.py:
   Remove requirement on md5sum,sha1sum,crc32 .. only need to have shash
