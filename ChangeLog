@@ -1,5 +1,12 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.486 2005/12/21 17:18:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.487 2005/12/21 17:40:00 wolf31o2 Exp $
+
+  21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-controller.sh,
+  targets/stage1/stage1-preclean-chroot.sh:
+  Revert gcc-config/binutils-config to _rc11 locations. This should fix
+  running gcc-config and binutils-config, though it probably breaks running on
+  non-Gentoo platforms.
 
   21 Dec 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/stage1_target.py:
