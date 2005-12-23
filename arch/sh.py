@@ -1,6 +1,6 @@
-'# Copyright 1999-2004 Gentoo Foundation
+# Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sh.py,v 1.2 2005/12/20 16:28:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sh.py,v 1.3 2005/12/23 06:38:18 rocket Exp $
 
 import builder,os
 from catalyst_support import *
