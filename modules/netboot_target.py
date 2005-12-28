@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.10 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot_target.py,v 1.11 2005/12/28 16:36:35 rocket Exp $
 
 """
 Builder class for a netboot build.
@@ -59,7 +59,7 @@ class netboot_target(generic_stage_target):
 
 	def set_dest_path(self):
 		#destpath=self.settings["chroot_path"]+self.settings["root_path"]
-		destpath=normpath(self.settings["chroot_path"]+"/tmp/image")
+		self.settings["destpath"]=normpath(self.settings["chroot_path"]+"/tmp/image")
 
 #	def build_packages(self):
 #		# build packages
