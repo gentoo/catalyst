@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.18 2005/12/02 20:09:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.19 2005/12/28 16:58:43 rocket Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -46,9 +46,6 @@ class embedded_target(generic_stage_target):
         self.settings["root_path"]=normpath("/tmp/mergeroot")
 	print "embedded root path is "+self.settings["root_path"]
 
-    def set_dest_path(self):
-	self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
-		
 def register(foo):
 	foo.update({"embedded":embedded_target})
 	return foo

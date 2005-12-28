@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.108 2005/12/28 11:56:17 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.109 2005/12/28 16:58:43 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -356,7 +356,10 @@ class generic_stage_target(generic_target):
 
 	
 	def set_dest_path(self):
-		self.settings["destpath"]=normpath(self.settings["chroot_path"])
+		if self.settings.has_key("root_path"):
+			self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
+		else:
+			self.settings["destpath"]=normpath(self.settings["chroot_path"])
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*","/root/*",\

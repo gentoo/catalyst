@@ -1,5 +1,10 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.492 2005/12/28 16:36:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.493 2005/12/28 16:58:43 rocket Exp $
+
+  28 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/embedded_target.py,
+  modules/generic_stage_target.py, modules/netboot_target.py,
+  modules/stage1_target.py:
+  make setting of destdir more global and part of generic_stage_target
 
   28 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/netboot_target.py:
   Fix destpath bug in netboot target
