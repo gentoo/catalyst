@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.109 2005/12/28 16:58:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.110 2005/12/31 08:03:22 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -782,13 +782,18 @@ class generic_stage_target(generic_target):
 			raise CatalystError,"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
+		self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
+		self.override_chost()	
+		self.override_cflags()
+		self.override_cxxflags()	
+		self.override_ldflags()	
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"chroot_setup"):
 			print "Resume point detected, skipping chroot_setup operation..."
 		else:
 			print "Setting up chroot..."
 			
-			self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
+			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
 			
 			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
 				"Could not copy resolv.conf into place.",env=self.env)
@@ -814,10 +819,10 @@ class generic_stage_target(generic_target):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
 					"/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
 				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
-			self.override_chost()	
-			self.override_cflags()
-			self.override_cxxflags()	
-			self.override_ldflags()	
+			#self.override_chost()	
+			#self.override_cflags()
+			#self.override_cxxflags()	
+			#self.override_ldflags()	
 			# modify and write out make.conf (for the chroot)
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf",\
 				env=self.env)

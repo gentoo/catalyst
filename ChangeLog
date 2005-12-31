@@ -1,5 +1,9 @@
 # Copyright 2002-2005 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.493 2005/12/28 16:58:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.494 2005/12/31 08:03:22 rocket Exp $
+
+  31 Dec 2005; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  Attempt to fix bug 117253; chost is wrong on autoresume
 
   28 Dec 2005; Eric Edgar <rocket@gentoo.org> modules/embedded_target.py,
   modules/generic_stage_target.py, modules/netboot_target.py,
