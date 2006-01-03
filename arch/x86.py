@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.21 2005/12/16 18:57:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.22 2006/01/03 14:55:11 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -21,43 +21,43 @@ class arch_x86(generic_x86):
 	"builder class for generic x86 (386+)"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=i686"
+		self.settings["CFLAGS"]="-O2 -mcpu=i686 -pipe"
 		self.settings["CHOST"]="i386-pc-linux-gnu"
 
 class arch_i386(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=i386"
+		self.settings["CFLAGS"]="-O2 -march=i386 -pipe"
 		self.settings["CHOST"]="i386-pc-linux-gnu"
 
 class arch_i486(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=i486"
+		self.settings["CFLAGS"]="-O2 -march=i486 -pipe"
 		self.settings["CHOST"]="i486-pc-linux-gnu"
 
 class arch_i586(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=i586"
+		self.settings["CFLAGS"]="-O2 -march=i586 -pipe"
 		self.settings["CHOST"]="i586-pc-linux-gnu"
 
 class arch_pentium_mmx(arch_i586):
 	def __init__(self,myspec):
 		arch_i586.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=pentium-mmx"
+		self.settings["CFLAGS"]="-O2 -march=pentium-mmx -pipe"
 		self.settings["HOSTUSE"]=["mmx"]
 	
 class arch_i686(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=i686"
+		self.settings["CFLAGS"]="-O2 -march=i686 -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 
 class arch_athlon(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=athlon"
+		self.settings["CFLAGS"]="-O2 -march=athlon -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","3dnow"]
 
@@ -65,21 +65,21 @@ class arch_athlon_xp(generic_x86):
 	#this handles XP and MP processors
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=athlon-xp"
+		self.settings["CFLAGS"]="-O2 -march=athlon-xp -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","3dnow","sse"]
 
 class arch_pentium4(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=pentium4"
+		self.settings["CFLAGS"]="-O2 -march=pentium4 -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 
 class arch_pentium3(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=pentium3"
+		self.settings["CFLAGS"]="-O2 -march=pentium3 -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 

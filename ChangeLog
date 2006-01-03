@@ -1,5 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.495 2006/01/03 14:25:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.496 2006/01/03 14:55:11 wolf31o2 Exp $
+
+  03 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
+  arch/amd64.py, arch/mips.py, arch/ppc.py, arch/ppc64.py, arch/s390.py,
+  arch/sh.py, arch/sparc.py, arch/sparc64.py, arch/x86.py:
+  Added -pipe to default CFLAGS/CXXFLAGS and doing some minor cleanup
+  (comments mostly).
 
   03 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

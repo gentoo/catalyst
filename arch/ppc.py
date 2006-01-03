@@ -1,14 +1,14 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.15 2005/11/30 21:34:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.16 2006/01/03 14:55:11 wolf31o2 Exp $
 
 import os,builder
 from catalyst_support import *
 
-# gcc-3.3.3 required to do G5 optimizations
-# install a 32bit kernel personality changer (that works) before building on a ppc64 host
-# new gcc optimization feature requires -fno-strict-aliasing needed, otherwise code complains 
-# use the experimental thing for nptl builds
+# gcc-3.3.3 is required to do G5 optimizations
+# install a 32bit kernel personality changer (that works) before building on a
+# ppc64 host new gcc optimization feature requires -fno-strict-aliasing needed,
+# otherwise code complains use the experimental thing for nptl builds
 
 class generic_ppc(builder.generic):
 	"abstract base class for all ppc builders"

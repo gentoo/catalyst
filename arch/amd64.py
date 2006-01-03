@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/amd64.py,v 1.4 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/amd64.py,v 1.5 2006/01/03 14:55:11 wolf31o2 Exp $
 
 import builder
 
@@ -15,10 +15,10 @@ class arch_amd64(generic_amd64):
 	"builder class for generic amd64 (athlon64/opteron)"
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2"
+		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 
 def register(foo):
 	"Inform main catalyst program of the contents of this plugin."
 	foo.update({"amd64":arch_amd64})
-		
+

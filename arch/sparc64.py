@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc64.py,v 1.5 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc64.py,v 1.6 2006/01/03 14:55:11 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -16,8 +16,8 @@ class arch_sparc64(generic_sparc64):
 	"builder class for generic sparc64 (sun4u)"
 	def __init__(self,myspec):
 		generic_sparc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc"
-		self.settings["CXXFLAGS"]="-O2 -mcpu=ultrasparc"
+		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc -pipe"
+		self.settings["CXXFLAGS"]="-O2 -mcpu=ultrasparc -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):

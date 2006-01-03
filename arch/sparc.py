@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc.py,v 1.6 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc.py,v 1.7 2006/01/03 14:55:11 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -21,8 +21,8 @@ class arch_sparc(generic_sparc):
 	"builder class for generic sparc (sun4cdm)"
 	def __init__(self,myspec):
 		generic_sparc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2"
-		self.settings["CXXFLAGS"]="-O2"
+		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["CXXFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 def register(foo):
