@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.110 2005/12/31 08:03:22 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.111 2006/01/03 14:25:09 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -197,7 +197,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("chost"):
 		    self.settings["CHOST"]=list_to_string(self.settings["chost"])
 		if self.makeconf.has_key("CHOST"):
-		    print "Using CHOST setting from seed stage"
+		    #print "Using CHOST setting from seed stage"
 		    self.settings["CHOST"]=self.makeconf["CHOST"]
 	
 	def override_cflags(self):
@@ -206,7 +206,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("cflags"):
 		    self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
 		if self.makeconf.has_key("CFLAGS"):
-		    print "Using CFLAGS setting from seed stage"
+		    #print "Using CFLAGS setting from seed stage"
 		    self.settings["CFLAGS"]=self.makeconf["CFLAGS"]
 
 	def override_cxxflags(self):	
@@ -215,7 +215,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("cxxflags"):
 		    self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
 		if self.makeconf.has_key("CXXFLAGS"):
-		    print "Using CXXFLAGS setting from seed stage"
+		    #print "Using CXXFLAGS setting from seed stage"
 		    self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
 	
 	def override_ldflags(self):
@@ -224,7 +224,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("ldflags"):
 		    self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 		if self.makeconf.has_key("LDFLAGS"):
-		    print "Using LDFLAGS setting from seed stage"
+		    #print "Using LDFLAGS setting from seed stage"
 		    self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
 	
 	def set_install_mask(self):
