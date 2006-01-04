@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.497 2006/01/04 19:51:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.498 2006/01/04 20:28:23 wolf31o2 Exp $
+
+  04 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/kmerge.sh:
+  Commented ccache for genkernel build which will resolve #117648 until a
+  proper solution can be found. This is 2.0_rc13.
 
   04 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-controller.sh:
