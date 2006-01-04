@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.11 2005/12/21 21:03:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.12 2006/01/04 19:51:03 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -33,7 +33,9 @@ case $1 in
 			then
 				mythang=1
 			fi
-			ROOT=${clst_chroot_path}/tmp/stage1root/ gcc-config ${mythang}
+			ROOT=${clst_chroot_path}/tmp/stage1root/ \
+			CHOST=${clst_CHOST} \
+				gcc-config ${mythang}
 		fi
 		if [ -x /usr/bin/binutils-config ]
 		then
@@ -42,7 +44,9 @@ case $1 in
 			then
 				mythang=1
 			fi
-			ROOT=${clst_chroot_path}/tmp/stage1root/ binutils-config ${mythang}
+			ROOT=${clst_chroot_path}/tmp/stage1root/ \
+			CHOST=${clst_CHOST} \
+				binutils-config ${mythang}
 		fi
 		${clst_CHROOT} ${clst_chroot_path}/tmp/stage1root \
 			/usr/sbin/env-update || exit 1
