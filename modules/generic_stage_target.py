@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.111 2006/01/03 14:25:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.112 2006/01/05 19:23:07 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1279,11 +1279,11 @@ class generic_stage_target(generic_target):
 				os.chmod(myemp,mystat[ST_MODE])
 
         def gen_digest_file(self,file):
-		if os.path.exists(file+".digests"):
-			os.remove(file+".digests")
+		if os.path.exists(file+".DIGESTS"):
+			os.remove(file+".DIGESTS")
 		if self.settings.has_key("digests"):
 			if os.path.exists(file):
-				myf=open(file+".digests","w")
+				myf=open(file+".DIGESTS","w")
 				keys={}
 				for i in self.settings["digests"].split():
 					keys[i]=1
