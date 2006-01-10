@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.113 2006/01/10 15:42:01 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.114 2006/01/10 19:52:46 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -149,6 +149,7 @@ class generic_stage_target(generic_target):
 		self.set_iso()
 		self.set_packages()
 		self.set_rm()
+		self.set_linuxrc()
 		self.set_portage_overlay()	
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
@@ -429,6 +430,12 @@ class generic_stage_target(generic_target):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
 		if type(self.settings[self.settings["spec_prefix"]+"/rm"])==types.StringType:
 		    self.settings[self.settings["spec_prefix"]+"/rm"]=self.settings[self.settings["spec_prefix"]+"/rm"].split()
+
+	def set_linuxrc(self):
+	    if self.settings.has_key(self.settings["spec_prefix"]+"/linuxrc"):
+			if type(self.settings[self.settings["spec_prefix"]+"/linuxrc"])==types.StringType:
+				self.settings["linuxrc"]=self.settings[self.settings["spec_prefix"]+"/linuxrc"]
+				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
 
 	def set_portage_overlay(self):
 	    if self.settings.has_key("portage_overlay"):
