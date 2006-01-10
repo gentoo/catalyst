@@ -51,8 +51,8 @@ setup_gk_args() {
 }
 
 genkernel_compile(){
-	eval "clst_initramfs_overlay=\$clst_boot_kernel_${clst_kname}_initramfs_overlay"
-	eval "clst_kernel_merge=\$clst_boot_kernel_${clst_kname}_packages"
+	eval "clst_initramfs_overlay=\$clst_boot_kernel_${filtered_kname}_initramfs_overlay"
+	eval "clst_kernel_merge=\$clst_boot_kernel_${filtered_kname}_packages"
 
 	setup_gk_args
 	#echo "The GK_ARGS are"
@@ -105,11 +105,16 @@ export CONFIG_PROTECT="-*"
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
-eval "clst_kernel_use=\$clst_boot_kernel_${clst_kname}_use"
+
+filtered_kname=${clst_kname/-/_}
+filtered_kname=${clst_kname/\//_}
+filtered_kname=${filtered_kname/\./_}
+
+eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
 export USE=$clst_kernel_use
 
-eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${clst_kname}_gk_kernargs"
-eval "clst_ksource=\$clst_boot_kernel_${clst_kname}_sources"
+eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${filtered_kname}_gk_kernargs"
+eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
 
 # Don't use pkgcache here, as the kernel source may get emerged with different
 # USE variables (and thus different patches enabled/disabled.) Also, there's no

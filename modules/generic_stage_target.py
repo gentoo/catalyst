@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.112 2006/01/05 19:23:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.113 2006/01/10 15:42:01 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -994,9 +994,10 @@ class generic_stage_target(generic_target):
 		# modify the current environment. This is an ugly hack that should be fixed. We need this
 		# to use the os.system() call since we can't specify our own environ:
 		for x in self.settings.keys():
-			# "/" is replaced with "_", "-" is also replaced with "_"
+			# "/" is replaced with "_", "-" is also replaced with "_", "." is also replace with "_"
 			varname="clst_"+string.replace(x,"/","_")
 			varname=string.replace(varname,"-","_")
+			varname=string.replace(varname,".","_")
 			if type(self.settings[x])==types.StringType:
 				# prefix to prevent namespace clashes:
 				#os.environ[varname]=self.settings[x]
