@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.19 2005/12/28 16:58:43 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.20 2006/01/10 19:32:47 wolf31o2 Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
@@ -22,7 +22,7 @@ class embedded_target(generic_stage_target):
     def __init__(self,spec,addlargs):
         self.required_values=[]
         self.valid_values=[]
-        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel"])
+        self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel","embedded/linuxrc"])
 	self.valid_values.extend(["embedded/use"])
         if addlargs.has_key("embedded/fs-type"):
             self.valid_values.append("embedded/fs-ops")

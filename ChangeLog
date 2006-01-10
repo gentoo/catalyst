@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.501 2006/01/10 15:46:22 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.502 2006/01/10 19:32:47 wolf31o2 Exp $
+
+  10 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/embedded_target.py, modules/stage4_target.py:
+  Added linuxrc to embedded and stage4 targets.
 
   10 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh:

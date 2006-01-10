@@ -1,9 +1,9 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.15 2005/12/28 11:56:17 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.16 2006/01/10 19:32:47 wolf31o2 Exp $
 
 """
-Builder class for LiveCD stage1.
+Builder class for stage4.
 """
 
 from catalyst_support import *
@@ -13,8 +13,8 @@ class stage4_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["stage4/use", "stage4/packages", "stage4/root_overlay", "stage4/fsscript", \
-				"stage4/rcadd","stage4/rcdel","chost","cflags","ldflags","cxxflags"])
+		self.valid_values.extend(["stage4/use","stage4/packages","stage4/root_overlay", "stage4/fsscript", \
+				"stage4/rcadd","stage4/rcdel","stage4/linuxrc","chost","cflags","ldflags","cxxflags"])
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_cleanables(self):
