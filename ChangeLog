@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.499 2006/01/05 19:23:06 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.500 2006/01/10 15:40:57 wolf31o2 Exp $
+
+  10 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/create-iso.sh:
+  Added sparc64 to sparc lines for create-iso.sh to fix ISO creation on sparc64.
 
   05 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
