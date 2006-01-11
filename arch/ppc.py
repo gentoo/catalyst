@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.16 2006/01/03 14:55:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.17 2006/01/11 23:27:52 wolf31o2 Exp $
 
 import os,builder
 from catalyst_support import *
@@ -27,35 +27,35 @@ class arch_power_ppc(generic_ppc):
 	"builder class for generic powerpc/power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=common -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=common -mtune=common -fno-strict-aliasing -pipe"
 
 class arch_ppc(generic_ppc):
 	"builder class for generic powerpc"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=powerpc -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -fno-strict-aliasing -pipe"
 
 class arch_power(generic_ppc):
 	"builder class for generic power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=power -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=power -mtune=power -fno-strict-aliasing -pipe"
 
 class arch_g3(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=G3 -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G3 -mtune=G3 -fno-strict-aliasing -pipe"
 
 class arch_g4(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=G4 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_g5(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mtune=G5 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 def register(foo):
