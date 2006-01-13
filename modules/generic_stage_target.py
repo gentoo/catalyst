@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.114 2006/01/10 19:52:46 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.115 2006/01/13 15:00:04 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -190,7 +190,7 @@ class generic_stage_target(generic_target):
 			self.mounts.append("/var/tmp/ccache")
 			self.mountmap["/var/tmp/ccache"]=ccdir
 			# for the chroot:
-			os.environ["CCACHE_DIR"]="/var/tmp/ccache"	
+			self.env["CCACHE_DIR"]="/var/tmp/ccache"	
 	
 	def override_chost(self):
 		#if os.environ.has_key("CHOST"):

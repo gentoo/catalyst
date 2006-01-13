@@ -34,10 +34,10 @@ setup_gk_args() {
 	then
 		GK_ARGS="${GK_ARGS} --initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
 	fi
-#	if [ -n "${clst_CCACHE}" ]
-#	then
-#		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
-#	fi
+	if [ -n "${clst_CCACHE}" ]
+	then
+		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
+	fi
 	
 	if [ "${clst_devmanager}" == "devfs" ]
 	then
