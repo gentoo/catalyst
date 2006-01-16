@@ -1,7 +1,8 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.20 2006/01/10 15:40:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.21 2006/01/16 15:25:08 wolf31o2 Exp $
+
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -63,7 +64,7 @@ then
 				sh)
 					clst_iso_volume_id="Gentoo Linux - SH"
 				;;
-				sparc|sparc64)
+				sparc*)
 					clst_iso_volume_id="Gentoo Linux - SPARC"
 				;;
 				x86)
@@ -148,7 +149,7 @@ case ${clst_mainarch} in
 			;;
 		esac
 	;;
-	sparc|sparc64)
+	sparc*)
 		# Old silo + patched mkisofs fubar magic
 		# Only silo 1.2.x seems to work for most hardware
 		# Seems silo 1.3.x+ breaks on newer machines

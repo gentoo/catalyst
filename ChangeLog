@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.508 2006/01/16 14:47:01 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.509 2006/01/16 15:25:08 wolf31o2 Exp $
+
+  16 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/create-iso.sh, targets/support/netboot2-final.sh:
+  Fixing some spacing.  This is catalyst 2.0_rc15.
 
   16 Jan 2006; Eric Edgar <rocket@gentoo.org> targets/support/functions.sh:
   Attempt to fix bug 117649
