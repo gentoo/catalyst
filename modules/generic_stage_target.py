@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.115 2006/01/13 15:00:04 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.116 2006/01/16 07:18:28 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -21,8 +21,8 @@ class generic_stage_target(generic_target):
 		
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
 			"snapshot","source_subpath","portage_confdir","cflags","cxxflags",\
-			"ldflags","chost","hostuse"])
-		generic_target.__init__(self,addlargs,myspec)
+			"ldflags","chost","hostuse","portage_overlay","distcc_hosts"])
+		generic_target.__init__(self,myspec,addlargs)
 		
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
@@ -438,9 +438,10 @@ class generic_stage_target(generic_target):
 				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
 
 	def set_portage_overlay(self):
-	    if self.settings.has_key("portage_overlay"):
-	    	if type(self.settings["portage_overlay"])==types.StringType:
-			self.settings["portage_overlay"]=[self.settings["portage_overlay"]]
+		if self.settings.has_key("portage_overlay"):
+			if type(self.settings["portage_overlay"])==types.StringType:
+				self.settings["portage_overlay"]=self.settings["portage_overlay"].split()
+			print "portage_overlay directories are set to: \"" + string.join(self.settings["portage_overlay"])+"\""
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -716,7 +717,8 @@ class generic_stage_target(generic_target):
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
 				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir",env=self.env)
-				cmd("rsync -a --delete "+x+"/* "+self.settings["chroot_path"]+x,\
+				#cmd("rsync -a --delete "+x+"/* "+self.settings["chroot_path"]+x,\
+				cmd("rsync -a --delete "+x+"/ "+self.settings["chroot_path"]+x,\
 						"Could not copy portage_overlay",env=self.env)
 				#cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay",env=self.env)
 	
@@ -858,10 +860,8 @@ class generic_stage_target(generic_target):
 
 		    # setup the portage overlay	
 			if self.settings.has_key("portage_overlay"):
-				if type(self.settings["portage_overlay"])==types.StringType:
-					self.settings[self.settings["portage_overlay"]]=[self.settings["portage_overlay"]]
-					
 				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
+			
 			myf.close()
 			touch(self.settings["autoresume_path"]+"chroot_setup")
 	
