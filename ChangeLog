@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.509 2006/01/16 15:25:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.510 2006/01/16 15:45:03 wolf31o2 Exp $
+
+  16 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/bootloader-setup.sh:
+  Added fix from bug #119123.  This is catalyst 2.0_rc16.
 
   16 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/create-iso.sh, targets/support/netboot2-final.sh:

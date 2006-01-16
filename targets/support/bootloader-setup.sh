@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.22 2005/12/16 18:57:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.23 2006/01/16 15:45:03 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -75,7 +75,7 @@ case ${clst_mainarch} in
 			echo >> ${icfg}
 			echo "image=/boot/${x}" >> ${icfg}
 
-			if [ -e "/boot/${x}.igz" ]
+			if [ -e "$1/boot/${x}.igz" ]
 			then
 				echo "initrd=/boot/${x}.igz" >> ${icfg}
 			fi
