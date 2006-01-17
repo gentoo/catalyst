@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.117 2006/01/17 20:39:15 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.118 2006/01/17 22:45:51 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -150,8 +150,6 @@ class generic_stage_target(generic_target):
 		self.set_rm()
 		self.set_linuxrc()
 		self.set_portage_overlay()	
-		
-		addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
 		
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()

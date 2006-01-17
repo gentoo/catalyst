@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.513 2006/01/17 20:45:49 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.514 2006/01/17 22:45:51 rocket Exp $
+
+  17 Jan 2006; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py:
+  remove extra function that was converting strings to lists unnecessarily
 
   17 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0_rc17.
