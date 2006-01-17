@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.116 2006/01/16 07:18:28 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.117 2006/01/17 20:39:15 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -15,15 +15,15 @@ import catalyst_lock
 class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
-		
 		self.required_values.extend(["version_stamp","target","subarch","rel_type",\
 			"profile","snapshot","source_subpath"])
 		
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
 			"snapshot","source_subpath","portage_confdir","cflags","cxxflags",\
 			"ldflags","chost","hostuse","portage_overlay","distcc_hosts"])
-		generic_target.__init__(self,myspec,addlargs)
 		
+		self.set_valid_build_kernel_vars(addlargs)
+		generic_target.__init__(self,myspec,addlargs)
 		# map the mainarch we are running under to the mainarches we support for
 		# building stages and LiveCDs. (for example, on amd64, we can build stages for
 		# x86 or amd64.
@@ -91,7 +91,6 @@ class generic_stage_target(generic_target):
 			
 			except IOError:
 				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
-		
 		# call arch constructor, pass our settings
 		try:
                         self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
@@ -136,7 +135,7 @@ class generic_stage_target(generic_target):
 		self.set_use()
 		self.set_cleanables()
 		self.set_iso_volume_id()
-		self.set_build_kernel_vars(addlargs)	
+		self.set_build_kernel_vars()
 		self.set_fsscript()
 		self.set_archscript()
 		self.set_runscript()
@@ -151,6 +150,9 @@ class generic_stage_target(generic_target):
 		self.set_rm()
 		self.set_linuxrc()
 		self.set_portage_overlay()	
+		
+		addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
+		
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
@@ -447,13 +449,12 @@ class generic_stage_target(generic_target):
 		# ROOT= variable for emerges
 		self.settings["root_path"]="/"
 
-	def set_build_kernel_vars(self,addlargs):
-		
-	    if addlargs.has_key("boot/kernel"):
-		if type(addlargs["boot/kernel"]) == types.StringType:
-			loopy=[addlargs["boot/kernel"]]
-		else:
-			loopy=addlargs["boot/kernel"]
+	def set_valid_build_kernel_vars(self,addlargs):
+		if addlargs.has_key("boot/kernel"):
+			if type(addlargs["boot/kernel"]) == types.StringType:
+				loopy=[addlargs["boot/kernel"]]
+			else:
+				loopy=addlargs["boot/kernel"]
 			    
 		for x in loopy:
 			self.required_values.append("boot/kernel/"+x+"/sources")
@@ -466,18 +467,20 @@ class generic_stage_target(generic_target):
 			self.valid_values.append("boot/kernel/"+x+"/gk_action")
 			self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
 			self.valid_values.append("boot/kernel/"+x+"/softlevel")
-	    		if self.settings.has_key("boot/kernel/"+x+"/postconf"):
+			self.valid_values.append("boot/kernel/"+x+"/postconf")
+			if addlargs.has_key("boot/kernel/"+x+"/postconf"):
 	   			print "boot/kernel/"+x+"/postconf is deprecated"
 				print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
 				print "\tPlease move them to boot/kernel/"+x+"/packages in your specfile"
-				if type(self.settings["boot/kernel/"+x+"/postconf"]) == types.StringType:
-					loop2=[self.settings["boot/kernel/"+x+"/postconf"]]
+				if type(addlargs["boot/kernel/"+x+"/postconf"]) == types.StringType:
+					loop2=[addlargs["boot/kernel/"+x+"/postconf"]]
 				else:
-					loop2=self.settings["boot/kernel/"+x+"/postconf"]
+					loop2=addlargs["boot/kernel/"+x+"/postconf"]
 				
 				for y in loop2:
-					self.settings["boot/kernel/"+x+"/packages"].append(y)
+					addlargs["boot/kernel/"+x+"/packages"].append(y)
 
+	def set_build_kernel_vars(self):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
 		self.settings["devmanager"]=self.settings[self.settings["spec_prefix"]+"/devmanager"]
 		del self.settings[self.settings["spec_prefix"]+"/devmanager"]

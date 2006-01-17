@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.67 2006/01/13 15:09:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.68 2006/01/17 20:39:15 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -705,11 +705,13 @@ def arg_parse(cmdline):
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
 	global valid_config_file_values
+	
 	for x in addlargs.keys():
-		if x not in validspec and x not in valid_config_file_values:
+		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
 			raise CatalystError, "Argument \""+x+"\" not recognized."
 		else:
 			myspec[x]=addlargs[x]
+	
 	for x in requiredspec:
 		if not myspec.has_key(x):
 			raise CatalystError, "Required argument \""+x+"\" not specified."
