@@ -108,6 +108,10 @@ setup_binutils(){
 	fi
 }
 
+cleanup_distcc() {
+	rm -rf /etc/distcc/hosts
+}
+
 update_env_settings(){
 	/usr/sbin/env-update
 	source /etc/profile

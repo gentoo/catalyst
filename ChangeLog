@@ -1,5 +1,16 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.510 2006/01/16 15:45:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.511 2006/01/17 19:30:44 wolf31o2 Exp $
+
+  17 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-preclean-chroot.sh,
+  targets/grp/grp-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh,
+  targets/stage1/stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/support/chroot-functions.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  Added function to cleanup stray /etc/distcc/hosts files.
 
   16 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/bootloader-setup.sh:
@@ -10,11 +21,11 @@
   Fixing some spacing.  This is catalyst 2.0_rc15.
 
   16 Jan 2006; Eric Edgar <rocket@gentoo.org> targets/support/functions.sh:
-  Attempt to fix bug 117649
+  Attempt to fix bug #117649
 
   16 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
-  fixes for bugs 119009,119041 and 118985
+  fixes for bugs #119009, #119041 and #118985
 
   13 Jan 2006; Eric Edgar <rocket@gentoo.org>
   +examples/netboot2_template.spec, modules/catalyst_support.py,
