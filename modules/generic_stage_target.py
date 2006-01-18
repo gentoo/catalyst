@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.118 2006/01/17 22:45:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.119 2006/01/18 14:10:23 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -454,29 +454,29 @@ class generic_stage_target(generic_target):
 			else:
 				loopy=addlargs["boot/kernel"]
 			    
-		for x in loopy:
-			self.required_values.append("boot/kernel/"+x+"/sources")
-			self.required_values.append("boot/kernel/"+x+"/config")
-			self.valid_values.append("boot/kernel/"+x+"/aliases")
-			self.valid_values.append("boot/kernel/"+x+"/extraversion")
-			self.valid_values.append("boot/kernel/"+x+"/packages")
-			self.valid_values.append("boot/kernel/"+x+"/use")
-			self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
-			self.valid_values.append("boot/kernel/"+x+"/gk_action")
-			self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
-			self.valid_values.append("boot/kernel/"+x+"/softlevel")
-			self.valid_values.append("boot/kernel/"+x+"/postconf")
-			if addlargs.has_key("boot/kernel/"+x+"/postconf"):
-	   			print "boot/kernel/"+x+"/postconf is deprecated"
-				print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
-				print "\tPlease move them to boot/kernel/"+x+"/packages in your specfile"
-				if type(addlargs["boot/kernel/"+x+"/postconf"]) == types.StringType:
-					loop2=[addlargs["boot/kernel/"+x+"/postconf"]]
-				else:
-					loop2=addlargs["boot/kernel/"+x+"/postconf"]
+			for x in loopy:
+				self.required_values.append("boot/kernel/"+x+"/sources")
+				self.required_values.append("boot/kernel/"+x+"/config")
+				self.valid_values.append("boot/kernel/"+x+"/aliases")
+				self.valid_values.append("boot/kernel/"+x+"/extraversion")
+				self.valid_values.append("boot/kernel/"+x+"/packages")
+				self.valid_values.append("boot/kernel/"+x+"/use")
+				self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
+				self.valid_values.append("boot/kernel/"+x+"/gk_action")
+				self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
+				self.valid_values.append("boot/kernel/"+x+"/softlevel")
+				self.valid_values.append("boot/kernel/"+x+"/postconf")
+				if addlargs.has_key("boot/kernel/"+x+"/postconf"):
+					print "boot/kernel/"+x+"/postconf is deprecated"
+					print "\tInternally moving these ebuilds to boot/kernel/"+x+"/packages"
+					print "\tPlease move them to boot/kernel/"+x+"/packages in your specfile"
+					if type(addlargs["boot/kernel/"+x+"/postconf"]) == types.StringType:
+						loop2=[addlargs["boot/kernel/"+x+"/postconf"]]
+					else:
+						loop2=addlargs["boot/kernel/"+x+"/postconf"]
 				
-				for y in loop2:
-					addlargs["boot/kernel/"+x+"/packages"].append(y)
+					for y in loop2:
+						addlargs["boot/kernel/"+x+"/packages"].append(y)
 
 	def set_build_kernel_vars(self):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
