@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.514 2006/01/17 22:45:51 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.515 2006/01/18 13:06:39 wolf31o2 Exp $
+
+  18 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/livecd_stage2_target.py:
+  Added livecd/volid to valid_values.
 
   17 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
