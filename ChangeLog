@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.518 2006/01/18 14:11:32 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.519 2006/01/19 23:15:56 rocket Exp $
+
+  19 Jan 2006; Eric Edgar <rocket@gentoo.org> targets/support/pre-kmerge.sh:
+  Fix pre-kmerge.sh for stage4
 
   18 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is 2.0_rc19.

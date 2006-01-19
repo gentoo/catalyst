@@ -7,7 +7,7 @@
 update_env_settings
 
 case ${clst_target} in
-	livecd*)
+	livecd*|stage4)
 		export USE="livecd"
 		run_emerge --oneshot genkernel
 		install -d /usr/portage/packages/gk_binaries
