@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.1 2006/01/13 15:09:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.2 2006/01/20 17:19:42 rocket Exp $
 
 """
 Builder class for a netboot build, version 2
@@ -12,15 +12,16 @@ from generic_stage_target import *
 
 class netboot2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.valid_values = [
-			"netboot2/extra_files",
-		]
 		self.required_values=[
 			"boot/kernel",
 			"netboot2/builddate",
 			"netboot2/busybox_config",
-			"netboot2/packages"			
+			"netboot2/packages",			
+			"netboot2/use"			
 		]
+		self.valid_values=self.required_values[:]
+		self.valid_values.extend(self.required_values)
+		self.valid_values.extend(["netboot2/extra_files"])
 			
 		try:
 			if addlargs.has_key("netboot2/packages"):
@@ -28,13 +29,16 @@ class netboot2_target(generic_stage_target):
 					loopy=[addlargs["netboot2/packages"]]
 				else:
 					loopy=addlargs["netboot2/packages"]
+
+				for x in loopy:
+					self.valid_values.append("netboot2/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot2/packages."
 		
 		
 
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars(addlargs)
+		self.set_build_kernel_vars()
 
 		# Merge packages into the buildroot, and pick out certain files to place in
 		# /tmp/image
