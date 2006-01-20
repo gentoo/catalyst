@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.520 2006/01/20 14:32:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.521 2006/01/20 14:34:57 rocket Exp $
+
+  20 Jan 2006; Eric Edgar <rocket@gentoo.org>
+  modules/generic_stage_target.py, modules/stage4_target.py:
+  add makeopts spec file support.  Fix printout typo bug 119635.
 
   20 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
