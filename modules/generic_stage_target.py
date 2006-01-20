@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.119 2006/01/18 14:10:23 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.120 2006/01/20 14:32:07 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -351,7 +351,7 @@ class generic_stage_target(generic_target):
 		if os.path.isdir(self.settings["source_path"]):
 			print "Source path set to "+self.settings["source_path"]
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
-			print "\tthe source path with then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
+			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 		else:
 			print "Source path set to "+self.settings["source_path"]
 

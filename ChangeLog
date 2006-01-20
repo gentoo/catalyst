@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.519 2006/01/19 23:15:56 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.520 2006/01/20 14:32:07 wolf31o2 Exp $
+
+  20 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Added fix for bug #119635.
 
   19 Jan 2006; Eric Edgar <rocket@gentoo.org> targets/support/pre-kmerge.sh:
   Fix pre-kmerge.sh for stage4
