@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.23 2006/01/16 15:45:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.24 2006/01/24 19:30:47 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -117,6 +117,7 @@ case ${clst_mainarch} in
 		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
 		echo 'chooser=simple' >> ${iacfg}
 		echo 'timeout=50' >> ${iacfg}
+		echo 'relocatable' >> ${iacfg}
 		echo >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do

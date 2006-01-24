@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.524 2006/01/23 23:09:51 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.525 2006/01/24 19:30:47 wolf31o2 Exp $
+
+  24 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/bootloader-setup.sh:
+  Added IA64 patch from plasmaroo.  This is catalyst 2.0_rc21.
 
   23 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
   Changed mcpu to mtune since mcpu is deprecated on GCC 3.4 and above.
