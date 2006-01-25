@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.24 2006/01/24 19:30:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.25 2006/01/25 16:07:35 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -13,17 +13,11 @@ check_dev_manager
 check_bootargs
 check_filesystem_type
 
-eval "clst_kernel_softlevel=\$clst_boot_kernel_${clst_kname}_softlevel"
-
 default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
-
-if ${clst_kernel_softlevel}
-then
-	default_append_line="${default_append_line} softlevel=${clst_kernel_softlevel}"
-fi
 
 case ${clst_mainarch} in
 	alpha)
+		# NO SOFTLEVEL SUPPORT YET
 		acfg=$1/etc/aboot.conf
 		bctr=0
 		for x in ${clst_boot_kernel}
@@ -35,8 +29,10 @@ case ${clst_mainarch} in
 		done
 		;;
 	arm)
+		# NO SOFTLEVEL SUPPORT YET
 		;;
 	hppa)
+		# NO SOFTLEVEL SUPPORT YET
 		icfg=$1/boot/palo.conf
 		kmsg=$1/boot/kernels.msg
 		hmsg=$1/boot/help.msg
@@ -45,6 +41,8 @@ case ${clst_mainarch} in
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		;;
 	ppc)
+		# NO SOFTLEVEL SUPPORT YET
+		
 		# PPC requirements: 
 		# -----------------
 		# The specs indicate the kernels to be build. We need to put
@@ -59,6 +57,10 @@ case ${clst_mainarch} in
 		# but the following suffices for now:
 
 		# this sets up the config file for yaboot
+
+
+		# ADD RUNLEVEL SUPPORT ???
+
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
 		echo "default ${first}" > ${icfg}
@@ -69,7 +71,7 @@ case ${clst_mainarch} in
 		echo "bgcolor=black" >> ${icfg}
 		echo "message=/boot/boot.msg" >> ${icfg}
 		for x in ${clst_boot_kernel}
-		do
+		do	
 			eval custom_kopts=\$${x}_kernelopts
 			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 			echo >> ${icfg}
@@ -91,6 +93,8 @@ case ${clst_mainarch} in
 		done
 		;;
 	sparc*)
+		# NO SOFTLEVEL SUPPORT YET
+		
 		scfg=$1/boot/silo.conf
 		echo "default=\"help\"" > ${scfg}
 		echo "message=\"/boot/boot.msg\"" >> ${scfg}
@@ -112,12 +116,13 @@ case ${clst_mainarch} in
 		echo -e "label=\"help\"" >> ${scfg}
 		;;
 	ia64)
+		# NO SOFTLEVEL SUPPORT YET
+		
 		iacfg=$1/boot/elilo.conf
 		echo 'prompt' > ${iacfg}
 		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
 		echo 'chooser=simple' >> ${iacfg}
 		echo 'timeout=50' >> ${iacfg}
-		echo 'relocatable' >> ${iacfg}
 		echo >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
@@ -167,22 +172,48 @@ case ${clst_mainarch} in
 				eval custom_kopts=\$${x}_kernelopts
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
-				echo "label ${x}" >> ${icfg}
-				echo "  kernel ${x}" >> ${icfg}
-				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
-				then
-					echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-				else
-					echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
-				fi
+				
+				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
 
-				echo >> ${icfg}
-				echo "   ${x}" >> ${kmsg}
-				echo "label ${x}-nofb" >> ${icfg}
-				echo "  kernel ${x}" >> ${icfg}
-				echo "  append ${default_append_line} initrd=${x}.igz" >> ${icfg}
-				echo >> ${icfg}
-				echo "   ${x}-nofb" >> ${kmsg}
+				if [ -n "${clst_kernel_softlevel}" ]
+				then
+					for y in ${clst_kernel_softlevel}
+					do
+						echo "label ${x}-${y}" >> ${icfg}
+						echo "  kernel ${x}" >> ${icfg}
+						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
+							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+						else
+							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
+						fi
+
+						echo >> ${icfg}
+						echo "   ${x}" >> ${kmsg}
+						echo "label ${x}-${y}-nofb" >> ${icfg}
+						echo "  kernel ${x}" >> ${icfg}
+						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz" >> ${icfg}
+						echo >> ${icfg}
+						echo "   ${x}-nofb" >> ${kmsg}
+					done
+				else
+					echo "label ${x}" >> ${icfg}
+					echo "  kernel ${x}" >> ${icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+					else
+						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
+					fi
+
+					echo >> ${icfg}
+					echo "   ${x}" >> ${kmsg}
+					echo "label ${x}-nofb" >> ${icfg}
+					echo "  kernel ${x}" >> ${icfg}
+					echo "  append ${default_append_line} initrd=${x}.igz" >> ${icfg}
+					echo >> ${icfg}
+					echo "   ${x}-nofb" >> ${kmsg}
+				fi
 			done
 
 			if [ -f $1/isolinux/memtest86 ]
@@ -212,27 +243,54 @@ case ${clst_mainarch} in
 				eval custom_kopts=\$${x}_kernelopts
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
-				echo "title ${x}" >> ${icfg}
-
-				if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+				
+				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
+				
+				if [ -n "${clst_kernel_softlevel}" ]
 				then
-					echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+					for y in ${clst_kernel_softlevel}
+					do
+						echo "title ${x}-${y}" >> ${icfg}
+						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
+							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+						else
+							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent" >> ${icfg}
+						fi
+						if [ -e $1/boot/${x}.igz ]
+						then
+							echo "initrd /boot/${x}.igz" >> ${icfg}
+						fi
+						echo >> ${icfg}
+						echo "title ${x}-${y} [ No FrameBuffer ]" >> ${icfg}
+						echo "kernel ${x} /boot/${x} softlevel=${y} ${default_append_line}" >> ${icfg}
+						if [ -e $1/boot/${x}.igz ]
+						then
+							echo "initrd /boot/${x}.igz" >> ${icfg}
+						fi
+						echo >> ${icfg}
+					done
 				else
-					echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
+					echo "title ${x}" >> ${icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+					else
+						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
+					fi
+					if [ -e $1/boot/${x}.igz ]
+					then
+						echo "initrd /boot/${x}.igz" >> ${icfg}
+					fi
+					echo >> ${icfg}
+					echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
+					echo "kernel ${x} /boot/${x} ${default_append_line}" >> ${icfg}
+					if [ -e $1/boot/${x}.igz ]
+					then
+						echo "initrd /boot/${x}.igz" >> ${icfg}
+					fi
 				fi
 
-				if [ -e $1/boot/${x}.igz ]
-				then
-					echo "initrd /boot/${x}.igz" >> ${icfg}
-				fi
-
-				echo >> ${icfg}
-				echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
-				echo "kernel ${x} /boot/${x} ${default_append_line}" >> ${icfg}
-				if [ -e $1/boot/${x}.igz ]
-				then
-					echo "initrd /boot/${x}.igz" >> ${icfg}
-				fi
 			done
 
 			if [ -f $1/boot/memtest86 ]
@@ -244,6 +302,10 @@ case ${clst_mainarch} in
 		fi
 		;;
 	mips)
+
+		# NO SOFTLEVEL SUPPORT YET
+
+
 		# Mips is an interesting arch -- where most archs will
 		# use ${1} as the root of the LiveCD, an SGI LiveCD lacks
 		# such a root.  Instead, we will use ${1} as a scratch

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.121 2006/01/20 14:34:57 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.122 2006/01/25 16:07:35 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -351,7 +351,7 @@ class generic_stage_target(generic_target):
 		if os.path.isdir(self.settings["source_path"]):
 			print "Source path set to "+self.settings["source_path"]
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
-			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
+			print "\tthe source path with then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 		else:
 			print "Source path set to "+self.settings["source_path"]
 
@@ -460,6 +460,8 @@ class generic_stage_target(generic_target):
 				self.valid_values.append("boot/kernel/"+x+"/aliases")
 				self.valid_values.append("boot/kernel/"+x+"/extraversion")
 				self.valid_values.append("boot/kernel/"+x+"/packages")
+				if type(addlargs["boot/kernel/"+x+"/packages"]) == types.StringType:
+					addlargs["boot/kernel/"+x+"/packages"]=[addlargs["boot/kernel/"+x+"/packages"]]
 				self.valid_values.append("boot/kernel/"+x+"/use")
 				self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
 				self.valid_values.append("boot/kernel/"+x+"/gk_action")
@@ -476,7 +478,10 @@ class generic_stage_target(generic_target):
 						loop2=addlargs["boot/kernel/"+x+"/postconf"]
 				
 					for y in loop2:
-						addlargs["boot/kernel/"+x+"/packages"].append(y)
+						if not addlargs.has_key("boot/kernel/"+x+"/packages"):
+							addlargs["boot/kernel/"+x+"/packages"]=[[y]]
+						else:
+							addlargs["boot/kernel/"+x+"/packages"].append(y)
 
 	def set_build_kernel_vars(self):
 	    if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
