@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.22 2006/01/26 21:53:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.23 2006/01/26 23:17:17 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -197,14 +197,14 @@ case ${clst_mainarch} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
 				echo "mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe \
-					-map ${clst_target_path}/boot/map.hfs -part -no-desktop \
+					-map ${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}/boot -V \"${clst_iso_volume_id}\" -o \
+					${clst_target_path}boot -V \"${clst_iso_volume_id}\" -o \
 					${1} ${clst_target_path}"
 				mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}/boot/map.hfs -part -no-desktop \
+					${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}/boot -V "${clst_iso_volume_id}" -o \
+					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
 					${1} ${clst_target_path} || die "Cannot make ISO image"
 			;;
 			*)

@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.532 2006/01/26 21:53:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.533 2006/01/26 23:17:16 wolf31o2 Exp $
+
+  26 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/create-iso.sh:
+  Added patch from bug #120475 that resolves HFS blessing on PPC*. This is
+  2.0_rc24.
 
   26 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   +livecd/cdtar/isolinux-elilo-memtest86+-cdtar.tar.bz2,
