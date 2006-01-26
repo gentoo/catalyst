@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.41 2005/12/19 15:23:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.42 2006/01/26 15:35:41 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -26,6 +26,8 @@ then
 fi
 
 ## START BUILD
-run_emerge "--noreplace ${clst_buildpkgs}"
+run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
+rm -f /var/lib/portage/world
+touch /var/lib/portage/world
 
 rm -f /var/log/emerge.log
