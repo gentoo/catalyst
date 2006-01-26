@@ -10,7 +10,7 @@ case ${clst_target} in
 	livecd*|stage4)
 		export USE="livecd"
 		run_emerge --oneshot genkernel
-		install -d /usr/portage/packages/gk_binaries
+		install -d /tmp/kerncache
 
 		# Setup case structure for livecd_type
 		case ${clst_livecd_type} in
@@ -27,7 +27,7 @@ case ${clst_target} in
 
 	netboot2)
 		run_emerge --oneshot genkernel
-		install -d /usr/portage/packages/gk_binaries
+		install -d /tmp/kerncache
 
 		# Set the netboot builddate/hostname in linuxrc & copy to proper arch directory in genkernel
 		sed -e "s/@@MYDATE@@/${clst_netboot2_builddate}/g" \

@@ -89,7 +89,7 @@ extract_kernels() {
 	for x in ${clst_boot_kernel}
 	do
 		first=${first:-""}
-		kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${x}-kernel-initrd-${clst_version_stamp}.tar.bz2"
+		kbinary="${clst_chroot_path}/tmp/kmerge/${x}-kernel-initrd-${clst_version_stamp}.tar.bz2"
 		if [ -z "${first}" ]
 		then
 			# grab name of first kernel
@@ -132,7 +132,7 @@ extract_kernels() {
 extract_modules() {
 	# $1 = Destination
 	# $2 = kname	
-	kmodules="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-modules-${clst_version_stamp}.tar.bz2"
+	kmodules="${clst_chroot_path}/tmp/kmerge/${2}-modules-${clst_version_stamp}.tar.bz2"
 
 	if [ -f "${kmodules}" ]
 	then
@@ -146,7 +146,7 @@ extract_kernel() {
 	# $1 = Destination
 	# $2 = kname
 
-	kbinary="${clst_chroot_path}/usr/portage/packages/gk_binaries/${2}-kernel-initrd-${clst_version_stamp}.tar.bz2"
+	kbinary="${clst_chroot_path}/tmp/kmerge/${2}-kernel-initrd-${clst_version_stamp}.tar.bz2"
 	[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 	mkdir -p ${1}/
 	tar xjf ${kbinary} -C ${1}/
