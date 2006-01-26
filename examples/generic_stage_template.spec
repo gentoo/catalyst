@@ -91,3 +91,9 @@ cxxflags:
 # example:
 # ldflags: -Wl,-O1 -Wl,-z,now
 ldflags:
+
+# Setting the option overrides the location of the pkgcache
+pkgcache_path:
+
+# Setting the option overrides the location of the kerncache
+kerncache_path:

@@ -78,3 +78,10 @@ tinderbox/use:
 # exampleL
 # tinderbox/packages: dante tsocks sys-apps/eject minicom links acpid apmd parted whois tcpdump cvs zip unzip netcat partimage app-admin/sudo app-cdr/cdrtools gnome emacs dev-lang/ruby enlightenment kde mozilla-firefox mozilla-thunderbird xfce4 openbox fluxbox sylpheed openoffice-bin gimp xemacs xmms abiword gaim xchat pan tetex xcdroast k3b samba nmap gradm ettercap ethereal mplayer
 tinderbox/packages:
+
+# Setting the option overrides the location of the pkgcache
+pkgcache_path:
+
+# Setting the option overrides the location of the kerncache
+kerncache_path:
+

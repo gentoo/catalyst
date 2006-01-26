@@ -286,3 +286,10 @@ netboot2/packages/xfsprogs/files:
 	/sbin/fsck.xfs
 	/sbin/mkfs.xfs
 	/sbin/xfs_repair
+
+# Setting the option overrides the location of the pkgcache
+pkgcache_path:
+
+# Setting the option overrides the location of the kerncache
+kerncache_path:
+

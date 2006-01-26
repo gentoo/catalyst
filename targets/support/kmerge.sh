@@ -4,21 +4,23 @@
 
 source /tmp/chroot-functions.sh
 
+mkdir -p /tmp/kerncache
+
 check_genkernel_version
 
-PKGDIR=/usr/portage/packages/gk_binaries/${clst_kname}/ebuilds
+PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 
 setup_gk_args() {
 	# default genkernel args
 	GK_ARGS="${clst_gk_mainargs} \
 			 ${clst_kernel_gk_kernargs} \
-			 --cachedir=/usr/portage/packages/gk_binaries/${clst_kname}-genkernel_cache-${clst_version_stamp} \
+			 --cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp} \
 			 --no-mountboot \
 			 --kerneldir=/usr/src/linux \
 			 --kernel-config=/var/tmp/${clst_kname}.config \
-			 --modulespackage=/usr/portage/packages/gk_binaries/${clst_kname}-modules-${clst_version_stamp}.tar.bz2 \
-			 --minkernpackage=/usr/portage/packages/gk_binaries/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 \
-			 --kerncache=/usr/portage/packages/gk_binaries/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2 all"
+			 --modulespackage=/tmp/kerncache/${clst_kname}-modules-${clst_version_stamp}.tar.bz2 \
+			 --minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 \
+			 --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2 all"
 	# extra genkernel options that we have to test for
 	if [ "${clst_splash_type}" == "bootsplash" -a -n "${clst_splash_theme}" ]
 	then
@@ -84,7 +86,7 @@ genkernel_compile(){
 			genkernel ${GK_ARGS} || exit 1
 		fi
 	fi
-	md5sum /var/tmp/${clst_kname}.config|awk '{print $1}' > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
+	md5sum /var/tmp/${clst_kname}.config|awk '{print $1}' > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
 }
 
 build_kernel() {
@@ -121,9 +123,9 @@ eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
 # real benefit in using the pkgcache for kernel source ebuilds.
 
 USE_MATCH=0 
-if [ -e /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
+if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
 then
-	STR1=$(for i in `cat /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
+	STR1=$(for i in `cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
 	STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
 	if [ "${STR1}" = "${STR2}" ]
 	then 
@@ -132,18 +134,18 @@ then
 	else
 		if [ -n "${clst_KERNCACHE}" ]
 		then
-		[ -d /usr/portage/packages/gk_binaries/${clst_kname}/ebuilds ] && \
-			rm -r /usr/portage/packages/gk_binaries/${clst_kname}/ebuilds
-		[ -e /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux/.config ] && \
-			rm /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux/.config
+		[ -d /tmp/kerncache/${clst_kname}/ebuilds ] && \
+			rm -r /tmp/kerncache/${clst_kname}/ebuilds
+		[ -e /tmp/kerncache/${clst_kname}/usr/src/linux/.config ] && \
+			rm /tmp/kerncache/${clst_kname}/usr/src/linux/.config
 		fi
 	fi
 fi
 
 EXTRAVERSION_MATCH=0
-if [ -e /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION ]
+if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION ]
 then
-	STR1=`cat /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
+	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
 	STR2=${clst_kextraversion}
 	if [ "${STR1}" = "${STR2}" ]
 	then 
@@ -156,9 +158,9 @@ then
 fi
 
 CONFIG_MATCH=0
-if [ -e /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
+if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
 then
-	STR1=`cat /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
+	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
 	STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
 	if [ "${STR1}" = "${STR2}" ]
 	then 
@@ -174,17 +176,17 @@ if [ "${USE_MATCH}" = "0" -o "${EXTRAVERSION_MATCH}" = "0" -o "${CONFIG_MATCH}" 
 then
 	echo "Cleaning up ${clst_kname} kernel install ..."
 	echo "This may take some time ..."
-	if [ -d /usr/portage/packages/gk_binaries/${clst_kname}/ ] 
+	if [ -d /tmp/kerncache/${clst_kname}/ ] 
 	then
-		rm -r /usr/portage/packages/gk_binaries/${clst_kname}/ || exit 1
+		rm -r /tmp/kerncache/${clst_kname}/ || exit 1
 	fi
 fi
 
-mkdir -p /usr/portage/packages/gk_binaries/${clst_kname}
+mkdir -p /tmp/kerncache/${clst_kname}
 	
 if [ -n "${clst_KERNCACHE}" ]
 then
-   	ROOT=/usr/portage/packages/gk_binaries/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -ukb  "${clst_ksource}" || exit 1
+   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -ukb  "${clst_ksource}" || exit 1
 	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
 	if [ ! -e /etc/portage/profile/package.provided ]
 	then
@@ -197,7 +199,7 @@ then
 		fi
 	fi
 		[ -d /usr/src/linux ] && rm /usr/src/linux
-	ln -s /usr/portage/packages/gk_binaries/${clst_kname}/usr/src/linux /usr/src/linux
+	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
 		USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
 fi
@@ -210,9 +212,9 @@ then
 	then
 	echo "Setting extraversion to ${clst_kextraversion}"
 	sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
-		echo ${clst_kextraversion} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+		echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	else 
-		touch /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+		touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	fi
 fi
 
@@ -227,4 +229,4 @@ clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 /sbin/modules-update --assume-kernel=${clst_fudgeuname}
 
 unset USE
-echo ${clst_kernel_use} > /usr/portage/packages/gk_binaries/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
+echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE

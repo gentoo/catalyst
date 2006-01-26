@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.122 2006/01/25 16:07:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.123 2006/01/26 19:56:32 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -20,7 +20,8 @@ class generic_stage_target(generic_target):
 		
 		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
 			"snapshot","source_subpath","portage_confdir","cflags","cxxflags",\
-			"ldflags","chost","hostuse","portage_overlay","distcc_hosts","makeopts"])
+			"ldflags","chost","hostuse","portage_overlay","distcc_hosts","makeopts",\
+			"pkgcache_path","kerncache_path"])
 		
 		self.set_valid_build_kernel_vars(addlargs)
 		generic_target.__init__(self,myspec,addlargs)
@@ -177,6 +178,12 @@ class generic_stage_target(generic_target):
 			print "Location of the package cache is " + self.settings["pkgcache_path"]
 			self.mounts.append("/usr/portage/packages")
 			self.mountmap["/usr/portage/packages"]=self.settings["pkgcache_path"]
+		
+		if self.settings.has_key("KERNCACHE"):
+			self.set_kerncache_path()
+			print "Location of the kerncache is " + self.settings["kerncache_path"]
+			self.mounts.append("/tmp/kerncache")
+			self.mountmap["/tmp/kerncache"]=self.settings["kerncache_path"]
 
 		if self.settings.has_key("CCACHE"):
 			if os.environ.has_key("CCACHE_DIR"):
@@ -251,9 +258,17 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("pkgcache_path"):
 			if type(self.settings["pkgcache_path"]) != types.StringType:
 				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+		else:
+			self.settings["pkgcache_path"]=normpath(self.settings["storedir"]+"/packages/"+\
+				self.settings["target_subpath"]+"/")
 
-		self.settings["pkgcache_path"]=normpath(self.settings["storedir"]+"/packages/"+\
-			self.settings["target_subpath"]+"/")
+	def set_kerncache_path(self):
+		if self.settings.has_key("kerncache_path"):
+			if type(self.settings["kerncache_path"]) != types.StringType:
+				self.settings["kerncache_path"]=normpath(string.join(self.settings["kerncache_path"]))
+		else:
+			self.settings["kerncache_path"]=normpath(self.settings["storedir"]+"/kerncache/"+\
+				self.settings["target_subpath"]+"/")
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
@@ -617,6 +632,10 @@ class generic_stage_target(generic_target):
 			if self.settings.has_key("PKGCACHE"):	
 				if not os.path.exists(self.settings["pkgcache_path"]):
 					os.makedirs(self.settings["pkgcache_path"],0755)
+			
+			if self.settings.has_key("KERNCACHE"):	
+				if not os.path.exists(self.settings["kerncache_path"]):
+					os.makedirs(self.settings["kerncache_path"],0755)
 			
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)
@@ -1277,6 +1296,22 @@ class generic_stage_target(generic_target):
 		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 		    os.chmod(myemp,mystat[ST_MODE])
 	
+	def clear_kerncache(self):
+	    if self.settings.has_key("KERNCACHE"):
+		print "purging the kerncache ..."
+
+		myemp=self.settings["kerncache_path"]
+		if os.path.isdir(myemp):
+		    print "Emptying directory",myemp
+		    # stat the dir, delete the dir, recreate the dir and set
+		    # the proper perms and ownership
+		    mystat=os.stat(myemp)
+		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
+		    shutil.rmtree(myemp)
+		    os.makedirs(myemp,0755)
+		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+		    os.chmod(myemp,mystat[ST_MODE])
+	
 	def clear_autoresume(self):
 		# clean resume points since they are no longer needed
 		if self.settings.has_key("AUTORESUME"):
@@ -1324,5 +1359,8 @@ class generic_stage_target(generic_target):
 		
 		print "clearing package cache ..."
 		self.clear_packages()
+		
+		print "clearing kerncache ..."
+		self.clear_kerncache()
 
 #vim: ts=4 sw=4 sta et sts=4 ai

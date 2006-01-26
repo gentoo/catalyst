@@ -124,3 +124,10 @@ netboot/packages/reiserfsprogs/files:
 # example:
 # netboot/extra_files: /lib/libresolv.so.2 /lib/libnss_compat.so.2 /lib/libnss_dns.so.2 /lib/libnss_files.so.2 /sbin/consoletype
 netboot/extra_files:
+
+# Setting the option overrides the location of the pkgcache
+pkgcache_path:
+
+# Setting the option overrides the location of the kerncache
+kerncache_path:
+
