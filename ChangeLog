@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.533 2006/01/26 23:17:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.534 2006/01/26 23:39:26 wolf31o2 Exp $
+
+  26 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/create-iso.sh:
+  Really fixing bug #120475 this time.  This is 2.0_rc25.
 
   26 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/create-iso.sh:
