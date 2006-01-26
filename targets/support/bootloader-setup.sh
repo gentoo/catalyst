@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.25 2006/01/25 16:07:35 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.26 2006/01/26 21:53:55 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -136,9 +136,9 @@ case ${clst_mainarch} in
 			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
 			echo >> ${iacfg}
+			mv $1/boot/${x}{,.igz} $1/boot/efi/boot
 		done
 		cp ${iacfg} $1/boot/efi/boot
-		mv $1/boot/${x}{,.igz} $1/boot/efi/boot
 		;;
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
@@ -223,6 +223,29 @@ case ${clst_mainarch} in
 				echo "label memtest86" >> $icfg
 				echo "  kernel memtest86" >> $icfg
 			fi
+		fi
+
+		if [ -e $1/boot/efi/elilo.efi ]
+		then
+			iacfg=$1/boot/elilo.conf
+			echo 'prompt' > ${iacfg}
+			echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
+			echo 'chooser=simple' >> ${iacfg}
+			echo 'timeout=50' >> ${iacfg}
+			echo >> ${iacfg}
+			for x in ${clst_boot_kernel}
+			do
+				echo "image=/efi/boot/${x}" >> ${iacfg}
+				echo "  label=${x}" >> ${iacfg}
+				echo '  append="'initrd=${x}.igz ${default_append_line}'"' >> ${iacfg}
+				echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
+				echo >> ${iacfg}
+				echo "image=/efi/boot/${x}" >> ${iacfg}
+				echo >> ${iacfg}
+				cp -f $1/boot/${x}{,.igz} $1/boot/efi/boot > /dev/null
+				cp -f $1/isolinux/${x}{,.igz} $1/boot/efi/boot > /dev/null
+			done
+			cp ${iacfg} $1/boot/efi/boot
 		fi
 
 		if [ -e $1/boot/grub/stage2_eltorito ]

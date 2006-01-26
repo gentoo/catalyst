@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.21 2006/01/16 15:25:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.22 2006/01/26 21:53:55 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -119,6 +119,79 @@ case ${clst_mainarch} in
 		esac
 		palo -f boot/palo.conf -C ${1}
 	;;
+	ia64)
+		if [ ! -e ${clst_target_path}/gentoo.efimg ]
+		then
+			iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
+			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
+			iaSize=$((${iaSizeB}+32)) # Add slack
+
+			dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k \
+				count=${iaSize}
+			mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
+
+			mkdir ${clst_target_path}/gentoo.efimg.mountPoint
+			mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
+				${clst_target_path}/gentoo.efimg.mountPoint
+
+			echo '>> Populating EFI image...'
+			cp -pPRv ${clst_target_path}/boot/* \
+				${clst_target_path}/gentoo.efimg.mountPoint
+
+			umount ${clst_target_path}/gentoo.efimg.mountPoint
+			rmdir ${clst_target_path}/gentoo.efimg.mountPoint
+		else
+			echo ">> Found populated EFI image at \
+				${clst_target_path}/gentoo.efimg"
+		fi
+		echo '>> Removing /boot...'
+		rm -rf ${clst_target_path}/boot
+
+		echo '>> Generating ISO...'
+		echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b \
+			gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
+		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c \
+			boot.cat -no-emul-boot \
+			${clst_target_path} || die "Cannot make ISO image" 
+	;;
+	mips)
+		case ${clst_fstype} in
+			normal)
+				# Gather up all our bits, and generate a tmp config file
+				# for sgibootcd
+				mkdir ${clst_target_path}/loopback ${clst_target_path}/sgibootcd
+				mv ${clst_target_path}/image.loop ${clst_target_path}/loopback
+				rm -f ${clst_target_path}/livecd
+				img="${clst_target_path}/loopback/image.loop"
+				knl="${clst_target_path}/kernels"
+				arc="${clst_target_path}/arcload"
+				cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
+				touch ${cfg}
+
+				# Add the kernels first
+				for x in ${clst_boot_kernel}; do
+					echo -e "f=${knl}/${x}@${x}" >> ${cfg}
+				done
+
+				# Next, the bootloaders
+				echo -e "f=${arc}/sash64@sash64" >> ${cfg}
+				echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
+				echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
+
+				# Next, the Loopback Image
+				echo -e "p0=${img}" >> ${cfg}
+
+				# Finally, the required SGI Partitions
+				echo -e "p8=#dvh" >> ${cfg}
+				echo -e "p10=#volume" >> ${cfg}
+
+				# All done; feed the config to sgibootcd and end up with an
+				# image
+				/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
+			;;
+			*) die "SGI LiveCDs only support the 'normal' fstype!"	;;
+		esac
+	;;
 	ppc*)
 		case ${clst_livecd_cdfstype} in
 			zisofs)
@@ -180,76 +253,113 @@ case ${clst_mainarch} in
 
 		rm /tmp/mkisofs.sparc.fu
 	;;
-	ia64)
-		if [ ! -e ${clst_target_path}/gentoo.efimg ]
-		then
-			iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
-			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
-			iaSize=$((${iaSizeB}+32)) # Add slack
-
-			dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k \
-				count=${iaSize}
-			mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
-
-			mkdir ${clst_target_path}/gentoo.efimg.mountPoint
-			mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
-				${clst_target_path}/gentoo.efimg.mountPoint
-
-			echo '>> Populating EFI image...'
-			cp -pPRv ${clst_target_path}/boot/* \
-				${clst_target_path}/gentoo.efimg.mountPoint
-
-			umount ${clst_target_path}/gentoo.efimg.mountPoint
-			rmdir ${clst_target_path}/gentoo.efimg.mountPoint
-		else
-			echo ">> Found populated EFI image at \
-				${clst_target_path}/gentoo.efimg"
-		fi
-		echo '>> Removing /boot...'
-		rm -rf ${clst_target_path}/boot
-
-		echo '>> Generating ISO...'
-		echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b \
-			gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
-		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c \
-			boot.cat -no-emul-boot \
-			${clst_target_path} || die "Cannot make ISO image" 
-	;;	
 	x86|amd64)
+		if [ -e ${clst_target_path}/boot/elilo.efi ]
+		then
+			if [ ! -e ${clst_target_path}/gentoo.efimg ]
+			then
+				iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
+				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
+				iaSize=$((${iaSizeB}+32)) # Add slack
+
+				dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k \
+					count=${iaSize}
+				mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
+
+				mkdir ${clst_target_path}/gentoo.efimg.mountPoint
+				mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
+					${clst_target_path}/gentoo.efimg.mountPoint
+
+				echo '>> Populating EFI image...'
+				cp -pPRv ${clst_target_path}/boot/* \
+					${clst_target_path}/gentoo.efimg.mountPoint
+
+				umount ${clst_target_path}/gentoo.efimg.mountPoint
+				rmdir ${clst_target_path}/gentoo.efimg.mountPoint
+			else
+				echo ">> Found populated EFI image at \
+					${clst_target_path}/gentoo.efimg"
+			fi
+			echo '>> Removing /boot...'
+			rm -rf ${clst_target_path}/boot
+		fi
+
 		if [ -e ${clst_target_path}/isolinux/isolinux.bin ]
 		then
-			echo "Creating ISO using ISOLINUX bootloader"
 			if [ -d ${clst_target_path}/boot ]
 			then
 				if [ -n "$(ls ${clst_target_path}/boot)" ]
 				then
 					mv ${clst_target_path}/boot/* ${clst_target_path}/isolinux
+					rm -r ${clst_target_path}/boot
+					echo "Creating ISO using ISOLINUX bootloader"
+					case ${clst_fstype} in
+						zisofs)
+							echo "mkisofs -J -R -l -V \
+								\"${clst_iso_volume_id}\" -o ${1} -b \
+								isolinux/isolinux.bin -c isolinux/boot.cat \
+								-no-emul-boot -boot-load-size 4 \
+								-boot-info-table -z ${clst_target_path}"
+							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+								${1} -b isolinux/isolinux.bin -c \
+								isolinux/boot.cat -no-emul-boot \
+								-boot-load-size 4 -boot-info-table -z \
+								${clst_target_path} \
+								|| die "Cannot make ISO image"
+						;;
+						*)
+							echo "mkisofs -J -R -l -V \
+								\"${clst_iso_volume_id}\" -o ${1} -b \
+								isolinux/isolinux.bin -c isolinux/boot.cat \
+								-no-emul-boot -boot-load-size 4 \
+								-boot-info-table ${clst_target_path}"
+							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+								${1} -b isolinux/isolinux.bin -c \
+								isolinux/boot.cat -no-emul-boot \
+								-boot-load-size 4 -boot-info-table \
+								${clst_target_path} \
+								|| die "Cannot make ISO image"
+						;;
+					esac
+				elif [ -e ${clst_target_path}/gentoo.efimg ]
+				then
+					echo "Creating ISO using both ISOLINUX and EFI bootloader"
+					case ${clst_fstype} in
+						zisofs)
+							echo "mkisofs -J -R -l -V \
+								\"${clst_iso_volume_id}\" -o ${1} -b \
+								isolinux/isolinux.bin -c isolinux/boot.cat \
+								-no-emul-boot -boot-load-size 4 \
+								-boot-info-table -eltorito-alt-boot -b \
+								gentoo.efimg -c boot.cat \
+								-no-emul-boot -z ${clst_target_path}"
+							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+								${1} -b isolinux/isolinux.bin -c \
+								isolinux/boot.cat -no-emul-boot \
+								-boot-load-size 4 -boot-info-table \
+								-eltorito-alt-boot -b gentoo.efimg -c \
+								boot.cat -no-emul-boot -z ${clst_target_path} \
+								|| die "Cannot make ISO image"
+						;;
+						*)
+							echo "mkisofs -J -R -l -V \
+								\"${clst_iso_volume_id}\" -o ${1} -b \
+								isolinux/isolinux.bin -c isolinux/boot.cat \
+								-no-emul-boot -boot-load-size 4 \
+								-boot-info-table -eltorito-alt-boot -b \
+								gentoo.efimg -c boot.cat \
+								-no-emul-boot ${clst_target_path}"
+							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+								${1} -b isolinux/isolinux.bin -c \
+								isolinux/boot.cat -no-emul-boot \
+								-boot-load-size 4 -boot-info-table \
+								-eltorito-alt-boot -b gentoo.efimg -c boot.cat \
+								-no-emul-boot ${clst_target_path} \
+								|| die "Cannot make ISO image"
+						;;
+					esac
 				fi
-				rm -r ${clst_target_path}/boot
 			fi
-
-			case ${clst_fstype} in
-				zisofs)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} -b isolinux/isolinux.bin -c isolinux/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table -z \
-						${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
-						isolinux/isolinux.bin -c isolinux/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table -z \
-						${clst_target_path} || die "Cannot make ISO image"
-				;;
-				*)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} -b isolinux/isolinux.bin -c isolinux/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table \
-						${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
-					isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot \
-					-boot-load-size 4 -boot-info-table ${clst_target_path} \
-					|| die "Cannot make ISO image"
-				;;
-			esac
 		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
 		then
 			echo "Creating ISO using GRUB bootloader"
@@ -275,6 +385,14 @@ case ${clst_mainarch} in
 						${clst_target_path} || die "Cannot make ISO image"
 				;;
 			esac
+		elif [ -e ${clst_target_path}/gentoo.efimg ]
+		then
+			echo 'Creating ISO using EFI bootloader'
+			echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b \
+				gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
+			mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
+				gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path} \
+				|| die "Cannot make ISO image" 
 		else	
 			case ${clst_fstype} in
 				zisofs)
@@ -291,44 +409,6 @@ case ${clst_mainarch} in
 				;;
 			esac
 		fi
-	;;
-	mips)
-		case ${clst_fstype} in
-			normal)
-				# Gather up all our bits, and generate a tmp config file
-				# for sgibootcd
-				mkdir ${clst_target_path}/loopback ${clst_target_path}/sgibootcd
-				mv ${clst_target_path}/image.loop ${clst_target_path}/loopback
-				rm -f ${clst_target_path}/livecd
-				img="${clst_target_path}/loopback/image.loop"
-				knl="${clst_target_path}/kernels"
-				arc="${clst_target_path}/arcload"
-				cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
-				touch ${cfg}
-
-				# Add the kernels first
-				for x in ${clst_boot_kernel}; do
-					echo -e "f=${knl}/${x}@${x}" >> ${cfg}
-				done
-
-				# Next, the bootloaders
-				echo -e "f=${arc}/sash64@sash64" >> ${cfg}
-				echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
-				echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
-
-				# Next, the Loopback Image
-				echo -e "p0=${img}" >> ${cfg}
-
-				# Finally, the required SGI Partitions
-				echo -e "p8=#dvh" >> ${cfg}
-				echo -e "p10=#volume" >> ${cfg}
-
-				# All done; feed the config to sgibootcd and end up with an
-				# image
-				/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
-			;;
-			*) die "SGI LiveCDs only support the 'normal' fstype!"	;;
-		esac
 	;;
 esac
 exit  $?
