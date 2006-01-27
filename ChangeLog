@@ -1,5 +1,13 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.534 2006/01/26 23:39:26 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.535 2006/01/27 14:45:21 wolf31o2 Exp $
+
+  27 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/generic_stage_template.spec, examples/grp_template.spec,
+  examples/livecd-stage1_template.spec,
+  examples/livecd-stage2_template.spec, examples/netboot_template.spec,
+  examples/stage4_template.spec:
+  Added more verbose wording and examples for pkgcache_path and
+  kerncache_path, where necessary.
 
   26 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/create-iso.sh:
