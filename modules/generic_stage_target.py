@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.124 2006/01/27 15:04:07 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.125 2006/01/27 22:49:10 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -483,6 +483,8 @@ class generic_stage_target(generic_target):
 				self.valid_values.append("boot/kernel/"+x+"/gk_action")
 				self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
 				self.valid_values.append("boot/kernel/"+x+"/softlevel")
+				self.valid_values.append("boot/kernel/"+x+"/console")
+				self.valid_values.append("boot/kernel/"+x+"/machine_type")
 				self.valid_values.append("boot/kernel/"+x+"/postconf")
 				if addlargs.has_key("boot/kernel/"+x+"/postconf"):
 					print "boot/kernel/"+x+"/postconf is deprecated"

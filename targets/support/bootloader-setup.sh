@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.26 2006/01/26 21:53:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.27 2006/01/27 22:49:10 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -40,7 +40,7 @@ case ${clst_mainarch} in
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		;;
-	ppc)
+	ppc|ppc64)
 		# NO SOFTLEVEL SUPPORT YET
 		
 		# PPC requirements: 
@@ -63,34 +63,130 @@ case ${clst_mainarch} in
 
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
+
 		echo "default ${first}" > ${icfg}
 		echo "timeout 300" >> ${icfg}
 		echo "device=cd:" >> ${icfg}
 		echo "root=/dev/ram" >> ${icfg}
 		echo "fgcolor=white" >> ${icfg}
 		echo "bgcolor=black" >> ${icfg}
-		echo "message=/boot/boot.msg" >> ${icfg}
+		echo "message=/boot" >> ${icfg}
+		
+		# Setup the IBM yaboot.conf	
+		etc_icfg=$1/etc/yaboot.conf
+		mkdir -p $1/etc	
+		IBM_YABOOT="FALSE"
+		echo "default ${first}" > ${etc_icfg}
+		echo "timeout 300" >> ${etc_icfg}
+		echo "device=cd:" >> ${etc_icfg}
+		echo "root=/dev/ram" >> ${etc_icfg}
+		echo "fgcolor=white" >> ${etc_icfg}
+		echo "bgcolor=black" >> ${etc_icfg}
+		echo "message=/boot/boot.msg" >> ${etc_icfg}
+		
 		for x in ${clst_boot_kernel}
 		do	
+			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
+			eval "clst_kernel_machine_type=\$clst_boot_kernel_${x}_machine_type"
 			eval custom_kopts=\$${x}_kernelopts
+				
 			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-			echo >> ${icfg}
-			echo "image=/boot/${x}" >> ${icfg}
-
-			if [ -e "$1/boot/${x}.igz" ]
+			if [ "${clst_kernel_machine_type}" == "ibm" ]
 			then
-				echo "initrd=/boot/${x}.igz" >> ${icfg}
-			fi
+				IBM_YABOOT="true"
+				if [ -n "${clst_kernel_console}" ]
+				then
+					for y in ${clst_kernel_console}
+					do
+						echo ${y}
+						echo >> ${etc_icfg}
+						echo "image=/boot/${x}" >> ${etc_icfg}
 
-			echo "label=${x}" >> ${icfg}
-			echo "read-write" >> ${icfg}
-			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
-			then
-				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+						if [ -e "$1/boot/${x}.igz" ]
+						then
+							echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
+						fi
+
+						echo "label=${x} [${y}] " >> ${etc_icfg}
+						echo "read-write" >> ${icfg}
+						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
+							echo "append=\"${default_append_line} console=${y} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
+						else
+							echo "append=\"${default_append_line} console=${y} splash=silent\"" >> ${etc_icfg}
+						fi
+					done
+				else
+					echo >> ${etc_icfg}
+					echo "image=/boot/${x}" >> ${etc_icfg}
+
+					if [ -e "$1/boot/${x}.igz" ]
+					then
+						echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
+					fi
+
+					echo "label=${x}" >> ${etc_icfg}
+					echo "read-write" >> ${etc_icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
+					else
+						echo "append=\"${default_append_line} splash=silent\"" >> ${etc_icfg}
+					fi
+				fi
 			else
-				echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+				if [ -n "${clst_kernel_console}" ]
+				then
+					for y in ${clst_kernel_console}
+					do
+						echo >> ${icfg}
+						echo "image=/boot/${x}" >> ${icfg}
+
+						if [ -e "$1/boot/${x}.igz" ]
+						then
+							echo "initrd=/boot/${x}.igz" >> ${icfg}
+						fi
+
+						echo "label=${x} [${y}] " >> ${icfg}
+						echo "read-write" >> ${icfg}
+						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
+							echo "append=\"${default_append_line} console=${y} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+						else
+							echo "append=\"${default_append_line} console=${y} splash=silent\"" >> ${icfg}
+						fi
+					done
+				else
+					echo >> ${icfg}
+					echo "image=/boot/${x}" >> ${icfg}
+
+					if [ -e "$1/boot/${x}.igz" ]
+					then
+						echo "initrd=/boot/${x}.igz" >> ${icfg}
+					fi
+
+					echo "label=${x}" >> ${icfg}
+					echo "read-write" >> ${icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+					else
+						echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+					fi
+				fi
 			fi
 		done
+
+		if [ "${IBM_YABOOT}" == "FALSE" ]
+		then 
+			rm ${etc_kmsg}
+			rmdir $1/etc
+			if [ -d $1/ppc ]
+			then
+				rm -r $1/ppc
+			fi
+		fi
+
 		;;
 	sparc*)
 		# NO SOFTLEVEL SUPPORT YET

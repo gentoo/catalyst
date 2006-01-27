@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.24 2006/01/26 23:39:26 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.25 2006/01/27 22:49:10 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -192,7 +192,7 @@ case ${clst_mainarch} in
 			*) die "SGI LiveCDs only support the 'normal' fstype!"	;;
 		esac
 	;;
-	ppc*)
+	ppc)
 		case ${clst_livecd_cdfstype} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
@@ -218,6 +218,43 @@ case ${clst_mainarch} in
 					${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
 					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
+					${1} ${clst_target_path} || die "Cannot make ISO image"
+			;;
+		esac
+	;;
+	ppc64)
+		if [ -f ${clst_target_path}/ppc/bootinfo.txt ]
+		then
+			echo "bootinfo.txt found .. updating it"
+			sed -i ${clst_target_path}/ppc/bootinfo.txt -e 's#^<description>.*</description>$#<description>'"${clst_iso_volume_id}"'</description>#'
+			sed -i ${clst_target_path}/ppc/bootinfo.txt -e 's#^<os-name>.*</os-name>$#<os-name>'"${clst_iso_volume_id}"'</os-name>#'
+		fi
+
+		case ${clst_livecd_cdfstype} in
+			zisofs)
+				echo "Running mkisofs to create iso image...."
+				echo "mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe \
+					-map ${clst_target_path}/boot/map.hfs -part -no-desktop \
+					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
+					${clst_target_path}/boot -V \"${clst_iso_volume_id}\" -o \
+					${1} ${clst_target_path}"
+				mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe -map \
+					${clst_target_path}/boot/map.hfs -part -no-desktop \
+					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
+					${clst_target_path}/boot -V "${clst_iso_volume_id}" -o \
+					${1} ${clst_target_path} || die "Cannot make ISO image"
+			;;
+			*)
+				echo "Running mkisofs to create iso image...."
+				echo "mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
+					${clst_target_path}/boot/map.hfs -part -no-desktop \
+					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
+					${clst_target_path}/boot -V \"${clst_iso_volume_id}\" -o \
+					${1} ${clst_target_path}"
+				mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
+					${clst_target_path}/boot/map.hfs -part -no-desktop \
+					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
+					${clst_target_path}/boot -V "${clst_iso_volume_id}" -o \
 					${1} ${clst_target_path} || die "Cannot make ISO image"
 			;;
 		esac
