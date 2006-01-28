@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.27 2006/01/27 22:49:10 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.28 2006/01/28 22:02:08 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -40,7 +40,7 @@ case ${clst_mainarch} in
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		;;
-	ppc|ppc64)
+	ppc)
 		# NO SOFTLEVEL SUPPORT YET
 		
 		# PPC requirements: 
@@ -72,13 +72,62 @@ case ${clst_mainarch} in
 		echo "bgcolor=black" >> ${icfg}
 		echo "message=/boot" >> ${icfg}
 		
+		for x in ${clst_boot_kernel}
+		do	
+			eval custom_kopts=\$${x}_kernelopts
+			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
+			echo "image=/boot/${x}" >> ${icfg}
+
+			if [ -e "$1/boot/${x}.igz" ]
+			then
+				echo "initrd=/boot/${x}.igz" >> ${icfg}
+			fi
+
+			echo "label=${x}" >> ${icfg}
+			echo "read-write" >> ${icfg}
+			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+			then
+				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+			else
+				echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+			fi
+		done
+	;;
+	
+	ppc64)
+		# NO SOFTLEVEL SUPPORT YET
+		
+		# PPC requirements: 
+		# -----------------
+		# The specs indicate the kernels to be build. We need to put
+		# those kernels and the corresponding initrd.img.gz(s) in the
+		# /boot directory. This directory contains a message boot.msg 
+		# containing some info to be displayed on boot, a configuration
+		# (yaboot.conf) specifying the boot options (kernel/initrd 
+		# combinations). The boot directory also contains a file called
+		# yaboot, which normally gets copied from the live environment.
+		# For now we supply a prebuilt file, prebuilt configuration 
+		# and prebuilt boot message. This can be enhanced later on
+		# but the following suffices for now:
+
+		# this sets up the config file for yaboot
+
+
+		# ADD RUNLEVEL SUPPORT ???
+
+		icfg=$1/boot/yaboot.conf
+		kmsg=$1/boot/boot.msg
+
+		echo "device=cd:" >> ${icfg}
+		echo "root=/dev/ram" >> ${icfg}
+		echo "fgcolor=white" >> ${icfg}
+		echo "bgcolor=black" >> ${icfg}
+		echo "message=/boot" >> ${icfg}
+		
 		# Setup the IBM yaboot.conf	
 		etc_icfg=$1/etc/yaboot.conf
 		mkdir -p $1/etc	
 		IBM_YABOOT="FALSE"
-		echo "default ${first}" > ${etc_icfg}
-		echo "timeout 300" >> ${etc_icfg}
-		echo "device=cd:" >> ${etc_icfg}
 		echo "root=/dev/ram" >> ${etc_icfg}
 		echo "fgcolor=white" >> ${etc_icfg}
 		echo "bgcolor=black" >> ${etc_icfg}
