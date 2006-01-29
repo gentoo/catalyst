@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.540 2006/01/29 08:32:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.541 2006/01/29 14:42:17 rocket Exp $
+
+  29 Jan 2006; Eric Edgar <rocket@gentoo.org> modules/grp_target.py:
+  add grp/use to valid_values in the grp module
 
   29 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is 2.0_rc27.

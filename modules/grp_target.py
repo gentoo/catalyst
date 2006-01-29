@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.22 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.23 2006/01/29 14:42:17 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -16,6 +16,7 @@ class grp_target(generic_stage_target):
 			"rel_type","profile","snapshot","source_subpath"]
 		
 		self.valid_values=self.required_values[:]
+		self.valid_values.extend(["grp/use"])
 		if not addlargs.has_key("grp"):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 		
