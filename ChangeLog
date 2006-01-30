@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.543 2006/01/30 13:38:24 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.544 2006/01/30 14:21:45 wolf31o2 Exp $
+
+  30 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Added path from bug #120935 for PPC/PPC64.
 
   30 Jan 2006; Eric Edgar <rocket@gentoo.org> modules/stage2_target.py:
   Additional spacing fixes submitted by `Kumba

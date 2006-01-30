@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.28 2006/01/28 22:02:08 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.29 2006/01/30 14:21:45 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -70,7 +70,7 @@ case ${clst_mainarch} in
 		echo "root=/dev/ram" >> ${icfg}
 		echo "fgcolor=white" >> ${icfg}
 		echo "bgcolor=black" >> ${icfg}
-		echo "message=/boot" >> ${icfg}
+		echo "message=/boot/boot.msg" >> ${icfg}
 		
 		for x in ${clst_boot_kernel}
 		do	
@@ -122,7 +122,7 @@ case ${clst_mainarch} in
 		echo "root=/dev/ram" >> ${icfg}
 		echo "fgcolor=white" >> ${icfg}
 		echo "bgcolor=black" >> ${icfg}
-		echo "message=/boot" >> ${icfg}
+		echo "message=/boot/boot.msg" >> ${icfg}
 		
 		# Setup the IBM yaboot.conf	
 		etc_icfg=$1/etc/yaboot.conf
