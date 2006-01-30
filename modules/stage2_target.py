@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.13 2006/01/29 18:58:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage2_target.py,v 1.14 2006/01/30 13:38:24 rocket Exp $
 
 """
 Builder class for a stage2 installation tarball build.
@@ -24,14 +24,14 @@ class stage2_target(generic_stage_target):
 		# reset the root path so the preclean doesnt fail
 		generic_stage_target.set_root_path(self)
 
-	if os.path.isdir(self.settings["source_path"]):
-		print "\nUsing seed-stage from "+self.settings["source_path"]
-		print "Delete this folder if you wish to use a seed stage tarball instead\n"
-	else:
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
-		if os.path.isfile(self.settings["source_path"]):
-			if os.path.exists(self.settings["source_path"]):
-				self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
+		if os.path.isdir(self.settings["source_path"]):
+			print "\nUsing seed-stage from "+self.settings["source_path"]
+			print "Delete this folder if you wish to use a seed stage tarball instead\n"
+		else:
+			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+			if os.path.isfile(self.settings["source_path"]):
+				if os.path.exists(self.settings["source_path"]):
+					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
 
 	def override_chost(self):
 		if self.settings.has_key("chost"):

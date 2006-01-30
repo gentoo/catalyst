@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.542 2006/01/29 18:58:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.543 2006/01/30 13:38:24 rocket Exp $
+
+  30 Jan 2006; Eric Edgar <rocket@gentoo.org> modules/stage2_target.py:
+  Additional spacing fixes submitted by `Kumba
 
   29 Jan 2006; Eric Edgar <rocket@gentoo.org> modules/stage1_target.py,
   modules/stage2_target.py:
