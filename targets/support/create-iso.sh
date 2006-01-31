@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.26 2006/01/27 22:57:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.27 2006/01/31 14:59:15 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -226,8 +226,12 @@ case ${clst_mainarch} in
 		if [ -f ${clst_target_path}/ppc/bootinfo.txt ]
 		then
 			echo "bootinfo.txt found .. updating it"
-			sed -i ${clst_target_path}/ppc/bootinfo.txt -e 's#^<description>.*</description>$#<description>'"${clst_iso_volume_id}"'</description>#'
-			sed -i ${clst_target_path}/ppc/bootinfo.txt -e 's#^<os-name>.*</os-name>$#<os-name>'"${clst_iso_volume_id}"'</os-name>#'
+			sed -i -e \
+			's#^<description>.*</description>$#<description>'"${clst_iso_volume_id}"'</description>#' \
+			${clst_target_path}/ppc/bootinfo.txt
+			sed -i -e \
+			's#^<os-name>.*</os-name>$#<os-name>'"${clst_iso_volume_id}"'</os-name>#' \
+			${clst_target_path}/ppc/bootinfo.txt
 		fi
 
 		case ${clst_livecd_cdfstype} in
@@ -307,18 +311,21 @@ case ${clst_mainarch} in
 				mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
 					${clst_target_path}/gentoo.efimg.mountPoint
 
-				echo '>> Populating EFI image...'
+				echo "Populating EFI image"
 				cp -pPRv ${clst_target_path}/boot/* \
 					${clst_target_path}/gentoo.efimg.mountPoint
 
 				umount ${clst_target_path}/gentoo.efimg.mountPoint
 				rmdir ${clst_target_path}/gentoo.efimg.mountPoint
 			else
-				echo ">> Found populated EFI image at \
+				echo "Found populated EFI image at \
 					${clst_target_path}/gentoo.efimg"
 			fi
-			echo '>> Removing /boot...'
-			rm -rf ${clst_target_path}/boot
+			if [ ! -e ${clst_target_path}/boot/grub/stage2_eltorito ]
+			then
+				echo "Removing /boot"
+				rm -rf ${clst_target_path}/boot
+			fi
 		fi
 
 		if [ -e ${clst_target_path}/isolinux/isolinux.bin ]
@@ -396,6 +403,36 @@ case ${clst_mainarch} in
 						;;
 					esac
 				fi
+			else
+				echo "Creating ISO using ISOLINUX bootloader"
+				case ${clst_fstype} in
+					zisofs)
+						echo "mkisofs -J -R -l -V \
+							\"${clst_iso_volume_id}\" -o ${1} -b \
+							isolinux/isolinux.bin -c isolinux/boot.cat \
+							-no-emul-boot -boot-load-size 4 \
+							-boot-info-table -z ${clst_target_path}"
+						mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+							${1} -b isolinux/isolinux.bin -c \
+							isolinux/boot.cat -no-emul-boot \
+							-boot-load-size 4 -boot-info-table -z \
+							${clst_target_path} \
+							|| die "Cannot make ISO image"
+					;;
+					*)
+						echo "mkisofs -J -R -l -V \
+							\"${clst_iso_volume_id}\" -o ${1} -b \
+							isolinux/isolinux.bin -c isolinux/boot.cat \
+							-no-emul-boot -boot-load-size 4 \
+							-boot-info-table ${clst_target_path}"
+						mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
+							${1} -b isolinux/isolinux.bin -c \
+							isolinux/boot.cat -no-emul-boot \
+							-boot-load-size 4 -boot-info-table \
+							${clst_target_path} \
+							|| die "Cannot make ISO image"
+					;;
+				esac
 			fi
 		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
 		then
