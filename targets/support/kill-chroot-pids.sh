@@ -55,4 +55,8 @@ then
 	do
 		kill -9 ${pid}
 	done
+
+	# Small sleep here to give the process(es) a chance to die before running unbind again.
+	sleep 5
+
 fi
