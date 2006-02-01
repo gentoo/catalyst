@@ -158,15 +158,15 @@ extract_kernel() {
 	mv ${1}/kernel-* ${1}/${2}
 
 	# change initrd name from "initrd" to "gentoo.igz", for example
-	if [ -e "${1}/initrd-*" ]
+	if [ -e ${1}/initrd-* ]
 	then
-		mv "${1}/initrd-*" "${1}/${2}.igz"
+		mv ${1}/initrd-* ${1}/${2}.igz
 	fi
 
 	# change initramfs name from "initramfs" to "gentoo.igz", for example
-	if [ -e "${1}"/initramfs-* ]
+	if [ -e ${1}/initramfs-* ]
 	then
-		mv "${1}"/initramfs-* "${1}/${2}.igz"
+		mv ${1}/initramfs-* ${1}/${2}.igz
 	fi
 }
 

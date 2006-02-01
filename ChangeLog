@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.545 2006/01/31 14:59:14 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.546 2006/02/01 21:09:50 wolf31o2 Exp $
+
+  01 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/functions.sh:
+  Removed some quotes to make sure we have a binary operator and closing bug
+  #117649.
 
   31 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/create-iso.sh:
