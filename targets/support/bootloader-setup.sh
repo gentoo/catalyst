@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.29 2006/01/30 14:21:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.30 2006/02/02 15:17:03 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -156,7 +156,7 @@ case ${clst_mainarch} in
 							echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
 						fi
 
-						echo "label=${x} [${y}] " >> ${etc_icfg}
+						echo "label=${x}-${y} " >> ${etc_icfg}
 						echo "read-write" >> ${icfg}
 						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 						then
@@ -196,7 +196,7 @@ case ${clst_mainarch} in
 							echo "initrd=/boot/${x}.igz" >> ${icfg}
 						fi
 
-						echo "label=${x} [${y}] " >> ${icfg}
+						echo "label=${x}-${y} " >> ${icfg}
 						echo "read-write" >> ${icfg}
 						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 						then
