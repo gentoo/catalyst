@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.552 2006/02/02 17:07:09 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.553 2006/02/02 17:55:15 wolf31o2 Exp $
+
+  02 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  This is 2.0_rc30.
 
   02 Feb 2006; Eric Edgar <rocket@gentoo.org>
   examples/livecd-stage2_template.spec:
@@ -7,7 +10,8 @@
 
   02 Feb 2006; Eric Edgar <rocket@gentoo.org>
   targets/support/bootloader-setup.sh:
-  Change [ console ] to -console in yaboot.conf for ppc64.  Spaces arent allowed
+  Change [ console ] to -console in yaboot.conf for ppc64.  Spaces aren't
+  allowed.
 
   02 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0_rc29.
