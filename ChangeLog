@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.551 2006/02/02 15:17:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.552 2006/02/02 17:07:09 rocket Exp $
+
+  02 Feb 2006; Eric Edgar <rocket@gentoo.org>
+  examples/livecd-stage2_template.spec:
+  updated examples to have console and machine_type
 
   02 Feb 2006; Eric Edgar <rocket@gentoo.org>
   targets/support/bootloader-setup.sh:
