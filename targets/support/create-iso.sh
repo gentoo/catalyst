@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.27 2006/01/31 14:59:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.28 2006/02/03 22:39:47 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -101,7 +101,7 @@ case ${clst_mainarch} in
 	arm)
 	;;
 	hppa)
-		case ${clst_livecd_cdfstype} in
+		case ${clst_fstype} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
 				echo "mkisofs -J -R -l -z -V \"${clst_iso_volume_id}\" -o \
@@ -193,7 +193,7 @@ case ${clst_mainarch} in
 		esac
 	;;
 	ppc)
-		case ${clst_livecd_cdfstype} in
+		case ${clst_fstype} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
 				echo "mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe \
@@ -234,7 +234,7 @@ case ${clst_mainarch} in
 			${clst_target_path}/ppc/bootinfo.txt
 		fi
 
-		case ${clst_livecd_cdfstype} in
+		case ${clst_fstype} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
 				echo "mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe \
@@ -269,7 +269,7 @@ case ${clst_mainarch} in
 		# Seems silo 1.3.x+ breaks on newer machines
 		# when booting from CD (current as of silo 1.4.8)
 		mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
-		case ${clst_livecd_cdfstype} in
+		case ${clst_fstype} in
 			zisofs)
 			echo "Running mkisofs.sparc.fu to create iso image...."
 			echo "/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S \
