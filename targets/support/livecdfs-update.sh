@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.33 2006/02/05 21:24:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.34 2006/02/07 18:20:39 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -71,10 +71,10 @@ echo "iface_eth4=\"dhcp\"" >> /etc/conf.d/net
 
 # Setup links for ethernet devices
 cd /etc/init.d
-ln -sf net.eth0 net.eth1
-ln -sf net.eth0 net.eth2
-ln -sf net.eth0 net.eth3
-ln -sf net.eth0 net.eth4
+ln -sf net.lo net.eth1
+ln -sf net.lo net.eth2
+ln -sf net.lo net.eth3
+ln -sf net.lo net.eth4
 
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
