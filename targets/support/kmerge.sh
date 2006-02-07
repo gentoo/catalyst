@@ -206,12 +206,12 @@ fi
 
 # If catalyst has set to a empty string, extraversion wasn't specified so we
 # skip this part
-if [ "${EXTRAVERSION_MATCH}" != "1" ]
+if [ "${EXTRAVERSION_MATCH}" = "0" ]
 then
-	if [ "${clst_kextraversion}" != "" ]
+	if [ ! "${clst_kextraversion}" = "" ]
 	then
-	echo "Setting extraversion to ${clst_kextraversion}"
-	sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+		echo "Setting extraversion to ${clst_kextraversion}"
+		sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
 		echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	else 
 		touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
