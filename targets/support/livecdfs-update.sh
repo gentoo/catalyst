@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.34 2006/02/07 18:20:39 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.35 2006/02/08 03:25:24 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -281,16 +281,17 @@ case ${clst_livecd_type} in
 				--type string --set /desktop/gnome/interface/font_name "Sans 9"
 		fi
 
-		# This is my hack to reduce tmpfs usage
+		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
+		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
+
+		# This is my hack to reduce tmpfs usage
 		cp -r /usr/portage/profiles /usr/livecd
 		cp -r /usr/portage/eclass /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		mv -f /var/db /usr/livecd
 
-		# This gives us our list of system packages for the installer
-		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
 		# This gives us a proper cache for portage
 		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
 		;;
