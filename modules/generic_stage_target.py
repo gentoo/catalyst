@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.125 2006/01/27 22:49:10 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.126 2006/02/08 18:59:12 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1200,15 +1200,15 @@ class generic_stage_target(generic_target):
 				
 						    if type(myopts) != types.StringType:
 							    myopts = string.join(myopts)
-						    os.putenv(kname+"_kernelopts", myopts)
 
+							self.env[kname+"_kernelopts"]=myopts
 					    else:
-						    os.putenv(kname+"_kernelopts", "")
+							self.env[kname+"_kernelopts"]=""
 
 					    if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
 						    self.settings["boot/kernel/"+kname+"/extraversion"]=""
 
-					    os.putenv("clst_kextraversion", self.settings["boot/kernel/"+kname+"/extraversion"])
+						self.env["clst_kextraversion"]=self.settings["boot/kernel/"+kname+"/extraversion"]
 					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
 						if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
 						    print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
