@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.30 2006/02/02 15:17:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.31 2006/02/08 21:48:10 rocket Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -145,6 +145,23 @@ case ${clst_mainarch} in
 				IBM_YABOOT="true"
 				if [ -n "${clst_kernel_console}" ]
 				then
+					echo >> ${etc_icfg}
+					echo "image=/boot/${x}" >> ${etc_icfg}
+
+					if [ -e "$1/boot/${x}.igz" ]
+					then
+						echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
+					fi
+
+					echo "label=${x}" >> ${etc_icfg}
+					echo "read-write" >> ${icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
+					else
+						echo "append=\"${default_append_line} splash=silent\"" >> ${etc_icfg}
+					fi
+					
 					for y in ${clst_kernel_console}
 					do
 						echo ${y}
@@ -186,6 +203,23 @@ case ${clst_mainarch} in
 			else
 				if [ -n "${clst_kernel_console}" ]
 				then
+					echo >> ${icfg}
+					echo "image=/boot/${x}" >> ${icfg}
+
+					if [ -e "$1/boot/${x}.igz" ]
+					then
+						echo "initrd=/boot/${x}.igz" >> ${icfg}
+					fi
+
+					echo "label=${x}" >> ${icfg}
+					echo "read-write" >> ${icfg}
+					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+					else
+						echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+					fi
+					
 					for y in ${clst_kernel_console}
 					do
 						echo >> ${icfg}
