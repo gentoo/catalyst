@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.126 2006/02/08 18:59:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.127 2006/02/09 00:46:11 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1156,92 +1156,92 @@ class generic_stage_target(generic_target):
 					raise CatalystError,self.settings["spec_prefix"] + "build aborting due to error."
 	
 	def build_kernel(self):
-	    if self.settings.has_key("AUTORESUME") \
+		if self.settings.has_key("AUTORESUME") \
 		and os.path.exists(self.settings["autoresume_path"]+"build_kernel"):
-		    print "Resume point detected, skipping build_kernel operation..."
-	    else:
-		if self.settings.has_key("boot/kernel"):
-	        	try:
-				mynames=self.settings["boot/kernel"]
-				if type(mynames)==types.StringType:
-					mynames=[mynames]
-				# execute the script that sets up the kernel build environment
-				cmd("/bin/bash "+self.settings["controller_file"]+" pre-kmerge ",\
-				   "Runscript pre-kmerge failed",env=self.env)
+			print "Resume point detected, skipping build_kernel operation..."
+		else:
+			if self.settings.has_key("boot/kernel"):
+				try:
+					mynames=self.settings["boot/kernel"]
+					if type(mynames)==types.StringType:
+						mynames=[mynames]
+					# execute the script that sets up the kernel build environment
+					cmd("/bin/bash "+self.settings["controller_file"]+" pre-kmerge ",\
+						"Runscript pre-kmerge failed",env=self.env)
 		
-				for kname in mynames:
-					if self.settings.has_key("AUTORESUME") \
-					    and os.path.exists(self.settings["autoresume_path"]+"build_kernel_"+kname):
-						print "Resume point detected, skipping build_kernel for "+kname+" operation..."
-					else:
-				    
-					    try:
-						    if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
-							    self.unbind()
-							    raise CatalystError, "Can't find kernel config: " \
-								    +self.settings["boot/kernel/"+kname+"/config"]
-			
-					    except TypeError:
-						    raise CatalystError, "Required value boot/kernel/config not specified"
-			
-					    try:
-						    cmd("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+ \
-							    self.settings["chroot_path"]+"/var/tmp/"+kname+".config", \
-							    "Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"],\
-							    env=self.env)
-		
-					    except CatalystError:
-						    self.unbind()
+					for kname in mynames:
+						if self.settings.has_key("AUTORESUME") \
+							and os.path.exists(self.settings["autoresume_path"]+"build_kernel_"+kname):
+							print "Resume point detected, skipping build_kernel for "+kname+" operation..."
+						else:
+							try:
+								if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
+									self.unbind()
+									raise CatalystError, "Can't find kernel config: " \
+										+self.settings["boot/kernel/"+kname+"/config"]
 
-					    # If we need to pass special options to the bootloader
-					    # for this kernel put them into the environment.
-					    if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
-						    myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
+							except TypeError:
+								raise CatalystError, "Required value boot/kernel/config not specified"
+			
+							try:
+								cmd("cp "+self.settings["boot/kernel/"+kname+"/config"]+" "+ \
+									self.settings["chroot_path"]+"/var/tmp/"+kname+".config", \
+									"Couldn't copy kernel config: "+self.settings["boot/kernel/"+kname+"/config"],\
+									env=self.env)
+
+							except CatalystError:
+								self.unbind()
+
+							# If we need to pass special options to the bootloader
+							# for this kernel put them into the environment.
+							if self.settings.has_key("boot/kernel/"+kname+"/kernelopts"):
+								myopts=self.settings["boot/kernel/"+kname+"/kernelopts"]
 				
-						    if type(myopts) != types.StringType:
-							    myopts = string.join(myopts)
+								if type(myopts) != types.StringType:
+									myopts = string.join(myopts)
+									self.env[kname+"_kernelopts"]=myopts
 
-							self.env[kname+"_kernelopts"]=myopts
-					    else:
-							self.env[kname+"_kernelopts"]=""
-
-					    if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
-						    self.settings["boot/kernel/"+kname+"/extraversion"]=""
-
-						self.env["clst_kextraversion"]=self.settings["boot/kernel/"+kname+"/extraversion"]
-					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
-						if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
-						    print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
+								else:
+									self.env[kname+"_kernelopts"]=""
+					    
+							if not self.settings.has_key("boot/kernel/"+kname+"/extraversion"):
+								self.settings["boot/kernel/"+kname+"/extraversion"]=""
 						
-						    cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
-							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"],env=self.env)
+							self.env["clst_kextraversion"]=self.settings["boot/kernel/"+kname+"/extraversion"]
+
+							if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+								if os.path.exists(self.settings["boot/kernel/"+kname+"/initramfs_overlay"]):
+									print "Copying initramfs_overlay dir " +self.settings["boot/kernel/"+kname+"/initramfs_overlay"]
+
+									cmd("mkdir -p "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/" + \
+										self.settings["boot/kernel/"+kname+"/initramfs_overlay"],env=self.env)
 						
-						    cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
-							    self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
-							    self.settings["boot/kernel/"+kname+"/initramfs_overlay"],\
-							    env=self.env)
+									cmd("cp -R "+self.settings["boot/kernel/"+kname+"/initramfs_overlay"]+"/* " + \
+										self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
+										self.settings["boot/kernel/"+kname+"/initramfs_overlay"],\
+										env=self.env)
 	
-					    
-					    # execute the script that builds the kernel
-					    cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
-						"Runscript kernel build failed",env=self.env)
-					
-					    if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
-						if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
-						    print "Cleaning up temporary overlay dir"
-						    cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/",env=self.env)
-					    
-					    touch(self.settings["autoresume_path"]+"build_kernel_"+kname)
 
-				# execute the script that cleans up the kernel build environment
-				cmd("/bin/bash "+self.settings["controller_file"]+" post-kmerge ",\
-				   "Runscript post-kmerge failed",env=self.env)
+							# execute the script that builds the kernel
+							cmd("/bin/bash "+self.settings["controller_file"]+" kernel "+kname,\
+								"Runscript kernel build failed",env=self.env)
+					
+							if self.settings.has_key("boot/kernel/"+kname+"/initramfs_overlay"):
+								if os.path.exists(self.settings["chroot_path"]+"/tmp/initramfs_overlay/"):
+									print "Cleaning up temporary overlay dir"
+									cmd("rm -R "+self.settings["chroot_path"]+"/tmp/initramfs_overlay/",env=self.env)
+
+							touch(self.settings["autoresume_path"]+"build_kernel_"+kname)
+
+							# execute the script that cleans up the kernel build environment
+							cmd("/bin/bash "+self.settings["controller_file"]+" post-kmerge ",\
+								"Runscript post-kmerge failed",env=self.env)
 				
-				touch(self.settings["autoresume_path"]+"build_kernel")
+					touch(self.settings["autoresume_path"]+"build_kernel")
 			
-			except CatalystError:
-				self.unbind()
-				raise CatalystError,"build aborting due to kernel build error."
+				except CatalystError:
+					self.unbind()
+					raise CatalystError,"build aborting due to kernel build error."
 
 	def bootloader(self):
 	    if self.settings.has_key("AUTORESUME") \
