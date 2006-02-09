@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.35 2006/02/08 03:25:24 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.36 2006/02/09 15:09:18 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -157,7 +157,8 @@ case ${clst_livecd_type} in
 	gentoo-release-livecd )
 		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
-		sed -i 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
+		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
+			-e "s:##DISPLAY_MANAGER:${clst_livecd_xdm}:" /etc/motd
 	;;
 	gentoo-gamecd )
 		cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
