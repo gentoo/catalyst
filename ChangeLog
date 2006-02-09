@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.565 2006/02/09 00:46:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.566 2006/02/09 12:16:03 rocket Exp $
+
+  09 Feb 2006; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
+  Add hfs-hide options to mkisofs so macs boot
 
   09 Feb 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:

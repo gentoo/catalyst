@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.28 2006/02/03 22:39:47 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.29 2006/02/09 12:16:03 rocket Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -237,15 +237,13 @@ case ${clst_mainarch} in
 		case ${clst_fstype} in
 			zisofs)
 				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe \
-					-map ${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}boot -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
+				echo "mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" -V \"${clst_iso_volume_id}\" -o  ${1} ${clst_target_path}"
 				mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe -map \
 					${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
+					${clst_target_path}boot -hide-hfs "zisofs" -hide-hfs "stages" \
+					-hide-hfs "distfiles" -hide-hfs "snapshots" \
+					-V "${clst_iso_volume_id}" -o \
 					${1} ${clst_target_path} || die "Cannot make ISO image"
 			;;
 			*)
@@ -253,13 +251,19 @@ case ${clst_mainarch} in
 				echo "mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
 					${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}boot -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
+					${clst_target_path}boot -V \"${clst_iso_volume_id}\" \
+					-hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" \
+					-hide-hfs \"image.loop\" -hide-hfs \"image.squashfs\" -hide-hfs \"image.jffs\" \
+					-hide-hfs \"image.cramfs\" \
+					-o ${1} ${clst_target_path}"
 				mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
 					${clst_target_path}boot/map.hfs -part -no-desktop \
 					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
-					${1} ${clst_target_path} || die "Cannot make ISO image"
+					${clst_target_path}boot -V "${clst_iso_volume_id}" \
+					-hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" \
+					-hide-hfs "image.loop" -hide-hfs "image.squashfs" -hide-hfs "image.jffs" \
+					-hide-hfs "image.cramfs" \
+					-o ${1} ${clst_target_path} || die "Cannot make ISO image"
 			;;
 		esac
 	;;
