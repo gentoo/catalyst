@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.127 2006/02/09 00:46:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.128 2006/02/10 23:01:21 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -150,7 +150,9 @@ class generic_stage_target(generic_target):
 		self.set_packages()
 		self.set_rm()
 		self.set_linuxrc()
+		self.set_overlay()	
 		self.set_portage_overlay()	
+		self.set_root_overlay()	
 		
 		# this next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
@@ -457,6 +459,17 @@ class generic_stage_target(generic_target):
 			if type(self.settings["portage_overlay"])==types.StringType:
 				self.settings["portage_overlay"]=self.settings["portage_overlay"].split()
 			print "portage_overlay directories are set to: \"" + string.join(self.settings["portage_overlay"])+"\""
+	
+	def set_overlay(self):
+		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay"):
+			if type(self.settings[self.settings["spec_prefix"]+"/overlay"])==types.StringType:
+				self.settings[self.settings["spec_prefix"]+"/overlay"]=self.settings[self.settings["spec_prefix"]+"/overlay"].split()
+	
+	def set_root_overlay(self):
+		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
+			if type(self.settings[self.settings["spec_prefix"]+"/root_overlay"])==types.StringType:
+				self.settings[self.settings["spec_prefix"]+"/root_overlay"]=self.settings[self.settings["spec_prefix"]+"/root_overlay"].split()
+	
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -753,10 +766,12 @@ class generic_stage_target(generic_target):
 	def root_overlay(self):
 	    # copy over the root_overlay
 	    # Always copy over the overlay incase it has changed
-		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
-		    print "Copying root overlay ..."
-		    cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/root_overlay"]+"/ "+\
-			self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay copy failed.",env=self.env)
+		for x in self.settings[self.settings["spec_prefix"]+"/root_overlay"]: 
+			if os.path.exists(x):
+				if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
+					print "Copying root_overlay: "+x
+					cmd("rsync -a "+x+"/ "+\
+					self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay: "+x+" copy failed.",env=self.env)
 
 	def bind(self):
 		for x in self.mounts: 
@@ -1108,14 +1123,15 @@ class generic_stage_target(generic_target):
 		touch(self.settings["autoresume_path"]+"target_setup")
 	
 	def setup_overlay(self):	
-	    if self.settings.has_key("AUTORESUME") \
+		if self.settings.has_key("AUTORESUME") \
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
-		    print "Resume point detected, skipping setup_overlay operation..."
-	    else:
-		if self.settings.has_key(self.settings["spec_prefix"]+"/overlay") \
-			and os.path.exists(self.settings[self.settings["spec_prefix"]+"/overlay"]):
-				cmd("rsync -a "+self.settings[self.settings["spec_prefix"]+"/overlay"]+"/ "+\
-				self.settings["target_path"], self.settings["spec_prefix"]+"overlay copy failed.",env=self.env)
+			print "Resume point detected, skipping setup_overlay operation..."
+		else:
+			if self.settings.has_key(self.settings["spec_prefix"]+"/overlay"):
+				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]: 
+					if os.path.exists(x):
+						cmd("rsync -a "+x+"/ "+\
+							self.settings["target_path"], self.settings["spec_prefix"]+"overlay: "+x+" copy failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_overlay")
 	
 	def create_iso(self):
