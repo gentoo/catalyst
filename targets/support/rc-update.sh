@@ -50,7 +50,7 @@ then
 		for x in ${clst_rcadd}
 		do
 			echo "Adding ${x%%|*} to ${x##*|}"
-			if [ ! -d /etc/runlevels/${x%%|*} ]
+			if [ ! -d /etc/runlevels/${x##|*} ]
 			then
 				echo "Runlevel ${x##*|} doesn't exist .... creating it"
 				mkdir -p "/etc/runlevels/${x##*|}"
