@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.36 2006/02/09 15:09:18 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.37 2006/02/13 22:26:44 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -254,12 +254,6 @@ case ${clst_livecd_type} in
 
 		if [ "${clst_livecd_xsession}" == "gnome" ]
 		then
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/gtk_key_theme Crux
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/gtk_theme Crux
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
 				--type string --set /desktop/gnome/interface/icon_theme Crux
@@ -302,6 +296,16 @@ case ${clst_livecd_type} in
 		mv -f /etc/gconf /usr/livecd
 
 		touch /etc/startx
+		;;
+	* )
+		if [ -e /usr/livecd/grppkgs.txt ]
+		then
+			rm -f /usr/livecd/grppkgs.txt
+		fi
+		if [ -e /usr/livecd/kernelpkgs.txt ]
+		then
+			rm -f /usr/livecd/kernelpkgs.txt
+		fi
 		;;
 esac
 
