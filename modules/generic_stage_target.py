@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.128 2006/02/10 23:01:21 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.129 2006/02/14 15:29:39 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -766,12 +766,12 @@ class generic_stage_target(generic_target):
 	def root_overlay(self):
 	    # copy over the root_overlay
 	    # Always copy over the overlay incase it has changed
-		for x in self.settings[self.settings["spec_prefix"]+"/root_overlay"]: 
-			if os.path.exists(x):
-				if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
+		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
+			for x in self.settings[self.settings["spec_prefix"]+"/root_overlay"]: 
+				if os.path.exists(x):
 					print "Copying root_overlay: "+x
 					cmd("rsync -a "+x+"/ "+\
-					self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay: "+x+" copy failed.",env=self.env)
+						self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay: "+x+" copy failed.",env=self.env)
 
 	def bind(self):
 		for x in self.mounts: 
