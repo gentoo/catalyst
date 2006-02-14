@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.570 2006/02/13 22:26:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.571 2006/02/14 00:04:13 wolf31o2 Exp $
+
+  14 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Added IA64/SGI patch from plasmaroo.
 
   13 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/livecd-stage1/livecd-stage1-controller.sh,

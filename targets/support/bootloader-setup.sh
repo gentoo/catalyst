@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.31 2006/02/08 21:48:10 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.32 2006/02/14 00:04:14 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -302,6 +302,7 @@ case ${clst_mainarch} in
 		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
 		echo 'chooser=simple' >> ${iacfg}
 		echo 'timeout=50' >> ${iacfg}
+		echo 'relocatable' >> ${iacfg}
 		echo >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
@@ -313,6 +314,11 @@ case ${clst_mainarch} in
 			echo "image=/efi/boot/${x}" >> ${iacfg}
 			echo "  label=${x}-serial">> ${iacfg}
 			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
+			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
+			echo >> ${iacfg}
+			echo "image=/efi/boot/${x}" >> ${iacfg}
+			echo "  label=${x}-sgi">> ${iacfg}
+			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttySG0,115200"' >> ${iacfg}
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
 			echo >> ${iacfg}
 			mv $1/boot/${x}{,.igz} $1/boot/efi/boot
