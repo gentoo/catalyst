@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.15 2005/12/21 19:39:34 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.16 2006/02/14 18:05:56 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -59,6 +59,9 @@ class snapshot_target(generic_target):
 		print "Compressing Portage snapshot tarball..."
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
+		
+		self.gen_digest_file(self.settings["snapshot_path"])
+
 		self.cleanup()
 		print "snapshot: complete!"
 	

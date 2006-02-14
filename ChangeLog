@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.574 2006/02/14 15:53:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.575 2006/02/14 18:05:56 rocket Exp $
+
+  14 Feb 2006; Eric Edgar <rocket@gentoo.org> modules/snapshot_target.py:
+  DIGESTS support for snapshot creation
 
   14 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0_rc38, codenamed: When will the stinking release
