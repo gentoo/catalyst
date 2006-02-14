@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.23 2006/01/29 14:42:17 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.24 2006/02/14 15:38:12 rocket Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.
@@ -81,35 +81,35 @@ class grp_target(generic_stage_target):
 	
 	def generate_digests(self):
 		for pkgset in self.settings["grp"]:
-		    if self.settings["grp/"+pkgset+"/type"] == "pkgset":
-			destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
-			print "Digesting files in the pkgset....."			
-			digests=glob.glob(destdir+'/*.digests')
-			for i in digests:
-			    if os.path.exists(i):
-				os.remove(i)
-			
-			files=os.listdir(destdir)
-			#ignore files starting with '.' using list comprehension
-			files=[filename for filename in files if filename[0] != '.']
-			for i in files:
-			    if os.path.isfile(normpath(destdir+"/"+i)):
-				self.gen_digest_file(normpath(destdir+"/"+i))
-		    else:
-			destdir=normpath(self.settings["target_path"]+"/"+pkgset)
-			print "Digesting files in the srcset....."			
-			
-			digests=glob.glob(destdir+'/*.digests')
-			for i in digests:
-			    if os.path.exists(i):
-				os.remove(i)
+			if self.settings["grp/"+pkgset+"/type"] == "pkgset":
+				destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
+				print "Digesting files in the pkgset....."			
+				digests=glob.glob(destdir+'/*.DIGESTS')
+				for i in digests:
+					if os.path.exists(i):
+						os.remove(i)
 
-			files=os.listdir(destdir)
-			#ignore files starting with '.' using list comprehension
-			files=[filename for filename in files if filename[0] != '.']
-			for i in files:
-			    if os.path.isfile(normpath(destdir+"/"+i)):
-				self.gen_digest_file(normpath(destdir+"/"+i))
+				files=os.listdir(destdir)
+				#ignore files starting with '.' using list comprehension
+				files=[filename for filename in files if filename[0] != '.']
+				for i in files:
+					if os.path.isfile(normpath(destdir+"/"+i)):
+						self.gen_digest_file(normpath(destdir+"/"+i))
+			else:
+				destdir=normpath(self.settings["target_path"]+"/"+pkgset)
+				print "Digesting files in the srcset....."			
+			
+				digests=glob.glob(destdir+'/*.DIGESTS')
+				for i in digests:
+					if os.path.exists(i):
+						os.remove(i)
+
+				files=os.listdir(destdir)
+				#ignore files starting with '.' using list comprehension
+				files=[filename for filename in files if filename[0] != '.']
+				for i in files:
+					if os.path.isfile(normpath(destdir+"/"+i)):
+						self.gen_digest_file(normpath(destdir+"/"+i))
 
 		    
 	def set_action_sequence(self):

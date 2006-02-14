@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.572 2006/02/14 15:29:39 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.573 2006/02/14 15:38:12 rocket Exp $
+
+  14 Feb 2006; Eric Edgar <rocket@gentoo.org> modules/grp_target.py:
+  fix for .DIGESTS.DIGESTS issue in grp
 
   14 Feb 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py:
