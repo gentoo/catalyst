@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.577 2006/02/15 03:53:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.578 2006/02/15 16:59:46 wolf31o2 Exp $
+
+  15 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/rc-update.sh:
+  Added fix for bug #122154 from Rajiv Manglani.
 
   15 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
