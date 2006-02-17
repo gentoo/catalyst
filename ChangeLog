@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.579 2006/02/17 13:34:41 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.580 2006/02/17 14:50:15 wolf31o2 Exp $
+
+  17 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/livecdfs-update.sh:
+  Added sed fix for udev starting evms_activate unconditionally. This is
+  2.0_rc39.
 
   17 Feb 2006; Eric Edgar <rocket@gentoo.org> modules/stage4_target.py:
   add stage4/unmerge stage4/rm to valid options
