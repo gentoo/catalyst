@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.578 2006/02/15 16:59:46 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.579 2006/02/17 13:34:41 rocket Exp $
+
+  17 Feb 2006; Eric Edgar <rocket@gentoo.org> modules/stage4_target.py:
+  add stage4/unmerge stage4/rm to valid options
 
   15 Feb 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:
