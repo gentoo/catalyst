@@ -5,12 +5,12 @@
 if [ "${clst_spec_prefix}" == "livecd" ]
 then
 	# default programs that we always want to start
-	rc-update del iptables default
-	rc-update del netmount default
-	rc-update add autoconfig default
+	rc-update del iptables
+	rc-update del netmount
 	rc-update del keymaps
 	rc-update del serial
 	rc-update del consolefont
+	rc-update add autoconfig default
 	rc-update add modules boot
 	rc-update add pwgen default
 	[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
@@ -18,8 +18,6 @@ then
 	[ -e /etc/init.d/sysklogd ] && rc-update add sysklogd default
 	[ -e /etc/init.d/metalog ] && rc-update add metalog default
 	[ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
-	[ -e /etc/init.d/alsasound ] && rc-update add alsasound default
-	[ -e /etc/init.d/hdparm ] && rc-update add hdparm default
 
 	# Do some livecd_type specific rc-update changes
 	case ${clst_livecd_type} in
