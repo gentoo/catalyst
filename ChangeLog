@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.583 2006/03/13 16:33:20 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.584 2006/03/13 16:38:41 rocket Exp $
+
+  13 Mar 2006; Eric Edgar <rocket@gentoo.org> modules/snapshot_target.py:
+  fix so snapshot target doesnt have errors
 
   13 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:

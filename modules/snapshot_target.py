@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.16 2006/02/14 18:05:56 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.17 2006/03/13 16:38:41 rocket Exp $
 
 """
 Builder class for snapshots.
@@ -10,7 +10,7 @@ import os
 from catalyst_support import *
 from generic_stage_target import *
 
-class snapshot_target(generic_target):
+class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target","portdir_overlay"]
