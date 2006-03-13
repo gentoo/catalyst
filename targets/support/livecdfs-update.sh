@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.39 2006/02/21 19:50:22 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.40 2006/03/13 16:33:20 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -252,6 +252,7 @@ case ${clst_livecd_type} in
 			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
 		fi
 
+		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]
 		then
 			gconftool-2 --direct \
@@ -276,6 +277,26 @@ case ${clst_livecd_type} in
 				--type string --set /desktop/gnome/interface/font_name "Sans 9"
 		fi
 
+		# Setup GDM
+		if [ "${clst_livecd_xdm}" == "gdm" ]
+		then
+			cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
+			sed -e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
+				-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
+				-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
+				-e 's:GraphicalTheme=circles:GraphicalTheme=gentoo-emergence:' \
+				-e ':^#GraphicalTheme: s:^#::' \
+				-i /etc/X11/gdm/gdm.conf
+			if [ -n "${clst_livecd_users}" -a -n "${first_user}" ]
+			then
+				sed -e "s:TimedLogin=:TimedLogin=${first_user}:" \
+					-i /etc/X11/gdm/gdm.conf
+			else
+				sed -e "s:TimedLogin=:TimedLogin=gentoo:" \
+					-i /etc/X11/gdm/gdm.conf
+			fi
+		fi
+
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
@@ -287,8 +308,37 @@ case ${clst_livecd_type} in
 		mv -f /etc/gconf /usr/livecd
 		mv -f /var/db /usr/livecd
 
-		# This gives us a proper cache for portage
+		# This gives us a proper cache for portage/installer
 		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
+
+		# We remove kernel sources from our vdb
+		rm -rf /usr/livecd/db/pkg/sys-kernel/*sources*
+
+		# Clear out lastlog
+		rm -f /var/log/lastlog && touch /var/log/lastlog
+
+		# Create our installer icons
+		if [ -e /usr/share/applications/installer-gli.desktop ]
+		then
+			if [ -n "${clst_livecd_users}" ]
+			then
+				for username in ${clst_livecd_users}
+				do
+					mkdir -p /home/${username}/Desktop
+					cp /usr/share/applications/installer-gtk.desktop \
+						/home/${username}/Desktop
+					cp /usr/share/applications/installer-faq.desktop \
+						/home/${username}/Desktop
+					cp /usr/share/applications/installer-dialog.desktop \
+						/home/${username}/Desktop
+					sed -e 's:Exec=installer:Exec=sudo installer:' \
+						/home/${username}/Desktop/installer-dialog.desktop
+					sed -e 's:Exec=installer:Exec=sudo installer:' \
+						/home/${username}/Desktop/installer-gtk.desktop
+					chown -R ${username}:100 /home/${username}
+				done
+			fi
+		fi
 		;;
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
