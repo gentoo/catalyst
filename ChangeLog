@@ -1,5 +1,15 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.585 2006/03/13 17:07:51 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.586 2006/03/16 19:33:26 wolf31o2 Exp $
+
+  16 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/yaboot-1.3.11-cdtar.tar.bz2,
+  -livecd/cdtar/yaboot-1.3.11-ppc64-cdtar-r1.tar.bz2,
+  +livecd/cdtar/yaboot-1.3.13-cdtar.tar.bz2,
+  -livecd/cdtar/ppc-yaboot-cdtar.tar.bz2,
+  targets/support/bootloader-setup.sh:
+  Added sed to PPC/PPC64 to change boot.msg to match the hardware for which
+  the CD was built, merged the PPC and PPC64 cdtar files into a single cdtar,
+  and removed all older cdtar files for PPC*.
 
   13 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   livecd/files/livecd.motd.txt:

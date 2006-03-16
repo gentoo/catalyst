@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.32 2006/02/14 00:04:14 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.33 2006/03/16 19:33:26 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -71,7 +71,15 @@ case ${clst_mainarch} in
 		echo "fgcolor=white" >> ${icfg}
 		echo "bgcolor=black" >> ${icfg}
 		echo "message=/boot/boot.msg" >> ${icfg}
-		
+
+		# Here is where I fix up the boot.msg file.
+		sed -e 's/ARCH/PPC/' \
+			-e 's/HARDWARE/32-bit Apple and Pegasos hardware/' \
+			-i $kmsg
+
+		# Here we wipe out the /ppc directory, if it exists.
+		rm -rf $1/ppc
+
 		for x in ${clst_boot_kernel}
 		do	
 			eval custom_kopts=\$${x}_kernelopts
@@ -89,7 +97,7 @@ case ${clst_mainarch} in
 			then
 				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
 			else
-				echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+				echo "append=\"${default_append_line}\"" >> ${icfg}
 			fi
 		done
 	;;
@@ -124,6 +132,11 @@ case ${clst_mainarch} in
 		echo "bgcolor=black" >> ${icfg}
 		echo "message=/boot/boot.msg" >> ${icfg}
 		
+		# Here is where I fix up the boot.msg file.
+		sed -e 's/ARCH/PPC/' \
+			-e 's/HARDWARE/64-bit Apple and IBM hardware/' \
+			-i $kmsg
+
 		# Setup the IBM yaboot.conf	
 		etc_icfg=$1/etc/yaboot.conf
 		mkdir -p $1/etc	
