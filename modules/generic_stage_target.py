@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.129 2006/02/14 15:29:39 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.130 2006/03/22 22:21:32 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -867,7 +867,7 @@ class generic_stage_target(generic_target):
 					"Could not copy envscript into place.",env=self.env)
 
 		    # copy over /etc/hosts from the host in case there are any specialties in there
-			if os.path.exists("/etc/hosts"):
+			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
 					"/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
 				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
