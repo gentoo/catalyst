@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.19 2006/03/22 19:05:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.20 2006/03/22 19:11:24 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -52,7 +52,8 @@ case $1 in
 					cp -pPR ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
 				;;
 			esac
-		else
+		elif [ "${clst_livecd_type}" != "generic-livecd" ]
+		then
 			cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
 				${clst_sharedir}/livecd/files/universal.motd.txt \
 				${clst_sharedir}/livecd/files/minimal.motd.txt \
