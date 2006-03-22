@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.40 2006/03/13 16:33:20 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.41 2006/03/22 19:05:40 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -344,6 +344,14 @@ case ${clst_livecd_type} in
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
 		mv -f /etc/gconf /usr/livecd
+		if [ -e /usr/livecd/grppkgs.txt ]
+		then
+			rm -f /usr/livecd/grppkgs.txt
+		fi
+		if [ -e /usr/livecd/kernelpkgs.txt ]
+		then
+			rm -f /usr/livecd/kernelpkgs.txt
+		fi
 
 		touch /etc/startx
 		;;

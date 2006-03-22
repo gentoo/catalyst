@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.18 2005/12/16 19:32:31 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.19 2006/03/22 19:05:40 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -36,7 +36,22 @@ case $1 in
 		# Move over the motd (if applicable)
 		if [ -n "${clst_livecd_motd}" ]
 		then
-			cp -pPR ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
+			case ${clst_livecd_type} in
+				gentoo-*)
+					echo "Using livecd/motd is not supported with livecd/type"
+					echo "${clst_livecd_type}. You should switch to using"
+					echo "generic-livecd instead."
+					cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
+						${clst_sharedir}/livecd/files/universal.motd.txt \
+						${clst_sharedir}/livecd/files/minimal.motd.txt \
+						${clst_sharedir}/livecd/files/livecd.motd.txt \
+						${clst_sharedir}/livecd/files/gamecd.motd.txt \
+						${clst_chroot_path}/etc
+				;;
+				*)
+					cp -pPR ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
+				;;
+			esac
 		else
 			cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
 				${clst_sharedir}/livecd/files/universal.motd.txt \
