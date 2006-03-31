@@ -175,9 +175,6 @@ check_dev_manager(){
 	if [ "${clst_livecd_devmanager}" == "devfs" ]
 	then
 		cmdline_opts="${cmdline_opts} noudev devfs"
-	elif [ "${clst_livecd_devmanager}" == "devfs" ]
-	then
-		cmdline_opts="${cmdline_opts} udev nodevfs"
 	fi
 }
 

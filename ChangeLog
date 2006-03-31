@@ -1,5 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.590 2006/03/23 16:16:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.591 2006/03/31 16:47:10 wolf31o2 Exp $
+
+  31 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/functions.sh:
+  Removed check for livecd/dev-manager being udev since it was done
+  incorrectly and genkernel assumes udev by default on a 2.6 kernel and devfs
+  by default on a 2.4 kernel. Thanks to Alvin Lee <liyiming@ict.ac.cn> on bug
+  #128265 for pointing this out.
 
   23 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/cdtar/elilo-3.4-cdtar.tar.bz2,
