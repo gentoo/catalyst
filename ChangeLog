@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.591 2006/03/31 16:47:10 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.592 2006/04/04 15:54:53 wolf31o2 Exp $
+
+  04 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Fix theme for gdm.
 
   31 Mar 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/functions.sh:

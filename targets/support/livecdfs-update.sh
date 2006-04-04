@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.41 2006/03/22 19:05:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.42 2006/04/04 15:54:53 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -257,13 +257,13 @@ case ${clst_livecd_type} in
 		then
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/icon_theme Crux
+				--type string --set /desktop/gnome/interface/icon_theme Clearlooks
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/theme Crux
+				--type string --set /desktop/gnome/interface/theme Clearlooks
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /apps/metacity/general/theme Crux
+				--type string --set /apps/metacity/general/theme Clearlooks
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
 				--type string --set /desktop/gnome/interface/gtk_key_theme \
@@ -284,8 +284,8 @@ case ${clst_livecd_type} in
 			sed -e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
 				-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
 				-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
-				-e 's:GraphicalTheme=circles:GraphicalTheme=gentoo-emergence:' \
-				-e ':^#GraphicalTheme: s:^#::' \
+				-e 's:#GraphicalTheme=circles:GraphicalTheme=gentoo-emergence:' \
+				-e ':^#GraphicalTheme=: s:^#::' \
 				-i /etc/X11/gdm/gdm.conf
 			if [ -n "${clst_livecd_users}" -a -n "${first_user}" ]
 			then
