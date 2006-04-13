@@ -9,9 +9,3 @@ target:
 # example:
 # version_stamp: 2005.0
 version_stamp:
-
-# This option specifies the location to a portage overlay that you would like to
-# have included in this snapshot.
-# example:
-# portdir_overlay: /usr/local/portage
-portdir_overlay:

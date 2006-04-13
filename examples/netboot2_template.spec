@@ -6,6 +6,12 @@ profile: uclibc/mips
 snapshot: 20060107
 source_subpath: default/stage3-mips-uclibc-mips3-20051026
 
+# This option specifies the location to a portage overlay that you would like to
+# have used when building this target.
+# example:
+# portage_overlay: /usr/local/portage
+portage_overlay:
+
 boot/kernel: ip22r4k ip22r5k ip27r10k ip28r10k ip30r10k ip32r5k
 boot/kernel/ip22r4k/sources: =mips-sources-2.6.14.5
 boot/kernel/ip22r5k/sources: =mips-sources-2.6.14.5
