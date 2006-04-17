@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.42 2006/04/04 15:54:53 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.43 2006/04/17 18:57:35 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -36,6 +36,12 @@ echo 'DNSDOMAIN="gentoo"' >> /etc/conf.d/domainname
 # Add any users
 if [ -n "${clst_livecd_users}" ]
 then
+	# Here we check to see if games exists for bug #125498
+	if [ "$(getent group games | cut -d: -f1`)" != "games" ]
+	then
+		echo "Adding games group"
+		groupadd -g 35 games
+	fi
 	for x in ${clst_livecd_users}
 	do
 		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" \

@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.594 2006/04/13 13:14:05 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.595 2006/04/17 18:57:35 wolf31o2 Exp $
+
+  17 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Added a check for the games group and add it if it doesn't exist already.
+  This should resolve bug #125498.
 
   13 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/generic_stage_template.spec, examples/grp_template.spec,
