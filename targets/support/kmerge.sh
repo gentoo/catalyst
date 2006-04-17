@@ -32,7 +32,7 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --gensplash=${clst_splash_theme}"
 	fi
 
-	if [ -d "${clst_initramfs_overlay}" ]
+	if [ -d "/tmp/initramfs_overlay/${clst_initramfs_overlay}" ]
 	then
 		GK_ARGS="${GK_ARGS} --initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
 	fi
