@@ -1,18 +1,22 @@
 #!/usr/bin/python
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/build.py,v 1.3 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/build.py,v 1.4 2006/04/17 21:41:44 wolf31o2 Exp $
 
-import portage,sys
+import os,portage,sys
 
 # this loads files from the profiles ...
 # wrap it here to take care of the different
 # ways portage handles stacked profiles
+# last case is for portage-2.1_pre*
 def scan_profile(file):
 	if "grab_stacked" in dir(portage):
 		return portage.grab_stacked(file, portage.settings.profiles, portage.grabfile, incremental_lines=1);
 	else:
-		return portage.stack_lists( portage.grab_multiple(file, portage.settings.profiles, portage.grabfile), incremental=1);
+		if "grab_multiple" in dir(portage):
+			return portage.stack_lists( portage.grab_multiple(file, portage.settings.profiles, portage.grabfile), incremental=1);
+		else:	
+			return portage.stack_lists( [portage.grabfile_package(os.path.join(x, file)) for x in portage.settings.profiles], incremental=1);
 
 # loaded the stacked packages / packages.build files
 pkgs = scan_profile("packages")
