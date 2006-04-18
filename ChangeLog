@@ -1,5 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.600 2006/04/18 20:57:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.601 2006/04/18 20:59:12 wolf31o2 Exp $
+
+  18 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
+  modules/catalyst_support.py:
+  Added patch from Andrew Gaffney <agaffney@gentoo.org> to re-write
+  parse_spec. This should resolve bug #130103, as well as make the code much
+  cleaner. This is 2.0_rc42.
 
   18 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:

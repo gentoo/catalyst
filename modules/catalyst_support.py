@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.68 2006/01/17 20:39:15 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.69 2006/04/18 20:59:12 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -540,75 +540,57 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
 """
 
 def parse_spec(mylines):
-	myspec={}
-	pos=0
-	colon=re.compile(":")
-	trailing_comment=re.compile("#.*\n")
-	newline=re.compile("\n")
-	leading_white_space=re.compile("^\s+")
+	myspec = {}
+	cur_array = []
+	trailing_comment=re.compile("#.*$")
 	white_space=re.compile("\s+")
-	while pos<len(mylines):
+	while len(mylines):
+		myline = mylines.pop(0).strip()
+
 		# Force the line to be clean 
 		# Remove Comments ( anything following # )
-		mylines[pos]=trailing_comment.sub("",mylines[pos])
-		
-		# Remove newline character \n
-		mylines[pos]=newline.sub("",mylines[pos])
+		myline = trailing_comment.sub("", myline)
 
-		# Remove leading white space
-		mylines[pos]=leading_white_space.sub("",mylines[pos])
-		
 		# Skip any blank lines
-		if len(mylines[pos])<=1:
-			pos += 1
-			continue
-		msearch=colon.search(mylines[pos])
+		if not myline: continue
+
+		# Look for colon
+		msearch = myline.find(':')
 		
 		# If semicolon found assume its a new key
 		# This may cause problems if : are used for key values but works for now
-		if msearch:
+		if msearch != -1:
 			# Split on the first semicolon creating two strings in the array mobjs
-			mobjs = colon.split(mylines[pos],1)
+			mobjs = myline.split(':', 1)
+			mobjs[1] = mobjs[1].strip()
 			# Start a new array using the first element of mobjs
-			newarray=[mobjs[0]]
+			cur_array = [mobjs[0]]
 			if mobjs[1]:
 				# split on white space creating additional array elements
-				subarray=mobjs[1].split()
-				if len(subarray)>0:
-					
+				subarray = white_space.split(mobjs[1])
+				if subarray:
 					if len(subarray)==1:
 						# Store as a string if only one element is found.
 						# this is to keep with original catalyst behavior 
 						# eventually this may go away if catalyst just works
 						# with arrays.
-						newarray.append(subarray[0])
+						cur_array.append(subarray[0])
 					else:
-						newarray.append(mobjs[1].split())
+						cur_array += subarray
 		
 		# Else add on to the last key we were working on
 		else:
-			mobjs = white_space.split(mylines[pos])
-			for i in mobjs:
-				newarray.append(i)
+			mobjs = white_space.split(myline)
+			cur_array += mobjs
 		
-		pos += 1
-		if len(newarray)==2:
-			myspec[newarray[0]]=newarray[1]
-		else: 
-			myspec[newarray[0]]=newarray[1:]
+		if len(cur_array) == 2:
+			myspec[cur_array[0]] = cur_array[1]
+		else:
+			myspec[cur_array[0]] = cur_array[1:]
 	
-	for x in myspec.keys():
-		# Convert myspec[x] to an array of strings
-		newarray=[]
-		if type(myspec[x])!=types.StringType:
-			for y in myspec[x]:
-				if type(y)==types.ListType:
-					newarray.append(y[0])
-				if type(y)==types.StringType:
-					newarray.append(y)
-			myspec[x]=newarray
+	for x in myspec:
 		# Delete empty key pairs
-		if len(myspec[x])==0:
+		if not myspec[x]:
 			print "\n\tWARNING: No value set for key: "+x
 			print "\tdeleting key: "+x+"\n"
 			del myspec[x]
