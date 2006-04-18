@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.130 2006/03/22 22:21:32 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.131 2006/04/18 20:57:21 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1019,7 +1019,7 @@ class generic_stage_target(generic_target):
 
 		print "Creating stage tarball..."
 		
-		cmd("tar cjf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
+		cmd("tar cjpf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball",env=self.env)
 
 		self.gen_digest_file(self.settings["target_path"])

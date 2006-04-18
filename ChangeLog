@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.599 2006/04/18 20:38:24 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.600 2006/04/18 20:57:21 wolf31o2 Exp $
+
+  18 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Forced -p on tar for compressing stages.
 
   18 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
