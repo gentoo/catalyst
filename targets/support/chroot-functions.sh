@@ -69,6 +69,11 @@ setup_myemergeopts(){
 		export clst_myemergeopts="--usepkg --buildpkg --newuse"
 		export bootstrap_opts="-r"
 	fi
+	if [ -n "${clst_FETCH}" ]
+	then
+		export bootstrap_opts="-f"
+		export clst_myemergeopts="{clst_myemergeopts} -f"
+	fi
 }
 
 
@@ -161,12 +166,6 @@ run_emerge() {
 	fi
 
 	echo "emerge ${clst_myemergeopts} $@" || exit 1
-
-	if [ -n "${clst_FETCH}" ]
-	then
-		export bootstrap_opts="-f"
-		emerge ${clst_myemergeopts} -f $@ || exit 1
-	fi
 
 	emerge ${clst_myemergeopts} $@ || exit 1
 }
