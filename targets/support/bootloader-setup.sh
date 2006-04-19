@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.33 2006/03/16 19:33:26 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.34 2006/04/19 14:28:40 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -95,7 +95,7 @@ case ${clst_mainarch} in
 			echo "read-write" >> ${icfg}
 			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 			then
-				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 			else
 				echo "append=\"${default_append_line}\"" >> ${icfg}
 			fi
@@ -170,11 +170,11 @@ case ${clst_mainarch} in
 					echo "read-write" >> ${icfg}
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
 					else
-						echo "append=\"${default_append_line} splash=silent\"" >> ${etc_icfg}
+						echo "append=\"${default_append_line}\"" >> ${etc_icfg}
 					fi
-					
+
 					for y in ${clst_kernel_console}
 					do
 						echo ${y}
@@ -188,12 +188,7 @@ case ${clst_mainarch} in
 
 						echo "label=${x}-${y} " >> ${etc_icfg}
 						echo "read-write" >> ${icfg}
-						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "append=\"${default_append_line} console=${y} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
-						else
-							echo "append=\"${default_append_line} console=${y} splash=silent\"" >> ${etc_icfg}
-						fi
+						echo "append=\"${default_append_line} console=${y}\"" >> ${etc_icfg}
 					done
 				else
 					echo >> ${etc_icfg}
@@ -208,9 +203,9 @@ case ${clst_mainarch} in
 					echo "read-write" >> ${etc_icfg}
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${etc_icfg}
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
 					else
-						echo "append=\"${default_append_line} splash=silent\"" >> ${etc_icfg}
+						echo "append=\"${default_append_line}\"" >> ${etc_icfg}
 					fi
 				fi
 			else
@@ -228,9 +223,9 @@ case ${clst_mainarch} in
 					echo "read-write" >> ${icfg}
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 					else
-						echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+						echo "append=\"${default_append_line}\"" >> ${icfg}
 					fi
 					
 					for y in ${clst_kernel_console}
@@ -245,12 +240,7 @@ case ${clst_mainarch} in
 
 						echo "label=${x}-${y} " >> ${icfg}
 						echo "read-write" >> ${icfg}
-						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "append=\"${default_append_line} console=${y} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
-						else
-							echo "append=\"${default_append_line} console=${y} splash=silent\"" >> ${icfg}
-						fi
+						echo "append=\"${default_append_line} console=${y}\"" >> ${icfg}
 					done
 				else
 					echo >> ${icfg}
@@ -265,9 +255,9 @@ case ${clst_mainarch} in
 					echo "read-write" >> ${icfg}
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme}\"" >> ${icfg}
+						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 					else
-						echo "append=\"${default_append_line} splash=silent\"" >> ${icfg}
+						echo "append=\"${default_append_line}\"" >> ${icfg}
 					fi
 				fi
 			fi
@@ -382,8 +372,10 @@ case ${clst_mainarch} in
 						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 						then
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-						else
+						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
+						else
+							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
 						fi
 
 						echo >> ${icfg}
@@ -400,10 +392,11 @@ case ${clst_mainarch} in
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					else
+					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
+					else
+						echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
 					fi
-
 					echo >> ${icfg}
 					echo "   ${x}" >> ${kmsg}
 					echo "label ${x}-nofb" >> ${icfg}
@@ -475,9 +468,11 @@ case ${clst_mainarch} in
 						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 						then
 							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
+						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
+							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
-							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent" >> ${icfg}
-						fi
+							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
+						fi						else
 						if [ -e $1/boot/${x}.igz ]
 						then
 							echo "initrd /boot/${x}.igz" >> ${icfg}
@@ -496,8 +491,10 @@ case ${clst_mainarch} in
 					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					else
+					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
 						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
+					else
+						echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}
 					fi
 					if [ -e $1/boot/${x}.igz ]
 					then

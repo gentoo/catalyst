@@ -1,5 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.601 2006/04/18 20:59:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.602 2006/04/19 14:28:40 wolf31o2 Exp $
+
+  19 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Removed bootplash support from ppc/ppc64 since they only will work with
+  gensplash. Forced use of livecd/splash_type of bootsplash to get
+  splash=silent. This should reduce the number of things on the kernel command
+  line that aren't necessary.
 
   18 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
   modules/catalyst_support.py:
