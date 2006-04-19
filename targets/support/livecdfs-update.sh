@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.44 2006/04/17 19:01:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.45 2006/04/19 15:34:08 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -37,7 +37,7 @@ echo 'DNSDOMAIN="gentoo"' >> /etc/conf.d/domainname
 if [ -n "${clst_livecd_users}" ]
 then
 	# Here we check to see if games exists for bug #125498
-	if [ "$(getent group games | cut -d: -f1`)" != "games" ]
+	if [ "$(getent group games | cut -d: -f1)" != "games" ]
 	then
 		echo "Adding games group"
 		groupadd -g 35 games
