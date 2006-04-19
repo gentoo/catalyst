@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.602 2006/04/19 14:28:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.603 2006/04/19 14:45:00 wolf31o2 Exp $
+
+  19 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/rc-update.sh:
+  Removed runlevel deletion, as it probably wasn't a good idea. This is for
+  bug #130476.
 
   19 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:

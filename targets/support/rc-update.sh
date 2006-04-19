@@ -63,15 +63,6 @@ then
 		do
 			rc-update del "${x%%|*}" "${x##*|}"
 		done
-		for x in $(ls /etc/runlevels)
-		do
-			CONTENTS=$(find /etc/runlevels/${x} -type f)
-			if [ -z "${CONTENTS}" ]
-			then
-				echo "${x}: Empty runlevel found.... deleting"
-				rmdir "/etc/runlevels/${x}"
-			fi
-		done
 	fi
 fi
 
