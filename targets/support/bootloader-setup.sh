@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.34 2006/04/19 14:28:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.35 2006/04/20 01:33:12 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -373,6 +373,7 @@ case ${clst_mainarch} in
 						then
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
@@ -393,6 +394,7 @@ case ${clst_mainarch} in
 					then
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 					else
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
@@ -469,6 +471,7 @@ case ${clst_mainarch} in
 						then
 							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
+						then
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
@@ -492,6 +495,7 @@ case ${clst_mainarch} in
 					then
 						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
 					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
+					then
 						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
 					else
 						echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}

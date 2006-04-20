@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.604 2006/04/19 15:34:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.605 2006/04/20 01:33:12 wolf31o2 Exp $
+
+  20 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  If you use elif, you have to use a then after it. Yeah, that one's totally
+  my fault.
 
   19 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/livecdfs-update.sh:
