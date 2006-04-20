@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.35 2006/04/20 01:33:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.36 2006/04/20 15:17:01 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -475,7 +475,7 @@ case ${clst_mainarch} in
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
-						fi						else
+						fi
 						if [ -e $1/boot/${x}.igz ]
 						then
 							echo "initrd /boot/${x}.igz" >> ${icfg}
