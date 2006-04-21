@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.131 2006/04/18 20:57:21 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.132 2006/04/21 13:00:50 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -937,7 +937,7 @@ class generic_stage_target(generic_target):
 			    cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+x,env=self.env)
 
 		    # put /etc/hosts back into place
-		    if os.path.exists("/etc/hosts.bck"):
+		    if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.bck"):
 			    cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+\
 					  "/etc/hosts", "Could not replace /etc/hosts",env=self.env)
 	
