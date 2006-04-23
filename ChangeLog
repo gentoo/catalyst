@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.607 2006/04/21 13:00:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.608 2006/04/23 02:58:37 wolf31o2 Exp $
+
+  23 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
+  Fixed creation of kernelpkgs.txt file for the installer.
 
   21 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:

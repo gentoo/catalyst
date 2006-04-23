@@ -63,7 +63,7 @@ genkernel_compile(){
 	export clst_initramfs_overlay
 	# Build our list of kernel packages
 	if [ "${clst_livecd_type}" = "gentoo-release-livecd" ] \
-	&& [ "$clst_kernel_merge" != ""]
+	&& [ -n "${clst_kernel_merge}" ]
 	then
 		mkdir -p /usr/livecd
 		echo "${clst_kernel_merge}" > /usr/livecd/kernelpkgs.txt
