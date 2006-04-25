@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.69 2006/04/18 20:59:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.70 2006/04/25 15:21:37 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -583,18 +583,17 @@ def parse_spec(mylines):
 			mobjs = white_space.split(myline)
 			cur_array += mobjs
 		
+		# XXX: Do we really still need this "single value is a string" behavior?
 		if len(cur_array) == 2:
 			myspec[cur_array[0]] = cur_array[1]
 		else:
 			myspec[cur_array[0]] = cur_array[1:]
 	
-	for x in myspec:
+	for x in myspec.keys():
 		# Delete empty key pairs
 		if not myspec[x]:
-			print "\n\tWARNING: No value set for key: "+x
-			print "\tdeleting key: "+x+"\n"
+			print "\n\tWARNING: No value set for key " + x + "...deleting"
 			del myspec[x]
-	#print myspec
 	return myspec
 
 def parse_makeconf(mylines):

@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.609 2006/04/25 15:17:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.610 2006/04/25 15:21:37 wolf31o2 Exp $
+
+  25 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/catalyst_support.py:
+  Added patch to parse_spec by Andrew Gaffney <agaffney@gentoo.org> and for
+  bug #131190.
 
   25 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
