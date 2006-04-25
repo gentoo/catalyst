@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.70 2006/04/25 15:21:37 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.71 2006/04/25 17:10:11 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -84,12 +84,14 @@ def calc_hash(file,cmd,cmd_args,id_string="MD5",verbose=False):
 
 def calc_hash2(file,cmd,cmd_args,id_string="MD5",verbose=False):
 	a=os.popen(cmd+" "+cmd_args+" "+file)
-	a.readline()
+	header=a.readline()
 	mylines=a.readline().split()
+	hash=mylines[0]
+	short_file=os.path.split(mylines[1])[1]
 	a.close()
-	result=mylines[0]
+	result=header+hash+" "+short_file
 	if verbose:
-		print id_string+" (%s) = %s" % (file, result)
+		print header+" (%s) = %s" % (short_file, result)
 	return result
 
 #This has map must be defined after the function calc_hash
