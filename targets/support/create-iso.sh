@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.29 2006/02/09 12:16:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.30 2006/04/25 18:33:44 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -268,35 +268,58 @@ case ${clst_mainarch} in
 		esac
 	;;
 	sparc*)
-		# Old silo + patched mkisofs fubar magic
-		# Only silo 1.2.x seems to work for most hardware
-		# Seems silo 1.3.x+ breaks on newer machines
-		# when booting from CD (current as of silo 1.4.8)
-		mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
-		case ${clst_fstype} in
-			zisofs)
-			echo "Running mkisofs.sparc.fu to create iso image...."
-			echo "/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S \
-				'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
-			echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
-			/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
-				-B '/boot/second.b' -s '/boot/silo.conf'\
-				-V "${clst_iso_volume_id}" ${clst_target_path} \
-				|| die "Cannot make ISO image"
-			;;
-			*)
-			echo "Running mkisofs.sparc.fu to create iso image...."
-			echo "/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S \
-				'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
-			echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
-			/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
-				-B '/boot/second.b' -s '/boot/silo.conf'\
-				-V "${clst_iso_volume_id}" ${clst_target_path} \
-				|| die "Cannot make ISO image"
-			;;
-		esac
+		# Old silo (<=1.2.6) requires a specially built mkisofs
+		# We try to autodetect this in a simple way, said mkisofs
+		# should be in the cdtar, otherwise use the new style.
+		if [ -x ${clst_target_path}/boot/mkisofs.sparc.fu ]
+		then
+			mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
+			case ${clst_fstype} in
+				zisofs)
+				echo "Running mkisofs.sparc.fu to create iso image...."
+				echo "/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S \
+					'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
+				echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
+				/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
+					-B '/boot/second.b' -s '/boot/silo.conf'\
+					-V "${clst_iso_volume_id}" ${clst_target_path} \
+					|| die "Cannot make ISO image"
+				;;
+				*)
+				echo "Running mkisofs.sparc.fu to create iso image...."
+				echo "/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S \
+					'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
+				echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
+				/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
+					-B '/boot/second.b' -s '/boot/silo.conf'\
+					-V "${clst_iso_volume_id}" ${clst_target_path} \
+					|| die "Cannot make ISO image"
+				;;
+			esac
+			rm /tmp/mkisofs.sparc.fu
+		else
+			case ${clst_fstype} in
+				zisofs)
+				echo "Running mkisofs to create iso image...."
+				echo "mkisofs -J -R -l -z -V \"${clst_iso_volume_id}\" -o ${1} \
+					-G \"${clst_target_path}/boot/isofs.b\" -B ... \
+					${clst_target_path}"
+				mkisofs -J -R -l -z -V "${clst_iso_volume_id}" -o ${1} \
+					-G "${clst_target_path}/boot/isofs.b" -B ... \
+					${clst_target_path} || die "CAnnot make ISO image"
+				;;
+				*)
+				echo "Running mkisofs to create iso image...."
+				echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} \
+					-G \"${clst_target_path}/boot/isofs.b\" -B ... \
+					${clst_target_path}"
+				mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
+					-G "${clst_target_path}/boot/isofs.b" -B ... \
+					${clst_target_path} || die "CAnnot make ISO image"
+				;;
+			esac
+		fi
 
-		rm /tmp/mkisofs.sparc.fu
 	;;
 	x86|amd64)
 		if [ -e ${clst_target_path}/boot/elilo.efi ]
