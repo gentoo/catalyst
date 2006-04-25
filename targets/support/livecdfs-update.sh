@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.45 2006/04/19 15:34:08 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.46 2006/04/25 15:17:41 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -374,7 +374,7 @@ then
 		/root/.bashrc
 fi
 
-if [-e /lib/rcscripts/addons/udev-start.sh ]
+if [ -e /lib/rcscripts/addons/udev-start.sh ]
 then
 	sed -i "s:\t\[\[ -x /sbin/evms_activate:\t\[\[ -x \${CDBOOT} \]\] \&\& \[\[ -x /sbin/evms_activate:" /lib/rcscripts/addons/udev-start.sh
 fi
