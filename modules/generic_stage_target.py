@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.132 2006/04/21 13:00:50 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.133 2006/04/25 17:13:28 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1348,7 +1348,7 @@ class generic_stage_target(generic_target):
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 
-        def gen_digest_file(self,file):
+	def gen_digest_file(self,file):
 		if os.path.exists(file+".DIGESTS"):
 			os.remove(file+".DIGESTS")
 		if self.settings.has_key("digests"):
@@ -1357,15 +1357,15 @@ class generic_stage_target(generic_target):
 				keys={}
 				for i in self.settings["digests"].split():
 					keys[i]=1
-				array=keys.keys()
-				array.sort()
-				for i in array:
-					if self.settings.has_key("VERBOSE"):
-			    			hash=generate_hash(file,hash_function=i,verbose=True)
-					else:
-			    			hash=generate_hash(file,hash_function=i)
-					myf.write(hash_map[i][3]+" "+hash+" "+os.path.split(file)[1]+"\n")
-                    		myf.close()
+					array=keys.keys()
+					array.sort()
+					for i in array:
+						if self.settings.has_key("VERBOSE"):
+							hash=generate_hash(file,hash_function=i,verbose=True)
+						else:
+							hash=generate_hash(file,hash_function=i)
+						myf.write(hash)
+				myf.close()
 
 	def purge(self):
 	    countdown(10,"Purging Caches ...")
