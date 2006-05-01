@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.71 2006/04/25 17:10:11 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.72 2006/05/01 19:31:55 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -637,7 +637,7 @@ def read_makeconf(mymakeconffile):
 		    myf.close()
 		    return parse_makeconf(mylines)
 	    except:
-		    raise CatalystError, "Could not open make.conf file "+myspecfile
+		    raise CatalystError, "Could not open make.conf file "+mymakeconffile
 	else:
 	    makeconf={}
 	    return makeconf

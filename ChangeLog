@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.613 2006/04/25 18:33:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.614 2006/05/01 19:31:55 wolf31o2 Exp $
+
+  01 May 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/catalyst_support.py:
+  Changed a display error from bug #131502 and rolling 2.0_rc45.
 
   25 Apr 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/create-iso.sh:
