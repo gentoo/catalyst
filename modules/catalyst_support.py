@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.72 2006/05/01 19:31:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.73 2006/05/03 22:18:38 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -136,7 +136,7 @@ def read_from_clst(file):
 		return -1
 		#raise CatalystError, "Could not open file "+file
 	for line in myf.readlines():
-	    line = string.replace(line, "\n", "") # drop newline
+	    #line = string.replace(line, "\n", "") # drop newline
 	    myline = myline + line
 	myf.close()
 	return myline
