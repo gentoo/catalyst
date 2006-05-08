@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.614 2006/05/01 19:31:55 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.615 2006/05/08 17:51:00 rocket Exp $
+
+  08 May 2006; Eric Edgar <rocket@gentoo.org> modules/catalyst_lock.py:
+  recursive directory create
 
   01 May 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/catalyst_support.py:
