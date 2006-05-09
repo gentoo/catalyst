@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.46 2006/04/25 15:17:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.47 2006/05/09 12:20:07 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -60,13 +60,6 @@ if [ -f /etc/sudoers ]
 then
 	sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 fi
-
-# Setup DHCP on all detected ethernet devices
-echo "iface_eth0=\"dhcp\""> /etc/conf.d/net
-echo "iface_eth1=\"dhcp\"" >> /etc/conf.d/net
-echo "iface_eth2=\"dhcp\"" >> /etc/conf.d/net
-echo "iface_eth3=\"dhcp\"" >> /etc/conf.d/net
-echo "iface_eth4=\"dhcp\"" >> /etc/conf.d/net
 
 # Setup links for ethernet devices
 cd /etc/init.d
