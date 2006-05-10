@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.47 2006/05/09 12:20:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.48 2006/05/10 15:55:28 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -310,7 +310,7 @@ case ${clst_livecd_type} in
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
 		# Create our installer icons
-		if [ -e /usr/share/applications/installer-gli.desktop ]
+		if [ -e /usr/share/applications/installer-gtk.desktop ]
 		then
 			if [ -n "${clst_livecd_users}" ]
 			then
