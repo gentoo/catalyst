@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.616 2006/05/09 12:20:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.617 2006/05/10 13:23:00 wolf31o2 Exp $
+
+  10 May 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc64.py:
+  Added 970, power3, power4, and power5 sub-arches for ppc64.
 
   09 May 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
