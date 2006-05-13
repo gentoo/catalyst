@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.48 2006/05/10 15:55:28 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.49 2006/05/13 14:01:16 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -197,10 +197,10 @@ then
 	cd /lib/firmware
 	if [ -n "$(ls /usr/lib/hotplug/firmware)" ]
 	then
-		cp /usr/lib/hotplug/firmware/* /lib/firmware
+		cp -r /usr/lib/hotplug/firmware/* /lib/firmware
 	fi
 	/bin/tar cjpf /lib/firmware.tar.bz2 .
-	rm -f /lib/firmware/*
+	rm -rf /lib/firmware/*
 	mkdir -p /usr/lib/hotplug
 	rm -rf /usr/lib/hotplug/firmware
 	ln -sf /lib/firmware /usr/lib/hotplug/firmware
