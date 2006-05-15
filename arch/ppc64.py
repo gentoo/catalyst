@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc64.py,v 1.5 2006/05/10 13:23:00 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc64.py,v 1.6 2006/05/15 19:09:28 rocket Exp $
 
 import builder
 
@@ -19,32 +19,32 @@ class arch_ppc64(generic_ppc64):
 		self.settings["CXXFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="powerpc64-unknown-linux-gnu"
 
-class arch_970(generic_ppc64):
+class arch_970(arch_ppc64):
 	"builder class for G5 under ppc64"
 	def __init__(self,myspec):
-		generic_ppc64.__init__(self,myspec)
+		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=970 -mtune=970 -mabi=altivec"
 		self.settings["CXXFLAGS"]="-O2 -pipe -mcpu=970 -mtune=970 -mabi=altivec"
 		self.settings["HOSTUSE"]=["altivec"]
 
-class arch_power3(generic_ppc64):
+class arch_power3(arch_ppc64):
 	"builder class for power3 under ppc64"
 	def __init__(self,myspec):
-		generic_ppc64.__init__(self,myspec)
+		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power3 -mtune=power3"
 		self.settings["CXXFLAGS"]="-O2 -pipe -mcpu=power3 -mtune=power3"
 
-class arch_power4(generic_ppc64):
+class arch_power4(arch_ppc64):
 	"builder class for power4 under ppc64"
 	def __init__(self,myspec):
-		generic_ppc64.__init__(self,myspec)
+		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power4 -mtune=power4"
 		self.settings["CXXFLAGS"]="-O2 -pipe -mcpu=power4 -mtune=power4"
 
-class arch_power5(generic_ppc64):
+class arch_power5(arch_ppc64):
 	"builder class for power5 under ppc64"
 	def __init__(self,myspec):
-		generic_ppc64.__init__(self,myspec)
+		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
 		self.settings["CXXFLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
 
