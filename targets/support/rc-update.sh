@@ -23,17 +23,14 @@ then
 	case ${clst_livecd_type} in
 		gentoo-gamecd )
 			rc-update add spind default
-			rc-update add x-setup default
 			;;
 		gentoo-release-livecd )
 			rc-update add spind default
-			rc-update add x-setup default
 			rc-update add xdm default
 			rc-update add famd default
 			;;
 		generic-livecd )
 			rc-update add spind default
-			rc-update add x-setup default
 			;;
 		*)
 			;;
