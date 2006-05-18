@@ -1,5 +1,5 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.622 2006/05/16 19:27:29 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.623 2006/05/18 00:35:41 wolf31o2 Exp $
 
   16 May 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:
@@ -15,7 +15,7 @@
 
   13 May 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
-  Make copies and deletes recursive for firmware sicne some packages put their
+  Make copies and deletes recursive for firmware since some packages put their
   firmware in a subdirectory.
 
   10 May 2006; Chris Gianelloni <wolf31o2@gentoo.org>
