@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.133 2006/04/25 17:13:28 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.134 2006/05/19 16:25:20 rocket Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -1359,12 +1359,12 @@ class generic_stage_target(generic_target):
 					keys[i]=1
 					array=keys.keys()
 					array.sort()
-					for i in array:
-						if self.settings.has_key("VERBOSE"):
-							hash=generate_hash(file,hash_function=i,verbose=True)
-						else:
-							hash=generate_hash(file,hash_function=i)
-						myf.write(hash)
+				for j in array:
+					if self.settings.has_key("VERBOSE"):
+						hash=generate_hash(file,hash_function=j,verbose=True)
+					else:
+						hash=generate_hash(file,hash_function=j)
+					myf.write(hash)
 				myf.close()
 
 	def purge(self):

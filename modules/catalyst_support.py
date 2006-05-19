@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.73 2006/05/03 22:18:38 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.74 2006/05/19 16:25:20 rocket Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
@@ -89,7 +89,7 @@ def calc_hash2(file,cmd,cmd_args,id_string="MD5",verbose=False):
 	hash=mylines[0]
 	short_file=os.path.split(mylines[1])[1]
 	a.close()
-	result=header+hash+" "+short_file
+	result=header+hash+" "+short_file+"\n"
 	if verbose:
 		print header+" (%s) = %s" % (short_file, result)
 	return result
