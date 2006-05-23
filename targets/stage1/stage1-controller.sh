@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.12 2006/01/04 19:51:03 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-controller.sh,v 1.13 2006/05/23 20:00:19 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -60,8 +60,8 @@ case $1 in
 		find -iname "*.py[co]" -exec rm -f {} \;
 		# Cleanup all .a files except libgcc.a, *_nonshared.a and
 		# /usr/lib/portage/bin/*.a
-		find -iname "*.a" | grep -v 'libgcc.a' | grep -v 'nonshared.a' | \
-			grep -v '/usr/lib/portage/bin/' | grep -v 'libgcc_eh.a' | xargs \
+		find -type f -iname "*.a" | grep -v 'libgcc.a' | grep -v 'nonshared.a' \
+			| grep -v '/usr/lib/portage/bin/' | grep -v 'libgcc_eh.a' | xargs \
 			rm -f
 	;;
 	*)
