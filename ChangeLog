@@ -1,5 +1,8 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.626 2006/05/23 20:00:19 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.627 2006/05/25 16:26:38 wolf31o2 Exp $
+
+  25 May 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  This is 2.0_rc46.
 
   23 May 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-controller.sh:
