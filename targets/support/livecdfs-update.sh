@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.51 2006/06/03 01:58:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.52 2006/06/08 21:27:30 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -247,6 +247,7 @@ case ${clst_livecd_type} in
 		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]
 		then
+			# Umm... there is no Clearlooks icon theme.  Yup.  I'm a retard.
 #			gconftool-2 --direct \
 #				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
 #				--type string --set /desktop/gnome/interface/icon_theme Clearlooks

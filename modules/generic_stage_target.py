@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.134 2006/05/19 16:25:20 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.135 2006/06/08 21:27:30 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -572,12 +572,22 @@ class generic_stage_target(generic_target):
 
 		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
 		
-		if self.settings.has_key("SEEDCACHE") and os.path.isdir(self.settings["source_path"]): 
-			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
-			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
-				self.settings["chroot_path"]+" (This may take some time) ...\n"
-			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+		if self.settings.has_key("SEEDCACHE"):
+			if os.path.isdir(self.settings["source_path"]): 
+				# SEEDCACHE Is a directory, use Rsync
+				unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
+				display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
+					self.settings["chroot_path"]+" (This may take some time) ...\n"
+				error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+			else:
+				# SEEDCACHE is a not a directory, try untar'ing
+				print "Referenced SEEDCACHE does not appear to be a directory, trying to untar..."
+				display_msg="\nStarting tar extract from "+self.settings["source_path"]+"\nto "+\
+					self.settings["chroot_path"]+" (This may take some time) ...\n"
+				unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]
+				error_msg="Tarball extraction of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 		else:
+			# No SEEDCACHE, use tar
 			display_msg="\nStarting tar extract from "+self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+" (This may take some time) ...\n"
 			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+self.settings["chroot_path"]

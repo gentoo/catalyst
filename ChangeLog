@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.629 2006/06/03 01:58:36 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.630 2006/06/08 21:27:29 wolf31o2 Exp $
+
+  08 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py, targets/support/livecdfs-update.sh:
+  Add patch from bug #135051 to fix the seedcache extraction logic.
 
   03 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
