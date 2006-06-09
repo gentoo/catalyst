@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.8 2005/12/19 15:03:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.9 2006/06/09 00:31:51 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -28,7 +28,7 @@ case ${1} in
 
 		# Main Busybox emerge
 		clst_root_path="/" \
-		clst_use="${clst_use} netboot" \
+		clst_use="${clst_use} netboot make-busybox-symlinks" \
 		clst_myemergeopts="${clst_myemergeopts} -O" \
 		clst_packages="busybox" \
 		exec_in_chroot \
