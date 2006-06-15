@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.632 2006/06/12 20:41:53 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.633 2006/06/15 22:18:51 wolf31o2 Exp $
+
+  15 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Added a second pass to the alpha bootloader setup to create aboot items for
+  serial console for bug #133457.
 
   12 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   +livecd/cdtar/arcload-0.43-r1.tbz2:
