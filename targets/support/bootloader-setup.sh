@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.37 2006/06/15 22:18:51 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.38 2006/06/19 19:05:02 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -492,7 +492,7 @@ case ${clst_mainarch} in
 						fi
 						echo >> ${icfg}
 						echo "title ${x}-${y} [ No FrameBuffer ]" >> ${icfg}
-						echo "kernel ${x} /boot/${x} softlevel=${y} ${default_append_line}" >> ${icfg}
+						echo "kernel /boot/${x} softlevel=${y} ${default_append_line}" >> ${icfg}
 						if [ -e $1/boot/${x}.igz ]
 						then
 							echo "initrd /boot/${x}.igz" >> ${icfg}
@@ -516,7 +516,7 @@ case ${clst_mainarch} in
 					fi
 					echo >> ${icfg}
 					echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
-					echo "kernel ${x} /boot/${x} ${default_append_line}" >> ${icfg}
+					echo "kernel /boot/${x} ${default_append_line}" >> ${icfg}
 					if [ -e $1/boot/${x}.igz ]
 					then
 						echo "initrd /boot/${x}.igz" >> ${icfg}
