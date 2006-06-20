@@ -1,5 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.634 2006/06/19 19:05:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.635 2006/06/20 19:32:31 wolf31o2 Exp $
+
+  20 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/unmerge.sh:
+  Change our unmerge from being a single unmerge to a loop, to work around an
+  unexpected change in portage 2.1's unmerge processing.
 
   19 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:
