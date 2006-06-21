@@ -39,6 +39,7 @@ case ${clst_target} in
 		cp -af ${clst_root_path}usr/share/genkernel/netboot/misc/* ${clst_merge_path}
 
 		echo ">>> Copying busybox config ..."
-		cp -f ${clst_netboot2_busybox_config} /usr/share/genkernel/${clst_mainarch}/busy-config
+		cp -f ${clst_root_path}usr/share/genkernel/${clst_mainarch}/nb-busybox.cf \
+			${clst_root_path}usr/share/genkernel/${clst_mainarch}/busy-config
 	;;
 esac

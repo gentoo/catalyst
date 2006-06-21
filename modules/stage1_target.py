@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.23 2006/01/29 18:58:03 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage1_target.py,v 1.24 2006/06/21 22:11:54 wolf31o2 Exp $
 
 """
 Builder class for a stage1 installation tarball build.
@@ -20,7 +20,7 @@ class stage1_target(generic_stage_target):
 		print "stage1 stage path is "+self.settings["stage_path"]
 	
 	def set_root_path(self):
-	       # ROOT= variable for emerges
+		# sets the root path, relative to 'chroot_path', of the stage1 root
 		self.settings["root_path"]=normpath("/tmp/stage1root")
 		print "stage1 root path is "+self.settings["root_path"]
 	
@@ -58,6 +58,16 @@ class stage1_target(generic_stage_target):
 			print "\tUsing an portage overlay for earlier stages could cause build issues."
 			print "\tIf you break it, you buy it. Don't complain to us about it."
 			print "\tDont say we did not warn you\n"
+
+	def set_mounts(self):
+		# stage_path/proc probably doesn't exist yet, so create it
+		if not os.path.exists(self.settings["stage_path"]+"/proc"):
+			os.makedirs(self.settings["stage_path"]+"/proc")
+
+		# alter the mount mappings to bind mount proc onto it
+		self.mounts.append("/tmp/stage1root/proc")
+		self.mountmap["/tmp/stage1root/proc"]="/proc"
+
 
 def register(foo):
 	foo.update({"stage1":stage1_target})

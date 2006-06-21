@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.2 2006/01/20 17:19:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.3 2006/06/21 22:11:54 wolf31o2 Exp $
 
 """
 Builder class for a netboot build, version 2
@@ -15,7 +15,6 @@ class netboot2_target(generic_stage_target):
 		self.required_values=[
 			"boot/kernel",
 			"netboot2/builddate",
-			"netboot2/busybox_config",
 			"netboot2/packages",			
 			"netboot2/use"			
 		]
@@ -43,10 +42,6 @@ class netboot2_target(generic_stage_target):
 		# Merge packages into the buildroot, and pick out certain files to place in
 		# /tmp/image
 		self.settings["merge_path"]=normpath("/tmp/image")
-
-		for envvar in "CFLAGS", "CXXFLAGS":
-			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
-				self.settings[envvar] = "-Os -pipe"
 
 	def set_dest_path(self):
 		if self.settings.has_key("merge_path"):

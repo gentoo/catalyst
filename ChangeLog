@@ -1,5 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.635 2006/06/20 19:32:31 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.636 2006/06/21 22:11:54 wolf31o2 Exp $
+
+  21 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/netboot2_target.py, modules/stage1_target.py,
+  targets/netboot2/netboot2-copyfile.sh, targets/support/pre-kmerge.sh:
+  Added two patches from Joshua Kinard <kumba@gentoo.org> to fix stage1 not
+  having /proc mounted during the preclean stage and also to clean up the
+  netboot2 code. This is 2.0_rc48.
 
   20 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/unmerge.sh:
