@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.135 2006/06/08 21:27:30 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.136 2006/06/22 14:54:27 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -510,7 +510,7 @@ class generic_stage_target(generic_target):
 				
 					for y in loop2:
 						if not addlargs.has_key("boot/kernel/"+x+"/packages"):
-							addlargs["boot/kernel/"+x+"/packages"]=[[y]]
+							addlargs["boot/kernel/"+x+"/packages"]=[y]
 						else:
 							addlargs["boot/kernel/"+x+"/packages"].append(y)
 
