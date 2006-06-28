@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.17 2006/01/11 23:27:52 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.18 2006/06/28 12:48:22 wolf31o2 Exp $
 
 import os,builder
 from catalyst_support import *
@@ -17,9 +17,9 @@ class generic_ppc(builder.generic):
 		self.settings["mainarch"]="ppc"
 		self.settings["CHOST"]="powerpc-unknown-linux-gnu"
 		if self.settings["hostarch"]=="ppc64":
-			if not os.path.exists("/usr/bin/linux32"):
-				raise CatalystError,"required /usr/bin/linux32 executable not found."
-			self.settings["CHROOT"]="/usr/bin/linux32 chroot"
+			if not os.path.exists("/bin/linux32"):
+				raise CatalystError,"required /bin/linux32 executable not found (\"emerge setarch\" to fix."
+			self.settings["CHROOT"]="linux32 chroot"
 		else:
 			self.settings["CHROOT"]="chroot"
 

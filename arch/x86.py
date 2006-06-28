@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.23 2006/01/23 23:09:51 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/x86.py,v 1.24 2006/06/28 12:48:22 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -12,7 +12,7 @@ class generic_x86(builder.generic):
 		self.settings["mainarch"]="x86"
 		if self.settings["hostarch"]=="amd64":
 			if not os.path.exists("/bin/linux32"):
-				raise CatalystError,"required /bin/linux32 executable not found (\"emerge linux32\" to fix.)"
+				raise CatalystError,"required /bin/linux32 executable not found (\"emerge setarch\" to fix.)"
 			self.settings["CHROOT"]="linux32 chroot"
 		else:
 			self.settings["CHROOT"]="chroot"

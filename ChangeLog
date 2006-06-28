@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.638 2006/06/22 14:54:27 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.639 2006/06/28 12:48:22 wolf31o2 Exp $
+
+  28 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc.py,
+  arch/x86.py:
+  Fixed invocation of linux32 for x86 and ppc.  This is for bug #138080.
 
   22 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
