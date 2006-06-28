@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.136 2006/06/22 14:54:27 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.137 2006/06/28 12:51:43 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -345,12 +345,6 @@ class generic_stage_target(generic_target):
 	def set_fsops(self):
 		if self.settings.has_key("fstype"):
 			self.valid_values.append("fsops")
-			if self.settings.has_key(self.settings["spec_prefix"]+"/fs-ops"):
-				print "\n\n\nWarning!!!"+self.settings["spec_prefix"]+"/fs-ops" + "is deprecated and may be removed."
-				print "\tUse "+self.settings["spec_prefix"]+"/fsops" + "instead.\n\n\n"
-				self.settings["fsops"]=self.settings[self.settings["spec_prefix"]+"/fs-ops"]
-				del self.settings[self.settings["spec_prefix"]+"/fs-ops"]
-			
 			if self.settings.has_key(self.settings["spec_prefix"]+"/fsops"):
 				self.settings["fsops"]=self.settings[self.settings["spec_prefix"]+"/fsops"]
 				del self.settings[self.settings["spec_prefix"]+"/fsops"]

@@ -53,7 +53,7 @@ create_noloop() {
 create_squashfs() {
 	echo "Creating squashfs..."
 	export loopname="image.squashfs"
-	mksquashfs "${clst_destpath}" "$1/${loopname}" ${clst_fs_ops} -noappend \
+	mksquashfs "${clst_destpath}" "$1/${loopname}" ${clst_fsops} -noappend \
 		|| die "mksquashfs failed, did you emerge squashfs-tools?"
 }
 
@@ -61,7 +61,7 @@ create_jffs() {
 	echo "Creating jffs..."
 	export loopname="image.jffs"
 	# fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
-	mkfs.jffs -d ${clst_destpath} -o $1/${loopname} ${clst_fs_ops} \
+	mkfs.jffs -d ${clst_destpath} -o $1/${loopname} ${clst_fsops} \
 		|| die "Could not create a jffs filesystem"
 }
 
@@ -69,7 +69,7 @@ create_jffs2(){
 	echo "Creating jffs2..."
 	export loopname="image.jffs"
 	# fs_check /usr/sbin/mkfs.jffs2 jffs2 sys-fs/mtd
-	mkfs.jffs2 --root=${clst_destpath} --output=$1/${loopname} ${clst_fs_ops} \
+	mkfs.jffs2 --root=${clst_destpath} --output=$1/${loopname} ${clst_fsops} \
 		|| die "Could not create a jffs2 filesystem"
 }
 
@@ -77,6 +77,6 @@ create_cramfs(){
 	echo "Creating cramfs..."
 	export loopname="image.cramfs"
 	#fs_check /sbin/mkcramfs cramfs sys-fs/cramfs
-	mkcramfs ${clst_fs_ops} ${clst_destpath} $1/${loopname} \
+	mkcramfs ${clst_fsops} ${clst_destpath} $1/${loopname} \
 		|| die "Could not create a cramfs filesystem"
 }

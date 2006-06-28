@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.60 2006/01/18 13:06:40 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.61 2006/06/28 12:51:43 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.
@@ -23,9 +23,9 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/modblacklist","livecd/splash_theme","livecd/splash_type",\
 			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
 			"livecd/root_overlay","livecd/devmanager","livecd/users",\
-			"gamecd/conf","livecd/users","portage_overlay","livecd/cdfstype",\
-			"livecd/fstype","livecd/linuxrc","livecd/bootargs","gamecd/conf",\
-			"livecd/xdm","livecd/xsession","livecd/volid"])
+			"portage_overlay","livecd/cdfstype","livecd/fstype","livecd/fsops",\
+			"livecd/linuxrc","livecd/bootargs","gamecd/conf","livecd/xdm",\
+			"livecd/xsession","livecd/volid"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):
