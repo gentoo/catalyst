@@ -1,5 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.640 2006/06/28 12:51:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.641 2006/07/05 13:59:18 wolf31o2 Exp $
+
+  05 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
+  +livecd/cdtar/silo-1.4.13-sparc-cdtar.tar.bz2,
+  targets/support/bootloader-setup.sh:
+  Added patch from Gustavo Zacarias <gustavoz@gentoo.org> for sparc/silo
+  parameters support. This is for bug #139300.
 
   28 Jun 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/generic_stage_target.py, modules/livecd_stage2_target.py,
