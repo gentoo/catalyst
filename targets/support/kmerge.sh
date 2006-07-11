@@ -174,16 +174,6 @@ then
 	fi
 fi
 
-if [ "${USE_MATCH}" = "0" -o "${EXTRAVERSION_MATCH}" = "0" -o "${CONFIG_MATCH}" = "0" ]
-then
-	echo "Cleaning up ${clst_kname} kernel install ..."
-	echo "This may take some time ..."
-	if [ -d /tmp/kerncache/${clst_kname}/ ] 
-	then
-		rm -r /tmp/kerncache/${clst_kname}/ || exit 1
-	fi
-fi
-
 mkdir -p /tmp/kerncache/${clst_kname}
 	
 if [ -n "${clst_KERNCACHE}" ]

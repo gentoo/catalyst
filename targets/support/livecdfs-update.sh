@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.52 2006/06/08 21:27:30 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.53 2006/07/11 21:40:59 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -247,10 +247,6 @@ case ${clst_livecd_type} in
 		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]
 		then
-			# Umm... there is no Clearlooks icon theme.  Yup.  I'm a retard.
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/icon_theme Clearlooks
 			gconftool-2 --direct \
 				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
 				--type string --set /desktop/gnome/interface/theme Clearlooks
@@ -273,22 +269,43 @@ case ${clst_livecd_type} in
 		# Setup GDM
 		if [ "${clst_livecd_xdm}" == "gdm" ]
 		then
-			cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
-			sed -e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
-				-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
-				-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
-				-e 's:#GraphicalTheme=circles:GraphicalTheme=gentoo-emergence:' \
-				-e ':^#GraphicalTheme=: s:^#::' \
-				-i /etc/X11/gdm/gdm.conf
-			if [ -n "${clst_livecd_users}" -a -n "${first_user}" ]
+			if [ ! -e /etc/X11/gdm/gdm.conf ] && [ -e /usr/share/gdm/defaults.conf ]
 			then
-				sed -e "s:TimedLogin=:TimedLogin=${first_user}:" \
-					-i /etc/X11/gdm/gdm.conf
+				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
+				then
+					sedxtra="TimedLogin=${first_user}"
+				else
+					sedxtra=""
+				fi
+
+				sed	-i \
+					-e 's:\(\[daemon\]\)$:\1\nTimedLoginEnable=true:' \
+					-e 's:^TimedLoginEnable=true$:\1\nTimedLoginDelay=10:' \
+					-e 's:\(\[greeter\]\)$:\1\nGraphicalTheme=gentoo-emergence:' \
+					/etc/X11/gdm/custom.conf
+				[ -n "${sedxtra}" ] && sed -i \
+					-e "s:^TimedLoginDelay=10$:\1\n${sedxtra}:" \
+					/etc/X11/gdm/custom.conf
 			else
-				sed -e "s:TimedLogin=:TimedLogin=gentoo:" \
-					-i /etc/X11/gdm/gdm.conf
+				cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
+				sed -i \
+					-e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
+					-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
+					-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
+					-e ':^#GraphicalTheme=: s:^#::' \
+					-e 's:^GraphicalTheme=.*$:GraphicalTheme=gentoo-emergence:' \
+					/etc/X11/gdm/gdm.conf
+
+
+				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
+				then
+					sed -i \
+						-e "s:TimedLogin=:TimedLogin=${first_user}:" \
+						/etc/X11/gdm/gdm.conf
+				fi
 			fi
 		fi
+
 
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd

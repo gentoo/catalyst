@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.39 2006/07/05 13:59:18 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/bootloader-setup.sh,v 1.40 2006/07/11 21:40:59 wolf31o2 Exp $
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
 
@@ -547,20 +547,20 @@ case ${clst_mainarch} in
 		# CD image, and then pass these components to the
 		# `sgibootcd` tool which outputs a final CD image
 		scratch="${1}"
-		mkdir ${scratch}/kernels
-		mkdir ${scratch}/kernels/misc
-		mkdir ${scratch}/arcload
+		[ ! -d "${scratch}/kernels" ] && mkdir ${scratch}/kernels
+		[ ! -d "${scratch}/kernels/misc" ] && mkdir ${scratch}/kernels/misc
+		[ ! -d "${scratch}/arcload" ] && mkdir ${scratch}/arcload
 		echo "" > ${scratch}/arc.cf
 
 		# Move kernel binaries to ${scratch}/kernels, and
 		# move everything else to ${scratch}/kernels/misc
 		for x in ${clst_boot_kernel}; do
-			mv ${1}/boot/${x} ${scratch}/kernels
-			mv ${1}/boot/${x}.igz ${scratch}/kernels/misc
+			[ -e "${1}/boot/${x}" ] && mv ${1}/boot/${x} ${scratch}/kernels
+			[ -e "${1}/boot/${x}.igz" ] && mv ${1}/boot/${x}.igz ${scratch}/kernels/misc
 		done
-		rmdir ${1}/boot
+		[ -d "${1}/boot" ] && rmdir ${1}/boot
 
-		# Source the bashified arcload config
+		# Source the arcload source file to generated required sections of arc.cf
 		source ${clst_sharedir}/targets/support/mips-arcload_conf.sh
 
 		# Generate top portions of the config
@@ -595,7 +595,9 @@ case ${clst_mainarch} in
 		echo -e "${cmt2}" >> ${scratch}/arc.cf
 
 		# Move the bootloader binaries & config to their destination
-		mv ${1}/sashARCS ${1}/sash64 ${1}/arc.cf ${scratch}/arcload
+		[ -e "${1}/sashARCS" ] && mv ${1}/sashARCS ${scratch}/arcload
+		[ -e "${1}/sash64" ] && mv ${1}/sash64 ${scratch}/arcload
+		[ -e "${1}/arc.cf" ] && mv ${1}/arc.cf ${scratch}/arcload
 		;;
 esac
 exit $?

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.30 2006/04/25 18:33:44 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/create-iso.sh,v 1.31 2006/07/11 21:40:59 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -156,24 +156,42 @@ case ${clst_mainarch} in
 	;;
 	mips)
 		case ${clst_fstype} in
-			normal)
-				# Gather up all our bits, and generate a tmp config file
-				# for sgibootcd
-				mkdir ${clst_target_path}/loopback ${clst_target_path}/sgibootcd
-				mv ${clst_target_path}/image.loop ${clst_target_path}/loopback
-				rm -f ${clst_target_path}/livecd
-				img="${clst_target_path}/loopback/image.loop"
+			squashfs)
+				# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
+				[ ! -d "${clst_target_path}/loopback" ] && mkdir ${clst_target_path}/loopback
+				[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir ${clst_target_path}/sgibootcd
+
+				# Setup variables
+				[ -f "${clst_target_path}/livecd" ] && rm -f ${clst_target_path}/livecd
+				img="${clst_target_path}/loopback/image.squashfs"
 				knl="${clst_target_path}/kernels"
 				arc="${clst_target_path}/arcload"
 				cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
-				touch ${cfg}
+				echo "" > ${cfg}
 
-				# Add the kernels first
+				# If the image file exists in $clst_target_path, move it to the loopback dir
+				[ -e "${clst_target_path}/image.squashfs" ] \
+					&& mv -f ${clst_target_path}/image.squashfs ${clst_target_path}/loopback
+
+				# An sgibootcd config is essentially a collection of commandline params
+				# stored in a text file.  We could pass these on the command line, but it's
+				# far easier to generate a config file and pass it to sgibootcd versus using a
+				# ton of commandline params.
+				#
+				# f=	indicates files to go into DVH (disk volume header) in an SGI disklabel
+				#	    format: f=</path/to/file>@<DVH name>
+				# p0=	the first partition holds the LiveCD rootfs image
+				#	    format: p0=</path/to/image>
+				# p8=	the eighth partition is the DVH partition
+				# p10=	the tenth partition is the disk volume partition
+				#	    format: p8= is always "#dvh" and p10= is always "#volume"
+
+				# Add the kernels to the sgibootcd config
 				for x in ${clst_boot_kernel}; do
 					echo -e "f=${knl}/${x}@${x}" >> ${cfg}
 				done
 
-				# Next, the bootloaders
+				# Next, the bootloader binaries and config
 				echo -e "f=${arc}/sash64@sash64" >> ${cfg}
 				echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
 				echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
@@ -181,12 +199,13 @@ case ${clst_mainarch} in
 				# Next, the Loopback Image
 				echo -e "p0=${img}" >> ${cfg}
 
-				# Finally, the required SGI Partitions
+				# Finally, the required SGI Partitions (dvh, volume)
 				echo -e "p8=#dvh" >> ${cfg}
 				echo -e "p10=#volume" >> ${cfg}
 
-				# All done; feed the config to sgibootcd and end up with an
-				# image
+				# All done; feed the config to sgibootcd and end up with an image
+				# c=	the config file
+				# o=	output image (burnable to CD; readable by fdisk)
 				/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 			;;
 			*) die "SGI LiveCDs only support the 'normal' fstype!"	;;

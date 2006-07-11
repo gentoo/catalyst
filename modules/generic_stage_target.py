@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.137 2006/06/28 12:51:43 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.138 2006/07/11 21:40:59 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -200,42 +200,22 @@ class generic_stage_target(generic_target):
 			self.mountmap["/var/tmp/ccache"]=ccdir
 			# for the chroot:
 			self.env["CCACHE_DIR"]="/var/tmp/ccache"	
-	
+
 	def override_chost(self):
-		#if os.environ.has_key("CHOST"):
-		#    self.settings["CHOST"] = os.environ["CHOST"]
-		if self.settings.has_key("chost"):
-		    self.settings["CHOST"]=list_to_string(self.settings["chost"])
 		if self.makeconf.has_key("CHOST"):
-		    #print "Using CHOST setting from seed stage"
-		    self.settings["CHOST"]=self.makeconf["CHOST"]
+			self.settings["CHOST"]=self.makeconf["CHOST"]
 	
 	def override_cflags(self):
-		#if os.environ.has_key("CFLAGS"):
-		#    self.settings["CFLAGS"] = os.environ["CFLAGS"]
-		if self.settings.has_key("cflags"):
-		    self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
 		if self.makeconf.has_key("CFLAGS"):
-		    #print "Using CFLAGS setting from seed stage"
-		    self.settings["CFLAGS"]=self.makeconf["CFLAGS"]
+			self.settings["CFLAGS"]=self.makeconf["CFLAGS"]
 
 	def override_cxxflags(self):	
-		#if os.environ.has_key("CXXFLAGS"):
-		#    self.settings["CXXFLAGS"] = os.environ["CXXFLAGS"]
-		if self.settings.has_key("cxxflags"):
-		    self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
 		if self.makeconf.has_key("CXXFLAGS"):
-		    #print "Using CXXFLAGS setting from seed stage"
-		    self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
+			self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
 	
 	def override_ldflags(self):
-		#if os.environ.has_key("LDFLAGS"):
-		#    self.settings["LDFLAGS"] = os.environ["LDFLAGS"]
-		if self.settings.has_key("ldflags"):
-		    self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 		if self.makeconf.has_key("LDFLAGS"):
-		    #print "Using LDFLAGS setting from seed stage"
-		    self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
+			self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
 	
 	def set_install_mask(self):
 		if self.settings.has_key("install_mask"):
