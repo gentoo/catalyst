@@ -1,12 +1,16 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.642 2006/07/11 21:40:58 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.643 2006/07/12 18:34:00 wolf31o2 Exp $
+
+  12 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/rc-update.sh:
+  Removed famd from the default runlevel for gentoo-release-livecd. It really
+  shouldn't cause a problem, but I prefer it stay a bit clean.
 
   11 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/generic_stage_target.py, targets/support/bootloader-setup.sh,
   targets/support/create-iso.sh, targets/support/kmerge.sh,
   targets/support/livecdfs-update.sh, targets/support/mips-arcload_conf.sh:
-  Added patches from Joshua Kinard <kumba@gentoo.org> from bug #139337. This
-  is 2.0_rc50, which will hopefully be renamed without incident to 2.0 final.
+  Added patches from Joshua Kinard <kumba@gentoo.org> from bug #139337.
 
   05 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   -livecd/cdtar/silo-1.2.6-sparc-cdtar.tar.bz2,
