@@ -1,5 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.644 2006/07/12 18:34:52 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.645 2006/07/12 23:28:40 wolf31o2 Exp $
+
+  12 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Hopefully, I have fixed the issue with the Installer icons. We'll have to
+  see once the newer Installer is released, as I still have to fix the
+  installer scripts.
 
   12 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:

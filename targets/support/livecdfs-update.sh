@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.53 2006/07/11 21:40:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.54 2006/07/12 23:28:41 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -341,9 +341,9 @@ case ${clst_livecd_type} in
 						/home/${username}/Desktop
 					cp /usr/share/applications/installer-dialog.desktop \
 						/home/${username}/Desktop
-					sed -i -e 's:Exec=installer:Exec=sudo installer:' \
+					sed -i -e 's:Exec=installer-dialog:Exec=installer dialog:' \
 						/home/${username}/Desktop/installer-dialog.desktop
-					sed -i -e 's:Exec=installer:Exec=sudo installer:' \
+					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
 						/home/${username}/Desktop/installer-gtk.desktop
 					chown -R ${username}:100 /home/${username}
 				done
