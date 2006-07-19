@@ -1,13 +1,13 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.54 2006/07/12 23:28:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.55 2006/07/19 21:39:46 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
 update_env_settings
 
-# Allow root logins to the livecd by default
+# Allow root logins to our CD by default
 if [ -e /etc/sshd/sshd_config ]
 then
 	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
@@ -36,6 +36,8 @@ echo 'DNSDOMAIN="gentoo"' >> /etc/conf.d/domainname
 # Add any users
 if [ -n "${clst_livecd_users}" ]
 then
+	first_user=$(echo ${clst_livecd_users} | cut -d' ' -f1)
+
 	# Here we check to see if games exists for bug #125498
 	if [ "$(getent group games | cut -d: -f1)" != "games" ]
 	then
@@ -45,12 +47,12 @@ then
 	for x in ${clst_livecd_users}
 	do
 		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" \
-			-m $x
+			-m ${x}
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then
-			echo "[Desktop]" > /home/$x/.dmrc
-			echo "Session=${clst_livecd_xsession}" >> /home/$x/.dmrc
-			chown -R $x:users /home/$x
+			echo "[Desktop]" > /home/${x}/.dmrc
+			echo "Session=${clst_livecd_xsession}" >> /home/${x}/.dmrc
+			chown -R ${x}:users /home/${x}
 		fi
 	done
 fi
@@ -122,7 +124,6 @@ if [ -n "${clst_livecd_xdm}" ]
 then
 	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
 		/etc/rc.conf
-	rc-update add xdm default
 fi
 
 # Setup configured default X Session
@@ -179,7 +180,7 @@ elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n \
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
-		sed -i 's:# SPLASH_THEME="gentoo":SPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/splash
+		sed -i "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" /etc/conf.d/splash
 		rm -f /etc/splash/default
 		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else
@@ -273,18 +274,14 @@ case ${clst_livecd_type} in
 			then
 				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
 				then
-					sedxtra="TimedLogin=${first_user}"
+					sedxtra="\nTimedLogin=${first_user}"
 				else
 					sedxtra=""
 				fi
 
 				sed	-i \
-					-e 's:\(\[daemon\]\)$:\1\nTimedLoginEnable=true:' \
-					-e 's:^TimedLoginEnable=true$:\1\nTimedLoginDelay=10:' \
+					-e "s:\(\[daemon\]\)$:\1\nTimedLoginEnable=true\nTimedLoginDelay=10${sedxtra}:" \
 					-e 's:\(\[greeter\]\)$:\1\nGraphicalTheme=gentoo-emergence:' \
-					/etc/X11/gdm/custom.conf
-				[ -n "${sedxtra}" ] && sed -i \
-					-e "s:^TimedLoginDelay=10$:\1\n${sedxtra}:" \
 					/etc/X11/gdm/custom.conf
 			else
 				cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
@@ -295,7 +292,6 @@ case ${clst_livecd_type} in
 					-e ':^#GraphicalTheme=: s:^#::' \
 					-e 's:^GraphicalTheme=.*$:GraphicalTheme=gentoo-emergence:' \
 					/etc/X11/gdm/gdm.conf
-
 
 				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
 				then
@@ -378,10 +374,10 @@ case ${clst_livecd_type} in
 esac
 
 # We want the first user to be used when auto-starting X
-if [ -n "${clst_livecd_users}" -a -e /etc/startx ]
+if [ -e /etc/startx ]
 then
-	first_user=$(echo ${clst_livecd_users} | cut -d' ' -f1)
-	sed -i "s/##STARTX/source /etc/profile && su - $first_user -c startx/" \
+	sed -i \
+		"s/##STARTX/source /etc/profile && su - ${first_user} -c startx/" \
 		/root/.bashrc
 fi
 
