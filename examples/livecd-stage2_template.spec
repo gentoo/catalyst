@@ -89,6 +89,13 @@ kerncache_path:
 # livecd/fstype: squashfs
 livecd/fstype:
 
+# The fsops are a list of optional parameters that can be passed to the tool
+# which will create the filesystem specified in livecd/fstype.  It is valid for
+# the following fstypes: squashfs, jffs, jffs2, cramfs
+# example:
+# livecd/fsops: -root-owned
+livecd/fsops:
+
 # The cdtar is essentially the bootloader for the CD.  It also holds the main
 # configuration for the bootloader.  On x86/amd64, it also can include a small
 # memory testing application, called memtest86+.
