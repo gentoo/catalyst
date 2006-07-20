@@ -72,7 +72,7 @@ setup_myemergeopts(){
 	if [ -n "${clst_FETCH}" ]
 	then
 		export bootstrap_opts="-f"
-		export clst_myemergeopts="{clst_myemergeopts} -f"
+		export clst_myemergeopts="${clst_myemergeopts} -f"
 	fi
 }
 
