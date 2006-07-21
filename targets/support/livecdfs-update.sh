@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.55 2006/07/19 21:39:46 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.56 2006/07/21 16:16:39 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -180,7 +180,13 @@ elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n \
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
-		sed -i "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" /etc/conf.d/splash
+		sed -i \
+			-e "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" \
+			-e "/^# SPLASH_TTYS=/ s/^#//" \
+			/etc/conf.d/splash
+		sed -i \
+			-e 's/type" cachedir "${spl_/type" tmpfs "${spl_/' \
+			/sbin/splash-functions.sh
 		rm -f /etc/splash/default
 		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else

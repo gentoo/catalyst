@@ -1,5 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.648 2006/07/20 22:02:16 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.649 2006/07/21 16:16:39 wolf31o2 Exp $
+
+  21 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Fix the splash code so we have our splash theme on all 6 virtual consoles,
+  as well as a possible fix for the read-only filesystem messages from
+  /sbin/splash-functions.sh
 
   20 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
