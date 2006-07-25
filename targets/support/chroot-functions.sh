@@ -64,9 +64,15 @@ setup_myfeatures(){
 }
 
 setup_myemergeopts(){
+	if [ -n "${clst_VERBOSE}" ]
+	then
+		clst_myemergeopts="--verbose"
+	else
+		clst_myemergeopts="--quiet"
+	fi
 	if [ -n "${clst_PKGCACHE}" ]
 	then
-		export clst_myemergeopts="--usepkg --buildpkg --newuse"
+		export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
 		export bootstrap_opts="-r"
 	fi
 	if [ -n "${clst_FETCH}" ]
@@ -154,8 +160,8 @@ run_emerge() {
 
 	if [ -n "${clst_VERBOSE}" ]
 	then
-		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -vpt $@" || exit 1
-		emerge ${clst_myemergeopts} -vpt $@ || exit 3
+		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -pt $@" || exit 1
+		emerge ${clst_myemergeopts} -pt $@ || exit 3
 		echo "Press any key within 15 seconds to pause the build..."
 		read -s -t 15 -n 1
 		if [ $? -eq 0 ]
