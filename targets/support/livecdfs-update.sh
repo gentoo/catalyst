@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.57 2006/07/26 22:38:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.58 2006/07/29 18:35:07 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -184,9 +184,6 @@ then
 			-e "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" \
 			-e "/^# SPLASH_TTYS=/ s/^#//" \
 			/etc/conf.d/splash
-		sed -i \
-			-e 's/type}" cachedir "${spl_/type}" tmpfs "${spl_/' \
-			/sbin/splash-functions.sh
 		rm -f /etc/splash/default
 		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
 	else
@@ -343,7 +340,7 @@ case ${clst_livecd_type} in
 						/home/${username}/Desktop
 					cp /usr/share/applications/installer-dialog.desktop \
 						/home/${username}/Desktop
-					sed -i -e 's:Exec=installer-dialog:Exec=installer dialog:' \
+					sed -i -e 's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
 						/home/${username}/Desktop/installer-dialog.desktop
 					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
 						/home/${username}/Desktop/installer-gtk.desktop
