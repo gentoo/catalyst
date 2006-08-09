@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.58 2006/07/29 18:35:07 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.59 2006/08/09 14:44:38 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -281,6 +281,8 @@ case ${clst_livecd_type} in
 				else
 					sedxtra=""
 				fi
+
+				cp -f /etc/X11/gdm/custom.con /etc/X11/gdm/custom.conf.old
 
 				sed	-i \
 					-e "s:\(\[daemon\]\)$:\1\nTimedLoginEnable=true\nTimedLoginDelay=10${sedxtra}:" \
