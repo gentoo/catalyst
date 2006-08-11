@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc.py,v 1.7 2006/01/03 14:55:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/sparc.py,v 1.8 2006/08/11 13:29:15 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *
@@ -11,9 +11,9 @@ class generic_sparc(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="sparc"
 		if self.settings["hostarch"]=="sparc64":
-			if not os.path.exists("/usr/bin/sparc32"):
-				raise CatalystError,"required /usr/bin/sparc32 executable not found (\"emerge sparc-utils\" to fix.)"
-			self.settings["CHROOT"]="/usr/bin/sparc32 chroot"
+			if not os.path.exists("/bin/sparc32"):
+				raise CatalystError,"required /bin/sparc32 executable not found (\"emerge sparc-utils\" to fix.)"
+			self.settings["CHROOT"]="/bin/sparc32 chroot"
 		else:
 			self.settings["CHROOT"]="chroot"
 
