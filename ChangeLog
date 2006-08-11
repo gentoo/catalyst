@@ -1,5 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.654 2006/08/11 02:02:11 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.655 2006/08/11 02:07:19 wolf31o2 Exp $
+
+  11 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  We now only set the options for pkgcache if we are not using fetchonly. This
+  should work around a problem where portage won't fetch the files if a binpkg
+  already exists for the package.
 
   09 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
