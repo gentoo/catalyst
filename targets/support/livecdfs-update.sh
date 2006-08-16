@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.59 2006/08/09 14:44:38 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.60 2006/08/16 21:50:12 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -310,7 +310,7 @@ case ${clst_livecd_type} in
 
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
-		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' > /usr/livecd/systempkgs.txt
+		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -ep system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage
 		cp -r /usr/portage/profiles /usr/livecd

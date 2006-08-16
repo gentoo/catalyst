@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.656 2006/08/11 13:29:15 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.657 2006/08/16 21:50:12 wolf31o2 Exp $
+
+  16 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Fixing sed so that systemspkgs.txt is built properly.
 
   11 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/sparc.py:
   The sparc32 binary is in /bin, not /usr/bin.
