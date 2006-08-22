@@ -1,5 +1,13 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.657 2006/08/16 21:50:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.658 2006/08/22 16:45:47 wolf31o2 Exp $
+
+  22 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  Changed some copy commands to use -f, added a check for /etc/gconf before
+  moving it when not using gentoo-release-livecd, and fixed a sed for root's
+  .bashrc, as reported on the gentoo-catalyst mailing list by Luca Casagrande
+  <luca.casagrande@gmail.com>.
 
   16 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:

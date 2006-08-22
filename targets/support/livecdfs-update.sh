@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.60 2006/08/16 21:50:12 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.61 2006/08/22 16:45:47 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -336,11 +336,11 @@ case ${clst_livecd_type} in
 				for username in ${clst_livecd_users}
 				do
 					mkdir -p /home/${username}/Desktop
-					cp /usr/share/applications/installer-gtk.desktop \
+					cp -f /usr/share/applications/installer-gtk.desktop \
 						/home/${username}/Desktop
-					cp /usr/share/applications/installer-faq.desktop \
+					cp -f /usr/share/applications/installer-faq.desktop \
 						/home/${username}/Desktop
-					cp /usr/share/applications/installer-dialog.desktop \
+					cp -f /usr/share/applications/installer-dialog.desktop \
 						/home/${username}/Desktop
 					sed -i -e 's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
 						/home/${username}/Desktop/installer-dialog.desktop
@@ -354,7 +354,7 @@ case ${clst_livecd_type} in
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
-		mv -f /etc/gconf /usr/livecd
+		[ -d /etc/gconf ] && mv -f /etc/gconf /usr/livecd
 		if [ -e /usr/livecd/grppkgs.txt ]
 		then
 			rm -f /usr/livecd/grppkgs.txt
@@ -382,7 +382,7 @@ esac
 if [ -e /etc/startx ]
 then
 	sed -i \
-		"s/##STARTX/source /etc/profile && su - ${first_user} -c startx/" \
+		"s:##STARTX:source /etc/profile && su - ${first_user} -c startx:" \
 		/root/.bashrc
 fi
 
