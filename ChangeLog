@@ -1,5 +1,9 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.659 2006/08/23 11:20:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.660 2006/09/08 20:00:57 wolf31o2 Exp $
+
+  08 Sep 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/catalyst_support.py:
+  Added fix for bug #143348.
 
   23 Aug 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
