@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.62 2006/08/23 11:20:23 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.63 2006/09/13 18:32:36 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 
@@ -245,7 +245,7 @@ case ${clst_livecd_type} in
 		if [ -e /opt/installer/misc/mkvardb ]
 		then
 			chmod +x /opt/installer/misc/mkvardb
-			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
+			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/System* /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
 		fi
 
 		# Setup Gnome theme

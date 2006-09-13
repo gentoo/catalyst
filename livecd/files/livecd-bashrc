@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! $(grep nox /proc/cmdline) ]
+if [ ! "$(grep nox /proc/cmdline)" ]
 then
 	if [ -x /usr/bin/X ]
 	then
