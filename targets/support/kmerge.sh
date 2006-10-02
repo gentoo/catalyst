@@ -74,7 +74,7 @@ genkernel_compile(){
 	then
 		if [ "$clst_kernel_merge" != "" ]
 		then
-			genkernel --callback="PKGDIR=${PKGDIR} emerge -kb \
+			genkernel --callback="PKGDIR=${PKGDIR} emerge -kqb \
 				${clst_kernel_merge}" ${GK_ARGS} || exit 1
 		else
 			genkernel ${GK_ARGS} || exit 1
@@ -82,7 +82,7 @@ genkernel_compile(){
 	else
 		if [ "$clst_kernel_merge" != "" ]
 		then
-			genkernel --callback="emerge ${clst_kernel_merge}" \
+			genkernel --callback="emerge -q ${clst_kernel_merge}" \
 				${GK_ARGS} || exit 1
 		else
 			genkernel ${GK_ARGS} || exit 1
@@ -178,7 +178,7 @@ mkdir -p /tmp/kerncache/${clst_kname}
 	
 if [ -n "${clst_KERNCACHE}" ]
 then
-   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -ukb  "${clst_ksource}" || exit 1
+   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -uqkb  "${clst_ksource}" || exit 1
 	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
 	if [ ! -e /etc/portage/profile/package.provided ]
 	then

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.138 2006/07/11 21:40:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.139 2006/10/02 20:25:25 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -26,8 +26,8 @@ class generic_stage_target(generic_target):
 		self.set_valid_build_kernel_vars(addlargs)
 		generic_target.__init__(self,myspec,addlargs)
 		# map the mainarch we are running under to the mainarches we support for
-		# building stages and LiveCDs. (for example, on amd64, we can build stages for
-		# x86 or amd64.
+		# building stages and LiveCDs. (for example, on amd64, we can build
+		# stages for x86 or amd64.
 		targetmap={ 	
 				"x86" : ["x86"],
 				"amd64" : ["x86","amd64"],
@@ -104,8 +104,8 @@ class generic_stage_target(generic_target):
                         sys.exit(2)
 	
 		print "Using target:",self.settings["target"]
-		# self.settings["mainarch"] should now be set by our arch constructor, so we print
-		# a nice informational message:
+		# self.settings["mainarch"] should now be set by our arch constructor,
+		# so we print a nice informational message:
 		if self.settings["mainarch"]==self.settings["hostarch"]:
 			print "Building natively for",self.settings["hostarch"]
 		
@@ -154,10 +154,11 @@ class generic_stage_target(generic_target):
 		self.set_portage_overlay()	
 		self.set_root_overlay()	
 		
-		# this next line checks to make sure that the specified variables exist on disk.
+		# This next line checks to make sure that the specified variables exist
+		# on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["source_path","snapshot_path","distdir"],expand=0)
-		# if we are using portage_confdir, check that as well
+		# If we are using portage_confdir, check that as well.
 		if self.settings.has_key("portage_confdir"):
 			file_locate(self.settings,["portage_confdir"],expand=0)
 		
@@ -174,7 +175,8 @@ class generic_stage_target(generic_target):
 
 		self.set_mounts()
 
-		# configure any user specified options (either in catalyst.conf or on the cmdline)
+		# Configure any user specified options (either in catalyst.conf or on
+		# the command line).
 		if self.settings.has_key("PKGCACHE"):
 			self.set_pkgcache_path()
 			print "Location of the package cache is " + self.settings["pkgcache_path"]
@@ -386,6 +388,7 @@ class generic_stage_target(generic_target):
 	
 	def set_controller_file(self):
 		self.settings["controller_file"]=normpath(self.settings["sharedir"]+"/targets/"+self.settings["target"]+"/"+self.settings["target"]+"-controller.sh")
+
 	def set_iso_volume_id(self):
                 if self.settings.has_key(self.settings["spec_prefix"]+"/volid"):
 			self.settings["iso_volume_id"] = string.join(self.settings[self.settings["spec_prefix"]+"/volid"])
@@ -1025,10 +1028,12 @@ class generic_stage_target(generic_target):
 			raise CatalystError,"Stage build aborting due to error."
 	
 	def setup_environment(self):
-		# modify the current environment. This is an ugly hack that should be fixed. We need this
-		# to use the os.system() call since we can't specify our own environ:
+		# Modify the current environment. This is an ugly hack that should be
+		# fixed. We need this to use the os.system() call since we can't
+		# specify our own environ:
 		for x in self.settings.keys():
-			# "/" is replaced with "_", "-" is also replaced with "_", "." is also replace with "_"
+			# "/" is replaced with "_", "-" is replaced with "_", and "." is
+			# replaced with "_"
 			varname="clst_"+string.replace(x,"/","_")
 			varname=string.replace(varname,"-","_")
 			varname=string.replace(varname,".","_")

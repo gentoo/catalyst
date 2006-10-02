@@ -1,18 +1,20 @@
 #!/bin/bash
 # Copyright 1999-2003 Gentoo Technologies, Inc.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.8 2005/12/16 19:08:59 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.9 2006/10/02 20:25:25 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
-case $1 in
+
+case ${1} in
 	enter)
 	;;
 
 	build_packages)
 		shift
 		export clst_packages="$*"
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
+		exec_in_chroot \
+			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
 	;;
 
 	preclean)
@@ -42,7 +44,7 @@ case $1 in
 
 	kernel)
 		shift
-		export clst_kname="$1"
+		export clst_kname="${1}"
 		# if we have our own linuxrc, copy it in
 		if [ -n "${clst_linuxrc}" ]
 		then
@@ -54,7 +56,7 @@ case $1 in
 
 	target_image_setup)
 		shift
-		${clst_sharedir}/targets/support/target_image_setup.sh $1
+		${clst_sharedir}/targets/support/target_image_setup.sh ${1}
 
 	;;
 	livecd-update)
@@ -65,14 +67,14 @@ case $1 in
 	bootloader)
 		shift
 		# Here is where we poke in our identifier
-		touch $1/livecd
+		touch ${1}/livecd
 
-		${clst_sharedir}/targets/support/bootloader-setup.sh $1
+		${clst_sharedir}/targets/support/bootloader-setup.sh ${1}
 	;;
 	
 	iso)
 		shift
-		${clst_sharedir}/targets/support/create-iso.sh $1
+		${clst_sharedir}/targets/support/create-iso.sh ${1}
 	;;
 
 	clean)

@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 die() {
-	echo "$1"
+	echo "${1}"
 	exit 1
 }
 
@@ -14,7 +14,7 @@ fs_check() {
 	fi
 }
 
-case $1 in
+case ${1} in
 	jffs)
 		fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
 		mkfs.jffs -d ${root_fs_path} -o ${clst_image_path}/root.img \
@@ -39,6 +39,8 @@ case $1 in
 			${clst_embedded_fs_ops} || \
 			die "Could not create a squashfs filesystem"
 	;;
+
 	*)
 	;;
 esac
+exit $?

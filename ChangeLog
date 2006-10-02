@@ -1,5 +1,19 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.661 2006/09/13 18:32:35 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.662 2006/10/02 20:25:25 wolf31o2 Exp $
+
+  02 Oct 2006; Chris Gianelloni <wolf31o2@gentoo.org> README,
+  modules/generic_stage_target.py, modules/livecd_stage1_target.py,
+  modules/stage4_target.py, targets/embedded/embedded-chroot.sh,
+  targets/embedded/embedded-controller.sh,
+  targets/embedded/embedded-fs-runscript.sh,
+  targets/embedded/embedded-preclean-chroot.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/netboot2/netboot2-copyfile.sh,
+  targets/stage4/stage4-controller.sh, targets/support/kmerge.sh,
+  targets/support/pre-kmerge.sh:
+  Fixed lots of spacing issues, removed livecd/type from livecd-stage1, add
+  splash capabilities to stage4, change 'cp -a' to 'cp -pPR', add -q to emerge
+  calls in kmerge.sh, and updated README.
 
   13 Sep 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/livecd-bashrc, targets/support/livecdfs-update.sh:

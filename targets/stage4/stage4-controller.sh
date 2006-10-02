@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.12 2005/12/19 15:36:02 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage4/stage4-controller.sh,v 1.13 2006/10/02 20:25:25 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
@@ -25,12 +25,13 @@ case $1 in
 		# If we have our own linuxrc, copy it in
 		if [ -n "${clst_linuxrc}" ]
 		then
-			cp -a ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
+			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
 		delete_from_chroot tmp/linuxrc
 		extract_modules ${clst_chroot_path} ${clst_kname}
-		extract_kernel ${clst_chroot_path}/boot ${clst_kname}
+		# Do we need this one?
+#		extract_kernel ${clst_chroot_path}/boot ${clst_kname}
 	;;
 	build_packages)
 		shift
@@ -41,21 +42,28 @@ case $1 in
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh ${clst_root_path}
 	;;
 	rc-update)
-		exec_in_chroot  ${clst_sharedir}/targets/support/rc-update.sh
+		exec_in_chroot ${clst_sharedir}/targets/support/rc-update.sh
 	;;
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
 	;;
 	livecd-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
-		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
+		exec_in_chroot ${clst_sharedir}/targets/support/livecdfs-update.sh
+
+		# Move over the xinitrc (if applicable)
+		# This is moved here, so we can override any default xinitrc
+		if [ -n "${clst_livecd_xinitrc}" ]
+		then
+			cp -f ${clst_livecd_xinitrc} \
+				${clst_chroot_path}/etc/X11/xinit/xinitrc
+		fi
 	;;
 	bootloader)
 		exit 0
 	;;
 	target_image_setup)
 		shift
-		#${clst_sharedir}/targets/livecd-stage2/livecd-stage2-cdfs.sh
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 	;;
 	unmerge)

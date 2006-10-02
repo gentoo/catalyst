@@ -29,14 +29,16 @@ case ${clst_target} in
 		run_emerge --oneshot genkernel
 		install -d /tmp/kerncache
 
-		# Set the netboot builddate/hostname in linuxrc & copy to proper arch directory in genkernel
+		# Set the netboot builddate/hostname in linuxrc and copy to proper arch
+		# directory in genkernel
 		sed -e "s/@@MYDATE@@/${clst_netboot2_builddate}/g" \
 		    -e "s/@@RELVER@@/${clst_version_stamp}/g" \
 			${clst_root_path}usr/share/genkernel/netboot/linuxrc.x \
 				> ${clst_root_path}usr/share/genkernel/${clst_mainarch}/linuxrc
 
 		echo ">>> Copying support files to ${clst_root_path} ..."
-		cp -af ${clst_root_path}usr/share/genkernel/netboot/misc/* ${clst_merge_path}
+		cp -pPRf ${clst_root_path}usr/share/genkernel/netboot/misc/* \
+			${clst_merge_path}
 
 		echo ">>> Copying busybox config ..."
 		cp -f ${clst_root_path}usr/share/genkernel/${clst_mainarch}/nb-busybox.cf \

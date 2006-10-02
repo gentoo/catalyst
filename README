@@ -1,26 +1,28 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.15 2005/12/21 16:56:01 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/README,v 1.16 2006/10/02 20:25:25 wolf31o2 Exp $
 
 Licensing
 ========================
 
-Catalyst is copyrighted by the Gentoo Foundation, and released
-under the terms of the GNU General Public License v.2.0 or later. For more
-information, please consult COPYING.
+Catalyst is copyrighted by the Gentoo Foundation, and is released under the
+terms of the GNU General Public License v.2.1. For more information, please
+consult COPYING.
 
 Disclaimer
 ========================
 
-Gentoo Linux extends no warranty or guarantee for catalyst. Use at
-your own risk.
+The Gentoo Foundation extends no warranty or guarantee for catalyst. This
+software is provided to the public to comply with the Gentoo social contract
+and to assist other distributors and integrators of Gentoo and Gentoo-based
+solutions. Use at your own risk.
 
 Requirements
 =======================
 
 - Python 2.4 or greater (may still work with 2.3)
 - A portage snapshot (or portage tree to make your own)
-- A Gentoo seed stage tarball
+- A Gentoo generic stage3 tarball
 - shash for digest support
 
 What is Catalyst?
@@ -28,20 +30,21 @@ What is Catalyst?
 
 Catalyst is the Gentoo Linux project's release building tool. With catalyst,
 you are able to completely customize your Gentoo install by customizing
-the very tools you install your system with.
+the very tools that are used to install a system. Official Gentoo Linux release
+media is built with catalyst.
 
 Catalyst is capable of:
 
-- Building installation stages for every architecture supported by Gentoo.
-- Building bootable LiveCDs for every architecture supported by Gentoo.
-- Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo.
-- Setting up a Tinderbox target for test building.
-- Building netboot images.
+- Building installation stages for every architecture supported by Gentoo
+- Building bootable LiveCDs for every architecture supported by Gentoo
+- Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo
+- Setting up a Tinderbox target for test building
+- Building netboot images
 
 Configuring catalyst
 ========================
 
-After emerging catalyst, the first thing (and probably only thing)
+After emerging/installing catalyst, the first (and probably only) thing
 that you will have to do is edit /etc/catalyst/catalyst.conf to your liking.
 
 Example catalyst.conf:
@@ -53,4 +56,4 @@ sharedir="/usr/lib/catalyst"
 There are many more options that can be set, but those defaults are good
 for out of the box operation. For more documentation on what you can do
 with catalyst, please check the man page or the online documentation at
-<http://www.gentoo.org/proj/en/releng/catalyst>.
+http://www.gentoo.org/proj/en/releng/catalyst.

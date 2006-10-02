@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.19 2006/02/17 13:34:42 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage4_target.py,v 1.20 2006/10/02 20:25:25 wolf31o2 Exp $
 
 """
 Builder class for stage4.
@@ -11,10 +11,13 @@ from generic_stage_target import *
 
 class stage4_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
-		self.required_values=[]
+		self.required_values=["stage4/packages"]
 		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["stage4/use","stage4/packages","stage4/root_overlay", "stage4/fsscript", \
-				"stage4/rcadd","stage4/rcdel","stage4/linuxrc","stage4/unmerge","stage4/rm","boot/kernel"])
+		self.valid_values.extend(["stage4/use","boot/kernel",\
+				"stage4/root_overlay","stage4/fsscript",\
+				"stage4/gk_mainargs","splash_theme","splash_type",\
+				"portage_overlay","stage4/rcadd","stage4/rcdel",\
+				"stage4/linuxrc","stage4/unmerge","stage4/rm","stage4/empty"])
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_cleanables(self):
@@ -24,7 +27,7 @@ class stage4_target(generic_stage_target):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
-					"build_kernel","bootloader","root_overlay","fsscript",
+					"build_kernel","bootloader","root_overlay","fsscript",\
 					"preclean","rcupdate","unmerge","unbind","remove","empty",\
 					"clean","capture", "clear_autoresume"]
 

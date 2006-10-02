@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.22 2006/08/22 16:45:47 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage2/livecd-stage2-controller.sh,v 1.23 2006/10/02 20:25:25 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh
@@ -84,9 +84,8 @@ case $1 in
 		;;
 	livecd-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
-		exec_in_chroot  ${clst_sharedir}/targets/support/livecdfs-update.sh
-		
-		
+		exec_in_chroot ${clst_sharedir}/targets/support/livecdfs-update.sh
+
 		# Move over the xinitrc (if applicable)
 		# This is moved here, so we can override any default xinitrc
 		if [ -n "${clst_livecd_xinitrc}" ]
@@ -96,7 +95,7 @@ case $1 in
 		fi
 		;;
 	rc-update)
-		exec_in_chroot  ${clst_sharedir}/targets/support/rc-update.sh
+		exec_in_chroot ${clst_sharedir}/targets/support/rc-update.sh
 		;;
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
