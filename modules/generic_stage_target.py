@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.139 2006/10/02 20:25:25 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.140 2006/10/02 20:32:41 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is
@@ -853,7 +853,8 @@ class generic_stage_target(generic_target):
 				cmd("cp "+self.settings["ENVSCRIPT"]+" "+self.settings["chroot_path"]+"/tmp/envscript",\
 					"Could not copy envscript into place.",env=self.env)
 
-		    # copy over /etc/hosts from the host in case there are any specialties in there
+		    # Copy over /etc/hosts from the host in case there are any
+			# specialties in there
 			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
 					"/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
@@ -862,12 +863,12 @@ class generic_stage_target(generic_target):
 			#self.override_cflags()
 			#self.override_cxxflags()	
 			#self.override_ldflags()	
-			# modify and write out make.conf (for the chroot)
+			# Modify and write out make.conf (for the chroot)
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf","Could not remove "+self.settings["chroot_path"]+"/etc/make.conf",\
 				env=self.env)
 			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
-			myf.write("# These settings were set by the catalyst build script that automatically built this stage\n")
-			myf.write("# Please consult /etc/make.conf.example for a more detailed example\n")
+			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
+			myf.write("# Please consult /etc/make.conf.example for a more detailed example.\n")
 			myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		    
@@ -878,8 +879,8 @@ class generic_stage_target(generic_target):
 		    
 			if self.settings.has_key("LDFLAGS"):
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
-		    
-		    # figure out what our USE vars are for building
+
+		    # Figure out what our USE vars are for building
 			myusevars=[]
 			if self.settings.has_key("HOSTUSE"):
 				myusevars.extend(self.settings["HOSTUSE"])
@@ -888,7 +889,7 @@ class generic_stage_target(generic_target):
 				myusevars.extend(self.settings["use"])
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 
-		    # setup the portage overlay	
+		    # Setup the portage overlay	
 			if self.settings.has_key("portage_overlay"):
 				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
 			
