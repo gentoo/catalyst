@@ -1,6 +1,4 @@
 #!/bin/bash
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
 
 if [ "${clst_spec_prefix}" == "livecd" ]
 then

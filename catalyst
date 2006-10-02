@@ -1,7 +1,5 @@
 #!/usr/bin/python -OO
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.161 2006/07/29 18:35:06 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/catalyst,v 1.162 2006/10/02 20:41:53 wolf31o2 Exp $
 
 # Maintained in full by:
 # Eric Edgar <rocket@gentoo.org>
@@ -42,9 +40,8 @@ def usage():
 
 def version():
 	print "Gentoo Catalyst, version "+__version__
-	print "Copyright 2003-2005 The Gentoo Foundation"
+	print "Copyright 2003-2006 The Gentoo Foundation"
 	print "Distributed under the GNU General Public License version 2\n"
-	
 
 def parse_config(myconfig):
 	# search a couple of different areas for the main config file

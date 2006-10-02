@@ -1,7 +1,5 @@
 #!/bin/bash
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.9 2006/06/09 00:31:51 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/netboot/netboot-controller.sh,v 1.10 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh

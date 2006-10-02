@@ -1,7 +1,5 @@
 #!/bin/bash
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-preclean-chroot.sh,v 1.10 2006/01/17 19:30:45 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-preclean-chroot.sh,v 1.11 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 

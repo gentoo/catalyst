@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.140 2006/10/02 20:32:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.141 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is

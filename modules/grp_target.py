@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.24 2006/02/14 15:38:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.25 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.

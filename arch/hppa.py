@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/hppa.py,v 1.6 2005/08/09 19:02:31 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/hppa.py,v 1.7 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *

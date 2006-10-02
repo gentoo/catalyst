@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ia64.py,v 1.5 2005/07/05 21:53:41 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ia64.py,v 1.6 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *

@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.17 2006/03/13 16:38:41 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/snapshot_target.py,v 1.18 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 Builder class for snapshots.

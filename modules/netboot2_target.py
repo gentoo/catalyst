@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.3 2006/06/21 22:11:54 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/netboot2_target.py,v 1.4 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 Builder class for a netboot build, version 2

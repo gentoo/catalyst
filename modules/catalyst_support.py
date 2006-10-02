@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.75 2006/09/08 20:00:57 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.76 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha

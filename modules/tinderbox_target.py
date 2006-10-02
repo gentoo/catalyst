@@ -1,6 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.18 2005/12/05 18:13:12 rocket Exp $
+# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.19 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 builder class for the tinderbox target

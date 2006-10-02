@@ -1,5 +1,3 @@
-# Copyright 1999-2005 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
 copy_to_chroot(){
 	local file_name=$(basename ${1})
 	local dest_dir=${clst_chroot_path}${2}
