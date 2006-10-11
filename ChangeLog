@@ -1,6 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  11 Oct 2006; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS,
+  modules/generic_stage_target.py, targets/stage1/stage1-controller.sh,
+  targets/support/chroot-functions.sh:
+  Added initial Gentoo/FreeBSD support. Patch from Diego Pettenò
+  <flameeyes@gentoo.org> and attached to bug #150351.
+
   02 Oct 2006; Chris Gianelloni <wolf31o2@gentoo.org> README, arch/alpha.py,
   arch/amd64.py, arch/arm.py, arch/hppa.py, arch/ia64.py, arch/mips.py,
   arch/ppc.py, arch/ppc64.py, arch/s390.py, arch/sh.py, arch/sparc.py,

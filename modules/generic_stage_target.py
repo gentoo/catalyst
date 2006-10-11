@@ -162,14 +162,16 @@ class generic_stage_target(generic_target):
 		
 		# setup our mount points
 		if self.settings.has_key("SNAPCACHE"):
-			self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage","/usr/portage/distfiles" ]
+			self.mounts=[ "/proc","/dev","/usr/portage","/usr/portage/distfiles" ]
 			self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
 				"/usr/portage/distfiles":self.settings["distdir"]}
 		else:
-			self.mounts=[ "/proc","/dev","/dev/pts","/usr/portage/distfiles" ]
+			self.mounts=[ "/proc","/dev","/usr/portage/distfiles" ]
 			self.mountmap={"/proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
 				"/usr/portage/distfiles":self.settings["distdir"]}
+		if os.uname()[0] == "Linux":
+			self.mounts.append("/dev/pts")
 
 		self.set_mounts()
 
@@ -769,7 +771,13 @@ class generic_stage_target(generic_target):
 			src=self.mountmap[x]
 			if self.settings.has_key("SNAPCACHE") and x == "/usr/portage":
 				self.snapshot_lock_object.read_lock()
-			retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
+			if os.uname()[0] == "FreeBSD":
+				if src == "/dev":
+					retval=os.system("mount -t devfs none "+self.settings["chroot_path"]+x)
+				else:
+					retval=os.system("mount_nullfs "+src+" "+self.settings["chroot_path"]+x)
+			else:
+				retval=os.system("mount --bind "+src+" "+self.settings["chroot_path"]+x)
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount "+src
@@ -789,7 +797,7 @@ class generic_stage_target(generic_target):
 				# it's not mounted, continue
 				continue
 			
-			retval=os.system("umount "+mypath+x)
+			retval=os.system("umount "+os.path.join(mypath,x.lstrip(os.path.sep)))
 			
 			if retval!=0:
 				warn("First attempt to unmount: "+mypath+x+" failed.")
@@ -1282,6 +1290,8 @@ class generic_stage_target(generic_target):
 		    # the proper perms and ownership
 		    mystat=os.stat(myemp)
 		    #cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
+		    if os.uname()[0] == "FreeBSD": # There's no easy way to change flags recursively in python
+			    os.system("chflags -R noschg "+myemp)
 		    shutil.rmtree(myemp)
 		    os.makedirs(myemp,0755)
 		    os.chown(myemp,mystat[ST_UID],mystat[ST_GID])

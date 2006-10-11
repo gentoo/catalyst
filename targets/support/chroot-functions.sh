@@ -214,7 +214,11 @@ function copy_symlink() {
 	[ ! -e ${clst_root_path}/${1} ] && \
 		cp -vfdp ${1} ${clst_root_path}/${1}
 	
-	TARGET=`readlink -f ${1}`
+	if [[ -n $(type -p realpath) ]]; then
+	    TARGET=`realpath ${1}`
+	else
+	    TARGET=`readlink -f ${1}`
+	fi
 	if [ -h ${TARGET} ]
 	then
 		copy_symlink ${TARGET} ${STACK}
