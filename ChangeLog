@@ -1,6 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  03 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  Changed the options to be in alphabetical order so my meatspace logical
+  parser can process them better, added the compress and tarball options,
+  which are as of yet unused for bug #139390 and request from Tim Yamin, and
+  removed the unused -x command line parameter for bug #151405.
+
   03 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Added a warning about changing the CHOST setting for bug #142034.

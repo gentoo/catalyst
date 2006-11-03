@@ -93,53 +93,61 @@ def parse_config(myconfig):
 			conf_values[x]=confdefaults[x]
 
 	# parse out the rest of the options from the config file
-	if "ccache" in string.split(conf_values["options"]):
-		print "Compiler cache support enabled."
-		conf_values["CCACHE"]="1"
-
-	if "pkgcache" in string.split(conf_values["options"]):
-		print "Package cache support enabled."
-		conf_values["PKGCACHE"]="1"
-	
-	if "snapcache" in string.split(conf_values["options"]):
-		print "Snapshot cache support enabled."
-		conf_values["SNAPCACHE"]="1"
-	
-	if "seedcache" in string.split(conf_values["options"]):
-		print "Seed cache support enabled."
-		conf_values["SEEDCACHE"]="1"
-
-	if "kerncache" in string.split(conf_values["options"]):
-		print "Kernel cache support enabled."
-		conf_values["KERNCACHE"]="1"
-	
-	if "distcc" in string.split(conf_values["options"]):
-		print "Distcc support enabled."
-		conf_values["DISTCC"]="1"
-
 	if "autoresume" in string.split(conf_values["options"]):
 		print "Autoresuming support enabled."
 		conf_values["AUTORESUME"]="1"
 
-	if "purge" in string.split(conf_values["options"]):
-		print "Purge support enabled."
-		conf_values["PURGE"]="1"
-	
+	if "ccache" in string.split(conf_values["options"]):
+		print "Compiler cache support enabled."
+		conf_values["CCACHE"]="1"
+
 	if "clear-autoresume" in string.split(conf_values["options"]):
 		print "Cleaning autoresume flags support enabled."
 		conf_values["CLEAR_AUTORESUME"]="1"
-	
+
+	if "compress" in string.split(conf_values["options"]):
+		print "Compression enabled."
+		conf_values["COMPRESS"]="1"
+
+	if "distcc" in string.split(conf_values["options"]):
+		print "Distcc support enabled."
+		conf_values["DISTCC"]="1"
+
+	if "kerncache" in string.split(conf_values["options"]):
+		print "Kernel cache support enabled."
+		conf_values["KERNCACHE"]="1"
+
+	if "pkgcache" in string.split(conf_values["options"]):
+		print "Package cache support enabled."
+		conf_values["PKGCACHE"]="1"
+
+	if "purge" in string.split(conf_values["options"]):
+		print "Purge support enabled."
+		conf_values["PURGE"]="1"
+
+	if "seedcache" in string.split(conf_values["options"]):
+		print "Seed cache support enabled."
+		conf_values["SEEDCACHE"]="1"
+
+	if "snapcache" in string.split(conf_values["options"]):
+		print "Snapshot cache support enabled."
+		conf_values["SNAPCACHE"]="1"
+
+	if "tarball" in string.split(conf_values["options"]):
+		print "Tarball creation enabled."
+		conf_values["TARBALL"]="1"
+
+	if myconf.has_key("digests"):
+		conf_values["digests"]=myconf["digests"]
+
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
-	
-	if myconf.has_key("digests"):
-		conf_values["digests"]=myconf["digests"]
 
 def import_modules():
 	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
 	targetmap={}
-	
+
 	try:
 		for x in required_build_targets:
 			try:
@@ -213,7 +221,7 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "apxhvdc:C:f:FVs:", ["purge","help", "version", "debug",\
+		opts,args = getopt.getopt(sys.argv[1:], "aphvdc:C:f:FVs:", ["purge","help", "version", "debug",\
 			"clear_autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
