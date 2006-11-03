@@ -2,6 +2,12 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   03 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py, modules/stage4_target.py:
+  Added a check to see if we have the tarball option enabled, which causes
+  catalyst to run the capture sequence. This was requested by Tim Yamin for
+  the stage4 target, but I thought it should be usable on any stage target.
+
+  03 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   Moved fstab tweaks all into one location and added make.conf tweak for bug
   #144647.

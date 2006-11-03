@@ -27,7 +27,11 @@ class stage4_target(generic_stage_target):
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"build_kernel","bootloader","root_overlay","fsscript",\
 					"preclean","rcupdate","unmerge","unbind","remove","empty",\
-					"clean","capture", "clear_autoresume"]
+					"clean"]
+
+		if self.settings.has_key("TARBALL"):
+			self.settings["action_sequence"].append("capture")
+		self.settings["action_sequence"].append("clear_autoresume")
 
 def register(foo):
 	foo.update({"stage4":stage4_target})

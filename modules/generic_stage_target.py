@@ -401,7 +401,10 @@ class generic_stage_target(generic_target):
 		#Default action sequence for run method
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
-				"setup_environment","run_local","preclean","unbind","clean","capture","clear_autoresume"]
+				"setup_environment","run_local","preclean","unbind","clean"]
+		if not self.settings.has_key("TARBALL"):
+			self.settings["action_sequence"].append("capture")
+		self.settings["action_sequence"].append("clear_autoresume")
 	
 	def set_use(self):
 		if self.settings.has_key(self.settings["spec_prefix"]+"/use"):
