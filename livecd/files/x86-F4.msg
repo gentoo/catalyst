@@ -1,7 +1,4 @@
 Hardware options (Page 2):
-doscsi          This loads support for most SCSI controllers.  This is also a
-                requirement for booting most USB devices, as they use the SCSI
-                subsystem of the kernel.
 hda=stroke      This allows you to partition the whole hard disk even when your
                 BIOS is unable to handle large disks.  This option is only used
                 on machines with an older BIOS.  Replace hda with the device

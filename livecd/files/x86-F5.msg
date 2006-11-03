@@ -18,3 +18,5 @@ nosound         This disables sound support and volume setting.  This is useful
                 for systems where sound support causes problems.
 nousb           This disables the autoloading of USB modules.  This is useful
                 for debugging USB issues.
+slowusb         This adds some extra pauses into the boot process for slow
+                USB CDROMs, like in the IBM BladeCenter.
