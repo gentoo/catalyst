@@ -71,8 +71,15 @@ ln -sf net.lo net.eth4
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
 
+# Tweak the livecd fstab so that users know not to edit it
+# http://bugs.gentoo.org/show_bug.cgi?id=60887
+echo "####################################################" > /etc/fstab
+echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	##" >> /etc/fstab
+echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab
+echo "####################################################" >> /etc/fstab
+
 # fstab tweaks
-echo "tmpfs	/					tmpfs	defaults	0 0" > /etc/fstab
+echo "tmpfs	/					tmpfs	defaults	0 0" >> /etc/fstab
 echo "tmpfs	/lib/firmware			tmpfs	defaults	0 0" >> /etc/fstab
 echo "tmpfs	/usr/portage			tmpfs	defaults	0 0" >> /etc/fstab
 # If /usr/lib/X11/xkb/compiled then make it tmpfs
@@ -82,18 +89,17 @@ then
 		/etc/fstab
 fi
 
+# Tweak the livecd make.conf so that users know not to edit it
+# http://bugs.gentoo.org/show_bug.cgi?id=144647
+mv /etc/make.conf /etc/make.conf.old
+echo "####################################################" >> /etc/make.conf
+echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> /etc/make.conf
+echo "## PLEASE EDIT /mnt/gentoo/etc/make.conf INSTEAD  ##" >> /etc/make.conf
+echo "####################################################" >> /etc/make.conf
+cat /etc/make.conf.old >> /etc/make.conf
+
 # devfs tweaks
 [ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
-
-# Tweak the livecd fstab so that users know not to edit it
-# http://bugs.gentoo.org/show_bug.cgi?id=60887
-mv /etc/fstab /etc/fstab.old
-echo "####################################################" >> /etc/fstab
-echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	 ##" >> /etc/fstab
-echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab	 
-echo "####################################################" >> /etc/fstab
-cat /etc/fstab.old >> /etc/fstab
-rm /etc/fstab.old
 
 # Add some helpful aliases
 echo "alias cp='cp -i'" >> /etc/profile
@@ -280,7 +286,7 @@ case ${clst_livecd_type} in
 					sedxtra=""
 				fi
 
-				cp -f /etc/X11/gdm/custom.con /etc/X11/gdm/custom.conf.old
+				cp -f /etc/X11/gdm/custom.conf /etc/X11/gdm/custom.conf.old
 
 				sed	-i \
 					-e "s:\(\[daemon\]\)$:\1\nTimedLoginEnable=true\nTimedLoginDelay=10${sedxtra}:" \
