@@ -876,8 +876,6 @@ class generic_stage_target(generic_target):
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /etc/make.conf.example for a more detailed example.\n")
 			myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
-			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
-		    
 			if self.settings.has_key("CXXFLAGS"):
 				myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 			else:
@@ -885,7 +883,9 @@ class generic_stage_target(generic_target):
 		    
 			if self.settings.has_key("LDFLAGS"):
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
-
+			myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\m")
+			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
+		    
 		    # Figure out what our USE vars are for building
 			myusevars=[]
 			if self.settings.has_key("HOSTUSE"):
