@@ -1,6 +1,12 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py,
+  modules/stage2_target.py, modules/stage4_target.py:
+  Fixed up action_sequence when using --fetchonly to not create tarballs or
+  ISO images for bug #143392.
+
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-chroot.sh, targets/stage4/stage4-chroot.sh:
   Clean up the USE usage in GRP/stage4.

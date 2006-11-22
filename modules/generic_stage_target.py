@@ -396,12 +396,14 @@ class generic_stage_target(generic_target):
 			self.settings["iso_volume_id"] = "catalyst " + self.settings["snapshot"] 
 															
 	def set_action_sequence(self):
-		#Default action sequence for run method
+		# Default action sequence for run method
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"config_profile_link","setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
 				"run_local","preclean","unbind","clean"]
-		if not self.settings.has_key("TARBALL"):
+#		if self.settings.has_key("TARBALL") or \
+#			not self.settings.has_key("FETCH"):
+		if not self.settings.has_key("FETCH"):
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
 	

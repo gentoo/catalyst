@@ -19,7 +19,8 @@ class stage2_target(generic_stage_target):
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
-				if os.path.exists(self.settings["source_path"]): # XXX: Is this even necessary if the previous check passes?
+				if os.path.exists(self.settings["source_path"]):
+				# XXX: Is this even necessary if the previous check passes?
 					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
 						hash_function=self.settings["hash_function"],verbose=False)
 		print "Source path set to "+self.settings["source_path"]
@@ -27,7 +28,8 @@ class stage2_target(generic_stage_target):
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
 			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
-	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
+	# XXX: How do these override_foo() functions differ from the ones in
+	# generic_stage_target and why aren't they in stage3_target?
 	
 	def override_chost(self):
 		if self.settings.has_key("chost"):
