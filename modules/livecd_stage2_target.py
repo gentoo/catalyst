@@ -73,6 +73,7 @@ class livecd_stage2_target(generic_stage_target):
 	
 	def unpack(self):
                 unpack=True
+		display_msg=None
 
                 clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
 
@@ -110,6 +111,9 @@ class livecd_stage2_target(generic_stage_target):
                         if self.settings.has_key("PKGCACHE"):
                                 if not os.path.exists(self.settings["pkgcache_path"]):
                                         os.makedirs(self.settings["pkgcache_path"],0755)
+
+			if not display_msg:
+				raise CatalystError,"Could not find appropriate source. Please check the 'source_subpath' setting in the spec file."
 
                         print display_msg
                         cmd(unpack_cmd,error_msg,env=self.env)

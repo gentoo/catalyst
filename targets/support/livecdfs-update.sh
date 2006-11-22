@@ -346,7 +346,8 @@ case ${clst_livecd_type} in
 						/home/${username}/Desktop
 					cp -f /usr/share/applications/installer-dialog.desktop \
 						/home/${username}/Desktop
-					sed -i -e 's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
+					sed -i -e \
+						's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
 						/home/${username}/Desktop/installer-dialog.desktop
 					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
 						/home/${username}/Desktop/installer-gtk.desktop
