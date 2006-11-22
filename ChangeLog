@@ -2,6 +2,14 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/grp/grp-chroot.sh, targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/netboot2/netboot2-pkg.sh,
+  targets/stage4/stage4-chroot.sh, targets/tinderbox/tinderbox-chroot.sh:
+  Added patch from Andrew Gaffney <agaffney@gentoo.org> to remove all
+  instances of USE_ORDER since auto hasn't been valid for some time. This is
+  wrt bug #155864.
+
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py, modules/stage1_target.py:
   Added patch from Daniel Ostrow <dostrow@gentoo.org> for added FreeBSD
   goodness wrt bug #153587.

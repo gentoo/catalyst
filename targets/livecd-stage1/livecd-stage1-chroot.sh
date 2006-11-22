@@ -15,8 +15,6 @@ export FEATURES="${clst_myfeatures}"
 ## START BUILD
 setup_portage
 
-# Turn off auto-use:
-export USE_ORDER="env:pkg:conf:defaults"	
 export USE="${clst_use}"
 
 run_emerge "${clst_packages}"

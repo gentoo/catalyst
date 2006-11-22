@@ -12,8 +12,6 @@ export FEATURES="${clst_myfeatures}"
 
 ## START BUILD
 setup_portage
-# Turn off auto-use:
-export USE_ORDER="env:pkg:conf:defaults"	
 
 echo "Bringing system up to date using profile specific use flags"
 export USE="${USE} ${clst_HOSTUSE}"

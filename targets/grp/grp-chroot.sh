@@ -14,9 +14,6 @@ export FEATURES="${clst_myfeatures}"
 ## START BUILD
 setup_portage
 
-# Turn off auto-use:
-export USE_ORDER="env:pkg:conf:defaults"
-
 unset DISTDIR
 
 # Don't grab MS core fonts, etc.

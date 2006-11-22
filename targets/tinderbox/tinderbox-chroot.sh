@@ -13,8 +13,6 @@ export FEATURES="${clst_myfeatures}"
 # START THE BUILD
 setup_portage
 
-# Turn off auto-use:
-export USE_ORDER="env:pkg:conf:defaults"	
 # Backup pristine system
 
 rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / \

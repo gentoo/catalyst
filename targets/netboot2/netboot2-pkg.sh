@@ -10,7 +10,6 @@ setup_myemergeopts
 
 # Setup our environment
 export FEATURES="${clst_myfeatures}"
-export USE_ORDER="env:pkg:conf:defaults"
 
 # START BUILD
 
