@@ -127,20 +127,16 @@ class livecd_stage2_target(generic_stage_target):
 
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-			    "config_profile_link","setup_confdir","portage_overlay",\
-			    "bind","chroot_setup","setup_environment","run_local",\
-				"build_kernel","bootloader","preclean","livecd_update",\
-				"root_overlay","fsscript","rcupdate","unmerge",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+				"config_profile_link","setup_confdir","portage_overlay",\
+				"bind","chroot_setup","setup_environment","run_local",\
+				"build_kernel"]
+		if not self.settings.has_key("FETCH"):
+			self.settings["action_sequence"] += ["bootloader","preclean",\
+				"livecd_update","root_overlay","fsscript","rcupdate","unmerge",\
 				"unbind","remove","empty","target_setup",\
-				"setup_overlay","create_iso","clear_autoresume"]
-#			    "build_kernel"]
-#		if not self.settings.has_key("FETCH"):
-#			self.settings["action_sequence"] += ["bootloader","preclean",\
-#				"livecd_update","root_overlay","fsscript","rcupdate","unmerge",\
-#			    "unbind","remove","empty","target_setup",\
-#			    "setup_overlay","create_iso"]
-#		self.settings["action_sequence"].append("clear_autoresume")
+				"setup_overlay","create_iso"]
+		self.settings["action_sequence"].append("clear_autoresume")
 
 def register(foo):
 	foo.update({"livecd-stage2":livecd_stage2_target})

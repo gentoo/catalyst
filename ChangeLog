@@ -3,6 +3,11 @@
 
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/livecd_stage2_target.py:
+  OK. We've fixed the spacing issue with livecd-stage2, so this is 2.0.1, for
+  real.
+
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/livecd_stage2_target.py:
   Reverted change in livecd-stage2 to the action_sequence until I can figure
   out what the problem is with it.
 
