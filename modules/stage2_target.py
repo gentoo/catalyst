@@ -12,25 +12,23 @@ class stage2_target(generic_stage_target):
 		self.required_values=[]
 		self.valid_values=[]
 		generic_stage_target.__init__(self,spec,addlargs)
-	def set_root_path(self):
-		# ROOT= variable for emerges
-		self.settings["root_path"]=normpath("/tmp/stage1root")
-
+		
 	def set_source_path(self):
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/"+self.settings["root_path"]+"/")
-
-		# reset the root path so the preclean doesnt fail
-		generic_stage_target.set_root_path(self)
-
-		if os.path.isdir(self.settings["source_path"]):
-			print "\nUsing seed-stage from "+self.settings["source_path"]
-			print "Delete this folder if you wish to use a seed stage tarball instead\n"
+		if self.settings.has_key("SEEDCACHE") and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
+			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
-				if os.path.exists(self.settings["source_path"]):
-					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
+				if os.path.exists(self.settings["source_path"]): # XXX: Is this even necessary if the previous check passes?
+					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
+						hash_function=self.settings["hash_function"],verbose=False)
+		print "Source path set to "+self.settings["source_path"]
+		if os.path.isdir(self.settings["source_path"]):
+			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
+			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
+	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
+	
 	def override_chost(self):
 		if self.settings.has_key("chost"):
 			self.settings["CHOST"]=list_to_string(self.settings["chost"])
@@ -54,7 +52,6 @@ class stage2_target(generic_stage_target):
 				print "\tUsing an portage overlay for earlier stages could cause build issues."
 				print "\tIf you break it, you buy it. Don't complain to us about it."
 				print "\tDont say we did not warn you\n"
-
 
 def register(foo):
 	foo.update({"stage2":stage2_target})

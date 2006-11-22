@@ -338,19 +338,15 @@ class generic_stage_target(generic_target):
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
-			
 			if os.path.isfile(self.settings["source_path"]):
-				if os.path.exists(self.settings["source_path"]):
-				 	self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
-							hash_function=self.settings["hash_function"],verbose=False)
+				if os.path.exists(self.settings["source_path"]): # XXX: Is this even necessary if the previous check passes?
+					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
+						hash_function=self.settings["hash_function"],verbose=False)
+		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
-			print "Source path set to "+self.settings["source_path"]
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
-			print "\tthe source path with then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
-		else:
-			print "Source path set to "+self.settings["source_path"]
+			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
-	
 	def set_dest_path(self):
 		if self.settings.has_key("root_path"):
 			self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])

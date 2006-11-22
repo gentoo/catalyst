@@ -33,6 +33,8 @@ class stage1_target(generic_stage_target):
 		"/usr/lib/python2.4/email", "/usr/lib/python2.4/lib-tk",\
 		"/usr/share/zoneinfo"])
 
+	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
+
 	def override_chost(self):
 		if self.settings.has_key("chost"):
 			self.settings["CHOST"]=list_to_string(self.settings["chost"])
