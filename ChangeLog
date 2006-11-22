@@ -2,6 +2,13 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2, catalyst,
+  livecd/cdtar/isolinux-elilo-memtest86+-cdtar.tar.bz2,
+  modules/livecd_stage2_target.py:
+  Fixed the livecd-stage2 action_sequence and updated the isolinux cdtar's to
+  include newer memtest86. This is catalyst 2.0.1 and ready to roll.
+
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/livecd_stage2_target.py, targets/support/livecdfs-update.sh:
   Added a patch from Bardur Arantsson <bugs-gentoo.org@scientician.net> which
   resolves an issue where a variable could be accessed unitialized in obscure
