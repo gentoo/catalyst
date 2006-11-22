@@ -1,6 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py, modules/stage1_target.py:
+  Added patch from Daniel Ostrow <dostrow@gentoo.org> for added FreeBSD
+  goodness wrt bug #153587.
+
   03 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/x86-F3.msg, livecd/files/x86-F4.msg, livecd/files/x86-F5.msg:
   Changed dobladecenter to slowusb.  Thanks to solar for pointing this out.

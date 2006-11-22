@@ -57,6 +57,32 @@ class stage1_target(generic_stage_target):
 			print "\tIf you break it, you buy it. Don't complain to us about it."
 			print "\tDont say we did not warn you\n"
 
+	def base_dirs(self):
+		if os.uname()[0] == "FreeBSD":
+			# baselayout no longer creates the .keep files in proc and dev for FreeBSD as it
+			# would create them too late...we need them earlier before bind mounting filesystems
+			# since proc and dev are not writeable, so...create them here
+			if not os.path.exists(self.settings["stage_path"]+"/proc"):
+				os.makedirs(self.settings["stage_path"]+"/proc")
+			if not os.path.exists(self.settings["stage_path"]+"/dev"):
+				os.makedirs(self.settings["stage_path"]+"/dev")
+			if not os.path.isfile(self.settings["stage_path"]+"/proc/.keep"):
+				try:
+					proc_keepfile = open(self.settings["stage_path"]+"/proc/.keep","w") 
+					proc_keepfile.write('')
+					proc_keepfile.close()
+				except IOError:
+					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
+			if not os.path.isfile(self.settings["stage_path"]+"/dev/.keep"):
+				try:
+					dev_keepfile = open(self.settings["stage_path"]+"/dev/.keep","w")
+					dev_keepfile.write('')
+					dev_keepfile.close() 
+				except IOError:
+					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
+		else:
+			pass
+
 	def set_mounts(self):
 		# stage_path/proc probably doesn't exist yet, so create it
 		if not os.path.exists(self.settings["stage_path"]+"/proc"):

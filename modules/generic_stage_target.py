@@ -13,13 +13,13 @@ import catalyst_lock
 class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
-		self.required_values.extend(["version_stamp","target","subarch","rel_type",\
-			"profile","snapshot","source_subpath"])
+		self.required_values.extend(["version_stamp","target","subarch",\
+			"rel_type","profile","snapshot","source_subpath"])
 		
-		self.valid_values.extend(["version_stamp","target","subarch","rel_type","profile",\
-			"snapshot","source_subpath","portage_confdir","cflags","cxxflags",\
-			"ldflags","chost","hostuse","portage_overlay","distcc_hosts","makeopts",\
-			"pkgcache_path","kerncache_path"])
+		self.valid_values.extend(["version_stamp","target","subarch",\
+			"rel_type","profile","snapshot","source_subpath","portage_confdir",\
+			"cflags","cxxflags","ldflags","chost","hostuse","portage_overlay",\
+			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 		
 		self.set_valid_build_kernel_vars(addlargs)
 		generic_target.__init__(self,myspec,addlargs)
@@ -82,25 +82,27 @@ class generic_stage_target(generic_target):
 		for x in targetmap[self.settings["hostarch"]]:
 			try:
 				fh=open(self.settings["sharedir"]+"/arch/"+x+".py")
-				# this next line loads the plugin as a module and assigns it to archmap[x]
+				# This next line loads the plugin as a module and assigns it to
+				# archmap[x]
 				self.archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
-				# this next line registers all the subarches supported in the plugin
+				# This next line registers all the subarches supported in the
+				# plugin
 				self.archmap[x].register(self.subarchmap)
 				fh.close()	
 			
 			except IOError:
 				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
-		# call arch constructor, pass our settings
+		# Call arch constructor, pass our settings
 		try:
-                        self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
+			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
                 except:
-                        print "Invalid subarch: "+self.settings["subarch"]
-                        print "Choose one of the following:",
-                        for x in self.subarchmap:
-                                print x,
+			print "Invalid subarch: "+self.settings["subarch"]
+			print "Choose one of the following:",
+			for x in self.subarchmap:
+				print x,
 			print
-                        sys.exit(2)
-	
+			sys.exit(2)
+
 		print "Using target:",self.settings["target"]
 		# self.settings["mainarch"] should now be set by our arch constructor,
 		# so we print a nice informational message:
@@ -400,8 +402,9 @@ class generic_stage_target(generic_target):
 	def set_action_sequence(self):
 		#Default action sequence for run method
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
-				"setup_environment","run_local","preclean","unbind","clean"]
+				"config_profile_link","setup_confdir","portage_overlay",\
+				"base_dirs","bind","chroot_setup","setup_environment",\
+				"run_local","preclean","unbind","clean"]
 		if not self.settings.has_key("TARBALL"):
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
@@ -762,6 +765,9 @@ class generic_stage_target(generic_target):
 					print "Copying root_overlay: "+x
 					cmd("rsync -a "+x+"/ "+\
 						self.settings["chroot_path"], self.settings["spec_prefix"]+"/root_overlay: "+x+" copy failed.",env=self.env)
+
+	def base_dirs(self):
+		pass
 
 	def bind(self):
 		for x in self.mounts: 
