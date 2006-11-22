@@ -19,10 +19,7 @@ run_emerge -u system
 
 echo "Emerging packages using stage4 use flags"
 if [ -n "${clst_use}" ]
-then 
-	export USE="${USE} ${clst_HOSTUSE}"
-else	
-	USE="${clst_use}"
+	USE="${clst_HOSTUSE} ${clst_use}"
 fi
 
 run_emerge "${clst_packages}"

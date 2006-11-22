@@ -17,7 +17,7 @@ setup_portage
 unset DISTDIR
 
 # Don't grab MS core fonts, etc.
-export USE="${USE} ${clst_use}"
+export USE="${USE} ${clst_HOSTUSE} ${clst_use}"
 
 if [ "${clst_grp_type}" = "pkgset" ]
 then
