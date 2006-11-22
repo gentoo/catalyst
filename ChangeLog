@@ -2,6 +2,11 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/livecd_stage2_target.py:
+  Reverted change in livecd-stage2 to the action_sequence until I can figure
+  out what the problem is with it.
+
+  22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2, catalyst,
   livecd/cdtar/isolinux-elilo-memtest86+-cdtar.tar.bz2,
   modules/livecd_stage2_target.py:
