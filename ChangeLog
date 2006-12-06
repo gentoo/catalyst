@@ -1,6 +1,11 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  06 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Make sure we setup the DISPLAYMANAGER variable in both /etc/rc.conf and
+  /etc/conf.d/xdm so we support older snapshots and newer ones.
+
   22 Nov 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/livecd_stage2_target.py:
   OK. We've fixed the spacing issue with livecd-stage2, so this is 2.0.1, for

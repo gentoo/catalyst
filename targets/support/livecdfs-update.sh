@@ -128,6 +128,8 @@ if [ -n "${clst_livecd_xdm}" ]
 then
 	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
 		/etc/rc.conf
+	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
+		/etc/conf.d/xdm
 fi
 
 # Setup configured default X Session
