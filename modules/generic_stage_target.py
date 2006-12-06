@@ -890,7 +890,7 @@ class generic_stage_target(generic_target):
 		    
 			if self.settings.has_key("LDFLAGS"):
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
-			myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\m")
+			myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
 			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		    
 		    # Figure out what our USE vars are for building

@@ -2,6 +2,10 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   06 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix a typo in generic_stage_target.
+
+  06 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   Make sure we setup the DISPLAYMANAGER variable in both /etc/rc.conf and
   /etc/conf.d/xdm so we support older snapshots and newer ones.
