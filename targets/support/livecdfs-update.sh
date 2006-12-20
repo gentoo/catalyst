@@ -1,7 +1,7 @@
 #!/bin/bash
 # $Header: /var/cvsroot/gentoo/src/catalyst/targets/support/livecdfs-update.sh,v 1.64 2006/10/02 20:41:54 wolf31o2 Exp $
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 update_env_settings
 
@@ -316,7 +316,6 @@ case ${clst_livecd_type} in
 			fi
 		fi
 
-
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
@@ -337,17 +336,22 @@ case ${clst_livecd_type} in
 		# Clear out lastlog
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
-		# Create our installer icons
-		if [ -e /usr/share/applications/installer-gtk.desktop ]
+		# Create our Handbook icon
+		create_handbook_icon
+
+		# Copy our icons into place and build home directories
+		if [ -n "${clst_livecd_users}" ]
 		then
-			if [ -n "${clst_livecd_users}" ]
-			then
-				for username in ${clst_livecd_users}
-				do
-					mkdir -p /home/${username}/Desktop
+			for username in ${clst_livecd_users}
+			do
+				mkdir -p /home/${username}/Desktop
+				# Copy our Handbook icon
+				cp -f /usr/share/applications/gentoo-handbook.desktop \
+					/home/${username}/Desktop
+				# Copy our installer icons
+				if [ -e /usr/share/applications/installer-gtk.desktop ]
+				then
 					cp -f /usr/share/applications/installer-gtk.desktop \
-						/home/${username}/Desktop
-					cp -f /usr/share/applications/installer-faq.desktop \
 						/home/${username}/Desktop
 					cp -f /usr/share/applications/installer-dialog.desktop \
 						/home/${username}/Desktop
@@ -356,9 +360,9 @@ case ${clst_livecd_type} in
 						/home/${username}/Desktop/installer-dialog.desktop
 					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
 						/home/${username}/Desktop/installer-gtk.desktop
-					chown -R ${username}:100 /home/${username}
-				done
-			fi
+				fi
+				chown -R ${username}:100 /home/${username}
+			done
 		fi
 		;;
 	generic-livecd )

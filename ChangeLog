@@ -2,6 +2,12 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   20 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh, targets/support/livecdfs-update.sh:
+  Added a create_handbook_icon function and rearranged some of the icon
+  creation for the LiveCD. This should resolve bug #143725 once a new release
+  is made.
+
+  20 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   We now disable the RC_COLDPLUG in /etc/conf.d/rc so udev will not do
   coldplugging. This allows us to unpack our firmware before we detect
