@@ -15,6 +15,9 @@ fi
 # Turn off udev tarball
 sed -i 's:RC_DEVICE_TARBALL="yes":RC_DEVICE_TARBALL="no":' /etc/conf.d/rc
 
+# Turn off udev coldplugging
+sed -i 's:RC_COLDPLG="yes":RC_COLDPLUG="no":' /etc/conf.d/rc
+
 # Clean up the time and set to UTC
 rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
