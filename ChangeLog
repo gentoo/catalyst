@@ -2,6 +2,11 @@
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
   27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh, targets/support/livecdfs-update.sh:
+  Fix the display manager sed lines and change the icon for the local Handbook
+  to use the GNOME 2.16 icon for gedit.
+
+  27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Changed the portage_overlay option to always install overlays in
   /usr/local/portage and added code to clean up /usr/local/portage and

@@ -261,5 +261,5 @@ Terminal=false
 Name=Gentoo Linux Handbook
 GenericName=Gentoo Linux Handbook
 Comment=This is a link to the local copy of the Gentoo Linux Handbook.
-Icon=gedit-icon.png" > /usr/share/applications/gentoo-handbook.desktop
+Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
 }

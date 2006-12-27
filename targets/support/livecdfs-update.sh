@@ -129,9 +129,12 @@ fi
 # Setup configured display manager
 if [ -n "${clst_livecd_xdm}" ]
 then
-	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
+	sed -i \
+		-e "s:DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
+		-e ":^DISPLAYMANAGER: s:^#::" \
 		/etc/rc.conf
-	sed -i "s:#DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
+	sed -i \
+		-e "s:DISPLAYMANAGER=\"xdm\":DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
 		/etc/conf.d/xdm
 fi
 
