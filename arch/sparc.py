@@ -9,9 +9,9 @@ class generic_sparc(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["mainarch"]="sparc"
 		if self.settings["hostarch"]=="sparc64":
-			if not os.path.exists("/bin/sparc32"):
-				raise CatalystError,"required /bin/sparc32 executable not found (\"emerge sparc-utils\" to fix.)"
-			self.settings["CHROOT"]="/bin/sparc32 chroot"
+			if not os.path.exists("/bin/linux32"):
+				raise CatalystError,"required /bin/linux32 executable not found (\"emerge setarch\" to fix.)"
+			self.settings["CHROOT"]="linux32 chroot"
 		else:
 			self.settings["CHROOT"]="chroot"
 

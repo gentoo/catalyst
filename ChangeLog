@@ -1,6 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/sparc.py:
+  Added patch from Mike Frysinger <vapier@gentoo.org> to change the SPARC
+  personality check.
+
   27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh, targets/support/livecdfs-update.sh:
   Fix the display manager sed lines and change the icon for the local Handbook
