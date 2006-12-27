@@ -1,6 +1,10 @@
 # Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
 
+  27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix indentation so things actually work.
+
   27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org> arch/sparc.py:
   Added patch from Mike Frysinger <vapier@gentoo.org> to change the SPARC
   personality check.

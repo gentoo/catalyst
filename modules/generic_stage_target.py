@@ -936,11 +936,11 @@ class generic_stage_target(generic_target):
 			    cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+x,env=self.env)
 
 		    # put /etc/hosts back into place
-			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.bck"):
+		    if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.bck"):
 				cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+"/etc/hosts", "Could not replace /etc/hosts",env=self.env)
 
-			# remove our overlay
-			if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
+		    # remove our overlay
+		    if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
 				cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage", "Could not remove /usr/local/portage",env=self.env)
 				cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+"/etc/make.conf", "Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
