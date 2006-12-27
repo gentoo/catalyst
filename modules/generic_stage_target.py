@@ -741,18 +741,15 @@ class generic_stage_target(generic_target):
 					"/etc/portage","Error copying /etc/portage",env=self.env)
 		    		touch(self.settings["autoresume_path"]+"setup_confdir")
 	
-	def portage_overlay(self):	
-	    # copy over the portage overlays
-	    # Always copy over the overlay incase it has changed
+	def portage_overlay(self):
+	    # Here, we copy the contents of our overlays to /usr/local/portage. We
+	    # always copy over the overlays in case it has changed.
 	    if self.settings.has_key("portage_overlay"):
 		for x in self.settings["portage_overlay"]: 
 			if os.path.exists(x):
 				print "Copying overlay dir " +x
-				cmd("mkdir -p "+self.settings["chroot_path"]+x,"Could not make portage_overlay dir",env=self.env)
-				#cmd("rsync -a --delete "+x+"/* "+self.settings["chroot_path"]+x,\
-				cmd("rsync -a --delete "+x+"/ "+self.settings["chroot_path"]+x,\
-						"Could not copy portage_overlay",env=self.env)
-				#cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+x,"Could not copy portage_overlay",env=self.env)
+				cmd("mkdir -p "+self.settings["chroot_path"]+"/usr/local/portage","Could not make portage_overlay dir",env=self.env)
+				cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+"/usr/local/portage","Could not copy portage_overlay",env=self.env)
 	
 	def root_overlay(self):
 	    # copy over the root_overlay
@@ -904,7 +901,8 @@ class generic_stage_target(generic_target):
 
 		    # Setup the portage overlay	
 			if self.settings.has_key("portage_overlay"):
-				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
+#				myf.write('PORTDIR_OVERLAY="'+string.join(self.settings["portage_overlay"])+'"\n')
+				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 			
 			myf.close()
 			touch(self.settings["autoresume_path"]+"chroot_setup")
@@ -938,10 +936,14 @@ class generic_stage_target(generic_target):
 			    cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+x,env=self.env)
 
 		    # put /etc/hosts back into place
-		    if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.bck"):
-			    cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+\
-					  "/etc/hosts", "Could not replace /etc/hosts",env=self.env)
-	
+			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.bck"):
+				cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.bck "+self.settings["chroot_path"]+"/etc/hosts", "Could not replace /etc/hosts",env=self.env)
+
+			# remove our overlay
+			if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
+				cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage", "Could not remove /usr/local/portage",env=self.env)
+				cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+"/etc/make.conf", "Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
+
 		    if os.path.exists(self.settings["controller_file"]):
 			cmd("/bin/bash "+self.settings["controller_file"]+" clean","clean script failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"clean")
