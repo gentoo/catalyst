@@ -1,5 +1,9 @@
-# Copyright 2002-2006 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo/src/catalyst/ChangeLog,v 1.664 2006/10/02 20:41:53 wolf31o2 Exp $
+# Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
+# $Id: $
+
+  02 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/stage4/stage4-chroot.sh:
+  Added back a missing 'then' from stage4 target.
 
   27 Dec 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
