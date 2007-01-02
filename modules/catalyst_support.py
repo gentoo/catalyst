@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/catalyst_support.py,v 1.76 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha

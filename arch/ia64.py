@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ia64.py,v 1.6 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import builder,os
 from catalyst_support import *

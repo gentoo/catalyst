@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/tinderbox/tinderbox-chroot.sh,v 1.17 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 

@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/grp_target.py,v 1.25 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 The builder class for GRP (Gentoo Reference Platform) builds.

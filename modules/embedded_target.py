@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/embedded_target.py,v 1.21 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead

@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/arch/ppc.py,v 1.19 2006/10/02 20:41:53 wolf31o2 Exp $
 
 import os,builder
 from catalyst_support import *

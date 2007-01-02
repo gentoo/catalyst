@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/livecd_stage2_target.py,v 1.62 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 Builder class for a LiveCD stage2 build.

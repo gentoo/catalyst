@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/tinderbox_target.py,v 1.19 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 builder class for the tinderbox target

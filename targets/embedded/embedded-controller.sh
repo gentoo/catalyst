@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/embedded/embedded-controller.sh,v 1.10 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 . ${clst_sharedir}/targets/support/filesystem-functions.sh

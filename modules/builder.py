@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/builder.py,v 1.9 2006/10/02 20:41:53 wolf31o2 Exp $
 
 class generic:
 	def __init__(self,myspec):

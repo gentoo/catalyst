@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_target.py,v 1.7 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 The toplevel class for generic_stage_target. This is about as generic as we get.

@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/stage3_target.py,v 1.7 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 Builder class for a stage3 installation tarball build.

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/build.py,v 1.5 2006/10/02 20:41:54 wolf31o2 Exp $
 
 import os,portage,sys
 

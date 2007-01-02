@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage1/stage1-chroot.sh,v 1.43 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 

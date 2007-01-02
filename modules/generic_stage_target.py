@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/modules/generic_stage_target.py,v 1.141 2006/10/02 20:41:54 wolf31o2 Exp $
 
 """
 This class does all of the chroot setup, copying of files, etc. It is

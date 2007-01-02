@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-controller.sh,v 1.5 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 

@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/stage2/stage2-preclean-chroot.sh,v 1.11 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . /tmp/chroot-functions.sh
 

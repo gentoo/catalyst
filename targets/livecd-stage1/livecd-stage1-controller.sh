@@ -1,4 +1,3 @@
-# $Header: /var/cvsroot/gentoo/src/catalyst/targets/livecd-stage1/livecd-stage1-controller.sh,v 1.12 2006/10/02 20:41:54 wolf31o2 Exp $
 
 . ${clst_sharedir}/targets/support/functions.sh
 
