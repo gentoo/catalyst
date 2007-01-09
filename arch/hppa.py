@@ -6,7 +6,6 @@ class generic_hppa(builder.generic):
 	"Abstract base class for all hppa builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="hppa"
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CXXFLAGS"]="-O2 -pipe"

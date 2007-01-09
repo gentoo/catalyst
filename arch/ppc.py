@@ -11,12 +11,12 @@ class generic_ppc(builder.generic):
 	"abstract base class for all ppc builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="ppc"
 		self.settings["CHOST"]="powerpc-unknown-linux-gnu"
-		if self.settings["hostarch"]=="ppc64":
+		if self.settings["buildarch"]=="ppc64":
 			if not os.path.exists("/bin/linux32"):
 				raise CatalystError,"required /bin/linux32 executable not found (\"emerge setarch\" to fix."
 			self.settings["CHROOT"]="linux32 chroot"
+			self.settings["crosscompile"] = False;
 		else:
 			self.settings["CHROOT"]="chroot"
 

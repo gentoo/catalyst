@@ -14,7 +14,7 @@ export FEATURES="${clst_myfeatures}"
 
 # First install the boot package that we need
 booter=""
-case ${clst_mainarch} in
+case ${clst_hostarch} in
 	alpha)
 		booter=""
 	;;
@@ -50,7 +50,7 @@ do
 	create_normal_loop ${clst_chroot_path}/tmp/staging/initrd-${kname} ${clst_target_path} initrd-${kname}.igz
 	rm -r ${clst_chroot_path}/tmp/staging/initrd-${kname}
 
-	case ${clst_mainarch} in
+	case ${clst_hostarch} in
 		alpha)
 			# Until aboot is patched this is broken currently.
 			# please use catalyst 1.1.5 or older
@@ -92,10 +92,10 @@ do
 			;;
 		sparc*)
 			#TEST TEST TEST TEST
-			#elftoaout -o /netboot-${kname}.${clst_mainarch} /usr/src/linux/vmlinux
-			#elftoaout -o /netboot-${kname}.${clst_mainarch} /${kname}
-			#piggy=${clst_mainarch/sparc/piggyback}
-			#${piggy} /netboot-${kname}.${clst_mainarch} /usr/src/linux/System.map /initrd-${kname}.igz
+			#elftoaout -o /netboot-${kname}.${clst_hostarch} /usr/src/linux/vmlinux
+			#elftoaout -o /netboot-${kname}.${clst_hostarch} /${kname}
+			#piggy=${clst_hostarch/sparc/piggyback}
+			#${piggy} /netboot-${kname}.${clst_hostarch} /usr/src/linux/System.map /initrd-${kname}.igz
 			;;
 		x86)
 			mknbi-linux \

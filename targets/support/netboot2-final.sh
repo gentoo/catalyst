@@ -20,7 +20,7 @@ rmdir ${clst_target_path}boot
 
 # Any post-processing necessary for each architecture can be done here.  This
 # may include things like sparc's elftoaout, x86's PXE boot, etc.
-case ${clst_mainarch} in
+case ${clst_hostarch} in
 	alpha)
 		sleep 0
 		;;

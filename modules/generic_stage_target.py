@@ -17,40 +17,21 @@ class generic_stage_target(generic_target):
 		
 		self.valid_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath","portage_confdir",\
-			"cflags","cxxflags","ldflags","chost","hostuse","portage_overlay",\
+			"cflags","cxxflags","ldflags","cbuild","chost","hostuse","portage_overlay",\
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 		
 		self.set_valid_build_kernel_vars(addlargs)
 		generic_target.__init__(self,myspec,addlargs)
-		# map the mainarch we are running under to the mainarches we support for
-		# building stages and LiveCDs. (for example, on amd64, we can build
-		# stages for x86 or amd64.
-		targetmap={ 	
-				"x86" : ["x86"],
-				"amd64" : ["x86","amd64"],
-				"sparc64" : ["sparc","sparc64"],
-				"ia64" : ["ia64"],
-				"alpha" : ["alpha"],
-				"sparc" : ["sparc"],
-				"sh" : ["sh"],
-				"s390" : ["s390"],
-				"ppc" : ["ppc"],
-				"ppc64" : ["ppc","ppc64"],
-				"hppa" : ["hppa"],
-				"mips" : ["mips"],
-				"arm" : ["arm"]
-		}
-		
-		machinemap={ 	
+		machinemap={
 				"i386" : "x86",
 				"i486" : "x86",
 				"i586" : "x86",
 				"i686" : "x86",
 				"x86_64" : "amd64",
+				"sparc" : "sparc",
 				"sparc64" : "sparc64",
 				"ia64" : "ia64",
 				"alpha" : "alpha",
-				"sparc" : "sparc",
 				"sh2" : "sh",
 				"sh3" : "sh",
 				"sh4" : "sh",
@@ -60,8 +41,12 @@ class generic_stage_target(generic_target):
 				"s390" : "s390",
 				"ppc" : "ppc",
 				"ppc64" : "ppc64",
-				"parisc" : "hppa",
-				"parisc64" : "hppa",
+				"powerpc" : "powerpc",
+				"powerpc64" : "powerpc64",
+				"parisc" : "parisc",
+				"parisc64" : "parisc",
+				"hppa" : "hppa",
+				"hppa64" : "hppa",
 				"mips" : "mips",
 				"mips64" : "mips",
 				"arm" : "arm",
@@ -70,31 +55,38 @@ class generic_stage_target(generic_target):
 				"armv5b" : "arm"
 		}
 		
-		mymachine=os.uname()[4]
-		if not machinemap.has_key(mymachine):
-			raise CatalystError, "Unknown machine type "+mymachine
-			
-		self.settings["hostarch"]=machinemap[mymachine]
-		self.archmap={}
-		self.subarchmap={}
+		if self.settings.has_key("chost"):
+			hostmachine = self.settings["chost"].split("-")[0]
+		else:
+			hostmachine = os.uname()[4]
+		if not machinemap.has_key(hostmachine):
+			raise CatalystError, "Unknown host machine type "+hostmachine
+		self.settings["hostarch"] = machinemap[hostmachine]
+		if self.settings.has_key("cbuild"):
+			buildmachine = self.settings["cbuild"].split("-")[0]
+		else:
+			buildmachine = os.uname()[4]
+		if not machinemap.has_key(buildmachine):
+			raise CatalystError, "Unknown build machine type "+buildmachine
+		self.settings["buildarch"] = machinemap[buildmachine]
+		self.settings["crosscompile"] = (self.settings["hostarch"] != self.settings["buildarch"])
+		self.archmap = {}
+		self.subarchmap = {}
 		
-		for x in targetmap[self.settings["hostarch"]]:
-			try:
-				fh=open(self.settings["sharedir"]+"/arch/"+x+".py")
-				# This next line loads the plugin as a module and assigns it to
-				# archmap[x]
-				self.archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
-				# This next line registers all the subarches supported in the
-				# plugin
-				self.archmap[x].register(self.subarchmap)
-				fh.close()	
-			
-			except IOError:
-				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
+		x = self.settings["hostarch"]
+		try:
+			fh = open(self.settings["sharedir"]+"/arch/"+x+".py")
+			# this next line loads the plugin as a module and assigns it to archmap[x]
+			self.archmap[x] = imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
+			# this next line registers all the subarches supported in the plugin
+			self.archmap[x].register(self.subarchmap)
+			fh.close()
+		except IOError:
+			msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 		# Call arch constructor, pass our settings
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
-                except:
+		except:
 			print "Invalid subarch: "+self.settings["subarch"]
 			print "Choose one of the following:",
 			for x in self.subarchmap:
@@ -103,14 +95,16 @@ class generic_stage_target(generic_target):
 			sys.exit(2)
 
 		print "Using target:",self.settings["target"]
-		# self.settings["mainarch"] should now be set by our arch constructor,
-		# so we print a nice informational message:
-		if self.settings["mainarch"]==self.settings["hostarch"]:
+		# print a nice informational message:
+		if self.settings["buildarch"]==self.settings["hostarch"]:
 			print "Building natively for",self.settings["hostarch"]
-		
+		elif self.settings["crosscompile"]:
+			print "Cross-compiling on",self.settings["buildarch"],"for different machine type",\
+				self.settings["hostarch"]
 		else:
-			print "Building on",self.settings["hostarch"],"for alternate machine type",\
-				self.settings["mainarch"]
+			print "Building on",self.settings["buildarch"],"for alternate personality type",\
+				self.settings["hostarch"]
+
 		# This should be first to be set as other set_ options depend on this
 		self.set_spec_prefix()
 		
@@ -203,6 +197,10 @@ class generic_stage_target(generic_target):
 			self.mountmap["/var/tmp/ccache"]=ccdir
 			# for the chroot:
 			self.env["CCACHE_DIR"]="/var/tmp/ccache"	
+
+	def override_cbuild(self):
+		if self.makeconf.has_key("CBUILD"):
+			self.settings["CBUILD"]=self.makeconf["CBUILD"]
 
 	def override_chost(self):
 		if self.makeconf.has_key("CHOST"):
@@ -831,7 +829,8 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
-		self.override_chost()	
+		self.override_cbuild()
+		self.override_chost()
 		self.override_cflags()
 		self.override_cxxflags()	
 		self.override_ldflags()	
@@ -868,7 +867,8 @@ class generic_stage_target(generic_target):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+self.settings["chroot_path"]+\
 					"/etc/hosts.bck", "Could not backup /etc/hosts",env=self.env)
 				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts", "Could not copy /etc/hosts",env=self.env)
-			#self.override_chost()	
+			#self.override_cbuild()
+			#self.override_chost()
 			#self.override_cflags()
 			#self.override_cxxflags()	
 			#self.override_ldflags()	
@@ -887,6 +887,8 @@ class generic_stage_target(generic_target):
 			if self.settings.has_key("LDFLAGS"):
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
 			myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
+			if self.settings.has_key("CBUILD"):
+				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
 			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 		    
 		    # Figure out what our USE vars are for building
@@ -1077,7 +1079,7 @@ class generic_stage_target(generic_target):
                         self.purge()
 
 		for x in self.settings["action_sequence"]:
-			print "Running action sequence: "+x
+			print "--- Running action sequence: "+x
 			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))

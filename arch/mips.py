@@ -6,7 +6,6 @@ class generic_mips(builder.generic):
 	"Abstract base class for all mips builders [Big-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="mips"
 		self.settings["CHROOT"]="chroot"
 		self.settings["CHOST"]="mips-unknown-linux-gnu"
 
@@ -14,7 +13,6 @@ class generic_mipsel(builder.generic):
 	"Abstract base class for all mipsel builders [Little-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="mips"
 		self.settings["CHROOT"]="chroot"
 		self.settings["CHOST"]="mipsel-unknown-linux-gnu"
 

@@ -211,3 +211,7 @@ check_filesystem_type(){
 		;;
 	esac
 }																												
+
+run_crossdev() {
+	crossdev ${clst_CHOST}
+}

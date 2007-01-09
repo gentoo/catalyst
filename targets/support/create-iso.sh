@@ -6,7 +6,7 @@
 ## START RUNSCRIPT
 
 # Check for our CD ISO creation tools
-case ${clst_mainarch} in
+case ${clst_hostarch} in
 	mips)
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
@@ -27,7 +27,7 @@ if [ -z "${clst_iso_volume_id}" ]
 then
 	case ${clst_livecd_type} in
 		gentoo-*)
-			case ${clst_mainarch} in
+			case ${clst_hostarch} in
 				alpha)
 					clst_iso_volume_id="Gentoo Linux - Alpha"
 				;;
@@ -75,7 +75,7 @@ then
 fi
 
 # Here we actually create the ISO images for each architecture
-case ${clst_mainarch} in
+case ${clst_hostarch} in
 	alpha)
 		case ${clst_fstype} in
 			zisofs)

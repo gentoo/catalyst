@@ -6,7 +6,6 @@ class generic_s390(builder.generic):
 	"abstract base class for all s390 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="s390"
 		self.settings["CHROOT"]="chroot"
 
 class arch_s390(generic_s390):

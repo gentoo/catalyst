@@ -6,7 +6,6 @@ class generic_sparc64(builder.generic):
 	"abstract base class for all sparc64 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="sparc64"
 		self.settings["CHROOT"]="chroot"
 
 class arch_sparc64(generic_sparc64):

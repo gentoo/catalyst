@@ -6,11 +6,11 @@ class generic_x86(builder.generic):
 	"abstract base class for all x86 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="x86"
-		if self.settings["hostarch"]=="amd64":
+		if self.settings["buildarch"]=="amd64":
 			if not os.path.exists("/bin/linux32"):
 				raise CatalystError,"required /bin/linux32 executable not found (\"emerge setarch\" to fix.)"
 			self.settings["CHROOT"]="linux32 chroot"
+			self.settings["crosscompile"] = False;
 		else:
 			self.settings["CHROOT"]="chroot"
 

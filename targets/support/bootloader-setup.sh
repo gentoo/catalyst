@@ -12,7 +12,7 @@ check_filesystem_type
 
 default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
 
-case ${clst_mainarch} in
+case ${clst_hostarch} in
 	alpha)
 		# NO SOFTLEVEL SUPPORT YET
 		acfg=$1/etc/aboot.conf

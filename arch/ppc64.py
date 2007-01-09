@@ -5,7 +5,6 @@ class generic_ppc64(builder.generic):
 	"abstract base class for all ppc64 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["mainarch"]="ppc64"
 		self.settings["CHROOT"]="chroot"
 
 class arch_ppc64(generic_ppc64):

@@ -1,6 +1,15 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  09 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
+  arch/amd64.py, arch/arm.py, arch/hppa.py, arch/ia64.py, arch/mips.py,
+  arch/ppc.py, arch/ppc64.py, arch/s390.py, arch/sh.py, arch/sparc.py,
+  arch/sparc64.py, arch/x86.py, modules/generic_stage_target.py,
+  targets/netboot/netboot-combine.sh, targets/support/bootloader-setup.sh,
+  targets/support/create-iso.sh, targets/support/functions.sh,
+  targets/support/netboot2-final.sh, targets/support/pre-kmerge.sh:
+  Added a patch from Mike Frysinger <vapier@gentoo.org> to support cbuild.
+
   02 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org> README, arch/alpha.py,
   arch/amd64.py, arch/arm.py, arch/hppa.py, arch/ia64.py, arch/mips.py,
   arch/ppc.py, arch/ppc64.py, arch/s390.py, arch/sh.py, arch/sparc.py,
