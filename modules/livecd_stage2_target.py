@@ -71,59 +71,58 @@ class livecd_stage2_target(generic_stage_target):
 			myf.close()
 	
 	def unpack(self):
-                unpack=True
+		unpack=True
 		display_msg=None
 
-                clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
+		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
 
-                if os.path.isdir(self.settings["source_path"]):
-                        unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
-                        display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
-                                self.settings["chroot_path"]+" (This may take some time) ...\n"
-                        error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-                        invalid_snapshot=False
+		if os.path.isdir(self.settings["source_path"]):
+			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
+			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
+				self.settings["chroot_path"]+" (This may take some time) ...\n"
+			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
+			invalid_snapshot=False
 
-                if self.settings.has_key("AUTORESUME"):
-                    if os.path.isdir(self.settings["source_path"]) and \
-                            os.path.exists(self.settings["autoresume_path"]+"unpack"):
-                                print "Resume point detected, skipping unpack operation..."
-                                unpack=False
-                    elif self.settings.has_key("source_path_hash"):
-                        if self.settings["source_path_hash"] != clst_unpack_hash:
-                                invalid_snapshot=True
+		if self.settings.has_key("AUTORESUME"):
+			if os.path.isdir(self.settings["source_path"]) and \
+				os.path.exists(self.settings["autoresume_path"]+"unpack"):
+				print "Resume point detected, skipping unpack operation..."
+				unpack=False
+			elif self.settings.has_key("source_path_hash"):
+				if self.settings["source_path_hash"] != clst_unpack_hash:
+					invalid_snapshot=True
 
-                if unpack:
-                        self.mount_safety_check()
-                        if invalid_snapshot:
-                                print "No Valid Resume point detected, cleaning up  ..."
-                                #os.remove(self.settings["autoresume_path"]+"dir_setup")
-                                self.clear_autoresume()
-                                self.clear_chroot()
-                                #self.dir_setup()
+		if unpack:
+			self.mount_safety_check()
+			if invalid_snapshot:
+				print "No Valid Resume point detected, cleaning up  ..."
+				#os.remove(self.settings["autoresume_path"]+"dir_setup")
+				self.clear_autoresume()
+				self.clear_chroot()
+				#self.dir_setup()
 
-                        if not os.path.exists(self.settings["chroot_path"]):
-                                os.makedirs(self.settings["chroot_path"])
+			if not os.path.exists(self.settings["chroot_path"]):
+				os.makedirs(self.settings["chroot_path"])
 
-                        if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-                                os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 
-                        if self.settings.has_key("PKGCACHE"):
-                                if not os.path.exists(self.settings["pkgcache_path"]):
-                                        os.makedirs(self.settings["pkgcache_path"],0755)
+			if self.settings.has_key("PKGCACHE"):
+				if not os.path.exists(self.settings["pkgcache_path"]):
+					os.makedirs(self.settings["pkgcache_path"],0755)
 
 			if not display_msg:
 				raise CatalystError,"Could not find appropriate source. Please check the 'source_subpath' setting in the spec file."
 
-                        print display_msg
-                        cmd(unpack_cmd,error_msg,env=self.env)
+			print display_msg
+			cmd(unpack_cmd,error_msg,env=self.env)
 
-                        if self.settings.has_key("source_path_hash"):
-                                myf=open(self.settings["autoresume_path"]+"unpack","w")
-                                myf.write(self.settings["source_path_hash"])
-                                myf.close()
-                        else:
-                                touch(self.settings["autoresume_path"]+"unpack")
-
+			if self.settings.has_key("source_path_hash"):
+				myf=open(self.settings["autoresume_path"]+"unpack","w")
+				myf.write(self.settings["source_path_hash"])
+				myf.close()
+			else:
+				touch(self.settings["autoresume_path"]+"unpack")
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\

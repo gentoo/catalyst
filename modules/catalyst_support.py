@@ -54,12 +54,12 @@ def cleanup(pids,block_exceptions=True):
 # a function to turn a string of non-printable characters into a string of
 # hex characters
 def hexify(str):
-    hexStr = string.hexdigits
-    r = ''
-    for ch in str:
-	i = ord(ch)
-	r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
-    return r
+	hexStr = string.hexdigits
+	r = ''
+	for ch in str:
+		i = ord(ch)
+		r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
+	return r
 # hexify()
 
 def generate_hash(file,hash_function="crc32",verbose=False):

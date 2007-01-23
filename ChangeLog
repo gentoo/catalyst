@@ -2,6 +2,14 @@
 # $Id: $
 
   23 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/catalyst_support.py, modules/embedded_target.py,
+  modules/generic_stage_target.py, modules/grp_target.py,
+  modules/livecd_stage1_target.py, modules/livecd_stage2_target.py,
+  modules/stage3_target.py, modules/tinderbox_target.py:
+  Added patch from Andrew Gaffney <agaffney@gentoo.org> to fix up some of the
+  tab/space nastiness. This is for bug #161915.
+
+  23 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Fixed new cbuild code with another patch from Mike Frysinger
   <vapier@gentoo.org> to allow the usage of subarches.
