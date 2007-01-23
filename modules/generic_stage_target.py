@@ -57,11 +57,14 @@ class generic_stage_target(generic_target):
 		
 		if self.settings.has_key("chost"):
 			hostmachine = self.settings["chost"].split("-")[0]
+			if not machinemap.has_key(hostmachine):
+				raise CatalystError, "Unknown host machine type "+hostmachine
+			self.settings["hostarch"] = machinemap[hostmachine]
 		else:
-			hostmachine = os.uname()[4]
-		if not machinemap.has_key(hostmachine):
-			raise CatalystError, "Unknown host machine type "+hostmachine
-		self.settings["hostarch"] = machinemap[hostmachine]
+			hostmachine = self.settings["subarch"]
+			if machinemap.has_key(hostmachine):
+				hostmachine = machinemap[hostmachine]
+			self.settings["hostarch"] = hostmachine
 		if self.settings.has_key("cbuild"):
 			buildmachine = self.settings["cbuild"].split("-")[0]
 		else:
