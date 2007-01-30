@@ -91,9 +91,10 @@ def calc_hash2(file,cmd,cmd_args,id_string="MD5",verbose=False):
 		print header+" (%s) = %s" % (short_file, result)
 	return result
 
-#This has map must be defined after the function calc_hash
-#It is possible to call different functions from this but they must be defined before hash_map
-# 	Key,function,cmd,cmd_args,Print string
+# This has map must be defined after the function calc_hash
+# It is possible to call different functions from this but they must be defined
+# before hash_map
+# Key,function,cmd,cmd_args,Print string
 hash_map={
 	 "adler32":[calc_hash2,"shash","-a ADLER32","ADLER32"],\
 	 "crc32":[calc_hash2,"shash","-a CRC32","CRC32"],\
