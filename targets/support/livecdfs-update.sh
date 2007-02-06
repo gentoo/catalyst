@@ -48,6 +48,7 @@ then
 	do
 		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" \
 			-m ${x}
+		chown -R ${x}:users /home/${x}
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then
 			echo "[Desktop]" > /home/${x}/.dmrc

@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf,
+  targets/support/livecdfs-update.sh:
+  Make sure the user owns his home directory for bug #147195.
+
   30 Jan 2007; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf,
   +files/catalystrc, modules/catalyst_support.py:
   Re-arranged catalyst.conf to make it easier to follow while looking at the
