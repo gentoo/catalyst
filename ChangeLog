@@ -1,6 +1,15 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  examples/generic_stage_template.spec, examples/grp_template.spec,
+  examples/livecd-stage1_template.spec,
+  examples/livecd-stage2_template.spec, examples/netboot2_template.spec,
+  examples/netboot_template.spec, examples/snapshot_template.spec,
+  examples/stage4_template.spec, examples/tinderbox_template.spec:
+  Update the examples to have 2006.1 for the dates. This is catalyst 2.0.2, so
+  everyone enjoy it.
+
   06 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf,
   targets/support/livecdfs-update.sh:
   Make sure the user owns his home directory for bug #147195.

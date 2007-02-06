@@ -4,7 +4,7 @@ target: netboot2
 rel_type: default
 profile: uclibc/mips
 snapshot: 20060107
-source_subpath: default/stage3-mips-uclibc-mips3-20051026
+source_subpath: default/stage3-mips-uclibc-mips3-2006.126
 
 # This option specifies the location to a portage overlay that you would like to
 # have used when building this target.

@@ -10,7 +10,7 @@ subarch:
 
 # The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
 # example:
-# version_stamp: 2005.0
+# version_stamp: 2006.1
 version_stamp:
 
 # The target specifies what target we want catalyst to do.  For building a CD,
@@ -28,18 +28,18 @@ rel_type:
 
 # This is the system profile to be used by catalyst to build this target.  It is# specified as a relative path from /usr/portage/profiles.
 # example:
-# profile: default-linux/x86/2005.0
+# profile: default-linux/x86/2006.1
 profile:
 
 # This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 20050324
+# snapshot: 2006.1
 snapshot:
 
 # This specifies where the seed stage comes from for this target,  The path is
 # relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
 # example:
-# default/stage3-x86-2004.3
+# default/stage3-x86-2006.1
 source_subpath:
 
 # These are the hosts used as distcc slaves when distcc is enabled in your
@@ -116,7 +116,7 @@ stage4/splash_type:
 # /etc/splash or /etc/bootsplash, depending on your stage4/splash_type, before
 # the kernel has completed building during the stage4-stage2 target.
 # example:
-# stage4/splash_theme: livecd-2005.0
+# stage4/splash_theme: livecd-2006.1
 stage4/splash_theme:
 
 # This is a set of arguments that will be passed to genkernel for all kernels
@@ -268,5 +268,5 @@ stage4/empty:
 # This option tells catalyst to clean specific files from the filesystem and is
 # very usefu in cleaning up stray files in /etc left over after stage4/unmerge.
 # example:
-# stage4/rm: /lib/*.a /usr/lib/*.a /usr/lib/gcc-lib/*/*/libgcj* /etc/dispatch-conf.conf /etc/etc-update.conf /etc/*- /etc/issue* /etc/make.conf /etc/man.conf /etc/*.old /root/.viminfo /usr/sbin/bootsplash* /usr/sbin/fb* /usr/sbin/fsck.cramfs /usr/sbin/fsck.minix /usr/sbin/mkfs.minix /usr/sbin/mkfs.bfs /usr/sbin/mkfs.cramfs /lib/security/pam_access.so /lib/security/pam_chroot.so /lib/security/pam_debug.so /lib/security/pam_ftp.so /lib/security/pam_issue.so /lib/security/pam_mail.so /lib/security/pam_motd.so /lib/security/pam_mkhomedir.so /lib/security/pam_postgresok.so /lib/security/pam_rhosts_auth.so /lib/security/pam_userdb.so /usr/share/consolefonts/1* /usr/share/consolefonts/7* /usr/share/consolefonts/8* /usr/share/consolefonts/9* /usr/share/consolefonts/A* /usr/share/consolefonts/C* /usr/share/consolefonts/E* /usr/share/consolefonts/G* /usr/share/consolefonts/L* /usr/share/consolefonts/M* /usr/share/consolefonts/R* /usr/share/consolefonts/a* /usr/share/consolefonts/c* /usr/share/consolefonts/dr* /usr/share/consolefonts/g* /usr/share/consolefonts/i* /usr/share/consolefonts/k* /usr/share/consolefonts/l* /usr/share/consolefonts/r* /usr/share/consolefonts/s* /usr/share/consolefonts/t* /usr/share/consolefonts/v* /etc/splash/livecd-2005.0/16* /etc/splash/livecd-2005.0/12* /etc/splash/livecd-2005.0/6* /etc/splash/livecd-2005.0/8* /etc/splash/livecd-2005.0/images/silent-16* /etc/splash/livecd-2005.0/images/silent-12* /etc/splash/livecd-2005.0/images/silent-6* /etc/splash/livecd-2005.0/images/silent-8* /etc/splash/livecd-2005.0/images/verbose-16* /etc/splash/livecd-2005.0/images/verbose-12* /etc/splash/livecd-2005.0/images/verbose-6* /etc/splash/livecd-2005.0/images/verbose-8* /etc/make.conf.example /etc/make.globals /etc/resolv.conf
+# stage4/rm: /lib/*.a /usr/lib/*.a /usr/lib/gcc-lib/*/*/libgcj* /etc/dispatch-conf.conf /etc/etc-update.conf /etc/*- /etc/issue* /etc/make.conf /etc/man.conf /etc/*.old /root/.viminfo /usr/sbin/bootsplash* /usr/sbin/fb* /usr/sbin/fsck.cramfs /usr/sbin/fsck.minix /usr/sbin/mkfs.minix /usr/sbin/mkfs.bfs /usr/sbin/mkfs.cramfs /lib/security/pam_access.so /lib/security/pam_chroot.so /lib/security/pam_debug.so /lib/security/pam_ftp.so /lib/security/pam_issue.so /lib/security/pam_mail.so /lib/security/pam_motd.so /lib/security/pam_mkhomedir.so /lib/security/pam_postgresok.so /lib/security/pam_rhosts_auth.so /lib/security/pam_userdb.so /usr/share/consolefonts/1* /usr/share/consolefonts/7* /usr/share/consolefonts/8* /usr/share/consolefonts/9* /usr/share/consolefonts/A* /usr/share/consolefonts/C* /usr/share/consolefonts/E* /usr/share/consolefonts/G* /usr/share/consolefonts/L* /usr/share/consolefonts/M* /usr/share/consolefonts/R* /usr/share/consolefonts/a* /usr/share/consolefonts/c* /usr/share/consolefonts/dr* /usr/share/consolefonts/g* /usr/share/consolefonts/i* /usr/share/consolefonts/k* /usr/share/consolefonts/l* /usr/share/consolefonts/r* /usr/share/consolefonts/s* /usr/share/consolefonts/t* /usr/share/consolefonts/v* /etc/splash/livecd-2006.1/16* /etc/splash/livecd-2006.1/12* /etc/splash/livecd-2006.1/6* /etc/splash/livecd-2006.1/8* /etc/splash/livecd-2006.1/images/silent-16* /etc/splash/livecd-2006.1/images/silent-12* /etc/splash/livecd-2006.1/images/silent-6* /etc/splash/livecd-2006.1/images/silent-8* /etc/splash/livecd-2006.1/images/verbose-16* /etc/splash/livecd-2006.1/images/verbose-12* /etc/splash/livecd-2006.1/images/verbose-6* /etc/splash/livecd-2006.1/images/verbose-8* /etc/make.conf.example /etc/make.globals /etc/resolv.conf
 stage4/rm:

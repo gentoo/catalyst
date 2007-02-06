@@ -9,7 +9,7 @@ subarch:
 
 # The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
 # example:
-# version_stamp: 2005.0
+# version_stamp: 2006.1
 version_stamp:
 
 # The target specifies what target we want catalyst to do.
@@ -26,18 +26,18 @@ rel_type:
 
 # This is the system profile to be used by catalyst to build this target.  It is# specified as a relative path from /usr/portage/profiles.
 # example:
-# profile: default-linux/x86/2005.0
+# profile: default-linux/x86/2006.1
 profile:
 
 # This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 20050324
+# snapshot: 2006.1
 snapshot:
 
 # This specifies where the seed stage comes from for this target,  The path is
 # relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
 # example:
-# default/stage3-x86-2004.3
+# default/stage3-x86-2006.1
 source_subpath:
 
 # These are the hosts used as distcc slaves when distcc is enabled in your
