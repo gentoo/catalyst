@@ -23,6 +23,8 @@ then
 fi
 
 ## START BUILD
+clst_root_path=/ setup_portage
+
 run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
 rm -f /var/lib/portage/world
 touch /var/lib/portage/world
