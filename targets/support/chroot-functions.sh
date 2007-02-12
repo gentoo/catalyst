@@ -85,13 +85,13 @@ setup_myemergeopts(){
 setup_portage(){
 	# portage needs to be merged manually with USE="build" set to avoid frying
 	# our make.conf. emerge system could merge it otherwise.
-	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
-	then
-		echo "Portage Autoresume point found not emerging portage"
-	else
+#	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
+#	then
+#		echo "Portage Autoresume point found not emerging portage"
+#	else
 		USE="build" run_emerge --oneshot --nodeps portage
-		touch /tmp/.clst_portage || exit 1
-	fi
+#		touch /tmp/.clst_portage || exit 1
+#	fi
 }
 
 setup_gcc(){

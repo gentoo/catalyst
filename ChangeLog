@@ -2,6 +2,12 @@
 # $Id: $
 
   12 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Added patch from Andrew Gaffney <agaffney@gentoo.org> for bug #166420 to
+  remove the autoresume point for portage, as it really isn't needed and
+  doesn't really gain us much, anyway.
+
+  12 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   Added patch from Andrew Gaffney <agaffney@gentoo.org> for bug #166426.
 
