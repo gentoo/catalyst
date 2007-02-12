@@ -41,10 +41,10 @@ class generic_stage_target(generic_target):
 				"s390" : "s390",
 				"ppc" : "ppc",
 				"ppc64" : "ppc64",
-				"powerpc" : "powerpc",
-				"powerpc64" : "powerpc64",
-				"parisc" : "parisc",
-				"parisc64" : "parisc",
+				"powerpc" : "ppc",
+				"powerpc64" : "ppc64",
+				"parisc" : "hppa",
+				"parisc64" : "hppa",
 				"hppa" : "hppa",
 				"hppa64" : "hppa",
 				"mips" : "mips",
@@ -54,7 +54,7 @@ class generic_stage_target(generic_target):
 				"armeb" : "arm",
 				"armv5b" : "arm"
 		}
-		
+
 		if self.settings.has_key("chost"):
 			hostmachine = self.settings["chost"].split("-")[0]
 			if not machinemap.has_key(hostmachine):

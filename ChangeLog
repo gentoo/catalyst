@@ -2,6 +2,11 @@
 # $Id: $
 
   12 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Added another fix from Andrew Gaffney <agaffney@gentoo.org> from bug
+  #166294. This one should fix the HPPA/PPC architectures.
+
+  12 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
   Added patch from Andrew Gaffney <agaffney@gentoo.org> for bug #166420 to
   remove the autoresume point for portage, as it really isn't needed and
