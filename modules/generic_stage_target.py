@@ -22,38 +22,50 @@ class generic_stage_target(generic_target):
 		
 		self.set_valid_build_kernel_vars(addlargs)
 		generic_target.__init__(self,myspec,addlargs)
-		machinemap={
-				"i386" : "x86",
-				"i486" : "x86",
-				"i586" : "x86",
-				"i686" : "x86",
-				"x86_64" : "amd64",
-				"sparc" : "sparc",
-				"sparc64" : "sparc64",
-				"ia64" : "ia64",
-				"alpha" : "alpha",
-				"sh2" : "sh",
-				"sh3" : "sh",
-				"sh4" : "sh",
-				"sh2eb" : "sh",
-				"sh3eb" : "sh",
-				"sh4eb" : "sh",
-				"s390" : "s390",
-				"ppc" : "ppc",
-				"ppc64" : "ppc64",
-				"powerpc" : "ppc",
-				"powerpc64" : "ppc64",
-				"parisc" : "hppa",
-				"parisc64" : "hppa",
-				"hppa" : "hppa",
-				"hppa64" : "hppa",
-				"mips" : "mips",
-				"mips64" : "mips",
-				"arm" : "arm",
-				"armv4l" : "arm",
-				"armeb" : "arm",
-				"armv5b" : "arm"
-		}
+
+		# The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
+		# work better with vapier's CBUILD stuff. I've removed the "monolithic"
+		# machinemap from this file and split up its contents amongst the various
+		# arch/foo.py files.
+		#
+		# When register() is called on each module in the arch/ dir, it now returns
+		# a tuple instead of acting on the subarchmap dict that is passed to it.
+		# The tuple contains the values that were previously added to subarchmap
+		# as well as a new list of CHOSTs that go along with that arch. This allows
+		# us to build machinemap on the fly based on the keys in subarchmap and
+		# the values of the 2nd list returned (tmpmachinemap).
+		#
+		# Also, after talking with vapier. I have a slightly better idea of what
+		# certain variables are used for and what they should be set to. Neither
+		# 'buildarch' or 'hostarch' are used directly, so their value doesn't
+		# really matter. They are just compared to determine if we are
+		# cross-compiling. Because of this, they are just set to the name of the
+		# module in arch/ that the subarch is part of to make things simpler. The
+		# entire build process is still based off of 'subarch' like it was
+		# previously. -agaffney
+
+		self.archmap = {}
+		self.subarchmap = {}
+		machinemap = {}
+		for x in [x[:-3] for x in os.listdir(self.settings["sharedir"]+"/arch/") if x.endswith(".py")]:
+			try:
+				fh=open(self.settings["sharedir"]+"/arch/"+x+".py")
+				# This next line loads the plugin as a module and assigns it to
+				# archmap[x]
+				self.archmap[x]=imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
+				# This next line registers all the subarches supported in the
+				# plugin
+				tmpsubarchmap, tmpmachinemap = self.archmap[x].register()
+				self.subarchmap.update(tmpsubarchmap)
+				for machine in tmpmachinemap:
+					machinemap[machine] = x
+				for subarch in tmpsubarchmap:
+					machinemap[subarch] = x
+				fh.close()	
+			except IOError:
+				# This message should probably change a bit, since everything in the dir should
+				# load just fine. If it doesn't, it's probably a syntax error in the module
+				msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 
 		if self.settings.has_key("chost"):
 			hostmachine = self.settings["chost"].split("-")[0]
@@ -73,19 +85,7 @@ class generic_stage_target(generic_target):
 			raise CatalystError, "Unknown build machine type "+buildmachine
 		self.settings["buildarch"] = machinemap[buildmachine]
 		self.settings["crosscompile"] = (self.settings["hostarch"] != self.settings["buildarch"])
-		self.archmap = {}
-		self.subarchmap = {}
 		
-		x = self.settings["hostarch"]
-		try:
-			fh = open(self.settings["sharedir"]+"/arch/"+x+".py")
-			# this next line loads the plugin as a module and assigns it to archmap[x]
-			self.archmap[x] = imp.load_module(x,fh,"arch/"+x+".py",(".py","r",imp.PY_SOURCE))
-			# this next line registers all the subarches supported in the plugin
-			self.archmap[x].register(self.subarchmap)
-			fh.close()
-		except IOError:
-			msg("Can't find "+x+".py plugin in "+self.settings["sharedir"]+"/arch/")
 		# Call arch constructor, pass our settings
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)

@@ -22,6 +22,6 @@ class arch_sparc(generic_sparc):
 		self.settings["CXXFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"sparc":arch_sparc})
+	return ({"sparc":arch_sparc}, ("sparc", ))

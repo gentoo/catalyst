@@ -16,6 +16,6 @@ class arch_sparc64(generic_sparc64):
 		self.settings["CXXFLAGS"]="-O2 -mcpu=ultrasparc -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"sparc64":arch_sparc64})
+	return ({"sparc64":arch_sparc64}, ("sparc64", ))

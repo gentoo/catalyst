@@ -80,8 +80,9 @@ class arch_pentium3(generic_x86):
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse"]
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"pentium4":arch_pentium4,"x86":arch_x86,"i386":arch_i386,"i486":arch_i486,"i586":arch_i586,"i686":arch_i686,"athlon":arch_athlon,
-	"athlon-xp":arch_athlon_xp,"athlon-mp":arch_athlon_xp,"pentium3":arch_pentium3,"pentium-mmx":arch_pentium_mmx})
+	return ({"pentium4":arch_pentium4,"x86":arch_x86,"i386":arch_i386,"i486":arch_i486,"i586":arch_i586,"i686":arch_i686,"athlon":arch_athlon,
+	"athlon-xp":arch_athlon_xp,"athlon-mp":arch_athlon_xp,"pentium3":arch_pentium3,"pentium-mmx":arch_pentium_mmx},
+	('i386', 'i486', 'i586', 'i686'))
 

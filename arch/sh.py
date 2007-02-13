@@ -70,9 +70,9 @@ class arch_sh4eb(generic_sheb):
 		self.settings["CFLAGS"]="-O2 -m4 -pipe"
 		self.settings["CHOST"]="sh4eb-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({
+	return ({
 			"sh"	:arch_sh,
 			"sh2"	:arch_sh2,
 			"sh3"	:arch_sh3,
@@ -81,4 +81,4 @@ def register(foo):
 			"sh2eb" :arch_sh2eb,
 			"sh3eb"	:arch_sh3eb,
 			"sh4eb"	:arch_sh4eb
-	})
+	}, ("sh2","sh3","sh4","sh2eb","sh3eb","sh4eb"))

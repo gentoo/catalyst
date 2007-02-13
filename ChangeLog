@@ -1,6 +1,13 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
+  arch/amd64.py, arch/arm.py, arch/hppa.py, arch/ia64.py, arch/mips.py,
+  arch/ppc.py, arch/ppc64.py, arch/s390.py, arch/sh.py, arch/sparc.py,
+  arch/sparc64.py, arch/x86.py, catalyst, modules/generic_stage_target.py:
+  Added a patch from Andrew Gaffney <agaffney@gentoo.org> to fix up the
+  problems with using all of the various subarch settings.
+
   13 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh, targets/support/create-iso.sh:
   Disabled deleting of /boot so we actually can work with EFI/grub, made EFI

@@ -44,12 +44,12 @@ class arch_armv5b(generic_arm):
 		self.settings["CFLAGS"]+=" -mcpu=xscale"
 		self.settings["CHOST"]="armv5b-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({
+	return ({
 		"arm"    : arch_arm,
 		"armv4l" : arch_armv4l,
 		"armeb"  : arch_armeb,
 		"armv5b" : arch_armv5b
+	}, ("arm", "armv4l", "armeb", "armv5b") )
 
-	})

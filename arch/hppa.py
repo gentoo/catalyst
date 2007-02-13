@@ -31,10 +31,11 @@ class arch_hppa2_0(generic_hppa):
 		self.settings["CFLAGS"]+=" -march=2.0"
 		self.settings["CHOST"]="hppa2.0-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({
+	return ({
 			"hppa":		arch_hppa,
 			"hppa1.1":	arch_hppa1_1,
 			"hppa2.0":	arch_hppa2_0
-	})
+	}, ("parisc","parisc64","hppa","hppa64") )
+

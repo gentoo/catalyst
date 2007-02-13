@@ -55,7 +55,8 @@ class arch_g5(generic_ppc):
 		self.settings["CFLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"ppc":arch_ppc,"power":arch_power,"power-ppc":arch_power_ppc,"g3":arch_g3,"g4":arch_g4,"g5":arch_g5})
+	return ({"ppc":arch_ppc,"power":arch_power,"power-ppc":arch_power_ppc,"g3":arch_g3,"g4":arch_g4,"g5":arch_g5}, 
+	("ppc","powerpc"))
 

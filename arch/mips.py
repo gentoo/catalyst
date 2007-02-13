@@ -73,9 +73,9 @@ class arch_mipsel4(generic_mipsel):
 
 
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({ 
+	return ({ 
 			"mips"		:arch_mips1,
 			"mips1"		:arch_mips1,
 			"mips2"		:arch_mips2,
@@ -91,4 +91,4 @@ def register(foo):
 			"sgir5k"	:arch_mips4,
 			"sgir10kplus"	:arch_mips4,
 			"cobalt"	:arch_mipsel4
-	 })
+	}, ("mips","mips64"))

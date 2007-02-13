@@ -44,7 +44,9 @@ class arch_power5(arch_ppc64):
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
 		self.settings["CXXFLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"ppc64":arch_ppc64,"970":arch_970,"power3":arch_power3,"power4":arch_power4,"power5":arch_power5})
+	return ({"ppc64":arch_ppc64,"970":arch_970,"power3":arch_power3,"power4":arch_power4,"power5":arch_power5},
+	("ppc64","powerpc64"))
+
 

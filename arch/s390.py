@@ -15,6 +15,6 @@ class arch_s390(generic_s390):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="s390-ibm-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"s390":arch_s390})
+	return ({"s390":arch_s390}, ("s390", ))

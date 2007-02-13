@@ -14,7 +14,7 @@ class arch_amd64(generic_amd64):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({"amd64":arch_amd64})
+	return ({"amd64":arch_amd64}, ("x86_64", ))
 

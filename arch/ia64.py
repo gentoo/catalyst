@@ -11,6 +11,6 @@ class arch_ia64(builder.generic):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="ia64-unknown-linux-gnu"
 
-def register(foo):
+def register():
 	"Inform main catalyst program of the contents of this plugin."
-	foo.update({ "ia64":arch_ia64 })
+	return ({ "ia64":arch_ia64 }, ("ia64", ))
