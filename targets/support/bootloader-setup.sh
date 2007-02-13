@@ -340,8 +340,7 @@ case ${clst_hostarch} in
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
 		then
-			mv $1/boot/* $1/isolinux
-			rmdir $1/boot
+			cp -f $1/boot/* $1/isolinux
 			# the rest of this function sets up the config file for isolinux
 			icfg=$1/isolinux/isolinux.cfg
 			kmsg=$1/isolinux/kernels.msg
@@ -429,6 +428,7 @@ case ${clst_hostarch} in
 
 		if [ -e $1/boot/efi/elilo.efi ]
 		then
+			[ -e $1/isolinux/elilo.efi ] && rm -f $1/isolinux/elilo.efi
 			iacfg=$1/boot/elilo.conf
 			echo 'prompt' > ${iacfg}
 			echo 'message=/efi/boot/elilo.msg' >> ${iacfg}

@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/create-iso.sh:
+  Disabled deleting of /boot so we actually can work with EFI/grub, made EFI
+  check look in the correct location, and made sure we don't delete /voot
+  within the EFI code if grub is present.
+
   12 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Added another fix from Andrew Gaffney <agaffney@gentoo.org> from bug

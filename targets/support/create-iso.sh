@@ -360,14 +360,14 @@ case ${clst_hostarch} in
 
 				umount ${clst_target_path}/gentoo.efimg.mountPoint
 				rmdir ${clst_target_path}/gentoo.efimg.mountPoint
+				if [ ! -e ${clst_target_path}/boot/grub/stage2_eltorito ]
+				then
+					echo "Removing /boot"
+					rm -rf ${clst_target_path}/boot
+				fi
 			else
 				echo "Found populated EFI image at \
 					${clst_target_path}/gentoo.efimg"
-			fi
-			if [ ! -e ${clst_target_path}/boot/grub/stage2_eltorito ]
-			then
-				echo "Removing /boot"
-				rm -rf ${clst_target_path}/boot
 			fi
 		fi
 
