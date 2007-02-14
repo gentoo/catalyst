@@ -1,6 +1,11 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  14 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Fix up the pci.ids/usb.ids code to work with newer pciutils and future-proof
+  the usbutils hanlding in case they follow suit with pciutils.
+
   13 Feb 2007; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
   arch/amd64.py, arch/arm.py, arch/hppa.py, arch/ia64.py, arch/mips.py,
   arch/ppc.py, arch/ppc64.py, arch/s390.py, arch/sh.py, arch/sparc.py,
