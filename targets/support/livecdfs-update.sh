@@ -267,11 +267,11 @@ case ${clst_livecd_type} in
 		;;
 	gentoo-release-livecd )
 		# First we setup the livecd-kernel package
-		if [ -e /opt/installer/misc/mkvardb ]
-		then
-			chmod +x /opt/installer/misc/mkvardb
-			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/System* /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
-		fi
+#		if [ -e /opt/installer/misc/mkvardb ]
+#		then
+#			chmod +x /opt/installer/misc/mkvardb
+#			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/System* /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
+#		fi
 
 		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]
