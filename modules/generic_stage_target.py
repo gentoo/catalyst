@@ -948,6 +948,10 @@ class generic_stage_target(generic_target):
 				cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage", "Could not remove /usr/local/portage",env=self.env)
 				cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+"/etc/make.conf", "Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
+                    # clean up old and obsoleted files in /etc
+                    if os.path.exists(self.settings["stage_path"]+"/etc"):
+                                cmd("find "+self.settings["stage_path"]+"/etc -maxdepth 1 -name \"*-\" | xargs rm -f", "Could not remove stray files in /etc",env=self.env)
+
 		    if os.path.exists(self.settings["controller_file"]):
 			cmd("/bin/bash "+self.settings["controller_file"]+" clean","clean script failed.",env=self.env)
 			touch(self.settings["autoresume_path"]+"clean")

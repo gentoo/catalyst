@@ -2,6 +2,12 @@
 # $Id: $
 
   06 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Added a patch from Christian Heim <phreak@gentoo.org> to remove stale files,
+  such as group- from /etc before creating our stage tarballs. This is for bug
+  #166695.
+
+  06 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   Commenting out the livecd-kernel code, since the Installer should be doing
   everything necessary itself.
