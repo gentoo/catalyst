@@ -132,7 +132,7 @@ case ${clst_hostarch} in
 				${clst_target_path}/gentoo.efimg.mountPoint
 
 			echo '>> Populating EFI image...'
-			cp -pPRv ${clst_target_path}/boot/* \
+			cp -rv ${clst_target_path}/boot/* \
 				${clst_target_path}/gentoo.efimg.mountPoint
 
 			umount ${clst_target_path}/gentoo.efimg.mountPoint
@@ -355,7 +355,7 @@ case ${clst_hostarch} in
 					${clst_target_path}/gentoo.efimg.mountPoint
 
 				echo "Populating EFI image"
-				cp -pPRv ${clst_target_path}/boot/* \
+				cp -rv ${clst_target_path}/boot/* \
 					${clst_target_path}/gentoo.efimg.mountPoint
 
 				umount ${clst_target_path}/gentoo.efimg.mountPoint
