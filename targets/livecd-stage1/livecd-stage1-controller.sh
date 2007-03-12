@@ -8,7 +8,6 @@ case $1 in
 		shift
 		export clst_packages="$*"
 		mkdir -p ${clst_chroot_path}/usr/livecd
-		echo "${clst_packages}" > ${clst_chroot_path}/usr/livecd/grppkgs.txt
 		exec_in_chroot \
 			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
 		;;

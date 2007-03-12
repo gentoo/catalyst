@@ -384,10 +384,6 @@ case ${clst_livecd_type} in
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
 		[ -d /etc/gconf ] && mv -f /etc/gconf /usr/livecd
-		if [ -e /usr/livecd/grppkgs.txt ]
-		then
-			rm -f /usr/livecd/grppkgs.txt
-		fi
 		if [ -e /usr/livecd/kernelpkgs.txt ]
 		then
 			rm -f /usr/livecd/kernelpkgs.txt
@@ -396,10 +392,6 @@ case ${clst_livecd_type} in
 		touch /etc/startx
 		;;
 	* )
-		if [ -e /usr/livecd/grppkgs.txt ]
-		then
-			rm -f /usr/livecd/grppkgs.txt
-		fi
 		if [ -e /usr/livecd/kernelpkgs.txt ]
 		then
 			rm -f /usr/livecd/kernelpkgs.txt

@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  12 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/support/livecdfs-update.sh:
+  Removed the generation of grppkgs.txt since the Installer now uses vdb
+  directly.
+
   09 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/create-iso.sh:
   Fix creation of the EFI images. Since it is FAT, we can't go around
