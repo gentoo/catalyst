@@ -108,10 +108,9 @@ class grp_target(generic_stage_target):
 					if os.path.isfile(normpath(destdir+"/"+i)):
 						self.gen_digest_file(normpath(destdir+"/"+i))
 
-		    
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-					    "config_profile_link","setup_confdir","bind","chroot_setup",\
+					    "config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
 	    				    "setup_environment","run_local","unbind",\
 					    "generate_digests","clear_autoresume"]
 

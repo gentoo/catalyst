@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  20 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/grp_target.py:
+  Added patch from Åsmund Grammeltvedt <grammel@online.no> to add
+  portage_overlay functionality to GRP, where it was mistakenly missing, for
+  bug #171157. This is catalyst 2.0.3 and ready for release.
+
   12 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-controller.sh,
   targets/support/livecdfs-update.sh:

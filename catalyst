@@ -8,7 +8,7 @@ import os,sys,imp,string,getopt
 import pdb
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="2.0.3_pre3"
+__version__="2.0.3"
 
 conf_values={}
 
