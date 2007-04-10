@@ -1057,8 +1057,7 @@ class generic_stage_target(generic_target):
 		# fixed. We need this to use the os.system() call since we can't
 		# specify our own environ:
 		for x in self.settings.keys():
-			# "/" is replaced with "_", "-" is replaced with "_", and "." is
-			# replaced with "_"
+			# sanitize var names by doing "s|/-.|_|g"
 			varname="clst_"+string.replace(x,"/","_")
 			varname=string.replace(varname,"-","_")
 			varname=string.replace(varname,".","_")
@@ -1069,6 +1068,11 @@ class generic_stage_target(generic_target):
 			elif type(self.settings[x])==types.ListType:
 				#os.environ[varname]=string.join(self.settings[x])
 				self.env[varname]=string.join(self.settings[x])
+			elif type(self.settings[x])==types.BooleanType:
+				if self.settings[x]:
+					self.env[varname]="true"
+				else:
+					self.env[varname]="false"
 		if self.settings.has_key("makeopts"):
 			self.env["MAKEOPTS"]=self.settings["makeopts"]
 			

@@ -3,6 +3,12 @@
 
   10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
+  Added a patch from Mike Frysinger <vapier@gentoo.org> for bug #173740 to
+  cause catalyst to export boolean variables as well as string-based
+  variables.
+
+  10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
   Fixing check for invalid subarch to not filter too much. Fix from Mike
   Frysinger <vapier@gentoo.org> for bug #173532.
 
