@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org> arch/s390.py:
+  Added s390x (64-bit) support via a patch from Mike Frysinger
+  <vapier@gentoo.org> for bug #173002.
+
   10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
   targets/livecd-stage1/livecd-stage1-chroot.sh,
