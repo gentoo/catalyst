@@ -23,7 +23,7 @@ case $1 in
 	;;
 	preclean)
 		# Before we enter the chroot, we need to run gcc-config/binutils-config
-		if [ -x /usr/bin/gcc-config ]
+		if [ -x /usr/bin/gcc-config ] && [ -z "${clst_FETCH}" ]
 		then
 			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
 			if [ -z "${mythang}" ]
@@ -34,7 +34,7 @@ case $1 in
 			CHOST=${clst_CHOST} \
 				gcc-config ${mythang}
 		fi
-		if [ -x /usr/bin/binutils-config ]
+		if [ -x /usr/bin/binutils-config ] && [ -z "${clst_FETCH}" ]
 		then
 			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
 			if [ -z "${mythang}" ]

@@ -68,23 +68,22 @@ genkernel_compile(){
 	fi
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
+	gk_callback_opts="-q"
+	PKGDIR=${PKGDIR}
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		if [ "$clst_kernel_merge" != "" ]
-		then
-			genkernel --callback="PKGDIR=${PKGDIR} emerge -kqb \
-				${clst_kernel_merge}" ${GK_ARGS} || exit 1
-		else
-			genkernel ${GK_ARGS} || exit 1
-		fi
+		gk_callback_opts="${gk_callback_opts} -kb"
+	fi
+	if [ -n "${clst_FETCH}" ]
+	then
+		gk_callback_opts="${gk_callback_opts} -f"
+	fi
+	if [ "${clst_kernel_merge}" != "" ]
+	then
+		genkernel --callback="emerge ${gk_callback_opts} ${clst_kernel_merge}" \
+			${GK_ARGS} || exit 1
 	else
-		if [ "$clst_kernel_merge" != "" ]
-		then
-			genkernel --callback="emerge -q ${clst_kernel_merge}" \
-				${GK_ARGS} || exit 1
-		else
-			genkernel ${GK_ARGS} || exit 1
-		fi
+		genkernel ${GK_ARGS} || exit 1
 	fi
 	md5sum /var/tmp/${clst_kname}.config|awk '{print $1}' > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
 }
@@ -98,7 +97,6 @@ build_kernel() {
 source /etc/profile
 
 setup_myfeatures
-setup_myemergeopts
 
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 export CONFIG_PROTECT="-*"
@@ -188,7 +186,7 @@ then
 			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
 		fi
 	fi
-		[ -d /usr/src/linux ] && rm /usr/src/linux
+	[ -d /usr/src/linux ] && rm /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
 		USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1

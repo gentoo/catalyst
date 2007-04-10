@@ -5,7 +5,6 @@
 update_env_settings
 
 setup_myfeatures
-setup_myemergeopts
 
 # Setup the environment
 

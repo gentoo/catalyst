@@ -4,6 +4,11 @@
 
 update_env_settings
 
+if [ -n "${clst_FETCH}" ]
+then
+	export clst_myemergeopts="${clst_myemergeopts} -f"
+fi
+
 case ${clst_target} in
 	livecd*|stage4)
 		export USE="livecd"

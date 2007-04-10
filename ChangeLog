@@ -1,6 +1,23 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,
+  targets/netboot2/netboot2-pkg.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage1/stage1-controller.sh, targets/stage2/stage2-chroot.sh,
+  targets/stage3/stage3-chroot.sh, targets/stage4/stage4-chroot.sh,
+  targets/support/chroot-functions.sh, targets/support/kmerge.sh,
+  targets/support/pre-kmerge.sh:
+  Added setup_myemergeopts to setup_myfeatures and removed redundant calls to
+  setup_myemergeopts. Added some extra checks for clst_FETCH to disable
+  certain functions/code paths when running with -F/--fetchonly. Simplified
+  kmerge.sh with regards to kerncache and callback packages. Also, changed
+  ccache/distcc installs to use run_emerge instead of emerge directly, which
+  allows us to more easily replace the underlying package manager, or add
+  support for multiple package managers to catalyst.
+
   20 Mar 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/grp_target.py:
   Added patch from Åsmund Grammeltvedt <grammel@online.no> to add

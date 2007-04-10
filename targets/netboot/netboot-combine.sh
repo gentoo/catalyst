@@ -7,7 +7,6 @@
 update_env_settings
 
 setup_myfeatures
-setup_myemergeopts
 
 # Ssetup our environment
 export FEATURES="${clst_myfeatures}"

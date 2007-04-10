@@ -35,6 +35,7 @@ check_genkernel_version(){
 }
 
 setup_myfeatures(){
+	setup_myemergeopts
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
@@ -42,7 +43,7 @@ setup_myfeatures(){
 		#then
 		#	echo "CCACHE Autoresume point found not emerging ccache"
 		#else
-			emerge --oneshot --nodeps -b -k ccache || exit 1
+			run_emerge --oneshot --nodeps ccache || exit 1
 		#	touch /tmp/.clst_ccache
 		#fi
 	fi
@@ -55,7 +56,7 @@ setup_myfeatures(){
 		#then
 		#	echo "DISTCC Autoresume point found not emerging distcc"
 		#else
-			USE="-gtk -gnome" emerge --oneshot --nodeps -b -k distcc || exit 1
+			USE="-gtk -gnome" run_emerge --oneshot --nodeps distcc || exit 1
 			#touch /tmp/.clst_distcc
 		#fi
 		mkdir -p /etc/distcc

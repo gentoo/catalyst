@@ -5,15 +5,14 @@
 update_env_settings
 
 setup_myfeatures
-setup_myemergeopts
 
 # Setup the build environment
 export FEATURES="${clst_myfeatures}"
 export USE="${USE} ${clst_HOSTUSE}"
 
 ## START BUILD
-# portage needs to be merged manually with USE="build" set to avoid frying our
-# make.conf. emerge system could merge it otherwise.
+# We need portage to be merged manually with USE="build" set to avoid frying
+# our make.conf, otherwise, the system target could take care of it.
 
 setup_portage
 
