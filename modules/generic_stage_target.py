@@ -28,20 +28,21 @@ class generic_stage_target(generic_target):
 		# machinemap from this file and split up its contents amongst the various
 		# arch/foo.py files.
 		#
-		# When register() is called on each module in the arch/ dir, it now returns
-		# a tuple instead of acting on the subarchmap dict that is passed to it.
-		# The tuple contains the values that were previously added to subarchmap
-		# as well as a new list of CHOSTs that go along with that arch. This allows
-		# us to build machinemap on the fly based on the keys in subarchmap and
-		# the values of the 2nd list returned (tmpmachinemap).
+		# When register() is called on each module in the arch/ dir, it now
+		# returns a tuple instead of acting on the subarchmap dict that is
+		# passed to it. The tuple contains the values that were previously
+		# added to subarchmap as well as a new list of CHOSTs that go along
+		# with that arch. This allows us to build machinemap on the fly based
+		# on the keys in subarchmap and the values of the 2nd list returned
+		# (tmpmachinemap).
 		#
 		# Also, after talking with vapier. I have a slightly better idea of what
 		# certain variables are used for and what they should be set to. Neither
 		# 'buildarch' or 'hostarch' are used directly, so their value doesn't
 		# really matter. They are just compared to determine if we are
 		# cross-compiling. Because of this, they are just set to the name of the
-		# module in arch/ that the subarch is part of to make things simpler. The
-		# entire build process is still based off of 'subarch' like it was
+		# module in arch/ that the subarch is part of to make things simpler.
+		# The entire build process is still based off of 'subarch' like it was
 		# previously. -agaffney
 
 		self.archmap = {}
@@ -89,7 +90,7 @@ class generic_stage_target(generic_target):
 		# Call arch constructor, pass our settings
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
-		except:
+		except KeyError:
 			print "Invalid subarch: "+self.settings["subarch"]
 			print "Choose one of the following:",
 			for x in self.subarchmap:
