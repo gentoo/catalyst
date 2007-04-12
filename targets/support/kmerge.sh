@@ -175,17 +175,17 @@ mkdir -p /tmp/kerncache/${clst_kname}
 if [ -n "${clst_KERNCACHE}" ]
 then
    	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -uqkb  "${clst_ksource}" || exit 1
-	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
-	if [ ! -e /etc/portage/profile/package.provided ]
-	then
-		mkdir -p /etc/portage/profile
-		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
-	else
-		if ( ! grep -q "^${KERNELVERSION}"  /etc/portage/profile/package.provided ) 
-		then
-			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
-		fi
-	fi
+#	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
+#	if [ ! -e /etc/portage/profile/package.provided ]
+#	then
+#		mkdir -p /etc/portage/profile
+#		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
+#	else
+#		if ( ! grep -q "^${KERNELVERSION}"  /etc/portage/profile/package.provided ) 
+#		then
+#			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
+#		fi
+#	fi
 	[ -d /usr/src/linux ] && rm /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
