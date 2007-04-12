@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  12 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh, targets/support/unmerge.sh:
+  Change moving the VDB until after we have processed unmerge by moving it
+  from livecdfs-update.sh to unmerge.sh, instead. This allows someone to
+  unmerge packages from the gentoo-release-livecd target.
+
   12 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/kmerge.sh:
   Commented out the package.provided code in catalyst that seemed to cause

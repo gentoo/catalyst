@@ -340,13 +340,9 @@ case ${clst_livecd_type} in
 		cp -r /usr/portage/eclass /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
-		mv -f /var/db /usr/livecd
 
 		# This gives us a proper cache for portage/installer
 		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
-
-		# We remove kernel sources from our vdb
-		rm -rf /usr/livecd/db/pkg/sys-kernel/*sources*
 
 		# Clear out lastlog
 		rm -f /var/log/lastlog && touch /var/log/lastlog
