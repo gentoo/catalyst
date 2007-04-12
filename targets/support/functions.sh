@@ -124,6 +124,11 @@ extract_kernels() {
 		then 
 			mv ${1}/initramfs-* ${1}/${x}.igz
 		fi
+
+		if [ -e ${1}/System.map-* ];
+		then
+			mv ${1}/System.map-* ${1}/System.map-${x}
+		fi
 	done
 }
 

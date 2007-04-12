@@ -10,15 +10,17 @@ from generic_stage_target import *
 class netboot2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=[
-			"boot/kernel",
-			"netboot2/builddate",
-			"netboot2/packages",			
-			"netboot2/use"			
+			"boot/kernel"
 		]
 		self.valid_values=self.required_values[:]
-		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["netboot2/extra_files"])
-			
+		self.valid_values.extend([
+			"netboot2/packages",
+			"netboot2/use",
+			"netboot2/extra_files",
+			"netboot2/overlay",
+			"netboot2/busybox_config"
+		])
+
 		try:
 			if addlargs.has_key("netboot2/packages"):
 				if type(addlargs["netboot2/packages"]) == types.StringType:
@@ -31,20 +33,9 @@ class netboot2_target(generic_stage_target):
 		except:
 			raise CatalystError,"configuration error in netboot2/packages."
 		
-		
-
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
-
-		# Merge packages into the buildroot, and pick out certain files to place in
-		# /tmp/image
-		self.settings["merge_path"]=normpath("/tmp/image")
-
-	def set_dest_path(self):
-		if self.settings.has_key("merge_path"):
-			self.settings["destpath"]=normpath(self.settings["chroot_path"]+self.settings["merge_path"])
-		else:
-			self.settings["destpath"]=normpath(self.settings["chroot_path"])
+		self.settings["merge_path"]=normpath("/tmp/image/")
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
@@ -99,6 +90,17 @@ class netboot2_target(generic_stage_target):
 
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
+	def setup_overlay(self):	
+		if self.settings.has_key("AUTORESUME") \
+		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
+			print "Resume point detected, skipping setup_overlay operation..."
+		else:
+			if self.settings.has_key("netboot2/overlay"):
+				for x in self.settings["netboot2/overlay"]: 
+					if os.path.exists(x):
+						cmd("rsync -a "+x+"/ "+\
+							self.settings["chroot_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
+				touch(self.settings["autoresume_path"]+"setup_overlay")
 
 	def move_kernels(self):
 		# we're done, move the kernels to builds/*
@@ -112,13 +114,47 @@ class netboot2_target(generic_stage_target):
 			self.unbind()
 			raise CatalystError,"Failed to move kernel images!"
 
+	def remove(self):
+		if self.settings.has_key("AUTORESUME") \
+			and os.path.exists(self.settings["autoresume_path"]+"remove"):
+			print "Resume point detected, skipping remove operation..."
+		else:
+			if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
+				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
+					# we're going to shell out for all these cleaning operations,
+					# so we get easy glob handling
+					print "netboot2: removing " + x
+					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
+
+	def empty(self):		
+		if self.settings.has_key("AUTORESUME") \
+			and os.path.exists(self.settings["autoresume_path"]+"empty"):
+			print "Resume point detected, skipping empty operation..."
+		else:
+			if self.settings.has_key("netboot2/empty"):
+				if type(self.settings["netboot2/empty"])==types.StringType:
+					self.settings["netboot2/empty"]=self.settings["netboot2/empty"].split()
+				for x in self.settings["netboot2/empty"]:
+					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x
+					if not os.path.isdir(myemp):
+						print x,"not a directory or does not exist, skipping 'empty' operation."
+						continue
+					print "Emptying directory", x
+					# stat the dir, delete the dir, recreate the dir and set
+					# the proper perms and ownership
+					mystat=os.stat(myemp)
+					shutil.rmtree(myemp)
+					os.makedirs(myemp,0755)
+					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+					os.chmod(myemp,mystat[ST_MODE])
+		touch(self.settings["autoresume_path"]+"empty")
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",
 	    				"setup_confdir","bind","chroot_setup",\
 					"setup_environment","build_packages","root_overlay",\
-					"copy_files_to_image","build_kernel","move_kernels",\
-					"unbind","clean","clear_autoresume"]
+					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
+					"remove","empty","unbind","clean","clear_autoresume"]
 
 def register(foo):
 	foo.update({"netboot2":netboot2_target})

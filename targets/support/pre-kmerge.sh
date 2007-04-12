@@ -34,17 +34,17 @@ case ${clst_target} in
 
 		# Set the netboot builddate/hostname in linuxrc and copy to proper arch
 		# directory in genkernel
-		sed -e "s/@@MYDATE@@/${clst_netboot2_builddate}/g" \
+		sed -e "s/@@MYDATE@@/$(date '+%Y%m%d')/g" \
 		    -e "s/@@RELVER@@/${clst_version_stamp}/g" \
-			${clst_root_path}usr/share/genkernel/netboot/linuxrc.x \
-				> ${clst_root_path}usr/share/genkernel/${clst_hostarch}/linuxrc
+			/usr/share/genkernel/netboot/linuxrc.x \
+			> /usr/share/genkernel/${clst_hostarch}/linuxrc
 
 		echo ">>> Copying support files to ${clst_root_path} ..."
-		cp -pPRf ${clst_root_path}usr/share/genkernel/netboot/misc/* \
+		cp -pPRf /usr/share/genkernel/netboot/misc/* \
 			${clst_merge_path}
 
 		echo ">>> Copying busybox config ..."
-		cp -f ${clst_root_path}usr/share/genkernel/${clst_hostarch}/nb-busybox.cf \
-			${clst_root_path}usr/share/genkernel/${clst_hostarch}/busy-config
+		cp -f /tmp/busy-config \
+			/usr/share/genkernel/${clst_hostarch}/busy-config
 	;;
 esac

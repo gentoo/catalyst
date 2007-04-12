@@ -1,6 +1,13 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  12 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/netboot2_target.py, targets/netboot2/netboot2-controller.sh,
+  targets/netboot2/netboot2-copyfile.sh, targets/support/functions.sh,
+  targets/support/netboot2-final.sh, targets/support/pre-kmerge.sh:
+  Added a patch from Andrew Gaffney <agaffney@gentoo.org> from bug #173826 to
+  improve the netboot2 target.
+
   10 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Added a patch from Mike Frysinger <vapier@gentoo.org> for bug #173740 to
@@ -2071,12 +2078,12 @@
   Made sure bindist was used for all emerges in GRP.
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/grp/grp-chroot.sh:
-  Fix USE flags for grp build
+  Fix USE flags for GRP build
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/grp/grp-chroot.sh,
   targets/stage4/stage4-chroot.sh:
-  let grp use the users environment variables and removed extra
-  grp_stage23_use from stage4
+  let GRP use the users environment variables and removed extra
+  GRP_STAGE23_USE from stage4
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org>
   targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh:
@@ -2084,7 +2091,7 @@
 
   07 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/support/rc-update.sh:
   fix bug 98165. Change the separator on rcadd/rcdel from : to | This will
-  impact all previous spec files that use this option. Its beejays fault
+  impact all previous spec files that use this option. It's beejay's fault.
 
   06 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc.py:
   Changed to use linux32 for ppc32 support when build host is ppc64.
@@ -2261,7 +2268,8 @@
 
   20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
   files/catalyst.conf:
-  Retired zhen and added storedir to default catalyst.conf.
+  Retired John Davis <zhen@gentoo.org> and added storedir to default
+  catalyst.conf.
 
   20 May 2005; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
@@ -2367,16 +2375,15 @@
   targets/support/create-iso.sh, targets/support/kmerge.sh,
   targets/support/target_image_setup.sh,
   targets/tinderbox/tinderbox-controller.sh:
-  Fix some exception handling in catalyst_support.py
-  remove intermediate destination folder of iso and tarball
-  Add additional tests for folders not found on host but defined
-          in spec file.  Keep catalyst from erroring in this case.
-  Change exit code on shell scripts so that errors are reported to catalyst
-          and causes catalyst to die on errors
-  Fix bug in livecd-stage1-chroot.sh so that it uses USE flags properly
-  Added additional check for mkisofs.  Informs user of where to get the program.
-  Removed autoresume code from ccache and distcc installation until I can figure
-          out a way to have the autoresume flag go someplace outside the chroot.
+  Fix some exception handling in catalyst_support.py, remove intermediate
+  destination folder of iso and tarball, add additional tests for folders not
+  found on host but defined in spec file, keep catalyst from erroring in this
+  case, change exit code on shell scripts so that errors are reported to
+  catalyst and causes catalyst to die on errors, fix bug in
+  livecd-stage1-chroot.sh so that it uses USE flags properly, added additional
+  check for mkisofs that informs the user of where to get the program, and
+  removed the autoresume code from ccache and distcc installation until I can
+  figure out a way to have the autoresume flag go someplace outside the chroot.
 
   26 Apr 2005; Eric Edgar <rocket@gentoo.org> catalyst:
   Remove bind mounts before rm operations happen at startup
@@ -2490,7 +2497,8 @@
   targets/support/pre-kmerge.sh:
   Fix ctrl-c error if pre-kmerge.sh is running by sourcing
   /tmp/chroot-functions.sh and removed extra equal sign to fix a genkernel
-  caching bug; Also adding preliminary support for initramfs_overlay from genkernel
+  caching bug; Also adding preliminary support for initramfs_overlay from
+  genkernel
 
   14 Apr 2005; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh:
@@ -3753,7 +3761,7 @@
   added envscripts support (fixes bug #39832) massive cleanup of tree to prepare
   it for ebuild - added headers to everything and removed deprecated dirs
 
-  14 Jan 2004; zhen <zhen@gentoo.org> arch/mips.py, modules/targets.py:
+  14 Jan 2004; John Davis <zhen@gentoo.org> arch/mips.py, modules/targets.py:
   adding Kumba's patches for MIPS
 
   16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py:
@@ -3785,14 +3793,14 @@
   24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: major code rework in 
   progress on the python parts.
   
-  17 Oct 2003; zhen <zhen@gentoo.org> files/grp/x86/x86.conf,
+  17 Oct 2003; John Davis <zhen@gentoo.org> files/grp/x86/x86.conf,
   files/grp/x86/x86.pkg.cd1, files/grp/x86/x86.pkg.cd2, files/grp/x86/x86.src,
   files/livecd/x86-basic/base.pkg, files/livecd/x86-basic/kern.pkg:
   for organiation's sake, I have moved the files, such as livecd foundations,
   into catalyst/files. It will make it easier for us when ebuild time comes
   around.
 
-  15 Oct 2003; zhen <zhen@gentoo.org> targets/stage3/stage3.sh:
+  15 Oct 2003; John Davis <zhen@gentoo.org> targets/stage3/stage3.sh:
   All preliminary target build scripts are now added and coded to near as spec
   that we can have at this point.
 
