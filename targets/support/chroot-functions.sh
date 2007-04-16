@@ -43,7 +43,7 @@ setup_myfeatures(){
 		#then
 		#	echo "CCACHE Autoresume point found not emerging ccache"
 		#else
-			run_emerge --oneshot --nodeps ccache || exit 1
+			clst_root_path=/ run_emerge --oneshot --nodeps ccache || exit 1
 		#	touch /tmp/.clst_ccache
 		#fi
 	fi
@@ -56,7 +56,7 @@ setup_myfeatures(){
 		#then
 		#	echo "DISTCC Autoresume point found not emerging distcc"
 		#else
-			USE="-gtk -gnome" run_emerge --oneshot --nodeps distcc || exit 1
+			USE="-gtk -gnome" clst_root_path=/ run_emerge --oneshot --nodeps distcc || exit 1
 			#touch /tmp/.clst_distcc
 		#fi
 		mkdir -p /etc/distcc
