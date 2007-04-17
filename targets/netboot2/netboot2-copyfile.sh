@@ -9,7 +9,7 @@ echo ">>> Copying initramfs files to ${clst_merge_path} (in chroot) ..."
 for f in ${clst_files}
 do 
 	# copy it to the merge path
-	cp -pPRf --parents ${f} ${clst_merge_path}
+	cp -pPRf --parents $(eval echo ${f}) ${clst_merge_path}
 
 	# if the file is an ELF binary, strip unneeded stuff from it
 	if [ -x "${f}" ] && [ ! -L "${f}" ]; then
