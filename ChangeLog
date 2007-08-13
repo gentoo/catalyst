@@ -3,8 +3,10 @@
 
   13 Aug 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/generic_stage_target.py, modules/netboot2_target.py:
-  fix typo in getopt call for --clear-autoresume. thanks to
-  Tais M. Hansen <tais.hansen@osd.dk> in bug #188339 for catching this
+  Fix typo in getopt call for --clear-autoresume. thanks to
+  Tais M. Hansen <tais.hansen@osd.dk> in bug #188339 for catching this.
+  Conditionally write CFLAGS to make.conf in stages for bug #177796.
+  Copy overlay files in netboot2 target into proper dir for bug #174635.
 
   17 Apr 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/netboot2_target.py, targets/netboot2/netboot2-copyfile.sh,
