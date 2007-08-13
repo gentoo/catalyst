@@ -221,7 +221,7 @@ if __name__ == "__main__":
 	# parse out the command line arguments
 	try:
 		opts,args = getopt.getopt(sys.argv[1:], "aphvdc:C:f:FVs:", ["purge","help", "version", "debug",\
-			"clear_autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
+			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
 		usage()

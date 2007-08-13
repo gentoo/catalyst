@@ -99,7 +99,7 @@ class netboot2_target(generic_stage_target):
 				for x in self.settings["netboot2/overlay"]: 
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
-							self.settings["chroot_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
+							self.settings["chroot_path"] + self.settings["merge_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_overlay")
 
 	def move_kernels(self):

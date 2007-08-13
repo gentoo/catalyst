@@ -882,7 +882,8 @@ class generic_stage_target(generic_target):
 			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /etc/make.conf.example for a more detailed example.\n")
-			myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
+			if self.settings.has_key("CFLAGS"):
+				myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 			if self.settings.has_key("CXXFLAGS"):
 				myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
 			else:
