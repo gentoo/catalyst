@@ -17,7 +17,7 @@ class generic_stage_target(generic_target):
 		
 		self.valid_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath","portage_confdir",\
-			"cflags","cxxflags","ldflags","cbuild","chost","hostuse","portage_overlay",\
+			"cflags","cxxflags","ldflags","cbuild","hostuse","portage_overlay",\
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 		
 		self.set_valid_build_kernel_vars(addlargs)
