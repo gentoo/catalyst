@@ -390,7 +390,7 @@ class generic_stage_target(generic_target):
 
 	def set_iso_volume_id(self):
                 if self.settings.has_key(self.settings["spec_prefix"]+"/volid"):
-			self.settings["iso_volume_id"] = string.join(self.settings[self.settings["spec_prefix"]+"/volid"])
+			self.settings["iso_volume_id"] = self.settings[self.settings["spec_prefix"]+"/volid"]
 			if len(self.settings["iso_volume_id"])>32:
 				raise CatalystError,"ISO VOLUME ID: volid must not exceed 32 characters."
 		else:

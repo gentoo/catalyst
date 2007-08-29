@@ -2,6 +2,11 @@
 # $Id: $
 
   29 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/generic_stage_target.py:
+  Fixed livecd/volid by removing the string.join() from set_iso_volume_id()
+  for bug #188099. This is catalyst 2.0.5_pre2 for testing.
+
+  29 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/rc-update.sh:
   Added support for the newer versions of splashutils which use fbcondecor as
   the init script. This is catalyst 2.0.5_pre1 for testing.
