@@ -1,9 +1,15 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  29 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/rc-update.sh:
+  Added support for the newer versions of splashutils which use fbcondecor as
+  the init script. This is catalyst 2.0.5_pre1 for testing.
+
   29 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
-  Make sure we mkdir on /etc/X11/xinit before we put files in it for bug #178289.
+  Make sure we mkdir on /etc/X11/xinit before we put files in it for bug
+  #178289.
 
   22 Aug 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py, modules/stage1_target.py,

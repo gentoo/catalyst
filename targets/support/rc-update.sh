@@ -11,11 +11,12 @@ then
 	rc-update add autoconfig default
 	rc-update add modules boot
 	rc-update add pwgen default
-	[ -e /etc/init.d/bootsplash ] && rc-update add bootsplash default
-	[ -e /etc/init.d/splash ] && rc-update add splash default
-	[ -e /etc/init.d/sysklogd ] && rc-update add sysklogd default
-	[ -e /etc/init.d/metalog ] && rc-update add metalog default
-	[ -e /etc/init.d/syslog-ng ] && rc-update add syslog-ng default
+	[[ -e /etc/init.d/bootsplash ]] && rc-update add bootsplash default
+	[[ -e /etc/init.d/splash ]] && rc-update add splash default
+	[[ -e /etc/init.d/fbcondecor ]] && rc-update add fbcondecor default
+	[[ -e /etc/init.d/sysklogd ]] && rc-update add sysklogd default
+	[[ -e /etc/init.d/metalog ]] && rc-update add metalog default
+	[[ -e /etc/init.d/syslog-ng ]] && rc-update add syslog-ng default
 
 	# Do some livecd_type specific rc-update changes
 	case ${clst_livecd_type} in
