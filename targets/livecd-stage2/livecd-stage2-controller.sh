@@ -87,6 +87,7 @@ case $1 in
 		# This is moved here, so we can override any default xinitrc
 		if [ -n "${clst_livecd_xinitrc}" ]
 		then
+			mkdir -p ${clst_chroot_path}/etc/X11/xinit
 			cp -f ${clst_livecd_xinitrc} \
 				${clst_chroot_path}/etc/X11/xinit/xinitrc
 		fi
