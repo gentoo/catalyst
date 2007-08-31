@@ -8,7 +8,7 @@ setup_myfeatures
 
 # Setup the build environment
 export FEATURES="${clst_myfeatures}"
-export USE="${USE} ${clst_HOSTUSE}"
+export USE="${USE} bindist ${clst_HOSTUSE}"
 
 ## START BUILD
 # We need portage to be merged manually with USE="build" set to avoid frying

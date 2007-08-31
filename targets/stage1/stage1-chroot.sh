@@ -9,7 +9,7 @@ setup_myfeatures
 # Setup our environment
 export clst_buildpkgs="$(/tmp/build.py)"
 export STAGE1_USE="$(portageq envvar STAGE1_USE)"
-export USE="-* build ${STAGE1_USE}"
+export USE="-* bindist build ${STAGE1_USE}"
 export FEATURES="${clst_myfeatures} nodoc noman noinfo"
 
 ## Sanity check profile

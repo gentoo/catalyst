@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  31 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh, targets/stage3/stage3-chroot.sh:
+  We need to force USE=bindist on for building stages.
+
   29 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/generic_stage_target.py:
   Fixed livecd/volid by removing the string.join() from set_iso_volume_id()
