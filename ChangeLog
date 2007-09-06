@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
+  examples/netboot_template.spec, examples/tinderbox_template.spec,
+  modules/grp_target.py, modules/tinderbox_target.py:
+  remove redundant set_pkgcache_path() functions from tinderbox and grp modules
+  remove extra pkgcache_path and kerncache_path options from example specs
+
   31 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0.5_pre3 for testing the new stages code.
 

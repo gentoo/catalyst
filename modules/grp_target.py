@@ -58,13 +58,6 @@ class grp_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
 
-        def set_pkgcache_path(self):
-            if self.settings.has_key("pkgcache_path"):
-                if type(self.settings["pkgcache_path"]) != types.StringType:
-                    self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
-            else:
-                generic_stage_target.set_pkgcache_path(self)
-
 	def set_use(self):
 	    generic_stage_target.set_use(self)
 	    if self.settings.has_key("use"):
