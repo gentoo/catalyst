@@ -563,6 +563,11 @@ def parse_spec(mylines):
 			# Split on the first semicolon creating two strings in the array mobjs
 			mobjs = myline.split(':', 1)
 			mobjs[1] = mobjs[1].strip()
+
+			# Check that this key doesn't exist already in the spec
+			if myspec.has_key(mobjs[0]):
+				raise Exception("You have a duplicate key (" + mobjs[0] + ") in your spec. Please fix it")
+
 			# Start a new array using the first element of mobjs
 			cur_array = [mobjs[0]]
 			if mobjs[1]:

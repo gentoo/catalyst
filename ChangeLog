@@ -2,6 +2,10 @@
 # $Id: $
 
   06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst_support.py:
+  raise an exception in parse_spec() if there's a duplicate key in the spec
+
+  06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   examples/netboot_template.spec, examples/tinderbox_template.spec,
   modules/grp_target.py, modules/tinderbox_target.py:
   remove redundant set_pkgcache_path() functions from tinderbox and grp modules
