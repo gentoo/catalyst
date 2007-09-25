@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  25 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst_support.py:
+  when parsing make.conf, first try pkgcore's
+  snakeoil.fileutils.read_bash_dict(), then portage's
+  portage_util.getconfig(), then the internal parse_makeconf()
+
   06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
   raise an exception in parse_spec() if there's a duplicate key in the spec

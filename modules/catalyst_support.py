@@ -634,16 +634,24 @@ def read_spec(myspecfile):
 
 def read_makeconf(mymakeconffile):
 	if os.path.exists(mymakeconffile):
-	    try:
-		    myf=open(mymakeconffile,"r")
-		    mylines=myf.readlines()
-		    myf.close()
-		    return parse_makeconf(mylines)
-	    except:
-		    raise CatalystError, "Could not open make.conf file "+mymakeconffile
+		try:
+			try:
+				import snakeoil.fileutils
+				return snakeoil.fileutils.read_bash_dict(mymakeconffile, sourcing_command="source")
+			except ImportError:
+				try:
+					import portage_util
+					return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
+				except ImportError:
+					myf=open(mymakeconffile,"r")
+					mylines=myf.readlines()
+					myf.close()
+					return parse_makeconf(mylines)
+		except:
+			raise CatalystError, "Could not parse make.conf file "+mymakeconffile
 	else:
-	    makeconf={}
-	    return makeconf
+		makeconf={}
+		return makeconf
 	
 def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
