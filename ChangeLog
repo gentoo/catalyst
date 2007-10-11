@@ -3,6 +3,12 @@
 
   11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
+  Adding a slightly modified version of Andrew Gaffney's <agaffney@gentoo.org>
+  patch from bug #120076 to add cross-compiling support to our distcc
+  configuration.
+
+  11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
   Added a version of get_libdir from multilib.eclass so we can determine where
   to go poking around if we need to touch anything in libdir.
 

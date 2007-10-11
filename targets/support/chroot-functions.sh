@@ -88,6 +88,16 @@ setup_myfeatures(){
 		#fi
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
+
+		# This sets up automatic cross-distcc-fu according to
+		# http://www.gentoo.org/doc/en/cross-compiling-distcc.xml
+		CHOST=$(portageq envvar CHOST)
+		# TODO: change to use get_libdir
+		cd /usr/lib/distcc/bin
+		rm cc gcc g++ c++ 2>/dev/null
+		echo -e '#!/bin/bash\nexec /usr/lib/distcc/bin/'${CHOST}'-g${0:$[-2]} "$@"' > ${CHOST}-wrapper
+		chmod a+x /usr/lib/distcc/bin/${CHOST}-wrapper
+		for i in cc gcc g++ c++; do ln -s ${CHOST}-wrapper ${i}; done
 	fi
 }
 
@@ -148,6 +158,12 @@ setup_binutils(){
 
 cleanup_distcc() {
 	rm -rf /etc/distcc/hosts
+	for i in cc gcc c++ g++; do
+		# TODO: change to use get_libdir
+		rm /usr/lib/distcc/bin/${i}
+		ln -s /usr/bin/distcc /usr/lib/distcc/bin/${i}
+	done
+	rm /usr/lib/distcc/bin/*-wrapper
 }
 
 update_env_settings(){
