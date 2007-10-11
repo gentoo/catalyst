@@ -202,6 +202,8 @@ def build_target(addlargs, targetmap):
 		mytarget.run()
 
 	except:
+		# TODO: Capture traceback, so we can display this error after printing of the traceback
+		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
 		raise
 
 if __name__ == "__main__":

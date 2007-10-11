@@ -1,6 +1,9 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  print an error saying what target failed before the traceback
+
   25 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
   when parsing make.conf, first try pkgcore's
