@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Trap these signals and kill ourselves if recieved
 # Force ourselves to die if any of these signals are recieved
@@ -32,6 +33,32 @@ check_genkernel_version(){
 	else
 		exit 1
 	fi
+}
+
+get_libdir() {
+	DEFAULT_ABI=$(portageq envvar DEFAULT_ABI)
+	LIBDIR_default=$(portageq envvar LIBDIR_default)
+	MULTILIB_ABIS=${MULTILIB_ABIS:-"default"}
+	export DEFAULT_ABI=${DEFAULT_ABI:-"default"}
+	export LIBDIR_default=${CONF_LIBDIR:-"lib"}
+
+	local abi
+	if [ $# -gt 0 ]
+	then
+		abi=${1}
+	elif [ -n "${ABI}" ]
+	then
+		abi=${ABI}
+	elif [ -n "${DEFAULT_ABI}" ]
+	then
+		abi=${DEFAULT_ABI}
+	else
+		abi="default"
+	fi
+
+	local var="LIBDIR_${abi}"
+	var=$(portageq envvar ${var})
+	echo ${var}
 }
 
 setup_myfeatures(){

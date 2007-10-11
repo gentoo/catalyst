@@ -1,6 +1,11 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Added a version of get_libdir from multilib.eclass so we can determine where
+  to go poking around if we need to touch anything in libdir.
+
   11 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   print an error saying what target failed before the traceback
 
