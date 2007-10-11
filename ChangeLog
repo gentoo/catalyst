@@ -1,6 +1,12 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  examples/livecd-stage2_template.spec, modules/generic_stage_target.py:
+  Added Andrew Gaffney to maintainer list, fixed a typo, updated copyright
+  information, and added a small fix for FreeBSD for bug #169041. This is
+  catalyst 2.0.5_pre4 for testing.
+
   11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
   Adding a slightly modified version of Andrew Gaffney's <agaffney@gentoo.org>

@@ -84,7 +84,7 @@ kerncache_path:
 # squashfs - This gives the best compression, but requires a kernel patch.
 # zisofs - This uses in-kernel compression and is supported on all platforms.
 # normal - This creates a loop without compression.
-# noloop - This copies the files to the CD directly, withuot using a loopback.
+# noloop - This copies the files to the CD directly, without using a loopback.
 # example:
 # livecd/fstype: squashfs
 livecd/fstype:
