@@ -1364,7 +1364,7 @@ class generic_stage_target(generic_target):
 		   		# the proper perms and ownership
 		   		mystat=os.stat(myemp)
 				if os.uname()[0] == "FreeBSD":
-					cmd("chflags -R noschg "+myemp, "Could not remove immutable flag")
+					cmd("chflags -R noschg "+myemp, "Could not remove immutable flag for file " + myemp)
 		   		#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
 		   		shutil.rmtree(myemp)
 		   		os.makedirs(myemp,0755)

@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  12 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
+  modules/generic_stage_target.py:
+  make error message more specific when removing immutable flag
+
   11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   examples/livecd-stage2_template.spec, modules/generic_stage_target.py:
   Added Andrew Gaffney to maintainer list, fixed a typo, updated copyright
