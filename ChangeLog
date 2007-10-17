@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  17 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> arch/ppc.py,
+  arch/sparc.py, arch/x86.py:
+  look for linux32 in /bin and /usr/bin
+
   12 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
   make error message more specific when removing immutable flag
