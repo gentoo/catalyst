@@ -12,8 +12,7 @@ fi
 if [ -n "${clst_DISTCC}" ]
 then
 	run_emerge -C sys-devel/distcc || exit 1
+	cleanup_distcc
 fi
-
-cleanup_distcc
 
 rm -f /var/log/emerge.log

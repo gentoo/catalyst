@@ -2,4 +2,8 @@
 
 . /tmp/chroot-functions.sh
 update_env_settings
-cleanup_distcc
+
+if [ -n "${clst_DISTCC}" ]
+then
+	cleanup_distcc
+fi

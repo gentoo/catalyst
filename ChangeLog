@@ -1,6 +1,15 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  29 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
+  targets/embedded/embedded-preclean-chroot.sh,
+  targets/grp/grp-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  check to see if distcc is enabled before calling cleanup_distcc()
+
   17 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> arch/ppc.py,
   arch/sparc.py, arch/x86.py:
   look for linux32 in /bin and /usr/bin
