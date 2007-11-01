@@ -1,6 +1,10 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  01 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  we don't need to copy files from /usr/lib/hotplug/firmware anymore
+
   29 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/embedded/embedded-preclean-chroot.sh,
   targets/grp/grp-preclean-chroot.sh,

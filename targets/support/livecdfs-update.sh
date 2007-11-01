@@ -223,10 +223,6 @@ fi
 if [ -n "$(ls /lib/firmware)" ]
 then
 	cd /lib/firmware
-	if [ -n "$(ls /usr/lib/hotplug/firmware)" ]
-	then
-		cp -r /usr/lib/hotplug/firmware/* /lib/firmware
-	fi
 	/bin/tar cjpf /lib/firmware.tar.bz2 .
 	rm -rf /lib/firmware/*
 	mkdir -p /usr/lib/hotplug
