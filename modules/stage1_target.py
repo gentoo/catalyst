@@ -24,13 +24,11 @@ class stage1_target(generic_stage_target):
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/usr/share/gettext",\
-		"/usr/lib/python2.2/test", "/usr/lib/python2.2/encodings",\
-		"/usr/lib/python2.2/email", "/usr/lib/python2.2/lib-tk",\
-		"/usr/lib/python2.3/test", "/usr/lib/python2.3/encodings",\
+		"/usr/lib/python2.2/test", "/usr/lib/python2.2/email",\
+		"/usr/lib/python2.2/lib-tk", "/usr/lib/python2.3/test",\
 		"/usr/lib/python2.3/email", "/usr/lib/python2.3/lib-tk",\
-		"/usr/lib/python2.4/test", "/usr/lib/python2.4/encodings",\
-		"/usr/lib/python2.4/email", "/usr/lib/python2.4/lib-tk",\
-		"/usr/share/zoneinfo"])
+		"/usr/lib/python2.4/test", "/usr/lib/python2.4/email",\
+		"/usr/lib/python2.4/lib-tk", "/usr/share/zoneinfo"])
 
 	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
 

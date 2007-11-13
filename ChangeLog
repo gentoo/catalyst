@@ -1,13 +1,17 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Nov 2007; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/stage1_target.py:
+  Removing cleaning of python encodings for bug #64890.
+
   11 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  add an extra warning into the generated make.conf about changing the CHOST
+  Add an extra warning into the generated make.conf about changing the CHOST
 
   01 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/livecdfs-update.sh:
-  we don't need to copy files from /usr/lib/hotplug/firmware anymore
+  We don't need to copy files from /usr/lib/hotplug/firmware anymore.
 
   29 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/embedded/embedded-preclean-chroot.sh,
@@ -16,15 +20,15 @@
   targets/stage2/stage2-preclean-chroot.sh,
   targets/stage3/stage3-preclean-chroot.sh,
   targets/tinderbox/tinderbox-preclean-chroot.sh:
-  check to see if distcc is enabled before calling cleanup_distcc()
+  Check to see if distcc is enabled before calling cleanup_distcc().
 
   17 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> arch/ppc.py,
   arch/sparc.py, arch/x86.py:
-  look for linux32 in /bin and /usr/bin
+  Look for linux32 in /bin and /usr/bin.
 
   12 Oct 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  make error message more specific when removing immutable flag
+  Make error message more specific when removing immutable flag.
 
   11 Oct 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   examples/livecd-stage2_template.spec, modules/generic_stage_target.py:
