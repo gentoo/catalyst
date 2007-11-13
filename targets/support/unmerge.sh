@@ -6,8 +6,9 @@ update_env_settings
 
 run_emerge -C ${clst_packages}
 
-case ${clst_livecd_type} in
-	gentoo-release-livecd ) mv -f /var/db /usr/livecd ;;
-esac
+if [ "${clst_livecd_type}" == "gentoo-release-livecd" ]
+then
+	mv -f /var/db /usr/livecd
+fi
 
 exit 0

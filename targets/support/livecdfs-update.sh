@@ -261,34 +261,27 @@ case ${clst_livecd_type} in
 		touch /etc/startx
 		;;
 	gentoo-release-livecd )
-		# First we setup the livecd-kernel package
-#		if [ -e /opt/installer/misc/mkvardb ]
-#		then
-#			chmod +x /opt/installer/misc/mkvardb
-#			/opt/installer/misc/mkvardb -p livecd-kernel -c sys-kernel -v ${clst_version_stamp} --provide "virtual/alsa" /boot/System* /boot/kernel* /boot/initr* $(for i in $(find "/lib/modules/" -type f); do grep --quiet "${i}" /var/db/pkg/*/*/CONTENTS || echo ${i}; done)
-#		fi
-
 		# Setup Gnome theme
-		if [ "${clst_livecd_xsession}" == "gnome" ]
-		then
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/theme Clearlooks
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /apps/metacity/general/theme Clearlooks
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/gtk_key_theme \
-				Clearlooks
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/gtk_theme \
-				Clearlooks
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/font_name "Sans 9"
-		fi
+#		if [ "${clst_livecd_xsession}" == "gnome" ]
+#		then
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/theme Clearlooks
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /apps/metacity/general/theme Clearlooks
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/gtk_key_theme \
+#				Clearlooks
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/gtk_theme \
+#				Clearlooks
+#			gconftool-2 --direct \
+#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+#				--type string --set /desktop/gnome/interface/font_name "Sans 9"
+#		fi
 
 		# Setup GDM
 		if [ "${clst_livecd_xdm}" == "gdm" ]
