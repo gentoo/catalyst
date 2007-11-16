@@ -329,6 +329,9 @@ case ${clst_livecd_type} in
 		cp -r /usr/portage/eclass /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
+		mv -f /var/db /usr/livecd
+		# We keep the symlink so that you can still unmerge stuff
+		ln -sf /usr/livecd/db /var/db
 
 		# This gives us a proper cache for portage/installer
 		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
