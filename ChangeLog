@@ -1,6 +1,13 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
+  livecd/files/livecd-local.start,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  we apparently still need profiles/eclass for building the stage3 from the
+  livecd
+
   17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org> arch/mips.py:
   apply patch for mips n32 support from Stuart Longland <redhatter@gentoo.org>
   in bug #197917

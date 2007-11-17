@@ -64,8 +64,8 @@ case $1 in
 			${clst_chroot_path}/root/.bashrc
 		cp -f ${clst_sharedir}/livecd/files/livecd-bash_profile \
 			${clst_chroot_path}/root/.bash_profile
-#		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
-#			${clst_chroot_path}/etc/conf.d/local.start
+		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
+			${clst_chroot_path}/etc/conf.d/local.start
 		
 		# execute copy gamecd.conf if we're a gamecd
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
