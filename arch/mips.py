@@ -65,11 +65,25 @@ class arch_mipsel3(generic_mipsel):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32 -pipe"
 
+class arch_mipsel3n32(generic_mipsel):
+	"Builder class for all MIPS III [Little-endian N32]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -mips3 -mabi=n32 -pipe"
+		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
+
 class arch_mipsel4(generic_mipsel):
 	"Builder class for all MIPS IV [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -pipe"
+
+class arch_mipsel4n32(generic_mipsel):
+	"Builder class for all MIPS IV [Little-endian N32]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -pipe"
+		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
 
 
 
@@ -86,9 +100,12 @@ def register():
 			"mipsel1"	:arch_mipsel1,
 			"mipsel2"	:arch_mipsel2,
 			"mipsel3"	:arch_mipsel3,
+			"mipsel3n32"	:arch_mipsel3n32,
 			"mipsel4"	:arch_mipsel4,
+			"mipsel4n32"	:arch_mipsel4n32,
 			"sgir4k"	:arch_mips3, 
 			"sgir5k"	:arch_mips4,
 			"sgir10kplus"	:arch_mips4,
+			"loongson"	:arch_mipsel3,
 			"cobalt"	:arch_mipsel4
 	}, ("mips","mips64"))
