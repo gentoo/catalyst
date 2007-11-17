@@ -325,12 +325,12 @@ case ${clst_livecd_type} in
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage
-		cp -r /usr/portage/profiles /usr/livecd
-		cp -r /usr/portage/eclass /usr/livecd
-		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
+#		cp -r /usr/portage/profiles /usr/livecd
+#		cp -r /usr/portage/eclass /usr/livecd
+#		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
+		ln -sf /usr/livecd/gconf /etc/gconf
 		mv -f /var/db /usr/livecd
-		# We keep the symlink so that you can still unmerge stuff
 		ln -sf /usr/livecd/db /var/db
 
 		# This gives us a proper cache for portage/installer
@@ -371,7 +371,13 @@ case ${clst_livecd_type} in
 	generic-livecd )
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
-		[ -d /etc/gconf ] && mv -f /etc/gconf /usr/livecd
+
+		if [ -d /etc/gconf ]
+		then
+			mv -f /etc/gconf /usr/livecd
+			ln -sf /usr/livecd/gconf /etc/gconf
+		fi
+
 		if [ -e /usr/livecd/kernelpkgs.txt ]
 		then
 			rm -f /usr/livecd/kernelpkgs.txt

@@ -1,6 +1,13 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  create symlink for /etc/gconf and /var/db when moving to /usr/livecd
+  remove preservation of eclasses/profiles
+  remove copying of livecd-local.start since it's not needed anymore
+
   16 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/livecdfs-update.sh, targets/support/unmerge.sh:
   move moving of /var/db back to livecdfs-update.sh but keep the symlink so we
