@@ -29,6 +29,10 @@ class stage2_target(generic_stage_target):
 
 	# XXX: How do these override_foo() functions differ from the ones in
 	# generic_stage_target and why aren't they in stage3_target?
+
+	def set_cleanables(self):
+		generic_stage_target.set_cleanables(self)
+		self.settings["cleanables"].extend(["/etc/portage"])
 	
 	def override_chost(self):
 		if self.settings.has_key("chost"):

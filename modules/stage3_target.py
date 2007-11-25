@@ -20,6 +20,10 @@ class stage3_target(generic_stage_target):
 			print "\tIf you break it, you buy it. Don't complain to us about it."
 			print "\tDont say we did not warn you\n"
 
+	def set_cleanables(self):
+		generic_stage_target.set_cleanables(self)
+		self.settings["cleanables"].extend(["/etc/portage"])
+
 def register(foo):
 	foo.update({"stage3":stage3_target})
 	return foo
