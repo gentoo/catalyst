@@ -202,6 +202,11 @@ class generic_stage_target(generic_target):
 			# for the chroot:
 			self.env["CCACHE_DIR"]="/var/tmp/ccache"	
 
+		if self.settings.has_key("ICECREAM"):
+			self.mounts.append("/var/cache/icecream")
+			self.mountmap["/var/cache/icecream"]="/var/cache/icecream"
+			self.env["PATH"]="/usr/lib/icecc/bin:"+self.env["PATH"]
+
 	def override_cbuild(self):
 		if self.makeconf.has_key("CBUILD"):
 			self.settings["CBUILD"]=self.makeconf["CBUILD"]

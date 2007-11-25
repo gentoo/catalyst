@@ -99,6 +99,23 @@ setup_myfeatures(){
 		chmod a+x /usr/lib/distcc/bin/${CHOST}-wrapper
 		for i in cc gcc g++ c++; do ln -s ${CHOST}-wrapper ${i}; done
 	fi
+
+	if [ -n "${clst_ICECREAM}" ]
+	then
+		clst_root_path=/ run_emerge --oneshot --nodeps sys-devel/icecream || exit 1
+
+		# This sets up automatic cross-icecc-fu according to
+		# http://gentoo-wiki.com/HOWTO_Setup_An_ICECREAM_Compile_Cluster#Icecream_and_cross-compiling
+		CHOST=$(portageq envvar CHOST)
+		LIBDIR=$(get_libdir)
+		cd /usr/${LIBDIR}/icecc/bin
+		rm cc gcc g++ c++ 2>/dev/null
+		echo -e '#!/bin/bash\nexec /usr/'${LIBDIR}'/icecc/bin/'${CHOST}'-g${0:$[-2]} "$@"' > ${CHOST}-wrapper
+		chmod a+x ${CHOST}-wrapper
+		for i in cc gcc g++ c++; do ln -s ${CHOST}-wrapper ${i}; done
+		export PATH="/usr/lib/icecc/bin:${PATH}"
+		export PREROOTPATH="/usr/lib/icecc/bin"
+	fi
 }
 
 setup_myemergeopts(){
@@ -164,6 +181,15 @@ cleanup_distcc() {
 		ln -s /usr/bin/distcc /usr/lib/distcc/bin/${i}
 	done
 	rm /usr/lib/distcc/bin/*-wrapper
+}
+
+cleanup_icecream() {
+	LIBDIR=$(get_libdir)
+	for i in cc gcc c++ g++; do
+		rm /usr/${LIBDIR}/icecc/bin/${i}
+		ln -s /usr/bin/icecc /usr/${LIBDIR}/icecc/bin/${i}
+	done
+	rm /usr/${LIBDIR}/icecc/bin/*-wrapper
 }
 
 update_env_settings(){

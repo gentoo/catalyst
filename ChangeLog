@@ -1,37 +1,51 @@
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  25 Nov 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  files/catalyst.conf, modules/catalyst_support.py,
+  modules/generic_stage_target.py,
+  targets/embedded/embedded-preclean-chroot.sh,
+  targets/grp/grp-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/support/chroot-functions.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  Applying a patch from Tais M. Hansen <tais.hansen@osd.dk> to add initial
+  sys-devel/icecream cluster compiler support for bug #200095. This is
+  catalyst 2.0.5_pre6 for testing.
+
   25 Nov 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   files/catalyst.conf, modules/generic_stage_target.py:
-  add option for metadata_overlay use with portage
+  Add the option for using metadata_overlay with portage to speed up cache.
 
   25 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/stage1_target.py, modules/stage2_target.py,
   modules/stage3_target.py:
-  add /etc/portage to cleanables for stage 1-3
+  Add /etc/portage to cleanables for stages 1 through 3.
 
   17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   livecd/files/livecd-local.start,
   targets/livecd-stage2/livecd-stage2-controller.sh,
   targets/support/livecdfs-update.sh:
-  we apparently still need profiles/eclass for building the stage3 from the
-  livecd
+  We apparently still need profiles/eclass for building the stage3 from the
+  livecd with the installer.
 
   17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org> arch/mips.py:
-  apply patch for mips n32 support from Stuart Longland <redhatter@gentoo.org>
-  in bug #197917
+  Apply patch for MIPS N32 support from Stuart Longland <redhatter@gentoo.org>
+  in bug #197917.
 
   17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh,
   targets/support/livecdfs-update.sh:
-  create symlink for /etc/gconf and /var/db when moving to /usr/livecd
-  remove preservation of eclasses/profiles
-  remove copying of livecd-local.start since it's not needed anymore
+  Create symlink for /etc/gconf and /var/db when moving to /usr/livecd, remove
+  preservation of eclasses/profiles, and remove copying of livecd-local.start
+  since it's not needed anymore.
 
   16 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/livecdfs-update.sh, targets/support/unmerge.sh:
-  move moving of /var/db back to livecdfs-update.sh but keep the symlink so we
-  can unmerge
+  Move moving of /var/db back to livecdfs-update.sh but keep the symlink so we
+  can unmerge.
 
   13 Nov 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/livecdfs-update.sh, targets/support/unmerge.sh:

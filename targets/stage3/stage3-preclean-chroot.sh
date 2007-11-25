@@ -15,4 +15,10 @@ then
 	cleanup_distcc
 fi
 
+if [ -n "${clst_ICECREAM}" ]
+then
+	run_emerge -C sys-devel/icecream || exit 1
+	cleanup_icecream
+fi
+
 rm -f /var/log/emerge.log
