@@ -9,7 +9,7 @@ import os,sys,imp,string,getopt
 import pdb
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="2.0.5_pre6"
+__version__="2.0.5"
 
 conf_values={}
 
@@ -23,7 +23,7 @@ def usage():
 	print " -F --fetchonly		fetch files only"
 	print " -h --help		print this help message"
 	print " -p --purge		clear tmp dirs,package cache and autoresume flags"
-	print " -s --snapshot		generate a Portage snapshot"
+	print " -s --snapshot		generate a release snapshot"
 	print " -V --version		display version information"
 	print " -v --verbose		verbose output"
 	print
@@ -32,14 +32,14 @@ def usage():
 	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
 	print "catalyst -C target=snapshot version_stamp=my_date"
 	print
-	print "Using the snapshot option (-s, --snapshot) to build a Portage snapshot:"
-	print "catalyst -s 20051208"
+	print "Using the snapshot option (-s, --snapshot) to build a release snapshot:"
+	print "catalyst -s 20071121"
 	print
 	print "Using the specfile option (-f, --file) to build a stage target:"
 	print "catalyst -f stage1-specfile.spec"
 
 def version():
-	print "Gentoo Catalyst, version "+__version__
+	print "Catalyst, version "+__version__
 	print "Copyright 2003-2007 Gentoo Foundation"
 	print "Distributed under the GNU General Public License version 2\n"
 

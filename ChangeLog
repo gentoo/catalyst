@@ -1,5 +1,8 @@
-# Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
+
+  10 Jan 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
+  This is now 2.0.5 for release.
 
   25 Nov 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   files/catalyst.conf, modules/catalyst_support.py,
