@@ -2,6 +2,13 @@
 # $Id: $
 
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/generic_stage_template.spec, examples/grp_template.spec,
+  examples/livecd-stage1_template.spec,
+  examples/livecd-stage2_template.spec, examples/netboot_template.spec,
+  examples/stage4_template.spec, examples/tinderbox_template.spec:
+  Changing link so it no longer points to a dead page.  This is for bug #208609.
+
+  02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/snapshot_target.py:
   Add .svn to the catalyst snapshot excludes and remove old pordir_overlay code.
 

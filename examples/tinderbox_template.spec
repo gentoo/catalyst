@@ -2,7 +2,7 @@
 
 # The subarch can be any of the supported catalyst subarches (like athlon-xp).
 # Refer to the catalyst reference manual for suppurted subarches.
-# http://www.gentoo.org/proj/en/releng/catalyst/reference.xml
+# http://www.gentoo.org/proj/en/releng/catalyst/
 # example:
 # subarch: athlon-xp
 subarch:
