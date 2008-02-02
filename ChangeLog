@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  02 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Add 'pager on' to grub.conf for bug 208531
+
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/README.txt, livecd/files/x86-F6.msg:
   Removing the unused kernel command line options from Volume/Device Management.

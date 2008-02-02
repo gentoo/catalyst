@@ -455,6 +455,7 @@ case ${clst_hostarch} in
 			icfg=$1/boot/grub/grub.conf
 			echo "default 1" > ${icfg}
 			echo "timeout 150" >> ${icfg}
+			echo "pager on" >> ${icfg}
 
 			# Setup help message
 			echo >> ${icfg}
