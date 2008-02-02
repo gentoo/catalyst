@@ -44,15 +44,9 @@ class snapshot_target(generic_stage_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 		
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ "+\
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --include .svn "+\
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
 		
-		#if self.settings.has_key("portdir_overlay"):
-			#print "Adding Portage overlay to the snapshot..."
-			#cmd("rsync -a --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ "+\
-			#	self.settings["portdir_overlay"]+"/ "+mytmp+"/portage/","Snapshot/ overlay addition failure",\
-			#	env=self.env)
-			
 		print "Compressing Portage snapshot tarball..."
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)

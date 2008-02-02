@@ -2,6 +2,10 @@
 # $Id: $
 
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/snapshot_target.py:
+  Add .svn to the catalyst snapshot excludes and remove old pordir_overlay code.
+
+  02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   As much as I hate this, we're going to force baselayout to install first.
   This will keep us from having any issues with packages that don't respect
