@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  As much as I hate this, we're going to force baselayout to install first.
+  This will keep us from having any issues with packages that don't respect
+  multilib libdirs.
+
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> files/catalyst.conf:
   Reorder options in catalyst.conf so they're alphabetical.
 
