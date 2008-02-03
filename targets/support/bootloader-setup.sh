@@ -457,6 +457,10 @@ case ${clst_hostarch} in
 			echo "timeout 150" >> ${icfg}
 			echo "pager on" >> ${icfg}
 
+			if [ -e ${1}/boot/grub/splash.xpm.gz ]; then
+				echo "splashimage=/boot/grub/splash.xpm.gz" >> ${icfg}
+			fi
+
 			# Setup help message
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}

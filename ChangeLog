@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  03 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Add splashimage= line to grub.conf if /boot/grub/splash.xpm.gz exists
+
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/generic_stage_template.spec, examples/grp_template.spec,
   examples/livecd-stage1_template.spec,
