@@ -36,11 +36,9 @@ check_genkernel_version(){
 }
 
 get_libdir() {
+	ABI=$(portageq envvar ABI)
 	DEFAULT_ABI=$(portageq envvar DEFAULT_ABI)
 	LIBDIR_default=$(portageq envvar LIBDIR_default)
-	MULTILIB_ABIS=${MULTILIB_ABIS:-"default"}
-	export DEFAULT_ABI=${DEFAULT_ABI:-"default"}
-	export LIBDIR_default=${CONF_LIBDIR:-"lib"}
 
 	local abi
 	if [ $# -gt 0 ]
@@ -135,7 +133,6 @@ setup_myemergeopts(){
 		export bootstrap_opts="-r"
 	fi
 }
-
 
 setup_portage(){
 	# portage needs to be merged manually with USE="build" set to avoid frying

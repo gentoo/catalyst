@@ -44,8 +44,10 @@ class livecd_stage1_target(generic_stage_target):
 		generic_stage_target.set_use(self)
 		if self.settings.has_key("use"):
 			self.settings["use"].append("livecd")
+			self.settings["use"].append("bindist")
 		else:
 			self.settings["use"]=["livecd"]
+			self.settings["use"].append("bindist")
 
 	def set_packages(self):
 		generic_stage_target.set_packages(self)

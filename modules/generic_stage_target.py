@@ -420,6 +420,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("use"):
 		    if type(self.settings["use"])==types.StringType:
 			self.settings["use"]=self.settings["use"].split()
+			self.settings["use"].append("bindist")
 
 	def set_stage_path(self):
 			self.settings["stage_path"]=normpath(self.settings["chroot_path"])
