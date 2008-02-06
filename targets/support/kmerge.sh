@@ -48,6 +48,12 @@ setup_gk_args() {
 	then
 		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"
 	fi
+
+    if [ "${clst_target}" == "netboot2" -a -n "${clst_merge_path}" ]
+    then
+        GK_ARGS="${GK_ARGS} --initramfs-overlay=\"${clst_merge_path}\""
+    fi
+        
 }
 
 genkernel_compile(){

@@ -2,6 +2,12 @@
 # $Id: $
 
   06 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/netboot2_target.py, targets/support/kmerge.sh:
+  Add patch to enabled netboot2/linuxrc and automatically add path for
+  initramfs overlay to genkernel commandline. Thanks to Justin Bronder
+  <jsbronder@gentoo.org> in bug 208106
+
+  06 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/netboot2_target.py:
   Allow root_overlay in netboot2 target for bug 208106.
 
