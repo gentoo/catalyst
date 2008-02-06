@@ -18,7 +18,8 @@ class netboot2_target(generic_stage_target):
 			"netboot2/use",
 			"netboot2/extra_files",
 			"netboot2/overlay",
-			"netboot2/busybox_config"
+			"netboot2/busybox_config",
+			"netboot2/root_overlay"
 		])
 
 		try:
