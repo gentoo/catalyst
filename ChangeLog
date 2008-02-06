@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
+  arch/x86.py:
+  Did a little cleanup on the x86.py to remove some redundant entries and
+  added nocona and core2 to amd64.py, though they're currently commented out.
+
   06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Write out HOSTUSE settings from arch/*.py to make.conf as well as any USE
