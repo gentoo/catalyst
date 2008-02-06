@@ -109,15 +109,14 @@ export CONFIG_PROTECT="-*"
 
 # Set the timezone for the kernel build
 rm /etc/localtime
-ln -s /usr/share/zoneinfo/UTC /etc/localtime
-
+cp -f /usr/share/zoneinfo/UTC /etc/localtime
 
 filtered_kname=${clst_kname/-/_}
 filtered_kname=${clst_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
-export USE=$clst_kernel_use
+export USE="${clst_kernel_use} ${clst_HOSTUSE}"
 
 eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${filtered_kname}_gk_kernargs"
 eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
