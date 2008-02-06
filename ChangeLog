@@ -1,15 +1,18 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/x86.py:
+  Added prescott to the subarches for x86.
+
   06 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/netboot2_target.py, targets/support/kmerge.sh:
   Add patch to enabled netboot2/linuxrc and automatically add path for
   initramfs overlay to genkernel commandline. Thanks to Justin Bronder
-  <jsbronder@gentoo.org> in bug 208106
+  <jsbronder@gentoo.org> in bug #208106
 
   06 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/netboot2_target.py:
-  Allow root_overlay in netboot2 target for bug 208106.
+  Allow root_overlay in netboot2 target for bug #208106.
 
   04 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py, modules/livecd_stage1_target.py,
