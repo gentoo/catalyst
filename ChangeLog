@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Write out HOSTUSE settings from arch/*.py to make.conf as well as any USE
+  flags defined in the spec file.
+
   06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc64.py:
   Added a patch from Markus Rothe <corsair@gentoo.org> to add power6 and cell
   subarches to ppc64 for bug #208860 and removing redundant CXXFLAGS settings,

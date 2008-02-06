@@ -910,13 +910,15 @@ class generic_stage_target(generic_target):
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
 			myf.write('# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult http://www.gentoo.org/doc/en/change-chost.xml before changing it.\nCHOST="'+self.settings["CHOST"]+'"\n')
 		    
-		    # Figure out what our USE vars are for building
+			# Figure out what our USE vars are for building
 			myusevars=[]
 			if self.settings.has_key("HOSTUSE"):
 				myusevars.extend(self.settings["HOSTUSE"])
 		
 			if self.settings.has_key("use"):
 				myusevars.extend(self.settings["use"])
+
+			if myusevars:
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 
 		    # Setup the portage overlay	
