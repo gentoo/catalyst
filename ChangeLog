@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/ppc64.py:
+  Added a patch from Markus Rothe <corsair@gentoo.org> to add power6 and cell
+  subarches to ppc64 for bug #208860 and removing redundant CXXFLAGS settings,
+  since catalyst sets CXXFLAGS=CFLAGS by default.
+
   06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage1/livecd-stage1-chroot.sh, targets/support/kmerge.sh:
   Added clst_HOSTUSE to livecd-stage1 and livecd-stage2 package builds.
