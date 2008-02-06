@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> +arch/powerpc.py,
+  -arch/ppc.py, -arch/ppc64.py, arch/sparc.py, -arch/sparc64.py:
+  Merged ppc.py and ppc64.py into powerpc.py and merged sparc.py and
+  sparc64.py into sparc.py, so we have a cleaner set of arch files.
+
   06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
   arch/x86.py:
   Did a little cleanup on the x86.py to remove some redundant entries and
