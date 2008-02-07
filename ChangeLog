@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Changed the code for copying the MOTD files so it's fewer lines and makes
+  more sense.
+
   06 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> +arch/powerpc.py,
   -arch/ppc.py, -arch/ppc64.py, arch/sparc.py, -arch/sparc64.py:
   Merged ppc.py and ppc64.py into powerpc.py and merged sparc.py and

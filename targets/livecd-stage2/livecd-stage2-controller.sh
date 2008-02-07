@@ -31,33 +31,28 @@ case $1 in
 
 	preclean)
 		# Move over the motd (if applicable)
-		if [ -n "${clst_livecd_motd}" ]
-		then
-			case ${clst_livecd_type} in
-				gentoo-*)
+		case ${clst_livecd_type} in
+			gentoo-*)
+				if [ -n "${clst_livecd_motd}" ]
+				then
 					echo "Using livecd/motd is not supported with livecd/type"
 					echo "${clst_livecd_type}. You should switch to using"
 					echo "generic-livecd instead."
-					cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
-						${clst_sharedir}/livecd/files/universal.motd.txt \
-						${clst_sharedir}/livecd/files/minimal.motd.txt \
-						${clst_sharedir}/livecd/files/livecd.motd.txt \
-						${clst_sharedir}/livecd/files/gamecd.motd.txt \
-						${clst_chroot_path}/etc
-				;;
-				*)
+				fi
+				cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
+					${clst_sharedir}/livecd/files/universal.motd.txt \
+					${clst_sharedir}/livecd/files/minimal.motd.txt \
+					${clst_sharedir}/livecd/files/livecd.motd.txt \
+					${clst_sharedir}/livecd/files/gamecd.motd.txt \
+					${clst_chroot_path}/etc
+			;;
+			*)
+				if [ -n "${clst_livecd_motd}" ]
+				then
 					cp -pPR ${clst_livecd_motd} ${clst_chroot_path}/etc/motd
-				;;
-			esac
-		elif [ "${clst_livecd_type}" != "generic-livecd" ]
-		then
-			cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
-				${clst_sharedir}/livecd/files/universal.motd.txt \
-				${clst_sharedir}/livecd/files/minimal.motd.txt \
-				${clst_sharedir}/livecd/files/livecd.motd.txt \
-				${clst_sharedir}/livecd/files/gamecd.motd.txt \
-				${clst_chroot_path}/etc
-		fi
+				fi
+			;;
+		esac
 	
 		# move over the environment
 		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
