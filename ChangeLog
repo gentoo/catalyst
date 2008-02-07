@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/mips.py,
+  catalyst:
+  Added several subarches for mips so we can dump the mips subarch profiles
+  from my shiny new multi-parent profile structure. This is 2.0.6_pre1 for
+  testing.
+
   07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Changed the code for copying the MOTD files so it's fewer lines and makes
