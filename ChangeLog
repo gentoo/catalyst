@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
+  arch/mips.py:
+  Rearrange things in the arch/*.py files to ensure that nothing is used
+  before it has been defined.
+
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org> arch/powerpc.py:
   Reorder arch/powerpc.py to make python happy
 

@@ -28,5 +28,7 @@ class arch_amd64(generic_amd64):
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
-	return ({"amd64":arch_amd64}, ("x86_64", ))
+	return ({
+		"amd64"		: arch_amd64
+	}, ("x86_64", ))
 
