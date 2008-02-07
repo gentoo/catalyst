@@ -1,6 +1,9 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org> arch/powerpc.py:
+  Reorder arch/powerpc.py to make python happy
+
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/snapshot_target.py:
   Change .svn --include to an --exclude like it was supposed to be

@@ -21,6 +21,19 @@ class generic_ppc64(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
+class arch_ppc(generic_ppc):
+	"builder class for generic powerpc"
+	def __init__(self,myspec):
+		generic_ppc.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -fno-strict-aliasing -pipe"
+
+class arch_ppc64(generic_ppc64):
+	"builder class for generic ppc64"
+	def __init__(self,myspec):
+		generic_ppc64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["CHOST"]="powerpc64-unknown-linux-gnu"
+
 class arch_970(arch_ppc64):
 	"builder class for 970 aka G5 under ppc64"
 	def __init__(self,myspec):
@@ -91,19 +104,6 @@ class arch_power6(arch_ppc64):
 		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
-
-class arch_ppc(generic_ppc):
-	"builder class for generic powerpc"
-	def __init__(self,myspec):
-		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -fno-strict-aliasing -pipe"
-
-class arch_ppc64(generic_ppc64):
-	"builder class for generic ppc64"
-	def __init__(self,myspec):
-		generic_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe"
-		self.settings["CHOST"]="powerpc64-unknown-linux-gnu"
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
