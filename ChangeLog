@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/kmerge.sh:
+  Make the --kerncache option to genkernel dependent on 'kerncache' being in
+  options, so that it can actually be turned off
+
   07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
   arch/mips.py:
   Rearrange things in the arch/*.py files to ensure that nothing is used
