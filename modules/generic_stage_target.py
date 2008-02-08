@@ -25,8 +25,8 @@ class generic_stage_target(generic_target):
 
 		# The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
 		# work better with vapier's CBUILD stuff. I've removed the "monolithic"
-		# machinemap from this file and split up its contents amongst the various
-		# arch/foo.py files.
+		# machinemap from this file and split up its contents amongst the
+		# various arch/foo.py files.
 		#
 		# When register() is called on each module in the arch/ dir, it now
 		# returns a tuple instead of acting on the subarchmap dict that is
@@ -1051,6 +1051,7 @@ class generic_stage_target(generic_target):
 		cmd("tar cjpf "+self.settings["target_path"]+" -C "+self.settings["stage_path"]+\
 			" .","Couldn't create stage tarball",env=self.env)
 
+		self.gen_contents_file(self.settings["target_path"])
 		self.gen_digest_file(self.settings["target_path"])
 
 		touch(self.settings["autoresume_path"]+"capture")
@@ -1178,6 +1179,7 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("iso"):
 			cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
 				self.settings["iso"],"ISO creation script failed.",env=self.env)
+			self.gen_contents_file(self.settings["iso"])
 			self.gen_digest_file(self.settings["iso"])
 			touch(self.settings["autoresume_path"]+"create_iso")
 		
@@ -1387,6 +1389,23 @@ class generic_stage_target(generic_target):
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 
+
+	def gen_contents_file(self,file):
+		if os.path.exists(file+".CONTENTS"):
+			os.remove(file+".CONTENTS")
+		if self.settings.has_key("contents"):
+			if os.path.exists(file):
+				myf=open(file+".CONTENTS","w")
+				keys={}
+				for i in self.settings["contents"].split():
+					keys[i]=1
+					array=keys.keys()
+					array.sort()
+				for j in array:
+					contents=generate_contents(file,contents_function=j,verbose=self.settings.has_key("VERBOSE"))
+					myf.write(contents)
+				myf.close()
+
 	def gen_digest_file(self,file):
 		if os.path.exists(file+".DIGESTS"):
 			os.remove(file+".DIGESTS")
@@ -1398,12 +1417,11 @@ class generic_stage_target(generic_target):
 					keys[i]=1
 					array=keys.keys()
 					array.sort()
-				for j in array:
-					if self.settings.has_key("VERBOSE"):
-						hash=generate_hash(file,hash_function=j,verbose=True)
-					else:
-						hash=generate_hash(file,hash_function=j)
-					myf.write(hash)
+				for f in [file, file+'.CONTENTS']:
+					if os.path.exists(f):
+						for j in array:
+							hash=generate_hash(f,hash_function=j,verbose=self.settings.has_key("VERBOSE"))
+							myf.write(hash)
 				myf.close()
 
 	def purge(self):

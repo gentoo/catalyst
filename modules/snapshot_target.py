@@ -51,6 +51,7 @@ class snapshot_target(generic_stage_target):
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
 		
+		self.gen_contents_file(self.settings["snapshot_path"])
 		self.gen_digest_file(self.settings["snapshot_path"])
 
 		self.cleanup()

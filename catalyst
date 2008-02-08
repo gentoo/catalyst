@@ -147,6 +147,8 @@ def parse_config(myconfig):
 
 	if myconf.has_key("digests"):
 		conf_values["digests"]=myconf["digests"]
+	if myconf.has_key("contents"):
+		conf_values["contents"]=myconf["contents"]
 
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."

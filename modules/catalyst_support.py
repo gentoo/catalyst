@@ -62,6 +62,54 @@ def hexify(str):
 	return r
 # hexify()
 
+def generate_contents(file,contents_function="auto",verbose=False):
+	try:
+		_ = contents_function
+		if _ is 'auto' and file.endswith('.iso'):
+			_ = 'isoinfo-l'
+		if (_ in ['tar-tv','auto']):
+			if file.endswith('.tgz') or file.endswith('.tar.gz'):
+				_ = 'tar-tvz'
+			elif file.endswith('.tbz2') or file.endswith('.tar.bz2'):
+				_ = 'tar-tvj'
+			elif file.endswith('.tar'):
+				_ = 'tar-tv'
+		
+		contents_function = _
+		_ = contents_map[contents_function]
+		return _[0](file,_[1],verbose)
+	except:
+		raise CatalystError,\
+			"Error generating contents, is appropriate utility (%s) installed on your system?" \
+			% (contents_function, )
+
+def calc_contents(file,cmd,verbose):
+	args={ 'file': file }
+	cmd=cmd % dict(args)
+	a=os.popen(cmd)
+	mylines=a.readlines()
+	a.close()
+	result="".join(mylines)
+	if verbose:
+		print result
+	return result
+
+# This has map must be defined after the function calc_content
+# It is possible to call different functions from this but they must be defined
+# before hash_map
+# Key,function,cmd
+contents_map={
+	# 'find' is disabled because it requires the source path, which is not
+	# always available
+	#"find"		:[calc_content,"find %(path)s"],
+	"tar-tv":[calc_content,"tar tvf %(file)s"],
+	"tar-tvz":[calc_content,"tar tvzf %(file)s"],
+	"tar-tvj":[calc_content,"tar tvjf %(file)s"],
+	"isoinfo-l":[calc_content,"isoinfo -l -i %(file)s"],
+	# isoinfo-f should be a last resort only
+	"isoinfo-f":[calc_content,"isoinfo -f -i %(file)s"],
+}
+
 def generate_hash(file,hash_function="crc32",verbose=False):
 	try:
 		return hash_map[hash_function][0](file,hash_map[hash_function][1],hash_map[hash_function][2],\
@@ -167,6 +215,7 @@ valid_config_file_values.append("SNAPCACHE")
 valid_config_file_values.append("snapshot_cache")
 valid_config_file_values.append("hash_function")
 valid_config_file_values.append("digests")
+valid_config_file_values.append("contents")
 valid_config_file_values.append("SEEDCACHE")
 
 verbosity=1
