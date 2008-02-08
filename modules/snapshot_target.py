@@ -44,7 +44,7 @@ class snapshot_target(generic_stage_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 		
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn "+\
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
 		
 		print "Compressing Portage snapshot tarball..."
