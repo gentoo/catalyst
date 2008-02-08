@@ -81,7 +81,7 @@ class arch_pentium4(generic_x86):
 	def __init__(self,myspec):
 		arch_i686.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium4 -pipe"
-		self.settings["HOSTUSE"]=["mmx","sse"]
+		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
 
 class arch_prescott(generic_x86):
 	def __init__(self,myspec):
@@ -100,11 +100,10 @@ def register():
 		"athlon"		: arch_athlon,
 		"athlon-xp"		: arch_athlon_xp,
 		"athlon-mp"		: arch_athlon_xp,
-		"pentium-mmx"		: arch_pentium_mmx,
+		"pentium-mmx"	: arch_pentium_mmx,
 		"pentium2"		: arch_pentium2,
 		"pentium3"		: arch_pentium3,
 		"pentium4"		: arch_pentium4,
 		"prescott"		: arch_prescott
-	},
-	('i386', 'i486', 'i586', 'i686'))
+	}, ('i386', 'i486', 'i586', 'i686'))
 

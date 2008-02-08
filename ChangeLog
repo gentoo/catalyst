@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  08 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
+  arch/x86.py, modules/generic_stage_target.py:
+  Fixing a minor display issue when we write out make.conf, adding HOSTUSE for
+  amd64 to add mmx, sse, and sse2 to USE, adding sse2 to pentium4's HOSTUSE.
+
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
   Make the --kerncache option to genkernel dependent on 'kerncache' being in

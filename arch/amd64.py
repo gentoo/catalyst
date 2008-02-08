@@ -13,6 +13,7 @@ class arch_amd64(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
+		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
 
 #class arch_nocona(generic_x86):
 #	def __init__(self,myspec):

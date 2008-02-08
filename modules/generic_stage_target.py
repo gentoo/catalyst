@@ -908,7 +908,7 @@ class generic_stage_target(generic_target):
 			myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
 			if self.settings.has_key("CBUILD"):
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
-			myf.write('# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult http://www.gentoo.org/doc/en/change-chost.xml before changing it.\nCHOST="'+self.settings["CHOST"]+'"\n')
+			myf.write('# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult http://www.gentoo.org/doc/en/change-chost.xml before changing.\nCHOST="'+self.settings["CHOST"]+'"\n')
 		    
 			# Figure out what our USE vars are for building
 			myusevars=[]
