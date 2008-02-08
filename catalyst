@@ -1,7 +1,6 @@
 #!/usr/bin/python -OO
 
 # Maintained in full by:
-# Eric Edgar <rocket@gentoo.org>
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@gentoo.org>
 
@@ -9,7 +8,7 @@ import os,sys,imp,string,getopt
 import pdb
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
-__version__="2.0.6_pre1"
+__version__="2.0.6_pre2"
 
 conf_values={}
 

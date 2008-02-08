@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if portageq has_version / >=sys-apps/baselayout-2*
+then
+	# We need to add a few here for baselayout-2
+	[[ -e /etc/init.d/device-mapper ]] && rc-update add device-mapper boot
+	[[ -e /etc/init.d/lvm ]] && rc-update add lvm boot
+	[[ -e /etc/init.d/dmcrypt ]] && rc-update add dmcrypt boot
+fi
+
 if [ "${clst_spec_prefix}" == "livecd" ]
 then
 	# default programs that we always want to start
@@ -8,9 +16,8 @@ then
 	rc-update del keymaps
 	rc-update del serial
 	rc-update del consolefont
+	# We need to add this one, unconditionally
 	rc-update add autoconfig default
-	rc-update add modules boot
-	rc-update add pwgen default
 	[[ -e /etc/init.d/bootsplash ]] && rc-update add bootsplash default
 	[[ -e /etc/init.d/splash ]] && rc-update add splash default
 	[[ -e /etc/init.d/fbcondecor ]] && rc-update add fbcondecor default

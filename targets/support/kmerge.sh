@@ -21,7 +21,7 @@ setup_gk_args() {
 	# extra genkernel options that we have to test for
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		GK_ARGS="${GK_ARGS}  --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2"
+		GK_ARGS="${GK_ARGS} --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2"
 	fi
 
 	if [ "${clst_splash_type}" == "bootsplash" -a -n "${clst_splash_theme}" ]
