@@ -101,13 +101,13 @@ def calc_contents(file,cmd,verbose):
 contents_map={
 	# 'find' is disabled because it requires the source path, which is not
 	# always available
-	#"find"		:[calc_content,"find %(path)s"],
-	"tar-tv":[calc_content,"tar tvf %(file)s"],
-	"tar-tvz":[calc_content,"tar tvzf %(file)s"],
-	"tar-tvj":[calc_content,"tar tvjf %(file)s"],
-	"isoinfo-l":[calc_content,"isoinfo -l -i %(file)s"],
+	#"find"		:[calc_contents,"find %(path)s"],
+	"tar-tv":[calc_contents,"tar tvf %(file)s"],
+	"tar-tvz":[calc_contents,"tar tvzf %(file)s"],
+	"tar-tvj":[calc_contents,"tar tvjf %(file)s"],
+	"isoinfo-l":[calc_contents,"isoinfo -l -i %(file)s"],
 	# isoinfo-f should be a last resort only
-	"isoinfo-f":[calc_content,"isoinfo -f -i %(file)s"],
+	"isoinfo-f":[calc_contents,"isoinfo -f -i %(file)s"],
 }
 
 def generate_hash(file,hash_function="crc32",verbose=False):
