@@ -31,4 +31,5 @@ rm -f /var/lib/portage/world
 touch /var/lib/portage/world
 
 rm -f /var/log/emerge.log
+rm -f /etc/xml/catalog
 rm -rf /var/tmp/*
