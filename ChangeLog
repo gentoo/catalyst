@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  09 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/mips.py:
+  Changing cobalt_n32 to use mipsel4_n32 as its inheritance point. Thanks to
+  Stuart Longland <redhatter@gentoo.org> for pointing this change out.
+
   08 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/catalyst_support.py:
   Fix up calc_contents in contents_map. Thanks to Brent Baude

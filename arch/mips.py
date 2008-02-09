@@ -123,7 +123,7 @@ class arch_cobalt(generic_mipsel):
 class arch_cobalt_n32(generic_mipsel):
 	"Builder class for all cobalt [Little-endian N32]"
 	def __init__(self,myspec):
-		arch_cobalt.__init__(self,myspec)
+		arch_mipsel4_n32.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=r5000 -mabi=n32 -pipe"
 		self.settings["HOSTUSE"]=["cobalt","n32"]
 
