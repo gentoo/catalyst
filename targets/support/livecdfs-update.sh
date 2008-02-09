@@ -44,10 +44,15 @@ then
 		echo "Adding games group"
 		groupadd -g 35 games
 	fi
+	if [ "$(getent group plugdev | cut -d: -f1)" != "plugdev" ]
+	then
+		echo "Adding plugdev group"
+		groupadd plugdev
+	fi
 	for x in ${clst_livecd_users}
 	do
-		useradd -G users,wheel,audio,games,cdrom,usb -c "Default LiveCD User" \
-			-m ${x}
+		useradd -G users,wheel,audio,plugdev,games,cdrom,disk,floppy,usb \
+			-c "Default LiveCD User" -m ${x}
 		chown -R ${x}:users /home/${x}
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then
