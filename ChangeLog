@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  We don't need to do the device building twice, so removing USE=build from
+  first baselayout install.
+
   09 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/livecdfs-update.sh:
   We check for a plugdev group, add it if it doesn't exist, and make sure any
