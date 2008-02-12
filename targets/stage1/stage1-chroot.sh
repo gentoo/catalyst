@@ -21,12 +21,27 @@ then
 	exit 1
 fi
 
+if [ "${debug}" = "1" ]
+then
+	echo "DEBUG:"
+	echo "Profile inheritance:"
+	python -c 'import portage; print portage.settings.profiles'
+	echo "STAGE1_USE:		 $(portageq envvar STAGE1_USE)"
+	echo "USE (profile):		 $(portageq envvar USE)"
+	echo "USE (stage1):		 ${USE}"
+	echo "FEATURES (profile):	 $(portageq envvar FEATURES)"
+	echo "FEATURES (stage1):	 ${FEATURES}"
+
+	exit 1
+fi
+
 ## START BUILD
 clst_root_path=/ setup_portage
 
 USE="-build" run_emerge "--oneshot --nodeps virtual/baselayout"
 
-run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
+USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
+
 rm -f /var/lib/portage/world
 touch /var/lib/portage/world
 

@@ -1,6 +1,13 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  12 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/stage1/stage1-chroot.sh:
+  Added some debug code to stage1 and fixed a nice bug where we weren't
+  building with the correct USE. Unfortunately, this invalidates any caches
+  for stage1, since we were building with the entire USE from the profile.
+  This is 2.0.6_pre4 for testing.
+
   11 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   We don't need to do the device building twice, so removing USE=build from
