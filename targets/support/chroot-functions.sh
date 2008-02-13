@@ -114,6 +114,7 @@ setup_myfeatures(){
 		export PATH="/usr/lib/icecc/bin:${PATH}"
 		export PREROOTPATH="/usr/lib/icecc/bin"
 	fi
+	export FEATURES="${clst_myfeatures}"
 }
 
 setup_myemergeopts(){

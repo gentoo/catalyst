@@ -6,9 +6,6 @@ update_env_settings
 
 setup_myfeatures
 
-# Setup the environment
-export FEATURES="${clst_myfeatures}"
-
 # START THE BUILD
 setup_portage
 
@@ -33,7 +30,7 @@ do
 
 	mkdir -p /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
-	run_emerge --usepkg --buildpkg --newuse $x
+	run_emerge $x
 
 	if [ "$?" != "0" ]
 	then

@@ -350,7 +350,7 @@ class generic_stage_target(generic_target):
 						hash_function=self.settings["hash_function"],verbose=False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
+			print "\tIf this is not desired, remove this directory or turn off seedcache in the options of catalyst.conf"
 			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
 	def set_dest_path(self):

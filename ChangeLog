@@ -1,6 +1,14 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py, targets/embedded/embedded-chroot.sh,
+  targets/grp/grp-chroot.sh, targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage4/stage4-chroot.sh, targets/support/chroot-functions.sh,
+  targets/tinderbox/tinderbox-chroot.sh:
+  Move export of FEATURES to setup_myfeatures.
+
   12 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/stage1/stage1-chroot.sh:
   Added some debug code to stage1 and fixed a nice bug where we weren't
