@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Huge refactoring of modules/generic_stage_target.py to fix indentation and
+  generally clean up the code so it's a bit easier to read/follow.
+
   13 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
   Sort and de-dupe myusevars
