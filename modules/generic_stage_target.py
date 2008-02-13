@@ -919,6 +919,7 @@ class generic_stage_target(generic_target):
 				myusevars.extend(self.settings["use"])
 
 			if myusevars:
+				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 
 		    # Setup the portage overlay	

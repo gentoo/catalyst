@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/generic_stage_target.py:
+  Sort and de-dupe myusevars
+
   13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   Modify stage1-chroot.sh to use the actual -d/--debug code already in catalyst.
