@@ -2,6 +2,10 @@
 # $Id: $
 
   13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  Modify stage1-chroot.sh to use the actual -d/--debug code already in catalyst.
+
+  13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py, targets/embedded/embedded-chroot.sh,
   targets/grp/grp-chroot.sh, targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/netboot/netboot-chroot.sh, targets/stage3/stage3-chroot.sh,

@@ -21,7 +21,7 @@ then
 	exit 1
 fi
 
-if [ "${debug}" = "1" ]
+if [ "${clst_DEBUG}" = "1" ]
 then
 	echo "DEBUG:"
 	echo "Profile inheritance:"
