@@ -24,3 +24,4 @@ fi
 ## START BUILD
 /usr/portage/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
 
+rm -f /var/log/emerge.log /var/log/portage/elog/*

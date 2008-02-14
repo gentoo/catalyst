@@ -45,6 +45,5 @@ USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --onesho
 rm -f /var/lib/portage/world
 touch /var/lib/portage/world
 
-rm -f /var/log/emerge.log
-rm -f /etc/xml/catalog
+rm -f /var/log/emerge.log /var/log/portage/elog/* /etc/xml/catalog
 rm -rf /var/tmp/*
