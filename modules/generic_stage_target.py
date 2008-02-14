@@ -698,28 +698,28 @@ class generic_stage_target(generic_target):
 				" to "+self.settings["chroot_path"]+" failed."
 
 		if self.settings.has_key("AUTORESUME"):
-			""" Autoresume is valid, SEEDCACHE is valid """
 			if os.path.isdir(self.settings["source_path"]) \
 				and os.path.exists(self.settings["autoresume_path"]+"unpack"):
+				""" Autoresume is valid, SEEDCACHE is valid """
 				unpack=False
 				invalid_snapshot=False
 
-			""" Autoresume is valid, tarball is valid """
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]==clst_unpack_hash:
+				""" Autoresume is valid, tarball is valid """
 				unpack=False
 				invalid_snapshot=True
 			
-			""" Autoresume is invalid, SEEDCACHE """
 			elif os.path.isdir(self.settings["source_path"]) \
 				and not os.path.exists(self.settings["autoresume_path"]+\
 				"unpack"):
+				""" Autoresume is invalid, SEEDCACHE """
 				unpack=True
 				invalid_snapshot=False
 
-			""" Autoresume is invalid, tarball """
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]!=clst_unpack_hash:
+				""" Autoresume is invalid, tarball """
 				unpack=True
 				invalid_snapshot=True
 		else:
@@ -729,18 +729,18 @@ class generic_stage_target(generic_target):
 				if os.path.isdir(self.settings["source_path"]):
 					unpack=True
 					invalid_snapshot=False
-				""" Tarball so unpack and remove anything already there """
 				elif os.path.isfile(self.settings["source_path"]):
+					""" Tarball so unpack and remove anything already there """
 					unpack=True
 					invalid_snapshot=True
-			""" No autoresume, no SEEDCACHE """
+				""" No autoresume, no SEEDCACHE """
 			else:
 				""" Tarball so unpack and remove anything already there """
 				if os.path.isfile(self.settings["source_path"]):
 					unpack=True
 					invalid_snapshot=True
-				""" We should never reach this, so something is very wrong """
 				elif os.path.isdir(self.settings["source_path"]):
+					""" We should never reach this, so something is very wrong """
 					raise CatalystError,\
 						"source path is a dir but seedcache is not enabled"
 
