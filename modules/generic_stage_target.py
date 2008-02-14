@@ -1071,7 +1071,7 @@ class generic_stage_target(generic_target):
 				myusevars.extend(self.settings["use"])
 
 			if myusevars:
-				myf.write("# These are the USE flags that were used in addition to what is provided by the\nprofile used for building.\n")
+				myf.write("# These are the USE flags that were used in addition to what is provided by the\n# profile used for building.\n")
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 
