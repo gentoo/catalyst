@@ -95,12 +95,23 @@ case $1 in
 		;;
 	clean)
 		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
+		find ${clst_chroot_path}/usr/lib32 -iname "*.pyc" -exec rm -f {} \;
+		find ${clst_chroot_path}/usr/lib64 -iname "*.pyc" -exec rm -f {} \;
 		;;
 	bootloader)
 		shift
 		# Here is where we poke in our identifier
 		touch $1/livecd
-		
+
+		# We create a firmware directory, if necessary
+		if [ -e ${clst_chroot_path}/lib/firmware.tar.bz2 ]
+		then
+			echo "Creating firmware directory in $1"
+			mkdir -p $1/firmware
+			# TODO: Unpack firmware into $1/firmware and remove it from the
+			# chroot so newer livecd-tools/genkernel can find it and unpack it.
+		fi
+
 		# Move over the readme (if applicable)
 		if [ -n "${clst_livecd_readme}" ]
 		then
@@ -116,7 +127,7 @@ case $1 in
 		then
 			cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
 		fi
-		
+
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
     unmerge)

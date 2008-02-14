@@ -230,9 +230,6 @@ then
 	cd /lib/firmware
 	/bin/tar cjpf /lib/firmware.tar.bz2 .
 	rm -rf /lib/firmware/*
-	mkdir -p /usr/lib/hotplug
-	rm -rf /usr/lib/hotplug/firmware
-	ln -sf /lib/firmware /usr/lib/hotplug/firmware
 fi
 
 # Clear out locales

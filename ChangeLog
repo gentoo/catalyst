@@ -1,6 +1,14 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  14 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/generic_stage_target.py,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/livecdfs-update.sh:
+  Clean up firmware code in livecdfs-update.sh, add beginnings of new firmware
+  code in livecd-stage2-controller.sh, and fix output for USE in make.conf to
+  80 columns. This is catalyst 2.0.6_pre5 for testing.
+
   14 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Apparently, python doesn't like it when you put a set of comments in front
