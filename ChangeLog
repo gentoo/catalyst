@@ -2,6 +2,11 @@
 # $Id: $
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Only call find on libdirs that actually exist. Thanks to Kristoffer
+  <krek6597@student.uu.se> in bug 210807
+
+  20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
   Add warning about -* in foo/use in the spec
 

@@ -94,9 +94,13 @@ case $1 in
 		exec_in_chroot ${clst_fsscript}
 		;;
 	clean)
-		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
-		find ${clst_chroot_path}/usr/lib32 -iname "*.pyc" -exec rm -f {} \;
-		find ${clst_chroot_path}/usr/lib64 -iname "*.pyc" -exec rm -f {} \;
+		for x in lib lib32 lib64
+		do
+			if [ -d "${clst_chroot_path}/usr/${x}" ]
+			then
+				find "${clst_chroot_path}/usr/${x}" -iname "*.pyc" -exec rm -f {} \;
+			fi
+		done
 		;;
 	bootloader)
 		shift
