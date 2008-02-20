@@ -178,19 +178,35 @@ cleanup_distcc() {
 	rm -rf /etc/distcc/hosts
 	for i in cc gcc c++ g++; do
 		# TODO: change to use get_libdir
-		rm /usr/lib/distcc/bin/${i}
+		rm -f /usr/lib/distcc/bin/${i}
 		ln -s /usr/bin/distcc /usr/lib/distcc/bin/${i}
 	done
-	rm /usr/lib/distcc/bin/*-wrapper
+	rm -f /usr/lib/distcc/bin/*-wrapper
 }
 
 cleanup_icecream() {
 	LIBDIR=$(get_libdir)
 	for i in cc gcc c++ g++; do
-		rm /usr/${LIBDIR}/icecc/bin/${i}
+		rm -f /usr/${LIBDIR}/icecc/bin/${i}
 		ln -s /usr/bin/icecc /usr/${LIBDIR}/icecc/bin/${i}
 	done
-	rm /usr/${LIBDIR}/icecc/bin/*-wrapper
+	rm -f /usr/${LIBDIR}/icecc/bin/*-wrapper
+}
+
+cleanup_stages() {
+	if [ -n "${clst_DISTCC}" ]
+	then
+		cleanup_distcc
+	fi
+	if [ -n "${clst_ICECREAM}" ]
+	then
+		cleanup_icecream
+	fi
+	rm -f /var/lib/portage/world
+	touch /var/lib/portage/world
+
+	rm -f /var/log/emerge.log /var/log/portage/elog/*
+	rm -rf /var/tmp/*
 }
 
 update_env_settings(){

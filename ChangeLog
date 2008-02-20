@@ -2,6 +2,18 @@
 # $Id: $
 
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-preclean-chroot.sh,
+  targets/grp/grp-preclean-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-preclean-chroot.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage1/stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/stage4/stage4-preclean-chroot.sh,
+  targets/support/chroot-functions.sh,
+  targets/tinderbox/tinderbox-preclean-chroot.sh:
+  Added a cleanup_stages function and added it to the appropriate places.
+
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
   targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/netboot/netboot-chroot.sh, targets/stage1/stage1-chroot.sh,

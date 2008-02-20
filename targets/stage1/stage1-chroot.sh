@@ -23,9 +23,3 @@ clst_root_path=/ setup_portage
 USE="-build" run_emerge "--oneshot --nodeps virtual/baselayout"
 
 USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
-
-rm -f /var/lib/portage/world
-touch /var/lib/portage/world
-
-rm -f /var/log/emerge.log /var/log/portage/elog/* /etc/xml/catalog
-rm -rf /var/tmp/*
