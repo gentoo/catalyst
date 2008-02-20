@@ -2,6 +2,10 @@
 # $Id: $
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/pre-kmerge.sh:
+  Comment out sed on genkernel executable as it appears to do nothing these days
+
+  20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Only call find on libdirs that actually exist. Thanks to Kristoffer
   <krek6597@student.uu.se> in bug 210807

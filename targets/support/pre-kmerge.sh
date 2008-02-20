@@ -12,7 +12,7 @@ case ${clst_target} in
 			gentoo-release-minimal | gentoo-release-universal)
 				case ${clst_hostarch} in
 					amd64|x86)
-						sed -i 's/initramfs_data.cpio.gz /initramfs_data.cpio.gz -r 1024x768 /' /usr/share/genkernel/genkernel
+#						sed -i 's/initramfs_data.cpio.gz /initramfs_data.cpio.gz -r 1024x768 /' /usr/share/genkernel/genkernel
 					;;
 				esac
 			;;
