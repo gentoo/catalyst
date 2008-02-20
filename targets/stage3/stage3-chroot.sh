@@ -2,15 +2,8 @@
 
 . /tmp/chroot-functions.sh
 
-update_env_settings
-
-setup_myfeatures
-
-show_debug
-
-setup_portage
-
 ## START BUILD
+setup_portage
 
 run_emerge "-e system"
 

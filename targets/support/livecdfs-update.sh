@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source /tmp/chroot-functions.sh
+RUN_DEFAULT_FUNCS="no"
 
-update_env_settings
+source /tmp/chroot-functions.sh
 
 # Allow root logins to our CD by default
 if [ -e /etc/sshd/sshd_config ]

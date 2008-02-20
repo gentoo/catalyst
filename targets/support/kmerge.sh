@@ -1,11 +1,12 @@
 #!/bin/bash
 
-source /tmp/chroot-functions.sh
+RUN_DEFAULT_FUNCS="no"
 
-mkdir -p /tmp/kerncache
+source /tmp/chroot-functions.sh
 
 check_genkernel_version
 
+mkdir -p /tmp/kerncache
 PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 
 setup_gk_args() {

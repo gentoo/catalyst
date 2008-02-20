@@ -4,6 +4,18 @@
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
   targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage4/stage4-chroot.sh, targets/support/chroot-functions.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/post-kmerge.sh, targets/support/pre-kmerge.sh,
+  targets/support/unmerge.sh, targets/tinderbox/tinderbox-chroot.sh:
+  Removing any functions that we now call by default when we source
+  chroot-functions.sh by default.
+
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/netboot/netboot-chroot.sh, targets/netboot2/netboot2-pkg.sh,
   targets/stage1/stage1-chroot.sh, targets/stage2/stage2-chroot.sh,
   targets/stage3/stage3-chroot.sh, targets/stage4/stage4-chroot.sh,

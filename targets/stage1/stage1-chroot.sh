@@ -2,12 +2,6 @@
 
 . /tmp/chroot-functions.sh
 
-update_env_settings
-
-setup_myfeatures
-
-show_debug
-
 # Setup our environment
 export clst_buildpkgs="$(/tmp/build.py)"
 export STAGE1_USE="$(portageq envvar STAGE1_USE)"

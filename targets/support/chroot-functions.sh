@@ -13,7 +13,10 @@ trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 #	* user types ctrl-c
 #	* kernel recognizes this and generates SIGINT signal
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
- 
+
+# We do this everywhere, so why not put it in this script
+run_default_funcs
+
 check_genkernel_version(){
 	if [ -x /usr/bin/genkernel ]
 	then
@@ -118,7 +121,7 @@ setup_myfeatures(){
 }
 
 setup_myemergeopts(){
-	if [ -n "${clst_VERBOSE}" ] || [ -n "${clst_DEBUG}" ]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		clst_myemergeopts="--verbose"
 	else
@@ -243,6 +246,43 @@ run_emerge() {
 	emerge ${clst_myemergeopts} $@ || exit 1
 }
 
+show_debug() {
+	if [ "${clst_DEBUG}" = "1" ]
+	then
+		echo "DEBUG:"
+		echo "Profile inheritance:"
+		python -c 'import portage; print portage.settings.profiles'
+		echo
+		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
+		echo
+		echo "USE (profile):         $(portageq envvar USE)"
+		echo "USE (stage1):          ${USE}"
+		echo "FEATURES (profile):    $(portageq envvar FEATURES)"
+		echo "FEATURES (stage1):     ${FEATURES}"
+		echo
+		echo "ARCH:                  $(portageq envvar ARCH)"
+		echo "CHOST:                 $(portageq envvar CHOST)"
+		echo "CFLAGS:                $(portageq envvar CFLAGS)"
+		echo
+		echo "PROFILE_ARCH:          $(portageq envvar PROFILE_ARCH)"
+		echo
+		echo "ABI:                   $(portageq envvar ABI)"
+		echo "DEFAULT_ABI:           $(portageq envvar DEFAULT_ABI)"
+		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
+		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
+		echo
+	fi
+}
+
+run_default_funcs() {
+	if [ -z "${RUN_DEFAULT_FUNCS}" ]
+	then
+		update_env_settings
+		setup_myfeatures
+		show_debug
+	fi
+}
+
 # Functions
 # Copy libs of a executable in the chroot
 function copy_libs() {
@@ -330,32 +370,4 @@ Name=Gentoo Linux Handbook
 GenericName=Gentoo Linux Handbook
 Comment=This is a link to the local copy of the Gentoo Linux Handbook.
 Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
-}
-
-show_debug() {
-	if [ "${clst_DEBUG}" = "1" ]
-	then
-		echo "DEBUG:"
-		echo "Profile inheritance:"
-		python -c 'import portage; print portage.settings.profiles'
-		echo
-		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
-		echo
-		echo "USE (profile):         $(portageq envvar USE)"
-		echo "USE (stage1):          ${USE}"
-		echo "FEATURES (profile):    $(portageq envvar FEATURES)"
-		echo "FEATURES (stage1):     ${FEATURES}"
-		echo
-		echo "ARCH:                  $(portageq envvar ARCH)"
-		echo "CHOST:                 $(portageq envvar CHOST)"
-		echo "CFLAGS:                $(portageq envvar CFLAGS)"
-		echo
-		echo "PROFILE_ARCH:          $(portageq envvar PROFILE_ARCH)"
-		echo
-		echo "ABI:                   $(portageq envvar ABI)"
-		echo "DEFAULT_ABI:           $(portageq envvar DEFAULT_ABI)"
-		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
-		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
-		echo
-	fi
 }

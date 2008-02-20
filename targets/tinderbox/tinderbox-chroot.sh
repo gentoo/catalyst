@@ -2,10 +2,6 @@
 
 . /tmp/chroot-functions.sh
 
-update_env_settings
-
-setup_myfeatures
-
 # START THE BUILD
 setup_portage
 
