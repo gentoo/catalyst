@@ -6,6 +6,8 @@ update_env_settings
 
 setup_myfeatures
 
+show_debug
+
 ## START BUILD
 setup_portage
 

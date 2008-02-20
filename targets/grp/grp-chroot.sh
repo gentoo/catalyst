@@ -4,9 +4,9 @@
 
 update_env_settings
 
-[ -f /tmp/envscript ] && source /tmp/envscript
-
 setup_myfeatures
+
+show_debug
 
 ## START BUILD
 setup_portage

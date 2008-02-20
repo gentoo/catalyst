@@ -6,6 +6,8 @@ update_env_settings
 
 setup_myfeatures
 
+show_debug
+
 # Setup our environment
 export clst_buildpkgs="$(/tmp/build.py)"
 export STAGE1_USE="$(portageq envvar STAGE1_USE)"
@@ -18,20 +20,6 @@ then
 	echo "Your profile seems to be broken."
 	echo "Could not build a list of build packages."
 	echo "Double check your /etc/make.profile link and the 'packages' files."
-	exit 1
-fi
-
-if [ "${clst_DEBUG}" = "1" ]
-then
-	echo "DEBUG:"
-	echo "Profile inheritance:"
-	python -c 'import portage; print portage.settings.profiles'
-	echo "STAGE1_USE:		 $(portageq envvar STAGE1_USE)"
-	echo "USE (profile):		 $(portageq envvar USE)"
-	echo "USE (stage1):		 ${USE}"
-	echo "FEATURES (profile):	 $(portageq envvar FEATURES)"
-	echo "FEATURES (stage1):	 ${FEATURES}"
-
 	exit 1
 fi
 

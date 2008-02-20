@@ -4,6 +4,10 @@
 
 update_env_settings
 
+setup_myfeatures
+
+show_debug
+
 if [ -n "${clst_FETCH}" ]
 then
 	export clst_myemergeopts="${clst_myemergeopts} -f"
@@ -11,7 +15,6 @@ fi
 
 case ${clst_target} in
 	livecd*|stage4)
-		export USE="livecd"
 		run_emerge --oneshot genkernel
 		install -d /tmp/kerncache
 

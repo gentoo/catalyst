@@ -118,7 +118,7 @@ setup_myfeatures(){
 }
 
 setup_myemergeopts(){
-	if [ -n "${clst_VERBOSE}" ]
+	if [ -n "${clst_VERBOSE}" ] || [ -n "${clst_DEBUG}" ]
 	then
 		clst_myemergeopts="--verbose"
 	else
@@ -283,9 +283,9 @@ function copy_symlink() {
 		cp -vfdp ${1} ${clst_root_path}/${1}
 	
 	if [[ -n $(type -p realpath) ]]; then
-	    TARGET=`realpath ${1}`
+		TARGET=`realpath ${1}`
 	else
-	    TARGET=`readlink -f ${1}`
+		TARGET=`readlink -f ${1}`
 	fi
 	if [ -h ${TARGET} ]
 	then
@@ -330,4 +330,32 @@ Name=Gentoo Linux Handbook
 GenericName=Gentoo Linux Handbook
 Comment=This is a link to the local copy of the Gentoo Linux Handbook.
 Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
+}
+
+show_debug() {
+	if [ "${clst_DEBUG}" = "1" ]
+	then
+		echo "DEBUG:"
+		echo "Profile inheritance:"
+		python -c 'import portage; print portage.settings.profiles'
+		echo
+		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
+		echo
+		echo "USE (profile):         $(portageq envvar USE)"
+		echo "USE (stage1):          ${USE}"
+		echo "FEATURES (profile):    $(portageq envvar FEATURES)"
+		echo "FEATURES (stage1):     ${FEATURES}"
+		echo
+		echo "ARCH:                  $(portageq envvar ARCH)"
+		echo "CHOST:                 $(portageq envvar CHOST)"
+		echo "CFLAGS:                $(portageq envvar CFLAGS)"
+		echo
+		echo "PROFILE_ARCH:          $(portageq envvar PROFILE_ARCH)"
+		echo
+		echo "ABI:                   $(portageq envvar ABI)"
+		echo "DEFAULT_ABI:           $(portageq envvar DEFAULT_ABI)"
+		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
+		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
+		echo
+	fi
 }

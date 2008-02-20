@@ -1,6 +1,16 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/netboot2/netboot2-pkg.sh,
+  targets/stage1/stage1-chroot.sh, targets/stage2/stage2-chroot.sh,
+  targets/stage3/stage3-chroot.sh, targets/stage4/stage4-chroot.sh,
+  targets/support/chroot-functions.sh, targets/support/pre-kmerge.sh:
+  Clean up the debug code that I've added to stage1, move it to
+  chroot_functions.sh, and call it from all of our main targets.
+
   14 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/generic_stage_target.py:
   Wow. I need to make sure that we actually comment comments in make.conf or

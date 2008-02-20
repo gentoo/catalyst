@@ -6,11 +6,11 @@ update_env_settings
 
 setup_myfeatures
 
-## START BUILD
-# We need portage to be merged manually with USE="build" set to avoid frying
-# our make.conf, otherwise, the system target could take care of it.
+show_debug
 
 setup_portage
+
+## START BUILD
 
 run_emerge "-e system"
 

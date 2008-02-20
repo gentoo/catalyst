@@ -6,6 +6,8 @@ update_env_settings
 
 setup_myfeatures
 
+show_debug
+
 # Setup the environment
 export DESTROOT="${clst_root_path}"
 export clst_root_path="/"
