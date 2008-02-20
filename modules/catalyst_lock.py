@@ -58,7 +58,8 @@ class LockDir:
 
 	def set_gid(self,gid):
 		if not self.islocked():
-			#print "setting gid to", gid 
+			if self.settings.has_key("DEBUG"):
+				print "setting gid to", gid 
 			self.gid=gid
 
 	def set_lockdir(self,lockdir):
@@ -69,20 +70,23 @@ class LockDir:
 				if lockdir[-1] == "/":
 					lockdir=lockdir[:-1]
 				self.lockdir=normpath(lockdir)
-				#print "setting lockdir to", self.lockdir
+				if self.settings.has_key("DEBUG"):
+					print "setting lockdir to", self.lockdir
 		else:
 			raise "the lock object needs a path to a dir"
 
 	def set_lockfilename(self,lockfilename):
 		if not self.islocked():
 			self.lockfilename=lockfilename
-			#print "setting lockfilename to", self.lockfilename
+			if self.settings.has_key("DEBUG"):
+				print "setting lockfilename to", self.lockfilename
 	
 	def set_lockfile(self):
 		if not self.islocked():
 			self.lockfile=normpath(self.lockdir+'/'+self.lockfilename)
-			#print "setting lockfile to", self.lockfile
-    
+			if self.settings.has_key("DEBUG"):
+				print "setting lockfile to", self.lockfile
+
 	def read_lock(self):
 		if not self.locking_method == "HARDLOCK":
 			self.fcntl_lock("read")
@@ -135,10 +139,10 @@ class LockDir:
 				raise
 			if e.errno == errno.EAGAIN:
 				if not LockDir.die_on_failed_lock:
-					# resource temp unavailable; eg, someone beat us to the lock.
+					# Resource temp unavailable; eg, someone beat us to the lock.
 					writemsg("waiting for lock on %s\n" % self.lockfile)
 
-					# try for the exclusive or shared lock again.
+					# Try for the exclusive or shared lock again.
 					if locktype == "read":
 						self.locking_method(self.myfd,fcntl.LOCK_SH)
 					else:
@@ -197,16 +201,17 @@ class LockDir:
 						except:
 							print "Read lock may be in effect. skipping lockfile delete..."
 							InUse=True
-							### We won the lock, so there isn't competition for it.
-							### We can safely delete the file.
-							###writemsg("Got the lockfile...\n")
-							###writemsg("Unlinking...\n")
+							# We won the lock, so there isn't competition for it.
+							# We can safely delete the file.
+							#writemsg("Got the lockfile...\n")
+							#writemsg("Unlinking...\n")
 							self.locking_method(self.myfd,fcntl.LOCK_UN)
 					if not InUse:
 						os.unlink(self.lockfile)
 						os.close(self.myfd)
 						self.myfd=None
-						#print "Unlinked lockfile..."
+						if self.settings.has_key("DEBUG"):
+							print "Unlinked lockfile..."
 				except SystemExit, e:
 					raise
 				except Exception, e:
@@ -215,7 +220,7 @@ class LockDir:
 					print "Failed to get lock... someone took it."
 					print str(e)
 
-					# why test lockfilename?  because we may have been handed an
+					# Why test lockfilename?  Because we may have been handed an
 					# fd originally, and the caller might not like having their
 					# open fd closed automatically on them.
 					#if type(lockfilename) == types.StringType:
@@ -254,8 +259,9 @@ class LockDir:
 			except SystemExit, e:
 				raise
 			except Exception, e:
-				#print "lockfile(): Hardlink: Link failed."
-				#print "Exception: ",e
+				if self.settings.has_key("DEBUG"):
+					print "lockfile(): Hardlink: Link failed."
+					print "Exception: ",e
 				pass
 
 			if self.hardlink_is_mine(self.myhardlock, self.lockfile):
