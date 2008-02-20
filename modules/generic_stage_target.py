@@ -1074,6 +1074,10 @@ class generic_stage_target(generic_target):
 				myf.write("# These are the USE flags that were used in addition to what is provided by the\n# profile used for building.\n")
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
+				if '-*' in myusevars:
+					print "\nWarning!!!  "
+					print "\tThe use of -* in " + self.settings["spec_prefix"] + "/use will cause portage to ignore\n"
+					print "\tpackage.use in the profile and portage_confdir. You've been warned!"
 
 			""" Setup the portage overlay """
 			if self.settings.has_key("portage_overlay"):
