@@ -65,7 +65,7 @@ def hexify(str):
 def generate_contents(file,contents_function="auto",verbose=False):
 	try:
 		_ = contents_function
-		if _ is 'auto' and file.endswith('.iso'):
+		if _ == 'auto' and file.endswith('.iso'):
 			_ = 'isoinfo-l'
 		if (_ in ['tar-tv','auto']):
 			if file.endswith('.tgz') or file.endswith('.tar.gz'):

@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst_support.py:
+  change 'is' to == because python is grumpy
+
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/livecd-stage2_template.spec, examples/stage4_template.spec,
   modules/livecd_stage2_target.py, targets/support/kmerge.sh,
