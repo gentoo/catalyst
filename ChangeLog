@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/catalyst_lock.py:
+  Since my python sucks and I don't feel like troubleshooting it at the
+  moment, commenting out all the DEBUG code in catalyst_lock and rolling up
+  2.0.6_pre8 for testing.
+
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> AUTHORS, catalyst,
   modules/builder.py, modules/catalyst_lock.py:
   Added some extra debug output to catalyst_lock.py and added Stuart Longland

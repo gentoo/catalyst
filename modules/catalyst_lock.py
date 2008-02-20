@@ -58,8 +58,8 @@ class LockDir:
 
 	def set_gid(self,gid):
 		if not self.islocked():
-			if self.settings.has_key("DEBUG"):
-				print "setting gid to", gid 
+#			if self.settings.has_key("DEBUG"):
+#				print "setting gid to", gid 
 			self.gid=gid
 
 	def set_lockdir(self,lockdir):
@@ -70,22 +70,22 @@ class LockDir:
 				if lockdir[-1] == "/":
 					lockdir=lockdir[:-1]
 				self.lockdir=normpath(lockdir)
-				if self.settings.has_key("DEBUG"):
-					print "setting lockdir to", self.lockdir
+#				if self.settings.has_key("DEBUG"):
+#					print "setting lockdir to", self.lockdir
 		else:
 			raise "the lock object needs a path to a dir"
 
 	def set_lockfilename(self,lockfilename):
 		if not self.islocked():
 			self.lockfilename=lockfilename
-			if self.settings.has_key("DEBUG"):
-				print "setting lockfilename to", self.lockfilename
-	
+#			if self.settings.has_key("DEBUG"):
+#				print "setting lockfilename to", self.lockfilename
+
 	def set_lockfile(self):
 		if not self.islocked():
 			self.lockfile=normpath(self.lockdir+'/'+self.lockfilename)
-			if self.settings.has_key("DEBUG"):
-				print "setting lockfile to", self.lockfile
+#			if self.settings.has_key("DEBUG"):
+#				print "setting lockfile to", self.lockfile
 
 	def read_lock(self):
 		if not self.locking_method == "HARDLOCK":
@@ -210,8 +210,8 @@ class LockDir:
 						os.unlink(self.lockfile)
 						os.close(self.myfd)
 						self.myfd=None
-						if self.settings.has_key("DEBUG"):
-							print "Unlinked lockfile..."
+#						if self.settings.has_key("DEBUG"):
+#							print "Unlinked lockfile..."
 				except SystemExit, e:
 					raise
 				except Exception, e:
@@ -259,9 +259,9 @@ class LockDir:
 			except SystemExit, e:
 				raise
 			except Exception, e:
-				if self.settings.has_key("DEBUG"):
-					print "lockfile(): Hardlink: Link failed."
-					print "Exception: ",e
+#				if self.settings.has_key("DEBUG"):
+#					print "lockfile(): Hardlink: Link failed."
+#					print "Exception: ",e
 				pass
 
 			if self.hardlink_is_mine(self.myhardlock, self.lockfile):
