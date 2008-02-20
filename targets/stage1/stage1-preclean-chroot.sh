@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 # Now, some finishing touches to initialize gcc-config....
 unset ROOT

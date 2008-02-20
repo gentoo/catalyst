@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 # START THE BUILD
 setup_portage
@@ -24,17 +24,17 @@ do
 		fi
 	fi
 
-	mkdir -p /tmp/packages/$x
+	mkdir -source /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
 	run_emerge $x
 
 	if [ "$?" != "0" ]
 	then
-		echo "! $x" >> /tmp/tinderbox.log	
+		echo "! $x" >source /tmp/tinderbox.log	
 	else
-		echo "$x" >> /tmp/tinderbox.log
+		echo "$x" >source /tmp/tinderbox.log
 	fi
 	echo "Syncing from original pristine tinderbox snapshot..."
 	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude \
-		"/usr/portage/" /tmp/rsync-bak/ /
+		"/usr/portage/source /tmp/rsync-bak/ /
 done

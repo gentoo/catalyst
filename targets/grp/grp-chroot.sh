@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 ## START BUILD
 setup_portage

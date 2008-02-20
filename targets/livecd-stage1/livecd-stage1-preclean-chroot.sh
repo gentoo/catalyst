@@ -1,5 +1,5 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 cleanup_stages

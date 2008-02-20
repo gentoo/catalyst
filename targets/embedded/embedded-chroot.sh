@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 # Setup the environment
 export DESTROOT="${clst_root_path}"

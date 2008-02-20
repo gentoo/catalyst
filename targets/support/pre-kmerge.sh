@@ -1,11 +1,11 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 case ${clst_target} in
 	livecd*|stage4)
 		run_emerge --oneshot genkernel
-		install -d /tmp/kerncache
+		install -source /tmp/kerncache
 
 		# Setup case structure for livecd_type
 		case ${clst_livecd_type} in
@@ -22,7 +22,7 @@ case ${clst_target} in
 
 	netboot2)
 		run_emerge --oneshot genkernel
-		install -d /tmp/kerncache
+		install -source /tmp/kerncache
 
 		# Set the netboot builddate/hostname in linuxrc and copy to proper arch
 		# directory in genkernel
@@ -36,7 +36,7 @@ case ${clst_target} in
 			${clst_merge_path}
 
 		echo ">>> Copying busybox config ..."
-		cp -f /tmp/busy-config \
+		cp -source /tmp/busy-config \
 			/usr/share/genkernel/${clst_hostarch}/busy-config
 	;;
 esac

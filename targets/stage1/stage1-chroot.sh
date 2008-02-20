@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /tmp/chroot-functions.sh
+source /tmp/chroot-functions.sh
 
 # Setup our environment
 export clst_buildpkgs="$(/tmp/build.py)"
