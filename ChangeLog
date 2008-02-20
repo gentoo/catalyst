@@ -1,22 +1,29 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/pre-kmerge.sh, targets/tinderbox/tinderbox-chroot.sh:
+  Fix up the sed for genkernel so it works on versions both before and after
+  3.4.10_pre2 and fixing a couple places where my sed for the . -> source
+  change was a bit too aggressive.
+
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/bootloader-setup.sh:
-  Change grub timeout to 15 seconds instead of 150
+  Change grub timeout to 15 seconds instead of 150.
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/pre-kmerge.sh:
-  Comment out sed on genkernel executable as it appears to do nothing these days
+  Comment out sed on genkernel executable as it appears to do nothing these
+  days.
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Only call find on libdirs that actually exist. Thanks to Kristoffer
-  <krek6597@student.uu.se> in bug 210807
+  <krek6597@student.uu.se> in bug #210807.
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  Add warning about -* in foo/use in the spec
+  Add warning about -* in foo/use in the spec.
 
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh,
@@ -101,7 +108,7 @@
 
   13 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  Sort and de-dupe myusevars
+  Sort and de-dupe myusevars.
 
   13 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
@@ -172,7 +179,7 @@
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
   Make the --kerncache option to genkernel dependent on 'kerncache' being in
-  options, so that it can actually be turned off
+  options, so that it can actually be turned off.
 
   07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/amd64.py,
   arch/mips.py:
@@ -180,11 +187,11 @@
   before it has been defined.
 
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org> arch/powerpc.py:
-  Reorder arch/powerpc.py to make python happy
+  Reorder arch/powerpc.py to make python happy.
 
   07 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/snapshot_target.py:
-  Change .svn --include to an --exclude like it was supposed to be
+  Change .svn --include to an --exclude like it was supposed to be.
 
   07 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> arch/mips.py,
   catalyst:
@@ -228,7 +235,7 @@
   modules/netboot2_target.py, targets/support/kmerge.sh:
   Add patch to enabled netboot2/linuxrc and automatically add path for
   initramfs overlay to genkernel commandline. Thanks to Justin Bronder
-  <jsbronder@gentoo.org> in bug #208106
+  <jsbronder@gentoo.org> in bug #208106.
 
   06 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/netboot2_target.py:
@@ -244,7 +251,7 @@
 
   03 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/bootloader-setup.sh:
-  Add splashimage= line to grub.conf if /boot/grub/splash.xpm.gz exists
+  Add splashimage= line to grub.conf if /boot/grub/splash.xpm.gz exists.
 
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   examples/generic_stage_template.spec, examples/grp_template.spec,
@@ -268,7 +275,7 @@
 
   02 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/bootloader-setup.sh:
-  Add 'pager on' to grub.conf for bug 208531
+  Add 'pager on' to grub.conf for bug #208531.
 
   02 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/README.txt, livecd/files/x86-F6.msg:
@@ -305,7 +312,7 @@
   targets/livecd-stage2/livecd-stage2-controller.sh,
   targets/support/livecdfs-update.sh:
   We apparently still need profiles/eclass for building the stage3 from the
-  livecd with the installer.
+  LiveCD with the installer.
 
   17 Nov 2007; Andrew Gaffney <agaffney@gentoo.org> arch/mips.py:
   Apply patch for MIPS N32 support from Stuart Longland <redhatter@gentoo.org>
@@ -336,7 +343,7 @@
 
   11 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  Add an extra warning into the generated make.conf about changing the CHOST
+  Add an extra warning into the generated make.conf about changing the CHOST.
 
   01 Nov 2007; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/livecdfs-update.sh:
@@ -377,23 +384,24 @@
   to go poking around if we need to touch anything in libdir.
 
   11 Oct 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst:
-  print an error saying what target failed before the traceback
+  Print an error saying what target failed before the traceback.
 
   25 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
-  when parsing make.conf, first try pkgcore's
+  When parsing make.conf, first try pkgcore's
   snakeoil.fileutils.read_bash_dict(), then portage's
-  portage_util.getconfig(), then the internal parse_makeconf()
+  portage_util.getconfig(), then the internal parse_makeconf().
 
   06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
-  raise an exception in parse_spec() if there's a duplicate key in the spec
+  Raise an exception in parse_spec() if there's a duplicate key in the spec.
 
   06 Sep 2007; Andrew Gaffney <agaffney@gentoo.org>
   examples/netboot_template.spec, examples/tinderbox_template.spec,
   modules/grp_target.py, modules/tinderbox_target.py:
-  remove redundant set_pkgcache_path() functions from tinderbox and grp modules
-  remove extra pkgcache_path and kerncache_path options from example specs
+  Remove redundant set_pkgcache_path() functions from tinderbox and grp
+  modules, and remove extra pkgcache_path and kerncache_path options from
+  example specs.
 
   31 Aug 2007; Chris Gianelloni <wolf31o2@gentoo.org> catalyst:
   This is catalyst 2.0.5_pre3 for testing the new stages code.
@@ -420,7 +428,8 @@
   22 Aug 2007; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py, modules/stage1_target.py,
   modules/stage2_target.py:
-  'chost' option is only valid in stage 1/2 specs. have catalyst error otherwise
+  The 'chost' option is only valid in stage 1/2 specs.  Have catalyst error
+  otherwise.
 
   13 Aug 2007; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/generic_stage_target.py, modules/netboot2_target.py:

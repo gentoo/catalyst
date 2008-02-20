@@ -24,17 +24,17 @@ do
 		fi
 	fi
 
-	mkdir -source /tmp/packages/$x
+	mkdir -p /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
 	run_emerge $x
 
 	if [ "$?" != "0" ]
 	then
-		echo "! $x" >source /tmp/tinderbox.log	
+		echo "! $x" >> /tmp/tinderbox.log	
 	else
-		echo "$x" >source /tmp/tinderbox.log
+		echo "$x" >> /tmp/tinderbox.log
 	fi
 	echo "Syncing from original pristine tinderbox snapshot..."
 	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude \
-		"/usr/portage/source /tmp/rsync-bak/ /
+		"/usr/portage/" /tmp/rsync-bak/ /
 done
