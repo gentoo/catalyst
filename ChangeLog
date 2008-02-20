@@ -2,6 +2,10 @@
 # $Id: $
 
   20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Change grub timeout to 15 seconds instead of 150
+
+  20 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/pre-kmerge.sh:
   Comment out sed on genkernel executable as it appears to do nothing these days
 
