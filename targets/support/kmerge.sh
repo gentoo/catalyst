@@ -6,7 +6,7 @@ source /tmp/chroot-functions.sh
 
 check_genkernel_version
 
-mkdir -p /tmp/kerncache
+install -d /tmp/kerncache
 PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 
 setup_gk_args() {
@@ -25,14 +25,19 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2"
 	fi
 
-	if [ "${clst_splash_type}" == "bootsplash" -a -n "${clst_splash_theme}" ]
+	if [ -n "${clst_splash_theme}" ]
 	then
-		GK_ARGS="${GK_ARGS} --bootsplash=${clst_splash_theme}"
-	fi
-	
-	if [ "${clst_splash_type}" == "gensplash" -a -n "${clst_splash_theme}" ]
-	then
-		GK_ARGS="${GK_ARGS} --gensplash=${clst_splash_theme}"
+		GK_ARGS="${GK_ARGS} --splash=${clst_splash_theme}"
+		# Setup case structure for livecd_type
+		case ${clst_livecd_type} in
+			gentoo-release-minimal|gentoo-release-universal)
+				case ${clst_hostarch} in
+					amd64|x86)
+						GK_ARGS="${GK_ARGS} --splash-res=1024x768"
+					;;
+				esac
+			;;
+		esac
 	fi
 
 	if [ -d "/tmp/initramfs_overlay/${clst_initramfs_overlay}" ]

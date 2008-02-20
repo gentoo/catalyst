@@ -28,6 +28,9 @@ class livecd_stage2_target(generic_stage_target):
 		if not self.settings.has_key("livecd/type"):
 			self.settings["livecd/type"] = "generic-livecd"
 
+		if self.settings.has_key("livecd/splash_type"):
+			print "Using livecd/splash_type is deprecated as we no longer support bootsplash."
+
 		file_locate(self.settings, ["cdtar","controller_file"])
 	
 	def set_source_path(self):

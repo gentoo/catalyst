@@ -190,22 +190,8 @@ esac
 
 rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt /etc/gamecd.motd.txt
 
-# Setup splash/bootsplash (if called for)
-if [ "${clst_livecd_splash_type}" == "bootsplash" -a -n \
-	"${clst_livecd_splash_theme}" ]
-then
-	if [ -d /etc/bootsplash/${clst_livecd_splash_theme} ]
-	then
-		sed -i 's:BOOTSPLASH_THEME=\"gentoo\":BOOTSPLASH_THEME=\"${clst_livecd_splash_theme}\":' /etc/conf.d/bootsplash
-		rm -f /etc/bootsplash/default
-		ln -s "/etc/bootsplash/${clst_livecd_splash_theme}" \
-			/etc/bootsplash/default
-	else
-		echo "Error, cannot setup bootsplash theme ${clst_livecd_splash_theme}"
-		exit 1
-	fi
-elif [ "${clst_livecd_splash_type}" == "gensplash" -a -n \
-	"${clst_livecd_splash_theme}" ]
+# Setup splash (if called for)
+if [ -n "${clst_livecd_splash_theme}" ]
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then

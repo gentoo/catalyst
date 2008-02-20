@@ -106,15 +106,8 @@ stage4/packages:
 # stage4/fsscript:
 stage4/fsscript:
 
-# The splash type determines the automatic arguments for the bootloader on
-# supported architectures.  The possible options are gensplash and bootsplash.
-# example:
-# stage4/splash_type: gensplash
-stage4/splash_type:
-
-# This is where you set the splash theme.  This theme must be present in either
-# /etc/splash or /etc/bootsplash, depending on your stage4/splash_type, before
-# the kernel has completed building during the stage4-stage2 target.
+# This is where you set the splash theme.  This theme must be present in
+# /etc/splash, before the kernel has completed building.
 # example:
 # stage4/splash_theme: livecd-2006.1
 stage4/splash_theme:
@@ -123,7 +116,7 @@ stage4/splash_theme:
 # defined in this target.  It is useful for passing arguments to genkernel that
 # are not otherwise available via the stage4-stage2 spec file.
 # example:
-# stage4/gk_mainargs: --lvm2 --dmraid
+# stage4/gk_mainargs: --lvm --dmraid
 stage4/gk_mainargs:
 
 # This option allows you to specify your own linuxrc script for genkernel to use# when building your CD.  This is not checked for functionality, so it is up to
@@ -175,13 +168,6 @@ stage4/rcdel:
 # example:
 # stage4/root_overlay:
 stage4/root_overlay:
-
-# This is here to enable udev support in both catalyst and genkernel.  This
-# option requires genkernel >= 3.1.0, and is not needed with genkernel >=3.2.0,
-# as udev is the default.
-# example:
-# stage4/devmanager: udev
-stage4/devmanager:
 
 # This is used by catalyst to copy the specified file to /etc/X11/xinit/xinitrc
 # and is used by the stage4/type gentoo-gamecd and generic-livecd.  While the
@@ -262,11 +248,11 @@ stage4/unmerge:
 # rid of files that don't belong to a particular package, or removing files from
 # a package that you wish to keep, but won't need the full functionality.
 # example:
-# stage4/empty: /var/tmp /var/cache /var/db /var/empty /var/lock /var/log /var/run /var/spool /var/state /tmp /usr/portage /usr/share/man /usr/share/info /usr/share/unimaps /usr/include /usr/share/zoneinfo /usr/share/dict /usr/share/doc /usr/share/ss /usr/share/state /usr/share/texinfo /usr/lib/python2.2 /usr/lib/portage /usr/share/gettext /usr/share/i18n /usr/share/rfc /usr/lib/X11/config /usr/lib/X11/etc /usr/lib/X11/doc /usr/src /usr/share/doc /usr/share/man /root/.ccache /etc/cron.daily /etc/cron.hourly /etc/cron.monthly /etc/cron.weekly /etc/logrotate.d /etc/rsync /usr/lib/awk /usr/lib/ccache /usr/lib/gcc-config /usr/lib/nfs /usr/local /usr/diet/include /usr/diet/man /usr/share/consolefonts/partialfonts /usr/share/consoletrans /usr/share/emacs /usr/share/gcc-data /usr/share/genkernel /etc/bootsplash/gentoo /etc/bootsplash/gentoo-highquality /etc/splash/gentoo /etc/splash/emergence /usr/share/gnuconfig /usr/share/lcms /usr/share/locale /etc/skel
+# stage4/empty: /var/tmp /var/cache /var/db /var/empty /var/lock /var/log /var/run /var/spool /var/state /tmp /usr/portage /usr/share/man /usr/share/info /usr/share/unimaps /usr/include /usr/share/zoneinfo /usr/share/dict /usr/share/doc /usr/share/ss /usr/share/state /usr/share/texinfo /usr/lib/python2.2 /usr/lib/portage /usr/share/gettext /usr/share/i18n /usr/share/rfc /usr/lib/X11/config /usr/lib/X11/etc /usr/lib/X11/doc /usr/src /usr/share/doc /usr/share/man /root/.ccache /etc/cron.daily /etc/cron.hourly /etc/cron.monthly /etc/cron.weekly /etc/logrotate.d /etc/rsync /usr/lib/awk /usr/lib/ccache /usr/lib/gcc-config /usr/lib/nfs /usr/local /usr/diet/include /usr/diet/man /usr/share/consolefonts/partialfonts /usr/share/consoletrans /usr/share/emacs /usr/share/gcc-data /usr/share/genkernel /etc/splash/gentoo /etc/splash/emergence /usr/share/gnuconfig /usr/share/lcms /usr/share/locale /etc/skel
 stage4/empty:
 
 # This option tells catalyst to clean specific files from the filesystem and is
 # very usefu in cleaning up stray files in /etc left over after stage4/unmerge.
 # example:
-# stage4/rm: /lib/*.a /usr/lib/*.a /usr/lib/gcc-lib/*/*/libgcj* /etc/dispatch-conf.conf /etc/etc-update.conf /etc/*- /etc/issue* /etc/make.conf /etc/man.conf /etc/*.old /root/.viminfo /usr/sbin/bootsplash* /usr/sbin/fb* /usr/sbin/fsck.cramfs /usr/sbin/fsck.minix /usr/sbin/mkfs.minix /usr/sbin/mkfs.bfs /usr/sbin/mkfs.cramfs /lib/security/pam_access.so /lib/security/pam_chroot.so /lib/security/pam_debug.so /lib/security/pam_ftp.so /lib/security/pam_issue.so /lib/security/pam_mail.so /lib/security/pam_motd.so /lib/security/pam_mkhomedir.so /lib/security/pam_postgresok.so /lib/security/pam_rhosts_auth.so /lib/security/pam_userdb.so /usr/share/consolefonts/1* /usr/share/consolefonts/7* /usr/share/consolefonts/8* /usr/share/consolefonts/9* /usr/share/consolefonts/A* /usr/share/consolefonts/C* /usr/share/consolefonts/E* /usr/share/consolefonts/G* /usr/share/consolefonts/L* /usr/share/consolefonts/M* /usr/share/consolefonts/R* /usr/share/consolefonts/a* /usr/share/consolefonts/c* /usr/share/consolefonts/dr* /usr/share/consolefonts/g* /usr/share/consolefonts/i* /usr/share/consolefonts/k* /usr/share/consolefonts/l* /usr/share/consolefonts/r* /usr/share/consolefonts/s* /usr/share/consolefonts/t* /usr/share/consolefonts/v* /etc/splash/livecd-2006.1/16* /etc/splash/livecd-2006.1/12* /etc/splash/livecd-2006.1/6* /etc/splash/livecd-2006.1/8* /etc/splash/livecd-2006.1/images/silent-16* /etc/splash/livecd-2006.1/images/silent-12* /etc/splash/livecd-2006.1/images/silent-6* /etc/splash/livecd-2006.1/images/silent-8* /etc/splash/livecd-2006.1/images/verbose-16* /etc/splash/livecd-2006.1/images/verbose-12* /etc/splash/livecd-2006.1/images/verbose-6* /etc/splash/livecd-2006.1/images/verbose-8* /etc/make.conf.example /etc/make.globals /etc/resolv.conf
+# stage4/rm: /lib/*.a /usr/lib/*.a /usr/lib/gcc-lib/*/*/libgcj* /etc/dispatch-conf.conf /etc/etc-update.conf /etc/*- /etc/issue* /etc/make.conf /etc/man.conf /etc/*.old /root/.viminfo /usr/sbin/fb* /usr/sbin/fsck.cramfs /usr/sbin/fsck.minix /usr/sbin/mkfs.minix /usr/sbin/mkfs.bfs /usr/sbin/mkfs.cramfs /lib/security/pam_access.so /lib/security/pam_chroot.so /lib/security/pam_debug.so /lib/security/pam_ftp.so /lib/security/pam_issue.so /lib/security/pam_mail.so /lib/security/pam_motd.so /lib/security/pam_mkhomedir.so /lib/security/pam_postgresok.so /lib/security/pam_rhosts_auth.so /lib/security/pam_userdb.so /usr/share/consolefonts/1* /usr/share/consolefonts/7* /usr/share/consolefonts/8* /usr/share/consolefonts/9* /usr/share/consolefonts/A* /usr/share/consolefonts/C* /usr/share/consolefonts/E* /usr/share/consolefonts/G* /usr/share/consolefonts/L* /usr/share/consolefonts/M* /usr/share/consolefonts/R* /usr/share/consolefonts/a* /usr/share/consolefonts/c* /usr/share/consolefonts/dr* /usr/share/consolefonts/g* /usr/share/consolefonts/i* /usr/share/consolefonts/k* /usr/share/consolefonts/l* /usr/share/consolefonts/r* /usr/share/consolefonts/s* /usr/share/consolefonts/t* /usr/share/consolefonts/v* /etc/splash/livecd-2006.1/16* /etc/splash/livecd-2006.1/12* /etc/splash/livecd-2006.1/6* /etc/splash/livecd-2006.1/8* /etc/splash/livecd-2006.1/images/silent-16* /etc/splash/livecd-2006.1/images/silent-12* /etc/splash/livecd-2006.1/images/silent-6* /etc/splash/livecd-2006.1/images/silent-8* /etc/splash/livecd-2006.1/images/verbose-16* /etc/splash/livecd-2006.1/images/verbose-12* /etc/splash/livecd-2006.1/images/verbose-6* /etc/splash/livecd-2006.1/images/verbose-8* /etc/make.conf.example /etc/make.globals /etc/resolv.conf
 stage4/rm:

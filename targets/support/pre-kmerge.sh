@@ -2,27 +2,12 @@
 
 source /tmp/chroot-functions.sh
 
+run_emerge --oneshot genkernel
+install -d /tmp/kerncache
+
 case ${clst_target} in
 	livecd*|stage4)
-		run_emerge --oneshot genkernel
-		install -d /tmp/kerncache
 
-		# Setup case structure for livecd_type
-		case ${clst_livecd_type} in
-			gentoo-release-minimal | gentoo-release-universal)
-				case ${clst_hostarch} in
-					amd64|x86)
-						if [ -x /usr/share/genkernel/genkernel ]
-						then
-							gk=/usr/share/genkernel/genkernel
-						else
-							gk=/usr/bin/genkernel
-						fi
-						sed -i 's/initramfs_data.cpio.gz /initramfs_data.cpio.gz -r 1024x768 /' ${gk}
-					;;
-				esac
-			;;
-		esac
 	;;
 
 	netboot2)

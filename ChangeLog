@@ -2,6 +2,14 @@
 # $Id: $
 
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  examples/livecd-stage2_template.spec, examples/stage4_template.spec,
+  modules/livecd_stage2_target.py, targets/support/kmerge.sh,
+  targets/support/livecdfs-update.sh, targets/support/pre-kmerge.sh,
+  targets/support/rc-update.sh:
+  Removing support for bootsplash, since it hasn't been in a supported kernel
+  in a couple years and isn't accepted upstream.
+
+  20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/pre-kmerge.sh, targets/tinderbox/tinderbox-chroot.sh:
   Fix up the sed for genkernel so it works on versions both before and after
   3.4.10_pre2 and fixing a couple places where my sed for the . -> source

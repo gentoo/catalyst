@@ -121,15 +121,8 @@ livecd/iso:
 # livecd/fsscript:
 livecd/fsscript:
 
-# The splash type determines the automatic arguments for the bootloader on
-# supported architectures.  The possible options are gensplash and bootsplash.
-# example:
-# livecd/splash_type: gensplash
-livecd/splash_type:
-
-# This is where you set the splash theme.  This theme must be present in either
-# /etc/splash or /etc/bootsplash, depending on your livecd/splash_type, before
-# the kernel has completed building during the livecd-stage2 target.
+# This is where you set the splash theme.  This theme must be present in
+# /etc/splash, before the kernel has completed building.
 # example:
 # livecd/splash_theme: livecd-2006.1
 livecd/splash_theme:
@@ -144,7 +137,7 @@ livecd/bootargs:
 # defined in this target.  It is useful for passing arguments to genkernel that
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
-# livecd/gk_mainargs: --lvm2 --dmraid
+# livecd/gk_mainargs: --lvm --dmraid
 livecd/gk_mainargs:
 
 # This option allows you to specify your own linuxrc script for genkernel to use
@@ -225,13 +218,6 @@ livecd/overlay:
 # example:
 # livecd/root_overlay:
 livecd/root_overlay:
-
-# This is here to enable udev support in both catalyst and genkernel.  This
-# option requires genkernel >= 3.1.0, and is not needed with genkernel >=3.2.0,
-# as udev is the default.
-# example:
-# livecd/devmanager: udev
-livecd/devmanager:
 
 # This is used by catalyst to copy the specified file to /etc/X11/xinit/xinitrc
 # and is used by the livecd/type gentoo-gamecd and generic-livecd.  While the
