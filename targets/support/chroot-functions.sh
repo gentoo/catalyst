@@ -14,9 +14,6 @@ trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 #	* kernel recognizes this and generates SIGINT signal
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
 
-# We do this everywhere, so why not put it in this script
-run_default_funcs
-
 check_genkernel_version(){
 	if [ -x /usr/bin/genkernel ]
 	then
@@ -285,6 +282,9 @@ show_debug() {
 		echo "Profile/target info:"
 		echo "Profile inheritance:"
 		python -c 'import portage; print portage.settings.profiles'
+		# TODO: grab our entire env
+		# <zmedico> to get see the ebuild env you can do something like:
+		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside /etc/portage/bashrc
 		echo
 		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
 		echo
@@ -323,7 +323,7 @@ show_debug() {
 }
 
 run_default_funcs() {
-	if [ -z "${RUN_DEFAULT_FUNCS}" ]
+	if [ "${RUN_DEFAULT_FUNCS}" != "no" ]
 	then
 		update_env_settings
 		setup_myfeatures
@@ -419,3 +419,7 @@ GenericName=Gentoo Linux Handbook
 Comment=This is a link to the local copy of the Gentoo Linux Handbook.
 Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
 }
+
+# We do this everywhere, so why not put it in this script
+run_default_funcs
+

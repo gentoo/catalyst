@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/chroot-functions.sh:
+  Adding a note to myself for better debug and moving run_default_funcs to the
+  bottom of the script so it gets executed. Since this can otherwise break
+  pkgcache, I'm making this catalyst 2.0.6_pre9 for testing, immediately.
+
   21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/stage2/stage2-chroot.sh,
   targets/support/chroot-functions.sh:
