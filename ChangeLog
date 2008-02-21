@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
+  Changing modules-update to update-modules to quiet a warning and keep us
+  from having it get removed out from under us.
+
   21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/support/chroot-functions.sh:
   Adding a note to myself for better debug and moving run_default_funcs to the

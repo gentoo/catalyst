@@ -229,7 +229,7 @@ SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
-/sbin/modules-update --assume-kernel=${clst_fudgeuname}
+/sbin/update-modules --assume-kernel=${clst_fudgeuname}
 
 unset USE
 echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
