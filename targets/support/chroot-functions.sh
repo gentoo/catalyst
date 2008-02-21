@@ -214,15 +214,7 @@ cleanup_stages() {
 }
 
 update_env_settings(){
-	which env-update > /dev/null 2>&1
-	ret=$?
-	if [ $ret -eq 0 ]
-	then
-		ENV_UPDATE=`which env-update`
-		${ENV_UPDATE}
-	else
-		echo "WARNING: env-update not found, skipping!"
-	fi
+	[ -x /usr/sbin/env-update ] && /usr/sbin/env-update
 	source /etc/profile
 	[ -f /tmp/envscript ] && source /tmp/envscript
 }
@@ -285,6 +277,7 @@ show_debug() {
 		# TODO: grab our entire env
 		# <zmedico> to get see the ebuild env you can do something like:
 		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside /etc/portage/bashrc
+		# XXX: Also, portageq does *not* source profile.bashrc at any time.
 		echo
 		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
 		echo

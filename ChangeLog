@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  OK, we shouldn't use which to find env-update, since /usr/sbin isn't in the
+  PATH by default. Instead, simply check if it exists.
+
   21 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:
   Remove temporary package listing code, since --verbose is forced on with
