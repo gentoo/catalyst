@@ -345,7 +345,7 @@ case ${clst_hostarch} in
 			icfg=$1/isolinux/isolinux.cfg
 			kmsg=$1/isolinux/kernels.msg
 			echo "default ${first}" > ${icfg}
-			echo "timeout 15" >> ${icfg}
+			echo "timeout 150" >> ${icfg}
 			echo "prompt 1" >> ${icfg}
 			echo "display boot.msg" >> ${icfg}
 			echo "F1 kernels.msg" >> ${icfg}
@@ -454,7 +454,7 @@ case ${clst_hostarch} in
 		then
 			icfg=$1/boot/grub/grub.conf
 			echo "default 1" > ${icfg}
-			echo "timeout 150" >> ${icfg}
+			echo "timeout 15" >> ${icfg}
 			echo "pager on" >> ${icfg}
 
 			if [ -e ${1}/boot/grub/splash.xpm.gz ]; then
