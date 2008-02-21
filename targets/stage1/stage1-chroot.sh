@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# We do this first, so we know our package list for --debug
+export clst_buildpkgs="$(/tmp/build.py)"
+
 source /tmp/chroot-functions.sh
 
 # Setup our environment
-export clst_buildpkgs="$(/tmp/build.py)"
 export STAGE1_USE="$(portageq envvar STAGE1_USE)"
 export USE="-* bindist build ${STAGE1_USE}"
 export FEATURES="${clst_myfeatures} nodoc noman noinfo"
@@ -22,4 +24,4 @@ clst_root_path=/ setup_portage
 
 USE="-build" run_emerge "--oneshot --nodeps virtual/baselayout"
 
-USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --oneshot ${clst_buildpkgs}"
+USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --oneshot --newuse ${clst_buildpkgs}"

@@ -1,6 +1,19 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  21 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh, targets/stage2/stage2-chroot.sh,
+  targets/support/chroot-functions.sh:
+  Moved creating of stage1 package list to the beginning of stage1-chroot.sh
+  so we can get the output with --debug, added --newuse to the options for
+  stage1, as we should always rebuild any package where the USE has changed,
+  removed removal of portage logs from stage2-chroot.sh since it is being done
+  by cleanup_stages, moved world removal in cleanup_stages into a check for
+  stages 1 through 3, made update_env_settings check for the existence of
+  env-update before running it since we now run update_env_settings by default
+  everywhere chroot-functions.sh is sourced, and added a section to show_debug
+  to list the packages, since we don't yet force-enable verbose with debug.
+
   20 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/catalyst_lock.py:
   Since my python sucks and I don't feel like troubleshooting it at the

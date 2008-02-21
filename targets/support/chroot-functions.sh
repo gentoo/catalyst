@@ -202,15 +202,30 @@ cleanup_stages() {
 	then
 		cleanup_icecream
 	fi
-	rm -f /var/lib/portage/world
-	touch /var/lib/portage/world
+	case ${clst_target} in
+		stage1|stage2|stage3)
+			rm -f /var/lib/portage/world
+			touch /var/lib/portage/world
+			;;
+		*)
+			echo "Skipping removal of world file for ${clst_target}"
+			;;
+	esac
 
 	rm -f /var/log/emerge.log /var/log/portage/elog/*
 	rm -rf /var/tmp/*
 }
 
 update_env_settings(){
-	/usr/sbin/env-update
+	which env-update > /dev/null 2>&1
+	ret=$?
+	if [ $ret -eq 0 ]
+	then
+		ENV_UPDATE=`which env-update`
+		${ENV_UPDATE}
+	else
+		echo "WARNING: env-update not found, skipping!"
+	fi
 	source /etc/profile
 	[ -f /tmp/envscript ] && source /tmp/envscript
 }
@@ -265,7 +280,9 @@ run_emerge() {
 show_debug() {
 	if [ "${clst_DEBUG}" = "1" ]
 	then
+		unset PACKAGES
 		echo "DEBUG:"
+		echo "Profile/target info:"
 		echo "Profile inheritance:"
 		python -c 'import portage; print portage.settings.profiles'
 		echo
@@ -287,6 +304,21 @@ show_debug() {
 		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
 		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
 		echo
+		### XXX: This is temporary until we make --debug force-enable --verbose
+		if [ -n "${clst_buildpkgs}" ]
+		then
+			PACKAGES=${clst_buildpkgs}
+		elif [ -n "${clst_packages}" ]
+		then
+			PACKAGES=${clst_packages}
+		fi
+		if [ -n "${PACKAGES}" ]
+		then
+			echo "Packages:"
+			echo "${PACKAGES}"
+			echo
+		fi
+		### XXX: end of section to remove
 	fi
 }
 
