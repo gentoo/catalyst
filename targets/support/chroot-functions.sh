@@ -304,21 +304,6 @@ show_debug() {
 		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
 		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
 		echo
-		### XXX: This is temporary until we make --debug force-enable --verbose
-		if [ -n "${clst_buildpkgs}" ]
-		then
-			PACKAGES=${clst_buildpkgs}
-		elif [ -n "${clst_packages}" ]
-		then
-			PACKAGES=${clst_packages}
-		fi
-		if [ -n "${PACKAGES}" ]
-		then
-			echo "Packages:"
-			echo "${PACKAGES}"
-			echo
-		fi
-		### XXX: end of section to remove
 	fi
 }
 

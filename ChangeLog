@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  21 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Remove temporary package listing code, since --verbose is forced on with
+  --debug
+
   21 Feb 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Force-enable --verbose when using --debug
 
