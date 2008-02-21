@@ -270,6 +270,7 @@ if __name__ == "__main__":
 				sys.exit(2)
 			else:
 				conf_values["DEBUG"]="1"
+				conf_values["VERBOSE"]="1"
 
 		if o in ("-c", "--config"):
 			if len(sys.argv) < 3:
