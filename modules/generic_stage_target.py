@@ -1156,21 +1156,21 @@ class generic_stage_target(generic_target):
 					self.settings[self.settings["spec_prefix"]+"/empty"]=\
 						self.settings[self.settings["spec_prefix"]+\
 						"/empty"].split()
-			for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
-				myemp=self.settings["destpath"]+x
-				if not os.path.isdir(myemp):
-					print x,"not a directory or does not exist, skipping 'empty' operation."
-					continue
-				print "Emptying directory",x
-				""" 
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+				for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
+					myemp=self.settings["destpath"]+x
+					if not os.path.isdir(myemp):
+						print x,"not a directory or does not exist, skipping 'empty' operation."
+						continue
+					print "Emptying directory",x
+					""" 
+					stat the dir, delete the dir, recreate the dir and set
+					the proper perms and ownership
+					"""
+					mystat=os.stat(myemp)
+					shutil.rmtree(myemp)
+					os.makedirs(myemp,0755)
+					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+					os.chmod(myemp,mystat[ST_MODE])
 			touch(self.settings["autoresume_path"]+"empty")
 
 	def remove(self):

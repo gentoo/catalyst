@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  26 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/generic_stage_target.py:
+  Fix leading whitespace in empty() so it's only executed if there's something
+  to execute it on. Thanks to Justin Bronder <jsbronder@gentoo.org> in bug
+  211410 for pointing this out
+
   21 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/rc-update.sh:
   Quote baselayout package atom
