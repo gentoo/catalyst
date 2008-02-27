@@ -132,6 +132,12 @@ case $1 in
 			cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
 		fi
 
+		if [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
+		then
+			mkdir -p $1/snapshots
+			cp -f ${clst_snapshot_path}* $1/snapshots
+		fi
+
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
     unmerge)
