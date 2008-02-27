@@ -1,6 +1,13 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  27 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/bootloader-setup.sh:
+  Removed checks on livecd/splash_type, since we only support one type,
+  removed remaining bootsplash code from bootloader-setup.sh, added automatic
+  copying of splash.xpm.gz for Gentoo releases when using grub, and moved grub
+  help to bottom of titles. This is catalyst 2.0.6_pre10 for testing.
+
   27 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Let's automatically copy in the snapshot if livecd/type is

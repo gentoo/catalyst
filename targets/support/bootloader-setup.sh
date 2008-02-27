@@ -34,10 +34,10 @@ case ${clst_hostarch} in
 			echo "init=/linuxrc ${cmdline_opts} cdroot" >> ${acfg}
 			((bctr=${bctr}+1))
 		done
-		;;
+	;;
 	arm)
 		# NO SOFTLEVEL SUPPORT YET
-		;;
+	;;
 	hppa)
 		# NO SOFTLEVEL SUPPORT YET
 		icfg=$1/boot/palo.conf
@@ -46,28 +46,9 @@ case ${clst_hostarch} in
 		echo "--commandline=0/${first} initrd=${first}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
-		;;
+	;;
 	ppc)
 		# NO SOFTLEVEL SUPPORT YET
-		
-		# PPC requirements: 
-		# -----------------
-		# The specs indicate the kernels to be build. We need to put
-		# those kernels and the corresponding initrd.img.gz(s) in the
-		# /boot directory. This directory contains a message boot.msg 
-		# containing some info to be displayed on boot, a configuration
-		# (yaboot.conf) specifying the boot options (kernel/initrd 
-		# combinations). The boot directory also contains a file called
-		# yaboot, which normally gets copied from the live environment.
-		# For now we supply a prebuilt file, prebuilt configuration 
-		# and prebuilt boot message. This can be enhanced later on
-		# but the following suffices for now:
-
-		# this sets up the config file for yaboot
-
-
-		# ADD RUNLEVEL SUPPORT ???
-
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
 
@@ -80,7 +61,7 @@ case ${clst_hostarch} in
 		echo "message=/boot/boot.msg" >> ${icfg}
 
 		# Here is where I fix up the boot.msg file.
-		sed -e 's/ARCH/PPC/' \
+		sed -e 's/ARCH/PowerPC/' \
 			-e 's/HARDWARE/32-bit Apple and Pegasos hardware/' \
 			-i $kmsg
 
@@ -100,7 +81,7 @@ case ${clst_hostarch} in
 
 			echo "label=${x}" >> ${icfg}
 			echo "read-write" >> ${icfg}
-			if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+			if [ -n "${clst_livecd_splash_theme}" ]
 			then
 				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 			else
@@ -108,28 +89,8 @@ case ${clst_hostarch} in
 			fi
 		done
 	;;
-	
 	ppc64)
 		# NO SOFTLEVEL SUPPORT YET
-		
-		# PPC requirements: 
-		# -----------------
-		# The specs indicate the kernels to be build. We need to put
-		# those kernels and the corresponding initrd.img.gz(s) in the
-		# /boot directory. This directory contains a message boot.msg 
-		# containing some info to be displayed on boot, a configuration
-		# (yaboot.conf) specifying the boot options (kernel/initrd 
-		# combinations). The boot directory also contains a file called
-		# yaboot, which normally gets copied from the live environment.
-		# For now we supply a prebuilt file, prebuilt configuration 
-		# and prebuilt boot message. This can be enhanced later on
-		# but the following suffices for now:
-
-		# this sets up the config file for yaboot
-
-
-		# ADD RUNLEVEL SUPPORT ???
-
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
 
@@ -140,7 +101,7 @@ case ${clst_hostarch} in
 		echo "message=/boot/boot.msg" >> ${icfg}
 		
 		# Here is where I fix up the boot.msg file.
-		sed -e 's/ARCH/PPC/' \
+		sed -e 's/ARCH/PowerPC/' \
 			-e 's/HARDWARE/64-bit Apple and IBM hardware/' \
 			-i $kmsg
 
@@ -175,7 +136,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${etc_icfg}
 					echo "read-write" >> ${icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
 					else
@@ -208,7 +169,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${etc_icfg}
 					echo "read-write" >> ${etc_icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
 					else
@@ -228,7 +189,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${icfg}
 					echo "read-write" >> ${icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 					else
@@ -260,7 +221,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${icfg}
 					echo "read-write" >> ${icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
 					else
@@ -280,10 +241,9 @@ case ${clst_hostarch} in
 			fi
 		fi
 
-		;;
+	;;
 	sparc*)
 		# NO SOFTLEVEL SUPPORT YET
-		
 		scfg=$1/boot/silo.conf
 		echo "default=\"help\"" > ${scfg}
 		echo "message=\"/boot/boot.msg\"" >> ${scfg}
@@ -305,10 +265,9 @@ case ${clst_hostarch} in
 		echo -e "label=\"help\"" >> ${scfg}
 		echo "image=\"cat /boot/parameters.msg\"" >> ${scfg}
 		echo -e "label=\"parameters\"" >> ${scfg}
-		;;
+	;;
 	ia64)
 		# NO SOFTLEVEL SUPPORT YET
-		
 		iacfg=$1/boot/elilo.conf
 		echo 'prompt' > ${iacfg}
 		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
@@ -336,7 +295,7 @@ case ${clst_hostarch} in
 			mv $1/boot/${x}{,.igz} $1/boot/efi/boot
 		done
 		cp ${iacfg} $1/boot/efi/boot
-		;;
+	;;
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
 		then
@@ -377,12 +336,9 @@ case ${clst_hostarch} in
 					do
 						echo "label ${x}-${y}" >> ${icfg}
 						echo "  kernel ${x}" >> ${icfg}
-						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						if [ -n "${clst_livecd_splash_theme}" ]
 						then
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
 						fi
@@ -398,12 +354,9 @@ case ${clst_hostarch} in
 				else
 					echo "label ${x}" >> ${icfg}
 					echo "  kernel ${x}" >> ${icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 					else
 						echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
 					fi
@@ -457,16 +410,18 @@ case ${clst_hostarch} in
 			echo "timeout 15" >> ${icfg}
 			echo "pager on" >> ${icfg}
 
+			# Copy our splash if we're a Gentoo release
+			case ${clst_livecd_type} in
+				gentoo-*)
+					[ -e ${clst_chroot_path}/boot/grub/splash.xpm.gz ] && \
+						cp -f ${clst_chroot_path}/boot/grub/splash.xpm.gz \
+						${1}/boot/grub
+				;;
+			esac
+
 			if [ -e ${1}/boot/grub/splash.xpm.gz ]; then
 				echo "splashimage=/boot/grub/splash.xpm.gz" >> ${icfg}
 			fi
-
-			# Setup help message
-			echo >> ${icfg}
-			echo "title help" >> ${icfg}
-			cp ${clst_sharedir}/livecd/files/README.txt \
-				$1/boot/help.msg
-			echo "cat /boot/help.msg" >> ${icfg}
 
 			for x in ${clst_boot_kernel}
 			do
@@ -481,12 +436,9 @@ case ${clst_hostarch} in
 					for y in ${clst_kernel_softlevel}
 					do
 						echo "title ${x}-${y}" >> ${icfg}
-						if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+						if [ -n "${clst_livecd_splash_theme}" ]
 						then
 							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-						elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent" >> ${icfg}
 						else
 							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
 						fi
@@ -505,12 +457,9 @@ case ${clst_hostarch} in
 					done
 				else
 					echo "title ${x}" >> ${icfg}
-					if [ "${clst_livecd_splash_type}" == "gensplash" -a -n "${clst_livecd_splash_theme}" ]
+					if [ -n "${clst_livecd_splash_theme}" ]
 					then
 						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					elif [ "${clst_livecd_splash_type}" == "bootplash" -a -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent" >> ${icfg}
 					else
 						echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}
 					fi
@@ -529,6 +478,13 @@ case ${clst_hostarch} in
 
 			done
 
+			# Setup help message
+			echo >> ${icfg}
+			echo "title help" >> ${icfg}
+			cp ${clst_sharedir}/livecd/files/README.txt \
+				$1/boot/help.msg
+			echo "cat /boot/help.msg" >> ${icfg}
+
 			if [ -f $1/boot/memtest86 ]
 			then
 				echo >> ${icfg}
@@ -536,11 +492,9 @@ case ${clst_hostarch} in
 				echo "kernel /boot/memtest86" >> ${icfg}
 			fi
 		fi
-		;;
+	;;
 	mips)
-
 		# NO SOFTLEVEL SUPPORT YET
-
 
 		# Mips is an interesting arch -- where most archs will
 		# use ${1} as the root of the LiveCD, an SGI LiveCD lacks
