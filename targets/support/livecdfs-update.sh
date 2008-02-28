@@ -310,6 +310,7 @@ case ${clst_livecd_type} in
 
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
+		### XXX: Andrew says we don't need this anymore
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage

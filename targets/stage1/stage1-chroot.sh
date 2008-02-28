@@ -6,9 +6,8 @@ export clst_buildpkgs="$(/tmp/build.py)"
 source /tmp/chroot-functions.sh
 
 # Setup our environment
-export STAGE1_USE="$(portageq envvar STAGE1_USE)"
-export USE="-* bindist build ${STAGE1_USE}"
-export FEATURES="${clst_myfeatures} nodoc noman noinfo"
+STAGE1_USE="$(portageq envvar STAGE1_USE)"
+FEATURES="${clst_myfeatures} nodoc noman noinfo"
 
 ## Sanity check profile
 if [ -z "${clst_buildpkgs}" ]
@@ -22,6 +21,15 @@ fi
 ## START BUILD
 clst_root_path=/ setup_pkgmgr
 
-USE="-build" run_merge "--oneshot --nodeps virtual/baselayout"
+# First, we drop in a known-good baselayout
+[ -e ${ROOT}/etc/make.conf ] && \
+	echo 'USE="${USE} -build' >> ${ROOT}/etc/make.conf
+run_merge "--oneshot --nodeps virtual/baselayout"
+sed -i '/USE="${USE} -build/d' ${ROOT}/etc/make.conf
 
-USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
+[ -e ${ROOT}/etc/make.conf ] && \
+	echo 'USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}"' \
+	>> ${ROOT}/etc/make.conf
+run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
+sed -i '/USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}"/d' \
+	${ROOT}/etc/make.conf

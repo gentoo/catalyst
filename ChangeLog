@@ -2,6 +2,13 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/grp/grp-chroot.sh, targets/stage1/stage1-chroot.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh:
+  Rather than using the environment, we write out our USE to make.conf, then
+  remove it once we're done. We don't bother adding clst_HOSTUSE, since it'll
+  be written to make.conf, already.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
   targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,

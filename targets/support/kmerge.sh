@@ -126,7 +126,6 @@ filtered_kname=${clst_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
-export USE="${clst_kernel_use} ${clst_HOSTUSE}"
 
 eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${filtered_kname}_gk_kernargs"
 eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
@@ -185,27 +184,19 @@ then
 	fi
 fi
 
-mkdir -p /tmp/kerncache/${clst_kname}
-	
+[ -e /etc/make.conf ] && echo 'USE="${USE} ${clst_kernel_use} symlink build' \
+	>> /etc/make.conf
+
 if [ -n "${clst_KERNCACHE}" ]
 then
-   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} USE="${USE} symlink build" emerge --nodeps -uqkb  "${clst_ksource}" || exit 1
-#	KERNELVERSION=`/usr/lib/portage/bin/portageq best_visible / "${clst_ksource}"`
-#	if [ ! -e /etc/portage/profile/package.provided ]
-#	then
-#		mkdir -p /etc/portage/profile
-#		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
-#	else
-#		if ( ! grep -q "^${KERNELVERSION}"  /etc/portage/profile/package.provided ) 
-#		then
-#			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
-#		fi
-#	fi
-	[ -d /usr/src/linux ] && rm /usr/src/linux
+mkdir -p /tmp/kerncache/${clst_kname}
+   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_emerge --nodeps -uqkb  "${clst_ksource}" || exit 1
+	[ -l /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
-		USE="${USE} symlink build" emerge "${clst_ksource}" || exit 1
+	run_emerge "${clst_ksource}" || exit 1
 fi
+sed -i '/USE="${USE} ${clst_kernel_use} symlink build/d' /etc/make.conf
 
 # If catalyst has set to a empty string, extraversion wasn't specified so we
 # skip this part

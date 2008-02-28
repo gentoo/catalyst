@@ -5,14 +5,8 @@ source /tmp/chroot-functions.sh
 ## START BUILD
 setup_pkgmgr
 
-unset DISTDIR
-
-# Don't grab MS core fonts, etc.
-export USE="${USE} ${clst_HOSTUSE} ${clst_use}"
-
 if [ "${clst_grp_type}" = "pkgset" ]
 then
-	unset DISTDIR
 	export PKGDIR="/tmp/grp/${clst_grp_target}"
 
 	run_merge --usepkg --buildpkg --noreplace --newuse ${clst_myemergeopts} \
@@ -20,5 +14,4 @@ then
 else
 	DISTDIR="/tmp/grp/${clst_grp_target}" run_merge --fetchonly \
 		${clst_grp_packages} || exit 1
-	unset PKGDIR
 fi
