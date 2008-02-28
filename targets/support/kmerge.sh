@@ -185,7 +185,7 @@ then
 fi
 
 [ -e /etc/make.conf ] && \
-	echo \"USE="${USE} ${clst_kernel_use} symlink build\"" >> /etc/make.conf
+	echo \"USE="\${USE} ${clst_kernel_use} symlink build\"" >> /etc/make.conf
 
 if [ -n "${clst_KERNCACHE}" ]
 then
@@ -196,7 +196,7 @@ mkdir -p /tmp/kerncache/${clst_kname}
 else
 	run_emerge "${clst_ksource}" || exit 1
 fi
-sed -i '/USE="${USE} ${clst_kernel_use} symlink build"/d' /etc/make.conf
+sed -i "/USE=\"\${USE} ${clst_kernel_use} symlink build\"/d" /etc/make.conf
 
 # If catalyst has set to a empty string, extraversion wasn't specified so we
 # skip this part
