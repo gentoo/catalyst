@@ -45,8 +45,6 @@ case $1 in
 			CHOST=${clst_CHOST} \
 				binutils-config ${mythang}
 		fi
-		${clst_CHROOT} ${clst_chroot_path}/tmp/stage1root \
-			/usr/sbin/env-update || exit 1
 
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
 	;;

@@ -2,6 +2,10 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-controller.sh:
+  Removing an extra env-update call from stage1's preclean.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/cdtar/grub-memtest86+-cdtar.tar.bz2,
   targets/support/bootloader-setup.sh:
   Set default for grub to 0 and updated cdtar so we don't ship a half-broken
