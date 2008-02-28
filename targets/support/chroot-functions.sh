@@ -135,16 +135,16 @@ setup_myemergeopts(){
 	fi
 }
 
-setup_portage(){
-	# portage needs to be merged manually with USE="build" set to avoid frying
-	# our make.conf. emerge system could merge it otherwise.
-#	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
-#	then
-#		echo "Portage Autoresume point found not emerging portage"
-#	else
-		USE="build" run_emerge --oneshot --nodeps portage
-#		touch /tmp/.clst_portage || exit 1
-#	fi
+setup_binutils(){
+	if [ -x /usr/bin/binutils-config ]
+	then
+		mythang=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
+		if [ -z "${mythang}" ]
+		then
+			mythang=1
+		fi
+		binutils-config ${mythang}; update_env_settings
+	fi
 }
 
 setup_gcc(){
@@ -159,16 +159,16 @@ setup_gcc(){
 	fi
 }
 
-setup_binutils(){
-	if [ -x /usr/bin/binutils-config ]
-	then
-		mythang=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
-		if [ -z "${mythang}" ]
-		then
-			mythang=1
-		fi
-		binutils-config ${mythang}; update_env_settings
-	fi
+setup_pkgmgr(){
+	# portage needs to be merged manually with USE="build" set to avoid frying
+	# our make.conf. emerge system could merge it otherwise.
+#	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
+#	then
+#		echo "Portage Autoresume point found not emerging portage"
+#	else
+		USE="build" run_emerge --oneshot --nodeps virtual/portage
+#		touch /tmp/.clst_portage || exit 1
+#	fi
 }
 
 cleanup_distcc() {

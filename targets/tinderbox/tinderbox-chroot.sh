@@ -3,7 +3,7 @@
 source /tmp/chroot-functions.sh
 
 # START THE BUILD
-setup_portage
+setup_pkgmgr
 
 # Backup pristine system
 

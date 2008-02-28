@@ -3,7 +3,7 @@
 source /tmp/chroot-functions.sh
 
 ## START BUILD
-setup_portage
+setup_pkgmgr
 
 echo "Bringing system up to date using profile specific use flags"
 run_emerge -u system

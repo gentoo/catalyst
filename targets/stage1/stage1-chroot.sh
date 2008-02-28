@@ -20,7 +20,7 @@ then
 fi
 
 ## START BUILD
-clst_root_path=/ setup_portage
+clst_root_path=/ setup_pkgmgr
 
 USE="-build" run_emerge "--oneshot --nodeps virtual/baselayout"
 

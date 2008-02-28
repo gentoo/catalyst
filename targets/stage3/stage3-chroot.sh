@@ -3,6 +3,6 @@
 source /tmp/chroot-functions.sh
 
 ## START BUILD
-setup_portage
+setup_pkgmgr
 
 run_emerge "-e system"
