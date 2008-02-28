@@ -3,6 +3,11 @@
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
+  Force-enable livecd/users for livecd/type gentoo-release-livecd and
+  gentoo-gamecd.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
   Remove /etc/conf.d/domainname code, since /etc/conf.d/domainname is no
   longer used.
 

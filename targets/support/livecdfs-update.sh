@@ -31,10 +31,25 @@ else
 	echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
 fi
 
+# Since we're an official Gentoo release, we do things the official Gentoo way.
+# As such, we override livecd/users.
+case ${clst_livecd_type} in
+	gentoo-release-livecd)
+		user_comment="Gentoo default user"
+		clst_livecd_users="gentoo"
+	;;
+	gentoo-gamecd)
+		user_comment="Gentoo GameCD default user"
+		clst_livecd_users="gamecd"
+	;;
+esac
+
 # Add any users
 if [ -n "${clst_livecd_users}" ]
 then
 	first_user=$(echo ${clst_livecd_users} | cut -d' ' -f1)
+	default_comment="Default LiveCD User"
+	[ -z "${user_comment}" ] && user_comment=${default_comment}
 
 	# Here we check to see if games exists for bug #125498
 	if [ "$(getent group games | cut -d: -f1)" != "games" ]
@@ -50,7 +65,7 @@ then
 	for x in ${clst_livecd_users}
 	do
 		useradd -G users,wheel,audio,plugdev,games,cdrom,disk,floppy,usb \
-			-c "Default LiveCD User" -m ${x}
+			-g 100 -c ${user_comment} -m ${x}
 		chown -R ${x}:users /home/${x}
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then
