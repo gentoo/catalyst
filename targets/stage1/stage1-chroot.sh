@@ -22,14 +22,13 @@ fi
 clst_root_path=/ setup_pkgmgr
 
 # First, we drop in a known-good baselayout
-[ -e ${ROOT}/etc/make.conf ] && \
-	echo 'USE="${USE} -build' >> ${ROOT}/etc/make.conf
+[ -e /etc/make.conf ] && \
+	echo 'USE="${USE} -build"' >> /etc/make.conf
 run_merge "--oneshot --nodeps virtual/baselayout"
-sed -i '/USE="${USE} -build/d' ${ROOT}/etc/make.conf
+sed -i '/USE="${USE} -build"/d' /etc/make.conf
 
-[ -e ${ROOT}/etc/make.conf ] && \
-	echo 'USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}"' \
-	>> ${ROOT}/etc/make.conf
+[ -e /etc/make.conf ] && \
+	echo 'USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}"' >> /etc/make.conf
 run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
 sed -i '/USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}"/d' \
-	${ROOT}/etc/make.conf
+	/etc/make.conf

@@ -72,9 +72,9 @@ setup_myfeatures(){
 		export clst_myfeatures="${clst_myfeatures} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e /etc/make.conf ] && \
-			echo 'USE="${USE} -avahi -gtk -gnome' >> /etc/make.conf
+			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/make.conf
 		clst_root_path=/ run_merge --oneshot --nodeps sys-devel/distcc || exit 1
-		sed -i '/USE="${USE} -avahi -gtk -gnome/d' /etc/make.conf
+		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
@@ -154,9 +154,9 @@ setup_pkgmgr(){
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/make.conf file.  Otherwise, we could
 	# just let emerge system could merge it.
-	[ -e /etc/make.conf ] && echo 'USE="${USE} build' >> /etc/make.conf
+	[ -e /etc/make.conf ] && echo 'USE="${USE} build"' >> /etc/make.conf
 	run_merge --oneshot --nodeps virtual/portage
-	sed -i '/USE="${USE} build/d' /etc/make.conf
+	sed -i '/USE="${USE} build"/d' /etc/make.conf
 }
 
 cleanup_distcc() {
