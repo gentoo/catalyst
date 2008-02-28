@@ -14,7 +14,7 @@ for x in ${clst_tinderbox_packages}
 do
 	if [ -n "${clst_VERBOSE}" ]
 	then
-		run_emerge --usepkg --buildpkg --newuse -vp $x
+		run_merge --usepkg --buildpkg --newuse -vp $x
 		echo "Press any key within 15 seconds to pause the build..."
 		read -s -t 15 -n 1
 		if [ $? -eq 0 ]
@@ -26,7 +26,7 @@ do
 
 	mkdir -p /tmp/packages/$x
 	export PORT_LOGDIR="/tmp/packages/$x"
-	run_emerge $x
+	run_merge $x
 
 	if [ "$?" != "0" ]
 	then

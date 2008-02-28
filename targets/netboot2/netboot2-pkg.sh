@@ -13,4 +13,4 @@ export FEATURES="${clst_myfeatures}"
 
 # START BUILD
 
-run_emerge ${clst_myemergeopts} ${clst_packages}
+run_merge ${clst_myemergeopts} ${clst_packages}

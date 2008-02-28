@@ -22,6 +22,6 @@ fi
 ## START BUILD
 clst_root_path=/ setup_pkgmgr
 
-USE="-build" run_emerge "--oneshot --nodeps virtual/baselayout"
+USE="-build" run_merge "--oneshot --nodeps virtual/baselayout"
 
-USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_emerge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
+USE="-* bindist build ${STAGE1_USE} ${HOSTUSE}" run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"

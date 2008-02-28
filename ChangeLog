@@ -2,6 +2,19 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
+  targets/livecd-stage1/livecd-stage1-chroot.sh,
+  targets/netboot/netboot-chroot.sh, targets/netboot/netboot-combine.sh,
+  targets/netboot2/netboot2-pkg.sh, targets/stage1/stage1-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh, targets/stage3/stage3-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh, targets/stage4/stage4-chroot.sh,
+  targets/support/chroot-functions.sh, targets/support/pre-kmerge.sh,
+  targets/support/unmerge.sh, targets/tinderbox/tinderbox-chroot.sh:
+  Changing run_emerge to run_merge, changing both setup_portage and
+  setup_myfeatures to add any USE changes to make.conf prior to merge, then
+  removing the settings added, rather than (ab)using the environment.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-chroot.sh, targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/stage1/stage1-chroot.sh, targets/stage3/stage3-chroot.sh,
   targets/stage4/stage4-chroot.sh, targets/support/chroot-functions.sh,

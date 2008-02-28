@@ -64,26 +64,17 @@ setup_myfeatures(){
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
-		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_ccache ]
-		#then
-		#	echo "CCACHE Autoresume point found not emerging ccache"
-		#else
-			clst_root_path=/ run_emerge --oneshot --nodeps ccache || exit 1
-		#	touch /tmp/.clst_ccache
-		#fi
+		clst_root_path=/ run_merge --oneshot --nodeps dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
-		#if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_distcc ]
-		#then
-		#	echo "DISTCC Autoresume point found not emerging distcc"
-		#else
-			USE="-gtk -gnome" clst_root_path=/ run_emerge --oneshot --nodeps distcc || exit 1
-			#touch /tmp/.clst_distcc
-		#fi
+		[ -e /etc/make.conf ] && \
+			echo 'USE="${USE} -avahi -gtk -gnome' >> /etc/make.conf
+		clst_root_path=/ run_merge --oneshot --nodeps sys-devel/distcc || exit 1
+		sed -i '/USE="${USE} -avahi -gtk -gnome/d' /etc/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
@@ -100,7 +91,7 @@ setup_myfeatures(){
 
 	if [ -n "${clst_ICECREAM}" ]
 	then
-		clst_root_path=/ run_emerge --oneshot --nodeps sys-devel/icecream || exit 1
+		clst_root_path=/ run_merge --oneshot --nodeps sys-devel/icecream || exit 1
 
 		# This sets up automatic cross-icecc-fu according to
 		# http://gentoo-wiki.com/HOWTO_Setup_An_ICECREAM_Compile_Cluster#Icecream_and_cross-compiling
@@ -160,15 +151,12 @@ setup_gcc(){
 }
 
 setup_pkgmgr(){
-	# portage needs to be merged manually with USE="build" set to avoid frying
-	# our make.conf. emerge system could merge it otherwise.
-#	if [ "${clst_AUTORESUME}" = "1" -a -e /tmp/.clst_portage ]
-#	then
-#		echo "Portage Autoresume point found not emerging portage"
-#	else
-		USE="build" run_emerge --oneshot --nodeps virtual/portage
-#		touch /tmp/.clst_portage || exit 1
-#	fi
+	# We need to merge our package manager with USE="build" set in case it is
+	# portage to avoid frying our /etc/make.conf file.  Otherwise, we could
+	# just let emerge system could merge it.
+	[ -e /etc/make.conf ] && echo 'USE="${USE} build' >> /etc/make.conf
+	run_merge --oneshot --nodeps virtual/portage
+	sed -i '/USE="${USE} build/d' /etc/make.conf
 }
 
 cleanup_distcc() {
@@ -237,7 +225,7 @@ make_destpath() {
 	fi
 }
 
-run_emerge() {
+run_merge() {
 	# Sets up the ROOT= parameter
 	# with no options ROOT=/
 	make_destpath ${clst_root_path}

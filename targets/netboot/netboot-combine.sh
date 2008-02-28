@@ -35,7 +35,7 @@ case ${clst_hostarch} in
 esac
 
 #if [ ! -z "${booter}" ] ; then
-#	run_emerge ${booter} || exit 1
+#	run_merge ${booter} || exit 1
 #fi
 
 extract_kernels ${clst_chroot_path}/tmp

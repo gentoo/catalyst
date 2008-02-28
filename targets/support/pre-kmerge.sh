@@ -2,7 +2,7 @@
 
 source /tmp/chroot-functions.sh
 
-run_emerge --oneshot genkernel
+run_merge --oneshot genkernel
 install -d /tmp/kerncache
 
 case ${clst_target} in
@@ -11,7 +11,7 @@ case ${clst_target} in
 	;;
 
 	netboot2)
-		run_emerge --oneshot genkernel
+		run_merge --oneshot genkernel
 		install -d /tmp/kerncache
 
 		# Set the netboot builddate/hostname in linuxrc and copy to proper arch

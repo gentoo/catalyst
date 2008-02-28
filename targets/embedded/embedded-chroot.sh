@@ -7,9 +7,9 @@ export DESTROOT="${clst_root_path}"
 export clst_root_path="/"
 
 echo "Installing dependencies into ${DESTROOT}..."
-run_emerge -o "${clst_embedded_packages}"
+run_merge -o "${clst_embedded_packages}"
 
 export clst_root_path="${DESTROOT}"
 export INSTALL_MASK="${clst_install_mask}" 
 
-run_emerge -1 -O "${clst_embedded_packages}"
+run_merge -1 -O "${clst_embedded_packages}"

@@ -15,10 +15,10 @@ then
 	unset DISTDIR
 	export PKGDIR="/tmp/grp/${clst_grp_target}"
 
-	run_emerge --usepkg --buildpkg --noreplace --newuse ${clst_myemergeopts} \
+	run_merge --usepkg --buildpkg --noreplace --newuse ${clst_myemergeopts} \
 		${clst_grp_packages} || exit 1
 else
-	DISTDIR="/tmp/grp/${clst_grp_target}" run_emerge --fetchonly \
+	DISTDIR="/tmp/grp/${clst_grp_target}" run_merge --fetchonly \
 		${clst_grp_packages} || exit 1
 	unset PKGDIR
 fi

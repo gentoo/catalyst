@@ -6,8 +6,8 @@ source /tmp/chroot-functions.sh
 setup_pkgmgr
 
 echo "Bringing system up to date using profile specific use flags"
-run_emerge -u system
+run_merge -u system
 
 echo "Emerging packages using stage4 use flags"
 
-run_emerge "${clst_packages}"
+run_merge "${clst_packages}"
