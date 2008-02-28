@@ -30,8 +30,6 @@ else
 	echo 'HOSTNAME="livecd"' > /etc/conf.d/hostname
 	echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
 fi
-echo 'OVERRIDE=0' > /etc/conf.d/domainname
-echo 'DNSDOMAIN="gentoo"' >> /etc/conf.d/domainname
 
 # Add any users
 if [ -n "${clst_livecd_users}" ]
