@@ -2,6 +2,11 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/create-iso.sh:
+  Change all clst_hostuse checks for ppc/ppc64 to ppc*|powerpc* so we match,
+  no matter what.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/bootloader-setup.sh:
   Let's change our splash checking to a global check so it only needs to be
   done once. This makes much more sense than having all of those if ... else

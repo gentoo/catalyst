@@ -49,11 +49,8 @@ then
 				mips)
 					clst_iso_volume_id="Gentoo Linux - MIPS"
 				;;
-				ppc)
-					clst_iso_volume_id="Gentoo Linux - PPC"
-				;;
-				ppc64)
-					clst_iso_volume_id="Gentoo Linux - PPC64"
+				ppc*|powerpc*)
+					clst_iso_volume_id="Gentoo Linux - PowerPC"
 				;;
 				s390)
 					clst_iso_volume_id="Gentoo Linux - S390"
@@ -65,7 +62,7 @@ then
 					clst_iso_volume_id="Gentoo Linux - SPARC"
 				;;
 				x86)
-					clst_iso_volume_id="Gentoo Linux - X86"
+					clst_iso_volume_id="Gentoo Linux - x86"
 				;;
 				*)
 					clst_iso_volume_id="Catalyst LiveCD"
@@ -74,46 +71,27 @@ then
 	esac
 fi
 
+if [ "${clst_fstype}" == "zisofs" ]
+then
+	mkisofs_opts="-J -z -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
+else
+	mkisofs_opts="-J -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
+fi
+
 # Here we actually create the ISO images for each architecture
 case ${clst_hostarch} in
 	alpha)
-		case ${clst_fstype} in
-			zisofs)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -z -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
-				mkisofs -J -R -l -z -V "${clst_iso_volume_id}" -o ${1} \
-					${clst_target_path}  || die "Cannot make ISO image"
-			;;
-			*)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} \
-					${clst_target_path}"
-				mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
-					${clst_target_path} || die "Cannot make ISO image"
-			;;
-		esac
+		echo ">> Running mkisofs to create iso image...."
+		echo ">> mkisofs -R -l ${mkisofs_opts}"
+		mkisofs -R -l ${mkisofs_opts} || die "Cannot make ISO image"
 		isomarkboot ${1} /boot/bootlx
 	;;
 	arm)
 	;;
 	hppa)
-		case ${clst_fstype} in
-			zisofs)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -z -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
-				mkisofs -J -R -l -z -V "${clst_iso_volume_id}" -o ${1} \
-					${clst_target_path}  || die "Cannot make ISO image"
-			;;
-			*)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} \
-					${clst_target_path}"
-				mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
-					${clst_target_path}  || die "Cannot make ISO image"
-			;;
-		esac
+		echo ">> Running mkisofs to create iso image...."
+		echo ">> mkisofs -R -l ${mkisofs_opts}"
+		mkisofs -R -l ${mkisofs_opts} || die "Cannot make ISO image"
 		palo -f boot/palo.conf -C ${1}
 	;;
 	ia64)
@@ -144,12 +122,9 @@ case ${clst_hostarch} in
 		echo '>> Removing /boot...'
 		rm -rf ${clst_target_path}/boot
 
-		echo '>> Generating ISO...'
-		echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b \
-			gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
-		mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c \
-			boot.cat -no-emul-boot \
-			${clst_target_path} || die "Cannot make ISO image" 
+		echo ">> Running mkisofs to create iso image...."
+		echo ">> mkisofs -R -l -b gentoo.efimg -c boot.cat -no-emul-boot ${mkisofs_opts}"
+		mkisofs -R -l -b gentoo.efimg -c boot.cat -no-emul-boot ${mkisofs_opts} || die "Cannot make ISO image"
 	;;
 	mips)
 		case ${clst_fstype} in
@@ -205,40 +180,10 @@ case ${clst_hostarch} in
 				# o=	output image (burnable to CD; readable by fdisk)
 				/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 			;;
-			*) die "SGI LiveCDs only support the 'normal' fstype!"	;;
+			*) die "SGI LiveCD(s) only support the 'squashfs' fstype!"	;;
 		esac
 	;;
-	ppc)
-		case ${clst_fstype} in
-			zisofs)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe \
-					-map ${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}boot -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
-				mkisofs -J -r -l -z -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
-					${1} ${clst_target_path} || die "Cannot make ISO image"
-			;;
-			*)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -r -l -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}boot -V \"${clst_iso_volume_id}\" -o \
-					${1} ${clst_target_path}"
-				mkisofs -J -r -l -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -V "${clst_iso_volume_id}" -o \
-					${1} ${clst_target_path} || die "Cannot make ISO image"
-			;;
-		esac
-	;;
-	ppc64)
+	ppc*|powerpc*)
 		if [ -f ${clst_target_path}/ppc/bootinfo.txt ]
 		then
 			echo "bootinfo.txt found .. updating it"
@@ -250,38 +195,9 @@ case ${clst_hostarch} in
 			${clst_target_path}/ppc/bootinfo.txt
 		fi
 
-		case ${clst_fstype} in
-			zisofs)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" -V \"${clst_iso_volume_id}\" -o  ${1} ${clst_target_path}"
-				mkisofs -J -r -U -z -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -hide-hfs "zisofs" -hide-hfs "stages" \
-					-hide-hfs "distfiles" -hide-hfs "snapshots" \
-					-V "${clst_iso_volume_id}" -o \
-					${1} ${clst_target_path} || die "Cannot make ISO image"
-			;;
-			*)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid \"${clst_iso_volume_id}\" -hfs-bless \
-					${clst_target_path}boot -V \"${clst_iso_volume_id}\" \
-					-hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" \
-					-hide-hfs \"image.loop\" -hide-hfs \"image.squashfs\" -hide-hfs \"image.jffs\" \
-					-hide-hfs \"image.cramfs\" \
-					-o ${1} ${clst_target_path}"
-				mkisofs -J -r -U -chrp-boot -netatalk -hfs -probe -map \
-					${clst_target_path}boot/map.hfs -part -no-desktop \
-					-hfs-volid "${clst_iso_volume_id}" -hfs-bless \
-					${clst_target_path}boot -V "${clst_iso_volume_id}" \
-					-hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" \
-					-hide-hfs "image.loop" -hide-hfs "image.squashfs" -hide-hfs "image.jffs" \
-					-hide-hfs "image.cramfs" \
-					-o ${1} ${clst_target_path} || die "Cannot make ISO image"
-			;;
-		esac
+		echo ">> Running mkisofs to create iso image...."
+		echo ">> mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" ${mkisofs_opts}"
+		mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" ${mkisofs_opts} || die "Cannot make ISO image"
 	;;
 	sparc*)
 		# Old silo (<=1.2.6) requires a specially built mkisofs

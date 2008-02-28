@@ -48,44 +48,7 @@ case ${clst_hostarch} in
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 	;;
-	ppc)
-		# NO SOFTLEVEL SUPPORT YET
-		icfg=$1/boot/yaboot.conf
-		kmsg=$1/boot/boot.msg
-
-		echo "default ${first}" > ${icfg}
-		echo "timeout 300" >> ${icfg}
-		echo "device=cd:" >> ${icfg}
-		echo "root=/dev/ram" >> ${icfg}
-		echo "fgcolor=white" >> ${icfg}
-		echo "bgcolor=black" >> ${icfg}
-		echo "message=/boot/boot.msg" >> ${icfg}
-
-		# Here is where I fix up the boot.msg file.
-		sed -e 's/ARCH/PowerPC/' \
-			-e 's/HARDWARE/32-bit Apple and Pegasos hardware/' \
-			-i $kmsg
-
-		# Here we wipe out the /ppc directory, if it exists.
-		rm -rf $1/ppc
-
-		for x in ${clst_boot_kernel}
-		do	
-			eval custom_kopts=\$${x}_kernelopts
-			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-			echo "image=/boot/${x}" >> ${icfg}
-
-			if [ -e "$1/boot/${x}.igz" ]
-			then
-				echo "initrd=/boot/${x}.igz" >> ${icfg}
-			fi
-
-			echo "label=${x}" >> ${icfg}
-			echo "read-write" >> ${icfg}
-			echo "append=\"${default_append_line}\"" >> ${icfg}
-		done
-	;;
-	ppc64)
+	ppc*|powerpc*)
 		# NO SOFTLEVEL SUPPORT YET
 		icfg=$1/boot/yaboot.conf
 		kmsg=$1/boot/boot.msg
@@ -98,7 +61,7 @@ case ${clst_hostarch} in
 		
 		# Here is where I fix up the boot.msg file.
 		sed -e 's/ARCH/PowerPC/' \
-			-e 's/HARDWARE/64-bit Apple and IBM hardware/' \
+			-e 's/HARDWARE/Apple and IBM hardware/' \
 			-i $kmsg
 
 		# Setup the IBM yaboot.conf	
@@ -163,6 +126,8 @@ case ${clst_hostarch} in
 					echo "append=\"${default_append_line}\"" >> ${etc_icfg}
 				fi
 			else
+				# Here we wipe out the /ppc directory, if it exists.
+				rm -rf $1/ppc
 				if [ -n "${clst_kernel_console}" ]
 				then
 					echo >> ${icfg}
