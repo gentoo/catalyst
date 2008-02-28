@@ -2,6 +2,11 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  Fix HOSTUSE invocation on stage1, since we use -* at the beginning to
+  disable profile USE.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/support/kmerge.sh:
   OK, we have to escape our quotes, rather than use single quotes, or we don't
   evaluate the variables properly.
