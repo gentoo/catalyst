@@ -2,6 +2,11 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Fixing the snapshot copying so it will only copy the correct snapshot for
+  people who don't know how to properly use wget.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   Fix HOSTUSE invocation on stage1, since we use -* at the beginning to
   disable profile USE.

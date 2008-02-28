@@ -135,7 +135,8 @@ case $1 in
 		if [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
 		then
 			mkdir -p $1/snapshots
-			cp -f ${clst_snapshot_path}* $1/snapshots
+			cp -f ${clst_snapshot_path} $1/snapshots
+			cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
 		fi
 
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
