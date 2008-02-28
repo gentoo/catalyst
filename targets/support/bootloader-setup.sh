@@ -406,7 +406,7 @@ case ${clst_hostarch} in
 		if [ -e $1/boot/grub/stage2_eltorito ]
 		then
 			icfg=$1/boot/grub/grub.conf
-			echo "default 1" > ${icfg}
+#			echo "default 1" > ${icfg}
 			echo "timeout 15" >> ${icfg}
 			echo "pager on" >> ${icfg}
 
