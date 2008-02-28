@@ -2,6 +2,12 @@
 # $Id: $
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Let's change our splash checking to a global check so it only needs to be
+  done once. This makes much more sense than having all of those if ... else
+  ... statements.
+
+  28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/support/kmerge.sh:
   Fix our USE invocation here so things work as expected.
 

@@ -11,6 +11,7 @@ check_bootargs
 check_filesystem_type
 
 default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
+[ -n "${clst_splash_theme}" ] && default_append_line="${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet"
 
 case ${clst_hostarch} in
 	alpha)
@@ -81,12 +82,7 @@ case ${clst_hostarch} in
 
 			echo "label=${x}" >> ${icfg}
 			echo "read-write" >> ${icfg}
-			if [ -n "${clst_livecd_splash_theme}" ]
-			then
-				echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
-			else
-				echo "append=\"${default_append_line}\"" >> ${icfg}
-			fi
+			echo "append=\"${default_append_line}\"" >> ${icfg}
 		done
 	;;
 	ppc64)
@@ -136,12 +132,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${etc_icfg}
 					echo "read-write" >> ${icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
-					else
-						echo "append=\"${default_append_line}\"" >> ${etc_icfg}
-					fi
+					echo "append=\"${default_append_line}\"" >> ${etc_icfg}
 
 					for y in ${clst_kernel_console}
 					do
@@ -169,12 +160,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${etc_icfg}
 					echo "read-write" >> ${etc_icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${etc_icfg}
-					else
-						echo "append=\"${default_append_line}\"" >> ${etc_icfg}
-					fi
+					echo "append=\"${default_append_line}\"" >> ${etc_icfg}
 				fi
 			else
 				if [ -n "${clst_kernel_console}" ]
@@ -189,12 +175,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${icfg}
 					echo "read-write" >> ${icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
-					else
-						echo "append=\"${default_append_line}\"" >> ${icfg}
-					fi
+					echo "append=\"${default_append_line}\"" >> ${icfg}
 					
 					for y in ${clst_kernel_console}
 					do
@@ -221,12 +202,7 @@ case ${clst_hostarch} in
 
 					echo "label=${x}" >> ${icfg}
 					echo "read-write" >> ${icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "append=\"${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet\"" >> ${icfg}
-					else
-						echo "append=\"${default_append_line}\"" >> ${icfg}
-					fi
+					echo "append=\"${default_append_line}\"" >> ${icfg}
 				fi
 			fi
 		done
@@ -336,12 +312,7 @@ case ${clst_hostarch} in
 					do
 						echo "label ${x}-${y}" >> ${icfg}
 						echo "  kernel ${x}" >> ${icfg}
-						if [ -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-						else
-							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
-						fi
+						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
 
 						echo >> ${icfg}
 						echo "   ${x}" >> ${kmsg}
@@ -354,12 +325,7 @@ case ${clst_hostarch} in
 				else
 					echo "label ${x}" >> ${icfg}
 					echo "  kernel ${x}" >> ${icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "  append ${default_append_line} initrd=${x}.igz vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					else
-						echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
-					fi
+					echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
 					echo >> ${icfg}
 					echo "   ${x}" >> ${kmsg}
 					echo "label ${x}-nofb" >> ${icfg}
@@ -436,12 +402,7 @@ case ${clst_hostarch} in
 					for y in ${clst_kernel_softlevel}
 					do
 						echo "title ${x}-${y}" >> ${icfg}
-						if [ -n "${clst_livecd_splash_theme}" ]
-						then
-							echo "kernel /boot/${x} softlevel=${y} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-						else
-							echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
-						fi
+						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
 						if [ -e $1/boot/${x}.igz ]
 						then
 							echo "initrd /boot/${x}.igz" >> ${icfg}
@@ -457,12 +418,7 @@ case ${clst_hostarch} in
 					done
 				else
 					echo "title ${x}" >> ${icfg}
-					if [ -n "${clst_livecd_splash_theme}" ]
-					then
-						echo "kernel /boot/${x} ${default_append_line} vga=791 splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet" >> ${icfg}
-					else
-						echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}
-					fi
+					echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}
 					if [ -e $1/boot/${x}.igz ]
 					then
 						echo "initrd /boot/${x}.igz" >> ${icfg}
