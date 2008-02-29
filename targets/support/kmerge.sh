@@ -185,7 +185,7 @@ then
 fi
 
 [ -e /etc/make.conf ] && \
-	echo \"USE="\${USE} ${clst_kernel_use} symlink build\"" >> /etc/make.conf
+	echo "USE=\"\${USE} ${clst_kernel_use} symlink build\"" >> /etc/make.conf
 
 if [ -n "${clst_KERNCACHE}" ]
 then

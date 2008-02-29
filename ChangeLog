@@ -3,6 +3,10 @@
 
   29 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
+  Escape the correct quote
+
+  29 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/kmerge.sh:
   Change remaining instances of run_emerge to run_merge
 
   28 Feb 2008; Chris Gianelloni <wolf31o2@gentoo.org>
