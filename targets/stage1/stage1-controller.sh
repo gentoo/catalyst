@@ -22,30 +22,6 @@ case $1 in
 			|| exit 1
 	;;
 	preclean)
-		# Before we enter the chroot, we need to run gcc-config/binutils-config
-		if [ -x /usr/bin/gcc-config ] && [ -z "${clst_FETCH}" ]
-		then
-			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
-			if [ -z "${mythang}" ]
-			then
-				mythang=1
-			fi
-			ROOT=${clst_chroot_path}/tmp/stage1root/ \
-			CHOST=${clst_CHOST} \
-				gcc-config ${mythang}
-		fi
-		if [ -x /usr/bin/binutils-config ] && [ -z "${clst_FETCH}" ]
-		then
-			mythang=$( cd ${clst_chroot_path}/tmp/stage1root/etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
-			if [ -z "${mythang}" ]
-			then
-				mythang=1
-			fi
-			ROOT=${clst_chroot_path}/tmp/stage1root/ \
-			CHOST=${clst_CHOST} \
-				binutils-config ${mythang}
-		fi
-
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
 	;;
 	clean)
