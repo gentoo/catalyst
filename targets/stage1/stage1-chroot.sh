@@ -31,5 +31,5 @@ sed -i '/USE="${USE} -build"/d' /etc/make.conf
 	echo "USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/make.conf
 run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
-sed -i "/USE=\"-* bindist build ${STAGE1_USE} ${HOSTUSE}\"/d" \
+sed -i "/USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/make.conf
