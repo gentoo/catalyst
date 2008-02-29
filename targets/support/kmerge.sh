@@ -190,11 +190,11 @@ fi
 if [ -n "${clst_KERNCACHE}" ]
 then
 mkdir -p /tmp/kerncache/${clst_kname}
-   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_emerge --nodeps -uqkb  "${clst_ksource}" || exit 1
+   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge --nodeps -uqkb  "${clst_ksource}" || exit 1
 	[ -l /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
-	run_emerge "${clst_ksource}" || exit 1
+	run_merge "${clst_ksource}" || exit 1
 fi
 sed -i "/USE=\"\${USE} ${clst_kernel_use} symlink build\"/d" /etc/make.conf
 
