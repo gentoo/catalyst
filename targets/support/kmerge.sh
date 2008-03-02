@@ -189,8 +189,8 @@ fi
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-mkdir -p /tmp/kerncache/${clst_kname}
-   	ROOT=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge --nodeps -uqkb  "${clst_ksource}" || exit 1
+	mkdir -p /tmp/kerncache/${clst_kname}
+   	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge --nodeps -uqkb  "${clst_ksource}" || exit 1
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
