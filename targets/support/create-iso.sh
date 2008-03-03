@@ -197,7 +197,7 @@ case ${clst_hostarch} in
 
 		echo ">> Running mkisofs to create iso image...."
 		echo ">> mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" ${mkisofs_opts}"
-		mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid \"${clst_iso_volume_id}\" -hfs-bless ${clst_target_path}boot -hide-hfs \"zisofs\" -hide-hfs \"stages\" -hide-hfs \"distfiles\" -hide-hfs \"snapshots\" ${mkisofs_opts} || die "Cannot make ISO image"
+		mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}boot/map.hfs -part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless ${clst_target_path}boot -hide-hfs "zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" ${mkisofs_opts} || die "Cannot make ISO image"
 	;;
 	sparc*)
 		# Old silo (<=1.2.6) requires a specially built mkisofs
