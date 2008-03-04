@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  04 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/create-iso.sh:
+  Bash fscking sucks, so we have to compromise on this code reduction solution
+  a bit. It's still far better than it was
+
   03 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/create-iso.sh:
   Don't escape quotes when actually running the command
