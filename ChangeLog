@@ -2,6 +2,11 @@
 # $Id: $
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/create-iso.sh:
+  Removed any further checks for clst_fstype and making sure everybody is
+  using ${mkisofs_zisofs_opts}.
+
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   The default theme for GNOME is now Clearlooks, so we can remove the theme
   code, but we still want to set the font size.

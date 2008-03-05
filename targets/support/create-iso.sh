@@ -13,7 +13,7 @@ case ${clst_hostarch} in
 		;;
 	*)
 		cdmaker="mkisofs"
-		cdmakerpkg="app-cdr/cdrtools"
+		cdmakerpkg="app-cdr/cdrkit or app/cdr-cdrtools"
 		;;
 esac
 
@@ -206,50 +206,14 @@ case ${clst_hostarch} in
 		if [ -x ${clst_target_path}/boot/mkisofs.sparc.fu ]
 		then
 			mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
-			case ${clst_fstype} in
-				zisofs)
-				echo "Running mkisofs.sparc.fu to create iso image...."
-				echo "/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S \
-					'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
-				echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
-				/tmp/mkisofs.sparc.fu -z -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
-					-B '/boot/second.b' -s '/boot/silo.conf'\
-					-V "${clst_iso_volume_id}" ${clst_target_path} \
-					|| die "Cannot make ISO image"
-				;;
-				*)
-				echo "Running mkisofs.sparc.fu to create iso image...."
-				echo "/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S \
-					'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf'"
-				echo "-V \"${clst_iso_volume_id}\" ${clst_target_path}"
-				/tmp/mkisofs.sparc.fu -o ${1} -D -r -pad -quiet -S 'boot/cd.b' \
-					-B '/boot/second.b' -s '/boot/silo.conf'\
-					-V "${clst_iso_volume_id}" ${clst_target_path} \
-					|| die "Cannot make ISO image"
-				;;
-			esac
+			echo "Running mkisofs.sparc.fu to create iso image...."
+			echo "/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V \"${clst_iso_volume_id}\" ${clst_target_path}"
+			/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V "${clst_iso_volume_id}" ${clst_target_path} || die "Cannot make ISO image"
 			rm /tmp/mkisofs.sparc.fu
 		else
-			case ${clst_fstype} in
-				zisofs)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -z -V \"${clst_iso_volume_id}\" -o ${1} \
-					-G \"${clst_target_path}/boot/isofs.b\" -B ... \
-					${clst_target_path}"
-				mkisofs -J -R -l -z -V "${clst_iso_volume_id}" -o ${1} \
-					-G "${clst_target_path}/boot/isofs.b" -B ... \
-					${clst_target_path} || die "CAnnot make ISO image"
-				;;
-				*)
-				echo "Running mkisofs to create iso image...."
-				echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} \
-					-G \"${clst_target_path}/boot/isofs.b\" -B ... \
-					${clst_target_path}"
-				mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
-					-G "${clst_target_path}/boot/isofs.b" -B ... \
-					${clst_target_path} || die "CAnnot make ISO image"
-				;;
-			esac
+			echo "Running mkisofs to create iso image...."
+			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -G \"${clst_target_path}/boot/isofs.b\" -B ... ${clst_target_path}"
+			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -G "${clst_target_path}/boot/isofs.b" -B ... ${clst_target_path} || die "CAnnot make ISO image"
 		fi
 
 	;;
@@ -296,151 +260,32 @@ case ${clst_hostarch} in
 					mv ${clst_target_path}/boot/* ${clst_target_path}/isolinux
 					rm -r ${clst_target_path}/boot
 					echo "Creating ISO using ISOLINUX bootloader"
-					case ${clst_fstype} in
-						zisofs)
-							echo "mkisofs -J -R -l -V \
-								\"${clst_iso_volume_id}\" -o ${1} -b \
-								isolinux/isolinux.bin -c isolinux/boot.cat \
-								-no-emul-boot -boot-load-size 4 \
-								-boot-info-table -z ${clst_target_path}"
-							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-								${1} -b isolinux/isolinux.bin -c \
-								isolinux/boot.cat -no-emul-boot \
-								-boot-load-size 4 -boot-info-table -z \
-								${clst_target_path} \
-								|| die "Cannot make ISO image"
-						;;
-						*)
-							echo "mkisofs -J -R -l -V \
-								\"${clst_iso_volume_id}\" -o ${1} -b \
-								isolinux/isolinux.bin -c isolinux/boot.cat \
-								-no-emul-boot -boot-load-size 4 \
-								-boot-info-table ${clst_target_path}"
-							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-								${1} -b isolinux/isolinux.bin -c \
-								isolinux/boot.cat -no-emul-boot \
-								-boot-load-size 4 -boot-info-table \
-								${clst_target_path} \
-								|| die "Cannot make ISO image"
-						;;
-					esac
+					echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}"
+					mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
 				elif [ -e ${clst_target_path}/gentoo.efimg ]
 				then
 					echo "Creating ISO using both ISOLINUX and EFI bootloader"
-					case ${clst_fstype} in
-						zisofs)
-							echo "mkisofs -J -R -l -V \
-								\"${clst_iso_volume_id}\" -o ${1} -b \
-								isolinux/isolinux.bin -c isolinux/boot.cat \
-								-no-emul-boot -boot-load-size 4 \
-								-boot-info-table -eltorito-alt-boot -b \
-								gentoo.efimg -c boot.cat \
-								-no-emul-boot -z ${clst_target_path}"
-							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-								${1} -b isolinux/isolinux.bin -c \
-								isolinux/boot.cat -no-emul-boot \
-								-boot-load-size 4 -boot-info-table \
-								-eltorito-alt-boot -b gentoo.efimg -c \
-								boot.cat -no-emul-boot -z ${clst_target_path} \
-								|| die "Cannot make ISO image"
-						;;
-						*)
-							echo "mkisofs -J -R -l -V \
-								\"${clst_iso_volume_id}\" -o ${1} -b \
-								isolinux/isolinux.bin -c isolinux/boot.cat \
-								-no-emul-boot -boot-load-size 4 \
-								-boot-info-table -eltorito-alt-boot -b \
-								gentoo.efimg -c boot.cat \
-								-no-emul-boot ${clst_target_path}"
-							mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-								${1} -b isolinux/isolinux.bin -c \
-								isolinux/boot.cat -no-emul-boot \
-								-boot-load-size 4 -boot-info-table \
-								-eltorito-alt-boot -b gentoo.efimg -c boot.cat \
-								-no-emul-boot ${clst_target_path} \
-								|| die "Cannot make ISO image"
-						;;
-					esac
+					echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -b gentoo.efimg -c boot.cat -no-emul-boot -z ${clst_target_path}"
+					mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -b gentoo.efimg -c boot.cat -no-emul-boot -z ${clst_target_path} || die "Cannot make ISO image"
 				fi
 			else
 				echo "Creating ISO using ISOLINUX bootloader"
-				case ${clst_fstype} in
-					zisofs)
-						echo "mkisofs -J -R -l -V \
-							\"${clst_iso_volume_id}\" -o ${1} -b \
-							isolinux/isolinux.bin -c isolinux/boot.cat \
-							-no-emul-boot -boot-load-size 4 \
-							-boot-info-table -z ${clst_target_path}"
-						mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-							${1} -b isolinux/isolinux.bin -c \
-							isolinux/boot.cat -no-emul-boot \
-							-boot-load-size 4 -boot-info-table -z \
-							${clst_target_path} \
-							|| die "Cannot make ISO image"
-					;;
-					*)
-						echo "mkisofs -J -R -l -V \
-							\"${clst_iso_volume_id}\" -o ${1} -b \
-							isolinux/isolinux.bin -c isolinux/boot.cat \
-							-no-emul-boot -boot-load-size 4 \
-							-boot-info-table ${clst_target_path}"
-						mkisofs -J -R -l -V "${clst_iso_volume_id}" -o \
-							${1} -b isolinux/isolinux.bin -c \
-							isolinux/boot.cat -no-emul-boot \
-							-boot-load-size 4 -boot-info-table \
-							${clst_target_path} \
-							|| die "Cannot make ISO image"
-					;;
-				esac
+				echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}"
+				mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
 			fi
 		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
 		then
 			echo "Creating ISO using GRUB bootloader"
-			case ${clst_fstype} in
-				zisofs)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} -b boot/grub/stage2_eltorito -c boot/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table -z \
-						${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
-						boot/grub/stage2_eltorito -c boot/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table -z \
-						${clst_target_path} || die "Cannot make ISO image"
-				;;
-				*)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} -b boot/grub/stage2_eltorito -c boot/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table \
-						${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
-						boot/grub/stage2_eltorito -c boot/boot.cat \
-						-no-emul-boot -boot-load-size 4 -boot-info-table \
-						${clst_target_path} || die "Cannot make ISO image"
-				;;
-			esac
+			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}"
+			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
 		elif [ -e ${clst_target_path}/gentoo.efimg ]
 		then
 			echo 'Creating ISO using EFI bootloader'
-			echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o ${1} -b \
-				gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
-			mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} -b \
-				gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path} \
-				|| die "Cannot make ISO image" 
+			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
+			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path} || die "Cannot make ISO image" 
 		else	
-			case ${clst_fstype} in
-				zisofs)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} -z ${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
-						-z ${clst_target_path} || die "Cannot make ISO image"
-				;;
-				*)
-					echo "mkisofs -J -R -l -V \"${clst_iso_volume_id}\" -o \
-						${1} ${clst_target_path}"
-					mkisofs -J -R -l -V "${clst_iso_volume_id}" -o ${1} \
-						${clst_target_path} || die "Cannot make ISO image"
-				;;
-			esac
+			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
+			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
 		fi
 	;;
 esac
