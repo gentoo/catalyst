@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh, targets/support/chroot-functions.sh:
+  Updated make_destpath so it writes out to make.conf as well as exporting
+  ROOT to the environment, added a make_destpath call to cleanup_stages, and
+  adding make_destpath /tmp/stage1root to stage1.
+
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> README, catalyst:
   Updated README a bit and rolling 2.0.6_pre12 for testing.
 

@@ -20,6 +20,7 @@ fi
 
 ## START BUILD
 clst_root_path=/ setup_pkgmgr
+make_destpath /tmp/stage1root
 
 # First, we drop in a known-good baselayout
 [ -e /etc/make.conf ] && \

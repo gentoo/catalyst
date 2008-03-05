@@ -179,6 +179,7 @@ cleanup_icecream() {
 }
 
 cleanup_stages() {
+	make_destpath
 	if [ -n "${clst_DISTCC}" ]
 	then
 		cleanup_distcc
@@ -213,16 +214,17 @@ die() {
 }
 
 make_destpath() {
-	if  [ "${1}" = "" ]
+	# ROOT is / by default, so remove any ROOT= settings from make.conf
+	sed -i '/ROOT=/d' /etc/make.conf
+	export ROOT=/
+	if [ "${1}" != "/" -a -n "${1}" ] 
 	then
-		# ROOT is / by default, so remove any ROOT= settings from make.conf
-		sed -i '/ROOT=/d' /etc/make.conf
-	else
 		echo "ROOT=\"${1}\"" >> /etc/make.conf
-		if [ ! -d ${ROOT} ]
-		then
-			install -d ${ROOT}
-		fi
+		export ROOT=${1}
+	fi
+	if [ ! -d ${ROOT} ]
+	then
+		install -d ${ROOT}
 	fi
 }
 
