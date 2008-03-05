@@ -14,13 +14,16 @@ setup_gk_args() {
 			 --cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp} \
 			 --no-mountboot \
 			 --kerneldir=/usr/src/linux \
-			 --kernel-config=/var/tmp/${clst_kname}.config \
 			 --modulespackage=/tmp/kerncache/${clst_kname}-modules-${clst_version_stamp}.tar.bz2 \
 			 --minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all"
 	# extra genkernel options that we have to test for
 	if [ -n "${clst_KERNCACHE}" ]
 	then
 		GK_ARGS="${GK_ARGS} --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2"
+	fi
+	if [ -e /var/tmp/${clst_kname}.config ]
+	then
+		GK_ARGS="${GK_ARGS} --kernel-config=/var/tmp/${clst_kname}.config"
 	fi
 
 	if [ -n "${clst_splash_theme}" ]

@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
+  Make sure we don't give genkernel a --kernel-config if it isn't set in the
+  spec.
+
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/generic_stage_target.py, targets/support/kmerge.sh,
   targets/support/pre-kmerge.sh:
