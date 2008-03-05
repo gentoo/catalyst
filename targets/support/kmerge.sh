@@ -1,7 +1,5 @@
 #!/bin/bash
 
-RUN_DEFAULT_FUNCS="no"
-
 source /tmp/chroot-functions.sh
 
 check_genkernel_version
@@ -107,12 +105,6 @@ genkernel_compile(){
 build_kernel() {
 	genkernel_compile
 }
-
-# Script to build each kernel, kernel-related packages
-/usr/sbin/env-update
-source /etc/profile
-
-setup_myfeatures
 
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 export CONFIG_PROTECT="-*"
