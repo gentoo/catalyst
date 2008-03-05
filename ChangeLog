@@ -2,6 +2,11 @@
 # $Id: $
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  -livecd/cdtar/aboot-0.9-r1-cdtar.tar.bz2,
+  +livecd/cdtar/aboot-1.0_pre20040408-r2-cdtar.tar.bz2:
+  Updated aboot cdtar with a newer version to support newer kernels.
+
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh, targets/support/chroot-functions.sh:
   Updated make_destpath so it writes out to make.conf as well as exporting
   ROOT to the environment, added a make_destpath call to cleanup_stages, and
