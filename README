@@ -18,11 +18,11 @@ Requirements
 =======================
 
 - Python 2.4 or greater (may still work with 2.3)
-- A portage snapshot (or portage tree to make your own)
-- A Gentoo generic stage3 tarball
+- An ebuild repository snapshot (or an ebuild tree to create one)
+- A generic stage3 tarball for your architecture
 - shash for digest support
 
-What is Catalyst?
+What is catalyst?
 ========================
 
 Catalyst is the Gentoo Linux project's release building tool. With catalyst,
@@ -32,9 +32,9 @@ media is built with catalyst.
 
 Catalyst is capable of:
 
-- Building installation stages for every architecture supported by Gentoo
-- Building bootable LiveCDs for every architecture supported by Gentoo
-- Building GRP (Gentoo Reference Platform) sets for every architecture supported by Gentoo
+- Building installation stages
+- Building bootable LiveCDs
+- Building GRP (Gentoo Reference Platform) sets
 - Setting up a Tinderbox target for test building
 - Building netboot images
 
