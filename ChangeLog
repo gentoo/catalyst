@@ -3,6 +3,11 @@
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
+  The default theme for GNOME is now Clearlooks, so we can remove the theme
+  code, but we still want to set the font size.
+
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
   We need to put quotes around ${user_comment} or useradd gets confused.
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>

@@ -261,28 +261,14 @@ case ${clst_livecd_type} in
 
 		touch /etc/startx
 		;;
-	gentoo-release-livecd )
+	gentoo-release-livecd)
 		# Setup Gnome theme
-#		if [ "${clst_livecd_xsession}" == "gnome" ]
-#		then
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/theme Clearlooks
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /apps/metacity/general/theme Clearlooks
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/gtk_key_theme \
-#				Clearlooks
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/gtk_theme \
-#				Clearlooks
-#			gconftool-2 --direct \
-#				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-#				--type string --set /desktop/gnome/interface/font_name "Sans 9"
-#		fi
+		if [ "${clst_livecd_xsession}" == "gnome" ]
+		then
+			gconftool-2 --direct \
+				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
+				--type string --set /desktop/gnome/interface/font_name "Sans 9"
+		fi
 
 		# Setup GDM
 		if [ "${clst_livecd_xdm}" == "gdm" ]
