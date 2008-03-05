@@ -1425,7 +1425,7 @@ class generic_stage_target(generic_target):
 							and os.path.exists(self.settings["autoresume_path"]\
 								+"build_kernel_"+kname):
 							print "Resume point detected, skipping build_kernel for "+kname+" operation..."
-						else:
+						else: # TODO: make this not require a kernel config
 							try:
 								if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
 									self.unbind()

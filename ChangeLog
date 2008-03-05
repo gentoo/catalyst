@@ -2,6 +2,11 @@
 # $Id: $
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Merged ChangeLog.old and ChangeLog and added a note for myself to fix up the
+  boot/kernel/${kname}/config copying code in generic_stage_target.
+
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
   Make sure we don't give genkernel a --kernel-config if it isn't set in the
   spec.
@@ -3977,13 +3982,13 @@
   livecd/runscript-support/livecdfs-update.sh:
   firmware tarball fix for packages that need firmware such as ipw2100
 
-  16 Oct 2004; <zhen@gentoo.org> livecd/files/x86-help.msg,
+  16 Oct 2004; John Davis <zhen@gentoo.org> livecd/files/x86-help.msg,
   livecd/runscript/x86-archscript.sh, livecd/runscript-support/kmerge.sh,
   livecd/runscript-support/livecdfs-update.sh,
   modules/livecd_stage2_target.py:
   patches for gensplash support from Chris Gianelloni <wolf31o2@gentoo.org>
 
-  14 Oct 2004; <zhen@gentoo.org> livecd/runscript/x86-archscript.sh:
+  14 Oct 2004; John Davis <zhen@gentoo.org> livecd/runscript/x86-archscript.sh:
   acpi=off changed to acpi=ht. enables HT automatically for intel users, but
   should not hurt non-HT users
 
@@ -3998,7 +4003,7 @@
   12 Oct 2004; John Davis <zhen@gentoo.org> modules/netboot.py:
   small netboot fixups
 
-  11 Oct 2004; <zhen@gentoo.org> modules/netboot.py,
+  11 Oct 2004; John Davis <zhen@gentoo.org> modules/netboot.py,
   targets/netboot/netboot-busybox.sh, targets/netboot/netboot-image.sh,
   targets/netboot/netboot-kernel.sh, targets/netboot/netboot-packages.sh,
   targets/netboot/netboot.sh:
@@ -4121,7 +4126,8 @@
   this out of generic_stage_target and into livecd-stage2 since the
   livecd-stage2 class was overriding generic_stage_target for cleaning anyway.
 
-  13 Jul 2004; <zhen@gentoo.org> livecd/runscript-support/livecdfs-update.sh:
+  13 Jul 2004; John Davis <zhen@gentoo.org>
+  livecd/runscript-support/livecdfs-update.sh:
   changed the behavior of rcadd/ rcdel. it was getting hokey to have to add the
   default rc'ed programs when only one change was required to rcadd. so I
   changed it so that the defaults are *always* loaded and specified additions/
@@ -4134,7 +4140,7 @@
   targets/tinderbox/tinderbox-chroot.sh:
   changing the more verbose behavior to the -V (verbose) flag
 
-  12 Jul 2004; <zhen@gentoo.org> catalyst,
+  12 Jul 2004; John Davis <zhen@gentoo.org> catalyst,
   targets/embedded/embedded-chroot.sh, targets/grp/grp-chroot.sh,
   targets/livecd-stage1/livecd-stage1-chroot.sh,
   targets/stage1/stage1-chroot.sh, targets/stage3/stage3-chroot.sh,
@@ -4142,7 +4148,7 @@
   the -d (debug) flag now makes catalyst calculate an emerge -vp of the packages
   it is about to merge so that deps and USE flags are more evident
 
-  11 Jul 2004; <zhen@gentoo.org> +catalyst, -catalyst.new.py,
+  11 Jul 2004; John Davis <zhen@gentoo.org> +catalyst, -catalyst.new.py,
   modules/catalyst_support.py:
   completely rewrote the catalyst main script so that it can actually utilize
   more than one command line flag. new functionality included, but not active
@@ -4188,14 +4194,13 @@
   now. Additionally, catalyst will stop when there is an error with an ebuild
   ... it didn't do this before, it just plowed along and packed things up.
   
-  Much thanks to <carpaski@gentoo.org> for (writing) pointing me to the spawn() code in
-  portage.py and then answering my noob questions.
+  Much thanks to <carpaski@gentoo.org> for (writing) pointing me to the spawn()
+  code in portage.py and then answering my noob questions.
 
   13 Jun 2004; John Davis <zhen@gentoo.org>
   livecd/runscript/x86-archscript.sh, livecd/runscript-support/kmerge.sh,
   livecd/runscript-support/livecdfs-update.sh:
-  some last minute fixins
-  (stuff to work with the new genkernel)
+  some last minute fixins (stuff to work with the new genkernel)
 
   13 Jun 2004; John Davis <zhen@gentoo.org> catalyst:
   rolling out 1.0.8.1
@@ -4462,21 +4467,21 @@
   examples/livecd/sparc64/config-2.4.24-sparc64:
   sparc fixups contributed by Gustavo Zacarias <gustavoz@gentoo.org>
 
-  12 Feb 2004; Daniel Robbins <drobbins@gentoo.org>: fixed bugs in previous
-  feature additions (see 11 Feb 2004) and added support for a $clst_conf 
-  environment variable. You can use the $clst_conf variable to point to
-  a file to use in place of /etc/catalyst.conf. By setting this variable
-  in your shell, catalyst can easily be used by multiple people on the
+  12 Feb 2004; Daniel Robbins <drobbins@gentoo.org>:
+  fixed bugs in previous feature additions (see 11 Feb 2004) and added support
+  for a $clst_conf environment variable. You can use the $clst_conf variable to
+  point to a file to use in place of /etc/catalyst.conf. By setting this
+  variable in your shell, catalyst can easily be used by multiple people on the
   same machine. Also, ccache support now works for genkernel.
   
-  11 Feb 2004; Daniel Robbins <drobbins@gentoo.org>: removed file for
-  livecd-stage2 target, as this is handled by the runscript now. Added support
-  for "/boot/kernel/foo/use", "/boot/kernel/foo/packages," and made
-  "/boot/kernel/foo/extraversion" an optional rather than required parameter.
-  The aforementioned "packages" is used to specify kernel-related packages
-  (like module ebuilds) to merge with each kernel, and the new "use" option is
-  used to specify the USE settings you'd like exported to the environment
-  during kernel as well as kernel "packages" build.
+  11 Feb 2004; Daniel Robbins <drobbins@gentoo.org>:
+  removed file for livecd-stage2 target, as this is handled by the runscript
+  now. Added support for "/boot/kernel/foo/use", "/boot/kernel/foo/packages,"
+  and made "/boot/kernel/foo/extraversion" an optional rather than required
+  parameter. The aforementioned "packages" is used to specify kernel-related
+  packages (like module ebuilds) to merge with each kernel, and the new "use"
+  option is used to specify the USE settings you'd like exported to the
+  environment during kernel as well as kernel "packages" build.
 
   10 Feb 2004; John Davis <zhen@gentoo.org> README, TODO, catalyst,
   modules/builder.py, modules/catalyst_support.py, modules/targets.py,
@@ -4490,34 +4495,38 @@
   14 Jan 2004; John Davis <zhen@gentoo.org> arch/mips.py, modules/targets.py:
   adding Kumba's patches for MIPS
 
-  16 Dec 2003; Guy Martin <gmsoft@gentoo.org> : arch/hppa.py,modules/targets.py:
+  16 Dec 2003; Guy Martin <gmsoft@gentoo.org>: arch/hppa.py,modules/targets.py:
   Added hppa specific code.
 
-  29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Tinderbox target added. See
-  tinderbox examples in examples/ dir.
+  29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
+  Tinderbox target added. See tinderbox examples in examples/ dir.
   
-  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: spec file support integrated
-  into catalyst. Use "-f/--file specfile" as argument; see examples dir for examples.
-  "grp" target now functional. See examples/x86-grp-20031102.spec for an example of
-  how to use it.
+  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
+  spec file support integrated into catalyst. Use "-f/--file specfile" as
+  argument; see examples dir for examples.
+  "grp" target now functional. See examples/x86-grp-20031102.spec for an
+  example of how to use it.
  
-  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: support functions for spec
-  file parsing and reading added. Will get added to the code soon.
+  08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
+  support functions for spec file parsing and reading added. Will get added to
+  the code soon.
   
-  05 Nov 2003; Daniel Robbins <drobbins@gentoo.org>: Many bug fixes later, things
-  seem to be working well for stage1/2/3 so I've added a README.
+  05 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
+  Many bug fixes later, things seem to be working well for stage1/2/3 so I've
+  added a README.
   
-  28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: Significant rework of code
-  structure. Everything is falling nicely into place.
+  28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
+  Significant rework of code structure. Everything is falling nicely into place.
   
-  28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: Exception handling fully-
-  integrated into current prototype code.
+  28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
+  Exception handling fully-integrated into current prototype code.
   
-  27 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: beginning of exception
-  handling integration, got some of the target code nicely fleshed out.
+  27 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
+  beginning of exception handling integration, got some of the target code
+  nicely fleshed out.
   
-  24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>: major code rework in 
-  progress on the python parts.
+  24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
+  major code rework in progress on the python parts.
   
   17 Oct 2003; John Davis <zhen@gentoo.org> files/grp/x86/x86.conf,
   files/grp/x86/x86.pkg.cd1, files/grp/x86/x86.pkg.cd2, files/grp/x86/x86.src,
@@ -4530,11 +4539,117 @@
   All preliminary target build scripts are now added and coded to near as spec
   that we can have at this point.
 
-  14 Oct 2003; Daniel Robbins <drobins@gentoo.org>: new and improved ChangeLog;
-  snapshots now work ("./catalyst-util.py snap 20031014",) and snapshotting
-  cleans up after itself (temp files deleted,) something that should be
-  continued as much as reasonably possible in other parts of catalyst. Also, we
-  have /etc/catalyst.conf config file reading stub code completed, and internal
-  fall-backs to reasonable global config defaults completed.
+  14 Oct 2003; Daniel Robbins <drobins@gentoo.org>:
+  new and improved ChangeLog; snapshots now work ("./catalyst-util.py snap
+  20031014",) and snapshotting cleans up after itself (temp files deleted,)
+  something that should be continued as much as reasonably possible in other
+  parts of catalyst. Also, we have /etc/catalyst.conf config file reading stub
+  code completed, and internal fall-backs to reasonable global config defaults
+  completed.
+
+  12 Oct 2003; Daniel Robbins <drobins@gentoo.org>:
+  subarch test outsourced to python catalyst-subarches function.
   
- 
+  12 Oct 2003; John Davis <zhen@gentoo.org> include/build_functions.sh:
+  fixed the entry in include/build_functions.sh for location of bootstrap.sh
+
+  12 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
+  removing dup enter_chroot
+
+  12 Oct 2003; Robin H. Johnson <robbat2@gentoo.org> catalyst:
+  document subarches checking
+
+  12 Oct 2003; Robin H. Johnson <robbat2@gentoo.org> catalyst:
+  Fix valid subarch test.
+
+  12 Oct 2003; John Davis <zhen@gentoo.org> catalyst, 
+  include/build_functions.sh, include/functions.sh:
+  thanks to robbat2, the cmdline argument handling is now fixed. I moved
+  start_build to build_functions.sh cleaning up the main catalyst script some
+  more.
+
+  11 Oct 2003; John Davis <zhen@gentoo.org> include/build_functions.sh:
+  fixed SRCBALL and DESTBALL, making it transparent for profiles
+
+  11 Oct 2003; John Davis <zhen@gentoo.org> catalyst, include/functions.sh:
+  added an exit condition to the cmd line argument case statement
+
+  09 Oct 2003; John Davis <zhen@gentoo.org> catalyst, bin/build.sh, bin/stage1,
+  files/catalyst.conf, include/build_functions.sh, include/functions.sh:
+  the changes that I made to the above files should make catalyst completely
+  transparent to no matter what profile we are using. check files/catalyst.conf
+  for the list of BUILDTYPEs that we support.
+
+  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
+  changed how cmd line arguments are handled
+
+  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
+  I changed the is_special handling so that it is cleaner and faster
+
+  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst, include/functions.sh, 
+  livecd/foundations/x86-basic/base.pkg, livecd/foundations/x86-basic/kern.pkg,
+  livecd/foundations/x86-basic/post-clean.sh,
+  livecd/foundations/x86-basic/pre-clean.sh,
+  livecd/foundations/x86-basic/settings:
+  I outsourced more functions to include/functions.sh. I made it a seperate file
+  from build_fucntions.sh so that we can keep our build and other functions
+  apart. I also added in the livecd stuffs from the stager side of things.
+
+  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst,
+  include/build_functions.sh:
+  I outsourced all of the build functions to include/build_functions.sh. In the
+  future, this will happen more - the code needs cleaned up.
+
+  07 Oct 2003; John Davis <zhen@gentoo.org> catalyst, bin/bootstrap.sh,
+  bin/stage1:
+  I mucked with stage1 and bootstrap.sh to add support for ${BUILDTYPE} (profile
+  transparency). Also, I removed gettext from bootstrap, since mainline gentoo
+  does not use that anymore.
+
+  05 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
+  since we now have a default profile in portage, i massaged some errors
+  messages to reflect that.
+
+  04 Oct 2003; John Davis <zhen@gentoo.org> catalyst, bin/bootstrap.sh,
+  bin/stage1:
+  removed ccache support from catalyst stage1 build cause it breaks the build.
+  Additionally, I removed gettext support from bootstrap, because according to
+  our new default profile, we don't use that anymore.
+
+  02 Oct 2003; John Davis <zhen@gentoo.org> catalyst, files/catalyst.conf:
+  added a new var, BUILDTYPE, adding more transparency for building.
+  In the future, we will be building both selinux and hardened sources.
+
+  02 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
+  fixed some formatting when catalyst prints out build info, additionally,
+  trying to make catalyst more transparent for future expansion of stages
+
+  21 Sep 2003; John Davis <zhen@gentoo.org> catalyst:
+  fixed the order/ way in which we handle cmd line arguments wrt to -h or
+  --help. I moved this functionality from the main program section to
+  prechecks().
+
+  21 Sep 2003; John Davis <zhen@gentoo.org> README.catalyst, catalyst:
+  I edited catalyst to change our naming convention from stage*-arch-h.* to
+  stage*-arch-etdyn-ssp.* re method's request. This will not be the first time
+  I change naming conventions, as catalyst will be eventually extended to
+  do selinux-* stages also.
+  
+  Additionally, I updated README.catalyst to include profile information.
+
+  10 Sep 2003; John Davis <zhen@gentoo.org> README.catalyst, README.stager,
+  bin/catalyst, bin/hardened-bootstrap.sh, bin/stage1:
+  I renamed README.stager to README.catalyst and have made some very minor
+  changes to it. bin/bootstrap.sh has been renamed to bin/hardened-bootstrap.sh.
+  I have hacked bootstrap to use the hardened profile, as well as utilize
+  hardened-gcc. bin/catalyst itself has undergone some more changes (nothing too
+  major). Additionally, bin/stage1 has been hacked to accept the hardened
+  profile, and use hardened-gcc.
+
+  09 September 2003; John Davis <zhen@gentoo.org>:
+  Initial import of hardened stager.  I am forking this from the original
+  stager code in order to better fit our needs.  The original stager code is
+  still used by Gentoo, and is maintained by Daniel Robbins
+  <drobbins@gentoo.org>.  I would like to thank him and the rest of the
+  contributors that coded stager.
+
