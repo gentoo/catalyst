@@ -63,7 +63,6 @@ setup_gk_args() {
     then
         GK_ARGS="${GK_ARGS} --initramfs-overlay=\"${clst_merge_path}\""
     fi
-        
 }
 
 genkernel_compile(){
@@ -101,7 +100,8 @@ genkernel_compile(){
 	else
 		genkernel ${GK_ARGS} || exit 1
 	fi
-	md5sum /var/tmp/${clst_kname}.config|awk '{print $1}' > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
+	md5sum /var/tmp/${clst_kname}.config | awk '{print $1}' > \
+		/tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
 }
 
 build_kernel() {
@@ -196,6 +196,7 @@ then
 else
 	run_merge "${clst_ksource}" || exit 1
 fi
+make_destpath
 sed -i "/USE=\"\${USE} ${clst_kernel_use} symlink build\"/d" /etc/make.conf
 
 # If catalyst has set to a empty string, extraversion wasn't specified so we

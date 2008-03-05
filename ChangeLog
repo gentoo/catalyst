@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/kmerge.sh:
+  Added an additional make_destpath call to kmerge.sh so it'll export ROOT=/
+  prior to running genkernel. This is catalyst 2.0.6_pre11 for testing.
+
   04 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/create-iso.sh:
   Bash fscking sucks, so we have to compromise on this code reduction solution
@@ -12,7 +17,7 @@
 
   02 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
-  Pass clst_root_path instead of ROOT to run_emerge, since it overrides ROOT
+  Pass clst_root_path instead of ROOT to run_merge, since it overrides ROOT
 
   29 Feb 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
