@@ -215,9 +215,10 @@ die() {
 make_destpath() {
 	if  [ "${1}" = "" ]
 	then
-		export ROOT=/
+		# ROOT is / by default, so remove any ROOT= settings from make.conf
+		sed -i '/ROOT=/d' /etc/make.conf
 	else
-		export ROOT=${1}
+		echo "ROOT=\"${1}\"" >> /etc/make.conf
 		if [ ! -d ${ROOT} ]
 		then
 			install -d ${ROOT}
