@@ -558,23 +558,23 @@ class generic_stage_target(generic_target):
 				loopy=addlargs["boot/kernel"]
 
 			for x in loopy:
-				self.required_values.append("boot/kernel/"+x+"/sources")
-				self.required_values.append("boot/kernel/"+x+"/config")
 				self.valid_values.append("boot/kernel/"+x+"/aliases")
+				self.valid_values.append("boot/kernel/"+x+"/config")
+				self.valid_values.append("boot/kernel/"+x+"/console")
 				self.valid_values.append("boot/kernel/"+x+"/extraversion")
+				self.valid_values.append("boot/kernel/"+x+"/gk_action")
+				self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
+				self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
+				self.valid_values.append("boot/kernel/"+x+"/machine_type")
+				self.valid_values.append("boot/kernel/"+x+"/sources")
+				self.valid_values.append("boot/kernel/"+x+"/softlevel")
+				self.valid_values.append("boot/kernel/"+x+"/use")
 				self.valid_values.append("boot/kernel/"+x+"/packages")
 				if addlargs.has_key("boot/kernel/"+x+"/packages"):
 					if type(addlargs["boot/kernel/"+x+\
 						"/packages"])==types.StringType:
 						addlargs["boot/kernel/"+x+"/packages"]=\
 							[addlargs["boot/kernel/"+x+"/packages"]]
-				self.valid_values.append("boot/kernel/"+x+"/use")
-				self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
-				self.valid_values.append("boot/kernel/"+x+"/gk_action")
-				self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
-				self.valid_values.append("boot/kernel/"+x+"/softlevel")
-				self.valid_values.append("boot/kernel/"+x+"/console")
-				self.valid_values.append("boot/kernel/"+x+"/machine_type")
 				# TODO: remove this warning/code with the next major version
 				self.valid_values.append("boot/kernel/"+x+"/postconf")
 				if addlargs.has_key("boot/kernel/"+x+"/postconf"):
@@ -605,6 +605,9 @@ class generic_stage_target(generic_target):
 			del self.settings[self.settings["spec_prefix"]+"/devmanager"]
 
 		if self.settings.has_key(self.settings["spec_prefix"]+"/splashtype"):
+			# TODO: remove this warning/code with the next major version
+			print self.settings["spec_prefix"]+\
+				"/splashtype is deprecated and will be removed."
 			self.settings["splashtype"]=\
 				self.settings[self.settings["spec_prefix"]+"/splashtype"]
 			del self.settings[self.settings["spec_prefix"]+"/splashtype"]

@@ -6,14 +6,7 @@ run_merge --oneshot genkernel
 install -d /tmp/kerncache
 
 case ${clst_target} in
-	livecd*|stage4)
-
-	;;
-
 	netboot2)
-		run_merge --oneshot genkernel
-		install -d /tmp/kerncache
-
 		# Set the netboot builddate/hostname in linuxrc and copy to proper arch
 		# directory in genkernel
 		sed -e "s/@@MYDATE@@/$(date '+%Y%m%d')/g" \

@@ -118,9 +118,13 @@ filtered_kname=${clst_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
-
 eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${filtered_kname}_gk_kernargs"
 eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
+
+if [ -z "${clst_ksource}" ]
+then
+	clst_ksource="virtual/linux-sources"
+fi
 
 # Don't use pkgcache here, as the kernel source may get emerged with different
 # USE variables (and thus different patches enabled/disabled.) Also, there's no
@@ -189,7 +193,6 @@ else
 	run_merge "${clst_ksource}" || exit 1
 fi
 make_destpath
-sed -i "/USE=\"\${USE} ${clst_kernel_use} symlink build\"/d" /etc/make.conf
 
 # If catalyst has set to a empty string, extraversion wasn't specified so we
 # skip this part
@@ -206,6 +209,7 @@ then
 fi
 
 build_kernel
+sed -i "/USE=\"\${USE} ${clst_kernel_use} symlink build\"/d" /etc/make.conf
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`

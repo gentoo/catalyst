@@ -1,6 +1,15 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/generic_stage_target.py, targets/support/kmerge.sh,
+  targets/support/pre-kmerge.sh:
+  Changed boot/kernel/${kname}/config and boot/kernel/${kname}/sources to be
+  valid, rather than required, changed clst_ksource to default to
+  virtual/linux-sources if boot/kernel/${kname}/sources is unset, moved
+  removal of USE to after the kernel build so the modules get the correct USE,
+  and did some minor cleanup on pre-kmerge. This is 2.0.6_pre13 for testing.
+
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
   We should run the default functions for kmerge.sh, too.
