@@ -65,7 +65,7 @@ then
 	for x in ${clst_livecd_users}
 	do
 		useradd -G users,wheel,audio,plugdev,games,cdrom,disk,floppy,usb \
-			-g 100 -c ${user_comment} -m ${x}
+			-g 100 -c "${user_comment}" -m ${x}
 		chown -R ${x}:users /home/${x}
 		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
 		then

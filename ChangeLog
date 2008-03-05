@@ -2,6 +2,10 @@
 # $Id: $
 
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  We need to put quotes around ${user_comment} or useradd gets confused.
+
+  05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
   Changed make_destpath to write out ROOT to make.conf, rather than (ab)using
   the environment.
