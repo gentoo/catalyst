@@ -1056,7 +1056,7 @@ class generic_stage_target(generic_target):
 				myf.write('CXXFLAGS="${CFLAGS}"\n')
 
 			if self.settings.has_key("LDFLAGS"):
-				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
+				myf.write("# LDFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
 			if self.settings.has_key("CBUILD"):
 				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")

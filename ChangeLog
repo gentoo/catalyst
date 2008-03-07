@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py:
+  Change the warning thrown into make.conf when someone uses LDFLAGS so it is
+  less confusing.
+
   05 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Merged ChangeLog.old and ChangeLog and added a note for myself to fix up the
