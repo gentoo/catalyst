@@ -1,6 +1,13 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  10 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  modules/generic_stage_target.py, targets/grp/grp-chroot.sh,
+  targets/support/chroot-functions.sh:
+  Fix some spacing on the -* warning, revert Andrew's last change, since it
+  didn't do anything, and clean up the GRP chroot code so it works smarter and
+  set clst_FETCH when clst_grp_type is something other than pkgset.
+
   10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:
   Don't set --usepkg and --buildpkg when fetching

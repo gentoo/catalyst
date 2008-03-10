@@ -119,7 +119,7 @@ setup_myemergeopts(){
 	then
 		export bootstrap_opts="-f"
 		export clst_myemergeopts="${clst_myemergeopts} -f"
-	elif [ -n "${clst_PKGCACHE}" -a -z "${clst_FETCH}" ]
+	elif [ -n "${clst_PKGCACHE}" ]
 	then
 		export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
 		export bootstrap_opts="-r"
