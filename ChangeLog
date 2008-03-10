@@ -2,6 +2,10 @@
 # $Id: $
 
   10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/grp/grp-chroot.sh:
+  Call setup_myemergeopts after changing clst_FETCH
+
+  10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot2/netboot2-pkg.sh:
   Remove a bit of unnecessary code
 
