@@ -84,7 +84,7 @@ genkernel_compile(){
 	fi
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
-	gk_callback_opts="-q"
+	gk_callback_opts="-qN"
 	PKGDIR=${PKGDIR}
 	if [ -n "${clst_KERNCACHE}" ]
 	then

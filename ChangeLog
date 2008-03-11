@@ -2,6 +2,10 @@
 # $Id: $
 
   11 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
+  We should be using --newuse when merging our packages in callback.
+
+  11 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/grp/grp-chroot.sh:
   We should only use --noreplace when building a pkgset, everything else
   should be a fetch.
