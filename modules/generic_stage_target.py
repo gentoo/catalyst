@@ -1648,7 +1648,8 @@ class generic_stage_target(generic_target):
 				for j in array:
 					contents=generate_contents(file,contents_function=j,\
 						verbose=self.settings.has_key("VERBOSE"))
-					myf.write(contents)
+					if contents:
+						myf.write(contents)
 				myf.close()
 
 	def gen_digest_file(self,file):

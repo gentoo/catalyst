@@ -74,10 +74,14 @@ def generate_contents(file,contents_function="auto",verbose=False):
 				_ = 'tar-tvj'
 			elif file.endswith('.tar'):
 				_ = 'tar-tv'
-		
-		contents_function = _
-		_ = contents_map[contents_function]
-		return _[0](file,_[1],verbose)
+
+		if _ == 'auto':
+			warn('File %r has unknown type for automatic detection.' % (file, ))
+			return None
+		else:
+			contents_function = _
+			_ = contents_map[contents_function]
+			return _[0](file,_[1],verbose)
 	except:
 		raise CatalystError,\
 			"Error generating contents, is appropriate utility (%s) installed on your system?" \

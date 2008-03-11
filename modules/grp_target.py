@@ -100,7 +100,7 @@ class grp_target(generic_stage_target):
 				files=[filename for filename in files if filename[0] != '.']
 				for i in files:
 					if os.path.isfile(normpath(destdir+"/"+i)):
-						self.gen_contents_file(normpath(destdir+"/"+i))
+						#self.gen_contents_file(normpath(destdir+"/"+i))
 						self.gen_digest_file(normpath(destdir+"/"+i))
 
 	def set_action_sequence(self):
