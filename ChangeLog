@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/grp/grp-chroot.sh:
+  We should only use --noreplace when building a pkgset, everything else
+  should be a fetch.
+
   11 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py, modules/generic_stage_target.py,
   modules/grp_target.py:
