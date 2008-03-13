@@ -3,6 +3,11 @@
 
   13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
+  It helps if I put things in the correct order so they'll actually execute,
+  rather than getting a nice error from emerge.
+
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
   Change upgrade to update.
 
   13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
