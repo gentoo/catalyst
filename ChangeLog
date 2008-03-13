@@ -2,6 +2,13 @@
 # $Id: $
 
   13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  OK, we run our find outside the chroot, so we don't want to use absolute
+  paths unless we want to wipe out *.a *.la *.pyc and *.pyo from our host
+  system. Oops. Due to this bug, I'm making this 2.0.6_pre15 for testing
+  immediately.
+
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   targets/livecd-stage2/livecd-stage2-controller.sh,
   targets/stage1/stage1-controller.sh:
   Cleanup the clean section for stage1 and add an updated clean section for
