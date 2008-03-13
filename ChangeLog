@@ -1,6 +1,13 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/stage1/stage1-controller.sh:
+  Cleanup the clean section for stage1 and add an updated clean section for
+  livecd-stage2 when we're a minimal, universal, or game CD. This is
+  2.0.6_pre14 for testing.
+
   11 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
   We should be using --newuse when merging our packages in callback.
@@ -13,15 +20,15 @@
   11 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py, modules/generic_stage_target.py,
   modules/grp_target.py:
-  Apply additional patches from bug 207862 for CONTENTS generation
+  Apply additional patches from bug #207862 for CONTENTS generation.
 
   10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/grp/grp-chroot.sh:
-  Call setup_myemergeopts after changing clst_FETCH
+  Call setup_myemergeopts after changing clst_FETCH.
 
   10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot2/netboot2-pkg.sh:
-  Remove a bit of unnecessary code
+  Remove a bit of unnecessary code.
 
   10 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py, targets/grp/grp-chroot.sh,
@@ -32,7 +39,7 @@
 
   10 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:
-  Don't set --usepkg and --buildpkg when fetching
+  Don't set --usepkg and --buildpkg when fetching.
 
   07 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:

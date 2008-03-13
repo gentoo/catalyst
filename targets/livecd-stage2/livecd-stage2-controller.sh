@@ -94,13 +94,20 @@ case $1 in
 		exec_in_chroot ${clst_fsscript}
 		;;
 	clean)
-		for x in lib lib32 lib64
-		do
-			if [ -d "${clst_chroot_path}/usr/${x}" ]
-			then
-				find "${clst_chroot_path}/usr/${x}" -iname "*.pyc" -exec rm -f {} \;
-			fi
-		done
+		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
+		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
+		|| [ "${clst_livecd_type}" = "gentoo-release-universal" ]
+		then
+			# Clean out man, info and doc files
+			rm -rf usr/share/{man,doc,info}/*
+			# Zap all .pyc and .pyo files
+			find / -iname "*.py[co]" -exec rm -f {} \;
+		fi
+		# Cleanup all .a files except libgcc.a, *_nonshared.a and
+		# /usr/lib/portage/bin/*.a
+		find / -type f -iname "*.a" | grep -v 'libgcc.a' | \
+			grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | \
+			grep -v 'libgcc_eh.a' | xargs rm -f
 		;;
 	bootloader)
 		shift

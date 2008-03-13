@@ -31,9 +31,9 @@ case $1 in
 		find . -iname "*.py[co]" -exec rm -f {} \;
 		# Cleanup all .a files except libgcc.a, *_nonshared.a and
 		# /usr/lib/portage/bin/*.a
-		find . -type f -iname "*.a" | grep -v 'libgcc.a' | grep -v 'nonshared.a' \
-			| grep -v '/usr/lib/portage/bin/' | grep -v 'libgcc_eh.a' | xargs \
-			rm -f
+		find . -type f -iname "*.a" | grep -v 'libgcc.a' | \
+			grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | \
+			grep -v 'libgcc_eh.a' | xargs rm -f
 	;;
 	*)
 		exit 1
