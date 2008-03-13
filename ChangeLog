@@ -3,6 +3,10 @@
 
   13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
+  Change upgrade to update.
+
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
   Add back in the package.provided code that *should* skip the kernel sources
   merge for call back and subsequent runs.
 
