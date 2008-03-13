@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
+  We don't really need to use binary packages for the kernel sources, since it
+  doesn't gain us anything. Also, we need to delete the /usr/src/linux symlink
+  when we're not using kerncache.
+
   13 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
   Remove 'symlink' from USE, since it's not needed and screws up kerncache

@@ -189,10 +189,11 @@ fi
 if [ -n "${clst_KERNCACHE}" ]
 then
 	mkdir -p /tmp/kerncache/${clst_kname}
-   	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge --nodeps -uqkb  "${clst_ksource}" || exit 1
+   	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge clst_myemergeopts="--quiet --nodeps --upgrade --newuse"  "${clst_ksource}" || exit 1
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else
+	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	run_merge "${clst_ksource}" || exit 1
 fi
 make_destpath
