@@ -190,6 +190,17 @@ if [ -n "${clst_KERNCACHE}" ]
 then
 	mkdir -p /tmp/kerncache/${clst_kname}
    	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} run_merge clst_myemergeopts="--quiet --nodeps --upgrade --newuse"  "${clst_ksource}" || exit 1
+	KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
+	if [ ! -e /etc/portage/profile/package.provided ]
+	then
+		mkdir -p /etc/portage/profile
+		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
+	else
+		if ( ! grep -q "^${KERNELVERSION}"  /etc/portage/profile/package.provided ) 
+		then
+			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
+		fi
+	fi
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
 else

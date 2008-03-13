@@ -3,6 +3,11 @@
 
   13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/kmerge.sh:
+  Add back in the package.provided code that *should* skip the kernel sources
+  merge for call back and subsequent runs.
+
+  13 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/kmerge.sh:
   We don't really need to use binary packages for the kernel sources, since it
   doesn't gain us anything. Also, we need to delete the /usr/src/linux symlink
   when we're not using kerncache.
