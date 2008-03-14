@@ -236,3 +236,12 @@ clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
 unset USE
 echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
+
+
+if [ -n "${clst_KERNCACHE}" ]
+then
+	if [ ! -e /etc/portage/profile/package.provided ]
+	then
+		sed -i "/^${KERNELVERSION}\$/d" /etc/portage/package.provided
+	fi
+fi
