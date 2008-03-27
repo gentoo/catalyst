@@ -6,6 +6,7 @@ then
 	[[ -e /etc/init.d/device-mapper ]] && rc-update add device-mapper boot
 	[[ -e /etc/init.d/lvm ]] && rc-update add lvm boot
 	[[ -e /etc/init.d/dmcrypt ]] && rc-update add dmcrypt boot
+	[[ -e /etc/init.d/mdraid ]] && rc-update add mdraid boot
 fi
 
 if [ "${clst_spec_prefix}" == "livecd" ]
