@@ -84,9 +84,13 @@ docache         This caches the entire runtime portion of the CD into RAM,
 doload=X        This causes the initial ramdisk to load any module listed, as
                 well as dependencies.  Replace X with the module name.
                 Multiple modules can be specified by a comma-separated list.
+dosshd          Starts sshd on boot, which is useful for unattended installs.
+passwd=foo      Sets whatever follows the equals as the root password, which
+                is required for dosshd since we scramble the root password.
 noload=X        This causes the initial ramdisk to skip the loading of a
                 specific module that may be causing a problem.  Syntax matches
                 that of doload.
+nonfs           Disables the starting of portmap/nfsmount on boot.
 nox             This causes an X-enabled LiveCD to not automatically start X,
                 but rather, to drop to the command line instead.
 scandelay       This causes the CD to pause for 10 seconds during certain

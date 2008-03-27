@@ -2,6 +2,10 @@
 # $Id: $
 
   27 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  livecd/files/README.txt:
+  Added dosshd, passwd=, and nonfs to README.txt, since they were missing.
+
+  27 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/rc-update.sh:
   Added mdraid for baselayout-2 users.
 
