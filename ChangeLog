@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  27 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  targets/support/chroot-functions.sh:
+  Added --noreplace to setup_myfeatures merges so we don't blow away any
+  packages which are already installed with the proper USE flags for the given
+  target. This is for bug #211654. This is catalyst 2.0.6_pre16 for testing.
+
   27 Mar 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   livecd/files/README.txt:
   Added dosshd, passwd=, and nonfs to README.txt, since they were missing.

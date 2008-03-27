@@ -64,7 +64,7 @@ setup_myfeatures(){
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
-		clst_root_path=/ run_merge --oneshot --nodeps dev-util/ccache || exit 1
+		clst_root_path=/ run_merge --oneshot --nodeps --noreplace dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
@@ -73,7 +73,7 @@ setup_myfeatures(){
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e /etc/make.conf ] && \
 			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/make.conf
-		clst_root_path=/ run_merge --oneshot --nodeps sys-devel/distcc || exit 1
+		clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/distcc || exit 1
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
@@ -91,7 +91,7 @@ setup_myfeatures(){
 
 	if [ -n "${clst_ICECREAM}" ]
 	then
-		clst_root_path=/ run_merge --oneshot --nodeps sys-devel/icecream || exit 1
+		clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/icecream || exit 1
 
 		# This sets up automatic cross-icecc-fu according to
 		# http://gentoo-wiki.com/HOWTO_Setup_An_ICECREAM_Compile_Cluster#Icecream_and_cross-compiling
