@@ -242,6 +242,6 @@ if [ -n "${clst_KERNCACHE}" ]
 then
 	if [ -e /etc/portage/profile/package.provided ]
 	then
-		sed -i "/^${KERNELVERSION}\$/d" /etc/portage/profile/package.provided
+		sed -i "/^$(echo "${KERNELVERSION}" | sed -e 's|/|\\/|g')\$/d" /etc/portage/profile/package.provided
 	fi
 fi

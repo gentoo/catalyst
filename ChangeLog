@@ -3,6 +3,11 @@
 
   30 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/kmerge.sh:
+  Run sed on KERNELVERSION to escape the slashes so we can use it in another
+  sed
+
+  30 Mar 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/kmerge.sh:
   Modify test to run if package.provided exists instead of if it doesn't Run
   sed on the correct file
 
