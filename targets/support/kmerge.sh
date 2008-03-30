@@ -196,7 +196,7 @@ then
 		mkdir -p /etc/portage/profile
 		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
 	else
-		if ( ! grep -q "^${KERNELVERSION}"  /etc/portage/profile/package.provided ) 
+		if ( ! grep -q "^${KERNELVERSION}\$"  /etc/portage/profile/package.provided ) 
 		then
 			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
 		fi
@@ -240,8 +240,8 @@ echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_vers
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-	if [ ! -e /etc/portage/profile/package.provided ]
+	if [ -e /etc/portage/profile/package.provided ]
 	then
-		sed -i "/^${KERNELVERSION}\$/d" /etc/portage/package.provided
+		sed -i "/^${KERNELVERSION}\$/d" /etc/portage/profile/package.provided
 	fi
 fi
