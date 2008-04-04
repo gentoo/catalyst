@@ -328,7 +328,8 @@ case ${clst_livecd_type} in
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
 		# Create our Handbook icon
-		create_handbook_icon
+		[ -e /docs/handbook/index.html ] && create_handbook_icon
+		[ -n "${clst_livecd_overlay}" ] && [ -e ${clst_livecd_overlay}/docs/handbook/index.html ] && create_handbook_icon
 
 		# Copy our icons into place and build home directories
 		if [ -n "${clst_livecd_users}" ]

@@ -545,7 +545,6 @@ class generic_stage_target(generic_target):
 					self.settings[self.settings["spec_prefix"]+\
 					"/root_overlay"].split()
 
-
 	def set_root_path(self):
 		""" ROOT= variable for emerges """
 		self.settings["root_path"]="/"

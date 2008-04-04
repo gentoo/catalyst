@@ -1,0 +1,5 @@
+- Remove spec_prefix from all exported variables
+- sign materials automatically
+- create logs
+- send emails
+- separate out options that control catalyst versus the package manager
