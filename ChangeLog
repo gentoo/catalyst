@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  05 Apr 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Use menu.lst for grub config, since 0.96 and higher won't use grub.conf
+  for eltorito
+
   04 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org> +TODO,
   modules/generic_stage_target.py, targets/support/livecdfs-update.sh:
   Added TODO. Changed create_handbook_icon call to only be called if
