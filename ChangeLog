@@ -2,6 +2,10 @@
 # $Id: $
 
   05 Apr 2008; Andrew Gaffney <agaffney@gentoo.org>
+  -livecd/cdtar/grub-memtest86+-cdtar.tar.bz2:
+  Update the grub cdtar for grub-0.97-r5 and memtest86+-2.01
+
+  05 Apr 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/bootloader-setup.sh:
   Use menu.lst for grub config, since 0.96 and higher won't use grub.conf
   for eltorito
