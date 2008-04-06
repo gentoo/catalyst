@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
+  modules/catalyst_support.py:
+  Added a small patch from Tim Yamin <tim.yamin@zonbu.com> to fix make.conf
+  parsing of variables with numbers in them. This is catalyst 2.0.6_pre17 for
+  testing.
+
   06 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   Change back to using sys-apps/baselayout. We'll need to come up with a

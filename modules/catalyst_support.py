@@ -658,7 +658,7 @@ def parse_spec(mylines):
 def parse_makeconf(mylines):
 	mymakeconf={}
 	pos=0
-	pat=re.compile("([a-zA-Z_]*)=(.*)")
+	pat=re.compile("([0-9a-zA-Z_]*)=(.*)")
 	while pos<len(mylines):
 		if len(mylines[pos])<=1:
 			#skip blanks
