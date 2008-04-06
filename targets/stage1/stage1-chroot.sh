@@ -25,7 +25,7 @@ make_destpath /tmp/stage1root
 # First, we drop in a known-good baselayout
 [ -e /etc/make.conf ] && \
 	echo 'USE="${USE} -build"' >> /etc/make.conf
-run_merge "--oneshot --nodeps virtual/baselayout"
+run_merge "--oneshot --nodeps sys-apps/baselayout"
 sed -i '/USE="${USE} -build"/d' /etc/make.conf
 
 [ -e /etc/make.conf ] && \

@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  Change back to using sys-apps/baselayout. We'll need to come up with a
+  better permanent solution now that virtual/baselayout is no more.
+
   05 Apr 2008; Andrew Gaffney <agaffney@gentoo.org>
   -livecd/cdtar/grub-memtest86+-cdtar.tar.bz2:
   Update the grub cdtar for grub-0.97-r5 and memtest86+-2.01
