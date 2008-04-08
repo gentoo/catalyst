@@ -2,6 +2,12 @@
 # $Id: $
 
   08 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  We should likely install baselayout before anything else, including the
+  package manager. As such, I've moved it to after sys-apps/baselayout is
+  installed.
+
+  08 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Check for a snapshot in the overlay and error if one is present. This should
   ensure that the snapshot on the CD is the same as the one used to build the

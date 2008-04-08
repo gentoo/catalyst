@@ -19,15 +19,17 @@ then
 fi
 
 ## START BUILD
-clst_root_path=/ setup_pkgmgr
-make_destpath /tmp/stage1root
-
 # First, we drop in a known-good baselayout
 [ -e /etc/make.conf ] && \
 	echo 'USE="${USE} -build"' >> /etc/make.conf
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 sed -i '/USE="${USE} -build"/d' /etc/make.conf
 
+# Next, we install the package manager
+clst_root_path=/ setup_pkgmgr
+make_destpath /tmp/stage1root
+
+# Now, we install our packages
 [ -e /etc/make.conf ] && \
 	echo "USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/make.conf
