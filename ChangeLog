@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  08 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Check for a snapshot in the overlay and error if one is present. This should
+  ensure that the snapshot on the CD is the same as the one used to build the
+  ISO.
+
   06 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org> catalyst,
   modules/catalyst_support.py:
   Added a small patch from Tim Yamin <tim.yamin@zonbu.com> to fix make.conf

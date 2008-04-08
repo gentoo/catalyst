@@ -142,6 +142,15 @@ case $1 in
 		if [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
 		then
 			mkdir -p $1/snapshots
+			if [ -n "${clst_livecd_overlay}" ]
+			then
+				if [ -e ${clst_livecd_overlay}/snapshots/${clst_snapshot_path} ]
+				then
+					echo "ERROR: You have a snapshot in your overlay, please"
+					echo "remove it, since catalyst adds it automatically."
+					exit 1
+				fi
+			fi
 			cp -f ${clst_snapshot_path} $1/snapshots
 			cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
 		fi
