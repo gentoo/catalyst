@@ -2,4 +2,9 @@
 - sign materials automatically
 - create logs
 - send emails
+- add multiple target support
 - separate out options that control catalyst versus the package manager
+- add a new livecd/type for livedvd
+  - make livedvd type perform several actions automatically
+    - auto-fetch distfiles
+	- automatically pull stages

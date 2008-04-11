@@ -1,6 +1,13 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  11 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO,
+  targets/livecd-stage1/livecd-stage1-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Updated TODO. Added code to livecd-stage1 to generate a package list, which
+  will be used in livecd-stage2 with the upcoming livedvd livecd/type to fetch
+  the distfiles automatically.
+
   11 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py:
   Fix seedcache output so it fits in 80 columns.
