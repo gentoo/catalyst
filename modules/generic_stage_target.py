@@ -407,8 +407,9 @@ class generic_stage_target(generic_target):
 						verbose=False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn off seedcache in the options of catalyst.conf"
-			print "\tthe source path will then be "+\
+			print "\tIf this is not desired, remove this directory or turn off"
+			print "\tseedcache in the options of catalyst.conf the source path"
+			print "\twill then be "+\
 				normpath(self.settings["storedir"]+"/builds/"+\
 				self.settings["source_subpath"]+".tar.bz2\n")
 
