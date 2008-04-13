@@ -1,6 +1,14 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  13 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/rc-update.sh:
+  Change all checks for livecd/type: gentoo-release-livecd to
+  gentoo-release-live* so we can add a new gentoo-release-livedvd livecd/type
+  to allow for auto-fetching of distfiles and stages onto official DVD media.
+
   11 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO,
   targets/livecd-stage1/livecd-stage1-controller.sh,
   targets/livecd-stage2/livecd-stage2-controller.sh:

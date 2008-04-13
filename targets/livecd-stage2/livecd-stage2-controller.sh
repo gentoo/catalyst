@@ -135,28 +135,28 @@ case $1 in
 		fi
 
 		# Move over Getting_Online.txt for minimal/GameCD
-		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
-		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
-		|| [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
-		then
-			cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
-		fi
+		case ${clst_livecd_type} in
+			gentoo-gamecd|gentoo-release-minimal|gentoo-release-live*)
+				cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
+			;;
+		esac
 
-		if [ "${clst_livecd_type}" = "gentoo-release-livecd" ]
-		then
-			mkdir -p $1/snapshots
-			if [ -n "${clst_livecd_overlay}" ]
-			then
-				if [ -e ${clst_livecd_overlay}/snapshots/${clst_snapshot_path} ]
+		case ${clst_livecd_type} in
+			gentoo-release-live*)
+				mkdir -p $1/snapshots
+				if [ -n "${clst_livecd_overlay}" ]
 				then
-					echo "ERROR: You have a snapshot in your overlay, please"
-					echo "remove it, since catalyst adds it automatically."
-					exit 1
+					if [ -e ${clst_livecd_overlay}/snapshots/${clst_snapshot_path} ]
+					then
+						echo "ERROR: You have a snapshot in your overlay, please"
+						echo "remove it, since catalyst adds it automatically."
+						exit 1
+					fi
 				fi
-			fi
-			cp -f ${clst_snapshot_path} $1/snapshots
-			cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
-		fi
+				cp -f ${clst_snapshot_path} $1/snapshots
+				cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
+			;;
+		esac
 
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;

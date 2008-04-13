@@ -34,7 +34,7 @@ fi
 # Since we're an official Gentoo release, we do things the official Gentoo way.
 # As such, we override livecd/users.
 case ${clst_livecd_type} in
-	gentoo-release-livecd)
+	gentoo-release-live*)
 		user_comment="Gentoo default user"
 		clst_livecd_users="gentoo"
 	;;
@@ -180,22 +180,22 @@ touch /etc/asound.state
 
 # Tweak the MOTD for Gentoo releases 
 case ${clst_livecd_type} in
-	gentoo-release-universal )
+	gentoo-release-universal)
 		cat /etc/generic.motd.txt /etc/universal.motd.txt \
 			/etc/minimal.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
 	;;
-	gentoo-release-minimal )
+	gentoo-release-minimal)
 		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
-	gentoo-release-livecd )
+	gentoo-release-live*)
 		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
 		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
 			-e "s:##DISPLAY_MANAGER:${clst_livecd_xdm}:" /etc/motd
 	;;
-	gentoo-gamecd )
+	gentoo-gamecd)
 		cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
 	;;
@@ -261,7 +261,7 @@ case ${clst_livecd_type} in
 
 		touch /etc/startx
 		;;
-	gentoo-release-livecd)
+	gentoo-release-live*)
 		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]
 		then
