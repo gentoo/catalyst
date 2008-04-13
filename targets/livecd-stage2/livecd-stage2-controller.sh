@@ -142,7 +142,7 @@ case $1 in
 		esac
 
 		case ${clst_livecd_type} in
-			gentoo-release-live*)
+			gentoo-release-livecd)
 				mkdir -p $1/snapshots
 				if [ -n "${clst_livecd_overlay}" ]
 				then
@@ -155,6 +155,37 @@ case $1 in
 				fi
 				cp -f ${clst_snapshot_path} $1/snapshots
 				cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
+			;;
+			gentoo-release-livedvd)
+				targets="distfiles snapshots stages"
+				for i in ${targets}
+				do
+					mkdir -p $1/$i
+					if [ -n "${clst_livecd_overlay}" ]
+					then
+						if [ -e ${clst_livecd_overlay}/$i ] && \
+						[ -n "$(ls ${clst_livecd_overlay}/$i |grep -v README)" ]
+						then
+							echo "ERROR: You have files in $i in your overlay!"
+							echo "This directory is now populated by catalyst."
+							exit 1
+						fi
+					fi
+					case ${target} in
+						distfiles)
+							### TODO: make this fetch the distfiles
+							continue
+						;;
+						snapshots)
+							cp -f ${clst_snapshot_path} $1/snapshots
+							cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
+						;;
+						stages)
+							### TODO: make this copy stages
+							continue
+						;;
+					esac
+				done
 			;;
 		esac
 

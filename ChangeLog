@@ -2,6 +2,12 @@
 # $Id: $
 
   13 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  Added initial framework for creating the CD's root on livecd/livedvd.
+  Currently, the end result is the same, but I'll be adding code to
+  automatically copy the stages and to automatically download the distfiles.
+
+  13 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh,
   targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
   targets/support/rc-update.sh:
