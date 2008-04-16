@@ -33,6 +33,6 @@ make_destpath /tmp/stage1root
 [ -e /etc/make.conf ] && \
 	echo "USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/make.conf
-run_merge "--noreplace --oneshot --newuse ${clst_buildpkgs}"
+run_merge "--noreplace --oneshot ${clst_buildpkgs}"
 sed -i "/USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/make.conf

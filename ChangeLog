@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  16 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  We don't need --newuse if we're not using binary packages, so there's no
+  need for it here.
+
   13 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/livecd-stage2/livecd-stage2-controller.sh:
   Added initial framework for creating the CD's root on livecd/livedvd.
