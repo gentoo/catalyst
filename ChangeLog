@@ -2,6 +2,10 @@
 # $Id: $
 
   17 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/livecd-stage2/livecd-stage2-controller.sh:
+  We should be matching all possible LIBDIRs, so make sure we do that.
+
+  17 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/livecdfs-update.sh:
   We no longer need the metadata.tar.bz2, since the Installer uses
   metadata_overlay.
