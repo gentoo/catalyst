@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  17 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  We no longer need the metadata.tar.bz2, since the Installer uses
+  metadata_overlay.
+
   16 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-chroot.sh:
   We don't need --newuse if we're not using binary packages, so there's no

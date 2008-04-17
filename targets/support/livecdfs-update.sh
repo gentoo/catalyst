@@ -321,9 +321,6 @@ case ${clst_livecd_type} in
 		mv -f /var/db /usr/livecd
 		ln -sf /usr/livecd/db /var/db
 
-		# This gives us a proper cache for portage/installer
-		tar cjf /usr/livecd/metadata.tar.bz2 /var/cache/edb/dep/usr/portage
-
 		# Clear out lastlog
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
