@@ -14,7 +14,7 @@ def writemsg(mystr):
 class LockDir:
 	locking_method=fcntl.flock
 	lock_dirs_in_use=[]
-	die_on_faile_lock=True
+	die_on_failed_lock=True
 	def __del__(self):
 		self.clean_my_hardlocks()
 		self.delete_lock_from_path_list()
