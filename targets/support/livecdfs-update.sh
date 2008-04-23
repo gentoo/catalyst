@@ -335,7 +335,8 @@ case ${clst_livecd_type} in
 			do
 				mkdir -p /home/${username}/Desktop
 				# Copy our Handbook icon
-				cp -f /usr/share/applications/gentoo-handbook.desktop \
+				[ -e /usr/share/applications/gentoo-handbook.desktop ] && \
+					cp -f /usr/share/applications/gentoo-handbook.desktop \
 					/home/${username}/Desktop
 				# Copy our installer icons
 				if [ -e /usr/share/applications/installer-gtk.desktop ]
