@@ -288,7 +288,11 @@ show_debug() {
 		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
 		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
 		echo
+		echo "LIBDIR:                $(get_libdir)"
+		echo
 	fi
+	[ -z "$(get_libdir)" ] && \
+		echo "Your profile is broken! LIBDIR is empty!" && exit 1
 }
 
 run_default_funcs() {
