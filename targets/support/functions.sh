@@ -6,7 +6,8 @@ copy_to_chroot(){
 		echo "copying ${file_name} to ${dest_dir}"
 		mkdir -p ${dest_dir}
 		cp -pPR ${1} ${dest_dir}
-		chmod 755 ${dest_dir}/${file_name}
+		[ "${file_name}" != "make.profile" ] && \
+			chmod 755 ${dest_dir}/${file_name}
 	else
 		echo "copying ${file_name} to ${clst_chroot_path}/tmp"
 		mkdir -p ${chroot_path}/tmp
