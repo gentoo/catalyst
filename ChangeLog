@@ -2,6 +2,15 @@
 # $Id: $
 
   25 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/stage4/stage4-preclean-chroot.sh,
+  targets/support/chroot-functions.sh:
+  Remove the die on LIBDIR check, since it won't be set on non-multilib
+  profiles. We can now run debug in preclean again.
+
+  25 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/functions.sh:
   Let's not try to chmod a dangling symlink.
 

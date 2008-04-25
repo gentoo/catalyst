@@ -276,26 +276,21 @@ show_debug() {
 		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
 		echo
 		echo "USE (profile):         $(portageq envvar USE)"
-		echo "USE (stage1):          ${USE}"
 		echo "FEATURES (profile):    $(portageq envvar FEATURES)"
-		echo "FEATURES (stage1):     ${FEATURES}"
 		echo
 		echo "ARCH:                  $(portageq envvar ARCH)"
 		echo "CHOST:                 $(portageq envvar CHOST)"
 		echo "CFLAGS:                $(portageq envvar CFLAGS)"
 		echo
-		echo "PROFILE_ARCH:          $(portageq envvar PROFILE_ARCH)"
-		echo
+		echo "These should be blank on non-multilib profiles."
 		echo "ABI:                   $(portageq envvar ABI)"
 		echo "DEFAULT_ABI:           $(portageq envvar DEFAULT_ABI)"
 		echo "KERNEL_ABI:            $(portageq envvar KERNEL_ABI)"
-		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
-		echo
 		echo "LIBDIR:                $(get_libdir)"
+		echo "MULTILIB_ABIS:         $(portageq envvar MULTILIB_ABIS)"
+		echo "PROFILE_ARCH:          $(portageq envvar PROFILE_ARCH)"
 		echo
 	fi
-	[ -z "$(get_libdir)" ] && \
-		echo "Your profile is broken! LIBDIR is empty!" && exit 1
 }
 
 run_default_funcs() {
