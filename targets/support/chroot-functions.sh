@@ -265,6 +265,9 @@ show_debug() {
 		echo "Profile/target info:"
 		echo "Profile inheritance:"
 		python -c 'import portage; print portage.settings.profiles'
+		echo
+		# TODO: make this work on non-portage
+		emerge --info
 		# TODO: grab our entire env
 		# <zmedico> to get see the ebuild env you can do something like:
 		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside /etc/portage/bashrc

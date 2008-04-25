@@ -2,6 +2,10 @@
 # $Id: $
 
   25 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Added emerge --info to debug output.  I don't know why I didn't add it before.
+
+  25 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean-chroot.sh,
   targets/stage2/stage2-preclean-chroot.sh,
   targets/stage3/stage3-preclean-chroot.sh,
