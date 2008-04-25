@@ -1,6 +1,12 @@
 #!/bin/bash
 
+export RUN_DEFAULT_FUNCS="no"
+
 source /tmp/chroot-functions.sh
+
+# Since we didn't run the default functions, we call a couple here.
+update_env_settings
+setup_myfeatures
 
 cleanup_stages
 
