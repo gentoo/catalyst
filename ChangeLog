@@ -3,6 +3,11 @@
 
   09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
+  If we don't have a distcc user, we need to reinstall distcc, even if it's
+  been built with the right USE. This mainly affects stage1/stage2.
+
+  09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
   We need to run distcc-config --install, since we won't be installing into
   ROOT=/ for stage1, and we have to use --noreplace to keep from wiping any
   installed versions of distcc.

@@ -73,7 +73,16 @@ setup_myfeatures(){
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e /etc/make.conf ] && \
 			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/make.conf
-		clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/distcc || exit 1
+		# We install distcc to / on stage1, then use --noreplace, so we need to
+		# have some way to check if we need to reinstall distcc without being
+		# able to rely on USE, so we check for the distcc user and force a
+		# reinstall if it isn't found.
+		if [ "$(getent passwd distcc | cut -d: -f1)" != "distcc" ]
+		then
+			clst_root_path=/ run_merge --oneshot --nodeps sys-devel/distcc || exit 1
+		else
+			clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/distcc || exit 1
+		fi
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
