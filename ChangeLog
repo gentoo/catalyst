@@ -1,6 +1,9 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO:
+  Add a couple of distcc-related items to TODO.
+
   09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean-chroot.sh,
   targets/stage2/stage2-preclean-chroot.sh,

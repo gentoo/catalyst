@@ -8,3 +8,5 @@
   - make livedvd type perform several actions automatically
     - auto-fetch distfiles
 	- automatically pull stages
+- check that distcc_hosts is set before enabling distcc
+- allow setting of distcc_hosts in catalyst.conf with override in the specs
