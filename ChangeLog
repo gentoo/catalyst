@@ -1,6 +1,12 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/support/chroot-functions.sh:
+  We need to run distcc-config --install, since we won't be installing into
+  ROOT=/ for stage1, and we have to use --noreplace to keep from wiping any
+  installed versions of distcc.
+
   09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO:
   Add a couple of distcc-related items to TODO.
 
