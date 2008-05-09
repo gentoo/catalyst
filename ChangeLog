@@ -1,6 +1,14 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
+  targets/stage1/stage1-preclean-chroot.sh,
+  targets/stage2/stage2-preclean-chroot.sh,
+  targets/stage3/stage3-preclean-chroot.sh,
+  targets/stage4/stage4-preclean-chroot.sh:
+  We don't want to run setup_myfeatures in preclean, but still want to update
+  the environment and show our debug information.
+
   25 Apr 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/stage1/stage1-preclean-chroot.sh,
   targets/stage2/stage2-preclean-chroot.sh,
