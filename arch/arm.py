@@ -51,5 +51,5 @@ def register():
 		"armv4l" : arch_armv4l,
 		"armeb"  : arch_armeb,
 		"armv5b" : arch_armv5b
-	}, ("arm", "armv4l", "armeb", "armv5b") )
+	}, ("arm", "armv4l", "armeb", "armv5b", "armv5tel") )
 
