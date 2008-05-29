@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  29 May 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO, catalyst,
+  targets/support/livecdfs-update.sh:
+  Add gconf settings for gnome-screensaver to disable locking by default. This
+  is 2.0.6 final.
+
   14 May 2008; Andrew Gaffney <agaffney@gentoo.org> arch/arm.py:
   Add armv5tel to arm host list
 

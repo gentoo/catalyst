@@ -270,6 +270,11 @@ case ${clst_livecd_type} in
 				--type string --set /desktop/gnome/interface/font_name "Sans 9"
 		fi
 
+		# Remove locking on screensaver
+		gconftool-2 --direct \
+			-config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s \
+			-t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
+
 		# Setup GDM
 		if [ "${clst_livecd_xdm}" == "gdm" ]
 		then

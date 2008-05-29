@@ -10,3 +10,4 @@
 	- automatically pull stages
 - check that distcc_hosts is set before enabling distcc
 - allow setting of distcc_hosts in catalyst.conf with override in the specs
+- perform user management via a loop in livecd-stage2
