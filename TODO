@@ -10,4 +10,12 @@
 	- automatically pull stages
 - check that distcc_hosts is set before enabling distcc
 - allow setting of distcc_hosts in catalyst.conf with override in the specs
+- check ccache settings, such as size, and ensure we don't overwrite them
 - perform user management via a loop in livecd-stage2
+- add portage jobs support
+  - --jobs
+  - --keep-going
+  - --load-average
+- perform GCC version detection in seed stages to determine supported settings
+- build bootloaders for targets on-demand, rather than using pre-built tarballs
+

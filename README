@@ -2,17 +2,18 @@
 Licensing
 ========================
 
-Catalyst is copyrighted by the Gentoo Foundation, and is released under the
-terms of the GNU General Public License v.2.1. For more information, please
-consult COPYING.
+Originally, Catalyst was copyrighted by the Gentoo Foundation, Inc. and was
+released under the terms of the GNU General Public License v.2.1.  Since this
+is a fork of that project, all new code is no longer copyrighted to the Gentoo
+Foundation.  Currently, copyright is held by the individual authors for their
+contributions.  For more information, please consult COPYING.
 
 Disclaimer
 ========================
 
-The Gentoo Foundation extends no warranty or guarantee for catalyst. This
-software is provided to the public to comply with the Gentoo social contract
-and to assist other distributors and integrators of Gentoo and Gentoo-based
-solutions. Use at your own risk.
+This software is covered by no warranty or guarantee of functionality.  It is
+provided to the public for use in creating source-based distributions in a
+simple and reproducable manner.  Use at your own risk.
 
 Requirements
 =======================
@@ -25,7 +26,7 @@ Requirements
 What is catalyst?
 ========================
 
-Catalyst is the Gentoo Linux project's release building tool. With catalyst,
+Catalyst is a release building tool, used by Gentoo Linux. With catalyst,
 you are able to completely customize your Gentoo install by customizing
 the very tools that are used to install a system. Official Gentoo Linux release
 media is built with catalyst.
