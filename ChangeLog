@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  24 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> TODO, catalyst,
+  README:
+  Updated for new git repo.
+
   29 May 2008; Chris Gianelloni <wolf31o2@gentoo.org> TODO, catalyst,
   targets/support/livecdfs-update.sh:
   Add gconf settings for gnome-screensaver to disable locking by default. This
