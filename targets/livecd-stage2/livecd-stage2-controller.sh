@@ -134,13 +134,6 @@ case $1 in
 			cp -f ${clst_sharedir}/livecd/files/README.txt $1
 		fi
 
-		# Move over Getting_Online.txt for minimal/GameCD
-		case ${clst_livecd_type} in
-			gentoo-gamecd|gentoo-release-minimal|gentoo-release-live*)
-				cp -f ${clst_sharedir}/livecd/files/Getting_Online.txt $1
-			;;
-		esac
-
 		case ${clst_livecd_type} in
 			gentoo-release-livecd)
 				mkdir -p $1/snapshots
