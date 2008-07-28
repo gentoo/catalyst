@@ -6,7 +6,6 @@
 
 extract_cdtar $1
 extract_kernels $1/boot
-check_dev_manager
 check_bootargs
 check_filesystem_type
 

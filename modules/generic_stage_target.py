@@ -148,9 +148,6 @@ class generic_stage_target(generic_target):
 		self.set_iso_volume_id()
 		self.set_build_kernel_vars()
 		self.set_fsscript()
-		# TODO: Remove archscript/runscript from next major version
-		self.set_archscript()
-		self.set_runscript()
 		self.set_install_mask()
 		self.set_rcadd()
 		self.set_rcdel()
@@ -310,20 +307,6 @@ class generic_stage_target(generic_target):
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
 				os.makedirs(self.settings["storedir"]+"/builds/")
 
-	def set_archscript(self):
-		if self.settings.has_key(self.settings["spec_prefix"]+"/archscript"):
-			# TODO: remove this warning/code with the next major version
-			print "\nWarning!!!  "
-			print "\t"+self.settings["spec_prefix"]+"/archscript"+\
-				" is deprecated and no longer used.\n"
-
-	def set_runscript(self):
-		if self.settings.has_key(self.settings["spec_prefix"]+"/runscript"):
-			# TODO: remove this warning/code with the next major version
-			print "\nWarning!!!  "
-			print "\t"+self.settings["spec_prefix"]+"/runscript"+\
-				" is deprecated and no longer used.\n"
-
 	def set_fsscript(self):
 		if self.settings.has_key(self.settings["spec_prefix"]+"/fsscript"):
 			self.settings["fsscript"]=\
@@ -355,19 +338,6 @@ class generic_stage_target(generic_target):
 			del self.settings[self.settings["spec_prefix"]+"/iso"]
 
 	def set_fstype(self):
-		if self.settings.has_key(self.settings["spec_prefix"]+"/cdfstype"):
-			# TODO: remove this warning/code with the next major version
-			print "\nWarning!!!  "
-			print self.settings["spec_prefix"]+"/cdfstype"+\
-				" is deprecated and will be removed."
-			print "\tUse "+self.settings["spec_prefix"]+"/fstype"+" instead."
-			print "\tConverting to "+self.settings["spec_prefix"]+"/fstype"+\
-				" internally."
-			print "\tContinuing ....\n"
-			self.settings["fstype"]=\
-				self.settings[self.settings["spec_prefix"]+"/cdfstype"]
-			del self.settings[self.settings["spec_prefix"]+"/cdfstype"]
-
 		if self.settings.has_key(self.settings["spec_prefix"]+"/fstype"):
 			self.settings["fstype"]=\
 				self.settings[self.settings["spec_prefix"]+"/fstype"]
@@ -376,8 +346,7 @@ class generic_stage_target(generic_target):
 		if not self.settings.has_key("fstype"):
 			self.settings["fstype"]="normal"
 			for x in self.valid_values:
-				if x ==  self.settings["spec_prefix"]+"/fstype"\
-					or x == self.settings["spec_prefix"]+"/cdfstype":
+				if x ==  self.settings["spec_prefix"]+"/fstype":
 					print "\n"+self.settings["spec_prefix"]+\
 						"/fstype is being set to the default of \"normal\"\n"
 
@@ -575,43 +544,8 @@ class generic_stage_target(generic_target):
 						"/packages"])==types.StringType:
 						addlargs["boot/kernel/"+x+"/packages"]=\
 							[addlargs["boot/kernel/"+x+"/packages"]]
-				# TODO: remove this warning/code with the next major version
-				self.valid_values.append("boot/kernel/"+x+"/postconf")
-				if addlargs.has_key("boot/kernel/"+x+"/postconf"):
-					print "boot/kernel/"+x+"/postconf is deprecated"
-					print "\tInternally moving these ebuilds to boot/kernel/"+\
-						x+"/packages"
-					print "\tPlease move them to boot/kernel/"+x+\
-						"/packages in your specfile"
-					if type(addlargs["boot/kernel/"+x+\
-						"/postconf"])==types.StringType:
-						loop2=[addlargs["boot/kernel/"+x+"/postconf"]]
-					else:
-						loop2=addlargs["boot/kernel/"+x+"/postconf"]
-				
-					for y in loop2:
-						if not addlargs.has_key("boot/kernel/"+x+"/packages"):
-							addlargs["boot/kernel/"+x+"/packages"]=[y]
-						else:
-							addlargs["boot/kernel/"+x+"/packages"].append(y)
 
 	def set_build_kernel_vars(self):
-		if self.settings.has_key(self.settings["spec_prefix"]+"/devmanager"):
-			# TODO: remove this warning/code with the next major version
-			print self.settings["spec_prefix"]+\
-				"/devmanager is deprecated and will be removed."
-			self.settings["devmanager"]=\
-				self.settings[self.settings["spec_prefix"]+"/devmanager"]
-			del self.settings[self.settings["spec_prefix"]+"/devmanager"]
-
-		if self.settings.has_key(self.settings["spec_prefix"]+"/splashtype"):
-			# TODO: remove this warning/code with the next major version
-			print self.settings["spec_prefix"]+\
-				"/splashtype is deprecated and will be removed."
-			self.settings["splashtype"]=\
-				self.settings[self.settings["spec_prefix"]+"/splashtype"]
-			del self.settings[self.settings["spec_prefix"]+"/splashtype"]
-
 		if self.settings.has_key(self.settings["spec_prefix"]+"/gk_mainargs"):
 			self.settings["gk_mainargs"]=\
 				self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
@@ -1536,11 +1470,11 @@ class generic_stage_target(generic_target):
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
 					" bootloader " + self.settings["target_path"],\
-					"Bootloader runscript failed.",env=self.env)
+					"Bootloader script failed.",env=self.env)
 				touch(self.settings["autoresume_path"]+"bootloader")
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"Runscript aborting due to error."
+				raise CatalystError,"Script aborting due to error."
 
 	def livecd_update(self):
 		if self.settings.has_key("AUTORESUME") \

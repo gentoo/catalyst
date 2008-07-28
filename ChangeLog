@@ -1,6 +1,15 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  28 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org>
+  modules/generic_stage_target.py, modules/livecd_stage2_target.py,
+  modules/snapshot_target.py, modules/stage4_target.py,
+  targets/support/bootloader-setup.sh, targets/support/functions.sh,
+  targets/support/kmerge.sh:
+  Removing all deprecated interfaces. We no longer wish to support them and
+  they're not needed. Anyone using a pre-2.x spec file will need to update
+  their specs, anyway.
+
   24 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org>
   -livecd/files/Getting_Online.txt:
   Removing livecd/files/Getting_Online.txt since it was quite outdated.

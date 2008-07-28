@@ -12,7 +12,7 @@ class stage4_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["stage4/use","boot/kernel",\
 				"stage4/root_overlay","stage4/fsscript",\
-				"stage4/gk_mainargs","splash_theme","splash_type",\
+				"stage4/gk_mainargs","splash_theme",\
 				"portage_overlay","stage4/rcadd","stage4/rcdel",\
 				"stage4/linuxrc","stage4/unmerge","stage4/rm","stage4/empty"])
 		generic_stage_target.__init__(self,spec,addlargs)

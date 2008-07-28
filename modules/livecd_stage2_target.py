@@ -17,19 +17,15 @@ class livecd_stage2_target(generic_stage_target):
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
 			"livecd/readme","livecd/motd","livecd/overlay",\
-			"livecd/modblacklist","livecd/splash_theme","livecd/splash_type",\
-			"livecd/rcadd","livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
-			"livecd/root_overlay","livecd/devmanager","livecd/users",\
-			"portage_overlay","livecd/cdfstype","livecd/fstype","livecd/fsops",\
-			"livecd/linuxrc","livecd/bootargs","gamecd/conf","livecd/xdm",\
-			"livecd/xsession","livecd/volid"])
+			"livecd/modblacklist","livecd/splash_theme","livecd/rcadd",\
+			"livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
+			"livecd/root_overlay","livecd/users","portage_overlay",\
+			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
+			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):
 			self.settings["livecd/type"] = "generic-livecd"
-
-		if self.settings.has_key("livecd/splash_type"):
-			print "Using livecd/splash_type is deprecated as we no longer support bootsplash."
 
 		file_locate(self.settings, ["cdtar","controller_file"])
 	

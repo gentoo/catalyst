@@ -50,11 +50,6 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
 	fi
 	
-	if [ "${clst_devmanager}" == "devfs" ]
-	then
-		GK_ARGS="${GK_ARGS} --no-udev"
-	fi
-
 	if [ -n "${clst_linuxrc}" ]
 	then
 		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"

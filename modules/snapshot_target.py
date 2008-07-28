@@ -10,7 +10,7 @@ from generic_stage_target import *
 class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
-		self.valid_values=["version_stamp","target","portdir_overlay"]
+		self.valid_values=["version_stamp","target"]
 		
 		generic_target.__init__(self,myspec,addlargs)
 		self.settings=myspec
@@ -19,13 +19,6 @@ class snapshot_target(generic_stage_target):
 		self.settings["snapshot_path"]=normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
 			+".tar.bz2")
 		self.settings["tmp_path"]=normpath(st+"/tmp/"+self.settings["target_subpath"])
-		if self.settings.has_key("portdir_overlay"):
-			print "\nWarning!!!!"
-			print "\tThis feature is deprecated no overlay will be added to the snapshot."
-			print "\tIf you need an overlay feature please use portage_overlay in the other spec files"
-			print "\tOtherwise add your files to the normal snapshot and redigest .. you should know what"
-			print "\t\tto do."
-			print "\tThis was removed due to digesting issues that are incompatible with portage."
 
 	def setup(self):
 		x=normpath(self.settings["storedir"]+"/snapshots")

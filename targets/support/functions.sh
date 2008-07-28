@@ -174,14 +174,6 @@ extract_kernel() {
 	fi
 }
 
-check_dev_manager(){
-	# figure out what device manager we are using and handle it accordingly
-	if [ "${clst_livecd_devmanager}" == "devfs" ]
-	then
-		cmdline_opts="${cmdline_opts} noudev devfs"
-	fi
-}
-
 check_bootargs(){
 	# Add any additional options
 	if [ -n "${clst_livecd_bootargs}" ]
