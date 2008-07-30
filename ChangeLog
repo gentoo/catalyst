@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  30 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> arch/amd64.py,
+  arch/x86.py:
+  Updating x86/amd64 arch support. Original patches by William Cooke
+  <gentoo@wcooke.org> and reported to Gentoo bug #224429, modified by me.
+
   28 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org>
   modules/generic_stage_target.py, modules/livecd_stage2_target.py,
   modules/snapshot_target.py, modules/stage4_target.py,
