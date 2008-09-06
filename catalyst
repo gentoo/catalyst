@@ -9,7 +9,7 @@ import pdb
 
 sys.path.append("./modules")
 
-from catalyst.spec import spec
+import catalyst
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0.6"
@@ -190,14 +190,6 @@ def import_modules():
 		sys.exit(1)
 
 	return targetmap
-
-def do_spec(myspecfile):
-	try:
-		addlargs=read_spec(myspecfile)
-	except:
-		sys.exit(1)
-		
-	return addlargs
 
 def do_cli(cmdline):
 	try:
@@ -389,7 +381,8 @@ if __name__ == "__main__":
 	addlargs={}
 	
 	if myspecfile:
-		addlargs.update(do_spec(myspecfile))
+		spec = catalyst.util.spec(myspecfile)
+		addlargs.update(spec.get_values())
 	
 	if mycmdline:
 		addlargs.update(do_cli(mycmdline))

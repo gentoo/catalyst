@@ -14,6 +14,11 @@ class spec:
 	def get_values(self):
 		return self.values
 
+	def dump(self):
+		dump = ""
+		for x in self.values.keys():
+			dump += x + ": " + repr(self.values[x]) + "\n"
+
 	def load(self, filename):
 		self.filename = filename
 		try:

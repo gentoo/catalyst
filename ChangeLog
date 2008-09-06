@@ -2,6 +2,12 @@
 # $Id: $
 
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  -modules/catalyst/spec.py, +modules/catalyst/util.py,
+  modules/catalyst_support.py:
+  Rename catalyst.spec to catalyst.util Move spec_dump() into spec class
+  Modify catalyst to use new spec class
+
+  06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/__init__.py:
   Add __init__.py file and import line
 

@@ -593,68 +593,6 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
 """
 
-def parse_spec(mylines):
-	myspec = {}
-	cur_array = []
-	trailing_comment=re.compile("#.*$")
-	white_space=re.compile("\s+")
-	while len(mylines):
-		myline = mylines.pop(0).strip()
-
-		# Force the line to be clean 
-		# Remove Comments ( anything following # )
-		myline = trailing_comment.sub("", myline)
-
-		# Skip any blank lines
-		if not myline: continue
-
-		# Look for colon
-		msearch = myline.find(':')
-		
-		# If semicolon found assume its a new key
-		# This may cause problems if : are used for key values but works for now
-		if msearch != -1:
-			# Split on the first semicolon creating two strings in the array mobjs
-			mobjs = myline.split(':', 1)
-			mobjs[1] = mobjs[1].strip()
-
-			# Check that this key doesn't exist already in the spec
-			if myspec.has_key(mobjs[0]):
-				raise Exception("You have a duplicate key (" + mobjs[0] + ") in your spec. Please fix it")
-
-			# Start a new array using the first element of mobjs
-			cur_array = [mobjs[0]]
-			if mobjs[1]:
-				# split on white space creating additional array elements
-				subarray = white_space.split(mobjs[1])
-				if subarray:
-					if len(subarray)==1:
-						# Store as a string if only one element is found.
-						# this is to keep with original catalyst behavior 
-						# eventually this may go away if catalyst just works
-						# with arrays.
-						cur_array.append(subarray[0])
-					else:
-						cur_array += subarray
-		
-		# Else add on to the last key we were working on
-		else:
-			mobjs = white_space.split(myline)
-			cur_array += mobjs
-		
-		# XXX: Do we really still need this "single value is a string" behavior?
-		if len(cur_array) == 2:
-			myspec[cur_array[0]] = cur_array[1]
-		else:
-			myspec[cur_array[0]] = cur_array[1:]
-	
-	for x in myspec.keys():
-		# Delete empty key pairs
-		if not myspec[x]:
-			print "\n\tWARNING: No value set for key " + x + "...deleting"
-			del myspec[x]
-	return myspec
-
 def parse_makeconf(mylines):
 	mymakeconf={}
 	pos=0
@@ -676,15 +614,6 @@ def parse_makeconf(mylines):
 			    clean_string = re.sub(r"\"",r"",mobj.group(2))
 			    mymakeconf[mobj.group(1)]=clean_string
 	return mymakeconf
-
-def read_spec(myspecfile):
-	try:
-		myf=open(myspecfile,"r")
-	except:
-		raise CatalystError, "Could not open spec file "+myspecfile
-	mylines=myf.readlines()
-	myf.close()
-	return parse_spec(mylines)
 
 def read_makeconf(mymakeconffile):
 	if os.path.exists(mymakeconffile):
@@ -764,10 +693,6 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not myspec.has_key(x):
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 	
-def spec_dump(myspec):
-	for x in myspec.keys():
-		print x+": "+repr(myspec[x])
-
 def touch(myfile):
 	try:
 		myf=open(myfile,"w")
