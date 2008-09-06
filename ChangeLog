@@ -2,6 +2,10 @@
 # $Id: $
 
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  +modules/catalyst/__init__.py:
+  Add __init__.py file and import line
+
+  06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/spec.py:
   Initial commit of modules/catalyst/spec.py
 

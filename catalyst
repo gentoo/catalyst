@@ -9,6 +9,8 @@ import pdb
 
 sys.path.append("./modules")
 
+from catalyst.spec import spec
+
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0.6"
 
