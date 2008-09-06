@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  +modules/catalyst/spec.py:
+  Initial commit of modules/catalyst/spec.py
+
   30 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> arch/amd64.py,
   arch/x86.py:
   Updating x86/amd64 arch support. Original patches by William Cooke
