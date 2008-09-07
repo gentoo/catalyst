@@ -381,7 +381,7 @@ if __name__ == "__main__":
 	addlargs={}
 	
 	if myspecfile:
-		spec = catalyst.util.spec(myspecfile)
+		spec = catalyst.config.SpecParser(myspecfile)
 		addlargs.update(spec.get_values())
 	
 	if mycmdline:

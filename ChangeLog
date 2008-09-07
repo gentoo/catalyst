@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  +modules/catalyst/config.py, -modules/catalyst/util.py:
+  More indecisiveness..move util.spec to config.SpecParser
+
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   -modules/catalyst/spec.py, +modules/catalyst/util.py,
   modules/catalyst_support.py:
