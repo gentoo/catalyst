@@ -83,7 +83,7 @@ class ParserBase:
 #					cur_array += mobjs
 					cur_array += myline.split()
 				else:
-					raise Exception("Value without a key found on line " + x)
+					raise CatalystError, "Syntax error: " + x
 		
 			# XXX: Do we really still need this "single value is a string" behavior?
 			if len(cur_array) == 2:

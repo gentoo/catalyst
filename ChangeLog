@@ -2,6 +2,10 @@
 # $Id: $
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  modules/catalyst/config.py, modules/catalyst_support.py:
+  Switch commandline spec value parsing to use catalyst.config.ConfigParser
+
+  07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/config.py:
   A few fixes to ParserBase after actually testing it switch to parsing
   config file with ConfigParser

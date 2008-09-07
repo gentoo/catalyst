@@ -193,14 +193,6 @@ def import_modules():
 
 	return targetmap
 
-def do_cli(cmdline):
-	try:
-		return arg_parse(cmdline)
-	
-	except CatalystError:
-		print "!!! catalyst: Could not parse commandline, exiting."
-		sys.exit(1)
-	
 def build_target(addlargs, targetmap):
 	try:
 		if not targetmap.has_key(addlargs["target"]):
@@ -387,8 +379,14 @@ if __name__ == "__main__":
 		addlargs.update(spec.get_values())
 	
 	if mycmdline:
-		addlargs.update(do_cli(mycmdline))
-	
+		try:
+			cmdline = catalyst.config.ConfigParser()
+			cmdline.parse_lines(mycmdline)
+			addlargs.update(cmdline.get_values())
+		except CatalystError:
+			print "!!! catalyst: Could not parse commandline, exiting."
+			sys.exit(1)
+
 	if not addlargs.has_key("target"):
 		raise CatalystError, "Required value \"target\" not specified."
 

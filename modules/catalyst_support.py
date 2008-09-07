@@ -665,20 +665,6 @@ def ismount(path):
 			return 1
 	return 0
 
-def arg_parse(cmdline):
-	#global required_config_file_values
-	mydict={}
-	for x in cmdline:
-		foo=string.split(x,"=",1)
-		if len(foo)!=2:
-			raise CatalystError, "Invalid arg syntax: "+x
-
-		else:
-			mydict[foo[0]]=foo[1]
-	
-	# if all is well, we should return (we should have bailed before here if not)
-	return mydict
-		
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
 	global valid_config_file_values
