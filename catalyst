@@ -10,6 +10,7 @@ import pdb
 sys.path.append("./modules")
 
 import catalyst.config
+import catalyst.util
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0.6"
@@ -203,9 +204,9 @@ def build_target(addlargs, targetmap):
 		mytarget.run()
 
 	except:
-		# TODO: Capture traceback, so we can display this error after printing of the traceback
+		catalyst.util.print_traceback()
 		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
-		raise
+		sys.exit(1)
 
 if __name__ == "__main__":
 	targetmap={}

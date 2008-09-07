@@ -2,6 +2,12 @@
 # $Id: $
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  +modules/catalyst/util.py:
+  Create catalyst.util module with capture_traceback() and print_traceback()
+  functions Capture and print traceback when build fails instead of letting
+  python do it
+
+  07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/config.py, modules/catalyst_support.py:
   Switch commandline spec value parsing to use catalyst.config.ConfigParser
 
