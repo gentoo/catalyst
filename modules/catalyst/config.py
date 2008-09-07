@@ -1,3 +1,5 @@
+import re
+
 class ParserBase:
 
 	filename = ""
@@ -12,6 +14,12 @@ class ParserBase:
 
 	def get_values(self):
 		return self.values
+
+	def dump(self):
+		dump = ""
+		for x in self.values.keys():
+			dump += x + " = " + repr(self.values[x]) + "\n"
+		return dump
 
 	def parse_file(self, filename):
 		try:
@@ -34,7 +42,7 @@ class ParserBase:
 		trailing_comment=re.compile('\s*#.*$')
 		white_space=re.compile('\s+')
 
-		for x, myline in enum(self.lines):
+		for x, myline in enumerate(self.lines):
 			myline = myline.strip()
 
 			# Force the line to be clean 
@@ -66,7 +74,7 @@ class ParserBase:
 						subarray = mobjs[1].split()
 						cur_array += subarray
 					else:
-						cur_array += mobjs[1]
+						cur_array += [mobjs[1]]
 
 			# Else add on to the last key we were working on
 			else:
@@ -75,7 +83,7 @@ class ParserBase:
 #					cur_array += mobjs
 					cur_array += myline.split()
 				else:
-					throw Exception("Value without a key found on line " + x)
+					raise Exception("Value without a key found on line " + x)
 		
 			# XXX: Do we really still need this "single value is a string" behavior?
 			if len(cur_array) == 2:
@@ -92,7 +100,7 @@ class ParserBase:
 
 		self.values = values
 
-class SpecParser:
+class SpecParser(ParserBase):
 
 	key_value_separator = ':'
 	multiple_values = True
@@ -102,7 +110,13 @@ class SpecParser:
 		if filename:
 			self.parse_file(filename)
 
-	def dump(self):
-		dump = ""
-		for x in self.values.keys():
-			dump += x + ": " + repr(self.values[x]) + "\n"
+class ConfigParser(ParserBase):
+
+	key_value_separator = '='
+	multiple_values = False
+	empty_values = True
+
+	def __init__(self, filename=""):
+		if filename:
+			self.parse_file(filename)
+

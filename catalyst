@@ -9,7 +9,7 @@ import pdb
 
 sys.path.append("./modules")
 
-import catalyst
+import catalyst.config
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.0.6"
@@ -81,7 +81,9 @@ def parse_config(myconfig):
 
 	# now, try and parse the config file "config_file"
 	try:
-		execfile(config_file, myconf, myconf)
+#		execfile(config_file, myconf, myconf)
+		myconfig = catalyst.config.ConfigParser(config_file)
+		myconf.update(myconfig.get_values())
 	
 	except:
 		print "!!! catalyst: Unable to parse configuration file, "+myconfig
