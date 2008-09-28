@@ -1,6 +1,9 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Id: $
 
+  28 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> TODO:
+  Update TODO with placeholder idea
+
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/util.py:
   Create catalyst.util module with capture_traceback() and print_traceback()

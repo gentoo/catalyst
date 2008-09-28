@@ -18,4 +18,7 @@
   - --load-average
 - perform GCC version detection in seed stages to determine supported settings
 - build bootloaders for targets on-demand, rather than using pre-built tarballs
+- support for placeholders in spec file, both automatic and user-specifed
+  - %DATESTAMP% could be automatic
+  - %BUILDDIR% would be nice for livecd/iso instead of specifying full path
 
