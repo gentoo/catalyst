@@ -1,38 +1,42 @@
-# Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
-# $Id: $
+# Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
+# Distributed under the GPL v2
+
+  31 Oct 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
+  Kicking out a 2.0.6.901 release for testing.
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/util.py:
   Create catalyst.util module with capture_traceback() and print_traceback()
   functions Capture and print traceback when build fails instead of letting
-  python do it
+  python do it.
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/config.py, modules/catalyst_support.py:
-  Switch commandline spec value parsing to use catalyst.config.ConfigParser
+  Switch commandline spec value parsing to use catalyst.config.ConfigParser.
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/config.py:
   A few fixes to ParserBase after actually testing it switch to parsing
-  config file with ConfigParser
+  config file with ConfigParser.
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/config.py, -modules/catalyst/util.py:
-  More indecisiveness..move util.spec to config.SpecParser
+  More indecisiveness..move util.spec to config.SpecParser.
 
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   -modules/catalyst/spec.py, +modules/catalyst/util.py,
   modules/catalyst_support.py:
-  Rename catalyst.spec to catalyst.util Move spec_dump() into spec class
-  Modify catalyst to use new spec class
+  * Rename catalyst.spec to catalyst.util
+  * Move spec_dump() into spec class
+  * Modify catalyst to use new spec class
 
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/__init__.py:
-  Add __init__.py file and import line
+  Add __init__.py file and import line.
 
   06 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/spec.py:
-  Initial commit of modules/catalyst/spec.py
+  Initial commit of modules/catalyst/spec.py.
 
   30 Jul 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> arch/amd64.py,
   arch/x86.py:
@@ -62,7 +66,7 @@
   is 2.0.6 final.
 
   14 May 2008; Andrew Gaffney <agaffney@gentoo.org> arch/arm.py:
-  Add armv5tel to arm host list
+  Add armv5tel to arm host list.
 
   09 May 2008; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/chroot-functions.sh:
