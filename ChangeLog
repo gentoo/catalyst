@@ -4,6 +4,14 @@
   31 Oct 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
   Kicking out a 2.0.6.901 release for testing.
 
+  29 Sep 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/generic_stage_target.py:
+  Automatically prepend build dir path to livecd/iso if it's not an absolute
+  path
+
+  28 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> TODO:
+  Update TODO with placeholder idea
+
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/util.py:
   Create catalyst.util module with capture_traceback() and print_traceback()

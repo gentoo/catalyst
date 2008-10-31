@@ -333,8 +333,15 @@ class generic_stage_target(generic_target):
 
 	def set_iso(self):
 		if self.settings.has_key(self.settings["spec_prefix"]+"/iso"):
-			self.settings["iso"]=\
-				normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
+			if self.settings[self.settings["spec_prefix"]+"iso"].startswith('/'):
+				self.settings["iso"]=\
+					normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
+			else:
+				# This automatically prepends the build dir to the ISO output path
+				# if it doesn't start with a /
+				self.settings["iso"] = normpath(self.settings["storedir"] + \
+					"/builds/" + self.settings["rel_type"] + "/" + \
+					self.settings[self.settings["spec_prefix"]+"iso"])
 			del self.settings[self.settings["spec_prefix"]+"/iso"]
 
 	def set_fstype(self):
