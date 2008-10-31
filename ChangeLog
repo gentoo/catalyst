@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  31 Oct 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> README:
+  Updated README to tell the user where to locate catalyst.conf if not using
+  an ebuild. Thanks to Claus Boehmer <Claus.Boehmer@gmx.de> for pointing it
+  out.
+
   31 Oct 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
   Kicking out a 2.0.6.901 release for testing.
 

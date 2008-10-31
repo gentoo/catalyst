@@ -45,6 +45,10 @@ Configuring catalyst
 After emerging/installing catalyst, the first (and probably only) thing
 that you will have to do is edit /etc/catalyst/catalyst.conf to your liking.
 
+If you are not using an ebuild for the installation, you should create a
+/etc/catalyst directory, and copy catalyst.conf and catalystrc from the
+distribution tarball's files directory.
+
 Example catalyst.conf:
 
 distdir="/usr/portage/distfiles"
