@@ -7,10 +7,10 @@
   29 Sep 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
   Automatically prepend build dir path to livecd/iso if it's not an absolute
-  path
+  path.
 
   28 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> TODO:
-  Update TODO with placeholder idea
+  Update TODO with placeholder idea.
 
   07 Sep 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   +modules/catalyst/util.py:
