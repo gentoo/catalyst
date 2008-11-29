@@ -20,16 +20,17 @@ conf_values={}
 def usage():
 	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
 	print " -a --clear-autoresume	clear autoresume flags"
-	print " -c --config		use specified configuration file"
-	print " -C --cli		catalyst commandline (MUST BE LAST OPTION)"
-	print " -d --debug		enable debugging"
-	print " -f --file		read specfile"
-	print " -F --fetchonly		fetch files only"
-	print " -h --help		print this help message"
-	print " -p --purge		clear tmp dirs,package cache and autoresume flags"
-	print " -s --snapshot		generate a release snapshot"
-	print " -V --version		display version information"
-	print " -v --verbose		verbose output"
+	print " -c --config     use specified configuration file"
+	print " -C --cli        catalyst commandline (MUST BE LAST OPTION)"
+	print " -d --debug      enable debugging"
+	print " -f --file       read specfile"
+	print " -F --fetchonly  fetch files only"
+	print " -h --help       print this help message"
+	print " -p --purge      clear tmp dirs,package cache and autoresume flags"
+	print " -P --purgeonly  clear tmp dirs,package cache and autoresume flags and exit"
+	print " -s --snapshot   generate a release snapshot"
+	print " -V --version    display version information"
+	print " -v --verbose    verbose output"
 	print
 	print "Usage examples:"
 	print
@@ -224,7 +225,7 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "aphvdc:C:f:FVs:", ["purge","help", "version", "debug",\
+		opts,args = getopt.getopt(sys.argv[1:], "apPhvdc:C:f:FVs:", ["purge", "purgeonly", "help", "version", "debug",\
 			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
@@ -245,7 +246,8 @@ if __name__ == "__main__":
 		print "!!! catalyst: please specify one of either -f or -C\n"
 		usage()
 		sys.exit(2)
-	run=0	
+
+	run = false
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
@@ -256,48 +258,28 @@ if __name__ == "__main__":
 			sys.exit(1)
 
 		if o in ("-d", "--debug"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				conf_values["DEBUG"]="1"
-				conf_values["VERBOSE"]="1"
+			conf_values["DEBUG"]="1"
+			conf_values["VERBOSE"]="1"
 
 		if o in ("-c", "--config"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				myconfig=a
+			myconfig=a
 
 		if o in ("-C", "--cli"):
-			run=1	
+			run = true
 			x=sys.argv.index(o)+1
 			while x < len(sys.argv):
 				mycmdline.append(sys.argv[x])
 				x=x+1
 			
 		if o in ("-f", "--file"):
-			run=1	
+			run = true
 			myspecfile=a
 
 		if o in ("-F", "--fetchonly"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				conf_values["FETCH"]="1"
+			conf_values["FETCH"]="1"
 			
 		if o in ("-v", "--verbose"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				conf_values["VERBOSE"]="1"
+			conf_values["VERBOSE"]="1"
 
 		if o in ("-s", "--snapshot"):
 			if len(sys.argv) < 3:
@@ -305,25 +287,20 @@ if __name__ == "__main__":
 				usage()
 				sys.exit(2)
 			else:
-				run=1
+				run = true
 				mycmdline.append("target=snapshot")
 				mycmdline.append("version_stamp="+a)
 		
 		if o in ("-p", "--purge"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				conf_values["PURGE"]="1"
+			conf_values["PURGE"] = "1"
+
+		if o in ("-P", "--purgeonly"):
+			conf_values["PURGEONLY"] = "1"
+
 		if o in ("-a", "--clear-autoresume"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: please specify one of either -f or -C\n"
-				usage()
-				sys.exit(2)
-			else:
-				conf_values["CLEAR_AUTORESUME"]="1"
-	if run != 1:
+			conf_values["CLEAR_AUTORESUME"] = "1"
+
+	if not run:
 		print "!!! catalyst: please specify one of either -f or -C\n"
 		usage()
 		sys.exit(2)

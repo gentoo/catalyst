@@ -1232,6 +1232,11 @@ class generic_stage_target(generic_target):
 
 		if self.settings.has_key("CLEAR_AUTORESUME"):
 			self.clear_autoresume()
+
+		if self.settings.has_key("PURGEONLY"):
+			self.purge()
+			return
+
 		if self.settings.has_key("PURGE"):
 			self.purge()
 
@@ -1614,7 +1619,7 @@ class generic_stage_target(generic_target):
 
 	def purge(self):
 		countdown(10,"Purging Caches ...")
-		if self.settings.has_key("PURGE"):
+		if self.settings.has_key("PURGE") or self.settings.has_key("PURGEONLY"):
 			print "clearing autoresume ..."
 			self.clear_autoresume()
 
