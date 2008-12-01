@@ -479,6 +479,8 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                         os.setuid(uid)
                 if umask:
                         os.umask(umask)
+                else:
+                        os.umask(022)
 
                 try:
                         #print "execing", myc, myargs

@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  01 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst_support.py:
+  Default to umask 022 for spawn() unless otherwise specified for gentoo bug
+  #239048
+
   29 Nov 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst_support.py, modules/generic_stage_target.py:
   Add support for -P/--purgeonly option
