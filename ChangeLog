@@ -1,6 +1,9 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  04 Dec 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
+  Bumping version for release.
+
   01 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
   Default to umask 022 for spawn() unless otherwise specified for gentoo bug
