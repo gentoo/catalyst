@@ -9,6 +9,7 @@ from catalyst_support import *
 from generic_target import *
 from stat import *
 import catalyst_lock
+
 class generic_stage_target(generic_target):
 
 	def __init__(self,myspec,addlargs):
@@ -1611,10 +1612,16 @@ class generic_stage_target(generic_target):
 					array.sort()
 				for f in [file, file+'.CONTENTS']:
 					if os.path.exists(f):
-						for j in array:
-							hash=generate_hash(f,hash_function=j,verbose=\
-								self.settings.has_key("VERBOSE"))
-							myf.write(hash)
+						if "all" in array:
+							for k in hash_map.keys():
+								hash=generate_hash(f,hash_function=k,verbose=\
+									self.settings.has_key("VERBOSE"))
+								myf.write(hash)
+						else:
+							for j in array:
+								hash=generate_hash(f,hash_function=j,verbose=\
+									self.settings.has_key("VERBOSE"))
+								myf.write(hash)
 				myf.close()
 
 	def purge(self):
