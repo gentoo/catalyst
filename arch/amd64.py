@@ -61,7 +61,7 @@ def register():
 		"k8"		: arch_k8,
 		"opteron"	: arch_k8,
 		"athlon64"	: arch_k8,
-		"athlonfx"	: arch_k8
+		"athlonfx"	: arch_k8,
 		"nocona"	: arch_nocona,
 # uncomment when gcc 4.3 is stable and delete this line
 #		"core2"		: arch_core2,

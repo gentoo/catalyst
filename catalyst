@@ -4,10 +4,13 @@
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@gentoo.org>
 
-import os,sys,imp,string,getopt
+import os, sys, imp, string, getopt
 import pdb
+import os.path
 
-sys.path.append("./modules")
+__selfpath__ = os.path.abspath(os.path.dirname(__file__))
+
+sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
 import catalyst.util

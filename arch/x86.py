@@ -1,6 +1,6 @@
 
 import builder,os
-from catalyst_supportimport *
+from catalyst_support import *
 
 class generic_x86(builder.generic):
 	"abstract base class for all x86 builders"
