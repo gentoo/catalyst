@@ -34,12 +34,12 @@ boot/kernel/ip28r10k/use: -doc ip28
 boot/kernel/ip30r10k/use: -doc ip30
 boot/kernel/ip32r5k/use: -doc
 
-boot/kernel/ip22r4k/gk_kernargs: --kernel-cross-compile=mips-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
-boot/kernel/ip22r5k/gk_kernargs: --kernel-cross-compile=mips-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
-boot/kernel/ip27r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
-boot/kernel/ip28r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
-boot/kernel/ip30r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
-boot/kernel/ip32r5k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2 --initramfs-overlay=/tmp/image
+boot/kernel/ip22r4k/gk_kernargs: --kernel-cross-compile=mips-unknown-linux-gnu- --makeopts=-j2
+boot/kernel/ip22r5k/gk_kernargs: --kernel-cross-compile=mips-unknown-linux-gnu- --makeopts=-j2
+boot/kernel/ip27r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
+boot/kernel/ip28r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
+boot/kernel/ip30r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
+boot/kernel/ip32r5k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
 
 netboot2/builddate: 20060107
 netboot2/busybox_config: /usr/share/genkernel/mips/nb-busybox.cf

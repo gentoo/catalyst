@@ -2,6 +2,11 @@
 # Distributed under the GPL v2
 
   07 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
+  examples/netboot2_template.spec, targets/support/kmerge.sh:
+  Automatically append --netboot to GK_ARGS for netboot2 target Remove
+  explicit --initramfs-overlay=/tmp/image from netboot2 example spec
+
+  07 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/pre-kmerge.sh:
   Remove evil hacks that copy gk files around for netboot2
 
