@@ -250,7 +250,7 @@ if __name__ == "__main__":
 		usage()
 		sys.exit(2)
 
-	run = false
+	run = False
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
@@ -268,14 +268,14 @@ if __name__ == "__main__":
 			myconfig=a
 
 		if o in ("-C", "--cli"):
-			run = true
+			run = True
 			x=sys.argv.index(o)+1
 			while x < len(sys.argv):
 				mycmdline.append(sys.argv[x])
 				x=x+1
 			
 		if o in ("-f", "--file"):
-			run = true
+			run = True
 			myspecfile=a
 
 		if o in ("-F", "--fetchonly"):
@@ -290,7 +290,7 @@ if __name__ == "__main__":
 				usage()
 				sys.exit(2)
 			else:
-				run = true
+				run = True
 				mycmdline.append("target=snapshot")
 				mycmdline.append("version_stamp="+a)
 		
