@@ -1,6 +1,10 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  12 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
+  targets/netboot2/netboot2-controller.sh:
+  Disable copying of nb-busybox.cf since it isn't used anyway
+
   07 Dec 2008; Andrew Gaffney <agaffney@gentoo.org> arch/amd64.py,
   arch/x86.py, catalyst:
   A few typo and other minor fixes as reported by armin76

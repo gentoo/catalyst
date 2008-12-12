@@ -14,11 +14,9 @@ case ${1} in
 	;;
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
-		if [ -z "${clst_netboot2_busybox_config}" ]; then
-			cp ${clst_sharedir}/targets/netboot2/nb-busybox.cf ${clst_chroot_path}/tmp/busy-config
-		else
-			cp ${clst_netboot2_busybox_config} ${clst_chroot_path}/tmp/busy-config
-		fi
+#		if [ -n "${clst_netboot2_busybox_config}" ]; then
+#			cp ${clst_netboot2_busybox_config} ${clst_chroot_path}/tmp/busy-config
+#		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 	;;
 	post-kmerge)
