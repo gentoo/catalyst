@@ -1,6 +1,9 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  19 Dec 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
+  Marking this 2.0.6.903 for testing.
+
   12 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot2/netboot2-controller.sh:
   Disable copying of nb-busybox.cf since it isn't used anyway
