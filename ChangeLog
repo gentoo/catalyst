@@ -11,6 +11,9 @@
   +livecd/cdtar/isolinux-3.72-memtest86+-cdtar.tar.bz2:
   Update cdtar files to isolinux-3.72 and latest memtest86+-2.10
 
+  19 Dec 2008; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
+  Marking this 2.0.6.903 for testing.
+
   12 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot2/netboot2-controller.sh:
   Disable copying of nb-busybox.cf since it isn't used anyway
