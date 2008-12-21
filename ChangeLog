@@ -1,6 +1,11 @@
 # Copyright 2002-2008 Gentoo Foundation; 2008 Chris Gianelloni, Andrew Gaffney
 # Distributed under the GPL v2
 
+  21 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
+  +livecd/cdtar/isolinux-3.72-cdtar.tar.bz2,
+  +livecd/cdtar/isolinux-3.72-memtest86+-cdtar.tar.bz2:
+  Update cdtar files to isolinux-3.72 and latest memtest86+-2.10
+
   12 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot2/netboot2-controller.sh:
   Disable copying of nb-busybox.cf since it isn't used anyway
