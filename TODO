@@ -21,4 +21,6 @@
 - support for placeholders in spec file, both automatic and user-specifed
   - %DATESTAMP% could be automatic
   - %BUILDDIR% would be nice for livecd/iso instead of specifying full path
-
+- switch to "mix-in" cdtar files
+  - rebuilding 5 cdtar files to bump memtest86+ is stupid
+  - livecd/cdtar: isolinux elilo memtest86+
