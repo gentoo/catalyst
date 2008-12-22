@@ -29,6 +29,13 @@ class snapshot_target(generic_stage_target):
 		pass
 		
 	def run(self):
+		if self.settings.has_key("PURGEONLY"):
+			self.purge()
+			return
+
+		if self.settings.has_key("PURGE"):
+			self.purge()
+
 		self.setup()
 		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
 			" from "+self.settings["portdir"]+"..."
@@ -55,6 +62,23 @@ class snapshot_target(generic_stage_target):
 
 	def cleanup(self):
 		print "Cleaning up..."
+
+	def purge(self):
+		myemp=self.settings["tmp_path"]
+		if os.path.isdir(myemp):
+			print "Emptying directory",myemp
+			"""
+			stat the dir, delete the dir, recreate the dir and set
+			the proper perms and ownership
+			"""
+			mystat=os.stat(myemp)
+			""" There's no easy way to change flags recursively in python """
+			if os.uname()[0] == "FreeBSD":
+				os.system("chflags -R noschg "+myemp)
+			shutil.rmtree(myemp)
+			os.makedirs(myemp,0755)
+			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+			os.chmod(myemp,mystat[ST_MODE])
 			
 def register(foo):
 	foo.update({"snapshot":snapshot_target})
