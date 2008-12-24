@@ -14,9 +14,6 @@ case ${1} in
 	;;
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
-#		if [ -n "${clst_netboot2_busybox_config}" ]; then
-#			cp ${clst_netboot2_busybox_config} ${clst_chroot_path}/tmp/busy-config
-#		fi
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 	;;
 	post-kmerge)
@@ -32,8 +29,15 @@ case ${1} in
 		then
 			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
+		if [ -n "${clst_busybox_config}" ]
+		then
+			cp ${clst_busybox_config} ${clst_chroot_path}/tmp/busy-config
+		fi
+
 		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
+
 		delete_from_chroot tmp/linuxrc
+		delete_from_chroot tmp/busy-config
 
 		extract_modules ${clst_chroot_path} ${clst_kname}
 		#16:12 <@solar> kernel_name=foo
