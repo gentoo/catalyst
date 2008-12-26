@@ -159,6 +159,7 @@ class generic_stage_target(generic_target):
 		self.set_packages()
 		self.set_rm()
 		self.set_linuxrc()
+		self.set_busybox_config()
 		self.set_overlay()
 		self.set_portage_overlay()
 		self.set_root_overlay()
@@ -498,6 +499,14 @@ class generic_stage_target(generic_target):
 				self.settings["linuxrc"]=\
 					self.settings[self.settings["spec_prefix"]+"/linuxrc"]
 				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
+
+	def set_busybox_config(self):
+		if self.settings.has_key(self.settings["spec_prefix"]+"/busybox_config"):
+			if type(self.settings[self.settings["spec_prefix"]+\
+				"/busybox_config"])==types.StringType:
+				self.settings["busybox_config"]=\
+					self.settings[self.settings["spec_prefix"]+"/busybox_config"]
+				del self.settings[self.settings["spec_prefix"]+"/busybox_config"]
 
 	def set_portage_overlay(self):
 		if self.settings.has_key("portage_overlay"):
