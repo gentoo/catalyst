@@ -300,10 +300,13 @@ class generic_stage_target(generic_target):
 				"Resume point detected, skipping target path setup operation..."
 		else:
 			""" First clean up any existing target stuff """
-			if os.path.isfile(self.settings["target_path"]):
-				cmd("rm -f "+self.settings["target_path"],\
-					"Could not remove existing file: "\
-					+self.settings["target_path"],env=self.env)
+			# XXX WTF are we removing the old tarball before we start building the
+			# XXX new one? If the build fails, you don't want to be left with 
+			# XXX nothing at all
+#			if os.path.isfile(self.settings["target_path"]):
+#				cmd("rm -f "+self.settings["target_path"],\
+#					"Could not remove existing file: "\
+#					+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
 
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
