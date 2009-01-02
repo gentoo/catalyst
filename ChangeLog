@@ -3,6 +3,10 @@
 
   02 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
+  screw you python...hard
+
+  02 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/generic_stage_target.py:
   Disable removal of 'target_path' when build starts
 
   26 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>

@@ -307,7 +307,7 @@ class generic_stage_target(generic_target):
 #				cmd("rm -f "+self.settings["target_path"],\
 #					"Could not remove existing file: "\
 #					+self.settings["target_path"],env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_target_path")
+			touch(self.settings["autoresume_path"]+"setup_target_path")
 
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
 				os.makedirs(self.settings["storedir"]+"/builds/")
