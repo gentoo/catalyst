@@ -1,23 +1,37 @@
-Current Maintainers:
-Chris Gianelloni <wolf31o2@gentoo.org>
-Eric Edgar <rocket@gentoo.org>
+This list is split into two alphabetical lists.  The first is a listing of the
+authors of the original Gentoo package.  The copyrights for all of those code
+contributions belong to the Gentoo Foundation.  The second list is the authors
+whom have contributed significant code to the new project.  All code added to
+the new project is copyrighted by the respective authors.
 
+Gentoo Foundation authors:
+------
 Original Authors:
 John Davis <zhen@gentoo.org>
 Daniel Robbins <drobbins@gentoo.org>
 
-Contributors:
-Rob Holland <tigger@gentoo.org>
-Guy Martin <gmsoft@gentoo.org>
-Mike Frysinger <vapier@gentoo.org>
-Gustavo Zacarias <gustavoz@gentoo.org>
-Robert Paskowitz <r2d2@gentoo.org>
-David Bryson <mutex@gentoo.org>
-Daniel Ostrow <dostrow@gentoo.org>
-Matsuu Takuto <matsuu@gentoo.org>
-Joshua Kinard <kumba@gentoo.org>
-Lars Weiler <pylon@gentoo.org>
+Additional Maintainers:
+Eric Edgar <rocket@gentoo.org>
 Andrew Gaffney <agaffney@gentoo.org>
-Diego Pettenò <flameeyes@gentoo.org>
+Chris Gianelloni <wolf31o2@gentoo.org>
+
+Contributors:
+David Bryson <mutex@gentoo.org>
+Mike Frysinger <vapier@gentoo.org>
+Rob Holland <tigger@gentoo.org>
 Robin H. Johnson <robbat2@gentoo.org>
+Joshua Kinard <kumba@gentoo.org>
 Stuart Longland <redhatter@gentoo.org>
+Guy Martin <gmsoft@gentoo.org>
+Daniel Ostrow <dostrow@gentoo.org>
+Robert Paskowitz <r2d2@gentoo.org>
+Diego Pettenò <flameeyes@gentoo.org>
+Matsuu Takuto <matsuu@gentoo.org>
+Lars Weiler <pylon@gentoo.org>
+Gustavo Zacarias <gustavoz@gentoo.org>
+
+
+Copyright authors:
+------
+Andrew Gaffney <agaffney@gentoo.org>
+Chris Gianelloni <wolf31o2@wolf31o2.org>
