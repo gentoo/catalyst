@@ -22,7 +22,7 @@ Global:
     - check host settings (icecream_hosts, etc) and restore them when done
 - add support for new portage features
   - Cache backends
-    - metadata_overlay
+    - metadata_overlay (portage default in 2.1.6)
 	- sqlite
   - Jobs
   - Load Average
