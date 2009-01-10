@@ -2,6 +2,9 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  10 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Change __version__ to 2.99 for catalyst_3 branch
+
   09 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> TODO:
   Add note about metadata_overlay being default in 2.1.6
 
