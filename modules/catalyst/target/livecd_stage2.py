@@ -6,6 +6,7 @@ Builder class for a LiveCD stage2 build.
 import os,string,types,stat,shutil
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -73,7 +74,7 @@ class livecd_stage2_target(generic_stage_target):
 		unpack=True
 		display_msg=None
 
-		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
+		clst_unpack_hash = catalyst.util.readfile(self.settings["autoresume_path"]+"unpack")
 
 		if os.path.isdir(self.settings["source_path"]):
 			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]

@@ -34,3 +34,14 @@ def find_binary(myc):
 			return "%s/%s" % (x,myc)
 	return None
 
+def readfile(file):
+	file_contents = ""
+	try:
+		myf = open(file, "r")
+		file_contents = "".join(myf.readlines())
+		myf.close()
+		return file_contents
+	except:
+		return None
+		#raise CatalystError, "Could not read file " + file
+

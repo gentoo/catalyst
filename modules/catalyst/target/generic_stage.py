@@ -11,6 +11,7 @@ from stat import *
 import catalyst.lock
 import catalyst.arch
 from catalyst.output import warn
+import catalyst.util
 
 class generic_stage_target(generic_target):
 
@@ -597,7 +598,7 @@ class generic_stage_target(generic_target):
 	def unpack(self):
 		unpack=True
 
-		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+\
+		clst_unpack_hash = catalyst.util.readfile(self.settings["autoresume_path"]+\
 			"unpack")
 
 		if "SEEDCACHE" in self.settings:
@@ -719,12 +720,12 @@ class generic_stage_target(generic_target):
 
 	def unpack_snapshot(self):
 		unpack=True
-		snapshot_hash=read_from_clst(self.settings["autoresume_path"]+\
+		snapshot_hash = catalyst.util.readfile(self.settings["autoresume_path"]+\
 			"unpack_portage")
 
 		if "SNAPCACHE" in self.settings:
-			snapshot_cache_hash=\
-				read_from_clst(self.settings["snapshot_cache_path"]+\
+			snapshot_cache_hash = \
+				catalyst.util.readfile(self.settings["snapshot_cache_path"]+\
 				"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
 			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+destdir

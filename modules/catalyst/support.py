@@ -180,21 +180,6 @@ hash_map={
 	 "whirlpool":[calc_hash2,"shash","-a WHIRLPOOL","WHIRLPOOL"],\
 	 }
 
-def read_from_clst(file):
-	line = ''
-	myline = ''
-	try:
-		myf=open(file,"r")
-	except:
-		return -1
-		#raise CatalystError, "Could not open file "+file
-	for line in myf.readlines():
-	    #line = string.replace(line, "\n", "") # drop newline
-	    myline = myline + line
-	myf.close()
-	return myline
-# read_from_clst
-
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
 valid_config_file_values.append("PKGCACHE")
