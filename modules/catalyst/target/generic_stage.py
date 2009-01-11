@@ -10,6 +10,7 @@ from catalyst.target.generic import *
 from stat import *
 import catalyst.lock
 import catalyst.arch
+from catalyst.output import warn
 
 class generic_stage_target(generic_target):
 

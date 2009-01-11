@@ -15,6 +15,7 @@ import catalyst.config
 import catalyst.util
 import catalyst.target
 from catalyst.support import *
+from catalyst.output import *
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.99"
@@ -74,8 +75,7 @@ def parse_config(myconfig):
 			print "Using command line specified Catalyst configuration file, " + myconfig
 			config_file = myconfig
 		else:
-			print "!!! catalyst: specified configuration file " + myconfig + " does not exist"
-			sys.exit(1)
+			die("specified configuration file " + myconfig + " does not exist")
 
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
@@ -84,8 +84,7 @@ def parse_config(myconfig):
 
 	# can't find a config file (we are screwed), so bail out
 	else:
-		print "!!! catalyst: Could not find a suitable configuration file"
-		sys.exit(1)
+		die("Could not find a suitable configuration file")
 
 	# Load the default config values into myconf
 	for x in confdefaults:
@@ -98,8 +97,7 @@ def parse_config(myconfig):
 		myconf.update(myconfig.get_values())
 
 	except:
-		print "!!! catalyst: Unable to parse configuration file, "+myconfig
-		sys.exit(1)
+		die("Unable to parse configuration file, " + myconfig)
 
 	# now, load up the values into conf_values so that we can use them
 	for x in confdefaults.keys():
@@ -154,8 +152,7 @@ def build_target(addlargs, targetmap):
 
 	except:
 		catalyst.util.print_traceback()
-		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
-#		sys.exit(1)
+		warn("Error encountered during run of target " + addlargs["target"])
 		raise
 
 def verify_digest_and_hash_functions():
@@ -203,8 +200,7 @@ if __name__ == "__main__":
 
 	if os.getuid() != 0:
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
-		print "!!! catalyst: This script requires root privileges to operate"
-		sys.exit(2)
+		die("This script requires root privileges to operate", 2)
 
 	# parse out the command line arguments
 	try:
@@ -226,7 +222,7 @@ if __name__ == "__main__":
 
 	# check preconditions
 	if len(opts) == 0:
-		print "!!! catalyst: please specify one of either -f or -C\n"
+		warn("please specify one of either -f or -C\n")
 		usage()
 		sys.exit(2)
 
@@ -266,7 +262,7 @@ if __name__ == "__main__":
 
 		if o in ("-s", "--snapshot"):
 			if len(sys.argv) < 3:
-				print "!!! catalyst: missing snapshot identifier\n"
+				warn("missing snapshot identifier")
 				usage()
 				sys.exit(2)
 			else:
@@ -284,7 +280,7 @@ if __name__ == "__main__":
 			conf_values["CLEAR_AUTORESUME"] = "1"
 
 	if not run:
-		print "!!! catalyst: please specify one of either -f or -C\n"
+		warn("please specify one of either -f or -C")
 		usage()
 		sys.exit(2)
 
@@ -306,8 +302,7 @@ if __name__ == "__main__":
 			cmdline.parse_lines(mycmdline)
 			addlargs.update(cmdline.get_values())
 		except CatalystError:
-			print "!!! catalyst: Could not parse commandline, exiting."
-			sys.exit(1)
+			die("Could not parse commandline, exiting.")
 
 	if not "target" in addlargs:
 		raise CatalystError, "Required value \"target\" not specified."

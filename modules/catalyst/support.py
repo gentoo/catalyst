@@ -1,6 +1,8 @@
 
 import sys,string,os,types,re,signal,traceback,time
+from catalyst.output import warn
 #import md5,sha
+
 selinux_capable = False
 #userpriv_capable = (os.getuid() == 0)
 #fakeroot_capable = False
@@ -262,14 +264,6 @@ class LockInUse(Exception):
 			print
 			print "!!! catalyst lock file in use: "+message
 			print
-
-def die(msg=None):
-	warn(msg)
-	sys.exit(1)
-
-def warn(msg):
-	print "!!! catalyst: "+msg
-
 
 def find_binary(myc):
 	"""look through the environmental path for an executable file named whatever myc is"""
@@ -630,10 +624,6 @@ def read_makeconf(mymakeconffile):
 	else:
 		makeconf={}
 		return makeconf
-
-def msg(mymsg,verblevel=1):
-	if verbosity>=verblevel:
-		print mymsg
 
 def pathcompare(path1,path2):
 	# Change double slashes to slash
