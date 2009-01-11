@@ -7,6 +7,7 @@ import os,string,types,stat,shutil
 from catalyst.support import *
 from generic_stage import *
 import catalyst.util
+import catalyst.hash
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -33,7 +34,7 @@ class livecd_stage2_target(generic_stage_target):
 	def set_source_path(self):
 		self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
-			self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
+			self.settings["source_path_hash"]=catalyst.hash.generate_hash(self.settings["source_path"])
 		else:
 			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):

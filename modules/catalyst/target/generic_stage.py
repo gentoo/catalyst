@@ -12,6 +12,7 @@ import catalyst.lock
 import catalyst.arch
 from catalyst.output import warn
 import catalyst.util
+import catalyst.hash
 
 class generic_stage_target(generic_target):
 
@@ -364,7 +365,7 @@ class generic_stage_target(generic_target):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
 					self.settings["source_path_hash"]=\
-						generate_hash(self.settings["source_path"],\
+						catalyst.hash.generate_hash(self.settings["source_path"],\
 						hash_function=self.settings["hash_function"],\
 						verbose=False)
 		print "Source path set to "+self.settings["source_path"]
@@ -392,7 +393,7 @@ class generic_stage_target(generic_target):
 
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"]=\
-				generate_hash(self.settings["snapshot_path"],\
+				catalyst.hash.generate_hash(self.settings["snapshot_path"],\
 				hash_function=self.settings["hash_function"],verbose=False)
 
 	def set_snapcache_path(self):
@@ -1586,7 +1587,7 @@ class generic_stage_target(generic_target):
 					array=keys.keys()
 					array.sort()
 				for j in array:
-					contents=catalyst.util.generate_contents(file,contents_function=j,\
+					contents=catalyst.hash.generate_contents(file,contents_function=j,\
 						verbose=("VERBOSE" in self.settings))
 					if contents:
 						myf.write(contents)
@@ -1607,12 +1608,12 @@ class generic_stage_target(generic_target):
 					if os.path.exists(f):
 						if "all" in array:
 							for k in hash_map.keys():
-								hash=generate_hash(f,hash_function=k,verbose=\
+								hash=catalyst.hash.generate_hash(f,hash_function=k,verbose=\
 									("VERBOSE" in self.settings))
 								myf.write(hash)
 						else:
 							for j in array:
-								hash=generate_hash(f,hash_function=j,verbose=\
+								hash=catalyst.hash.generate_hash(f,hash_function=j,verbose=\
 									("VERBOSE" in self.settings))
 								myf.write(hash)
 				myf.close()
