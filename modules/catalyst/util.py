@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback
+import sys, traceback, os
 
 def capture_traceback():
 	etype, value, tb = sys.exc_info()

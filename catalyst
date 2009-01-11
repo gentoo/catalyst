@@ -14,7 +14,7 @@ sys.path.append(__selfpath__ + "/modules")
 import catalyst.config
 import catalyst.util
 import catalyst.target
-from catalyst.support import *
+from catalyst.support import hash_map, CatalystError
 from catalyst.output import *
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
