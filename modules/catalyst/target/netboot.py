@@ -5,7 +5,7 @@ Builder class for a netboot build.
 
 import os,string,types
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class netboot_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

@@ -4,7 +4,7 @@ builder class for the tinderbox target
 """
 
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

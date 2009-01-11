@@ -4,7 +4,7 @@ Builder class for a stage3 installation tarball build.
 """
 
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class stage3_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

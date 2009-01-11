@@ -5,7 +5,7 @@ The builder class for GRP (Gentoo Reference Platform) builds.
 
 import os,types,glob
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

@@ -5,7 +5,7 @@ Builder class for snapshots.
 
 import os
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):

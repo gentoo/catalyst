@@ -11,7 +11,7 @@ ROOT=/tmp/submerge emerge --blahblah foo bar
 
 import os,string,imp,types,shutil
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 from stat import *
 
 class embedded_target(generic_stage_target):

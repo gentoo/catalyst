@@ -5,7 +5,7 @@ Builder class for a LiveCD stage2 build.
 
 import os,string,types,stat,shutil
 from catalyst.support import *
-from generic_stage_target import *
+from generic_stage import *
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
