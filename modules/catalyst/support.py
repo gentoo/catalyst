@@ -551,15 +551,3 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
-def countdown(secs=5, doing="Starting"):
-        if secs:
-		print ">>> Waiting",secs,"seconds before starting..."
-		print ">>> (Control-C to abort)...\n"+doing+" in: ",
-		ticks=range(secs)
-		ticks.reverse()
-		for sec in ticks:
-			sys.stdout.write(str(sec+1)+" ")
-			sys.stdout.flush()
-			time.sleep(1)
-		print
-

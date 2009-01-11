@@ -1618,7 +1618,7 @@ class generic_stage_target(generic_target):
 				myf.close()
 
 	def purge(self):
-		countdown(10,"Purging Caches ...")
+		catalyst.util.countdown(10, "Purging Caches ...")
 		if "PURGE" in self.settings or "PURGEONLY" in self.settings:
 			print "clearing autoresume ..."
 			self.clear_autoresume()

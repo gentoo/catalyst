@@ -5,6 +5,11 @@
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
   modules/catalyst/util.py:
+  Move countdown() from catalyst.support to catalyst.util
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
+  modules/catalyst/util.py:
   Move generate_contents() from catalyst.support to catalyst.util
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
