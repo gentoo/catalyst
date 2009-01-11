@@ -6,6 +6,7 @@ Builder class for a netboot build.
 import os,string,types
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class netboot_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -58,7 +59,7 @@ class netboot_target(generic_stage_target):
 #	def build_packages(self):
 #		# build packages
 #		if "netboot/packages" in self.settings:
-#			mypack=list_bashify(self.settings["netboot/packages"])
+#			mypack = catalyst.util.list_bashify(self.settings["netboot/packages"])
 #		try:
 #			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack,env=self.env)
 #		except CatalystError:
@@ -102,7 +103,7 @@ class netboot_target(generic_stage_target):
 
 		try:
 			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" image " + list_bashify(myfiles),env=self.env)
+				" image " + catalyst.util.list_bashify(myfiles),env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."

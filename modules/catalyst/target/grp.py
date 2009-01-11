@@ -6,6 +6,7 @@ The builder class for GRP (Gentoo Reference Platform) builds.
 import os,types,glob
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -49,7 +50,7 @@ class grp_target(generic_stage_target):
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
+			mypackages = catalyst.util.list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
 					+" "+pkgset+" "+mypackages,env=self.env)

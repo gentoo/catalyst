@@ -3,6 +3,13 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/output.py, modules/catalyst/support.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/netboot2.py,
+  modules/catalyst/target/tinderbox.py, modules/catalyst/util.py:
+  Move list_bashify() from catalyst.support to catalyst.util
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
   modules/catalyst/target/livecd_stage2.py, modules/catalyst/util.py:
   Replace catalyst.support.read_from_clst() with catalyst.util.readfile()

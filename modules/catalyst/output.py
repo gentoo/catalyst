@@ -2,6 +2,8 @@
 This module contains miscellaneous functions for outputting messages
 """
 
+import sys
+
 def msg(mymsg, verblevel=1):
 	if verbosity >= verblevel:
 		print mymsg

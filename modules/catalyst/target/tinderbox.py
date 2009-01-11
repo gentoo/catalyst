@@ -5,6 +5,7 @@ builder class for the tinderbox target
 
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -19,7 +20,7 @@ class tinderbox_target(generic_stage_target):
 		try:
 			if os.path.exists(self.settings["controller_file"]):
 			    cmd("/bin/bash "+self.settings["controller_file"]+" run "+\
-				list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
+				catalyst.util.list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
 
 		except CatalystError:
 			self.unbind()

@@ -45,3 +45,15 @@ def readfile(file):
 		return None
 		#raise CatalystError, "Could not read file " + file
 
+def list_bashify(mylist):
+	if isinstance(mylist, str):
+		mypack = [mylist]
+	else:
+		mypack = mylist[:]
+	for x in range(0,len(mypack)):
+		# surround args with quotes for passing to bash,
+		# allows things like "<" to remain intact
+		mypack[x] = "'" + mypack[x] + "'"
+	mypack = "".join(mypack)
+	return mypack
+

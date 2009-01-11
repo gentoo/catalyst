@@ -1331,8 +1331,8 @@ class generic_stage_target(generic_target):
 						"build_packages"):
 					print "Resume point detected, skipping build_packages operation..."
 				else:
-					mypack=\
-						list_bashify(self.settings[self.settings["spec_prefix"]\
+					mypack = \
+						catalyst.util.list_bashify(self.settings[self.settings["spec_prefix"] \
 						+"/packages"])
 					try:
 						cmd("/bin/bash "+self.settings["controller_file"]+\

@@ -6,6 +6,7 @@ Builder class for a netboot build, version 2
 import os,string,types
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class netboot2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -85,7 +86,7 @@ class netboot2_target(generic_stage_target):
 
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
-					" image " + list_bashify(myfiles),env=self.env)
+					" image " + catalyst.util.list_bashify(myfiles),env=self.env)
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"Failed to copy files to image!"
