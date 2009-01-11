@@ -1,17 +1,17 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_s390(builder.generic):
+class generic_s390(catalyst.arch.generic_arch):
 	"abstract base class for all s390 builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
-class generic_s390x(builder.generic):
+class generic_s390x(catalyst.arch.generic_arch):
 	"abstract base class for all s390x builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
 class arch_s390(generic_s390):

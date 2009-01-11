@@ -1,11 +1,11 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_sparc(builder.generic):
+class generic_sparc(catalyst.arch.generic_arch):
 	"abstract base class for all sparc builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		if self.settings["buildarch"]=="sparc64":
 			if not os.path.exists("/bin/linux32") and not os.path.exists("/usr/bin/linux32"):
 				raise CatalystError,"required executable linux32 not found (\"emerge setarch\" to fix.)"
@@ -14,10 +14,10 @@ class generic_sparc(builder.generic):
 		else:
 			self.settings["CHROOT"]="chroot"
 
-class generic_sparc64(builder.generic):
+class generic_sparc64(catalyst.arch.generic_arch):
 	"abstract base class for all sparc64 builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
 class arch_sparc(generic_sparc):

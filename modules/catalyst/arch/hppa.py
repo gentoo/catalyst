@@ -1,11 +1,11 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_hppa(builder.generic):
+class generic_hppa(catalyst.arch.generic_arch):
 	"Abstract base class for all hppa builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CXXFLAGS"]="-O2 -pipe"

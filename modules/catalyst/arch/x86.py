@@ -1,11 +1,11 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_x86(builder.generic):
+class generic_x86(catalyst.arch.generic_arch):
 	"abstract base class for all x86 builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		if self.settings["buildarch"]=="amd64":
 			if not os.path.exists("/bin/linux32") and not os.path.exists("/usr/bin/linux32"):
 					raise CatalystError,"required executable linux32 not found (\"emerge setarch\" to fix.)"

@@ -28,3 +28,8 @@ class arches:
 					"happens due to a syntax error, which should be reported as " \
 					"a bug.")
 		return self._arch_modules
+
+class generic_arch:
+
+	def __init__(self, myspec):
+		self.settings = myspec

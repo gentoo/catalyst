@@ -1,11 +1,11 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_alpha(builder.generic):
+class generic_alpha(catalyst.arch.generic_arch):
 	"abstract base class for all alpha builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-mieee -pipe"
 

@@ -1,17 +1,17 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_sh(builder.generic):
+class generic_sh(catalyst.arch.generic_arch):
 	"Abstract base class for all sh builders [Little-endian]"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
-class generic_sheb(builder.generic):
+class generic_sheb(catalyst.arch.generic_arch):
 	"Abstract base class for all sheb builders [Big-endian]"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
 class arch_sh(generic_sh):

@@ -1,11 +1,11 @@
 
-import os,builder
+import os,catalyst.arch
 from catalyst.support import *
 
-class generic_ppc(builder.generic):
+class generic_ppc(catalyst.arch.generic_arch):
 	"abstract base class for all 32-bit powerpc builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHOST"]="powerpc-unknown-linux-gnu"
 		if self.settings["buildarch"]=="ppc64":
 			if not os.path.exists("/bin/linux32") and not os.path.exists("/usr/bin/linux32"):
@@ -15,10 +15,10 @@ class generic_ppc(builder.generic):
 		else:
 			self.settings["CHROOT"]="chroot"
 
-class generic_ppc64(builder.generic):
+class generic_ppc64(catalyst.arch.generic_arch):
 	"abstract base class for all 64-bit powerpc builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
 class arch_ppc(generic_ppc):

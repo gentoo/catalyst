@@ -1,18 +1,18 @@
 
-import builder,os
+import catalyst.arch,os
 from catalyst.support import *
 
-class generic_mips(builder.generic):
+class generic_mips(catalyst.arch.generic_arch):
 	"Abstract base class for all mips builders [Big-endian]"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 		self.settings["CHOST"]="mips-unknown-linux-gnu"
 
-class generic_mipsel(builder.generic):
+class generic_mipsel(catalyst.arch.generic_arch):
 	"Abstract base class for all mipsel builders [Little-endian]"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 		self.settings["CHOST"]="mipsel-unknown-linux-gnu"
 

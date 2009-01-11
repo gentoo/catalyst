@@ -1,10 +1,10 @@
 
-import builder
+import catalyst.arch
 
-class generic_amd64(builder.generic):
+class generic_amd64(catalyst.arch.generic_arch):
 	"abstract base class for all amd64 builders"
 	def __init__(self,myspec):
-		builder.generic.__init__(self,myspec)
+		catalyst.arch.generic_arch.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 
 class arch_amd64(generic_amd64):
