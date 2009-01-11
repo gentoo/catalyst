@@ -30,7 +30,7 @@ class livecd_stage1_target(generic_stage_target):
 			if os.path.exists(self.settings["target_path"]):
 				cmd("rm -rf "+self.settings["target_path"],\
 					"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_target_path")
+				catalyst.util.touch(self.settings["autoresume_path"]+"setup_target_path")
 
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])

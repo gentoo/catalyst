@@ -577,13 +577,6 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
-def touch(myfile):
-	try:
-		myf=open(myfile,"w")
-		myf.close()
-	except IOError:
-		raise CatalystError, "Could not touch "+myfile+"."
-
 def countdown(secs=5, doing="Starting"):
         if secs:
 		print ">>> Waiting",secs,"seconds before starting..."

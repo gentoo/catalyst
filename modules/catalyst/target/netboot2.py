@@ -51,7 +51,7 @@ class netboot2_target(generic_stage_target):
 			if os.path.isfile(self.settings["target_path"]):
 				cmd("rm -f "+self.settings["target_path"], \
 					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_target_path")
+				catalyst.util.touch(self.settings["autoresume_path"]+"setup_target_path")
 
 		if not os.path.exists(self.settings["storedir"]+"/builds/"):
 			os.makedirs(self.settings["storedir"]+"/builds/")
@@ -91,7 +91,7 @@ class netboot2_target(generic_stage_target):
 				self.unbind()
 				raise CatalystError,"Failed to copy files to image!"
 
-			touch(self.settings["autoresume_path"]+"copy_files_to_image")
+			catalyst.util.touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
 	def setup_overlay(self):
 		if "AUTORESUME" in self.settings \
@@ -103,7 +103,7 @@ class netboot2_target(generic_stage_target):
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
 							self.settings["chroot_path"] + self.settings["merge_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_overlay")
+				catalyst.util.touch(self.settings["autoresume_path"]+"setup_overlay")
 
 	def move_kernels(self):
 		# we're done, move the kernels to builds/*
@@ -150,7 +150,7 @@ class netboot2_target(generic_stage_target):
 					os.makedirs(myemp,0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
-		touch(self.settings["autoresume_path"]+"empty")
+		catalyst.util.touch(self.settings["autoresume_path"]+"empty")
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",

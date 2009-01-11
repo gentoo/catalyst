@@ -96,3 +96,10 @@ def ismount(path):
 			return True
 	return False
 
+def touch(myfile):
+	try:
+		myf = open(myfile, "w")
+		myf.close()
+	except IOError:
+		raise CatalystError, "Could not touch " + myfile + "."
+

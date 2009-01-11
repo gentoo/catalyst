@@ -288,7 +288,7 @@ class generic_stage_target(generic_target):
 #				cmd("rm -f "+self.settings["target_path"],\
 #					"Could not remove existing file: "\
 #					+self.settings["target_path"],env=self.env)
-			touch(self.settings["autoresume_path"]+"setup_target_path")
+			catalyst.util.touch(self.settings["autoresume_path"]+"setup_target_path")
 
 			if not os.path.exists(self.settings["storedir"]+"/builds/"):
 				os.makedirs(self.settings["storedir"]+"/builds/")
@@ -714,7 +714,7 @@ class generic_stage_target(generic_target):
 				myf.write(self.settings["source_path_hash"])
 				myf.close()
 			else:
-				touch(self.settings["autoresume_path"]+"unpack")
+				catalyst.util.touch(self.settings["autoresume_path"]+"unpack")
 		else:
 			print "Resume point detected, skipping unpack operation..."
 
@@ -800,7 +800,7 @@ class generic_stage_target(generic_target):
 				self.settings["target_profile"]+" "+\
 				self.settings["chroot_path"]+"/etc/make.profile",\
 				"Error creating profile link",env=self.env)
-			touch(self.settings["autoresume_path"]+"config_profile_link")
+			catalyst.util.touch(self.settings["autoresume_path"]+"config_profile_link")
 
 	def setup_confdir(self):
 		if "AUTORESUME" in self.settings \
@@ -815,7 +815,7 @@ class generic_stage_target(generic_target):
 				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
 					self.settings["chroot_path"]+"/etc/portage",\
 					"Error copying /etc/portage",env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_confdir")
+				catalyst.util.touch(self.settings["autoresume_path"]+"setup_confdir")
 
 	def portage_overlay(self):
 		""" We copy the contents of our overlays to /usr/local/portage """
@@ -1026,7 +1026,7 @@ class generic_stage_target(generic_target):
 			cmd("cp "+self.settings["chroot_path"]+"/etc/make.conf "+\
 				self.settings["chroot_path"]+"/etc/make.conf.catalyst",\
 				"Could not backup /etc/make.conf",env=self.env)
-			touch(self.settings["autoresume_path"]+"chroot_setup")
+			catalyst.util.touch(self.settings["autoresume_path"]+"chroot_setup")
 
 	def fsscript(self):
 		if "AUTORESUME" in self.settings \
@@ -1037,7 +1037,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" fsscript","fsscript script failed.",env=self.env)
-					touch(self.settings["autoresume_path"]+"fsscript")
+					catalyst.util.touch(self.settings["autoresume_path"]+"fsscript")
 
 	def rcupdate(self):
 		if "AUTORESUME" in self.settings \
@@ -1047,7 +1047,7 @@ class generic_stage_target(generic_target):
 			if os.path.exists(self.settings["controller_file"]):
 				cmd("/bin/bash "+self.settings["controller_file"]+" rc-update",\
 					"rc-update script failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"rcupdate")
+				catalyst.util.touch(self.settings["autoresume_path"]+"rcupdate")
 
 	def clean(self):
 		if "AUTORESUME" in self.settings \
@@ -1082,7 +1082,7 @@ class generic_stage_target(generic_target):
 		if os.path.exists(self.settings["controller_file"]):
 			cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
 				"clean script failed.",env=self.env)
-			touch(self.settings["autoresume_path"]+"clean")
+			catalyst.util.touch(self.settings["autoresume_path"]+"clean")
 
 	def empty(self):
 		if "AUTORESUME" in self.settings \
@@ -1110,7 +1110,7 @@ class generic_stage_target(generic_target):
 					os.makedirs(myemp,0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
-			touch(self.settings["autoresume_path"]+"empty")
+			catalyst.util.touch(self.settings["autoresume_path"]+"empty")
 
 	def remove(self):
 		if "AUTORESUME" in self.settings \
@@ -1129,7 +1129,7 @@ class generic_stage_target(generic_target):
 					if os.path.exists(self.settings["controller_file"]):
 						cmd("/bin/bash "+self.settings["controller_file"]+\
 							" clean","Clean  failed.",env=self.env)
-						touch(self.settings["autoresume_path"]+"remove")
+						catalyst.util.touch(self.settings["autoresume_path"]+"remove")
 				except:
 					self.unbind()
 					raise
@@ -1143,7 +1143,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" preclean","preclean script failed.",env=self.env)
-					touch(self.settings["autoresume_path"]+"preclean")
+					catalyst.util.touch(self.settings["autoresume_path"]+"preclean")
 
 			except:
 				self.unbind()
@@ -1172,7 +1172,7 @@ class generic_stage_target(generic_target):
 			self.gen_contents_file(self.settings["target_path"])
 			self.gen_digest_file(self.settings["target_path"])
 
-			touch(self.settings["autoresume_path"]+"capture")
+			catalyst.util.touch(self.settings["autoresume_path"]+"capture")
 
 	def run_local(self):
 		if "AUTORESUME" in self.settings \
@@ -1183,7 +1183,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+" run",\
 						"run script failed.",env=self.env)
-					touch(self.settings["autoresume_path"]+"run_local")
+					catalyst.util.touch(self.settings["autoresume_path"]+"run_local")
 
 			except CatalystError:
 				self.unbind()
@@ -1275,7 +1275,7 @@ class generic_stage_target(generic_target):
 				except CatalystError:
 					self.unbind()
 					raise
-				touch(self.settings["autoresume_path"]+"unmerge")
+				catalyst.util.touch(self.settings["autoresume_path"]+"unmerge")
 
 	def target_setup(self):
 		if "AUTORESUME" in self.settings \
@@ -1286,7 +1286,7 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+\
 				" target_image_setup "+ self.settings["target_path"],\
 				"target_image_setup script failed.",env=self.env)
-			touch(self.settings["autoresume_path"]+"target_setup")
+			catalyst.util.touch(self.settings["autoresume_path"]+"target_setup")
 
 	def setup_overlay(self):
 		if "AUTORESUME" in self.settings \
@@ -1300,7 +1300,7 @@ class generic_stage_target(generic_target):
 							self.settings["target_path"],\
 							self.settings["spec_prefix"]+"overlay: "+x+\
 							" copy failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_overlay")
+				catalyst.util.touch(self.settings["autoresume_path"]+"setup_overlay")
 
 	def create_iso(self):
 		if "AUTORESUME" in self.settings \
@@ -1314,7 +1314,7 @@ class generic_stage_target(generic_target):
 					env=self.env)
 				self.gen_contents_file(self.settings["iso"])
 				self.gen_digest_file(self.settings["iso"])
-				touch(self.settings["autoresume_path"]+"create_iso")
+				catalyst.util.touch(self.settings["autoresume_path"]+"create_iso")
 			else:
 				print "WARNING: livecd/iso was not defined."
 				print "An ISO Image will not be created."
@@ -1338,7 +1338,7 @@ class generic_stage_target(generic_target):
 						cmd("/bin/bash "+self.settings["controller_file"]+\
 							" build_packages "+mypack,\
 							"Error in attempt to build packages",env=self.env)
-						touch(self.settings["autoresume_path"]+"build_packages")
+						catalyst.util.touch(self.settings["autoresume_path"]+"build_packages")
 					except CatalystError:
 						self.unbind()
 						raise CatalystError,self.settings["spec_prefix"]+\
@@ -1450,7 +1450,7 @@ class generic_stage_target(generic_target):
 									cmd("rm -R "+self.settings["chroot_path"]+\
 										"/tmp/initramfs_overlay/",env=self.env)
 
-							touch(self.settings["autoresume_path"]+\
+							catalyst.util.touch(self.settings["autoresume_path"]+\
 								"build_kernel_"+kname)
 
 							"""
@@ -1461,7 +1461,7 @@ class generic_stage_target(generic_target):
 								" post-kmerge ",
 								"Runscript post-kmerge failed",env=self.env)
 
-					touch(self.settings["autoresume_path"]+"build_kernel")
+					catalyst.util.touch(self.settings["autoresume_path"]+"build_kernel")
 
 				except CatalystError:
 					self.unbind()
@@ -1477,7 +1477,7 @@ class generic_stage_target(generic_target):
 				cmd("/bin/bash "+self.settings["controller_file"]+\
 					" bootloader " + self.settings["target_path"],\
 					"Bootloader script failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"bootloader")
+				catalyst.util.touch(self.settings["autoresume_path"]+"bootloader")
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"Script aborting due to error."
@@ -1491,7 +1491,7 @@ class generic_stage_target(generic_target):
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
 					" livecd-update","livecd-update failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"livecd_update")
+				catalyst.util.touch(self.settings["autoresume_path"]+"livecd_update")
 
 			except CatalystError:
 				self.unbind()

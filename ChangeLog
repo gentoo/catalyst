@@ -4,6 +4,13 @@
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
+  modules/catalyst/target/grp.py, modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot2.py, modules/catalyst/util.py:
+  Move touch() from catalyst.support to catalyst.util
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
   modules/catalyst/util.py:
   Move ismount() and pathcompare() from catalyst.support to catalyst.util
 
