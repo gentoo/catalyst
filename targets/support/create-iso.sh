@@ -205,7 +205,7 @@ case ${clst_hostarch} in
 		# should be in the cdtar, otherwise use the new style.
 		if [ -x ${clst_target_path}/boot/mkisofs.sparc.fu ]
 		then
-			mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp 
+			mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp
 			echo "Running mkisofs.sparc.fu to create iso image...."
 			echo "/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V \"${clst_iso_volume_id}\" ${clst_target_path}"
 			/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V "${clst_iso_volume_id}" ${clst_target_path} || die "Cannot make ISO image"
@@ -281,9 +281,9 @@ case ${clst_hostarch} in
 		elif [ -e ${clst_target_path}/gentoo.efimg ]
 		then
 			echo 'Creating ISO using EFI bootloader'
-			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}" 
-			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path} || die "Cannot make ISO image" 
-		else	
+			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}"
+			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path} || die "Cannot make ISO image"
+		else
 			echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
 			mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
 		fi

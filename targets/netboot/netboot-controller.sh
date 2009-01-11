@@ -20,7 +20,7 @@ case ${1} in
 			mkdir -p ${clst_chroot_path}/etc/busybox/${clst_CHOST}
 			cp -v ${clst_netboot_busybox_config} \
 				${clst_chroot_path}/etc/busybox/${clst_CHOST}/busybox.config
-			clst_use="savedconfig" 
+			clst_use="savedconfig"
 		fi
 
 		# Main Busybox emerge

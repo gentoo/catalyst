@@ -178,7 +178,7 @@ fi
 # touch /etc/asound.state
 touch /etc/asound.state
 
-# Tweak the MOTD for Gentoo releases 
+# Tweak the MOTD for Gentoo releases
 case ${clst_livecd_type} in
 	gentoo-release-universal)
 		cat /etc/generic.motd.txt /etc/universal.motd.txt \

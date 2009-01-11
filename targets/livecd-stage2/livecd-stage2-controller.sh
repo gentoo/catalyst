@@ -53,7 +53,7 @@ case $1 in
 				fi
 			;;
 		esac
-	
+
 		# move over the environment
 		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
 			${clst_chroot_path}/root/.bashrc
@@ -61,7 +61,7 @@ case $1 in
 			${clst_chroot_path}/root/.bash_profile
 		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
-		
+
 		# execute copy gamecd.conf if we're a gamecd
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
 		then

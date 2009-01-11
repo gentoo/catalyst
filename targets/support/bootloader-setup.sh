@@ -57,27 +57,27 @@ case ${clst_hostarch} in
 		echo "fgcolor=white" >> ${icfg}
 		echo "bgcolor=black" >> ${icfg}
 		echo "message=/boot/boot.msg" >> ${icfg}
-		
+
 		# Here is where I fix up the boot.msg file.
 		sed -e 's/ARCH/PowerPC/' \
 			-e 's/HARDWARE/Apple and IBM hardware/' \
 			-i $kmsg
 
-		# Setup the IBM yaboot.conf	
+		# Setup the IBM yaboot.conf
 		etc_icfg=$1/etc/yaboot.conf
-		mkdir -p $1/etc	
+		mkdir -p $1/etc
 		IBM_YABOOT="FALSE"
 		echo "root=/dev/ram" >> ${etc_icfg}
 		echo "fgcolor=white" >> ${etc_icfg}
 		echo "bgcolor=black" >> ${etc_icfg}
 		echo "message=/boot/boot.msg" >> ${etc_icfg}
-		
+
 		for x in ${clst_boot_kernel}
-		do	
+		do
 			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
 			eval "clst_kernel_machine_type=\$clst_boot_kernel_${x}_machine_type"
 			eval custom_kopts=\$${x}_kernelopts
-				
+
 			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 			if [ "${clst_kernel_machine_type}" == "ibm" ]
 			then
@@ -140,7 +140,7 @@ case ${clst_hostarch} in
 					echo "label=${x}" >> ${icfg}
 					echo "read-write" >> ${icfg}
 					echo "append=\"${default_append_line}\"" >> ${icfg}
-					
+
 					for y in ${clst_kernel_console}
 					do
 						echo >> ${icfg}
@@ -172,7 +172,7 @@ case ${clst_hostarch} in
 		done
 
 		if [ "${IBM_YABOOT}" == "FALSE" ]
-		then 
+		then
 			rm ${etc_kmsg}
 			rmdir $1/etc
 			if [ -d $1/ppc ]
@@ -267,7 +267,7 @@ case ${clst_hostarch} in
 				eval custom_kopts=\$${x}_kernelopts
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
-				
+
 				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
 
 				if [ -n "${clst_kernel_softlevel}" ]
@@ -358,9 +358,9 @@ case ${clst_hostarch} in
 				eval custom_kopts=\$${x}_kernelopts
 				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
 				echo >> ${icfg}
-				
+
 				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
-				
+
 				if [ -n "${clst_kernel_softlevel}" ]
 				then
 					for y in ${clst_kernel_softlevel}

@@ -7,10 +7,10 @@ case $1 in
 	;;
 	run)
 		cp ${clst_sharedir}/targets/stage1/build.py ${clst_chroot_path}/tmp
-		
+
 		# Setup "ROOT in chroot" dir
 		install -d ${clst_chroot_path}/${clst_root_path}/etc
-		
+
 		# Setup make.conf and make.profile link in "ROOT in chroot":
 		copy_to_chroot ${clst_chroot_path}/etc/make.conf /${clst_root_path}/etc
 		copy_to_chroot ${clst_chroot_path}/etc/make.profile \

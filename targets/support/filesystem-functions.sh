@@ -27,7 +27,7 @@ create_normal_loop() {
 		|| die "Couldn't mount loopback ext2 filesystem"
 	sync; sync; sleep 3 # Try to work around 2.6.0+ loopback bug
 	echo "cp -pPR ${source_path}/* ${destination_path}/loopmount"
-	cp -pPR ${source_path}/* ${destination_path}/loopmount 
+	cp -pPR ${source_path}/* ${destination_path}/loopmount
 	[ $? -ne 0 ] && { umount ${destination_path}/${loopname}; \
 		die "Couldn't copy files to loopback ext2 filesystem"; }
 	umount ${destination_path}/loopmount \

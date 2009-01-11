@@ -3,6 +3,21 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  targets/embedded/embedded-chroot.sh,
+  targets/embedded/embedded-controller.sh, targets/grp/grp-controller.sh,
+  targets/livecd-stage2/livecd-stage2-controller.sh,
+  targets/netboot/netboot-combine.sh, targets/netboot/netboot-controller.sh,
+  targets/netboot/netboot-image.sh, targets/netboot2/netboot2-copyfile.sh,
+  targets/stage1/stage1-controller.sh, targets/stage4/stage4-controller.sh,
+  targets/support/bootloader-setup.sh, targets/support/chroot-functions.sh,
+  targets/support/create-iso.sh, targets/support/filesystem-functions.sh,
+  targets/support/functions.sh, targets/support/kill-chroot-pids.sh,
+  targets/support/kmerge.sh, targets/support/livecdfs-update.sh,
+  targets/support/mips-arcload_conf.sh,
+  targets/tinderbox/tinderbox-chroot.sh:
+  More trailing whitespace cleanups
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/arm.py, modules/catalyst/arch/mips.py,
   modules/catalyst/arch/x86.py, modules/catalyst/config.py,
   modules/catalyst/lock.py, modules/catalyst/support.py,

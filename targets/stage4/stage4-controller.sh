@@ -66,7 +66,7 @@ case $1 in
 	unmerge)
 		shift
 		export clst_packages="$*"
-		exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh 
+		exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh
 	;;
 	iso)
 		shift

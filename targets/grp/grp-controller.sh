@@ -24,7 +24,7 @@ case $1 in
 	clean)
 		exit 0
 	;;
-	
+
 	*)
 		exit 1
 	;;
