@@ -14,6 +14,7 @@ sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
 import catalyst.util
+import catalyst.target
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.99"
@@ -164,13 +165,6 @@ def parse_config(myconfig):
 	if myconf.has_key("envscript"):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
-
-def import_modules():
-	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
-	import catalyst.target
-
-	targetmap = catalyst.target.build_target_map()
-	return targetmap
 
 def build_target(addlargs, targetmap):
 	try:
@@ -324,8 +318,7 @@ if __name__ == "__main__":
 			print "Catalyst aborting...."
 			sys.exit(2)
 
-	# import the rest of the catalyst modules
-	targetmap=import_modules()
+	targetmap = catalyst.target.build_target_map()
 
 	addlargs={}
 	
