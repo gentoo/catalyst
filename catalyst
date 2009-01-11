@@ -6,8 +6,9 @@
 
 import os, sys, getopt
 
+# This assumes that our modules are in a sub-dir named "modules" in the
+# directory that the main catalyst binary is in
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
-
 sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
@@ -103,60 +104,29 @@ def parse_config(myconfig):
 			print "Setting",x,"to default value \""+confdefaults[x]+"\""
 			conf_values[x]=confdefaults[x]
 
+	options = (
+		("autoresume", "AUTORESUME", "Autoresuming support enabled."),
+		("ccache", "CCACHE", "Compiler cache support enabled."),
+		("clear-autoresume", "CLEAR_AUTORESUME", "Cleaning autoresume flags support enabled"),
+#		("compress", "COMPRESS", "Compression enabled."),
+		("distcc", "DISTCC", "Distcc support enabled."),
+		("icecream", "ICECREAM", "Icecream compiler cluster support enabled."),
+		("kerncache", "KERNCACHE", "Kernel cache support enabled."),
+		("pkgcache", "PKGCACHE", "Package cache support enabled."),
+		("purge", "PURGE", "Purge support enabled."),
+		("seedcache", "SEEDCACHE", "Seed cache support enabled."),
+		("snapcache", "SNAPCACHE", "Snapshot cache support enabled."),
+		("metadata_overlay", "METADATA_OVERLAY", "Use of metadata_overlay module for portage enabled."),
+#		("tarball", "TARBALL", "Tarball creation enabled.")
+	)
+
 	split_options = conf_values["options"].split()
 
 	# parse out the rest of the options from the config file
-	if "autoresume" in split_options:
-		print "Autoresuming support enabled."
-		conf_values["AUTORESUME"]="1"
-
-	if "ccache" in split_options:
-		print "Compiler cache support enabled."
-		conf_values["CCACHE"]="1"
-
-	if "clear-autoresume" in split_options:
-		print "Cleaning autoresume flags support enabled."
-		conf_values["CLEAR_AUTORESUME"]="1"
-
-#	if "compress" in split_options:
-#		print "Compression enabled."
-#		conf_values["COMPRESS"]="1"
-
-	if "distcc" in split_options:
-		print "Distcc support enabled."
-		conf_values["DISTCC"]="1"
-
-	if "icecream" in split_options:
-		print "Icecream compiler cluster support enabled."
-		conf_values["ICECREAM"]="1"
-
-	if "kerncache" in split_options:
-		print "Kernel cache support enabled."
-		conf_values["KERNCACHE"]="1"
-
-	if "pkgcache" in split_options:
-		print "Package cache support enabled."
-		conf_values["PKGCACHE"]="1"
-
-	if "purge" in split_options:
-		print "Purge support enabled."
-		conf_values["PURGE"]="1"
-
-	if "seedcache" in split_options:
-		print "Seed cache support enabled."
-		conf_values["SEEDCACHE"]="1"
-
-	if "snapcache" in split_options:
-		print "Snapshot cache support enabled."
-		conf_values["SNAPCACHE"]="1"
-
-	if "metadata_overlay" in conf_values["options"].split():
-		print "Use of metadata_overlay module for portage enabled."
-		conf_values["METADATA_OVERLAY"]="1"
-
-#	if "tarball" in split_options:
-#		print "Tarball creation enabled."
-#		conf_values["TARBALL"]="1"
+	for x in options:
+		if x[0] in split_options:
+			print x[2]
+			conf_values[x[1]] = "1"
 
 	if "digests" in myconf:
 		conf_values["digests"]=myconf["digests"]
@@ -220,7 +190,6 @@ def verify_digest_and_hash_functions():
 			print
 			print "Catalyst aborting...."
 			sys.exit(2)
-
 
 if __name__ == "__main__":
 
