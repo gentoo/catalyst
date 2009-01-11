@@ -2,13 +2,6 @@
 import builder,os
 from catalyst_support import *
 
-__subarch_map = {
-	"sparc"		: arch_sparc,
-	"sparc64"	: arch_sparc64
-}
-
-__machine_map = ("sparc","sparc64")
-
 class generic_sparc(builder.generic):
 	"abstract base class for all sparc builders"
 	def __init__(self,myspec):
@@ -40,3 +33,11 @@ class arch_sparc64(generic_sparc64):
 		generic_sparc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
+
+__subarch_map = {
+	"sparc"		: arch_sparc,
+	"sparc64"	: arch_sparc64
+}
+
+__machine_map = ("sparc","sparc64")
+

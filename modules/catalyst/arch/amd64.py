@@ -1,24 +1,6 @@
 
 import builder
 
-__subarch_map = {
-	"amd64"		: arch_amd64,
-	"k8"		: arch_k8,
-	"opteron"	: arch_k8,
-	"athlon64"	: arch_k8,
-	"athlonfx"	: arch_k8,
-	"nocona"	: arch_nocona,
-# uncomment when gcc 4.3 is stable and delete this line
-#	"core2"		: arch_core2,
-#	"k8-sse3"	: arch_k8_sse3,
-#	"opteron-sse3"	: arch_k8_sse3,
-#	"athlon64-sse3"	: arch_k8_sse3,
-#	"amdfam10"	: arch_amdfam10,
-#	"barcelona"	: arch_amdfam10
-}
-
-__machine_map = ("x86_64","amd64","nocona")
-
 class generic_amd64(builder.generic):
 	"abstract base class for all amd64 builders"
 	def __init__(self,myspec):
@@ -71,3 +53,22 @@ class arch_amdfam10(generic_amd64):
 		self.settings["CFLAGS"]="-O2 -march=amdfam10 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2","3dnow"]
+
+__subarch_map = {
+	"amd64"		: arch_amd64,
+	"k8"		: arch_k8,
+	"opteron"	: arch_k8,
+	"athlon64"	: arch_k8,
+	"athlonfx"	: arch_k8,
+	"nocona"	: arch_nocona,
+# uncomment when gcc 4.3 is stable and delete this line
+#	"core2"		: arch_core2,
+#	"k8-sse3"	: arch_k8_sse3,
+#	"opteron-sse3"	: arch_k8_sse3,
+#	"athlon64-sse3"	: arch_k8_sse3,
+#	"amdfam10"	: arch_amdfam10,
+#	"barcelona"	: arch_amdfam10
+}
+
+__machine_map = ("x86_64","amd64","nocona")
+

@@ -32,13 +32,10 @@ class arches:
 	def find_arch_modules(self):
 		search_dir = os.path.abspath(os.path.dirname(__file__))
 		arch_module_list = [x[:-3] for x in os.listdir(search_dir) \
-			if x.endswith('.py')]
+			if x.endswith('.py') and not x.startswith('__')]
 		return arch_module_list
 
 	def get_arches(self):
-		self.archmap = {}
-		self.subarchmap = {}
-		machinemap = {}
 		# We don't know if this works yet
 #		for x in self.find_arch_modules():
 		for x in __arch_module_list:
@@ -47,4 +44,4 @@ class arches:
 				msg("Cannot import catalyst.arch." + x + ". This usually only " + \
 					"happens due to a syntax error, which should be reported as " \
 					"a bug.")
-
+		return self.__arch_modules

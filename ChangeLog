@@ -3,6 +3,17 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/__init__.py, modules/catalyst/arch/alpha.py,
+  modules/catalyst/arch/amd64.py, modules/catalyst/arch/arm.py,
+  modules/catalyst/arch/hppa.py, modules/catalyst/arch/ia64.py,
+  modules/catalyst/arch/mips.py, modules/catalyst/arch/powerpc.py,
+  modules/catalyst/arch/s390.py, modules/catalyst/arch/sh.py,
+  modules/catalyst/arch/sparc.py, modules/catalyst/arch/x86.py,
+  modules/generic_stage_target.py:
+  Move subarch and maching maps to bottom of arch files, since the classes
+  aren't defined yet at the top
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/sh.py:
   Forgot the sh arch module
 

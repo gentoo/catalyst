@@ -2,13 +2,6 @@
 import builder,os
 from catalyst_support import *
 
-__subarch_map = {
-	"s390": arch_s390,
-	"s390x": arch_s390x
-}
-
-__machine_map = ("s390", "s390x")
-
 class generic_s390(builder.generic):
 	"abstract base class for all s390 builders"
 	def __init__(self,myspec):
@@ -34,3 +27,11 @@ class arch_s390x(generic_s390x):
 		generic_s390x.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="s390x-ibm-linux-gnu"
+
+__subarch_map = {
+	"s390": arch_s390,
+	"s390x": arch_s390x
+}
+
+__machine_map = ("s390", "s390x")
+

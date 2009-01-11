@@ -2,34 +2,6 @@
 import builder,os
 from catalyst_support import *
 
-__subarch_map = {
-	"x86"			: arch_x86,
-	"i386"			: arch_i386,
-	"i486"			: arch_i486,
-	"i586"			: arch_i586,
-	"i686"			: arch_i686,
-	"pentium"		: arch_i586,
-	"pentium2"		: arch_pentium2,
-	"pentium3"		: arch_pentium3,
-	"pentium3m"		: arch_pentium3,
-	"pentium-m"		: arch_pentium_m,
-	"pentium4"		: arch_pentium4,
-	"pentium4m"		: arch_pentium4,
-	"pentiumpro"		: arch_i686,
-	"pentium-mmx"		: arch_pentium_mmx,
-	"prescott"		: arch_prescott,
-	"k6"			: arch_k6,
-	"k6-2"			: arch_k6_2,
-	"k6-3"			: arch_k6_2,
-	"athlon"		: arch_athlon,
-	"athlon-tbird"		: arch_athlon,
-	"athlon-4"		: arch_athlon_xp,
-	"athlon-xp"		: arch_athlon_xp,
-	"athlon-mp"		: arch_athlon_xp
-}
-
-__machine_map = ('i386', 'i486', 'i586', 'i686')
-
 class generic_x86(builder.generic):
 	"abstract base class for all x86 builders"
 	def __init__(self,myspec):
@@ -150,3 +122,32 @@ class arch_athlon_xp(generic_x86):
 		self.settings["CFLAGS"]="-O2 -march=athlon-xp -pipe"
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","3dnow","sse"]
+
+__subarch_map = {
+	"x86"			: arch_x86,
+	"i386"			: arch_i386,
+	"i486"			: arch_i486,
+	"i586"			: arch_i586,
+	"i686"			: arch_i686,
+	"pentium"		: arch_i586,
+	"pentium2"		: arch_pentium2,
+	"pentium3"		: arch_pentium3,
+	"pentium3m"		: arch_pentium3,
+	"pentium-m"		: arch_pentium_m,
+	"pentium4"		: arch_pentium4,
+	"pentium4m"		: arch_pentium4,
+	"pentiumpro"		: arch_i686,
+	"pentium-mmx"		: arch_pentium_mmx,
+	"prescott"		: arch_prescott,
+	"k6"			: arch_k6,
+	"k6-2"			: arch_k6_2,
+	"k6-3"			: arch_k6_2,
+	"athlon"		: arch_athlon,
+	"athlon-tbird"		: arch_athlon,
+	"athlon-4"		: arch_athlon_xp,
+	"athlon-xp"		: arch_athlon_xp,
+	"athlon-mp"		: arch_athlon_xp
+}
+
+__machine_map = ('i386', 'i486', 'i586', 'i686')
+
