@@ -3,7 +3,7 @@
 The toplevel class for generic_stage_target. This is about as generic as we get.
 """
 
-from catalyst_support import *
+from catalyst.support import *
 
 class generic_target:
 

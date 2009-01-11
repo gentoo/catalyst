@@ -1,6 +1,6 @@
 
 import builder,os
-from catalyst_support import *
+from catalyst.support import *
 
 class generic_s390(builder.generic):
 	"abstract base class for all s390 builders"

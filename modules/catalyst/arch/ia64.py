@@ -1,6 +1,6 @@
 
 import builder,os
-from catalyst_support import *
+from catalyst.support import *
 
 class arch_ia64(builder.generic):
 	"builder class for ia64"

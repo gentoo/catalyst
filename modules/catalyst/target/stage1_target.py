@@ -3,7 +3,7 @@
 Builder class for a stage1 installation tarball build.
 """
 
-from catalyst_support import *
+from catalyst.support import *
 from generic_stage_target import *
 
 class stage1_target(generic_stage_target):

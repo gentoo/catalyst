@@ -10,7 +10,7 @@ ROOT=/tmp/submerge emerge --blahblah foo bar
 """
 
 import os,string,imp,types,shutil
-from catalyst_support import *
+from catalyst.support import *
 from generic_stage_target import *
 from stat import *
 

@@ -3,7 +3,7 @@
 Builder class for stage4.
 """
 
-from catalyst_support import *
+from catalyst.support import *
 from generic_stage_target import *
 
 class stage4_target(generic_stage_target):

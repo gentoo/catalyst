@@ -7,7 +7,7 @@ import imp
 import catalyst.util
 
 # This is only until we move all the output stuff into catalyst.output
-from catalyst_support import msg
+from catalyst.support import msg
 
 class targets:
 

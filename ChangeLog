@@ -3,6 +3,30 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/__init__.py, modules/catalyst/arch/alpha.py,
+  modules/catalyst/arch/arm.py, modules/catalyst/arch/hppa.py,
+  modules/catalyst/arch/ia64.py, modules/catalyst/arch/mips.py,
+  modules/catalyst/arch/powerpc.py, modules/catalyst/arch/s390.py,
+  modules/catalyst/arch/sh.py, modules/catalyst/arch/sparc.py,
+  modules/catalyst/arch/x86.py, modules/catalyst/lock.py,
+  +modules/catalyst/support.py, modules/catalyst/target/__init__.py,
+  modules/catalyst/target/embedded_target.py,
+  modules/catalyst/target/generic_stage_target.py,
+  modules/catalyst/target/generic_target.py,
+  modules/catalyst/target/grp_target.py,
+  modules/catalyst/target/livecd_stage1_target.py,
+  modules/catalyst/target/livecd_stage2_target.py,
+  modules/catalyst/target/netboot2_target.py,
+  modules/catalyst/target/netboot_target.py,
+  modules/catalyst/target/snapshot_target.py,
+  modules/catalyst/target/stage1_target.py,
+  modules/catalyst/target/stage2_target.py,
+  modules/catalyst/target/stage3_target.py,
+  modules/catalyst/target/stage4_target.py,
+  modules/catalyst/target/tinderbox_target.py, -modules/catalyst_support.py:
+  Move catalyst_support.py to catalyst.support and update references
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   +modules/catalyst/lock.py,
   modules/catalyst/target/generic_stage_target.py,
   -modules/catalyst_lock.py:
