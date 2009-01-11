@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Clean up instances of has_key() for py3k
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   We don't need to pass conf_values since it's a global var
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:

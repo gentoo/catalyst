@@ -96,7 +96,7 @@ def parse_config(myconfig):
 	
 	# now, load up the values into conf_values so that we can use them
 	for x in confdefaults.keys():
-		if myconf.has_key(x):
+		if x in myconf:
 			print "Setting",x,"to config file value \""+myconf[x]+"\""
 			conf_values[x]=myconf[x]
 		else:
@@ -158,18 +158,18 @@ def parse_config(myconfig):
 #		print "Tarball creation enabled."
 #		conf_values["TARBALL"]="1"
 
-	if myconf.has_key("digests"):
+	if "digests" in myconf:
 		conf_values["digests"]=myconf["digests"]
-	if myconf.has_key("contents"):
+	if "contents" in myconf:
 		conf_values["contents"]=myconf["contents"]
 
-	if myconf.has_key("envscript"):
+	if "envscript" in myconf:
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
 
 def build_target(addlargs, targetmap):
 	try:
-		if not targetmap.has_key(addlargs["target"]):
+		if not addlargs["target"] in targetmap:
 			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
 		
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
@@ -184,9 +184,9 @@ def build_target(addlargs, targetmap):
 
 def verify_digest_and_hash_functions():
 	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
-	if conf_values.has_key("digests"):
+	if "digests" in conf_values:
 		for i in conf_values["digests"].split():
-			if not hash_map.has_key(i):
+			if not i in hash_map:
 				print
 				print i+" is not a valid digest entry"
 				print "Valid digest entries:"
@@ -203,8 +203,8 @@ def verify_digest_and_hash_functions():
 				print "Catalyst aborting...."
 				sys.exit(2)
 
-	if conf_values.has_key("hash_function"):
-		if not hash_map.has_key(conf_values["hash_function"]):
+	if "hash_function" in conf_values:
+		if not conf_values["hash_function"] in hash_map:
 			print
 			print conf_values["hash_function"]+" is not a valid hash_function entry"
 			print "Valid hash_function entries:"
@@ -334,7 +334,7 @@ if __name__ == "__main__":
 			print "!!! catalyst: Could not parse commandline, exiting."
 			sys.exit(1)
 
-	if not addlargs.has_key("target"):
+	if not "target" in addlargs:
 		raise CatalystError, "Required value \"target\" not specified."
 
 	# everything is setup, so the build is a go
