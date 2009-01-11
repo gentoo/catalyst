@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Rename version() to show_version()
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Remove import_modules()
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,

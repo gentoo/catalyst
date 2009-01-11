@@ -47,7 +47,7 @@ def usage():
 	print "Using the specfile option (-f, --file) to build a stage target:"
 	print "catalyst -f stage1-specfile.spec"
 
-def version():
+def show_version():
 	print "Catalyst, version "+__version__
 	print "Copyright 2003-2008 Gentoo Foundation"
 	print "Copyright 2008 various authors"
@@ -181,9 +181,8 @@ def build_target(addlargs, targetmap):
 		sys.exit(1)
 
 if __name__ == "__main__":
-	targetmap={}
 	
-	version()
+	show_version()
 	if os.getuid() != 0:
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
 		print "!!! catalyst: This script requires root privileges to operate"
