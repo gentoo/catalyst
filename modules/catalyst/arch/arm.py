@@ -44,6 +44,7 @@ class arch_armv5b(generic_arm):
 		self.settings["CFLAGS"]+=" -mcpu=xscale"
 		self.settings["CHOST"]="armv5b-unknown-linux-gnu"
 
+__subarch_map = {
 	"arm"    : arch_arm,
 	"armv4l" : arch_armv4l,
 	"armeb"  : arch_armeb,

@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/__init__.py, modules/catalyst/arch/arm.py:
+  Remove hard-coded arch list now that find_arch_modules() is known to work
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/__init__.py, modules/catalyst/arch/alpha.py,
   modules/catalyst/arch/amd64.py, modules/catalyst/arch/arm.py,
   modules/catalyst/arch/hppa.py, modules/catalyst/arch/ia64.py,
