@@ -55,24 +55,26 @@ def show_version():
 
 def parse_config(myconfig):
 	# search a couple of different areas for the main config file
-	myconf={}
-	config_file=""
+	myconf = {}
+	config_file = ""
 
-	confdefaults={ "storedir":"/var/tmp/catalyst",\
-		"sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",\
-		"portdir":"/usr/portage","options":"",\
-		"snapshot_cache":"/var/tmp/catalyst/snapshot_cache",\
-		"hash_function":"crc32"}
+	confdefaults = {
+		"storedir": "/var/tmp/catalyst",
+		"sharedir": "/usr/share/catalyst",
+		"distdir": "/usr/portage/distfiles",
+		"portdir": "/usr/portage",
+		"options": "",
+		"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
+		"hash_function": "crc32"
+	}
 
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
 		if os.path.exists(myconfig):
-			print "Using command line specified Catalyst configuration file, "+myconfig
-			config_file=myconfig
-
+			print "Using command line specified Catalyst configuration file, " + myconfig
+			config_file = myconfig
 		else:
-			print "!!! catalyst: Could not use specified configuration file "+\
-				myconfig
+			print "!!! catalyst: specified configuration file " + myconfig + " does not exist"
 			sys.exit(1)
 
 	# next, try the default location
@@ -85,9 +87,13 @@ def parse_config(myconfig):
 		print "!!! catalyst: Could not find a suitable configuration file"
 		sys.exit(1)
 
+	# Load the default config values into myconf
+	for x in confdefaults:
+		print "Setting " + x + " to default value \"" + confdefaults[x] + "\""
+		myconf[x] = confdefaults[x]
+
 	# now, try and parse the config file "config_file"
 	try:
-#		execfile(config_file, myconf, myconf)
 		myconfig = catalyst.config.ConfigParser(config_file)
 		myconf.update(myconfig.get_values())
 
