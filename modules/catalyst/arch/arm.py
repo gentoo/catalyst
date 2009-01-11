@@ -9,7 +9,7 @@ class generic_arm(catalyst.arch.generic_arch):
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CXXFLAGS"]="-O1 -pipe"
-   
+
 class generic_armeb(catalyst.arch.generic_arch):
 	"Abstract base class for all arm (big endian) builders"
 	def __init__(self,myspec):

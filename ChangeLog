@@ -3,6 +3,19 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/arm.py, modules/catalyst/arch/mips.py,
+  modules/catalyst/arch/x86.py, modules/catalyst/config.py,
+  modules/catalyst/lock.py, modules/catalyst/support.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/netboot2.py,
+  modules/catalyst/target/snapshot.py, modules/catalyst/target/stage1.py,
+  modules/catalyst/target/stage2.py, modules/catalyst/target/tinderbox.py,
+  targets/stage1/build.py:
+  Kill lots and lots of trailing whitespace in .py files
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py:
   Fix up a few bad replacements from previous commit
 

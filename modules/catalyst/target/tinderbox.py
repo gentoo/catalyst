@@ -20,7 +20,7 @@ class tinderbox_target(generic_stage_target):
 			if os.path.exists(self.settings["controller_file"]):
 			    cmd("/bin/bash "+self.settings["controller_file"]+" run "+\
 				list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
-		
+
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Tinderbox aborting due to error."
@@ -34,5 +34,5 @@ class tinderbox_target(generic_stage_target):
 		              "config_profile_link","setup_confdir","bind","chroot_setup",\
 		              "setup_environment","run_local","preclean","unbind","clean",\
 		              "clear_autoresume"]
-	
+
 __target_map = {"tinderbox":tinderbox_target}

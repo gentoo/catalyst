@@ -11,7 +11,7 @@ class stage2_target(generic_stage_target):
 		self.required_values=[]
 		self.valid_values=["chost"]
 		generic_stage_target.__init__(self,spec,addlargs)
-		
+
 	def set_source_path(self):
 		if "SEEDCACHE" in self.settings and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")
@@ -33,7 +33,7 @@ class stage2_target(generic_stage_target):
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/etc/portage"])
-	
+
 	def override_chost(self):
 		if "chost" in self.settings:
 			self.settings["CHOST"]=list_to_string(self.settings["chost"])

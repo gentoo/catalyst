@@ -246,12 +246,12 @@ class CatalystError(Exception):
 		if message:
 			(type,value)=sys.exc_info()[:2]
 			if value!=None:
-				print 
+				print
 				print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
 			print
-			
+
 class LockInUse(Exception):
 	def __init__(self, message):
 		if message:
@@ -354,19 +354,19 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 	Can either have a tuple, or a string passed in.  If uid/gid/groups/umask specified, it changes
 	the forked process to said value.  If path_lookup is on, a non-absolute command will be converted
 	to an absolute command, otherwise it returns None.
-	
+
 	selinux_context is the desired context, dependant on selinux being available.
 	opt_name controls the name the processor goes by.
 	fd_pipes controls which file descriptor numbers are left open in the forked process- it's a dict of
 	current fd's raw fd #, desired #.
-	
+
 	func_call is a boolean for specifying to execute a python function- use spawn_func instead.
 	raise_signals is questionable.  Basically throw an exception if signal'd.  No exception is thrown
 	if raw_input is on.
-	
+
 	logfile overloads the specified fd's to write to a tee process which logs to logfile
 	returnpid returns the relevant pids (a list, including the logging process if logfile is on).
-	
+
 	non-returnpid calls to spawn will block till the process has exited, returning the exitcode/signal
 	raw_exit_code controls whether the actual waitpid result is returned, or intrepretted."""
 
@@ -392,7 +392,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 			if raw_exit_code:
 				return retval
 			return process_exit_code(retval)
-		
+
 		if fd_pipes == None:
 			fd_pipes={}
 			fd_pipes[0] = 0
@@ -425,7 +425,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 			for x in k:
 				trg_fd.append(x)
 				src_fd.append(fd_pipes[x])
-	
+
 			# run through said list dup'ing descriptors so that they won't be waxed
 			# by other dup calls.
 			for x in range(0,len(trg_fd)):
@@ -448,7 +448,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 					os.dup2(src_fd[x], trg_fd[x])
 		else:
 			trg_fd=[0,1,2]
-		
+
 		# wax all open descriptors that weren't requested be left open.
 		for x in range(0,max_fd_limit):
 			if x not in trg_fd:
@@ -579,7 +579,7 @@ item3:
 	meep
 	bark
 	gleep moop
-	
+
 This file would be interpreted as defining three items: item1, item2 and item3. item1 would contain
 the string value "value1". Item2 would contain an ordered list [ "foo", "bar", "oni" ]. item3
 would contain an ordered list as well: [ "meep", "bark", "gleep", "moop" ]. It's important to note
@@ -630,7 +630,7 @@ def read_makeconf(mymakeconffile):
 	else:
 		makeconf={}
 		return makeconf
-	
+
 def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
 		print mymsg
@@ -642,7 +642,7 @@ def pathcompare(path1,path2):
 	# Removing ending slash
 	path1 = re.sub("/$","",path1)
 	path2 = re.sub("/$","",path2)
-	
+
 	if path1 == path2:
 		return 1
 	return 0
@@ -663,17 +663,17 @@ def ismount(path):
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
 	global valid_config_file_values
-	
+
 	for x in addlargs.keys():
 		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
 			raise CatalystError, "Argument \""+x+"\" not recognized."
 		else:
 			myspec[x]=addlargs[x]
-	
+
 	for x in requiredspec:
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
-	
+
 def touch(myfile):
 	try:
 		myf=open(myfile,"w")

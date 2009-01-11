@@ -20,21 +20,21 @@ class netboot_target(generic_stage_target):
 			"netboot/packages"
 		]
 		self.required_values=[]
-			
+
 		try:
 			if "netboot/packages" in addlargs:
 				if type(addlargs["netboot/packages"]) == types.StringType:
 					loopy=[addlargs["netboot/packages"]]
 				else:
 					loopy=addlargs["netboot/packages"]
-			
+
 		#	for x in loopy:
 		#		self.required_values.append("netboot/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot/packages."
-		
-		
-		
+
+
+
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
@@ -44,11 +44,11 @@ class netboot_target(generic_stage_target):
 		# Custom Kernel Tarball --- use that instead ...
 
 		# unless the user wants specific CFLAGS/CXXFLAGS, let's use -Os
-		
+
 		for envvar in "CFLAGS", "CXXFLAGS":
 			if not envvar in os.environ and not envvar in addlargs:
 				self.settings[envvar] = "-Os -pipe"
-	
+
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -64,7 +64,7 @@ class netboot_target(generic_stage_target):
 #		except CatalystError:
 #			self.unbind()
 #			raise CatalystError,"netboot build aborting due to error."
-	
+
 	def build_busybox(self):
 		# build busybox
 		if "netboot/busybox_config" in self.settings:
@@ -76,7 +76,7 @@ class netboot_target(generic_stage_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
-	
+
 
 	def copy_files_to_image(self):
 		# create image
@@ -86,7 +86,7 @@ class netboot_target(generic_stage_target):
 				loopy=[self.settings["netboot/packages"]]
 			else:
 				loopy=self.settings["netboot/packages"]
-		
+
 		for x in loopy:
 			if "netboot/packages/"+x+"/files" in self.settings:
 			    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:

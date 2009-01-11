@@ -11,7 +11,7 @@ class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
-		
+
 		generic_target.__init__(self,myspec,addlargs)
 		self.settings=myspec
 		self.settings["target_subpath"]="portage"
@@ -24,10 +24,10 @@ class snapshot_target(generic_stage_target):
 		x=normpath(self.settings["storedir"]+"/snapshots")
 		if not os.path.exists(x):
 			os.makedirs(x)
-	
+
 	def mount_safety_check(self):
 		pass
-		
+
 	def run(self):
 		if "PURGEONLY" in self.settings:
 			self.purge()
@@ -39,24 +39,24 @@ class snapshot_target(generic_stage_target):
 		self.setup()
 		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
 			" from "+self.settings["portdir"]+"..."
-		
+
 		mytmp=self.settings["tmp_path"]
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
-		
+
 		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
-		
+
 		print "Compressing Portage snapshot tarball..."
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
-		
+
 		self.gen_contents_file(self.settings["snapshot_path"])
 		self.gen_digest_file(self.settings["snapshot_path"])
 
 		self.cleanup()
 		print "snapshot: complete!"
-	
+
 	def kill_chroot_pids(self):
 		pass
 
@@ -79,5 +79,5 @@ class snapshot_target(generic_stage_target):
 			os.makedirs(myemp,0755)
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])
-			
+
 __target_map = {"snapshot":snapshot_target}

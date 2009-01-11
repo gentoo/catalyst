@@ -30,16 +30,16 @@ class livecd_stage1_target(generic_stage_target):
 				cmd("rm -rf "+self.settings["target_path"],\
 					"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
-			
+
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
-        
-	
+
+
 	def set_target_path(self):
 		pass
 	def set_spec_prefix(self):
 	                self.settings["spec_prefix"]="livecd"
-	
+
 	def set_use(self):
 		generic_stage_target.set_use(self)
 		if "use" in self.settings:

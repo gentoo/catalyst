@@ -11,16 +11,16 @@ class stage1_target(generic_stage_target):
 		self.required_values=[]
 		self.valid_values=["chost"]
 		generic_stage_target.__init__(self,spec,addlargs)
-	
+
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
 		print "stage1 stage path is "+self.settings["stage_path"]
-	
+
 	def set_root_path(self):
 		# sets the root path, relative to 'chroot_path', of the stage1 root
 		self.settings["root_path"]=normpath("/tmp/stage1root")
 		print "stage1 root path is "+self.settings["root_path"]
-	
+
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/usr/share/gettext",\
@@ -68,7 +68,7 @@ class stage1_target(generic_stage_target):
 				os.makedirs(self.settings["stage_path"]+"/dev")
 			if not os.path.isfile(self.settings["stage_path"]+"/proc/.keep"):
 				try:
-					proc_keepfile = open(self.settings["stage_path"]+"/proc/.keep","w") 
+					proc_keepfile = open(self.settings["stage_path"]+"/proc/.keep","w")
 					proc_keepfile.write('')
 					proc_keepfile.close()
 				except IOError:
@@ -77,7 +77,7 @@ class stage1_target(generic_stage_target):
 				try:
 					dev_keepfile = open(self.settings["stage_path"]+"/dev/.keep","w")
 					dev_keepfile.write('')
-					dev_keepfile.close() 
+					dev_keepfile.close()
 				except IOError:
 					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
 		else:

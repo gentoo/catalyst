@@ -12,7 +12,7 @@ def scan_profile(file):
 	else:
 		if "grab_multiple" in dir(portage):
 			return portage.stack_lists( portage.grab_multiple(file, portage.settings.profiles, portage.grabfile), incremental=1);
-		else:	
+		else:
 			return portage.stack_lists( [portage.grabfile_package(os.path.join(x, file)) for x in portage.settings.profiles], incremental=1);
 
 # loaded the stacked packages / packages.build files
