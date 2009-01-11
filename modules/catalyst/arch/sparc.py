@@ -1,6 +1,7 @@
 
 import catalyst.arch,os
 from catalyst.support import *
+from catalyst.error import *
 
 class generic_sparc(catalyst.arch.generic_arch):
 	"abstract base class for all sparc builders"

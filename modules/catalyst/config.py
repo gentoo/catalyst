@@ -1,4 +1,5 @@
 import re
+from catalyst.error import *
 
 class ParserBase:
 

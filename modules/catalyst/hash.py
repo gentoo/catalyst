@@ -3,6 +3,7 @@ This module contains functions for generating the CONTENTS and hash files
 """
 
 import os
+from catalyst.error import *
 
 def generate_contents(file, contents_function="auto", verbose=False):
 	try:

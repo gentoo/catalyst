@@ -3,6 +3,7 @@ Collection of utility functions for catalyst
 """
 
 import sys, traceback, os, os.path
+from catalyst.error import *
 
 def capture_traceback():
 	etype, value, tb = sys.exc_info()

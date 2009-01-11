@@ -13,6 +13,7 @@ import catalyst.arch
 from catalyst.output import warn
 import catalyst.util
 import catalyst.hash
+from catalyst.error import *
 
 class generic_stage_target(generic_target):
 
