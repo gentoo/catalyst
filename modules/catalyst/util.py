@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback, os, os.path
+import sys, traceback, os, os.path, re
 from catalyst.error import *
 
 def capture_traceback():

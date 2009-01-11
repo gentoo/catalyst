@@ -1,5 +1,4 @@
 
-import os, re
 from catalyst.error import *
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
