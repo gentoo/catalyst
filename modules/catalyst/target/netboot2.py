@@ -24,7 +24,7 @@ class netboot2_target(generic_stage_target):
 		])
 
 		try:
-			if addlargs.has_key("netboot2/packages"):
+			if "netboot2/packages" in addlargs:
 				if type(addlargs["netboot2/packages"]) == types.StringType:
 					loopy=[addlargs["netboot2/packages"]]
 				else:
@@ -42,7 +42,7 @@ class netboot2_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -60,24 +60,24 @@ class netboot2_target(generic_stage_target):
 		myfiles=[]
 
 		# check for autoresume point
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"copy_files_to_image"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
-			if self.settings.has_key("netboot2/packages"):
+			if "netboot2/packages" in self.settings:
 				if type(self.settings["netboot2/packages"]) == types.StringType:
 					loopy=[self.settings["netboot2/packages"]]
 				else:
 					loopy=self.settings["netboot2/packages"]
 		
 			for x in loopy:
-				if self.settings.has_key("netboot2/packages/"+x+"/files"):
+				if "netboot2/packages/"+x+"/files" in self.settings:
 				    if type(self.settings["netboot2/packages/"+x+"/files"]) == types.ListType:
 					    myfiles.extend(self.settings["netboot2/packages/"+x+"/files"])
 				    else:
 					    myfiles.append(self.settings["netboot2/packages/"+x+"/files"])
 
-			if self.settings.has_key("netboot2/extra_files"):
+			if "netboot2/extra_files" in self.settings:
 				if type(self.settings["netboot2/extra_files"]) == types.ListType:
 					myfiles.extend(self.settings["netboot2/extra_files"])
 				else:
@@ -93,11 +93,11 @@ class netboot2_target(generic_stage_target):
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
 	def setup_overlay(self):	
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
-			if self.settings.has_key("netboot2/overlay"):
+			if "netboot2/overlay" in self.settings:
 				for x in self.settings["netboot2/overlay"]: 
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
@@ -117,11 +117,11 @@ class netboot2_target(generic_stage_target):
 			raise CatalystError,"Failed to move kernel images!"
 
 	def remove(self):
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"remove"):
 			print "Resume point detected, skipping remove operation..."
 		else:
-			if self.settings.has_key(self.settings["spec_prefix"]+"/rm"):
+			if self.settings["spec_prefix"]+"/rm" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
@@ -129,11 +129,11 @@ class netboot2_target(generic_stage_target):
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):		
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"empty"):
 			print "Resume point detected, skipping empty operation..."
 		else:
-			if self.settings.has_key("netboot2/empty"):
+			if "netboot2/empty" in self.settings:
 				if type(self.settings["netboot2/empty"])==types.StringType:
 					self.settings["netboot2/empty"]=self.settings["netboot2/empty"].split()
 				for x in self.settings["netboot2/empty"]:

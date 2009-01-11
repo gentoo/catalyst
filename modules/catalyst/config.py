@@ -62,7 +62,7 @@ class ParserBase:
 				mobjs[1] = mobjs[1].strip().strip('"')
 
 #				# Check that this key doesn't exist already in the spec
-#				if values.has_key(mobjs[0]):
+#				if mobjs[0] in values:
 #					raise Exception("You have a duplicate key (" + mobjs[0] + ") in your spec. Please fix it")
 
 				# Start a new array using the first element of mobjs

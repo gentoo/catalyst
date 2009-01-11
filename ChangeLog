@@ -2,6 +2,18 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/config.py, modules/catalyst/lock.py,
+  modules/catalyst/support.py, modules/catalyst/target/embedded.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/netboot2.py,
+  modules/catalyst/target/snapshot.py, modules/catalyst/target/stage1.py,
+  modules/catalyst/target/stage2.py, modules/catalyst/target/stage3.py,
+  modules/catalyst/target/stage4.py:
+  Do a mass sed to fix up all remaining usage of has_key()
+
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Clean up instances of has_key() for py3k
 

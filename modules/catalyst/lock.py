@@ -58,7 +58,7 @@ class LockDir:
 
 	def set_gid(self,gid):
 		if not self.islocked():
-#			if self.settings.has_key("DEBUG"):
+#			if "DEBUG" in self.settings:
 #				print "setting gid to", gid 
 			self.gid=gid
 
@@ -70,7 +70,7 @@ class LockDir:
 				if lockdir[-1] == "/":
 					lockdir=lockdir[:-1]
 				self.lockdir=normpath(lockdir)
-#				if self.settings.has_key("DEBUG"):
+#				if "DEBUG" in self.settings:
 #					print "setting lockdir to", self.lockdir
 		else:
 			raise "the lock object needs a path to a dir"
@@ -78,13 +78,13 @@ class LockDir:
 	def set_lockfilename(self,lockfilename):
 		if not self.islocked():
 			self.lockfilename=lockfilename
-#			if self.settings.has_key("DEBUG"):
+#			if "DEBUG" in self.settings:
 #				print "setting lockfilename to", self.lockfilename
 
 	def set_lockfile(self):
 		if not self.islocked():
 			self.lockfile=normpath(self.lockdir+'/'+self.lockfilename)
-#			if self.settings.has_key("DEBUG"):
+#			if "DEBUG" in self.settings:
 #				print "setting lockfile to", self.lockfile
 
 	def read_lock(self):
@@ -210,7 +210,7 @@ class LockDir:
 						os.unlink(self.lockfile)
 						os.close(self.myfd)
 						self.myfd=None
-#						if self.settings.has_key("DEBUG"):
+#						if "DEBUG" in self.settings:
 #							print "Unlinked lockfile..."
 				except SystemExit, e:
 					raise
@@ -259,7 +259,7 @@ class LockDir:
 			except SystemExit, e:
 				raise
 			except Exception, e:
-#				if self.settings.has_key("DEBUG"):
+#				if "DEBUG" in self.settings:
 #					print "lockfile(): Hardlink: Link failed."
 #					print "Exception: ",e
 				pass
@@ -299,7 +299,7 @@ class LockDir:
 			self.hardlock_paths[self.lockdir]=self.myhardlock
     
 	def remove_hardlock_file_from_cleanup(self):
-		if self.hardlock_paths.has_key(self.lockdir):
+		if self.lockdir in self.hardlock_paths:
 			del self.hardlock_paths[self.lockdir]
 			print self.hardlock_paths
 
@@ -359,10 +359,10 @@ class LockDir:
 				hostpid  = parts[1].split("-")
 				host  = "-".join(hostpid[:-1])
 				pid   = hostpid[-1]
-			if not mylist.has_key(filename):
+			if not filename in mylist:
 				mylist[filename] = {}
 			    
-			if not mylist[filename].has_key(host):
+			if not host in mylist[filename]:
 				mylist[filename][host] = []
 				mylist[filename][host].append(pid)
 				mycount += 1
@@ -373,7 +373,7 @@ class LockDir:
 
 		results.append("Found %(count)s locks" % {"count":mycount})
 		for x in mylist.keys():
-			if mylist[x].has_key(myhost):
+			if myhost in mylist[x]:
 				mylockname = self.hardlock_name(x)
 				if self.hardlink_is_mine(mylockname, self.lockfile) or \
 					not os.path.exists(self.lockfile):

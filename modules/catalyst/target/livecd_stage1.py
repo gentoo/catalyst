@@ -21,7 +21,7 @@ class livecd_stage1_target(generic_stage_target):
 					"unbind", "clean","clear_autoresume"]
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -42,7 +42,7 @@ class livecd_stage1_target(generic_stage_target):
 	
 	def set_use(self):
 		generic_stage_target.set_use(self)
-		if self.settings.has_key("use"):
+		if "use" in self.settings:
 			self.settings["use"].append("livecd")
 			self.settings["use"].append("bindist")
 		else:
@@ -51,14 +51,14 @@ class livecd_stage1_target(generic_stage_target):
 
 	def set_packages(self):
 		generic_stage_target.set_packages(self)
-		if self.settings.has_key(self.settings["spec_prefix"]+"/packages"):
+		if self.settings["spec_prefix"]+"/packages" in self.settings:
 			if type(self.settings[self.settings["spec_prefix"]+"/packages"]) == types.StringType:
 				self.settings[self.settings["spec_prefix"]+"/packages"] = \
 					self.settings[self.settings["spec_prefix"]+"/packages"].split()
 		self.settings[self.settings["spec_prefix"]+"/packages"].append("app-misc/livecd-tools")
 
 	def set_pkgcache_path(self):
-		if self.settings.has_key("pkgcache_path"):
+		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"]) != types.StringType:
 				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
 		else:

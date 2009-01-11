@@ -34,24 +34,24 @@ class stage1_target(generic_stage_target):
 	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
 
 	def override_chost(self):
-		if self.settings.has_key("chost"):
+		if "chost" in self.settings:
 			self.settings["CHOST"]=list_to_string(self.settings["chost"])
 
 	def override_cflags(self):
-		if self.settings.has_key("cflags"):
+		if "cflags" in self.settings:
 			self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
 
 	def override_cxxflags(self):
-		if self.settings.has_key("cxxflags"):
+		if "cxxflags" in self.settings:
 			self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
 
 	def override_ldflags(self):
-		if self.settings.has_key("ldflags"):
+		if "ldflags" in self.settings:
 			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
 	def set_portage_overlay(self):
 		generic_stage_target.set_portage_overlay(self)
-		if self.settings.has_key("portage_overlay"):
+		if "portage_overlay" in self.settings:
 			print "\nWARNING !!!!!"
 			print "\tUsing an portage overlay for earlier stages could cause build issues."
 			print "\tIf you break it, you buy it. Don't complain to us about it."

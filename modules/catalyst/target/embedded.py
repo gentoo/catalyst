@@ -21,7 +21,7 @@ class embedded_target(generic_stage_target):
 		self.valid_values=[]
 		self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel","embedded/linuxrc"])
 		self.valid_values.extend(["embedded/use"])
-		if addlargs.has_key("embedded/fs-type"):
+		if "embedded/fs-type" in addlargs:
 			self.valid_values.append("embedded/fs-ops")
 
 		generic_stage_target.__init__(self,spec,addlargs)

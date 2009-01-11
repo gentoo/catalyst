@@ -14,14 +14,14 @@ class grp_target(generic_stage_target):
 		
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["grp/use"])
-		if not addlargs.has_key("grp"):
+		if not "grp" in addlargs:
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 		
 		self.required_values.extend(["grp"])
 		if type(addlargs["grp"])==types.StringType:
 			addlargs["grp"]=[addlargs["grp"]]
 		
-		if addlargs.has_key("grp/use"):
+		if "grp/use" in addlargs:
 		    if type(addlargs["grp/use"])==types.StringType:
 			    addlargs["grp/use"]=[addlargs["grp/use"]]
 			
@@ -33,7 +33,7 @@ class grp_target(generic_stage_target):
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 			print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -60,7 +60,7 @@ class grp_target(generic_stage_target):
 
 	def set_use(self):
 	    generic_stage_target.set_use(self)
-	    if self.settings.has_key("use"):
+	    if "use" in self.settings:
 	    	self.settings["use"].append("bindist")
 	    else:
 	    	self.settings["use"]=["bindist"]

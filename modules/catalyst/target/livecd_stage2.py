@@ -24,7 +24,7 @@ class livecd_stage2_target(generic_stage_target):
 			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
 		
 		generic_stage_target.__init__(self,spec,addlargs)
-		if not self.settings.has_key("livecd/type"):
+		if not "livecd/type" in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"
 
 		file_locate(self.settings, ["cdtar","controller_file"])
@@ -43,7 +43,7 @@ class livecd_stage2_target(generic_stage_target):
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
-		if self.settings.has_key("AUTORESUME") \
+		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -57,7 +57,7 @@ class livecd_stage2_target(generic_stage_target):
 
 	def run_local(self):
 		# what modules do we want to blacklist?
-		if self.settings.has_key("livecd/modblacklist"):
+		if "livecd/modblacklist" in self.settings:
 			try:
 				myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
 			except:
@@ -82,12 +82,12 @@ class livecd_stage2_target(generic_stage_target):
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 			invalid_snapshot=False
 
-		if self.settings.has_key("AUTORESUME"):
+		if "AUTORESUME" in self.settings:
 			if os.path.isdir(self.settings["source_path"]) and \
 				os.path.exists(self.settings["autoresume_path"]+"unpack"):
 				print "Resume point detected, skipping unpack operation..."
 				unpack=False
-			elif self.settings.has_key("source_path_hash"):
+			elif "source_path_hash" in self.settings:
 				if self.settings["source_path_hash"] != clst_unpack_hash:
 					invalid_snapshot=True
 
@@ -106,7 +106,7 @@ class livecd_stage2_target(generic_stage_target):
 			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
 				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 
-			if self.settings.has_key("PKGCACHE"):
+			if "PKGCACHE" in self.settings:
 				if not os.path.exists(self.settings["pkgcache_path"]):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 
@@ -116,7 +116,7 @@ class livecd_stage2_target(generic_stage_target):
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)
 
-			if self.settings.has_key("source_path_hash"):
+			if "source_path_hash" in self.settings:
 				myf=open(self.settings["autoresume_path"]+"unpack","w")
 				myf.write(self.settings["source_path_hash"])
 				myf.close()
@@ -128,7 +128,7 @@ class livecd_stage2_target(generic_stage_target):
 				"config_profile_link","setup_confdir","portage_overlay",\
 				"bind","chroot_setup","setup_environment","run_local",\
 				"build_kernel"]
-		if not self.settings.has_key("FETCH"):
+		if not "FETCH" in self.settings:
 			self.settings["action_sequence"] += ["bootloader","preclean",\
 				"livecd_update","root_overlay","fsscript","rcupdate","unmerge",\
 				"unbind","remove","empty","target_setup",\
