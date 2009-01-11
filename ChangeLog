@@ -3,6 +3,32 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  +modules/catalyst/target/__init__.py,
+  +modules/catalyst/target/embedded_target.py,
+  +modules/catalyst/target/generic_stage_target.py,
+  +modules/catalyst/target/generic_target.py,
+  +modules/catalyst/target/grp_target.py,
+  +modules/catalyst/target/livecd_stage1_target.py,
+  +modules/catalyst/target/livecd_stage2_target.py,
+  +modules/catalyst/target/netboot2_target.py,
+  +modules/catalyst/target/netboot_target.py,
+  +modules/catalyst/target/snapshot_target.py,
+  +modules/catalyst/target/stage1_target.py,
+  +modules/catalyst/target/stage2_target.py,
+  +modules/catalyst/target/stage3_target.py,
+  +modules/catalyst/target/stage4_target.py,
+  +modules/catalyst/target/tinderbox_target.py, -modules/embedded_target.py,
+  -modules/generic_stage_target.py, -modules/generic_target.py,
+  -modules/grp_target.py, -modules/livecd_stage1_target.py,
+  -modules/livecd_stage2_target.py, -modules/netboot2_target.py,
+  -modules/netboot_target.py, -modules/snapshot_target.py,
+  -modules/stage1_target.py, -modules/stage2_target.py,
+  -modules/stage3_target.py, -modules/stage4_target.py,
+  -modules/tinderbox_target.py:
+  Move all *_target.py modules under modules/catalyst/target and create
+  parent catalyst.target module
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/__init__.py, modules/catalyst/arch/arm.py:
   Remove hard-coded arch list now that find_arch_modules() is known to work
 
