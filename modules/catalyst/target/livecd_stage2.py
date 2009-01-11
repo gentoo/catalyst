@@ -31,7 +31,7 @@ class livecd_stage2_target(generic_stage_target):
 		if not "livecd/type" in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"
 
-		file_locate(self.settings, ["cdtar","controller_file"])
+		catalyst.util.file_locate(self.settings, ["cdtar","controller_file"])
 
 	def set_source_path(self):
 		self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")

@@ -117,3 +117,18 @@ def countdown(secs=5, doing="Starting"):
 			time.sleep(1)
 		print
 
+def file_locate(settings, filelist, expand=True):
+	#if expand is True, non-absolute paths will be accepted and
+	# expanded to os.getcwd()+"/"+localpath if file exists
+	for myfile in filelist:
+		if myfile in settings:
+			# filenames such as cdtar are optional, so we don't assume the variable is defined.
+		    if not len(settings[myfile]):
+			    raise CatalystError, "File variable \"" + myfile + "\" has a length of zero (not specified)"
+		    if settings[myfile].startswith('/'):
+			    if not os.path.exists(settings[myfile]):
+				    raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile]
+		    elif expand and os.path.exists(os.getcwd() + "/" + settings[myfile]):
+			    settings[myfile] = os.getcwd() + "/" + settings[myfile]
+		    else:
+			    raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile] + " (2nd try)"

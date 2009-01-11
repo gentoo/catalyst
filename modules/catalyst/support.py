@@ -29,23 +29,6 @@ valid_config_file_values.append("SEEDCACHE")
 
 verbosity=1
 
-def file_locate(settings,filelist,expand=1):
-	#if expand=1, non-absolute paths will be accepted and
-	# expanded to os.getcwd()+"/"+localpath if file exists
-	for myfile in filelist:
-		if not myfile in settings:
-			#filenames such as cdtar are optional, so we don't assume the variable is defined.
-			pass
-		else:
-		    if len(settings[myfile])==0:
-			    raise CatalystError, "File variable \""+myfile+"\" has a length of zero (not specified.)"
-		    if settings[myfile][0]=="/":
-			    if not os.path.exists(settings[myfile]):
-				    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]
-		    elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
-			    settings[myfile]=os.getcwd()+"/"+settings[myfile]
-		    else:
-			    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]+" (2nd try)"
 """
 Spec file format:
 

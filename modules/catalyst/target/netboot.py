@@ -42,7 +42,7 @@ class netboot_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
 		if "netboot/busybox_config" in addlargs:
-			file_locate(self.settings, ["netboot/busybox_config"])
+			catalyst.util.file_locate(self.settings, ["netboot/busybox_config"])
 
 		# Custom Kernel Tarball --- use that instead ...
 

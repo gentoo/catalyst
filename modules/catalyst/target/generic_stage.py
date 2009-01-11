@@ -153,11 +153,11 @@ class generic_stage_target(generic_target):
 		on disk.
 		"""
 		#pdb.set_trace()
-		file_locate(self.settings,["source_path","snapshot_path","distdir"],\
+		catalyst.util.file_locate(self.settings,["source_path","snapshot_path","distdir"],\
 			expand=0)
 		""" If we are using portage_confdir, check that as well. """
 		if "portage_confdir" in self.settings:
-			file_locate(self.settings,["portage_confdir"],expand=0)
+			catalyst.util.file_locate(self.settings,["portage_confdir"],expand=0)
 
 		""" Setup our mount points """
 		if "SNAPCACHE" in self.settings:
