@@ -109,6 +109,4 @@ class grp_target(generic_stage_target):
 	    				    "setup_environment","run_local","unbind",\
 					    "generate_digests","clear_autoresume"]
 
-def register(foo):
-	foo.update({"grp":grp_target})
-	return foo
+__target_map = {"grp":grp_target}

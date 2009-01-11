@@ -2,6 +2,25 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  modules/catalyst/target/embedded_target.py,
+  modules/catalyst/target/grp_target.py,
+  modules/catalyst/target/livecd_stage1_target.py,
+  modules/catalyst/target/livecd_stage2_target.py,
+  modules/catalyst/target/netboot2_target.py,
+  modules/catalyst/target/netboot_target.py,
+  modules/catalyst/target/snapshot_target.py,
+  modules/catalyst/target/stage1_target.py,
+  modules/catalyst/target/stage2_target.py,
+  modules/catalyst/target/stage3_target.py,
+  modules/catalyst/target/stage4_target.py,
+  modules/catalyst/target/tinderbox_target.py, modules/catalyst_support.py:
+  Add target map in each target module and remove register() function
+  Change catalyst program to load target modules with catalyst.target.targets
+  class
+  Remove required_build_targets and valid_build_targets from catalyst_support.py,
+  since we can scan the dir now
+
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   +modules/catalyst/target/__init__.py,
   +modules/catalyst/target/embedded_target.py,

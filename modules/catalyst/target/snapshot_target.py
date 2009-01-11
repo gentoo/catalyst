@@ -80,6 +80,4 @@ class snapshot_target(generic_stage_target):
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])
 			
-def register(foo):
-	foo.update({"snapshot":snapshot_target})
-	return foo
+__target_map = {"snapshot":snapshot_target}

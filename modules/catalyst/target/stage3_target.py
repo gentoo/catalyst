@@ -24,6 +24,4 @@ class stage3_target(generic_stage_target):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/etc/portage"])
 
-def register(foo):
-	foo.update({"stage3":stage3_target})
-	return foo
+__target_map = {"stage3":stage3_target}

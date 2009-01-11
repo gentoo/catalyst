@@ -158,6 +158,4 @@ class netboot2_target(generic_stage_target):
 					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
 					"remove","empty","unbind","clean","clear_autoresume"]
 
-def register(foo):
-	foo.update({"netboot2":netboot2_target})
-	return foo
+__target_map = {"netboot2":netboot2_target}

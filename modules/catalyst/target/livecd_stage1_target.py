@@ -64,6 +64,4 @@ class livecd_stage1_target(generic_stage_target):
 		else:
 			generic_stage_target.set_pkgcache_path(self)
 
-def register(foo):
-	foo.update({"livecd-stage1":livecd_stage1_target})
-	return foo
+__target_map = {"livecd-stage1":livecd_stage1_target}

@@ -93,6 +93,4 @@ class stage1_target(generic_stage_target):
 		self.mountmap["/tmp/stage1root/proc"]="/proc"
 
 
-def register(foo):
-	foo.update({"stage1":stage1_target})
-	return foo
+__target_map = {"stage1":stage1_target}

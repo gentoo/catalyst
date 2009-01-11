@@ -58,6 +58,4 @@ class stage2_target(generic_stage_target):
 				print "\tIf you break it, you buy it. Don't complain to us about it."
 				print "\tDont say we did not warn you\n"
 
-def register(foo):
-	foo.update({"stage2":stage2_target})
-	return foo
+__target_map = {"stage2":stage2_target}

@@ -34,7 +34,5 @@ class stage4_target(generic_stage_target):
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
 
-def register(foo):
-	foo.update({"stage4":stage4_target})
-	return foo
+__target_map = {"stage4":stage4_target}
 

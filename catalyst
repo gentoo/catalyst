@@ -169,32 +169,9 @@ def import_modules():
 	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
 	targetmap={}
 
-	try:
-		for x in required_build_targets:
-			try:
-				fh=open(conf_values["sharedir"]+"/modules/"+x+".py")
-				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
-				fh.close()
-        	
-			except IOError:
-				raise CatalystError,"Can't find "+x+".py plugin in "+\
-					conf_values.settings["sharedir"]+"/modules/"
-
-		for x in valid_build_targets:
-			try:
-				fh=open(conf_values["sharedir"]+"/modules/"+x+".py")
-				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
-				module.register(targetmap)
-				fh.close()
-        	
-			except IOError:
-				raise CatalystError,"Can't find "+x+".py plugin in "+\
-					conf_values.settings["sharedir"]+"/modules/"
-
-	except ImportError:
-		print "!!! catalyst: Python modules not found in "+\
-			conf_values["sharedir"]+"/modules; exiting."
-		sys.exit(1)
+	targets = catalyst.target.targets()
+	for x in targets.get_targets():
+		targetmap.update(x.__target_map)
 
 	return targetmap
 
