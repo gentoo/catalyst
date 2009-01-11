@@ -2,6 +2,12 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  +modules/catalyst/lock.py,
+  modules/catalyst/target/generic_stage_target.py,
+  -modules/catalyst_lock.py:
+  Move catalyst_lock.py to catalyst/lock.py and update references
+
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/target/__init__.py,
   modules/catalyst/target/generic_stage_target.py:
