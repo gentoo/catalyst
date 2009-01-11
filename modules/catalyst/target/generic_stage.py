@@ -1586,7 +1586,7 @@ class generic_stage_target(generic_target):
 					array.sort()
 				for j in array:
 					contents=generate_contents(file,contents_function=j,\
-"VERBOSE" in 						verbose=self.settings)
+						verbose=("VERBOSE" in self.settings))
 					if contents:
 						myf.write(contents)
 				myf.close()
@@ -1607,12 +1607,12 @@ class generic_stage_target(generic_target):
 						if "all" in array:
 							for k in hash_map.keys():
 								hash=generate_hash(f,hash_function=k,verbose=\
-"VERBOSE" in 									self.settings)
+									("VERBOSE" in self.settings))
 								myf.write(hash)
 						else:
 							for j in array:
 								hash=generate_hash(f,hash_function=j,verbose=\
-"VERBOSE" in 									self.settings)
+									("VERBOSE" in self.settings))
 								myf.write(hash)
 				myf.close()
 
