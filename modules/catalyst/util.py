@@ -12,3 +12,10 @@ def capture_traceback():
 def print_traceback():
 	for x in capture_traceback():
 		print x
+
+def load_module(name):
+	try:
+		exec("import " + name)
+		return sys.modules[name]
+	except Exception:
+		return None
