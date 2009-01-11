@@ -6,6 +6,21 @@ import sys, os, types
 import catalyst.util
 from catalyst.error import *
 
+BASH_BINARY = "/bin/bash"
+
+selinux_capable = False
+#userpriv_capable = (os.getuid() == 0)
+#fakeroot_capable = False
+
+try:
+	import resource
+	max_fd_limit=resource.getrlimit(RLIMIT_NOFILE)
+except SystemExit, e:
+	raise
+except:
+	# hokay, no resource module.
+	max_fd_limit=256
+
 # XXX We need to change this to a singleton class to track it all properly
 # pids this process knows of.
 spawned_pids = []

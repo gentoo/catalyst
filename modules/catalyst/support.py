@@ -4,20 +4,6 @@ from catalyst.output import warn
 import catalyst.util
 from catalyst.error import *
 
-selinux_capable = False
-#userpriv_capable = (os.getuid() == 0)
-#fakeroot_capable = False
-BASH_BINARY             = "/bin/bash"
-
-try:
-	import resource
-	max_fd_limit=resource.getrlimit(RLIMIT_NOFILE)
-except SystemExit, e:
-	raise
-except:
-	# hokay, no resource module.
-	max_fd_limit=256
-
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
 valid_config_file_values.append("PKGCACHE")

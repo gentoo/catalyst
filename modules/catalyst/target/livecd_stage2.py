@@ -9,6 +9,7 @@ from generic_stage import *
 import catalyst.util
 import catalyst.hash
 from catalyst.error import *
+from catalyst.spawn import *
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

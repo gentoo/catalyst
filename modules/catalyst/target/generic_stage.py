@@ -14,6 +14,7 @@ from catalyst.output import warn
 import catalyst.util
 import catalyst.hash
 from catalyst.error import *
+from catalyst.spawn import *
 
 class generic_stage_target(generic_target):
 

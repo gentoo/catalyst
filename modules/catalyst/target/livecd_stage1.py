@@ -6,6 +6,7 @@ Builder class for LiveCD stage1.
 from catalyst.support import *
 from generic_stage import *
 import catalyst.util
+from catalyst.spawn import *
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

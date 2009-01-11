@@ -7,6 +7,7 @@ import os
 from catalyst.support import *
 from generic_stage import *
 import catalyst.util
+from catalyst.spawn import *
 
 class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):
