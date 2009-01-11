@@ -6,6 +6,7 @@ import sys, os, types
 import catalyst.util
 from catalyst.error import *
 
+# XXX We need to change this to a singleton class to track it all properly
 # pids this process knows of.
 spawned_pids = []
 
