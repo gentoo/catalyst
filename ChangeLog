@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Move code to verify digest and hash functions to a separate function
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Allow build_target() to re-raise the exception for the top-level handler
   to catch it
 

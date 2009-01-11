@@ -182,6 +182,46 @@ def build_target(addlargs, targetmap):
 #		sys.exit(1)
 		raise
 
+def verify_digest_and_hash_functions(conf_values):
+	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
+	if conf_values.has_key("digests"):
+		for i in conf_values["digests"].split():
+			if not hash_map.has_key(i):
+				print
+				print i+" is not a valid digest entry"
+				print "Valid digest entries:"
+				print hash_map.keys()
+				print
+				print "Catalyst aborting...."
+				sys.exit(2)
+			if find_binary(hash_map[i][1]) == None:
+				print
+				print "digest="+i
+				print "\tThe "+hash_map[i][1]+\
+					" binary was not found. It needs to be in your system path"
+				print
+				print "Catalyst aborting...."
+				sys.exit(2)
+
+	if conf_values.has_key("hash_function"):
+		if not hash_map.has_key(conf_values["hash_function"]):
+			print
+			print conf_values["hash_function"]+" is not a valid hash_function entry"
+			print "Valid hash_function entries:"
+			print hash_map.keys()
+			print
+			print "Catalyst aborting...."
+			sys.exit(2)
+		if find_binary(hash_map[conf_values["hash_function"]][1]) == None:
+			print
+			print "hash_function="+conf_values["hash_function"]
+			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\
+				" binary was not found. It needs to be in your system path"
+			print
+			print "Catalyst aborting...."
+			sys.exit(2)
+
+
 if __name__ == "__main__":
 	
 	show_version()
@@ -275,43 +315,7 @@ if __name__ == "__main__":
 
 	parse_config(myconfig)
 	
-	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
-	if conf_values.has_key("digests"):
-		for i in conf_values["digests"].split():
-			if not hash_map.has_key(i):
-				print
-				print i+" is not a valid digest entry"
-				print "Valid digest entries:"
-				print hash_map.keys()
-				print
-				print "Catalyst aborting...."
-				sys.exit(2)
-			if find_binary(hash_map[i][1]) == None:
-				print
-				print "digest="+i
-				print "\tThe "+hash_map[i][1]+\
-					" binary was not found. It needs to be in your system path"
-				print
-				print "Catalyst aborting...."
-				sys.exit(2)
-
-	if conf_values.has_key("hash_function"):
-		if not hash_map.has_key(conf_values["hash_function"]):
-			print
-			print conf_values["hash_function"]+" is not a valid hash_function entry"
-			print "Valid hash_function entries:"
-			print hash_map.keys()
-			print
-			print "Catalyst aborting...."
-			sys.exit(2)
-		if find_binary(hash_map[conf_values["hash_function"]][1]) == None:
-			print
-			print "hash_function="+conf_values["hash_function"]
-			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\
-				" binary was not found. It needs to be in your system path"
-			print
-			print "Catalyst aborting...."
-			sys.exit(2)
+	verify_digest_and_hash_functions(conf_values)
 
 	targetmap = catalyst.target.build_target_map()
 
