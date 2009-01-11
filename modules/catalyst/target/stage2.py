@@ -5,6 +5,7 @@ Builder class for a stage2 installation tarball build.
 
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -36,19 +37,19 @@ class stage2_target(generic_stage_target):
 
 	def override_chost(self):
 		if "chost" in self.settings:
-			self.settings["CHOST"]=list_to_string(self.settings["chost"])
+			self.settings["CHOST"] = catalyst.util.list_to_string(self.settings["chost"])
 
 	def override_cflags(self):
 		if "cflags" in self.settings:
-			self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
+			self.settings["CFLAGS"] = catalyst.util.list_to_string(self.settings["cflags"])
 
 	def override_cxxflags(self):
 		if "cxxflags" in self.settings:
-			self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
+			self.settings["CXXFLAGS"] = catalyst.util.list_to_string(self.settings["cxxflags"])
 
 	def override_ldflags(self):
 		if "ldflags" in self.settings:
-			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
+			self.settings["LDFLAGS"] = catalyst.util.list_to_string(self.settings["ldflags"])
 
 	def set_portage_overlay(self):
 			generic_stage_target.set_portage_overlay(self)

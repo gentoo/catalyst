@@ -57,3 +57,11 @@ def list_bashify(mylist):
 	mypack = "".join(mypack)
 	return mypack
 
+def list_to_string(mylist):
+	if isinstance(mylist, str):
+		mypack=[mylist]
+	else:
+		mypack=mylist[:]
+	mypack = " ".join(mypack)
+	return mypack
+
