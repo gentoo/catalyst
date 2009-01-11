@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Pre-split options from config file and remove unnecessary imported modules
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Move code to verify digest and hash functions to a separate function
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
