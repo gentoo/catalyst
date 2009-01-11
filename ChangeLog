@@ -3,6 +3,11 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/support.py, modules/catalyst/target/generic_stage.py,
+  modules/catalyst/util.py:
+  Move ismount() and pathcompare() from catalyst.support to catalyst.util
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/support.py:
   Remove unused function hexify()
 

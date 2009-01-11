@@ -582,13 +582,13 @@ class generic_stage_target(generic_target):
 			if not os.path.exists(mypath+x):
 				continue
 
-			if ismount(mypath+x):
+			if catalyst.util.ismount(mypath+x):
 				""" Something is still mounted "" """
 				try:
 					print x+" is still mounted; performing auto-bind-umount...",
 					""" Try to umount stuff ourselves """
 					self.unbind()
-					if ismount(mypath+x):
+					if catalyst.util.ismount(mypath+x):
 						raise CatalystError, "Auto-unbind failed for "+x
 					else:
 						print "Auto-unbind successful..."
@@ -880,7 +880,7 @@ class generic_stage_target(generic_target):
 			if not os.path.exists(mypath+x):
 				continue
 
-			if not ismount(mypath+x):
+			if not catalyst.util.ismount(mypath+x):
 				continue
 
 			retval=os.system("umount "+\

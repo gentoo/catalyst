@@ -73,3 +73,26 @@ def normpath(mypath):
 		newpath = newpath[1:]
 	return newpath
 
+def pathcompare(path1, path2):
+	# Change double slashes to slash
+	path1 = re.sub(r"//",r"/",path1)
+	path2 = re.sub(r"//",r"/",path2)
+	# Removing ending slash
+	path1 = re.sub("/$","",path1)
+	path2 = re.sub("/$","",path2)
+	if path1 == path2:
+		return True
+	return False
+
+def ismount(path):
+	"enhanced to handle bind mounts"
+	if os.path.ismount(path):
+		return True
+	a = os.popen("mount")
+	mounts = [line.split()[2] for line in a.readlines()]
+	a.close()
+	for mount in mounts:
+		if pathcompare(path, mount):
+			return True
+	return False
+

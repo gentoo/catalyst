@@ -563,31 +563,6 @@ def read_makeconf(mymakeconffile):
 		makeconf={}
 		return makeconf
 
-def pathcompare(path1,path2):
-	# Change double slashes to slash
-	path1 = re.sub(r"//",r"/",path1)
-	path2 = re.sub(r"//",r"/",path2)
-	# Removing ending slash
-	path1 = re.sub("/$","",path1)
-	path2 = re.sub("/$","",path2)
-
-	if path1 == path2:
-		return 1
-	return 0
-
-def ismount(path):
-	"enhanced to handle bind mounts"
-	if os.path.ismount(path):
-		return 1
-	a=os.popen("mount")
-	mylines=a.readlines()
-	a.close()
-	for line in mylines:
-		mysplit=line.split()
-		if pathcompare(path,mysplit[2]):
-			return 1
-	return 0
-
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
 	global valid_config_file_values
