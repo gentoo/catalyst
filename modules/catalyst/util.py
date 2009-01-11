@@ -21,3 +21,16 @@ def load_module(name):
 		return sys.modules[name]
 	except Exception:
 		return None
+
+def find_binary(myc):
+	"""look through the environmental path for an executable file named whatever myc is"""
+	# this sucks. badly.
+	p=os.getenv("PATH")
+	if p == None:
+		return None
+	for x in p.split(":"):
+		#if it exists, and is executable
+		if os.path.exists("%s/%s" % (x,myc)) and os.stat("%s/%s" % (x,myc))[0] & 0x0248:
+			return "%s/%s" % (x,myc)
+	return None
+

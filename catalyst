@@ -167,7 +167,7 @@ def verify_digest_and_hash_functions():
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
-			if find_binary(hash_map[i][1]) == None:
+			if catalyst.util.find_binary(hash_map[i][1]) == None:
 				print
 				print "digest="+i
 				print "\tThe "+hash_map[i][1]+\
@@ -185,7 +185,7 @@ def verify_digest_and_hash_functions():
 			print
 			print "Catalyst aborting...."
 			sys.exit(2)
-		if find_binary(hash_map[conf_values["hash_function"]][1]) == None:
+		if catalyst.util.find_binary(hash_map[conf_values["hash_function"]][1]) == None:
 			print
 			print "hash_function="+conf_values["hash_function"]
 			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\

@@ -1,6 +1,7 @@
 
 import sys,string,os,types,re,signal,traceback,time
 from catalyst.output import warn
+import catalyst.util
 #import md5,sha
 
 selinux_capable = False
@@ -265,19 +266,6 @@ class LockInUse(Exception):
 			print "!!! catalyst lock file in use: "+message
 			print
 
-def find_binary(myc):
-	"""look through the environmental path for an executable file named whatever myc is"""
-        # this sucks. badly.
-        p=os.getenv("PATH")
-        if p == None:
-                return None
-        for x in p.split(":"):
-                #if it exists, and is executable
-                if os.path.exists("%s/%s" % (x,myc)) and os.stat("%s/%s" % (x,myc))[0] & 0x0248:
-                        return "%s/%s" % (x,myc)
-        return None
-
-
 def spawn_bash(mycommand,env={},debug=False,opt_name=None,**keywords):
 	"""spawn mycommand as an arguement to bash"""
 	args=[BASH_BINARY]
@@ -373,7 +361,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 		if not os.access(myc, os.X_OK):
 			if not path_lookup:
 				return None
-			myc = find_binary(myc)
+			myc = catalyst.util.find_binary(myc)
 			if myc == None:
 			    return None
         mypid=[]
