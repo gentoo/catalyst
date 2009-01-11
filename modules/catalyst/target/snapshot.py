@@ -6,6 +6,7 @@ Builder class for snapshots.
 import os
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class snapshot_target(generic_stage_target):
 	def __init__(self,myspec,addlargs):
@@ -16,12 +17,12 @@ class snapshot_target(generic_stage_target):
 		self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
+		self.settings["snapshot_path"]=catalyst.util.normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
 			+".tar.bz2")
-		self.settings["tmp_path"]=normpath(st+"/tmp/"+self.settings["target_subpath"])
+		self.settings["tmp_path"]=catalyst.util.normpath(st+"/tmp/"+self.settings["target_subpath"])
 
 	def setup(self):
-		x=normpath(self.settings["storedir"]+"/snapshots")
+		x=catalyst.util.normpath(self.settings["storedir"]+"/snapshots")
 		if not os.path.exists(x):
 			os.makedirs(x)
 

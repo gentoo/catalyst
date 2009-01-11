@@ -14,12 +14,12 @@ class stage1_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_stage_path(self):
-		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
+		self.settings["stage_path"]=catalyst.util.normpath(self.settings["chroot_path"]+self.settings["root_path"])
 		print "stage1 stage path is "+self.settings["stage_path"]
 
 	def set_root_path(self):
 		# sets the root path, relative to 'chroot_path', of the stage1 root
-		self.settings["root_path"]=normpath("/tmp/stage1root")
+		self.settings["root_path"]=catalyst.util.normpath("/tmp/stage1root")
 		print "stage1 root path is "+self.settings["root_path"]
 
 	def set_cleanables(self):

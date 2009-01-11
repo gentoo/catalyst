@@ -38,10 +38,10 @@ class netboot2_target(generic_stage_target):
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
-		self.settings["merge_path"]=normpath("/tmp/image/")
+		self.settings["merge_path"]=catalyst.util.normpath("/tmp/image/")
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
+		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
 		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):

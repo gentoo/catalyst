@@ -33,7 +33,7 @@ class grp_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
+		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 			print "Resume point detected, skipping target path setup operation..."
@@ -73,7 +73,7 @@ class grp_target(generic_stage_target):
 	def generate_digests(self):
 		for pkgset in self.settings["grp"]:
 			if self.settings["grp/"+pkgset+"/type"] == "pkgset":
-				destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
+				destdir=catalyst.util.normpath(self.settings["target_path"]+"/"+pkgset+"/All")
 				print "Digesting files in the pkgset....."
 				digests=glob.glob(destdir+'/*.DIGESTS')
 				for i in digests:
@@ -84,11 +84,11 @@ class grp_target(generic_stage_target):
 				#ignore files starting with '.' using list comprehension
 				files=[filename for filename in files if filename[0] != '.']
 				for i in files:
-					if os.path.isfile(normpath(destdir+"/"+i)):
-						self.gen_contents_file(normpath(destdir+"/"+i))
-						self.gen_digest_file(normpath(destdir+"/"+i))
+					if os.path.isfile(catalyst.util.normpath(destdir+"/"+i)):
+						self.gen_contents_file(catalyst.util.normpath(destdir+"/"+i))
+						self.gen_digest_file(catalyst.util.normpath(destdir+"/"+i))
 			else:
-				destdir=normpath(self.settings["target_path"]+"/"+pkgset)
+				destdir=catalyst.util.normpath(self.settings["target_path"]+"/"+pkgset)
 				print "Digesting files in the srcset....."
 
 				digests=glob.glob(destdir+'/*.DIGESTS')
@@ -100,9 +100,9 @@ class grp_target(generic_stage_target):
 				#ignore files starting with '.' using list comprehension
 				files=[filename for filename in files if filename[0] != '.']
 				for i in files:
-					if os.path.isfile(normpath(destdir+"/"+i)):
-						#self.gen_contents_file(normpath(destdir+"/"+i))
-						self.gen_digest_file(normpath(destdir+"/"+i))
+					if os.path.isfile(catalyst.util.normpath(destdir+"/"+i)):
+						#self.gen_contents_file(catalyst.util.normpath(destdir+"/"+i))
+						self.gen_digest_file(catalyst.util.normpath(destdir+"/"+i))
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\

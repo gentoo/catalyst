@@ -5,6 +5,7 @@ Builder class for LiveCD stage1.
 
 from catalyst.support import *
 from generic_stage import *
+import catalyst.util
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -20,7 +21,7 @@ class livecd_stage1_target(generic_stage_target):
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"unbind", "clean","clear_autoresume"]
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
+		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
@@ -60,7 +61,7 @@ class livecd_stage1_target(generic_stage_target):
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"]) != types.StringType:
-				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+				self.settings["pkgcache_path"]=catalyst.util.normpath(string.join(self.settings["pkgcache_path"]))
 		else:
 			generic_stage_target.set_pkgcache_path(self)
 

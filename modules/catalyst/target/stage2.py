@@ -14,10 +14,10 @@ class stage2_target(generic_stage_target):
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_source_path(self):
-		if "SEEDCACHE" in self.settings and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")
+		if "SEEDCACHE" in self.settings and os.path.isdir(catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
+			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")
 		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
 				if os.path.exists(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
@@ -26,7 +26,7 @@ class stage2_target(generic_stage_target):
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
-			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
+			print "\tthe source path will then be "+catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
 	# XXX: How do these override_foo() functions differ from the ones in
 	# generic_stage_target and why aren't they in stage3_target?

@@ -53,7 +53,7 @@ class netboot_target(generic_stage_target):
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
-		self.settings["root_path"]=normpath("/tmp/image")
+		self.settings["root_path"]=catalyst.util.normpath("/tmp/image")
 		print "netboot root path is "+self.settings["root_path"]
 
 #	def build_packages(self):

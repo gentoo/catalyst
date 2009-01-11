@@ -31,11 +31,11 @@ class livecd_stage2_target(generic_stage_target):
 		file_locate(self.settings, ["cdtar","controller_file"])
 
 	def set_source_path(self):
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+		self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
 			self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
 		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
+			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
 			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 
@@ -43,7 +43,7 @@ class livecd_stage2_target(generic_stage_target):
 	    self.settings["spec_prefix"]="livecd"
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
+		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if "AUTORESUME" in self.settings \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."

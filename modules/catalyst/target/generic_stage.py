@@ -256,23 +256,23 @@ class generic_stage_target(generic_target):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"])!=types.StringType:
 				self.settings["pkgcache_path"]=\
-					normpath(string.join(self.settings["pkgcache_path"]))
+					catalyst.util.normpath(string.join(self.settings["pkgcache_path"]))
 		else:
 			self.settings["pkgcache_path"]=\
-				normpath(self.settings["storedir"]+"/packages/"+\
+				catalyst.util.normpath(self.settings["storedir"]+"/packages/"+\
 				self.settings["target_subpath"]+"/")
 
 	def set_kerncache_path(self):
 		if "kerncache_path" in self.settings:
 			if type(self.settings["kerncache_path"])!=types.StringType:
 				self.settings["kerncache_path"]=\
-					normpath(string.join(self.settings["kerncache_path"]))
+					catalyst.util.normpath(string.join(self.settings["kerncache_path"]))
 		else:
-			self.settings["kerncache_path"]=normpath(self.settings["storedir"]+\
+			self.settings["kerncache_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 				"/kerncache/"+self.settings["target_subpath"]+"/")
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+\
+		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 			"/builds/"+self.settings["target_subpath"]+".tar.bz2")
 		if "AUTORESUME" in self.settings\
 			and os.path.exists(self.settings["autoresume_path"]+\
@@ -314,18 +314,18 @@ class generic_stage_target(generic_target):
 	def set_cdtar(self):
 		if self.settings["spec_prefix"]+"/cdtar" in self.settings:
 			self.settings["cdtar"]=\
-				normpath(self.settings[self.settings["spec_prefix"]+"/cdtar"])
+				catalyst.util.normpath(self.settings[self.settings["spec_prefix"]+"/cdtar"])
 			del self.settings[self.settings["spec_prefix"]+"/cdtar"]
 
 	def set_iso(self):
 		if self.settings["spec_prefix"]+"/iso" in self.settings:
 			if self.settings[self.settings["spec_prefix"]+"/iso"].startswith('/'):
 				self.settings["iso"]=\
-					normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
+					catalyst.util.normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
 			else:
 				# This automatically prepends the build dir to the ISO output path
 				# if it doesn't start with a /
-				self.settings["iso"] = normpath(self.settings["storedir"] + \
+				self.settings["iso"] = catalyst.util.normpath(self.settings["storedir"] + \
 					"/builds/" + self.settings["rel_type"] + "/" + \
 					self.settings[self.settings["spec_prefix"]+"/iso"])
 			del self.settings[self.settings["spec_prefix"]+"/iso"]
@@ -353,12 +353,12 @@ class generic_stage_target(generic_target):
 
 	def set_source_path(self):
 		if "SEEDCACHE" in self.settings\
-			and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+\
+			and os.path.isdir(catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+\
 				self.settings["source_subpath"]+"/")):
-			self.settings["source_path"]=normpath(self.settings["storedir"]+\
+			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 				"/tmp/"+self.settings["source_subpath"]+"/")
 		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+\
+			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 				"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
@@ -372,22 +372,22 @@ class generic_stage_target(generic_target):
 			print "\tIf this is not desired, remove this directory or turn off"
 			print "\tseedcache in the options of catalyst.conf the source path"
 			print "\twill then be "+\
-				normpath(self.settings["storedir"]+"/builds/"+\
+				catalyst.util.normpath(self.settings["storedir"]+"/builds/"+\
 				self.settings["source_subpath"]+".tar.bz2\n")
 
 	def set_dest_path(self):
 		if "root_path" in self.settings:
-			self.settings["destpath"]=normpath(self.settings["chroot_path"]+\
+			self.settings["destpath"]=catalyst.util.normpath(self.settings["chroot_path"]+\
 				self.settings["root_path"])
 		else:
-			self.settings["destpath"]=normpath(self.settings["chroot_path"])
+			self.settings["destpath"]=catalyst.util.normpath(self.settings["chroot_path"])
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*",\
 			"/root/*","/usr/portage"]
 
 	def set_snapshot_path(self):
-		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
+		self.settings["snapshot_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 			"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
 
 		if os.path.exists(self.settings["snapshot_path"]):
@@ -398,7 +398,7 @@ class generic_stage_target(generic_target):
 	def set_snapcache_path(self):
 		if "SNAPCACHE" in self.settings:
 			self.settings["snapshot_cache_path"]=\
-				normpath(self.settings["snapshot_cache"]+"/"+\
+				catalyst.util.normpath(self.settings["snapshot_cache"]+"/"+\
 				self.settings["snapshot"]+"/")
 			self.snapcache_lock=\
 				catalyst.lock.LockDir(self.settings["snapshot_cache_path"])
@@ -409,12 +409,12 @@ class generic_stage_target(generic_target):
 		NOTE: the trailing slash is very important!
 		Things *will* break without it!
 		"""
-		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
+		self.settings["chroot_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 			"/tmp/"+self.settings["target_subpath"]+"/")
 		self.chroot_lock=catalyst.lock.LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
-		self.settings["autoresume_path"]=normpath(self.settings["storedir"]+\
+		self.settings["autoresume_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 			"/tmp/"+self.settings["rel_type"]+"/"+".autoresume-"+\
 			self.settings["target"]+"-"+self.settings["subarch"]+"-"+\
 			self.settings["version_stamp"]+"/")
@@ -424,7 +424,7 @@ class generic_stage_target(generic_target):
 			os.makedirs(self.settings["autoresume_path"],0755)
 
 	def set_controller_file(self):
-		self.settings["controller_file"]=normpath(self.settings["sharedir"]+\
+		self.settings["controller_file"]=catalyst.util.normpath(self.settings["sharedir"]+\
 			"/targets/"+self.settings["target"]+"/"+self.settings["target"]+\
 			"-controller.sh")
 
@@ -461,7 +461,7 @@ class generic_stage_target(generic_target):
 				self.settings["use"].append("bindist")
 
 	def set_stage_path(self):
-		self.settings["stage_path"]=normpath(self.settings["chroot_path"])
+		self.settings["stage_path"]=catalyst.util.normpath(self.settings["chroot_path"])
 
 	def set_mounts(self):
 		pass
@@ -740,7 +740,7 @@ class generic_stage_target(generic_target):
 				print "Valid snapshot cache, skipping unpack of portage tree..."
 				unpack=False
 		else:
-			destdir=normpath(self.settings["chroot_path"]+"/usr/portage")
+			destdir=catalyst.util.normpath(self.settings["chroot_path"]+"/usr/portage")
 			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."

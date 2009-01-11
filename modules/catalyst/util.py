@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback, os
+import sys, traceback, os, os.path
 
 def capture_traceback():
 	etype, value, tb = sys.exc_info()
@@ -64,4 +64,12 @@ def list_to_string(mylist):
 		mypack=mylist[:]
 	mypack = " ".join(mypack)
 	return mypack
+
+def normpath(mypath):
+	newpath = os.path.normpath(mypath)
+	if mypath.endswith('/'):
+		newpath += '/'
+	if len(newpath) > 1 and newpath[:2] == '//':
+		newpath = newpath[1:]
+	return newpath
 

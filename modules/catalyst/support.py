@@ -632,15 +632,3 @@ def countdown(secs=5, doing="Starting"):
 			time.sleep(1)
 		print
 
-def normpath(mypath):
-	TrailingSlash=False
-        if mypath[-1] == "/":
-	    TrailingSlash=True
-        newpath = os.path.normpath(mypath)
-        if len(newpath) > 1:
-                if newpath[:2] == "//":
-                        newpath = newpath[1:]
-	if TrailingSlash:
-	    newpath=newpath+'/'
-        return newpath
-
