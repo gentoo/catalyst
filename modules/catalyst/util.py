@@ -103,3 +103,28 @@ def touch(myfile):
 	except IOError:
 		raise CatalystError, "Could not touch " + myfile + "."
 
+def generate_contents(file, contents_function="auto", verbose=False):
+	try:
+		_ = contents_function
+		if _ == 'auto' and file.endswith('.iso'):
+			_ = 'isoinfo-l'
+		if (_ in ['tar-tv','auto']):
+			if file.endswith('.tgz') or file.endswith('.tar.gz'):
+				_ = 'tar-tvz'
+			elif file.endswith('.tbz2') or file.endswith('.tar.bz2'):
+				_ = 'tar-tvj'
+			elif file.endswith('.tar'):
+				_ = 'tar-tv'
+
+		if _ == 'auto':
+			warn('File %r has unknown type for automatic detection.' % (file, ))
+			return None
+		else:
+			contents_function = _
+			_ = contents_map[contents_function]
+			return _[0](file,_[1],verbose)
+	except:
+		raise CatalystError, \
+			"Error generating contents, is appropriate utility (%s) installed on your system?" \
+			% (contents_function, )
+

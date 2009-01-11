@@ -1586,7 +1586,7 @@ class generic_stage_target(generic_target):
 					array=keys.keys()
 					array.sort()
 				for j in array:
-					contents=generate_contents(file,contents_function=j,\
+					contents=catalyst.util.generate_contents(file,contents_function=j,\
 						verbose=("VERBOSE" in self.settings))
 					if contents:
 						myf.write(contents)
