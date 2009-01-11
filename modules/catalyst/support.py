@@ -1,7 +1,5 @@
 
-import sys, os, re, signal
-from catalyst.output import warn
-import catalyst.util
+import os, re
 from catalyst.error import *
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
@@ -49,49 +47,6 @@ that the order of multiple-value items is preserved, but the order that the item
 defined are not preserved. In other words, "foo", "bar", "oni" ordering is preserved but "item1"
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
 """
-
-def parse_makeconf(mylines):
-	mymakeconf={}
-	pos=0
-	pat=re.compile("([0-9a-zA-Z_]*)=(.*)")
-	while pos<len(mylines):
-		if len(mylines[pos])<=1:
-			#skip blanks
-			pos += 1
-			continue
-		if mylines[pos][0] in ["#"," ","\t"]:
-			#skip indented lines, comments
-			pos += 1
-			continue
-		else:
-			myline=mylines[pos]
-			mobj=pat.match(myline)
-			pos += 1
-			if mobj.group(2):
-			    clean_string = re.sub(r"\"",r"",mobj.group(2))
-			    mymakeconf[mobj.group(1)]=clean_string
-	return mymakeconf
-
-def read_makeconf(mymakeconffile):
-	if os.path.exists(mymakeconffile):
-		try:
-			try:
-				import snakeoil.fileutils
-				return snakeoil.fileutils.read_bash_dict(mymakeconffile, sourcing_command="source")
-			except ImportError:
-				try:
-					import portage_util
-					return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
-				except ImportError:
-					myf=open(mymakeconffile,"r")
-					mylines=myf.readlines()
-					myf.close()
-					return parse_makeconf(mylines)
-		except:
-			raise CatalystError, "Could not parse make.conf file "+mymakeconffile
-	else:
-		makeconf={}
-		return makeconf
 
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"

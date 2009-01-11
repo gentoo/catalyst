@@ -920,7 +920,7 @@ class generic_stage_target(generic_target):
 				"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
-		self.makeconf=read_makeconf(self.settings["chroot_path"]+\
+		self.makeconf=catalyst.util.read_makeconf(self.settings["chroot_path"]+\
 			"/etc/make.conf")
 		self.override_cbuild()
 		self.override_chost()
@@ -933,7 +933,7 @@ class generic_stage_target(generic_target):
 		else:
 			print "Setting up chroot..."
 
-			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
+			#self.makeconf=catalyst.util.read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
 
 			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
 				"Could not copy resolv.conf into place.",env=self.env)

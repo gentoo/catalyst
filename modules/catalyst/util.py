@@ -132,3 +132,47 @@ def file_locate(settings, filelist, expand=True):
 			    settings[myfile] = os.getcwd() + "/" + settings[myfile]
 		    else:
 			    raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile] + " (2nd try)"
+
+def parse_makeconf(mylines):
+	mymakeconf={}
+	pos=0
+	pat=re.compile("([0-9a-zA-Z_]*)=(.*)")
+	while pos<len(mylines):
+		if len(mylines[pos])<=1:
+			#skip blanks
+			pos += 1
+			continue
+		if mylines[pos][0] in ["#"," ","\t"]:
+			#skip indented lines, comments
+			pos += 1
+			continue
+		else:
+			myline=mylines[pos]
+			mobj=pat.match(myline)
+			pos += 1
+			if mobj.group(2):
+			    clean_string = re.sub(r"\"",r"",mobj.group(2))
+			    mymakeconf[mobj.group(1)]=clean_string
+	return mymakeconf
+
+def read_makeconf(mymakeconffile):
+	if os.path.exists(mymakeconffile):
+		try:
+			try:
+				import snakeoil.fileutils
+				return snakeoil.fileutils.read_bash_dict(mymakeconffile, sourcing_command="source")
+			except ImportError:
+				try:
+					import portage_util
+					return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
+				except ImportError:
+					myf=open(mymakeconffile,"r")
+					mylines=myf.readlines()
+					myf.close()
+					return parse_makeconf(mylines)
+		except:
+			raise CatalystError, "Could not parse make.conf file "+mymakeconffile
+	else:
+		makeconf={}
+		return makeconf
+
