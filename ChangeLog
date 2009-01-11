@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/sh.py:
+  Forgot the sh arch module
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/alpha.py, modules/catalyst/arch/amd64.py,
   modules/catalyst/arch/arm.py, modules/catalyst/arch/hppa.py,
   modules/catalyst/arch/ia64.py, modules/catalyst/arch/mips.py,
