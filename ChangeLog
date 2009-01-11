@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  We don't need to pass conf_values since it's a global var
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Pre-split options from config file and remove unnecessary imported modules
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
