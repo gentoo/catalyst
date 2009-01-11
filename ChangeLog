@@ -3,6 +3,12 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/__init__.py, modules/catalyst/target/__init__.py,
+  modules/catalyst/target/generic_stage.py:
+  Get rid of arches and targets classes and move functions into the module
+  instead
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/embedded/embedded-chroot.sh,
   targets/embedded/embedded-controller.sh, targets/grp/grp-controller.sh,
   targets/livecd-stage2/livecd-stage2-controller.sh,
