@@ -49,17 +49,17 @@ class generic_stage_target(generic_target):
 		previously. -agaffney
 		"""
 
-		self.archmap = {}
 		self.subarchmap = {}
 		machinemap = {}
+
 		arches = catalyst.arch.arches()
+		arch_modules = arches.get_arches()
 		for x in arches.get_arches():
-			tmpsubarchmap, tmpmachinemap = self.archmap[x].register()
-			self.subarchmap.update(x.__subarch_map)
-			for machine in x.__machine_map:
-				machinemap[machine] = x
-			for subarch in x.__subarch_map:
-				machinemap[subarch] = x
+			self.subarchmap.update(arch_modules[x].__subarch_map)
+			for machine in arch_modules[x].__machine_map:
+				machinemap[machine] = arch_modules[x]
+			for subarch in arch_modules[x].__subarch_map:
+				machinemap[subarch] = arch_modules[x]
 
 		if self.settings.has_key("chost"):
 			hostmachine = self.settings["chost"].split("-")[0]

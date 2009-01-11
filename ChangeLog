@@ -3,6 +3,12 @@
 # Distributed under the GPL v2
 
   11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,
+  modules/catalyst/target/__init__.py,
+  modules/catalyst/target/generic_stage_target.py:
+  Move target module loading logic into build_target_map() in
+  catalyst.target module
+
+  11 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   modules/catalyst/target/embedded_target.py,
   modules/catalyst/target/grp_target.py,
   modules/catalyst/target/livecd_stage1_target.py,

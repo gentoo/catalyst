@@ -28,3 +28,12 @@ class targets:
 					"happens due to a syntax error, which should be reported as " \
 					"a bug.")
 		return self._target_modules
+
+def build_target_map():
+	target_map = {}
+	targets_obj = targets()
+	target_modules = targets_obj.get_targets()
+	for x in target_modules:
+		if hasattr(target_modules[x], '__target_map'):
+			target_map.update(target_modules[x].__target_map)
+	return target_map
