@@ -15,6 +15,7 @@ sys.path.append(__selfpath__ + "/modules")
 import catalyst.config
 import catalyst.util
 import catalyst.target
+from catalyst.support import *
 
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.99"
@@ -271,10 +272,7 @@ if __name__ == "__main__":
 		usage()
 		sys.exit(2)
 
-	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
-
-	from catalyst.support import *
 	
 	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
 	if conf_values.has_key("digests"):
@@ -295,6 +293,7 @@ if __name__ == "__main__":
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
+
 	if conf_values.has_key("hash_function"):
 		if not hash_map.has_key(conf_values["hash_function"]):
 			print
@@ -341,23 +340,22 @@ if __name__ == "__main__":
 		print
 		print "Catalyst aborting...."
 		sys.exit(2)
+
 	except KeyboardInterrupt:
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
 		print "Catalyst aborting...."
 		sys.exit(2)
+
 	except LockInUse:
 		print "Catalyst aborting...."
 		sys.exit(2)
+
 	except:
 		print "Catalyst aborting...."
 		raise
 		sys.exit(2)
 
-	#except CatalystError:
-	#	print
-	#	print "Catalyst aborting...."
-	#	sys.exit(2)
 	#except KeyError:
 	#	print "\nproblem with command line or spec file ( Key Error )"
 	#	print "Key: "+str(sys.exc_value)+" was not found"
