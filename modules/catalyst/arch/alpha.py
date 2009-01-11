@@ -2,6 +2,19 @@
 import builder,os
 from catalyst_support import *
 
+__subarch_map = {
+	"alpha": arch_alpha,
+	"ev4": arch_ev4,
+	"ev45": arch_ev45,
+	"ev5": arch_ev5,
+	"ev56": arch_ev56,
+	"pca56": arch_pca56,
+	"ev6": arch_ev6,
+	"ev67": arch_ev67
+}
+
+__machine_map = ("alpha", )
+
 class generic_alpha(builder.generic):
 	"abstract base class for all alpha builders"
 	def __init__(self,myspec):
@@ -66,10 +79,3 @@ class arch_ev67(generic_alpha):
 		self.settings["CFLAGS"]+=" -O2 -mcpu=ev67"
 		self.settings["CHOST"]="alphaev67-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["ev6"]
-
-def register():
-	"Inform main catalyst program of the contents of this plugin."
-	return ({ "alpha":arch_alpha, "ev4":arch_ev4, "ev45":arch_ev45,
-		"ev5":arch_ev5, "ev56":arch_ev56, "pca56":arch_pca56,
-		"ev6":arch_ev6, "ev67":arch_ev67 }, 
-	("alpha", ))

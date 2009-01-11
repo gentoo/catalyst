@@ -2,6 +2,15 @@
 import builder,os
 from catalyst_support import *
 
+__subarch_map = {
+	"arm"    : arch_arm,
+	"armv4l" : arch_armv4l,
+	"armeb"  : arch_armeb,
+	"armv5b" : arch_armv5b
+}
+
+__machine_map = ("arm", "armv4l", "armeb", "armv5b", "armv5tel")
+
 class generic_arm(builder.generic):
 	"Abstract base class for all arm (little endian) builders"
 	def __init__(self,myspec):
@@ -43,13 +52,3 @@ class arch_armv5b(generic_arm):
 		generic_arm.__init__(self,myspec)
 		self.settings["CFLAGS"]+=" -mcpu=xscale"
 		self.settings["CHOST"]="armv5b-unknown-linux-gnu"
-
-def register():
-	"Inform main catalyst program of the contents of this plugin."
-	return ({
-		"arm"    : arch_arm,
-		"armv4l" : arch_armv4l,
-		"armeb"  : arch_armeb,
-		"armv5b" : arch_armv5b
-	}, ("arm", "armv4l", "armeb", "armv5b", "armv5tel") )
-

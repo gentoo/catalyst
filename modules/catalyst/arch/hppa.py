@@ -2,6 +2,14 @@
 import builder,os
 from catalyst_support import *
 
+__subarch_map = {
+	"hppa":		arch_hppa,
+	"hppa1.1":	arch_hppa1_1,
+	"hppa2.0":	arch_hppa2_0
+}
+
+__machine_map = ("parisc","parisc64","hppa","hppa64")
+
 class generic_hppa(builder.generic):
 	"Abstract base class for all hppa builders"
 	def __init__(self,myspec):
@@ -30,12 +38,3 @@ class arch_hppa2_0(generic_hppa):
 		generic_hppa.__init__(self,myspec)
 		self.settings["CFLAGS"]+=" -march=2.0"
 		self.settings["CHOST"]="hppa2.0-unknown-linux-gnu"
-
-def register():
-	"Inform main catalyst program of the contents of this plugin."
-	return ({
-			"hppa":		arch_hppa,
-			"hppa1.1":	arch_hppa1_1,
-			"hppa2.0":	arch_hppa2_0
-	}, ("parisc","parisc64","hppa","hppa64") )
-

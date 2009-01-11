@@ -2,6 +2,35 @@
 import builder,os
 from catalyst_support import *
 
+__subarch_map = { 
+	"cobalt"		: arch_cobalt,
+	"cobalt_n32"	: arch_cobalt_n32,
+	"ip27"			: arch_ip27,
+	"ip27_n32"		: arch_ip27_n32,
+	"ip28"			: arch_ip28,
+	"ip28_n32"		: arch_ip28_n32,
+	"ip30"			: arch_ip30,
+	"ip30_n32"		: arch_ip30_n32,
+	"mips"			: arch_mips1,
+	"mips1"			: arch_mips1,
+	"mips2"			: arch_mips2,
+	"mips3"			: arch_mips3,
+	"mips3_n32"		: arch_mips3_n32,
+	"mips3_n64"		: arch_mips3_n64,
+	"mips4"			: arch_mips4,
+	"mips4_n32"		: arch_mips4_n32,
+	"mipsel"		: arch_mipsel1,
+	"mipsel1"		: arch_mipsel1,
+	"mipsel2"		: arch_mipsel2,
+	"mipsel3"		: arch_mipsel3,
+	"mipsel3_n32"	: arch_mipsel3_n32,
+	"mipsel4"		: arch_mipsel4,
+	"mipsel4_n32"	: arch_mipsel4_n32,
+	"loongson"		: arch_mipsel3,
+}
+
+__machine_map = ("mips","mips64")
+
 class generic_mips(builder.generic):
 	"Abstract base class for all mips builders [Big-endian]"
 	def __init__(self,myspec):
@@ -162,32 +191,3 @@ class arch_ip30_n32(generic_mipsel):
 	def __init__(self,myspec):
 		arch_mips4_n32.__init__(self,myspec)
 		self.settings["HOSTUSE"]=["ip30","n32"]
-
-def register():
-	"Inform main catalyst program of the contents of this plugin."
-	return ({ 
-			"cobalt"		: arch_cobalt,
-			"cobalt_n32"	: arch_cobalt_n32,
-			"ip27"			: arch_ip27,
-			"ip27_n32"		: arch_ip27_n32,
-			"ip28"			: arch_ip28,
-			"ip28_n32"		: arch_ip28_n32,
-			"ip30"			: arch_ip30,
-			"ip30_n32"		: arch_ip30_n32,
-			"mips"			: arch_mips1,
-			"mips1"			: arch_mips1,
-			"mips2"			: arch_mips2,
-			"mips3"			: arch_mips3,
-			"mips3_n32"		: arch_mips3_n32,
-			"mips3_n64"		: arch_mips3_n64,
-			"mips4"			: arch_mips4,
-			"mips4_n32"		: arch_mips4_n32,
-			"mipsel"		: arch_mipsel1,
-			"mipsel1"		: arch_mipsel1,
-			"mipsel2"		: arch_mipsel2,
-			"mipsel3"		: arch_mipsel3,
-			"mipsel3_n32"	: arch_mipsel3_n32,
-			"mipsel4"		: arch_mipsel4,
-			"mipsel4_n32"	: arch_mipsel4_n32,
-			"loongson"		: arch_mipsel3,
-	}, ("mips","mips64"))

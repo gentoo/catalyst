@@ -2,6 +2,24 @@
 import os,builder
 from catalyst_support import *
 
+__subarch_map = {
+	"970"		: arch_970,
+	"cell"		: arch_cell,
+	"g3"		: arch_g3,
+	"g4"		: arch_g4,
+	"g5"		: arch_g5,
+	"power"		: arch_power,
+	"power-ppc"	: arch_power_ppc,
+	"power3"	: arch_power3,
+	"power4"	: arch_power4,
+	"power5"	: arch_power5,
+	"power6"	: arch_power6,
+	"ppc"		: arch_ppc,
+	"ppc64"		: arch_ppc64
+}
+
+__machine_map = ("ppc","ppc64","powerpc","powerpc64")
+
 class generic_ppc(builder.generic):
 	"abstract base class for all 32-bit powerpc builders"
 	def __init__(self,myspec):
@@ -104,22 +122,3 @@ class arch_power6(arch_ppc64):
 		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
-
-def register():
-	"Inform main catalyst program of the contents of this plugin."
-	return ({
-		"970"		: arch_970,
-		"cell"		: arch_cell,
-		"g3"		: arch_g3,
-		"g4"		: arch_g4,
-		"g5"		: arch_g5,
-		"power"		: arch_power,
-		"power-ppc"	: arch_power_ppc,
-		"power3"	: arch_power3,
-		"power4"	: arch_power4,
-		"power5"	: arch_power5,
-		"power6"	: arch_power6,
-		"ppc"		: arch_ppc,
-		"ppc64"		: arch_ppc64
-	}, ("ppc","ppc64","powerpc","powerpc64"))
-
