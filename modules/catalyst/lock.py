@@ -1,9 +1,9 @@
-#!/usr/bin/python
-import os
-import fcntl
+
 import errno
+import fcntl
+import os
+import stat
 import sys
-import string
 import time
 from catalyst.support import *
 
@@ -30,7 +30,7 @@ class LockDir:
 		self.set_lockfile()
 
 		if LockDir.lock_dirs_in_use.count(lockdir)>0:
-			raise "This directory already associated with a lock object"
+			raise Exception("This directory already associated with a lock object")
 		else:
 			LockDir.lock_dirs_in_use.append(lockdir)
 
@@ -73,7 +73,7 @@ class LockDir:
 #				if "DEBUG" in self.settings:
 #					print "setting lockdir to", self.lockdir
 		else:
-			raise "the lock object needs a path to a dir"
+			raise Exception("the lock object needs a path to a dir")
 
 	def set_lockfilename(self,lockfilename):
 		if not self.islocked():
@@ -121,7 +121,7 @@ class LockDir:
 					raise
 				except OSError, e:
 					if e[0] == 2: #XXX: No such file or directory
-						return self.fcntl_locking(locktype)
+						return self.fcntl_lock(locktype)
 					else:
 						writemsg("Cannot chown a lockfile. This could cause inconvenience later.\n")
 
@@ -164,13 +164,12 @@ class LockDir:
 
 
 	def fcntl_unlock(self):
-		import fcntl
 		unlinkfile = 1
 		if not os.path.exists(self.lockfile):
 			print "lockfile does not exist '%s'" % self.lockfile
 			if (self.myfd != None):
 				try:
-					os.close(myfd)
+					os.close(self.myfd)
 					self.myfd=None
 				except:
 					pass
@@ -255,10 +254,10 @@ class LockDir:
 			if not os.path.exists(self.myhardlock):
 				raise FileNotFound, "Created lockfile is missing: %(filename)s" % {"filename":self.myhardlock}
 			try:
-				res = os.link(self.myhardlock, self.lockfile)
-			except SystemExit, e:
+				os.link(self.myhardlock, self.lockfile)
+			except SystemExit:
 				raise
-			except Exception, e:
+			except Exception:
 #				if "DEBUG" in self.settings:
 #					print "lockfile(): Hardlink: Link failed."
 #					print "Exception: ",e
@@ -288,7 +287,7 @@ class LockDir:
 				os.unlink(self.myhardlock)
 			if os.path.exists(self.lockfile):
 				os.unlink(self.lockfile)
-		except SystemExit, e:
+		except SystemExit:
 			raise
 		except:
 			writemsg("Something strange happened to our hardlink locks.\n")
@@ -313,11 +312,10 @@ class LockDir:
 
 
 	def hardlink_is_mine(self,link,lock):
-		import stat
 		try:
 			myhls = os.stat(link)
 			mylfs = os.stat(lock)
-		except SystemExit, e:
+		except SystemExit:
 			raise
 		except:
 			myhls = None
@@ -331,7 +329,7 @@ class LockDir:
 				return True
 		return False
 
-	def hardlink_active(lock):
+	def hardlink_active(self, lock):
 		if not os.path.exists(lock):
 			return False
 
@@ -343,7 +341,6 @@ class LockDir:
 			pass
 
 	def hardlock_cleanup(self,path):
-		mypid  = str(os.getpid())
 		myhost = os.uname()[1]
 		mydl = os.listdir(path)
 		results = []
@@ -387,26 +384,26 @@ class LockDir:
 								# We're sweeping through, unlinking everyone's locks.
 								os.unlink(filename)
 								results.append("Unlinked: " + filename)
-							except SystemExit, e:
+							except SystemExit:
 								raise
-							except Exception,e:
+							except Exception:
 								pass
 					try:
 						os.unlink(x)
 						results.append("Unlinked: " + x)
 						os.unlink(mylockname)
 						results.append("Unlinked: " + mylockname)
-					except SystemExit, e:
+					except SystemExit:
 						raise
-					except Exception,e:
+					except Exception:
 						pass
 				else:
 					try:
 						os.unlink(mylockname)
 						results.append("Unlinked: " + mylockname)
-					except SystemExit, e:
+					except SystemExit:
 						raise
-					except Exception,e:
+					except Exception:
 						pass
 		return results
 
@@ -427,7 +424,6 @@ if __name__ == "__main__":
 		return newpath
 
 	print "Lock 5 starting"
-	import time
 	Lock1=LockDir("/tmp/lock_path")
 	Lock1.write_lock()
 	print "Lock1 write lock"
