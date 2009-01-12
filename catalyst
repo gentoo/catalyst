@@ -11,9 +11,7 @@ import os, sys, getopt
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(__selfpath__ + "/modules")
 
-import catalyst.config
-import catalyst.util
-import catalyst.target
+import catalyst
 from catalyst.output import *
 from catalyst.error import *
 from catalyst.hash import hash_map

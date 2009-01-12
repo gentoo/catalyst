@@ -5,6 +5,7 @@ import catalyst.util
 import catalyst.error
 import catalyst.spawn
 import catalyst.target
+import catalyst.config
 
 hash = catalyst.hash
 arch = catalyst.arch
@@ -13,3 +14,4 @@ util = catalyst.util
 error = catalyst.error
 spawn = catalyst.spawn
 target = catalyst.target
+config = catalyst.config

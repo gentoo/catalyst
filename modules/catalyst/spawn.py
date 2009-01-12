@@ -14,7 +14,7 @@ selinux_capable = False
 
 try:
 	import resource
-	max_fd_limit=resource.getrlimit(resource.RLIMIT_NOFILE)
+	max_fd_limit = resource.getrlimit(resource.RLIMIT_NOFILE)[0]
 except SystemExit, e:
 	raise
 except:
