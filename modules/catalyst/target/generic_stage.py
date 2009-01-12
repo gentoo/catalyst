@@ -1173,7 +1173,7 @@ class generic_stage_target(generic_target):
 				"Couldn't create stage tarball",env=self.env)
 
 			catalyst.hash.gen_contents_file(self.settings["target_path"], self.settings)
-			catalyst.hash.gen_digest_file(self.settings["target_path"], settings)
+			catalyst.hash.gen_digest_file(self.settings["target_path"], self.settings)
 
 			catalyst.util.touch(self.settings["autoresume_path"]+"capture")
 
