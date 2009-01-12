@@ -258,7 +258,7 @@ case ${clst_hostarch} in
 			echo "Available kernels:" > ${kmsg}
 			for i in 2 3 4 5 6 7
 			do
-				cp ${clst_sharedir}/livecd/files/x86-F$i.msg \
+				cp ${clst_sharedir}/files/livecd/x86-F$i.msg \
 					$1/isolinux/F$i.msg
 			done
 
@@ -401,7 +401,7 @@ case ${clst_hostarch} in
 			# Setup help message
 			echo >> ${icfg}
 			echo "title help" >> ${icfg}
-			cp ${clst_sharedir}/livecd/files/README.txt \
+			cp ${clst_sharedir}/files/livecd/README.txt \
 				$1/boot/help.msg
 			echo "cat /boot/help.msg" >> ${icfg}
 

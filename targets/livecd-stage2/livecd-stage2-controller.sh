@@ -39,11 +39,11 @@ case $1 in
 					echo "${clst_livecd_type}. You should switch to using"
 					echo "generic-livecd instead."
 				fi
-				cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
-					${clst_sharedir}/livecd/files/universal.motd.txt \
-					${clst_sharedir}/livecd/files/minimal.motd.txt \
-					${clst_sharedir}/livecd/files/livecd.motd.txt \
-					${clst_sharedir}/livecd/files/gamecd.motd.txt \
+				cp -pPR ${clst_sharedir}/files/livecd/generic.motd.txt \
+					${clst_sharedir}/files/livecd/universal.motd.txt \
+					${clst_sharedir}/files/livecd/minimal.motd.txt \
+					${clst_sharedir}/files/livecd/livecd.motd.txt \
+					${clst_sharedir}/files/livecd/gamecd.motd.txt \
 					${clst_chroot_path}/etc
 			;;
 			*)
@@ -55,11 +55,11 @@ case $1 in
 		esac
 
 		# move over the environment
-		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
+		cp -f ${clst_sharedir}/files/livecd/livecd-bashrc \
 			${clst_chroot_path}/root/.bashrc
-		cp -f ${clst_sharedir}/livecd/files/livecd-bash_profile \
+		cp -f ${clst_sharedir}/files/livecd/livecd-bash_profile \
 			${clst_chroot_path}/root/.bash_profile
-		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
+		cp -f ${clst_sharedir}/files/livecd/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
 
 		# execute copy gamecd.conf if we're a gamecd
@@ -131,7 +131,7 @@ case $1 in
 		then
 			cp -f ${clst_livecd_readme} $1/README.txt
 		else
-			cp -f ${clst_sharedir}/livecd/files/README.txt $1
+			cp -f ${clst_sharedir}/files/livecd/README.txt $1
 		fi
 
 		case ${clst_livecd_type} in
