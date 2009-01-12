@@ -1,29 +1,3 @@
-
-from catalyst.error import *
-
-required_config_file_values=["storedir","sharedir","distdir","portdir"]
-valid_config_file_values=required_config_file_values[:]
-valid_config_file_values.append("PKGCACHE")
-valid_config_file_values.append("KERNCACHE")
-valid_config_file_values.append("CCACHE")
-valid_config_file_values.append("DISTCC")
-valid_config_file_values.append("ICECREAM")
-valid_config_file_values.append("ENVSCRIPT")
-valid_config_file_values.append("AUTORESUME")
-valid_config_file_values.append("FETCH")
-valid_config_file_values.append("CLEAR_AUTORESUME")
-valid_config_file_values.append("options")
-valid_config_file_values.append("DEBUG")
-valid_config_file_values.append("VERBOSE")
-valid_config_file_values.append("PURGE")
-valid_config_file_values.append("PURGEONLY")
-valid_config_file_values.append("SNAPCACHE")
-valid_config_file_values.append("snapshot_cache")
-valid_config_file_values.append("hash_function")
-valid_config_file_values.append("digests")
-valid_config_file_values.append("contents")
-valid_config_file_values.append("SEEDCACHE")
-
 """
 Spec file format:
 

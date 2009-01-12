@@ -3,6 +3,7 @@ Collection of utility functions for catalyst
 """
 
 import sys, traceback, os, os.path, re, time
+import catalyst
 from catalyst.error import *
 
 def capture_traceback():
@@ -178,10 +179,8 @@ def read_makeconf(mymakeconffile):
 
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
-	global valid_config_file_values
-
 	for x in addlargs.keys():
-		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
+		if x not in validspec and x not in catalyst.config.valid_config_file_values and x not in requiredspec:
 			raise CatalystError, "Argument \""+x+"\" not recognized."
 		else:
 			myspec[x]=addlargs[x]

@@ -3,6 +3,11 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/config.py, modules/catalyst/support.py,
+  modules/catalyst/util.py:
+  Move remaining stuff from catalyst.support to catalyst.config
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/hash.py, modules/catalyst/target/generic.py,
   modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
   modules/catalyst/target/snapshot.py:
