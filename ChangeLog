@@ -3,6 +3,12 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  -examples/netboot_template.spec, -modules/catalyst/target/netboot.py,
+  -targets/netboot/netboot-chroot.sh, -targets/netboot/netboot-combine.sh,
+  -targets/netboot/netboot-controller.sh, -targets/netboot/netboot-image.sh:
+  Whack the outdated and non-functional netboot target
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/__init__.py, modules/catalyst/arch/__init__.py,
   modules/catalyst/arch/alpha.py, modules/catalyst/arch/arm.py,
   modules/catalyst/arch/hppa.py, modules/catalyst/arch/ia64.py,
