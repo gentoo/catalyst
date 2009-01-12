@@ -3,6 +3,11 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
+  Replace all instances of print with catalyst.output.msg() in
+  catalyst.target.generic_stage
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic.py,
   modules/catalyst/target/generic_stage.py:
   Move set_autoresume_path() from catalyst.target.generic_stage to

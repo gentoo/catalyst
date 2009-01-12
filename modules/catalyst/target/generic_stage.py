@@ -7,7 +7,7 @@ the driver class for pretty much everything that Catalyst does.
 import os, string, types, shutil
 from stat import *
 import catalyst
-from catalyst.output import warn
+from catalyst.output import *
 from catalyst.spawn import cmd
 from catalyst.error import *
 from catalyst.target.generic import *
@@ -81,27 +81,26 @@ class generic_stage_target(generic_target):
 		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
 			self.settings["buildarch"])
 
+		# XXX This should be moved somewhere "higher"
 		""" Call arch constructor, pass our settings """
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
 		except KeyError:
-			print "Invalid subarch: "+self.settings["subarch"]
-			print "Choose one of the following:",
-			for x in self.subarchmap:
-				print x,
-			print
+			msg("Invalid subarch: " + self.settings["subarch"])
+			msg("Choose one of the following:")
+			msg("\n".join(self.subarchmap.keys()))
 			sys.exit(2)
 
-		print "Using target:",self.settings["target"]
+		msg("Using target: " + self.settings["target"])
 		""" Print a nice informational message """
 		if self.settings["buildarch"]==self.settings["hostarch"]:
-			print "Building natively for",self.settings["hostarch"]
+			msg("Building natively for " + self.settings["hostarch"])
 		elif self.settings["crosscompile"]:
-			print "Cross-compiling on",self.settings["buildarch"],\
-				"for different machine type",self.settings["hostarch"]
+			msg("Cross-compiling on " + self.settings["buildarch"] + \
+				"for different machine type " + self.settings["hostarch"])
 		else:
-			print "Building on",self.settings["buildarch"],\
-				"for alternate personality type",self.settings["hostarch"]
+			msg("Building on" + self.settings["buildarch"] + \
+				"for alternate personality type " + self.settings["hostarch"])
 
 		""" This must be set first as other set_ options depend on this """
 		self.set_spec_prefix()
@@ -176,16 +175,16 @@ class generic_stage_target(generic_target):
 		"""
 		if "PKGCACHE" in self.settings:
 			self.set_pkgcache_path()
-			print "Location of the package cache is "+\
-				self.settings["pkgcache_path"]
+			msg("Location of the package cache is " + \
+				self.settings["pkgcache_path"])
 			self.mounts.append("/usr/portage/packages")
 			self.mountmap["/usr/portage/packages"]=\
 				self.settings["pkgcache_path"]
 
 		if "KERNCACHE" in self.settings:
 			self.set_kerncache_path()
-			print "Location of the kerncache is "+\
-				self.settings["kerncache_path"]
+			msg("Location of the kerncache is " + \
+				self.settings["kerncache_path"])
 			self.mounts.append("/tmp/kerncache")
 			self.mountmap["/tmp/kerncache"]=self.settings["kerncache_path"]
 
@@ -274,7 +273,7 @@ class generic_stage_target(generic_target):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 			"/builds/"+self.settings["target_subpath"]+".tar.bz2")
 		if self.check_autoresume("setup_target_path"):
-			print "Resume point detected, skipping target path setup operation..."
+			msg("Resume point detected, skipping target path setup operation...")
 		else:
 			""" First clean up any existing target stuff """
 			# XXX WTF are we removing the old tarball before we start building the
@@ -336,8 +335,8 @@ class generic_stage_target(generic_target):
 			self.settings["fstype"]="normal"
 			for x in self.valid_values:
 				if x ==  self.settings["spec_prefix"]+"/fstype":
-					print "\n"+self.settings["spec_prefix"]+\
-						"/fstype is being set to the default of \"normal\"\n"
+					msg(self.settings["spec_prefix"] + \
+						"/fstype is being set to the default of 'normal'")
 
 	def set_fsops(self):
 		if "fstype" in self.settings:
@@ -363,13 +362,13 @@ class generic_stage_target(generic_target):
 						catalyst.hash.generate_hash(self.settings["source_path"],\
 						hash_function=self.settings["hash_function"],\
 						verbose=False)
-		print "Source path set to "+self.settings["source_path"]
+		msg("Source path set to " + self.settings["source_path"])
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn off"
-			print "\tseedcache in the options of catalyst.conf the source path"
-			print "\twill then be "+\
-				catalyst.util.normpath(self.settings["storedir"]+"/builds/"+\
-				self.settings["source_subpath"]+".tar.bz2\n")
+			msg("\tIf this is not desired, remove this directory or turn off")
+			msg("\tseedcache in the options of catalyst.conf the source path")
+			msg("\twill then be " + \
+				catalyst.util.normpath(self.settings["storedir"] + "/builds/" + \
+				self.settings["source_subpath"] + ".tar.bz2"))
 
 	def set_dest_path(self):
 		if "root_path" in self.settings:
@@ -398,7 +397,7 @@ class generic_stage_target(generic_target):
 				self.settings["snapshot"]+"/")
 			self.snapcache_lock=\
 				catalyst.lock.LockDir(self.settings["snapshot_cache_path"])
-			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
+			msg("Caching snapshot to " + self.settings["snapshot_cache_path"])
 
 	def set_chroot_path(self):
 		"""
@@ -483,8 +482,8 @@ class generic_stage_target(generic_target):
 			if type(self.settings["portage_overlay"])==types.StringType:
 				self.settings["portage_overlay"]=\
 					self.settings["portage_overlay"].split()
-			print "portage_overlay directories are set to: \""+\
-				string.join(self.settings["portage_overlay"])+"\""
+			msg("portage_overlay directories are set to: '" + \
+				"".join(self.settings["portage_overlay"]) + "'")
 
 	def set_overlay(self):
 		if self.settings["spec_prefix"]+"/overlay" in self.settings:
@@ -539,7 +538,7 @@ class generic_stage_target(generic_target):
 			del self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
 
 	def kill_chroot_pids(self):
-		print "Checking for processes running in chroot and killing them."
+		msg("Checking for processes running in chroot and killing them.")
 
 		"""
 		Force environment variables to be exported so script can see them
@@ -571,13 +570,13 @@ class generic_stage_target(generic_target):
 			if catalyst.util.ismount(mypath+x):
 				""" Something is still mounted "" """
 				try:
-					print x+" is still mounted; performing auto-bind-umount...",
+					msg(x + " is still mounted; performing auto-bind-umount...")
 					""" Try to umount stuff ourselves """
 					self.unbind()
 					if catalyst.util.ismount(mypath+x):
-						raise CatalystError, "Auto-unbind failed for "+x
+						raise CatalystError("Auto-unbind failed for " + x)
 					else:
-						print "Auto-unbind successful..."
+						msg("Auto-unbind successful...")
 				except CatalystError:
 					raise CatalystError, "Unable to auto-unbind "+x
 
@@ -600,7 +599,7 @@ class generic_stage_target(generic_target):
 					self.settings["chroot_path"]+" failed."
 			else:
 				""" SEEDCACHE is a not a directory, try untar'ing """
-				print "Referenced SEEDCACHE does not appear to be a directory, trying to untar..."
+				msg("Referenced SEEDCACHE does not appear to be a directory, trying to untar...")
 				display_msg="\nStarting tar extract from "+\
 					self.settings["source_path"]+"\nto "+\
 					self.settings["chroot_path"]+\
@@ -672,7 +671,7 @@ class generic_stage_target(generic_target):
 
 			if invalid_snapshot:
 				if self.check_autoresume():
-					print "No Valid Resume point detected, cleaning up..."
+					msg("No Valid Resume point detected, cleaning up...")
 
 				self.clear_autoresume()
 				self.clear_chroot()
@@ -691,7 +690,7 @@ class generic_stage_target(generic_target):
 				if not os.path.exists(self.settings["kerncache_path"]):
 					os.makedirs(self.settings["kerncache_path"],0755)
 
-			print display_msg
+			msg(display_msg)
 			cmd(unpack_cmd,error_msg,env=self.env)
 
 			if "source_path_hash" in self.settings:
@@ -699,7 +698,7 @@ class generic_stage_target(generic_target):
 			else:
 				self.set_autoresume("unpack")
 		else:
-			print "Resume point detected, skipping unpack operation..."
+			msg("Resume point detected, skipping unpack operation...")
 
 	def unpack_snapshot(self):
 		unpack=True
@@ -720,7 +719,7 @@ class generic_stage_target(generic_target):
 			self.snapshot_lock_object=self.snapcache_lock
 
 			if self.settings["snapshot_path_hash"]==snapshot_cache_hash:
-				print "Valid snapshot cache, skipping unpack of portage tree..."
+				msg("Valid snapshot cache, skipping unpack of portage tree...")
 				unpack=False
 		else:
 			destdir=catalyst.util.normpath(self.settings["chroot_path"]+"/usr/portage")
@@ -735,21 +734,20 @@ class generic_stage_target(generic_target):
 				and os.path.exists(self.settings["chroot_path"]+\
 					"/usr/portage/") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
-					print \
-						"Valid Resume point detected, skipping unpack of portage tree..."
+					msg("Valid Resume point detected, skipping unpack of portage tree...")
 					unpack=False
 
 		if unpack:
 			if "SNAPCACHE" in self.settings:
 				self.snapshot_lock_object.write_lock()
 			if os.path.exists(destdir):
-				print cleanup_msg
+				msg(cleanup_msg)
 				cleanup_cmd="rm -rf "+destdir
 				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
 			if not os.path.exists(destdir):
 				os.makedirs(destdir,0755)
 
-			print "Unpacking portage tree (This can take a long time) ..."
+			msg("Unpacking portage tree (This can take a long time) ...")
 			cmd(unpack_cmd,unpack_errmsg,env=self.env)
 
 			if "SNAPCACHE" in self.settings:
@@ -757,7 +755,7 @@ class generic_stage_target(generic_target):
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 			else:
-				print "Setting snapshot autoresume point"
+				msg("Setting snapshot autoresume point")
 				myf=open(self.settings["autoresume_path"]+"unpack_portage","w")
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
@@ -767,12 +765,11 @@ class generic_stage_target(generic_target):
 
 	def config_profile_link(self):
 		if self.check_autoresume("config_profile_link"):
-			print \
-				"Resume point detected, skipping config_profile_link operation..."
+			msg("Resume point detected, skipping config_profile_link operation...")
 		else:
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
-			print "Configuring profile link..."
+			msg("Configuring profile link...")
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile",\
 					"Error zapping profile link",env=self.env)
 			cmd("ln -sf ../usr/portage/profiles/"+\
@@ -783,10 +780,10 @@ class generic_stage_target(generic_target):
 
 	def setup_confdir(self):
 		if self.check_autoresume("setup_confdir"):
-			print "Resume point detected, skipping setup_confdir operation..."
+			msg("Resume point detected, skipping setup_confdir operation...")
 		else:
 			if "portage_confdir" in self.settings:
-				print "Configuring /etc/portage..."
+				msg("Configuring /etc/portage...")
 				cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage",\
 					"Error zapping /etc/portage",env=self.env)
 				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
@@ -799,7 +796,7 @@ class generic_stage_target(generic_target):
 		if "portage_overlay" in self.settings:
 			for x in self.settings["portage_overlay"]:
 				if os.path.exists(x):
-					print "Copying overlay dir " +x
+					msg("Copying overlay dir " + x)
 					cmd("mkdir -p "+self.settings["chroot_path"]+\
 						"/usr/local/portage",\
 						"Could not make portage_overlay dir",env=self.env)
@@ -813,7 +810,7 @@ class generic_stage_target(generic_target):
 			for x in self.settings[self.settings["spec_prefix"]+\
 				"/root_overlay"]:
 				if os.path.exists(x):
-					print "Copying root_overlay: "+x
+					msg("Copying root_overlay: " + x)
 					cmd("rsync -a "+x+"/ "+\
 						self.settings["chroot_path"],\
 						self.settings["spec_prefix"]+"/root_overlay: "+x+\
@@ -902,9 +899,9 @@ class generic_stage_target(generic_target):
 		self.override_cxxflags()
 		self.override_ldflags()
 		if self.check_autoresume("chroot_setup"):
-			print "Resume point detected, skipping chroot_setup operation..."
+			msg("Resume point detected, skipping chroot_setup operation...")
 		else:
-			print "Setting up chroot..."
+			msg("Setting up chroot...")
 
 			#self.makeconf=catalyst.util.read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
 
@@ -917,13 +914,13 @@ class generic_stage_target(generic_target):
 					raise CatalystError,\
 						"Can't find envscript "+self.settings["ENVSCRIPT"]
 
-				print "\nWarning!!!!"
-				print "\tOverriding certain env variables may cause catastrophic failure."
-				print "\tIf your build fails look here first as the possible problem."
-				print "\tCatalyst assumes you know what you are doing when setting"
-				print "\t\tthese variables."
-				print "\tCatalyst Maintainers use VERY minimal envscripts if used at all"
-				print "\tYou have been warned\n"
+				msg("\nWarning!!!!")
+				msg("\tOverriding certain env variables may cause catastrophic failure.")
+				msg("\tIf your build fails look here first as the possible problem.")
+				msg("\tCatalyst assumes you know what you are doing when setting")
+				msg("\t\tthese variables.")
+				msg("\tCatalyst Maintainers use VERY minimal envscripts if used at all")
+				msg("\tYou have been warned\n")
 
 				cmd("cp "+self.settings["ENVSCRIPT"]+" "+\
 					self.settings["chroot_path"]+"/tmp/envscript",\
@@ -989,10 +986,10 @@ class generic_stage_target(generic_target):
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 				if '-*' in myusevars:
-					print "\nWarning!!!  "
-					print "\tThe use of -* in "+self.settings["spec_prefix"]+\
-						"/use will cause portage to ignore"
-					print "\tpackage.use in the profile and portage_confdir. You've been warned!"
+					msg("\nWarning!!!  ")
+					msg("\tThe use of -* in " + self.settings["spec_prefix"] + \
+						"/use will cause portage to ignore")
+					msg("\tpackage.use in the profile and portage_confdir. You've been warned!")
 
 			""" Setup the portage overlay """
 			if "portage_overlay" in self.settings:
@@ -1006,7 +1003,7 @@ class generic_stage_target(generic_target):
 
 	def fsscript(self):
 		if self.check_autoresume("fsscript"):
-			print "Resume point detected, skipping fsscript operation..."
+			msg("Resume point detected, skipping fsscript operation...")
 		else:
 			if "fsscript" in self.settings:
 				if os.path.exists(self.settings["controller_file"]):
@@ -1016,7 +1013,7 @@ class generic_stage_target(generic_target):
 
 	def rcupdate(self):
 		if self.check_autoresume("rcupdate"):
-			print "Resume point detected, skipping rcupdate operation..."
+			msg("Resume point detected, skipping rcupdate operation...")
 		else:
 			if os.path.exists(self.settings["controller_file"]):
 				cmd("/bin/bash "+self.settings["controller_file"]+" rc-update",\
@@ -1025,10 +1022,10 @@ class generic_stage_target(generic_target):
 
 	def clean(self):
 		if self.check_autoresume("clean"):
-			print "Resume point detected, skipping clean operation..."
+			msg("Resume point detected, skipping clean operation...")
 		else:
 			for x in self.settings["cleanables"]:
-				print "Cleaning chroot: "+x+"... "
+				msg("Cleaning chroot: " + x +"...")
 				cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+\
 					x,env=self.env)
 
@@ -1059,7 +1056,7 @@ class generic_stage_target(generic_target):
 
 	def empty(self):
 		if self.check_autoresume("empty"):
-			print "Resume point detected, skipping empty operation..."
+			msg("Resume point detected, skipping empty operation...")
 		else:
 			if self.settings["spec_prefix"]+"/empty" in self.settings:
 				if type(self.settings[self.settings["spec_prefix"]+\
@@ -1070,9 +1067,9 @@ class generic_stage_target(generic_target):
 				for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
 					myemp=self.settings["destpath"]+x
 					if not os.path.isdir(myemp):
-						print x,"not a directory or does not exist, skipping 'empty' operation."
+						msg(x + " not a directory or does not exist, skipping 'empty' operation.")
 						continue
-					print "Emptying directory",x
+					msg("Emptying directory" + x)
 					"""
 					stat the dir, delete the dir, recreate the dir and set
 					the proper perms and ownership
@@ -1086,7 +1083,7 @@ class generic_stage_target(generic_target):
 
 	def remove(self):
 		if self.check_autoresume("remove"):
-			print "Resume point detected, skipping remove operation..."
+			msg("Resume point detected, skipping remove operation...")
 		else:
 			if self.settings["spec_prefix"]+"/rm" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
@@ -1094,7 +1091,7 @@ class generic_stage_target(generic_target):
 					We're going to shell out for all these cleaning
 					operations, so we get easy glob handling.
 					"""
-					print "livecd: removing "+x
+					msg("livecd: removing " + x)
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
@@ -1107,7 +1104,7 @@ class generic_stage_target(generic_target):
 
 	def preclean(self):
 		if self.check_autoresume("preclean"):
-			print "Resume point detected, skipping preclean operation..."
+			msg("Resume point detected, skipping preclean operation...")
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
@@ -1121,7 +1118,7 @@ class generic_stage_target(generic_target):
 
 	def capture(self):
 		if self.check_autoresume("capture"):
-			print "Resume point detected, skipping capture operation..."
+			msg("Resume point detected, skipping capture operation...")
 		else:
 			""" Capture target in a tarball """
 			mypath=self.settings["target_path"].split("/")
@@ -1132,7 +1129,7 @@ class generic_stage_target(generic_target):
 			if not os.path.exists(mypath):
 				os.makedirs(mypath)
 
-			print "Creating stage tarball..."
+			msg("Creating stage tarball...")
 
 			cmd("tar cjpf "+self.settings["target_path"]+" -C "+\
 				self.settings["stage_path"]+" .",\
@@ -1145,7 +1142,7 @@ class generic_stage_target(generic_target):
 
 	def run_local(self):
 		if self.check_autoresume("run_local"):
-			print "Resume point detected, skipping run_local operation..."
+			msg("Resume point detected, skipping run_local operation...")
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
@@ -1203,7 +1200,7 @@ class generic_stage_target(generic_target):
 			self.purge()
 
 		for x in self.settings["action_sequence"]:
-			print "--- Running action sequence: "+x
+			msg("--- Running action sequence: " + x)
 			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))
@@ -1215,7 +1212,7 @@ class generic_stage_target(generic_target):
 
 	def unmerge(self):
 		if self.check_autoresume("unmerge"):
-			print "Resume point detected, skipping unmerge operation..."
+			msg("Resume point detected, skipping unmerge operation...")
 		else:
 			if self.settings["spec_prefix"]+"/unmerge" in self.settings:
 				if type(self.settings[self.settings["spec_prefix"]+\
@@ -1238,7 +1235,7 @@ class generic_stage_target(generic_target):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" unmerge "+ myunmerge,"Unmerge script failed.",\
 						env=self.env)
-					print "unmerge shell script"
+					msg("unmerge shell script")
 				except CatalystError:
 					self.unbind()
 					raise
@@ -1246,9 +1243,9 @@ class generic_stage_target(generic_target):
 
 	def target_setup(self):
 		if self.check_autoresume("target_setup"):
-			print "Resume point detected, skipping target_setup operation..."
+			msg("Resume point detected, skipping target_setup operation...")
 		else:
-			print "Setting up filesystems per filesystem type"
+			msg("Setting up filesystems per filesystem type")
 			cmd("/bin/bash "+self.settings["controller_file"]+\
 				" target_image_setup "+ self.settings["target_path"],\
 				"target_image_setup script failed.",env=self.env)
@@ -1256,7 +1253,7 @@ class generic_stage_target(generic_target):
 
 	def setup_overlay(self):
 		if self.check_autoresume("setup_overlay"):
-			print "Resume point detected, skipping setup_overlay operation..."
+			msg("Resume point detected, skipping setup_overlay operation...")
 		else:
 			if self.settings["spec_prefix"]+"/overlay" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
@@ -1269,7 +1266,7 @@ class generic_stage_target(generic_target):
 
 	def create_iso(self):
 		if self.check_autoresume("create_iso"):
-			print "Resume point detected, skipping create_iso operation..."
+			msg("Resume point detected, skipping create_iso operation...")
 		else:
 			""" Create the ISO """
 			if "iso" in self.settings:
@@ -1280,13 +1277,13 @@ class generic_stage_target(generic_target):
 				catalyst.hash.gen_digest_file(self.settings["iso"], self.settings)
 				self.set_autoresume("create_iso")
 			else:
-				print "WARNING: livecd/iso was not defined."
-				print "An ISO Image will not be created."
+				msg("WARNING: livecd/iso was not defined.")
+				msg("An ISO Image will not be created.")
 
 	def build_packages(self):
 		if self.settings["spec_prefix"]+"/packages" in self.settings:
 			if self.check_autoresume("build_packages"):
-				print "Resume point detected, skipping build_packages operation..."
+				msg("Resume point detected, skipping build_packages operation...")
 			else:
 				mypack = \
 					catalyst.util.list_bashify(self.settings[self.settings["spec_prefix"] \
@@ -1303,7 +1300,7 @@ class generic_stage_target(generic_target):
 
 	def build_kernel(self):
 		if self.check_autoresume("build_kernel"):
-			print "Resume point detected, skipping build_kernel operation..."
+			msg("Resume point detected, skipping build_kernel operation...")
 		else:
 			if "boot/kernel" in self.settings:
 				try:
@@ -1319,7 +1316,7 @@ class generic_stage_target(generic_target):
 
 					for kname in mynames:
 						if self.check_autoresume("build_kernel_" + kname):
-							print "Resume point detected, skipping build_kernel for "+kname+" operation..."
+							msg("Resume point detected, skipping build_kernel for " + kname + " operation...")
 						else: # TODO: make this not require a kernel config
 							try:
 								if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
@@ -1374,9 +1371,9 @@ class generic_stage_target(generic_target):
 								"/initramfs_overlay"):
 								if os.path.exists(self.settings["boot/kernel/"+\
 									kname+"/initramfs_overlay"]):
-									print "Copying initramfs_overlay dir "+\
-										self.settings["boot/kernel/"+kname+\
-										"/initramfs_overlay"]
+									msg("Copying initramfs_overlay dir " + \
+										self.settings["boot/kernel/" + kname + \
+										"/initramfs_overlay"])
 
 									cmd("mkdir -p "+\
 										self.settings["chroot_path"]+\
@@ -1400,7 +1397,7 @@ class generic_stage_target(generic_target):
 								"/initramfs_overlay"):
 								if os.path.exists(self.settings["chroot_path"]+\
 									"/tmp/initramfs_overlay/"):
-									print "Cleaning up temporary overlay dir"
+									msg("Cleaning up temporary overlay dir")
 									cmd("rm -R "+self.settings["chroot_path"]+\
 										"/tmp/initramfs_overlay/",env=self.env)
 
@@ -1423,7 +1420,7 @@ class generic_stage_target(generic_target):
 
 	def bootloader(self):
 		if self.check_autoresume("bootloader"):
-			print "Resume point detected, skipping bootloader operation..."
+			msg("Resume point detected, skipping bootloader operation...")
 		else:
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
@@ -1436,7 +1433,7 @@ class generic_stage_target(generic_target):
 
 	def livecd_update(self):
 		if self.check_autoresume("livecd_update"):
-			print "Resume point detected, skipping build_packages operation..."
+			msg("Resume point detected, skipping build_packages operation...")
 		else:
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
@@ -1450,7 +1447,7 @@ class generic_stage_target(generic_target):
 	def clear_chroot(self):
 		myemp=self.settings["chroot_path"]
 		if os.path.isdir(myemp):
-			print "Emptying directory",myemp
+			msg("Emptying directory " + myemp)
 			"""
 			stat the dir, delete the dir, recreate the dir and set
 			the proper perms and ownership
@@ -1467,11 +1464,11 @@ class generic_stage_target(generic_target):
 
 	def clear_packages(self):
 		if "PKGCACHE" in self.settings:
-			print "purging the pkgcache ..."
+			msg("purging the pkgcache...")
 
 			myemp=self.settings["pkgcache_path"]
 			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
+				msg("Emptying directory " + myemp)
 				"""
 				stat the dir, delete the dir, recreate the dir and set
 				the proper perms and ownership
@@ -1485,11 +1482,11 @@ class generic_stage_target(generic_target):
 
 	def clear_kerncache(self):
 		if "KERNCACHE" in self.settings:
-			print "purging the kerncache ..."
+			msg("purging the kerncache...")
 
 			myemp=self.settings["kerncache_path"]
 			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
+				msg("Emptying directory " + myemp)
 				"""
 				stat the dir, delete the dir, recreate the dir and set
 				the proper perms and ownership
@@ -1504,10 +1501,10 @@ class generic_stage_target(generic_target):
 	def clear_autoresume(self):
 		""" Clean resume points since they are no longer needed """
 		if self.check_autoresume():
-			print "Removing AutoResume Points: ..."
+			msg("Removing AutoResume Points: ...")
 			myemp=self.settings["autoresume_path"]
 			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
+				msg("Emptying directory " + myemp)
 				"""
 				stat the dir, delete the dir, recreate the dir and set
 				the proper perms and ownership
@@ -1526,16 +1523,16 @@ class generic_stage_target(generic_target):
 	def purge(self):
 		catalyst.util.countdown(10, "Purging Caches ...")
 		if "PURGE" in self.settings or "PURGEONLY" in self.settings:
-			print "clearing autoresume ..."
+			msg("clearing autoresume ...")
 			self.clear_autoresume()
 
-			print "clearing chroot ..."
+			msg("clearing chroot ...")
 			self.clear_chroot()
 
-			print "clearing package cache ..."
+			msg("clearing package cache ...")
 			self.clear_packages()
 
-			print "clearing kerncache ..."
+			msg("clearing kerncache ...")
 			self.clear_kerncache()
 
 # vim: ts=4 sw=4 sta et sts=4 ai
