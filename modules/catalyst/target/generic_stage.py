@@ -50,6 +50,7 @@ class generic_stage_target(generic_target):
 		previously. -agaffney
 		"""
 
+		# XXX This should all be moved somewhere "higher" vvvvvvvvvvv
 		self.subarchmap = {}
 		machinemap = {}
 
@@ -81,7 +82,6 @@ class generic_stage_target(generic_target):
 		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
 			self.settings["buildarch"])
 
-		# XXX This should be moved somewhere "higher"
 		""" Call arch constructor, pass our settings """
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
@@ -101,6 +101,7 @@ class generic_stage_target(generic_target):
 		else:
 			msg("Building on" + self.settings["buildarch"] + \
 				"for alternate personality type " + self.settings["hostarch"])
+		# XXX This should all be moved somewhere "higher" ^^^^^^^^^^^^^^
 
 		""" This must be set first as other set_ options depend on this """
 		self.set_spec_prefix()
