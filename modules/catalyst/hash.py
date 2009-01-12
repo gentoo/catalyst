@@ -4,7 +4,7 @@ This module contains functions for generating the CONTENTS and hash files
 
 import os
 from catalyst.error import *
-from catalyst.output import warn
+from catalyst.output import *
 
 def gen_contents_file(file, settings):
 	if os.path.exists(file+".CONTENTS"):
@@ -80,7 +80,7 @@ def calc_contents(file, cmd, verbose):
 	result = "".join(a.readlines())
 	a.close()
 	if verbose:
-		print result
+		msg(result)
 	return result
 
 # This has map must be defined after the function calc_content
@@ -111,7 +111,7 @@ def calc_hash(file, cmd, cmd_args, id_string="MD5", verbose=False):
 	result = a.readline().split()[0]
 	a.close()
 	if verbose:
-		print "%s (%s) = %s" % (id_string, file, result)
+		msg("%s (%s) = %s" % (id_string, file, result))
 	return result
 
 def calc_hash2(file, cmd, cmd_args, id_string="MD5", verbose=False):
@@ -123,7 +123,7 @@ def calc_hash2(file, cmd, cmd_args, id_string="MD5", verbose=False):
 	short_file = os.path.split(myline[1])[1]
 	result = header + tmphash + "  " + short_file + "\n"
 	if verbose:
-		print "%s (%s) = %s" % (header, short_file, result)
+		msg("%s (%s) = %s" % (header, short_file, result))
 	return result
 
 # This has map must be defined after the function calc_hash

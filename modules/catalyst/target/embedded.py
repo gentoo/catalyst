@@ -11,6 +11,7 @@ ROOT=/tmp/submerge emerge --blahblah foo bar
 
 from generic_stage import *
 import catalyst.util
+from catalyst.output import *
 
 class embedded_target(generic_stage_target):
 
@@ -35,10 +36,10 @@ class embedded_target(generic_stage_target):
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=catalyst.util.normpath(self.settings["chroot_path"]+"/tmp/mergeroot")
-		print "embedded stage path is "+self.settings["stage_path"]
+		msg("embedded stage path is " + self.settings["stage_path"])
 
 	def set_root_path(self):
 		self.settings["root_path"]=catalyst.util.normpath("/tmp/mergeroot")
-		print "embedded root path is "+self.settings["root_path"]
+		msg("embedded root path is " + self.settings["root_path"])
 
 __target_map = {"embedded":embedded_target}

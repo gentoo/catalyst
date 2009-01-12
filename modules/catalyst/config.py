@@ -1,5 +1,6 @@
 import re
 from catalyst.error import *
+from catalyst.output import *
 
 required_config_file_values=["storedir","sharedir","distdir","portdir"]
 valid_config_file_values=required_config_file_values[:]
@@ -119,7 +120,7 @@ class ParserBase:
 			for x in values.keys():
 				# Delete empty key pairs
 				if not values[x]:
-					print "\n\tWARNING: No value set for key " + x + "...deleting"
+					msg("\n\tWARNING: No value set for key " + x + "...deleting")
 					del values[x]
 
 		self.values = values

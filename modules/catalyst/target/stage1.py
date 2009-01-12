@@ -4,7 +4,8 @@ Builder class for a stage1 installation tarball build.
 """
 
 from generic_stage import *
-import catalyst.util
+import catalyst
+from catalyst.output import *
 
 class stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -14,12 +15,12 @@ class stage1_target(generic_stage_target):
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=catalyst.util.normpath(self.settings["chroot_path"]+self.settings["root_path"])
-		print "stage1 stage path is "+self.settings["stage_path"]
+		msg("stage1 stage path is " + self.settings["stage_path"])
 
 	def set_root_path(self):
 		# sets the root path, relative to 'chroot_path', of the stage1 root
 		self.settings["root_path"]=catalyst.util.normpath("/tmp/stage1root")
-		print "stage1 root path is "+self.settings["root_path"]
+		msg("stage1 root path is " + self.settings["root_path"])
 
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
@@ -52,10 +53,12 @@ class stage1_target(generic_stage_target):
 	def set_portage_overlay(self):
 		generic_stage_target.set_portage_overlay(self)
 		if "portage_overlay" in self.settings:
-			print "\nWARNING !!!!!"
-			print "\tUsing an portage overlay for earlier stages could cause build issues."
-			print "\tIf you break it, you buy it. Don't complain to us about it."
-			print "\tDont say we did not warn you\n"
+			msg()
+			msg("WARNING !!!!!")
+			msg("\tUsing an portage overlay for earlier stages could cause build issues.")
+			msg("\tIf you break it, you buy it. Don't complain to us about it.")
+			msg("\tDont say we did not warn you")
+			msg()
 
 	def base_dirs(self):
 		if os.uname()[0] == "FreeBSD":
@@ -72,14 +75,14 @@ class stage1_target(generic_stage_target):
 					proc_keepfile.write('')
 					proc_keepfile.close()
 				except IOError:
-					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
+					msg("!!! Failed to create %s" % (self.settings["stage_path"] + "/dev/.keep"))
 			if not os.path.isfile(self.settings["stage_path"]+"/dev/.keep"):
 				try:
 					dev_keepfile = open(self.settings["stage_path"]+"/dev/.keep","w")
 					dev_keepfile.write('')
 					dev_keepfile.close()
 				except IOError:
-					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
+					msg("!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep"))
 		else:
 			pass
 

@@ -8,6 +8,7 @@ from generic_stage import *
 import catalyst
 from catalyst.error import *
 from catalyst.spawn import cmd
+from catalyst.output import *
 
 class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -36,7 +37,7 @@ class grp_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if self.check_autoresume("setup_target_path"):
-			print "Resume point detected, skipping target path setup operation..."
+			msg("Resume point detected, skipping target path setup operation...")
 		else:
 			# first clean up any existing target stuff
 			#if os.path.isdir(self.settings["target_path"]):
@@ -74,7 +75,7 @@ class grp_target(generic_stage_target):
 		for pkgset in self.settings["grp"]:
 			if self.settings["grp/"+pkgset+"/type"] == "pkgset":
 				destdir=catalyst.util.normpath(self.settings["target_path"]+"/"+pkgset+"/All")
-				print "Digesting files in the pkgset....."
+				msg("Digesting files in the pkgset.....")
 				digests=glob.glob(destdir+'/*.DIGESTS')
 				for i in digests:
 					if os.path.exists(i):
@@ -89,7 +90,7 @@ class grp_target(generic_stage_target):
 						catalyst.hash.gen_digest_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
 			else:
 				destdir=catalyst.util.normpath(self.settings["target_path"]+"/"+pkgset)
-				print "Digesting files in the srcset....."
+				msg("Digesting files in the srcset.....")
 
 				digests=glob.glob(destdir+'/*.DIGESTS')
 				for i in digests:

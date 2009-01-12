@@ -5,6 +5,7 @@ This module contains all the functions related to spawning external commands
 import sys, os, types, signal
 import catalyst.util
 from catalyst.error import *
+from catalyst.output import *
 
 BASH_BINARY = "/bin/bash"
 
@@ -243,7 +244,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                         os.umask(022)
 
                 try:
-                        #print "execing", myc, myargs
+                        #msg("execing", myc, myargs)
                         if func_call:
                                 # either use a passed in func for interpretting the results, or return if no exception.
                                 # note the passed in list, and dict are expanded.
@@ -252,7 +253,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                                 try:
                                         mycommand[0](*mycommand[1],**mycommand[2])
                                 except Exception,e:
-                                        print "caught exception",e," in forked func",mycommand[0]
+                                        msg("caught exception",e," in forked func",mycommand[0])
                                 sys.exit(0)
 
 			#os.execvp(myc,myargs)
@@ -262,7 +263,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
                 except Exception, e:
                         if not func_call:
                                 raise str(e)+":\n   "+myc+" "+"".join(myargs)
-                        print "func call failed"
+                        msg("func call failed")
 
                 # If the execve fails, we need to report it, and exit
                 # *carefully* --- report error here

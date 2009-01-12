@@ -8,6 +8,7 @@ from generic_stage import *
 import catalyst.util
 from catalyst.error import *
 from catalyst.spawn import cmd
+from catalyst.output import *
 
 class netboot_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -45,7 +46,7 @@ class netboot_target(generic_stage_target):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
 		if self.check_autoresume("setup_target_path"):
-				print "Resume point detected, skipping target path setup operation..."
+				msg("Resume point detected, skipping target path setup operation...")
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
@@ -62,7 +63,7 @@ class netboot_target(generic_stage_target):
 
 		# check for autoresume point
 		if self.check_autoresume("copy_files_to_image"):
-				print "Resume point detected, skipping target path setup operation..."
+				msg("Resume point detected, skipping target path setup operation...")
 		else:
 			if "netboot/packages" in self.settings:
 				if type(self.settings["netboot/packages"]) == types.StringType:
@@ -94,7 +95,7 @@ class netboot_target(generic_stage_target):
 
 	def setup_overlay(self):
 		if self.check_autoresume("setup_overlay"):
-			print "Resume point detected, skipping setup_overlay operation..."
+			msg("Resume point detected, skipping setup_overlay operation...")
 		else:
 			if "netboot/overlay" in self.settings:
 				for x in self.settings["netboot/overlay"]:
@@ -110,25 +111,25 @@ class netboot_target(generic_stage_target):
 		try:
 			cmd("/bin/bash "+self.settings["controller_file"]+\
 				" final",env=self.env)
-			print ">>> Netboot Build Finished!"
+			msg(">>> Netboot Build Finished!")
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"Failed to move kernel images!"
 
 	def remove(self):
 		if self.check_autoresume("remove"):
-			print "Resume point detected, skipping remove operation..."
+			msg("Resume point detected, skipping remove operation...")
 		else:
 			if self.settings["spec_prefix"]+"/rm" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
-					print "netboot: removing " + x
+					msg("netboot: removing " + x)
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):
 		if self.check_autoresume("empty"):
-			print "Resume point detected, skipping empty operation..."
+			msg("Resume point detected, skipping empty operation...")
 		else:
 			if "netboot/empty" in self.settings:
 				if type(self.settings["netboot/empty"])==types.StringType:
@@ -136,9 +137,9 @@ class netboot_target(generic_stage_target):
 				for x in self.settings["netboot/empty"]:
 					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x
 					if not os.path.isdir(myemp):
-						print x,"not a directory or does not exist, skipping 'empty' operation."
+						msg(x + " not a directory or does not exist, skipping 'empty' operation.")
 						continue
-					print "Emptying directory", x
+					msg("Emptying directory " + x)
 					# stat the dir, delete the dir, recreate the dir and set
 					# the proper perms and ownership
 					mystat=os.stat(myemp)

@@ -7,6 +7,7 @@ import os
 from generic_stage import *
 import catalyst
 from catalyst.spawn import cmd
+from catalyst.output import *
 
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
@@ -38,8 +39,8 @@ class snapshot_target(generic_target):
 			self.purge()
 
 		self.setup()
-		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
-			" from "+self.settings["portdir"]+"..."
+		msg("Creating Portage tree snapshot " + self.settings["version_stamp"] + \
+			" from " + self.settings["portdir"] + "...")
 
 		mytmp=self.settings["tmp_path"]
 		if not os.path.exists(mytmp):
@@ -48,7 +49,7 @@ class snapshot_target(generic_target):
 		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
 
-		print "Compressing Portage snapshot tarball..."
+		msg("Compressing Portage snapshot tarball...")
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
 
@@ -56,18 +57,18 @@ class snapshot_target(generic_target):
 		catalyst.hash.gen_digest_file(self.settings["snapshot_path"], self.settings)
 
 		self.cleanup()
-		print "snapshot: complete!"
+		msg("snapshot: complete!")
 
 	def kill_chroot_pids(self):
 		pass
 
 	def cleanup(self):
-		print "Cleaning up..."
+		msg("Cleaning up...")
 
 	def purge(self):
 		myemp=self.settings["tmp_path"]
 		if os.path.isdir(myemp):
-			print "Emptying directory",myemp
+			msg("Emptying directory " + myemp)
 			"""
 			stat the dir, delete the dir, recreate the dir and set
 			the proper perms and ownership

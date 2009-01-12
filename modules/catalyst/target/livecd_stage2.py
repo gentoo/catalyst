@@ -8,6 +8,7 @@ from generic_stage import *
 import catalyst
 from catalyst.error import *
 from catalyst.spawn import cmd
+from catalyst.output import *
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -46,7 +47,7 @@ class livecd_stage2_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if self.check_autoresume("setup_target_path"):
-				print "Resume point detected, skipping target path setup operation..."
+				msg("Resume point detected, skipping target path setup operation...")
 		else:
 			# first clean up any existing target stuff
 			if os.path.isdir(self.settings["target_path"]):
@@ -86,7 +87,7 @@ class livecd_stage2_target(generic_stage_target):
 		if self.check_autoresume():
 			if os.path.isdir(self.settings["source_path"]) and \
 				self.check_autoresume("unpack"):
-				print "Resume point detected, skipping unpack operation..."
+				msg("Resume point detected, skipping unpack operation...")
 				unpack=False
 			elif "source_path_hash" in self.settings:
 				if self.settings["source_path_hash"] != clst_unpack_hash:
@@ -95,7 +96,7 @@ class livecd_stage2_target(generic_stage_target):
 		if unpack:
 			self.mount_safety_check()
 			if invalid_snapshot:
-				print "No Valid Resume point detected, cleaning up  ..."
+				msg("No Valid Resume point detected, cleaning up...")
 				#os.remove(self.settings["autoresume_path"]+"dir_setup")
 				self.clear_autoresume()
 				self.clear_chroot()
@@ -114,7 +115,7 @@ class livecd_stage2_target(generic_stage_target):
 			if not display_msg:
 				raise CatalystError,"Could not find appropriate source. Please check the 'source_subpath' setting in the spec file."
 
-			print display_msg
+			msg(display_msg)
 			cmd(unpack_cmd,error_msg,env=self.env)
 
 			if "source_path_hash" in self.settings:

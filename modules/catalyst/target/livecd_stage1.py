@@ -6,6 +6,7 @@ Builder class for LiveCD stage1.
 from generic_stage import *
 import catalyst.util
 from catalyst.spawn import cmd
+from catalyst.output import *
 
 class livecd_stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -24,7 +25,7 @@ class livecd_stage1_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if self.check_autoresume("setup_target_path"):
-				print "Resume point detected, skipping target path setup operation..."
+				msg("Resume point detected, skipping target path setup operation...")
 		else:
 			# first clean up any existing target stuff
 			if os.path.exists(self.settings["target_path"]):

@@ -5,6 +5,7 @@ Builder class for a stage2 installation tarball build.
 
 from generic_stage import *
 import catalyst
+from catalyst.output import *
 
 class stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
@@ -22,10 +23,10 @@ class stage2_target(generic_stage_target):
 				# XXX: Is this even necessary if the previous check passes?
 					self.settings["source_path_hash"]=catalyst.hash.generate_hash(self.settings["source_path"],\
 						hash_function=self.settings["hash_function"],verbose=False)
-		print "Source path set to "+self.settings["source_path"]
+		msg("Source path set to " + self.settings["source_path"])
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
-			print "\tthe source path will then be "+catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
+			msg("\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf")
+			msg("\tthe source path will then be " + catalyst.util.normpath(self.settings["storedir"] + "/builds/" + self.settings["source_subpath"] + ".tar.bz2\n"))
 
 	# XXX: How do these override_foo() functions differ from the ones in
 	# generic_stage_target and why aren't they in stage3_target?
@@ -53,9 +54,11 @@ class stage2_target(generic_stage_target):
 	def set_portage_overlay(self):
 			generic_stage_target.set_portage_overlay(self)
 			if "portage_overlay" in self.settings:
-				print "\nWARNING !!!!!"
-				print "\tUsing an portage overlay for earlier stages could cause build issues."
-				print "\tIf you break it, you buy it. Don't complain to us about it."
-				print "\tDont say we did not warn you\n"
+				msg()
+				msg("WARNING !!!!!")
+				msg("\tUsing an portage overlay for earlier stages could cause build issues.")
+				msg("\tIf you break it, you buy it. Don't complain to us about it.")
+				msg("\tDont say we did not warn you")
+				msg()
 
 __target_map = {"stage2":stage2_target}
