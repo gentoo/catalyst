@@ -40,7 +40,7 @@ Config:
 - security
   - sign materials automatically
 - logging
-  - add logging support
+  - add logging support (partially done through use of catalyst.output.msg())
     - file-based
 	- syslog
   - add notification capabilities
