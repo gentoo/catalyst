@@ -24,8 +24,6 @@ valid_config_file_values.append("digests")
 valid_config_file_values.append("contents")
 valid_config_file_values.append("SEEDCACHE")
 
-verbosity=1
-
 """
 Spec file format:
 

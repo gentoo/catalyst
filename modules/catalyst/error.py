@@ -8,7 +8,7 @@ import catalyst.output
 class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
-			(type,value)=sys.exc_info()[:2]
+			(extype,value)=sys.exc_info()[:2]
 			if value!=None:
 				print
 				print traceback.print_exc(file=sys.stdout)
@@ -19,7 +19,7 @@ class CatalystError(Exception):
 class LockInUse(Exception):
 	def __init__(self, message):
 		if message:
-			#(type,value)=sys.exc_info()[:2]
+			#(extype,value)=sys.exc_info()[:2]
 			#if value!=None:
 			    #print
 			    #kprint traceback.print_exc(file=sys.stdout)

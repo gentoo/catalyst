@@ -3,7 +3,7 @@
 Builder class for a LiveCD stage2 build.
 """
 
-import os,string,types,stat,shutil
+import os
 from catalyst.support import *
 from generic_stage import *
 import catalyst.util

@@ -4,6 +4,7 @@ This module contains functions for generating the CONTENTS and hash files
 
 import os
 from catalyst.error import *
+from catalyst.output import warn
 
 def generate_contents(file, contents_function="auto", verbose=False):
 	try:
@@ -75,9 +76,9 @@ def calc_hash2(file, cmd, cmd_args, id_string="MD5", verbose=False):
 	header = a.readline()
 	myline = a.readline().split()
 	a.close()
-	hash = myline[0]
+	tmphash = myline[0]
 	short_file = os.path.split(myline[1])[1]
-	result = header + hash + "  " + short_file + "\n"
+	result = header + tmphash + "  " + short_file + "\n"
 	if verbose:
 		print "%s (%s) = %s" % (header, short_file, result)
 	return result

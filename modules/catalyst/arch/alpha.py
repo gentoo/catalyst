@@ -1,5 +1,5 @@
 
-import catalyst.arch,os
+import catalyst.arch
 from catalyst.support import *
 
 class generic_alpha(catalyst.arch.generic_arch):

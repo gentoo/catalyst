@@ -4,7 +4,7 @@ This class does all of the chroot setup, copying of files, etc. It is
 the driver class for pretty much everything that Catalyst does.
 """
 
-import os,string,imp,types,shutil
+import os, string, types, shutil
 from catalyst.support import *
 from catalyst.target.generic import *
 from stat import *
@@ -1609,15 +1609,15 @@ class generic_stage_target(generic_target):
 				for f in [file, file+'.CONTENTS']:
 					if os.path.exists(f):
 						if "all" in array:
-							for k in hash_map.keys():
-								hash=catalyst.hash.generate_hash(f,hash_function=k,verbose=\
+							for k in catalyst.hash.hash_map.keys():
+								tmphash=catalyst.hash.generate_hash(f,hash_function=k,verbose=\
 									("VERBOSE" in self.settings))
-								myf.write(hash)
+								myf.write(tmphash)
 						else:
 							for j in array:
-								hash=catalyst.hash.generate_hash(f,hash_function=j,verbose=\
+								tmphash=catalyst.hash.generate_hash(f,hash_function=j,verbose=\
 									("VERBOSE" in self.settings))
-								myf.write(hash)
+								myf.write(tmphash)
 				myf.close()
 
 	def purge(self):

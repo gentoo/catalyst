@@ -21,6 +21,7 @@ class livecd_stage1_target(generic_stage_target):
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
 					"unbind", "clean","clear_autoresume"]
+
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if "AUTORESUME" in self.settings \
@@ -39,8 +40,9 @@ class livecd_stage1_target(generic_stage_target):
 
 	def set_target_path(self):
 		pass
+
 	def set_spec_prefix(self):
-	                self.settings["spec_prefix"]="livecd"
+		self.settings["spec_prefix"]="livecd"
 
 	def set_use(self):
 		generic_stage_target.set_use(self)

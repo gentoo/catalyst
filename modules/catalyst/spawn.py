@@ -2,7 +2,7 @@
 This module contains all the functions related to spawning external commands
 """
 
-import sys, os, types
+import sys, os, types, signal
 import catalyst.util
 from catalyst.error import *
 
@@ -14,7 +14,7 @@ selinux_capable = False
 
 try:
 	import resource
-	max_fd_limit=resource.getrlimit(RLIMIT_NOFILE)
+	max_fd_limit=resource.getrlimit(resource.RLIMIT_NOFILE)
 except SystemExit, e:
 	raise
 except:

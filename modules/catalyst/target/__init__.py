@@ -3,7 +3,6 @@ Parent module of all target modules
 """
 
 import os
-import imp
 import catalyst.util
 from catalyst.output import warn
 

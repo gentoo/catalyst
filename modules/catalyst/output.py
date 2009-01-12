@@ -4,6 +4,8 @@ This module contains miscellaneous functions for outputting messages
 
 import sys
 
+verbosity = 1
+
 def msg(mymsg, verblevel=1):
 	if verbosity >= verblevel:
 		print mymsg

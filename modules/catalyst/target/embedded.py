@@ -24,7 +24,7 @@ class embedded_target(generic_stage_target):
 			self.valid_values.append("embedded/fs-ops")
 
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars(addlargs)
+		self.set_build_kernel_vars()
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\

@@ -40,7 +40,7 @@ class netboot_target(generic_stage_target):
 
 
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars(addlargs)
+		self.set_build_kernel_vars()
 		if "netboot/busybox_config" in addlargs:
 			catalyst.util.file_locate(self.settings, ["netboot/busybox_config"])
 
