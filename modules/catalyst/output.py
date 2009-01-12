@@ -6,9 +6,12 @@ import sys
 
 verbosity = 1
 
-def msg(mymsg, verblevel=1):
+def msg(mymsg, verblevel=1, newline=True):
 	if verbosity >= verblevel:
-		print mymsg
+		if newline:
+			print mymsg
+		else:
+			print mymsg,
 
 def warn(msg):
 	print "!!! catalyst: " + msg

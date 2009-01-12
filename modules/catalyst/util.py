@@ -5,6 +5,7 @@ Collection of utility functions for catalyst
 import sys, traceback, os, os.path, re, time
 import catalyst
 from catalyst.error import *
+from catalyst.output import *
 
 def capture_traceback():
 	etype, value, tb = sys.exc_info()
@@ -13,7 +14,7 @@ def capture_traceback():
 
 def print_traceback():
 	for x in capture_traceback():
-		print x
+		msg(x)
 
 def load_module(name):
 	try:
@@ -107,16 +108,17 @@ def touch(myfile):
 
 def countdown(secs=5, doing="Starting"):
 	if secs:
-		print ">>> Waiting " + secs + " seconds before starting..."
-		print ">>> (Control-C to abort)..."
-		print doing + " in: ",
+		msg(">>> Waiting " + secs + " seconds before starting...")
+		msg(">>> (Control-C to abort)...")
+		msg(doing + " in: ", newline=False)
 		ticks = range(secs)
 		ticks.reverse()
 		for sec in ticks:
-			sys.stdout.write(str(sec+1) + " ")
+#			sys.stdout.write(str(sec+1) + " ")
+			msg(str(sec+1), newline=False)
 			sys.stdout.flush()
 			time.sleep(1)
-		print
+		msg()
 
 def file_locate(settings, filelist, expand=True):
 	#if expand is True, non-absolute paths will be accepted and

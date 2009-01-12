@@ -48,10 +48,10 @@ def usage():
 	print "catalyst -f stage1-specfile.spec"
 
 def show_version():
-	print "Catalyst, version "+__version__
-	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008 various authors"
-	print "Distributed under the GNU General Public License version 2.1\n"
+	msg("Catalyst, version " + __version__)
+	msg("Copyright 2003-2008 Gentoo Foundation")
+	msg("Copyright 2008 various authors")
+	msg("Distributed under the GNU General Public License version 2.1")
 
 def parse_config(myconfig):
 	# search a couple of different areas for the main config file
@@ -71,14 +71,14 @@ def parse_config(myconfig):
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
 		if os.path.exists(myconfig):
-			print "Using command line specified Catalyst configuration file, " + myconfig
+			msg("Using command line specified Catalyst configuration file, " + myconfig)
 			config_file = myconfig
 		else:
 			die("specified configuration file " + myconfig + " does not exist")
 
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
-		print "Using default Catalyst configuration file, /etc/catalyst/catalyst.conf"
+		msg("Using default Catalyst configuration file, /etc/catalyst/catalyst.conf")
 		config_file="/etc/catalyst/catalyst.conf"
 
 	# can't find a config file (we are screwed), so bail out
@@ -87,7 +87,7 @@ def parse_config(myconfig):
 
 	# Load the default config values into myconf
 	for x in confdefaults:
-		print "Setting " + x + " to default value \"" + confdefaults[x] + "\""
+		msg("Setting " + x + " to default value '" + confdefaults[x] + "'")
 		myconf[x] = confdefaults[x]
 
 	# now, try and parse the config file "config_file"
@@ -101,10 +101,10 @@ def parse_config(myconfig):
 	# now, load up the values into conf_values so that we can use them
 	for x in confdefaults.keys():
 		if x in myconf:
-			print "Setting",x,"to config file value \""+myconf[x]+"\""
+			msg("Setting " + x + " to config file value '" + myconf[x] + "'")
 			conf_values[x]=myconf[x]
 		else:
-			print "Setting",x,"to default value \""+confdefaults[x]+"\""
+			msg("Setting " + x + " to default value '"+confdefaults[x] + "'")
 			conf_values[x]=confdefaults[x]
 
 	options = (
@@ -128,7 +128,7 @@ def parse_config(myconfig):
 	# parse out the rest of the options from the config file
 	for x in options:
 		if x[0] in split_options:
-			print x[2]
+			msg(x[2])
 			conf_values[x[1]] = "1"
 
 	if "digests" in myconf:
@@ -137,7 +137,7 @@ def parse_config(myconfig):
 		conf_values["contents"]=myconf["contents"]
 
 	if "envscript" in myconf:
-		print "Envscript support enabled."
+		msg("Envscript support enabled.")
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
 
 def build_target(addlargs, targetmap):
@@ -159,38 +159,38 @@ def verify_digest_and_hash_functions():
 	if "digests" in conf_values:
 		for i in conf_values["digests"].split():
 			if not i in hash_map:
-				print
-				print i+" is not a valid digest entry"
-				print "Valid digest entries:"
-				print hash_map.keys()
-				print
-				print "Catalyst aborting...."
+				msg()
+				msg(i + " is not a valid digest entry")
+				msg("Valid digest entries:")
+				msg("\n".join(hash_map.keys()))
+				msg()
+				msg("Catalyst aborting....")
 				sys.exit(2)
 			if catalyst.util.find_binary(hash_map[i][1]) == None:
-				print
-				print "digest="+i
-				print "\tThe "+hash_map[i][1]+\
-					" binary was not found. It needs to be in your system path"
-				print
-				print "Catalyst aborting...."
+				msg()
+				msg("digest=" + i)
+				msg("\tThe " + hash_map[i][1] + \
+					" binary was not found. It needs to be in your system path")
+				msg()
+				msg("Catalyst aborting....")
 				sys.exit(2)
 
 	if "hash_function" in conf_values:
 		if not conf_values["hash_function"] in hash_map:
-			print
-			print conf_values["hash_function"]+" is not a valid hash_function entry"
-			print "Valid hash_function entries:"
-			print hash_map.keys()
-			print
-			print "Catalyst aborting...."
+			msg()
+			msg(conf_values["hash_function"] + " is not a valid hash_function entry")
+			msg("Valid hash_function entries:")
+			msg("\n".join(hash_map.keys()))
+			msg()
+			msg("Catalyst aborting....")
 			sys.exit(2)
 		if catalyst.util.find_binary(hash_map[conf_values["hash_function"]][1]) == None:
-			print
-			print "hash_function="+conf_values["hash_function"]
-			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\
-				" binary was not found. It needs to be in your system path"
-			print
-			print "Catalyst aborting...."
+			msg()
+			msg("hash_function=" + conf_values["hash_function"])
+			msg("\tThe " + hash_map[conf_values["hash_function"]][1] + \
+				" binary was not found. It needs to be in your system path")
+			msg()
+			msg("Catalyst aborting....")
 			sys.exit(2)
 
 if __name__ == "__main__":
@@ -232,7 +232,7 @@ if __name__ == "__main__":
 			sys.exit(1)
 
 		if o in ("-V", "--version"):
-			print "Catalyst version "+__version__
+			show_version()
 			sys.exit(1)
 
 		if o in ("-d", "--debug"):
@@ -311,22 +311,23 @@ if __name__ == "__main__":
 		build_target(addlargs, targetmap)
 
 	except CatalystError:
-		print
-		print "Catalyst aborting...."
+		msg()
+		msg("Catalyst aborting....")
 		sys.exit(2)
 
 	except KeyboardInterrupt:
-		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
-		print
-		print "Catalyst aborting...."
+		msg()
+		msg("Catalyst build aborted due to user interrupt ( Ctrl-C )")
+		msg()
+		msg("Catalyst aborting....")
 		sys.exit(2)
 
 	except LockInUse:
-		print "Catalyst aborting...."
+		msg("Catalyst aborting....")
 		sys.exit(2)
 
 	except:
-		print "Catalyst aborting...."
+		msg("Catalyst aborting....")
 		raise
 		sys.exit(2)
 
