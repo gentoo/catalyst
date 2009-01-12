@@ -4,8 +4,7 @@ Builder class for a stage2 installation tarball build.
 """
 
 from generic_stage import *
-import catalyst.util
-import catalyst.hash
+import catalyst
 
 class stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

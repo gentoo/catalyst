@@ -5,8 +5,7 @@ Builder class for a LiveCD stage2 build.
 
 import os
 from generic_stage import *
-import catalyst.util
-import catalyst.hash
+import catalyst
 from catalyst.error import *
 from catalyst.spawn import *
 

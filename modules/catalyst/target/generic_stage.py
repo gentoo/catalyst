@@ -5,13 +5,10 @@ the driver class for pretty much everything that Catalyst does.
 """
 
 import os, string, types, shutil
-from catalyst.target.generic import *
 from stat import *
-import catalyst.lock
-import catalyst.arch
+import catalyst
+from catalyst.target.generic import *
 from catalyst.output import warn
-import catalyst.util
-import catalyst.hash
 from catalyst.error import *
 from catalyst.spawn import *
 

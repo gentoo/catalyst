@@ -3,6 +3,12 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/stage2.py:
+  Remove redundant imports
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/alpha.py, modules/catalyst/arch/arm.py,
   modules/catalyst/arch/hppa.py, modules/catalyst/arch/ia64.py,
   modules/catalyst/arch/mips.py, modules/catalyst/arch/powerpc.py,
