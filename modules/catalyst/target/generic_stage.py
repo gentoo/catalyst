@@ -409,16 +409,6 @@ class generic_stage_target(generic_target):
 			"/tmp/"+self.settings["target_subpath"]+"/")
 		self.chroot_lock=catalyst.lock.LockDir(self.settings["chroot_path"])
 
-	def set_autoresume_path(self):
-		self.settings["autoresume_path"]=catalyst.util.normpath(self.settings["storedir"]+\
-			"/tmp/"+self.settings["rel_type"]+"/"+".autoresume-"+\
-			self.settings["target"]+"-"+self.settings["subarch"]+"-"+\
-			self.settings["version_stamp"]+"/")
-		if self.check_autoresume():
-			print "The autoresume path is " + self.settings["autoresume_path"]
-		if not os.path.exists(self.settings["autoresume_path"]):
-			os.makedirs(self.settings["autoresume_path"],0755)
-
 	def set_controller_file(self):
 		self.settings["controller_file"]=catalyst.util.normpath(self.settings["sharedir"]+\
 			"/targets/"+self.settings["target"]+"/"+self.settings["target"]+\

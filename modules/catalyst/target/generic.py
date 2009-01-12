@@ -3,6 +3,7 @@ The toplevel class for generic_stage_target. This is about as generic as we get.
 """
 
 import catalyst
+from catalyst.output import *
 
 class generic_target:
 
@@ -11,6 +12,17 @@ class generic_target:
 		self.settings=myspec
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
+
+	def set_autoresume_path(self):
+		self.settings["autoresume_path"] = catalyst.util.normpath(self.settings["storedir"] + \
+			"/tmp/" + self.settings["rel_type"] + "/" + ".autoresume-" + \
+			self.settings["target"] + "-" + self.settings["subarch"] + "-" + \
+			self.settings["version_stamp"] + "/")
+		if self.check_autoresume():
+			msg("The autoresume path is " + self.settings["autoresume_path"])
+		if not os.path.exists(self.settings["autoresume_path"]):
+			os.makedirs(self.settings["autoresume_path"],0755)
+
 
 	def check_autoresume(self, step=None):
 		if "AUTORESUME" in self.settings:
