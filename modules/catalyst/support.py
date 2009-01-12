@@ -44,18 +44,3 @@ that the order of multiple-value items is preserved, but the order that the item
 defined are not preserved. In other words, "foo", "bar", "oni" ordering is preserved but "item1"
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
 """
-
-def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
-	"helper function to help targets parse additional arguments"
-	global valid_config_file_values
-
-	for x in addlargs.keys():
-		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
-			raise CatalystError, "Argument \""+x+"\" not recognized."
-		else:
-			myspec[x]=addlargs[x]
-
-	for x in requiredspec:
-		if not x in myspec:
-			raise CatalystError, "Required argument \""+x+"\" not specified."
-
