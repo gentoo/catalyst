@@ -3,6 +3,17 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  -examples/netboot2_template.spec, +examples/netboot_template.spec,
+  +modules/catalyst/target/netboot.py, -modules/catalyst/target/netboot2.py,
+  +targets/netboot/nb-busybox.cf, +targets/netboot/netboot-controller.sh,
+  +targets/netboot/netboot-copyfile.sh, +targets/netboot/netboot-pkg.sh,
+  -targets/netboot2/nb-busybox.cf, -targets/netboot2/netboot2-controller.sh,
+  -targets/netboot2/netboot2-copyfile.sh, -targets/netboot2/netboot2-pkg.sh,
+  targets/support/kmerge.sh, +targets/support/netboot-final.sh,
+  -targets/support/netboot2-final.sh:
+  Rename netboot2 target to netboot
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/lock.py:
   Cleanups to make pychecker happy
 

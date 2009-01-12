@@ -60,7 +60,7 @@ setup_gk_args() {
 		GK_ARGS="${GK_ARGS} --busybox-config=/tmp/busy-config"
 	fi
 
-	if [ "${clst_target}" == "netboot2" ]
+	if [ "${clst_target}" == "netboot" ]
 	then
 		GK_ARGS="${GK_ARGS} --netboot"
 

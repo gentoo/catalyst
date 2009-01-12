@@ -1,6 +1,6 @@
 subarch: mips3
 version_stamp: 2006.0
-target: netboot2
+target: netboot
 rel_type: default
 profile: uclibc/mips
 snapshot: 20060107
@@ -41,16 +41,16 @@ boot/kernel/ip28r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gn
 boot/kernel/ip30r10k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
 boot/kernel/ip32r5k/gk_kernargs: --kernel-cross-compile=mips64-unknown-linux-gnu- --makeopts=-j2
 
-netboot2/builddate: 20060107
-netboot2/busybox_config: /usr/share/genkernel/mips/nb-busybox.cf
+netboot/builddate: 20060107
+netboot/busybox_config: /usr/share/genkernel/mips/nb-busybox.cf
 
-netboot2/use:
+netboot/use:
 	-*
 	multicall
 	readline
 	ssl
 
-netboot2/packages:
+netboot/packages:
 	com_err
 	dropbear
 	dvhtool
@@ -73,14 +73,14 @@ netboot2/packages:
 	wget
 	xfsprogs
 
-netboot2/packages/com_err/files:
+netboot/packages/com_err/files:
 	/lib/libcom_err.so
 	/lib/libcom_err.so.2
 	/lib/libcom_err.so.2.1
 	/usr/bin/compile_et
 	/usr/lib/libcom_err.so
 
-netboot2/packages/dropbear/files:
+netboot/packages/dropbear/files:
 	/usr/bin/dbclient
 	/usr/bin/dbscp
 	/usr/bin/dropbearconvert
@@ -88,10 +88,10 @@ netboot2/packages/dropbear/files:
 	/usr/bin/dropbearmulti
 	/usr/sbin/dropbear
 
-netboot2/packages/dvhtool/files:
+netboot/packages/dvhtool/files:
 	/usr/sbin/dvhtool
 
-netboot2/packages/e2fsprogs/files:
+netboot/packages/e2fsprogs/files:
 	/bin/chattr
 	/bin/lsattr
 	/bin/uuidgen
@@ -132,23 +132,23 @@ netboot2/packages/e2fsprogs/files:
 	/usr/lib/libuuid.so
 	/usr/sbin/mklost+found
 
-netboot2/packages/jfsutils/files:
+netboot/packages/jfsutils/files:
 	/sbin/fsck.jfs
 	/sbin/jfs_fsck
 	/sbin/jfs_mkfs
 	/sbin/jfs_tune
 	/sbin/mkfs.jfs
 
-netboot2/packages/mdadm/files:
+netboot/packages/mdadm/files:
 	/etc/mdadm.conf
 	/sbin/mdadm
 
-netboot2/packages/nano/files:
+netboot/packages/nano/files:
 	/bin/nano
 	/bin/rnano
 	/usr/bin/nano
 
-netboot2/packages/ncurses/files:
+netboot/packages/ncurses/files:
 	/etc/terminfo
 	/lib/libcurses.so
 	/lib/libncurses.so
@@ -187,7 +187,7 @@ netboot2/packages/ncurses/files:
 	/usr/share/terminfo/x/xterm-color
 	/usr/share/terminfo/x/xterm-xfree86
 
-netboot2/packages/openssl/files:
+netboot/packages/openssl/files:
 	/usr/lib/libcrypto.so
 	/usr/lib/libcrypto.so.0
 	/usr/lib/libcrypto.so.0.9.7
@@ -195,38 +195,38 @@ netboot2/packages/openssl/files:
 	/usr/lib/libssl.so.0
 	/usr/lib/libssl.so.0.9.7
 
-netboot2/packages/popt/files:
+netboot/packages/popt/files:
 	/usr/lib/libpopt.so
 	/usr/lib/libpopt.so.0
 	/usr/lib/libpopt.so.0.0.0
 
-netboot2/packages/portmap/files:
+netboot/packages/portmap/files:
 	/sbin/portmap
 
-netboot2/packages/reiserfsprogs/files:
+netboot/packages/reiserfsprogs/files:
 	/sbin/fsck.reiserfs
 	/sbin/mkfs.reiserfs
 	/sbin/mkreiserfs
 	/sbin/reiserfsck
 	/sbin/reiserfstune
 
-netboot2/packages/rsync/files:
+netboot/packages/rsync/files:
 	/usr/bin/rsync
 
-netboot2/packages/sdparm/files:
+netboot/packages/sdparm/files:
 	/usr/bin/sdparm
 
-netboot2/packages/ss/files:
+netboot/packages/ss/files:
 	/lib/libss.so
 	/lib/libss.so.2
 	/lib/libss.so.2.0
 	/usr/bin/mk_cmds
 	/usr/lib/libss.so
 
-netboot2/packages/ttcp/files:
+netboot/packages/ttcp/files:
 	/usr/bin/ttcp
 
-netboot2/packages/uclibc/files:
+netboot/packages/uclibc/files:
 	/etc/ld.so.cache
 	/lib/ld-uClibc-0.9.27.so
 	/lib/ld-uClibc.so.0
@@ -269,7 +269,7 @@ netboot2/packages/uclibc/files:
 	/usr/lib/libthread_db.so
 	/usr/lib/libutil.so
 
-netboot2/packages/util-linux/files:
+netboot/packages/util-linux/files:
 	/sbin/fdisk
 	/sbin/mkfs
 	/sbin/mkswap
@@ -279,10 +279,10 @@ netboot2/packages/util-linux/files:
 	/usr/bin/setterm
 	/usr/bin/whereis
 
-netboot2/packages/wget/files:
+netboot/packages/wget/files:
 	/usr/bin/wget
 
-netboot2/packages/xfsprogs/files:
+netboot/packages/xfsprogs/files:
 	/bin/xfs_copy
 	/bin/xfs_growfs
 	/bin/xfs_info

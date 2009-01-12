@@ -10,33 +10,33 @@ import catalyst.util
 from catalyst.error import *
 from catalyst.spawn import *
 
-class netboot2_target(generic_stage_target):
+class netboot_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=[
 			"boot/kernel"
 		]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend([
-			"netboot2/packages",
-			"netboot2/use",
-			"netboot2/extra_files",
-			"netboot2/overlay",
-			"netboot2/busybox_config",
-			"netboot2/root_overlay",
-			"netboot2/linuxrc"
+			"netboot/packages",
+			"netboot/use",
+			"netboot/extra_files",
+			"netboot/overlay",
+			"netboot/busybox_config",
+			"netboot/root_overlay",
+			"netboot/linuxrc"
 		])
 
 		try:
-			if "netboot2/packages" in addlargs:
-				if type(addlargs["netboot2/packages"]) == types.StringType:
-					loopy=[addlargs["netboot2/packages"]]
+			if "netboot/packages" in addlargs:
+				if type(addlargs["netboot/packages"]) == types.StringType:
+					loopy=[addlargs["netboot/packages"]]
 				else:
-					loopy=addlargs["netboot2/packages"]
+					loopy=addlargs["netboot/packages"]
 
 				for x in loopy:
-					self.valid_values.append("netboot2/packages/"+x+"/files")
+					self.valid_values.append("netboot/packages/"+x+"/files")
 		except:
-			raise CatalystError,"configuration error in netboot2/packages."
+			raise CatalystError,"configuration error in netboot/packages."
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
@@ -67,24 +67,24 @@ class netboot2_target(generic_stage_target):
 			and os.path.exists(self.settings["autoresume_path"]+"copy_files_to_image"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
-			if "netboot2/packages" in self.settings:
-				if type(self.settings["netboot2/packages"]) == types.StringType:
-					loopy=[self.settings["netboot2/packages"]]
+			if "netboot/packages" in self.settings:
+				if type(self.settings["netboot/packages"]) == types.StringType:
+					loopy=[self.settings["netboot/packages"]]
 				else:
-					loopy=self.settings["netboot2/packages"]
+					loopy=self.settings["netboot/packages"]
 
 			for x in loopy:
-				if "netboot2/packages/"+x+"/files" in self.settings:
-				    if type(self.settings["netboot2/packages/"+x+"/files"]) == types.ListType:
-					    myfiles.extend(self.settings["netboot2/packages/"+x+"/files"])
+				if "netboot/packages/"+x+"/files" in self.settings:
+				    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+					    myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
 				    else:
-					    myfiles.append(self.settings["netboot2/packages/"+x+"/files"])
+					    myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
-			if "netboot2/extra_files" in self.settings:
-				if type(self.settings["netboot2/extra_files"]) == types.ListType:
-					myfiles.extend(self.settings["netboot2/extra_files"])
+			if "netboot/extra_files" in self.settings:
+				if type(self.settings["netboot/extra_files"]) == types.ListType:
+					myfiles.extend(self.settings["netboot/extra_files"])
 				else:
-					myfiles.append(self.settings["netboot2/extra_files"])
+					myfiles.append(self.settings["netboot/extra_files"])
 
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
@@ -100,11 +100,11 @@ class netboot2_target(generic_stage_target):
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
-			if "netboot2/overlay" in self.settings:
-				for x in self.settings["netboot2/overlay"]:
+			if "netboot/overlay" in self.settings:
+				for x in self.settings["netboot/overlay"]:
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
-							self.settings["chroot_path"] + self.settings["merge_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
+							self.settings["chroot_path"] + self.settings["merge_path"], "netboot/overlay: "+x+" copy failed.",env=self.env)
 				catalyst.util.touch(self.settings["autoresume_path"]+"setup_overlay")
 
 	def move_kernels(self):
@@ -128,7 +128,7 @@ class netboot2_target(generic_stage_target):
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
-					print "netboot2: removing " + x
+					print "netboot: removing " + x
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):
@@ -136,10 +136,10 @@ class netboot2_target(generic_stage_target):
 			and os.path.exists(self.settings["autoresume_path"]+"empty"):
 			print "Resume point detected, skipping empty operation..."
 		else:
-			if "netboot2/empty" in self.settings:
-				if type(self.settings["netboot2/empty"])==types.StringType:
-					self.settings["netboot2/empty"]=self.settings["netboot2/empty"].split()
-				for x in self.settings["netboot2/empty"]:
+			if "netboot/empty" in self.settings:
+				if type(self.settings["netboot/empty"])==types.StringType:
+					self.settings["netboot/empty"]=self.settings["netboot/empty"].split()
+				for x in self.settings["netboot/empty"]:
 					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x
 					if not os.path.isdir(myemp):
 						print x,"not a directory or does not exist, skipping 'empty' operation."
@@ -161,4 +161,4 @@ class netboot2_target(generic_stage_target):
 					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
 					"remove","empty","unbind","clean","clear_autoresume"]
 
-__target_map = {"netboot2":netboot2_target}
+__target_map = {"netboot":netboot_target}
