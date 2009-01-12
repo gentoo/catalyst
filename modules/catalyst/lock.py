@@ -5,6 +5,7 @@ import os
 import stat
 import sys
 import time
+from catalyst.output import *
 
 def writemsg(mystr):
 	sys.stderr.write(mystr)
@@ -90,8 +91,8 @@ class LockDir:
 		if not self.locking_method == "HARDLOCK":
 			self.fcntl_lock("read")
 		else:
-			print "HARDLOCKING doesnt support shared-read locks"
-			print "using exclusive write locks"
+			msg("HARDLOCKING doesnt support shared-read locks")
+			msg("using exclusive write locks")
 			self.hard_lock()
 
 	def write_lock(self):
@@ -165,7 +166,7 @@ class LockDir:
 	def fcntl_unlock(self):
 		unlinkfile = 1
 		if not os.path.exists(self.lockfile):
-			print "lockfile does not exist '%s'" % self.lockfile
+			msg("lockfile does not exist '%s'" % self.lockfile)
 			if (self.myfd != None):
 				try:
 					os.close(self.myfd)
@@ -197,7 +198,7 @@ class LockDir:
 						try:
 							self.locking_method(self.myfd,fcntl.LOCK_EX|fcntl.LOCK_NB)
 						except:
-							print "Read lock may be in effect. skipping lockfile delete..."
+							msg("Read lock may be in effect. skipping lockfile delete...")
 							InUse=True
 							# We won the lock, so there isn't competition for it.
 							# We can safely delete the file.
@@ -215,8 +216,8 @@ class LockDir:
 				except Exception, e:
 					# We really don't care... Someone else has the lock.
 					# So it is their problem now.
-					print "Failed to get lock... someone took it."
-					print str(e)
+					msg("Failed to get lock... someone took it.")
+					msg(str(e))
 
 					# Why test lockfilename?  Because we may have been handed an
 					# fd originally, and the caller might not like having their
@@ -265,16 +266,16 @@ class LockDir:
 			if self.hardlink_is_mine(self.myhardlock, self.lockfile):
 				# We have the lock.
 				if reported_waiting:
-					print
+					msg()
 				return True
 
 			if reported_waiting:
 				writemsg(".")
 			else:
 				reported_waiting = True
-				print
-				print "Waiting on (hardlink) lockfile: (one '.' per 3 seconds)"
-				print "Lockfile: " + self.lockfile
+				msg()
+				msg("Waiting on (hardlink) lockfile: (one '.' per 3 seconds)")
+				msg("Lockfile: " + self.lockfile)
 			time.sleep(3)
 
 		os.unlink(self.myhardlock)
@@ -299,7 +300,7 @@ class LockDir:
 	def remove_hardlock_file_from_cleanup(self):
 		if self.lockdir in self.hardlock_paths:
 			del self.hardlock_paths[self.lockdir]
-			print self.hardlock_paths
+			msg(self.hardlock_paths)
 
 	def hardlock_name(self, path):
 		mypath=path+"/.hardlock-"+os.uname()[1]+"-"+str(os.getpid())
@@ -410,11 +411,11 @@ class LockDir:
 if __name__ == "__main__":
 
 	def lock_work():
-		print
+		msg()
 		for i in range(1,6):
-			print i,time.time()
+			msg(i,time.time())
 			time.sleep(1)
-		print
+		msg()
 	def normpath(mypath):
 		newpath = os.path.normpath(mypath)
 		if len(newpath) > 1:
@@ -422,42 +423,42 @@ if __name__ == "__main__":
 				newpath = "/"+newpath.lstrip("/")
 		return newpath
 
-	print "Lock 5 starting"
+	msg("Lock 5 starting")
 	Lock1=LockDir("/tmp/lock_path")
 	Lock1.write_lock()
-	print "Lock1 write lock"
+	msg("Lock1 write lock")
 
 	lock_work()
 
 	Lock1.unlock()
-	print "Lock1 unlock"
+	msg("Lock1 unlock")
 
 	Lock1.read_lock()
-	print "Lock1 read lock"
+	msg("Lock1 read lock")
 
 	lock_work()
 
 	Lock1.unlock()
-	print "Lock1 unlock"
+	msg("Lock1 unlock")
 
 	Lock1.read_lock()
-	print "Lock1 read lock"
+	msg("Lock1 read lock")
 
 	Lock1.write_lock()
-	print "Lock1 write lock"
+	msg("Lock1 write lock")
 
 	lock_work()
 
 	Lock1.unlock()
-	print "Lock1 unlock"
+	msg("Lock1 unlock")
 
 	Lock1.read_lock()
-	print "Lock1 read lock"
+	msg("Lock1 read lock")
 
 	lock_work()
 
 	Lock1.unlock()
-	print "Lock1 unlock"
+	msg("Lock1 unlock")
 #Lock1.write_lock()
 #time.sleep(2)
 #Lock1.unlock()
