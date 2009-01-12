@@ -11,3 +11,22 @@ class generic_target:
 		self.settings=myspec
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
+
+	def check_autoresume(self, step=None):
+		if "AUTORESUME" in self.settings:
+			if step:
+				if os.path.exists(self.settings["autoresume_path"] + step):
+					return True
+				else:
+					return False
+			else:
+				return True
+		return False
+
+	def set_autoresume(self, step, value=""):
+		if value:
+			myf=open(self.settings["autoresume_path"] + step, "w")
+			myf.write(value)
+			myf.close()
+		else:
+			catalyst.util.touch(self.settings["autoresume_path"] + step)

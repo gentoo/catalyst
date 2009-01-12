@@ -44,8 +44,7 @@ class netboot_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
-		if "AUTORESUME" in self.settings \
-			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+		if self.check_autoresume("setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
@@ -62,8 +61,7 @@ class netboot_target(generic_stage_target):
 		myfiles=[]
 
 		# check for autoresume point
-		if "AUTORESUME" in self.settings \
-			and os.path.exists(self.settings["autoresume_path"]+"copy_files_to_image"):
+		if self.check_autoresume("copy_files_to_image"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			if "netboot/packages" in self.settings:
@@ -95,8 +93,7 @@ class netboot_target(generic_stage_target):
 			catalyst.util.touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
 	def setup_overlay(self):
-		if "AUTORESUME" in self.settings \
-		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
+		if self.check_autoresume("setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
 			if "netboot/overlay" in self.settings:
@@ -119,8 +116,7 @@ class netboot_target(generic_stage_target):
 			raise CatalystError,"Failed to move kernel images!"
 
 	def remove(self):
-		if "AUTORESUME" in self.settings \
-			and os.path.exists(self.settings["autoresume_path"]+"remove"):
+		if self.check_autoresume("remove"):
 			print "Resume point detected, skipping remove operation..."
 		else:
 			if self.settings["spec_prefix"]+"/rm" in self.settings:
@@ -131,8 +127,7 @@ class netboot_target(generic_stage_target):
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):
-		if "AUTORESUME" in self.settings \
-			and os.path.exists(self.settings["autoresume_path"]+"empty"):
+		if self.check_autoresume("empty"):
 			print "Resume point detected, skipping empty operation..."
 		else:
 			if "netboot/empty" in self.settings:

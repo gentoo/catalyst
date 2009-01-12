@@ -45,8 +45,7 @@ class livecd_stage2_target(generic_stage_target):
 
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
-		if "AUTORESUME" in self.settings \
-			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+		if self.check_autoresume("setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
@@ -84,9 +83,9 @@ class livecd_stage2_target(generic_stage_target):
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 			invalid_snapshot=False
 
-		if "AUTORESUME" in self.settings:
+		if self.check_autoresume():
 			if os.path.isdir(self.settings["source_path"]) and \
-				os.path.exists(self.settings["autoresume_path"]+"unpack"):
+				self.check_autoresume("unpack"):
 				print "Resume point detected, skipping unpack operation..."
 				unpack=False
 			elif "source_path_hash" in self.settings:
