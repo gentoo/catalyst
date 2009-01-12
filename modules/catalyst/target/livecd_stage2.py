@@ -7,7 +7,7 @@ import os
 from generic_stage import *
 import catalyst
 from catalyst.error import *
-from catalyst.spawn import *
+from catalyst.spawn import cmd
 
 class livecd_stage2_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

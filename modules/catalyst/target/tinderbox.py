@@ -6,7 +6,7 @@ builder class for the tinderbox target
 from generic_stage import *
 import catalyst.util
 from catalyst.error import *
-from catalyst.spawn import *
+from catalyst.spawn import cmd
 
 class tinderbox_target(generic_stage_target):
 	def __init__(self,spec,addlargs):

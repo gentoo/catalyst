@@ -3,6 +3,14 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/snapshot.py,
+  modules/catalyst/target/tinderbox.py:
+  Import only cmd() from catalyst.spawn
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py,
   modules/catalyst/target/livecd_stage2.py,
   modules/catalyst/target/stage2.py:

@@ -6,7 +6,7 @@ Builder class for snapshots.
 import os
 from generic_stage import *
 import catalyst
-from catalyst.spawn import *
+from catalyst.spawn import cmd
 
 class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):

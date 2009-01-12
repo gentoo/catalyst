@@ -10,7 +10,7 @@ import catalyst
 from catalyst.target.generic import *
 from catalyst.output import warn
 from catalyst.error import *
-from catalyst.spawn import *
+from catalyst.spawn import cmd
 
 class generic_stage_target(generic_target):
 
