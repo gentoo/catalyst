@@ -45,7 +45,7 @@ class grp_target(generic_stage_target):
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
 
-			catalyst.util.touch(self.settings["autoresume_path"]+"setup_target_path")
+			self.set_autoresume("setup_target_path")
 
 	def run_local(self):
 		for pkgset in self.settings["grp"]:

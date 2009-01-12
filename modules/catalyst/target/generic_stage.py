@@ -789,7 +789,7 @@ class generic_stage_target(generic_target):
 				self.settings["target_profile"]+" "+\
 				self.settings["chroot_path"]+"/etc/make.profile",\
 				"Error creating profile link",env=self.env)
-			catalyst.util.touch(self.settings["autoresume_path"]+"config_profile_link")
+			self.set_autoresume("config_profile_link")
 
 	def setup_confdir(self):
 		if self.check_autoresume("setup_confdir"):
@@ -802,7 +802,7 @@ class generic_stage_target(generic_target):
 				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
 					self.settings["chroot_path"]+"/etc/portage",\
 					"Error copying /etc/portage",env=self.env)
-				catalyst.util.touch(self.settings["autoresume_path"]+"setup_confdir")
+				self.set_autoresume("setup_confdir")
 
 	def portage_overlay(self):
 		""" We copy the contents of our overlays to /usr/local/portage """
@@ -1012,7 +1012,7 @@ class generic_stage_target(generic_target):
 			cmd("cp "+self.settings["chroot_path"]+"/etc/make.conf "+\
 				self.settings["chroot_path"]+"/etc/make.conf.catalyst",\
 				"Could not backup /etc/make.conf",env=self.env)
-			catalyst.util.touch(self.settings["autoresume_path"]+"chroot_setup")
+			self.set_autoresume("chroot_setup")
 
 	def fsscript(self):
 		if self.check_autoresume("fsscript"):
@@ -1022,7 +1022,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" fsscript","fsscript script failed.",env=self.env)
-					catalyst.util.touch(self.settings["autoresume_path"]+"fsscript")
+					self.set_autoresume("fsscript")
 
 	def rcupdate(self):
 		if self.check_autoresume("rcupdate"):
@@ -1031,7 +1031,7 @@ class generic_stage_target(generic_target):
 			if os.path.exists(self.settings["controller_file"]):
 				cmd("/bin/bash "+self.settings["controller_file"]+" rc-update",\
 					"rc-update script failed.",env=self.env)
-				catalyst.util.touch(self.settings["autoresume_path"]+"rcupdate")
+				self.set_autoresume("rcupdate")
 
 	def clean(self):
 		if self.check_autoresume("clean"):
@@ -1065,7 +1065,7 @@ class generic_stage_target(generic_target):
 		if os.path.exists(self.settings["controller_file"]):
 			cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
 				"clean script failed.",env=self.env)
-			catalyst.util.touch(self.settings["autoresume_path"]+"clean")
+			self.set_autoresume("clean")
 
 	def empty(self):
 		if self.check_autoresume("empty"):
@@ -1092,7 +1092,7 @@ class generic_stage_target(generic_target):
 					os.makedirs(myemp,0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
-			catalyst.util.touch(self.settings["autoresume_path"]+"empty")
+			self.set_autoresume("empty")
 
 	def remove(self):
 		if self.check_autoresume("remove"):
@@ -1110,7 +1110,7 @@ class generic_stage_target(generic_target):
 					if os.path.exists(self.settings["controller_file"]):
 						cmd("/bin/bash "+self.settings["controller_file"]+\
 							" clean","Clean  failed.",env=self.env)
-						catalyst.util.touch(self.settings["autoresume_path"]+"remove")
+						self.set_autoresume("remove")
 				except:
 					self.unbind()
 					raise
@@ -1123,7 +1123,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" preclean","preclean script failed.",env=self.env)
-					catalyst.util.touch(self.settings["autoresume_path"]+"preclean")
+					self.set_autoresume("preclean")
 
 			except:
 				self.unbind()
@@ -1151,7 +1151,7 @@ class generic_stage_target(generic_target):
 			catalyst.hash.gen_contents_file(self.settings["target_path"], self.settings)
 			catalyst.hash.gen_digest_file(self.settings["target_path"], self.settings)
 
-			catalyst.util.touch(self.settings["autoresume_path"]+"capture")
+			self.set_autoresume("capture")
 
 	def run_local(self):
 		if self.check_autoresume("run_local"):
@@ -1161,7 +1161,7 @@ class generic_stage_target(generic_target):
 				if os.path.exists(self.settings["controller_file"]):
 					cmd("/bin/bash "+self.settings["controller_file"]+" run",\
 						"run script failed.",env=self.env)
-					catalyst.util.touch(self.settings["autoresume_path"]+"run_local")
+					self.set_autoresume("run_local")
 
 			except CatalystError:
 				self.unbind()
@@ -1252,7 +1252,7 @@ class generic_stage_target(generic_target):
 				except CatalystError:
 					self.unbind()
 					raise
-				catalyst.util.touch(self.settings["autoresume_path"]+"unmerge")
+				self.set_autoresume("unmerge")
 
 	def target_setup(self):
 		if self.check_autoresume("target_setup"):
@@ -1262,7 +1262,7 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+\
 				" target_image_setup "+ self.settings["target_path"],\
 				"target_image_setup script failed.",env=self.env)
-			catalyst.util.touch(self.settings["autoresume_path"]+"target_setup")
+			self.set_autoresume("target_setup")
 
 	def setup_overlay(self):
 		if self.check_autoresume("setup_overlay"):
@@ -1275,7 +1275,7 @@ class generic_stage_target(generic_target):
 							self.settings["target_path"],\
 							self.settings["spec_prefix"]+"overlay: "+x+\
 							" copy failed.",env=self.env)
-				catalyst.util.touch(self.settings["autoresume_path"]+"setup_overlay")
+				self.set_autoresume("setup_overlay")
 
 	def create_iso(self):
 		if self.check_autoresume("create_iso"):
@@ -1288,7 +1288,7 @@ class generic_stage_target(generic_target):
 					env=self.env)
 				catalyst.hash.gen_contents_file(self.settings["iso"], self.settings)
 				catalyst.hash.gen_digest_file(self.settings["iso"], self.settings)
-				catalyst.util.touch(self.settings["autoresume_path"]+"create_iso")
+				self.set_autoresume("create_iso")
 			else:
 				print "WARNING: livecd/iso was not defined."
 				print "An ISO Image will not be created."
@@ -1305,7 +1305,7 @@ class generic_stage_target(generic_target):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" build_packages "+mypack,\
 						"Error in attempt to build packages",env=self.env)
-					catalyst.util.touch(self.settings["autoresume_path"]+"build_packages")
+					self.set_autoresume("build_packages")
 				except CatalystError:
 					self.unbind()
 					raise CatalystError,self.settings["spec_prefix"]+\
@@ -1414,8 +1414,7 @@ class generic_stage_target(generic_target):
 									cmd("rm -R "+self.settings["chroot_path"]+\
 										"/tmp/initramfs_overlay/",env=self.env)
 
-							catalyst.util.touch(self.settings["autoresume_path"]+\
-								"build_kernel_"+kname)
+							self.set_autoresume("build_kernel_" + kname)
 
 							"""
 							Execute the script that cleans up the kernel build
@@ -1425,7 +1424,7 @@ class generic_stage_target(generic_target):
 								" post-kmerge ",
 								"Runscript post-kmerge failed",env=self.env)
 
-					catalyst.util.touch(self.settings["autoresume_path"]+"build_kernel")
+					self.set_autoresume("build_kernel")
 
 				except CatalystError:
 					self.unbind()
@@ -1440,7 +1439,7 @@ class generic_stage_target(generic_target):
 				cmd("/bin/bash "+self.settings["controller_file"]+\
 					" bootloader " + self.settings["target_path"],\
 					"Bootloader script failed.",env=self.env)
-				catalyst.util.touch(self.settings["autoresume_path"]+"bootloader")
+				self.set_autoresume("bootloader")
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"Script aborting due to error."
@@ -1452,7 +1451,7 @@ class generic_stage_target(generic_target):
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+\
 					" livecd-update","livecd-update failed.",env=self.env)
-				catalyst.util.touch(self.settings["autoresume_path"]+"livecd_update")
+				self.set_autoresume("livecd_update")
 
 			except CatalystError:
 				self.unbind()
