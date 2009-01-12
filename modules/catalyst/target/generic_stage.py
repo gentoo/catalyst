@@ -1172,8 +1172,8 @@ class generic_stage_target(generic_target):
 				self.settings["stage_path"]+" .",\
 				"Couldn't create stage tarball",env=self.env)
 
-			self.gen_contents_file(self.settings["target_path"])
-			self.gen_digest_file(self.settings["target_path"])
+			catalyst.hash.gen_contents_file(self.settings["target_path"], self.settings)
+			catalyst.hash.gen_digest_file(self.settings["target_path"], settings)
 
 			catalyst.util.touch(self.settings["autoresume_path"]+"capture")
 
@@ -1315,8 +1315,8 @@ class generic_stage_target(generic_target):
 				cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
 					self.settings["iso"],"ISO creation script failed.",\
 					env=self.env)
-				self.gen_contents_file(self.settings["iso"])
-				self.gen_digest_file(self.settings["iso"])
+				catalyst.hash.gen_contents_file(self.settings["iso"], self.settings)
+				catalyst.hash.gen_digest_file(self.settings["iso"], self.settings)
 				catalyst.util.touch(self.settings["autoresume_path"]+"create_iso")
 			else:
 				print "WARNING: livecd/iso was not defined."
@@ -1576,49 +1576,6 @@ class generic_stage_target(generic_target):
 				os.makedirs(myemp,0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
-
-	def gen_contents_file(self,file):
-		if os.path.exists(file+".CONTENTS"):
-			os.remove(file+".CONTENTS")
-		if "contents" in self.settings:
-			if os.path.exists(file):
-				myf=open(file+".CONTENTS","w")
-				keys={}
-				for i in self.settings["contents"].split():
-					keys[i]=1
-					array=keys.keys()
-					array.sort()
-				for j in array:
-					contents=catalyst.hash.generate_contents(file,contents_function=j,\
-						verbose=("VERBOSE" in self.settings))
-					if contents:
-						myf.write(contents)
-				myf.close()
-
-	def gen_digest_file(self,file):
-		if os.path.exists(file+".DIGESTS"):
-			os.remove(file+".DIGESTS")
-		if "digests" in self.settings:
-			if os.path.exists(file):
-				myf=open(file+".DIGESTS","w")
-				keys={}
-				for i in self.settings["digests"].split():
-					keys[i]=1
-					array=keys.keys()
-					array.sort()
-				for f in [file, file+'.CONTENTS']:
-					if os.path.exists(f):
-						if "all" in array:
-							for k in catalyst.hash.hash_map.keys():
-								tmphash=catalyst.hash.generate_hash(f,hash_function=k,verbose=\
-									("VERBOSE" in self.settings))
-								myf.write(tmphash)
-						else:
-							for j in array:
-								tmphash=catalyst.hash.generate_hash(f,hash_function=j,verbose=\
-									("VERBOSE" in self.settings))
-								myf.write(tmphash)
-				myf.close()
 
 	def purge(self):
 		catalyst.util.countdown(10, "Purging Caches ...")

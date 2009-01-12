@@ -6,6 +6,49 @@ import os
 from catalyst.error import *
 from catalyst.output import warn
 
+def gen_contents_file(file, settings):
+	if os.path.exists(file+".CONTENTS"):
+		os.remove(file+".CONTENTS")
+	if "contents" in settings:
+		if os.path.exists(file):
+			myf=open(file+".CONTENTS","w")
+			keys={}
+			for i in settings["contents"].split():
+				keys[i]=1
+				array=keys.keys()
+				array.sort()
+			for j in array:
+				contents = generate_contents(file,contents_function=j,\
+					verbose=("VERBOSE" in settings))
+				if contents:
+					myf.write(contents)
+			myf.close()
+
+def gen_digest_file(file, settings):
+	if os.path.exists(file+".DIGESTS"):
+		os.remove(file+".DIGESTS")
+	if "digests" in settings:
+		if os.path.exists(file):
+			myf=open(file+".DIGESTS","w")
+			keys={}
+			for i in settings["digests"].split():
+				keys[i]=1
+				array=keys.keys()
+				array.sort()
+			for f in [file, file+'.CONTENTS']:
+				if os.path.exists(f):
+					if "all" in array:
+						for k in catalyst.hash.hash_map.keys():
+							tmphash = generate_hash(f,hash_function=k,verbose=\
+								("VERBOSE" in settings))
+							myf.write(tmphash)
+					else:
+						for j in array:
+							tmphash = generate_hash(f,hash_function=j,verbose=\
+								("VERBOSE" in settings))
+							myf.write(tmphash)
+			myf.close()
+
 def generate_contents(file, contents_function="auto", verbose=False):
 	try:
 		_ = contents_function
@@ -116,3 +159,4 @@ hash_map={
 	 "tiger160":[calc_hash2,"shash","-a TIGER160","TIGER160"],
 	 "whirlpool":[calc_hash2,"shash","-a WHIRLPOOL","WHIRLPOOL"],
 }
+

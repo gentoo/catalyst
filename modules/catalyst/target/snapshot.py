@@ -6,10 +6,10 @@ Builder class for snapshots.
 import os
 from catalyst.support import *
 from generic_stage import *
-import catalyst.util
+import catalyst
 from catalyst.spawn import *
 
-class snapshot_target(generic_stage_target):
+class snapshot_target(generic_target):
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
@@ -53,8 +53,8 @@ class snapshot_target(generic_stage_target):
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
 
-		self.gen_contents_file(self.settings["snapshot_path"])
-		self.gen_digest_file(self.settings["snapshot_path"])
+		catalyst.hash.gen_contents_file(self.settings["snapshot_path"], self.settings)
+		catalyst.hash.gen_digest_file(self.settings["snapshot_path"], self.settings)
 
 		self.cleanup()
 		print "snapshot: complete!"

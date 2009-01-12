@@ -6,7 +6,7 @@ The builder class for GRP (Gentoo Reference Platform) builds.
 import os,types,glob
 from catalyst.support import *
 from generic_stage import *
-import catalyst.util
+import catalyst
 from catalyst.error import *
 from catalyst.spawn import *
 
@@ -87,8 +87,8 @@ class grp_target(generic_stage_target):
 				files=[filename for filename in files if filename[0] != '.']
 				for i in files:
 					if os.path.isfile(catalyst.util.normpath(destdir+"/"+i)):
-						self.gen_contents_file(catalyst.util.normpath(destdir+"/"+i))
-						self.gen_digest_file(catalyst.util.normpath(destdir+"/"+i))
+						catalyst.hash.gen_contents_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
+						catalyst.hash.gen_digest_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
 			else:
 				destdir=catalyst.util.normpath(self.settings["target_path"]+"/"+pkgset)
 				print "Digesting files in the srcset....."
@@ -103,8 +103,8 @@ class grp_target(generic_stage_target):
 				files=[filename for filename in files if filename[0] != '.']
 				for i in files:
 					if os.path.isfile(catalyst.util.normpath(destdir+"/"+i)):
-						#self.gen_contents_file(catalyst.util.normpath(destdir+"/"+i))
-						self.gen_digest_file(catalyst.util.normpath(destdir+"/"+i))
+						#catalyst.hash.gen_contents_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
+						catalyst.hash.gen_digest_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\

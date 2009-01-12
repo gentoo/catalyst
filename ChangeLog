@@ -3,6 +3,13 @@
 # Distributed under the GPL v2
 
   12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/hash.py, modules/catalyst/target/generic.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/snapshot.py:
+  Move gen_contents_file() and gen_digest_file() from
+  catalyst.target.generic_stage to catalyst.hash
+
+  12 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/netboot/netboot-controller.sh, +targets/netboot/netboot-final.sh,
   -targets/support/netboot-final.sh:
   Move netboot-final.sh from targets/support/ to targets/netboot/
