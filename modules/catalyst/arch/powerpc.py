@@ -1,6 +1,5 @@
 
 import os,catalyst.arch
-from catalyst.support import *
 from catalyst.error import *
 
 class generic_ppc(catalyst.arch.generic_arch):

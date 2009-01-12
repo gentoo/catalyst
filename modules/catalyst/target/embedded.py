@@ -9,7 +9,6 @@ It sounds real complicated but basically it runs
 ROOT=/tmp/submerge emerge --blahblah foo bar
 """
 
-from catalyst.support import *
 from generic_stage import *
 import catalyst.util
 

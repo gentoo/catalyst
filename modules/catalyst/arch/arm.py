@@ -1,6 +1,5 @@
 
 import catalyst.arch
-from catalyst.support import *
 
 class generic_arm(catalyst.arch.generic_arch):
 	"Abstract base class for all arm (little endian) builders"

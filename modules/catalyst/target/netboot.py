@@ -4,7 +4,6 @@ Builder class for a netboot build, version 2
 """
 
 import os,string,types
-from catalyst.support import *
 from generic_stage import *
 import catalyst.util
 from catalyst.error import *

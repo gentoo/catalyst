@@ -3,7 +3,6 @@
 Builder class for LiveCD stage1.
 """
 
-from catalyst.support import *
 from generic_stage import *
 import catalyst.util
 from catalyst.spawn import *

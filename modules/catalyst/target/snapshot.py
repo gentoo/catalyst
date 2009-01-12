@@ -4,7 +4,6 @@ Builder class for snapshots.
 """
 
 import os
-from catalyst.support import *
 from generic_stage import *
 import catalyst
 from catalyst.spawn import *

@@ -1,6 +1,5 @@
 
 import catalyst.arch
-from catalyst.support import *
 
 class generic_sh(catalyst.arch.generic_arch):
 	"Abstract base class for all sh builders [Little-endian]"

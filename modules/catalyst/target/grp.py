@@ -4,7 +4,6 @@ The builder class for GRP (Gentoo Reference Platform) builds.
 """
 
 import os,types,glob
-from catalyst.support import *
 from generic_stage import *
 import catalyst
 from catalyst.error import *

@@ -5,7 +5,6 @@ import os
 import stat
 import sys
 import time
-from catalyst.support import *
 
 def writemsg(mystr):
 	sys.stderr.write(mystr)

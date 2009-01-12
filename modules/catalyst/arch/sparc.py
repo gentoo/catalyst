@@ -1,6 +1,5 @@
 
 import catalyst.arch,os
-from catalyst.support import *
 from catalyst.error import *
 
 class generic_sparc(catalyst.arch.generic_arch):

@@ -5,7 +5,6 @@ the driver class for pretty much everything that Catalyst does.
 """
 
 import os, string, types, shutil
-from catalyst.support import *
 from catalyst.target.generic import *
 from stat import *
 import catalyst.lock
