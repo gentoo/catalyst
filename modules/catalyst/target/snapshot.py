@@ -14,8 +14,8 @@ class snapshot_target(generic_target):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
 
-		generic_target.__init__(self,myspec,addlargs)
-		self.settings=myspec
+		generic_target.__init__(self)
+#		self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=catalyst.util.normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\

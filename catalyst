@@ -20,6 +20,7 @@ __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.99"
 
 conf_values={}
+config = catalyst.config.config()
 
 def usage():
 	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
@@ -145,6 +146,7 @@ def build_target(addlargs, targetmap):
 		if not addlargs["target"] in targetmap:
 			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
 
+		config.get_spec().set_target(addlargs["target"])
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
 
 		mytarget.run()
@@ -290,18 +292,26 @@ if __name__ == "__main__":
 	targetmap = catalyst.target.build_target_map()
 
 	addlargs={}
+	spec = catalyst.config.Spec()
 
 	if myspecfile:
-		spec = catalyst.config.SpecParser(myspecfile)
-		addlargs.update(spec.get_values())
+		specparser = catalyst.config.SpecParser(myspecfile)
+		spec_values = specparser.get_values()
+		addlargs.update(spec_values)
+		spec.parse_values(spec_values)
 
 	if mycmdline:
 		try:
 			cmdline = catalyst.config.ConfigParser()
 			cmdline.parse_lines(mycmdline)
+			cmdline_values = cmdline.get_values()
 			addlargs.update(cmdline.get_values())
+			spec.parse_values(cmdline_values)
 		except CatalystError:
 			die("Could not parse commandline, exiting.")
+
+	config.set_spec(spec)
+	config.set_conf(conf_values)
 
 	if not "target" in addlargs:
 		raise CatalystError, "Required value \"target\" not specified."

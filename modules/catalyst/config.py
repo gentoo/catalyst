@@ -145,3 +145,70 @@ class ConfigParser(ParserBase):
 		if filename:
 			self.parse_file(filename)
 
+class Spec:
+
+	special_prefixes = ('boot', )
+
+	def __init__(self, values=None):
+		self.values = { 'global': {} }
+		self.target = None
+		if values:
+			self.parse_values(values)
+
+	def parse_values(self, values):
+		for x in values:
+			parts = x.split('/')
+			if len(parts) == 1 or parts[0] in self.special_prefixes:
+				self.values['global'][x] = values[x]
+			else:
+				if not parts[0] in self.values:
+					self.values[parts[0]] = {}
+				# We need to stick the key including the prefix in here until the targets are updated
+				self.values[parts[0]][x] = values[x]
+				self.values[parts[0]]['/'.join(parts[1:])] = values[x]
+
+	def set_target(self, target):
+		self.target = target
+
+	def get_values(self, target=None):
+		if target is None:
+			target = self.target
+		tmp = self.values['global']
+		if target in self.values:
+			tmp.update(self.values[target])
+		return tmp
+
+class Singleton(type):
+
+	def __init__(self, *args):
+		type.__init__(self, *args)
+		self._instances = {}
+
+	def __call__(self, *args):
+		if not args in self._instances:
+			self._instances[args] = type.__call__(self, *args)
+		return self._instances[args]
+
+class config:
+
+	__metaclass__ = Singleton
+
+	def __init__(self):
+		if not hasattr(self, 'spec'):
+			self.spec = None
+			self.conf = {}
+
+	def set_spec(self, spec):
+		self.spec = spec
+
+	def get_spec(self):
+		return self.spec
+
+	def set_conf(self, conf):
+		self.conf = conf
+
+	def update_conf(self, conf):
+		self.conf.update(conf)
+
+	def get_conf(self):
+		return self.conf
