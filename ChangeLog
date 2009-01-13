@@ -3,6 +3,15 @@
 # Distributed under the GPL v2
 
   13 Jan 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> M:
+  TODO updates: add information about verification of
+  seeds/caches/configs/specs, update automated actions section in targets, add
+  all-stages and all-images target information, clean up system and world
+  target information, add information on improving caching/resuming, move
+  mixed host/target information into targets section, add information on
+  replacing livecd-tools (hwdata/libkudzu/hwsetup) with internal code, and
+  fixing the spacing.
+
+  13 Jan 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> M:
   TODO updates: added section on statistics gathering/reporting, added section
   on (potential) new targets, and update boot loader section.
 

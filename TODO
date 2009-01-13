@@ -5,115 +5,179 @@ be filed at http://tinyurl.com/79slrk (http://bugs.gentoo.org) under the
 Catalyst component.
 
 Global:
-- Remove spec_prefix from all exported variables
+- remove spec_prefix from all exported variables
   - variables without spec_prefix are global and used in all targets
   - variables with spec_prefix only apply to that target
 - add multiple target support for spec files
   - target: stage1
   - targets: stage1 stage2 stage3 stage4 livecd netboot
-- add more validation and checking for code which affects both host and target
-  - setup defaults if host isn't configured
+- add more validation and checking to code
   - allow configuration globally (catalyst.conf), per-spec, or per-target
-  - ccache
-    - check host settings (size, location, etc) and restore them when done
-  - distcc
-    - check host settings (distcc_hosts, etc) and restore them when done
-  - icecream
-    - check host settings (icecream_hosts, etc) and restore them when done
-- add support for new portage features
-  - Cache backends
+  - setup defaults if host isn't configured
+  - do not assume end-user is a Release Engineer/Developer
+    - fallback to defaults on invalid options, by default (opt-out)
+    - more verbose error reporting to assist in troubleshooting problems
+  - perform verifications before starting processing
+    - referenced files exist
+    - seed has required components for building
+- support new portage features
+  - cache backends
     - metadata_overlay (portage default in 2.1.6)
-	- sqlite
-  - Jobs
-  - Load Average
-  - Dependency checking
-    - Deep checking
-	- Complete Graph
-	- Build-time dependencies
+    - sqlite
+  - jobs
+  - load average
+  - dependency checking
+    - --deep
+    - --complete-graph
+    - --with-bdeps y (Build-time dependencies)
   - USE changes
-    - newuse versus changed-use
-  - Failure detection
-    - Add --keep-going support
+    - --newuse
+    - --reinstall changed-use
+  - failure detection
+    - --keep-going
+    - --resume --skipfirst
 - detect GCC version in seed stages for supported settings (CFLAGS)
 - add statistics gathering/reporting
-  - counter
+  - counters
     - sessions started/completed/failed
-	- targets started/completed/failed (and per-subarch here, too)
-	- sessions/targets run-time, CPU/RAM/disk usage (max and final)
-  - guage
+    - targets started/completed/failed (and per-subarch here, too)
+    - sessions/targets run-time, CPU/RAM/disk usage (max and final)
+  - guages
     - sessions/targets active
-	- caching information
+    - caching information
       - packages/stages/snapshots in respective caches
       - cache hit ratio/percent
-	  - cache age
+      - cache age
     - timing information
-	  - currently-running jobs
-	  - specific tasks
-	    - dependency calculation
-		- unpacking seeds
-  - easily retrievable (text files? BDB? SQLite? configurable?) for SNMP, etc
-- add option to perform update of the (in-cache) seed before processing target
+      - currently-running jobs
+      - specific tasks
+        - dependency calculation
+        - unpacking seeds
+  - easily retrievable (text files? BDB? SQLite? configurable?) for monitoring
 
 Config:
 - security
-  - sign materials automatically
+  - automated signing
+  - security updates
 - logging
   - add logging support (partially done through use of catalyst.output.msg())
     - file-based
-	- syslog
+    - syslog
   - add notification capabilities
     - email
-	- snmp trap
-- seperate out options that control catalyst versus the package manager
-  - options key should specify catalyst options
+    - snmp trap
+- seperate catalyst options from the package manager options
+  - options key should specify catalyst options only
   - new keys for package managers
     - portage_features
-	- pkgcore_features
+    - pkgcore_features
+- clean up mixed host/target options
+  - save/restore host settings
+    - ccache (size, location, etc)
+    - distcc (distcc_hosts, allowed, logging, etc)
+    - icecream (icecream_hosts, etc)
+- add options to update the caches/seeds before processing targets
+  - validate caches, update as necessary
+  - trust caches to be accurate
+  - update packages in seed
+    - no updates
+    - minimal updates (toolchain and dependencies, basically)
+    - update world
 
 Targets:
 - add support for livedvd/liveusb
   - do we use livecd/type or something new
-  - make livedvd type perform several actions automatically, if configured
-    - auto-fetch distfiles
-	- automatically pull stages
-	  - local disk via absolute or relative path
-	  - URI
+  - perform automatic actions, if configured
+    - auto-fetch non-target materials
+      - snapshots
+      - distfiles
+      - stages
+        - local absolute or relative path
+        - support URIs
+          - absolute URI path
+          - base URI path
+        - allow tarball names to be derived from target name
+    - create a default user
 - change user creation to be more flexible
   - stage4 and netboot support
 - build boot software for targets on-demand
   - removes cdtar requirement
   - allows one to specify multiple bootloaders
     - boot/loader: grub elilo
-	- netboot/boot/loader: pxelinux elilo
-	- livecd/boot/loader: isolinux elilo
+    - netboot/boot/loader: pxelinux elilo
+    - livecd/boot/loader: isolinux elilo
   - add ability to specify other "bootables" to build/install, like memtest86+
     - do we use a single spec key or multiple?
-	  - single
-	    - livecd/boot/image: memtest|/path/to/image (pre-built, label=memtest)
-	    - livecd/boot/image: memtest86+ (use PM)
-		- livecd/boot/image: memtest|build-memtest86+ (use PM, change label)
-		- livecd/boot/image: memtest|auto (locate in cache, try build, and fail)
-	  - multiple
-	    - livecd/boot/labels: gentoo gentoo-nofb gentoo-nodetect memtest
-	    - livecd/boot/image: gentoo gentoo gentoo memtest86 ("kernel" line)
-		- livecd/boot/opts: default default default,nodetect none
-	- do we also need a way to specify an initrd with this?
+      - single
+        - boot/image: memtest|/path/to/image (pre-built, label=memtest)
+        - livecd/boot/image: memtest86+ (use PM to build)
+        - livecd/boot/image: memtest|build-memtest86+ (use PM, change label)
+        - livecd/boot/image: memtest|auto (locate in cache, try build, fail)
+      - multiple
+        - livecd/boot/labels: gentoo gentoo-nofb gentoo-nodetect memtest
+        - livecd/boot/image: gentoo gentoo gentoo memtest86 ("kernel" line)
+        - livecd/boot/opts: default default default,nodetect none
+    - do we also need a way to specify an initrd with this?
   - setup defaults for each arch
-    - allow overrides/adds
-	- verify usability on arch
+    - allow user-defined overrides/adds
+    - verify usability on arch
 - add variable support for spec files
   - automatic substitution
     - %DATESTAMP%
-	- %BUILDDIR%
+    - %BUILDDIR%
   - user-defined
     - %DISTRIBUTION%
-	- %AUTHOR%
+    - %AUTHOR%
 - add new targets
-  - system (functionally equivalent to stages 1 through 3, produces "stage3")
-  - world (stage4 work-a-like)
+  - system
+    - aligned with current stage3, but has all lower-level work done (toolchain)
+  - world
+    - stage4 work-a-like
+  - all-stages
+    - perform stages 1, 2, and 3 (and 4?)
+  - all-images
+    - perform all-stages, if necessary
+    - build all image types
+      - LiveCD
+      - LiveDVD
+      - LiveUSB
+      - NetBoot
+        - standalone
+        - nfsroot
 - merge livecd-stage1 and livecd-stage2 into livecd target
   - do we add targets for other live (LiveDVD, LiveUSB, LiveNet) media?
 - add support for multiple userland images on a single media
   - 32-bit and 64-bit kernels/userlands
   - multiple arches/ABIs
   - normal and debug kernels/userlands
+- perform fetches before builds
+- smarter auto-resume/caching
+  - store failure info
+    - attempt normal --resume or equivalent auto-resume
+    - remove object from seed/package caches
+      - try --resume then --skipfirst to continue
+    - attempt to resolve issue, where possible
+      - merge failing package individually
+      - again with unset MAKEOPTS
+  - detect optional changes
+    - CFLAGS/LDFLAGS/etc
+  - reduce duplicated cache files
+    - shared caches, where possible
+    - symlinks
+    - hard links
+- include livecd-tools functionality
+  - userspace device enumeration/configuration
+    - pre-defined hardware information for OEM/VAR machines
+    - detect/setup network
+      - on-line updating support
+        - driver modules
+        - kernel (via kexec) when possible
+        - hardware definitions
+    - video detection/setup
+    - use hald/dbus to help standardize
+  - media-specific fixups
+    - opengl configuration
+    - auto-login on consoles
+      - setup serial console
+    - prevent rc system from unmounting incorrectly
+
