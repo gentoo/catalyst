@@ -2,6 +2,12 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  13 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  +modules/catalyst/target/system.py, +targets/system/system-chroot.sh,
+  +targets/system/system-controller.sh,
+  +targets/system/system-preclean-chroot.sh:
+  Initial commit of new system target
+
   13 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> TODO:
   Add procedure for 'system' target
 
