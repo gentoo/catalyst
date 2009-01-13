@@ -40,9 +40,6 @@ class livecd_stage1_target(generic_stage_target):
 	def set_target_path(self):
 		pass
 
-	def set_spec_prefix(self):
-		self.settings["spec_prefix"]="livecd"
-
 	def set_use(self):
 		generic_stage_target.set_use(self)
 		if "use" in self.settings:
@@ -54,11 +51,11 @@ class livecd_stage1_target(generic_stage_target):
 
 	def set_packages(self):
 		generic_stage_target.set_packages(self)
-		if self.settings["spec_prefix"]+"/packages" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+"/packages"]) == types.StringType:
-				self.settings[self.settings["spec_prefix"]+"/packages"] = \
-					self.settings[self.settings["spec_prefix"]+"/packages"].split()
-		self.settings[self.settings["spec_prefix"]+"/packages"].append("app-misc/livecd-tools")
+		if "packages" in self.settings:
+			if type(self.settings["packages"]) == types.StringType:
+				self.settings["packages"] = \
+					self.settings["packages"].split()
+		self.settings["packages"].append("app-misc/livecd-tools")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:

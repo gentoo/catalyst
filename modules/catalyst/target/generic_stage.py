@@ -103,9 +103,6 @@ class generic_stage_target(generic_target):
 				"for alternate personality type " + self.settings["hostarch"])
 		# XXX This should all be moved somewhere "higher" ^^^^^^^^^^^^^^
 
-		""" This must be set first as other set_ options depend on this """
-		self.set_spec_prefix()
-
 		""" Define all of our core variables """
 		self.set_target_profile()
 		self.set_target_subpath()
@@ -127,19 +124,12 @@ class generic_stage_target(generic_target):
 		self.set_use()
 		self.set_cleanables()
 		self.set_iso_volume_id()
-		self.set_build_kernel_vars()
-		self.set_fsscript()
 		self.set_install_mask()
-		self.set_rcadd()
-		self.set_rcdel()
-		self.set_cdtar()
 		self.set_fstype()
 		self.set_fsops()
 		self.set_iso()
 		self.set_packages()
 		self.set_rm()
-		self.set_linuxrc()
-		self.set_busybox_config()
 		self.set_overlay()
 		self.set_portage_overlay()
 		self.set_root_overlay()
@@ -235,9 +225,6 @@ class generic_stage_target(generic_target):
 				self.settings["install_mask"]=\
 					string.join(self.settings["install_mask"])
 
-	def set_spec_prefix(self):
-		self.settings["spec_prefix"]=self.settings["target"]
-
 	def set_target_profile(self):
 		self.settings["target_profile"]=self.settings["profile"]
 
@@ -289,63 +276,28 @@ class generic_stage_target(generic_target):
 		if not os.path.exists(self.settings["storedir"]+"/builds/"):
 			os.makedirs(self.settings["storedir"]+"/builds/")
 
-	def set_fsscript(self):
-		if self.settings["spec_prefix"]+"/fsscript" in self.settings:
-			self.settings["fsscript"]=\
-				self.settings[self.settings["spec_prefix"]+"/fsscript"]
-			del self.settings[self.settings["spec_prefix"]+"/fsscript"]
-
-	def set_rcadd(self):
-		if self.settings["spec_prefix"]+"/rcadd" in self.settings:
-			self.settings["rcadd"]=\
-				self.settings[self.settings["spec_prefix"]+"/rcadd"]
-			del self.settings[self.settings["spec_prefix"]+"/rcadd"]
-
-	def set_rcdel(self):
-		if self.settings["spec_prefix"]+"/rcdel" in self.settings:
-			self.settings["rcdel"]=\
-				self.settings[self.settings["spec_prefix"]+"/rcdel"]
-			del self.settings[self.settings["spec_prefix"]+"/rcdel"]
-
-	def set_cdtar(self):
-		if self.settings["spec_prefix"]+"/cdtar" in self.settings:
-			self.settings["cdtar"]=\
-				catalyst.util.normpath(self.settings[self.settings["spec_prefix"]+"/cdtar"])
-			del self.settings[self.settings["spec_prefix"]+"/cdtar"]
-
 	def set_iso(self):
-		if self.settings["spec_prefix"]+"/iso" in self.settings:
-			if self.settings[self.settings["spec_prefix"]+"/iso"].startswith('/'):
+		if "iso" in self.settings:
+			if self.settings["iso"].startswith('/'):
 				self.settings["iso"]=\
-					catalyst.util.normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
+					catalyst.util.normpath(self.settings["iso"])
 			else:
 				# This automatically prepends the build dir to the ISO output path
 				# if it doesn't start with a /
 				self.settings["iso"] = catalyst.util.normpath(self.settings["storedir"] + \
 					"/builds/" + self.settings["rel_type"] + "/" + \
-					self.settings[self.settings["spec_prefix"]+"/iso"])
-			del self.settings[self.settings["spec_prefix"]+"/iso"]
+					self.settings["iso"])
 
 	def set_fstype(self):
-		if self.settings["spec_prefix"]+"/fstype" in self.settings:
-			self.settings["fstype"]=\
-				self.settings[self.settings["spec_prefix"]+"/fstype"]
-			del self.settings[self.settings["spec_prefix"]+"/fstype"]
-
 		if not "fstype" in self.settings:
 			self.settings["fstype"]="normal"
 			for x in self.valid_values:
-				if x ==  self.settings["spec_prefix"]+"/fstype":
-					msg(self.settings["spec_prefix"] + \
-						"/fstype is being set to the default of 'normal'")
+				if x ==  "fstype":
+					msg("fstype is being set to the default of 'normal'")
 
 	def set_fsops(self):
 		if "fstype" in self.settings:
 			self.valid_values.append("fsops")
-			if self.settings["spec_prefix"]+"/fsops" in self.settings:
-				self.settings["fsops"]=\
-					self.settings[self.settings["spec_prefix"]+"/fsops"]
-				del self.settings[self.settings["spec_prefix"]+"/fsops"]
 
 	def set_source_path(self):
 		if "SEEDCACHE" in self.settings\
@@ -415,9 +367,9 @@ class generic_stage_target(generic_target):
 			"-controller.sh")
 
 	def set_iso_volume_id(self):
-		if self.settings["spec_prefix"]+"/volid" in self.settings:
+		if "volid" in self.settings:
 			self.settings["iso_volume_id"]=\
-				self.settings[self.settings["spec_prefix"]+"/volid"]
+				self.settings["volid"]
 			if len(self.settings["iso_volume_id"])>32:
 				raise CatalystError,\
 					"ISO volume ID must not exceed 32 characters."
@@ -437,10 +389,6 @@ class generic_stage_target(generic_target):
 		self.settings["action_sequence"].append("clear_autoresume")
 
 	def set_use(self):
-		if self.settings["spec_prefix"]+"/use" in self.settings:
-			self.settings["use"]=\
-				self.settings[self.settings["spec_prefix"]+"/use"]
-			del self.settings[self.settings["spec_prefix"]+"/use"]
 		if "use" in self.settings:
 			if type(self.settings["use"])==types.StringType:
 				self.settings["use"]=self.settings["use"].split()
@@ -456,27 +404,10 @@ class generic_stage_target(generic_target):
 		pass
 
 	def set_rm(self):
-		if self.settings["spec_prefix"]+"/rm" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/rm"])==types.StringType:
-				self.settings[self.settings["spec_prefix"]+"/rm"]=\
-					self.settings[self.settings["spec_prefix"]+"/rm"].split()
-
-	def set_linuxrc(self):
-		if self.settings["spec_prefix"]+"/linuxrc" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/linuxrc"])==types.StringType:
-				self.settings["linuxrc"]=\
-					self.settings[self.settings["spec_prefix"]+"/linuxrc"]
-				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
-
-	def set_busybox_config(self):
-		if self.settings["spec_prefix"]+"/busybox_config" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/busybox_config"])==types.StringType:
-				self.settings["busybox_config"]=\
-					self.settings[self.settings["spec_prefix"]+"/busybox_config"]
-				del self.settings[self.settings["spec_prefix"]+"/busybox_config"]
+		if "rm" in self.settings:
+			if type(self.settings["rm"])==types.StringType:
+				self.settings["rm"]=\
+					self.settings["rm"].split()
 
 	def set_portage_overlay(self):
 		if "portage_overlay" in self.settings:
@@ -487,20 +418,16 @@ class generic_stage_target(generic_target):
 				"".join(self.settings["portage_overlay"]) + "'")
 
 	def set_overlay(self):
-		if self.settings["spec_prefix"]+"/overlay" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/overlay"])==types.StringType:
-				self.settings[self.settings["spec_prefix"]+"/overlay"]=\
-					self.settings[self.settings["spec_prefix"]+\
-					"/overlay"].split()
+		if "overlay" in self.settings:
+			if type(self.settings["overlay"])==types.StringType:
+				self.settings["overlay"]=\
+					self.settings["overlay"].split()
 
 	def set_root_overlay(self):
-		if self.settings["spec_prefix"]+"/root_overlay" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/root_overlay"])==types.StringType:
-				self.settings[self.settings["spec_prefix"]+"/root_overlay"]=\
-					self.settings[self.settings["spec_prefix"]+\
-					"/root_overlay"].split()
+		if "root_overlay" in self.settings:
+			if type(self.settings["root_overlay"])==types.StringType:
+				self.settings["root_overlay"]=\
+					self.settings["root_overlay"].split()
 
 	def set_root_path(self):
 		""" ROOT= variable for emerges """
@@ -531,12 +458,6 @@ class generic_stage_target(generic_target):
 						"/packages"])==types.StringType:
 						addlargs["boot/kernel/"+x+"/packages"]=\
 							[addlargs["boot/kernel/"+x+"/packages"]]
-
-	def set_build_kernel_vars(self):
-		if self.settings["spec_prefix"]+"/gk_mainargs" in self.settings:
-			self.settings["gk_mainargs"]=\
-				self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
-			del self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
 
 	def kill_chroot_pids(self):
 		msg("Checking for processes running in chroot and killing them.")
@@ -807,14 +728,13 @@ class generic_stage_target(generic_target):
 
 	def root_overlay(self):
 		""" Copy over the root_overlay """
-		if self.settings["spec_prefix"]+"/root_overlay" in self.settings:
-			for x in self.settings[self.settings["spec_prefix"]+\
-				"/root_overlay"]:
+		if "root_overlay" in self.settings:
+			for x in self.settings["root_overlay"]:
 				if os.path.exists(x):
 					msg("Copying root_overlay: " + x)
 					cmd("rsync -a "+x+"/ "+\
 						self.settings["chroot_path"],\
-						self.settings["spec_prefix"]+"/root_overlay: "+x+\
+						"root_overlay: "+x+\
 						" copy failed.",env=self.env)
 
 	def base_dirs(self):
@@ -988,8 +908,7 @@ class generic_stage_target(generic_target):
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 				if '-*' in myusevars:
 					msg("\nWarning!!!  ")
-					msg("\tThe use of -* in " + self.settings["spec_prefix"] + \
-						"/use will cause portage to ignore")
+					msg("\tThe use of -* in " + "use will cause portage to ignore")
 					msg("\tpackage.use in the profile and portage_confdir. You've been warned!")
 
 			""" Setup the portage overlay """
@@ -1059,13 +978,11 @@ class generic_stage_target(generic_target):
 		if self.check_autoresume("empty"):
 			msg("Resume point detected, skipping empty operation...")
 		else:
-			if self.settings["spec_prefix"]+"/empty" in self.settings:
-				if type(self.settings[self.settings["spec_prefix"]+\
-					"/empty"])==types.StringType:
-					self.settings[self.settings["spec_prefix"]+"/empty"]=\
-						self.settings[self.settings["spec_prefix"]+\
-						"/empty"].split()
-				for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
+			if "empty" in self.settings:
+				if type(self.settings["empty"])==types.StringType:
+					self.settings["empty"]=\
+						self.settings["empty"].split()
+				for x in self.settings["empty"]:
 					myemp=self.settings["destpath"]+x
 					if not os.path.isdir(myemp):
 						msg(x + " not a directory or does not exist, skipping 'empty' operation.")
@@ -1086,8 +1003,8 @@ class generic_stage_target(generic_target):
 		if self.check_autoresume("remove"):
 			msg("Resume point detected, skipping remove operation...")
 		else:
-			if self.settings["spec_prefix"]+"/rm" in self.settings:
-				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
+			if "rm" in self.settings:
+				for x in self.settings["rm"]:
 					"""
 					We're going to shell out for all these cleaning
 					operations, so we get easy glob handling.
@@ -1215,13 +1132,12 @@ class generic_stage_target(generic_target):
 		if self.check_autoresume("unmerge"):
 			msg("Resume point detected, skipping unmerge operation...")
 		else:
-			if self.settings["spec_prefix"]+"/unmerge" in self.settings:
-				if type(self.settings[self.settings["spec_prefix"]+\
-					"/unmerge"])==types.StringType:
-					self.settings[self.settings["spec_prefix"]+"/unmerge"]=\
-						[self.settings[self.settings["spec_prefix"]+"/unmerge"]]
+			if "unmerge" in self.settings:
+				if type(self.settings["unmerge"])==types.StringType:
+					self.settings["unmerge"]=\
+						[self.settings["unmerge"]]
 				myunmerge=\
-					self.settings[self.settings["spec_prefix"]+"/unmerge"][:]
+					self.settings["unmerge"][:]
 
 				for x in range(0,len(myunmerge)):
 					"""
@@ -1256,12 +1172,12 @@ class generic_stage_target(generic_target):
 		if self.check_autoresume("setup_overlay"):
 			msg("Resume point detected, skipping setup_overlay operation...")
 		else:
-			if self.settings["spec_prefix"]+"/overlay" in self.settings:
-				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
+			if "overlay" in self.settings:
+				for x in self.settings["overlay"]:
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
 							self.settings["target_path"],\
-							self.settings["spec_prefix"]+"overlay: "+x+\
+							"overlay: "+x+\
 							" copy failed.",env=self.env)
 				self.set_autoresume("setup_overlay")
 
@@ -1282,13 +1198,12 @@ class generic_stage_target(generic_target):
 				msg("An ISO Image will not be created.")
 
 	def build_packages(self):
-		if self.settings["spec_prefix"]+"/packages" in self.settings:
+		if "packages" in self.settings:
 			if self.check_autoresume("build_packages"):
 				msg("Resume point detected, skipping build_packages operation...")
 			else:
 				mypack = \
-					catalyst.util.list_bashify(self.settings[self.settings["spec_prefix"] \
-					+"/packages"])
+					catalyst.util.list_bashify(self.settings["packages"])
 				try:
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" build_packages "+mypack,\
@@ -1296,8 +1211,7 @@ class generic_stage_target(generic_target):
 					self.set_autoresume("build_packages")
 				except CatalystError:
 					self.unbind()
-					raise CatalystError,self.settings["spec_prefix"]+\
-						"build aborting due to error."
+					raise CatalystError("build aborting due to error")
 
 	def build_kernel(self):
 		if self.check_autoresume("build_kernel"):

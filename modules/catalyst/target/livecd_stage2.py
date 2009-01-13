@@ -41,9 +41,6 @@ class livecd_stage2_target(generic_stage_target):
 		if not os.path.exists(self.settings["source_path"]):
 			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
 
-	def set_spec_prefix(self):
-	    self.settings["spec_prefix"]="livecd"
-
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if self.check_autoresume("setup_target_path"):

@@ -2,6 +2,7 @@
 The toplevel class for generic_stage_target. This is about as generic as we get.
 """
 
+import os
 import catalyst
 from catalyst.output import *
 

@@ -39,7 +39,6 @@ class netboot_target(generic_stage_target):
 			raise CatalystError,"configuration error in netboot/packages."
 
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars()
 		self.settings["merge_path"]=catalyst.util.normpath("/tmp/image/")
 
 	def set_target_path(self):
@@ -120,8 +119,8 @@ class netboot_target(generic_stage_target):
 		if self.check_autoresume("remove"):
 			msg("Resume point detected, skipping remove operation...")
 		else:
-			if self.settings["spec_prefix"]+"/rm" in self.settings:
-				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
+			if "rm" in self.settings:
+				for x in self.settings["rm"]:
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
 					msg("netboot: removing " + x)

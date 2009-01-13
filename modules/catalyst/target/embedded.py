@@ -16,15 +16,10 @@ from catalyst.output import *
 class embedded_target(generic_stage_target):
 
 	def __init__(self,spec,addlargs):
-		self.required_values=[]
-		self.valid_values=[]
-		self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel","embedded/linuxrc"])
-		self.valid_values.extend(["embedded/use"])
-		if "embedded/fs-type" in addlargs:
-			self.valid_values.append("embedded/fs-ops")
+		self.valid_values = ["empty","rm","unmerge","fs-prepare","fs-finish","mergeroot","packages","fs-type"]
+		self.valid_values += ["runscript","boot/kernel","linuxrc", "use", "fs-ops"]
 
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars()
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\

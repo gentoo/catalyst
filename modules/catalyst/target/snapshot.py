@@ -3,7 +3,7 @@
 Builder class for snapshots.
 """
 
-import os
+import os, shutil, stat
 import catalyst
 from catalyst.spawn import cmd
 from catalyst.output import *
@@ -79,7 +79,7 @@ class snapshot_target(catalyst.target.generic.generic_target):
 				os.system("chflags -R noschg "+myemp)
 			shutil.rmtree(myemp)
 			os.makedirs(myemp,0755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
+			os.chown(myemp,mystat[stat.ST_UID],mystat[stat.ST_GID])
+			os.chmod(myemp,mystat[stat.ST_MODE])
 
 __target_map = {"snapshot":snapshot_target}
