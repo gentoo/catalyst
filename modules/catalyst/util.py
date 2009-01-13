@@ -166,13 +166,17 @@ def read_makeconf(mymakeconffile):
 				return snakeoil.fileutils.read_bash_dict(mymakeconffile, sourcing_command="source")
 			except ImportError:
 				try:
-					import portage_util
-					return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
-				except ImportError:
-					myf=open(mymakeconffile,"r")
-					mylines=myf.readlines()
-					myf.close()
-					return parse_makeconf(mylines)
+					import portage.util
+					return portage.util.genconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
+				except:
+					try:
+						import portage_util
+						return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
+					except ImportError:
+						myf=open(mymakeconffile,"r")
+						mylines=myf.readlines()
+						myf.close()
+						return parse_makeconf(mylines)
 		except:
 			raise CatalystError, "Could not parse make.conf file "+mymakeconffile
 	else:
