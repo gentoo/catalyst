@@ -9,11 +9,13 @@ from catalyst.error import *
 from catalyst.spawn import cmd
 
 class tinderbox_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=["tinderbox/packages"]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["tinderbox/use"])
-		generic_stage_target.__init__(self,spec,addlargs)
 
 	def run_local(self):
 		# tinderbox

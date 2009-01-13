@@ -8,10 +8,12 @@ import catalyst
 from catalyst.output import *
 
 class stage1_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=[]
 		self.valid_values=["chost"]
-		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=catalyst.util.normpath(self.settings["chroot_path"]+self.settings["root_path"])

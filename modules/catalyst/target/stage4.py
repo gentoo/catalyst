@@ -6,7 +6,10 @@ Builder class for stage4.
 from generic_stage import *
 
 class stage4_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=["stage4/packages"]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["stage4/use","boot/kernel",\
@@ -14,7 +17,6 @@ class stage4_target(generic_stage_target):
 				"stage4/gk_mainargs","splash_theme",\
 				"portage_overlay","stage4/rcadd","stage4/rcdel",\
 				"stage4/linuxrc","stage4/unmerge","stage4/rm","stage4/empty"])
-		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/var/tmp/*","/tmp/*"]

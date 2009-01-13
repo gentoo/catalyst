@@ -6,10 +6,12 @@ Builder class for a stage3 installation tarball build.
 from generic_stage import *
 
 class stage3_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=[]
 		self.valid_values=[]
-		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_portage_overlay(self):
 		generic_stage_target.set_portage_overlay(self)

@@ -8,14 +8,14 @@ from catalyst.output import *
 
 class generic_target:
 
-	def __init__(self, myspec=None, addlargs=None):
-		if myspec and addlargs:
-			catalyst.util.addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
-			self.settings=myspec
-		else:
-			self.config = catalyst.config.config()
-			self.settings = self.config.get_spec().get_values()
-			self.settings.update(self.config.get_conf())
+	def __init__(self):
+#		if myspec and addlargs:
+#			catalyst.util.addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
+#			self.settings=myspec
+#		else:
+		self.config = catalyst.config.config()
+		self.settings = self.config.get_spec().get_values()
+		self.settings.update(self.config.get_conf())
 
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"

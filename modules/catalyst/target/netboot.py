@@ -11,7 +11,9 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class netboot_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=[
 			"boot/kernel"
 		]
@@ -27,18 +29,17 @@ class netboot_target(generic_stage_target):
 		])
 
 		try:
-			if "netboot/packages" in addlargs:
+			if "netboot/packages" in self.settings:
 				if type(addlargs["netboot/packages"]) == types.StringType:
-					loopy=[addlargs["netboot/packages"]]
+					loopy=[self.settings["netboot/packages"]]
 				else:
-					loopy=addlargs["netboot/packages"]
+					loopy=self.settings["netboot/packages"]
 
 				for x in loopy:
 					self.valid_values.append("netboot/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot/packages."
 
-		generic_stage_target.__init__(self,spec,addlargs)
 		self.settings["merge_path"]=catalyst.util.normpath("/tmp/image/")
 
 	def set_target_path(self):

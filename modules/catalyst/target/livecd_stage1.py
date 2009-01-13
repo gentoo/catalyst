@@ -9,12 +9,12 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class livecd_stage1_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+	def __init__(self):
 		self.required_values=["livecd/packages"]
 		self.valid_values=self.required_values[:]
 
 		self.valid_values.extend(["livecd/use"])
-		generic_stage_target.__init__(self,spec,addlargs)
+		generic_stage_target.__init__(self)
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\

@@ -8,10 +8,12 @@ import catalyst
 from catalyst.output import *
 
 class stage2_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+
+	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=[]
 		self.valid_values=["chost"]
-		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_source_path(self):
 		if "SEEDCACHE" in self.settings and os.path.isdir(catalyst.util.normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):

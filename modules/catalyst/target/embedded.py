@@ -15,11 +15,11 @@ from catalyst.output import *
 
 class embedded_target(generic_stage_target):
 
-	def __init__(self,spec,addlargs):
+	def __init__(self):
 		self.valid_values = ["empty","rm","unmerge","fs-prepare","fs-finish","mergeroot","packages","fs-type"]
 		self.valid_values += ["runscript","boot/kernel","linuxrc", "use", "fs-ops"]
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		generic_stage_target.__init__()
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\

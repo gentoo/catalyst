@@ -14,8 +14,8 @@ from catalyst.target.generic import *
 
 class generic_stage_target(generic_target):
 
-	def __init__(self, myspec=None, addlargs=None):
-		generic_target.__init__(self,myspec,addlargs)
+	def __init__(self):
+		generic_target.__init__(self)
 
 		self.required_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"])

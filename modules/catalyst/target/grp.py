@@ -11,7 +11,7 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class grp_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+	def __init__(self):
 		self.required_values=["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"]
 
@@ -32,7 +32,7 @@ class grp_target(generic_stage_target):
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		generic_stage_target.__init__(self)
 
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")

@@ -11,7 +11,7 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class livecd_stage2_target(generic_stage_target):
-	def __init__(self,spec,addlargs):
+	def __init__(self):
 		self.required_values=["boot/kernel"]
 
 		self.valid_values=[]
@@ -26,7 +26,7 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
 			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		generic_stage_target.__init__(self)
 		if not "livecd/type" in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"
 
