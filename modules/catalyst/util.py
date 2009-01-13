@@ -167,7 +167,7 @@ def read_makeconf(mymakeconffile):
 			except ImportError:
 				try:
 					import portage.util
-					return portage.util.genconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
+					return portage.util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
 				except:
 					try:
 						import portage_util
