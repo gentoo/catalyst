@@ -35,6 +35,24 @@ Global:
   - Failure detection
     - Add --keep-going support
 - detect GCC version in seed stages for supported settings (CFLAGS)
+- add statistics gathering/reporting
+  - counter
+    - sessions started/completed/failed
+	- targets started/completed/failed (and per-subarch here, too)
+	- sessions/targets run-time, CPU/RAM/disk usage (max and final)
+  - guage
+    - sessions/targets active
+	- caching information
+      - packages/stages/snapshots in respective caches
+      - cache hit ratio/percent
+	  - cache age
+    - timing information
+	  - currently-running jobs
+	  - specific tasks
+	    - dependency calculation
+		- unpacking seeds
+  - easily retrievable (text files? BDB? SQLite? configurable?) for SNMP, etc
+- add option to perform update of the (in-cache) seed before processing target
 
 Config:
 - security
@@ -46,14 +64,14 @@ Config:
   - add notification capabilities
     - email
 	- snmp trap
-- separate out options that control catalyst versus the package manager
+- seperate out options that control catalyst versus the package manager
   - options key should specify catalyst options
   - new keys for package managers
     - portage_features
 	- pkgcore_features
 
 Targets:
-- add support for livedvd
+- add support for livedvd/liveusb
   - do we use livecd/type or something new
   - make livedvd type perform several actions automatically, if configured
     - auto-fetch distfiles
@@ -69,8 +87,20 @@ Targets:
 	- netboot/boot/loader: pxelinux elilo
 	- livecd/boot/loader: isolinux elilo
   - add ability to specify other "bootables" to build/install, like memtest86+
-	- livecd/boot/image: memtest|/path/to/image
+    - do we use a single spec key or multiple?
+	  - single
+	    - livecd/boot/image: memtest|/path/to/image (pre-built, label=memtest)
+	    - livecd/boot/image: memtest86+ (use PM)
+		- livecd/boot/image: memtest|build-memtest86+ (use PM, change label)
+		- livecd/boot/image: memtest|auto (locate in cache, try build, and fail)
+	  - multiple
+	    - livecd/boot/labels: gentoo gentoo-nofb gentoo-nodetect memtest
+	    - livecd/boot/image: gentoo gentoo gentoo memtest86 ("kernel" line)
+		- livecd/boot/opts: default default default,nodetect none
 	- do we also need a way to specify an initrd with this?
+  - setup defaults for each arch
+    - allow overrides/adds
+	- verify usability on arch
 - add variable support for spec files
   - automatic substitution
     - %DATESTAMP%
@@ -78,4 +108,12 @@ Targets:
   - user-defined
     - %DISTRIBUTION%
 	- %AUTHOR%
-
+- add new targets
+  - system (functionally equivalent to stages 1 through 3, produces "stage3")
+  - world (stage4 work-a-like)
+- merge livecd-stage1 and livecd-stage2 into livecd target
+  - do we add targets for other live (LiveDVD, LiveUSB, LiveNet) media?
+- add support for multiple userland images on a single media
+  - 32-bit and 64-bit kernels/userlands
+  - multiple arches/ABIs
+  - normal and debug kernels/userlands
