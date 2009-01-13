@@ -15,6 +15,8 @@ from catalyst.target.generic import *
 class generic_stage_target(generic_target):
 
 	def __init__(self, myspec=None, addlargs=None):
+		generic_target.__init__(self,myspec,addlargs)
+
 		self.required_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"])
 
@@ -24,7 +26,6 @@ class generic_stage_target(generic_target):
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 
 		self.set_valid_build_kernel_vars(addlargs)
-		generic_target.__init__(self,myspec,addlargs)
 
 		"""
 		The semantics of subarchmap and machinemap changed a bit in 2.0.3 to

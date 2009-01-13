@@ -147,7 +147,8 @@ def build_target(addlargs, targetmap):
 			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
 
 		config.get_spec().set_target(addlargs["target"])
-		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
+#		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
+		mytarget=targetmap[addlargs["target"]]()
 
 		mytarget.run()
 

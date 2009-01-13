@@ -5,16 +5,17 @@ Builder class for snapshots.
 
 import os, shutil, stat
 import catalyst
+from catalyst.target.generic import generic_target
 from catalyst.spawn import cmd
 from catalyst.output import *
 
 class snapshot_target(catalyst.target.generic.generic_target):
 
-	def __init__(self,myspec,addlargs):
+	def __init__(self):
+		generic_target.__init__(self)
+
 		self.required_values = ["version_stamp","target"]
 		self.valid_values = ["version_stamp","target"]
-
-		catalyst.target.generic.generic_target.__init__(self)
 
 	def setup(self):
 		self.settings["target_subpath"]="portage"
