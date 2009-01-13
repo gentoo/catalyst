@@ -163,8 +163,6 @@ class Spec:
 			else:
 				if not parts[0] in self.values:
 					self.values[parts[0]] = {}
-				# We need to stick the key including the prefix in here until the targets are updated
-				self.values[parts[0]][x] = values[x]
 				self.values[parts[0]]['/'.join(parts[1:])] = values[x]
 
 	def set_target(self, target):
