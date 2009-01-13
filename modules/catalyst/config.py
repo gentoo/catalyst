@@ -178,6 +178,24 @@ class Spec:
 			tmp.update(self.values[target])
 		return tmp
 
+	def compare_key(self, key1, key2):
+		foo = re.compile(key1)
+		return foo.match(key2)
+
+	def validate_values(self, required, valid, target=None):
+		if target is None:
+			target = self.target
+		values = self.get_values(target)
+		for x in values:
+			if x in required or x in valid:
+				continue
+			for y in set(required + valid):
+				if not self.compare_key(y, x):
+					raise CatalystError("The key '" + x + "' is not a valid key for this target")
+		for y in required:
+			if not y in values:
+				raise CatalystError("The required key '" + y + "' was not found")
+
 class Singleton(type):
 
 	def __init__(self, *args):
