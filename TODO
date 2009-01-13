@@ -131,6 +131,12 @@ Targets:
 - add new targets
   - system
     - aligned with current stage3, but has all lower-level work done (toolchain)
+      - mkdir -p /tmp/stage3root/etc
+      - cp -a /etc/make.conf /etc/make.globals make.profile /tmp/stage3root/etc/
+      - ROOT=/tmp/stage3root PORTAGE_CONFIGROOT=/tmp/stage3root
+      - USE=build emerge -O1 baselayout
+      - emerge system
+      - eat cake
   - world
     - stage4 work-a-like
   - all-stages

@@ -2,6 +2,9 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  13 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> TODO:
+  Add procedure for 'system' target
+
   13 Jan 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> M:
   TODO updates: add information about verification of
   seeds/caches/configs/specs, update automated actions section in targets, add
