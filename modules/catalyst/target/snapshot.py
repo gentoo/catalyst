@@ -4,25 +4,25 @@ Builder class for snapshots.
 """
 
 import os
-from generic_stage import *
 import catalyst
 from catalyst.spawn import cmd
 from catalyst.output import *
 
-class snapshot_target(generic_target):
-	def __init__(self,myspec,addlargs):
-		self.required_values=["version_stamp","target"]
-		self.valid_values=["version_stamp","target"]
+class snapshot_target(catalyst.target.generic.generic_target):
 
-		generic_target.__init__(self)
-#		self.settings=myspec
+	def __init__(self,myspec,addlargs):
+		self.required_values = ["version_stamp","target"]
+		self.valid_values = ["version_stamp","target"]
+
+		catalyst.target.generic.generic_target.__init__(self)
+
+	def setup(self):
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"]=catalyst.util.normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
 			+".tar.bz2")
 		self.settings["tmp_path"]=catalyst.util.normpath(st+"/tmp/"+self.settings["target_subpath"])
 
-	def setup(self):
 		x=catalyst.util.normpath(self.settings["storedir"]+"/snapshots")
 		if not os.path.exists(x):
 			os.makedirs(x)
