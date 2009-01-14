@@ -12,27 +12,27 @@ from catalyst.output import *
 
 class grp_target(generic_stage_target):
 	def __init__(self):
+		generic_stage_target.__init__(self)
+
 		self.required_values=["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"]
 
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["grp/use"])
-		if not "grp" in addlargs:
+		if not "grp" in self.settings:
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 
 		self.required_values.extend(["grp"])
-		if type(addlargs["grp"])==types.StringType:
-			addlargs["grp"]=[addlargs["grp"]]
+		if type(self.settings["grp"])==types.StringType:
+			self.settings["grp"]=[self.settings["grp"]]
 
-		if "grp/use" in addlargs:
-		    if type(addlargs["grp/use"])==types.StringType:
-			    addlargs["grp/use"]=[addlargs["grp/use"]]
+		if "grp/use" in self.settings:
+		    if type(self.settings["grp/use"])==types.StringType:
+			    self.settings["grp/use"]=[self.settings["grp/use"]]
 
-		for x in addlargs["grp"]:
+		for x in self.settings["grp"]:
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
-
-		generic_stage_target.__init__(self)
 
 	def set_target_path(self):
 		self.settings["target_path"]=catalyst.util.normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
@@ -51,10 +51,9 @@ class grp_target(generic_stage_target):
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-			mypackages = catalyst.util.list_bashify(self.settings["grp/"+pkgset+"/packages"])
+			mypackages = catalyst.util.list_bashify(self.settings[pkgset + "/packages"])
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
-					+" "+pkgset+" "+mypackages,env=self.env)
+				self.run_controller_action("run", self.settings[pkgset + "/type"] + " " + pkgset)
 
 			except CatalystError:
 				self.unbind()

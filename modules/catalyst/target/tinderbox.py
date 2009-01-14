@@ -21,9 +21,7 @@ class tinderbox_target(generic_stage_target):
 		# tinderbox
 		# example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
-			if os.path.exists(self.settings["controller_file"]):
-			    cmd("/bin/bash "+self.settings["controller_file"]+" run "+\
-				catalyst.util.list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
+			self.run_controller_action("run", catalyst.util.list_bashify(self.settings["packages"]))
 
 		except CatalystError:
 			self.unbind()

@@ -30,7 +30,7 @@ class netboot_target(generic_stage_target):
 
 		try:
 			if "netboot/packages" in self.settings:
-				if type(addlargs["netboot/packages"]) == types.StringType:
+				if type(self.settings["netboot/packages"]) == types.StringType:
 					loopy=[self.settings["netboot/packages"]]
 				else:
 					loopy=self.settings["netboot/packages"]
@@ -85,8 +85,7 @@ class netboot_target(generic_stage_target):
 					myfiles.append(self.settings["netboot/extra_files"])
 
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
-					" image " + catalyst.util.list_bashify(myfiles),env=self.env)
+				self.run_controller_action("image", catalyst.util.list_bashify(myfiles))
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"Failed to copy files to image!"
@@ -109,8 +108,7 @@ class netboot_target(generic_stage_target):
 		# no auto resume here as we always want the
 		# freshest images moved
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" final",env=self.env)
+			self.run_controller_action("final")
 			msg(">>> Netboot Build Finished!")
 		except CatalystError:
 			self.unbind()

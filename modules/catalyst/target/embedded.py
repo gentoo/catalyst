@@ -19,7 +19,7 @@ class embedded_target(generic_stage_target):
 		self.valid_values = ["empty","rm","unmerge","fs-prepare","fs-finish","mergeroot","packages","fs-type"]
 		self.valid_values += ["runscript","boot/kernel","linuxrc", "use", "fs-ops"]
 
-		generic_stage_target.__init__()
+		generic_stage_target.__init__(self)
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\

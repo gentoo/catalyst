@@ -927,19 +927,15 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping fsscript operation...")
 		else:
 			if "fsscript" in self.settings:
-				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" fsscript","fsscript script failed.",env=self.env)
-					self.set_autoresume("fsscript")
+				self.run_controller_action("fsscript")
+				self.set_autoresume("fsscript")
 
 	def rcupdate(self):
 		if self.check_autoresume("rcupdate"):
 			msg("Resume point detected, skipping rcupdate operation...")
 		else:
-			if os.path.exists(self.settings["controller_file"]):
-				cmd("/bin/bash "+self.settings["controller_file"]+" rc-update",\
-					"rc-update script failed.",env=self.env)
-				self.set_autoresume("rcupdate")
+			self.run_controller_action("rc-update")
+			self.set_autoresume("rcupdate")
 
 	def clean(self):
 		if self.check_autoresume("clean"):
@@ -970,10 +966,8 @@ class generic_stage_target(generic_target):
 				"/etc -maxdepth 1 -name \"*-\" | xargs rm -f",\
 				"Could not remove stray files in /etc",env=self.env)
 
-		if os.path.exists(self.settings["controller_file"]):
-			cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
-				"clean script failed.",env=self.env)
-			self.set_autoresume("clean")
+		self.run_controller_action("clean")
+		self.set_autoresume("clean")
 
 	def empty(self):
 		if self.check_autoresume("empty"):
@@ -1013,10 +1007,8 @@ class generic_stage_target(generic_target):
 					msg("livecd: removing " + x)
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
 				try:
-					if os.path.exists(self.settings["controller_file"]):
-						cmd("/bin/bash "+self.settings["controller_file"]+\
-							" clean","Clean  failed.",env=self.env)
-						self.set_autoresume("remove")
+					self.run_controller_action("clean")
+					self.set_autoresume("remove")
 				except:
 					self.unbind()
 					raise
@@ -1026,10 +1018,8 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping preclean operation...")
 		else:
 			try:
-				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" preclean","preclean script failed.",env=self.env)
-					self.set_autoresume("preclean")
+				self.run_controller_action("preclean")
+				self.set_autoresume("preclean")
 
 			except:
 				self.unbind()
@@ -1064,10 +1054,8 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping run_local operation...")
 		else:
 			try:
-				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+" run",\
-						"run script failed.",env=self.env)
-					self.set_autoresume("run_local")
+				self.run_controller_action("run")
+				self.set_autoresume("run_local")
 
 			except CatalystError:
 				self.unbind()
@@ -1151,9 +1139,7 @@ class generic_stage_target(generic_target):
 
 				""" Before cleaning, unmerge stuff """
 				try:
-					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" unmerge "+ myunmerge,"Unmerge script failed.",\
-						env=self.env)
+					self.run_controller_action("unmerge")
 					msg("unmerge shell script")
 				except CatalystError:
 					self.unbind()
@@ -1165,9 +1151,7 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping target_setup operation...")
 		else:
 			msg("Setting up filesystems per filesystem type")
-			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" target_image_setup "+ self.settings["target_path"],\
-				"target_image_setup script failed.",env=self.env)
+			self.run_controller_action("target_image_setup")
 			self.set_autoresume("target_setup")
 
 	def setup_overlay(self):
@@ -1189,9 +1173,7 @@ class generic_stage_target(generic_target):
 		else:
 			""" Create the ISO """
 			if "iso" in self.settings:
-				cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
-					self.settings["iso"],"ISO creation script failed.",\
-					env=self.env)
+				self.run_controller_action("iso", self.settings["iso"])
 				catalyst.hash.gen_contents_file(self.settings["iso"], self.settings)
 				catalyst.hash.gen_digest_file(self.settings["iso"], self.settings)
 				self.set_autoresume("create_iso")
@@ -1207,9 +1189,7 @@ class generic_stage_target(generic_target):
 				mypack = \
 					catalyst.util.list_bashify(self.settings["packages"])
 				try:
-					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" build_packages "+mypack,\
-						"Error in attempt to build packages",env=self.env)
+					self.run_controller_action("build_packages", mypack)
 					self.set_autoresume("build_packages")
 				except CatalystError:
 					self.unbind()
@@ -1227,9 +1207,7 @@ class generic_stage_target(generic_target):
 					"""
 					Execute the script that sets up the kernel build environment
 					"""
-					cmd("/bin/bash "+self.settings["controller_file"]+\
-						" pre-kmerge ","Runscript pre-kmerge failed",\
-						env=self.env)
+					self.run_controller_action("pre-kmerge")
 
 					for kname in mynames:
 						if self.check_autoresume("build_kernel_" + kname):
@@ -1306,9 +1284,7 @@ class generic_stage_target(generic_target):
 										"/initramfs_overlay"],env=self.env)
 
 							""" Execute the script that builds the kernel """
-							cmd("/bin/bash "+self.settings["controller_file"]+\
-								" kernel "+kname,\
-								"Runscript kernel build failed",env=self.env)
+							self.run_controller_action("kernel", kname)
 
 							if self.settings.has_key("boot/kernel/"+kname+\
 								"/initramfs_overlay"):
@@ -1324,9 +1300,7 @@ class generic_stage_target(generic_target):
 							Execute the script that cleans up the kernel build
 							environment
 							"""
-							cmd("/bin/bash "+self.settings["controller_file"]+\
-								" post-kmerge ",
-								"Runscript post-kmerge failed",env=self.env)
+							self.run_controller_action("post-kmerge")
 
 					self.set_autoresume("build_kernel")
 
@@ -1340,9 +1314,7 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping bootloader operation...")
 		else:
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
-					" bootloader " + self.settings["target_path"],\
-					"Bootloader script failed.",env=self.env)
+				self.run_controller_action("bootloader", self.settings["target_path"])
 				self.set_autoresume("bootloader")
 			except CatalystError:
 				self.unbind()
@@ -1353,9 +1325,7 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping build_packages operation...")
 		else:
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
-					" livecd-update","livecd-update failed.",env=self.env)
-				self.set_autoresume("livecd_update")
+				self.run_controller_action("livecd-update")
 
 			except CatalystError:
 				self.unbind()

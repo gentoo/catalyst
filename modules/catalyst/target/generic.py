@@ -5,6 +5,7 @@ The toplevel class for generic_stage_target. This is about as generic as we get.
 import os
 import catalyst
 from catalyst.output import *
+from catalyst.spawn import cmd
 
 class generic_target:
 
@@ -52,3 +53,12 @@ class generic_target:
 			myf.close()
 		else:
 			catalyst.util.touch(self.settings["autoresume_path"] + step)
+
+	def run_controller_action(self, action, args=""):
+		if os.path.exists(self.settings["controller_file"]):
+			command = action
+			if args:
+				command += " " + args
+			cmd("/bin/bash " + self.settings["controller_file"] + " " + command, \
+				action + " script failed.", env=self.env)
+

@@ -3,6 +3,13 @@
 # Distributed under the GPL v2
 
   14 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/embedded.py, modules/catalyst/target/generic.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/tinderbox.py:
+  Add run_controller_action() function and replace manual calls to
+  controller file
+
+  14 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/spawn.py, targets/system/system-controller.sh:
   Add clean no-op for system target
 
