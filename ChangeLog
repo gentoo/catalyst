@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 
   14 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/spawn.py, targets/system/system-controller.sh:
+  Add clean no-op for system target
+
+  14 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/alpha.py, modules/catalyst/arch/amd64.py,
   modules/catalyst/arch/arm.py, modules/catalyst/arch/hppa.py,
   modules/catalyst/arch/ia64.py, modules/catalyst/arch/mips.py,

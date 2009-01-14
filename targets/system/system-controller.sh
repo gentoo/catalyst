@@ -22,6 +22,8 @@ case $1 in
 	preclean)
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /${clst_root_path} || exit 1
 	;;
+	clean)
+	;;
 	*)
 		exit 1
 	;;

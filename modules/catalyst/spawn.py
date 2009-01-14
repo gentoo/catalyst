@@ -298,9 +298,9 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 def cmd(mycmd,myexc="",env={}):
 	try:
 		sys.stdout.flush()
-		retval=spawn_bash(mycmd,env)
+		retval = spawn_bash(mycmd, env)
 		if retval != 0:
-			raise CatalystError,myexc
+			raise CatalystError(myexc + " (exit code " + str(retval) + ")")
 	except:
 		raise
 
