@@ -27,10 +27,10 @@ class arch_s390x(generic_s390x):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="s390x-ibm-linux-gnu"
 
-__subarch_map = {
+_subarch_map = {
 	"s390": arch_s390,
 	"s390x": arch_s390x
 }
 
-__machine_map = ("s390", "s390x")
+_machine_map = ("s390", "s390x")
 

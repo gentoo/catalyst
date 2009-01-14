@@ -17,6 +17,9 @@ class generic_target:
 		self.settings = self.config.get_spec().get_values()
 		self.settings.update(self.config.get_conf())
 
+		self.required_values = []
+		self.valid_values = []
+
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
 

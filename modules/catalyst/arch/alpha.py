@@ -66,7 +66,7 @@ class arch_ev67(generic_alpha):
 		self.settings["CHOST"]="alphaev67-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["ev6"]
 
-__subarch_map = {
+_subarch_map = {
 	"alpha": arch_alpha,
 	"ev4": arch_ev4,
 	"ev45": arch_ev45,
@@ -77,4 +77,4 @@ __subarch_map = {
 	"ev67": arch_ev67
 }
 
-__machine_map = ("alpha", )
+_machine_map = ("alpha", )

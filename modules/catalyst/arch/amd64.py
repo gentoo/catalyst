@@ -54,7 +54,7 @@ class arch_amdfam10(generic_amd64):
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2","3dnow"]
 
-__subarch_map = {
+_subarch_map = {
 	"amd64"		: arch_amd64,
 	"k8"		: arch_k8,
 	"opteron"	: arch_k8,
@@ -70,5 +70,5 @@ __subarch_map = {
 #	"barcelona"	: arch_amdfam10
 }
 
-__machine_map = ("x86_64","amd64","nocona")
+_machine_map = ("x86_64","amd64","nocona")
 

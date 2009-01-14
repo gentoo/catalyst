@@ -30,11 +30,11 @@ class arch_hppa2_0(generic_hppa):
 		self.settings["CFLAGS"]+=" -march=2.0"
 		self.settings["CHOST"]="hppa2.0-unknown-linux-gnu"
 
-__subarch_map = {
+_subarch_map = {
 	"hppa":		arch_hppa,
 	"hppa1.1":	arch_hppa1_1,
 	"hppa2.0":	arch_hppa2_0
 }
 
-__machine_map = ("parisc","parisc64","hppa","hppa64")
+_machine_map = ("parisc","parisc64","hppa","hppa64")
 

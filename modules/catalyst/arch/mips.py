@@ -162,7 +162,7 @@ class arch_ip30_n32(generic_mipsel):
 		arch_mips4_n32.__init__(self,myspec)
 		self.settings["HOSTUSE"]=["ip30","n32"]
 
-__subarch_map = {
+_subarch_map = {
 	"cobalt"		: arch_cobalt,
 	"cobalt_n32"	: arch_cobalt_n32,
 	"ip27"			: arch_ip27,
@@ -189,5 +189,5 @@ __subarch_map = {
 	"loongson"		: arch_mipsel3,
 }
 
-__machine_map = ("mips","mips64")
+_machine_map = ("mips","mips64")
 

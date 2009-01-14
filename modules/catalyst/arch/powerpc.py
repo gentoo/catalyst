@@ -105,7 +105,7 @@ class arch_power6(arch_ppc64):
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
-__subarch_map = {
+_subarch_map = {
 	"970"		: arch_970,
 	"cell"		: arch_cell,
 	"g3"		: arch_g3,
@@ -121,5 +121,5 @@ __subarch_map = {
 	"ppc64"		: arch_ppc64
 }
 
-__machine_map = ("ppc","ppc64","powerpc","powerpc64")
+_machine_map = ("ppc","ppc64","powerpc","powerpc64")
 

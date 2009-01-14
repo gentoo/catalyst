@@ -5,6 +5,7 @@ import os
 import stat
 import sys
 import time
+from os.path import normpath
 from catalyst.output import *
 
 def writemsg(mystr):

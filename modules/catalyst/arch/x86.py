@@ -123,7 +123,7 @@ class arch_athlon_xp(generic_x86):
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","3dnow","sse"]
 
-__subarch_map = {
+_subarch_map = {
 	"x86"			: arch_x86,
 	"i386"			: arch_i386,
 	"i486"			: arch_i486,
@@ -149,5 +149,5 @@ __subarch_map = {
 	"athlon-mp"		: arch_athlon_xp
 }
 
-__machine_map = ('i386', 'i486', 'i586', 'i686')
+_machine_map = ('i386', 'i486', 'i586', 'i686')
 

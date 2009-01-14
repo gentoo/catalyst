@@ -10,9 +10,9 @@ class arch_ia64(catalyst.arch.generic_arch):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="ia64-unknown-linux-gnu"
 
-__subarch_map = {
+_subarch_map = {
 	"ia64": arch_ia64
 }
 
-__machine_map = ("ia64", )
+_machine_map = ("ia64", )
 

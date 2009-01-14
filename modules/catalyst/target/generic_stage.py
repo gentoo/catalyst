@@ -25,7 +25,7 @@ class generic_stage_target(generic_target):
 			"cflags","cxxflags","ldflags","cbuild","hostuse","portage_overlay",\
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 
-		self.set_valid_build_kernel_vars(addlargs)
+		self.set_valid_build_kernel_vars()
 
 		"""
 		The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
@@ -57,11 +57,11 @@ class generic_stage_target(generic_target):
 
 		arches = catalyst.arch.get_arches()
 		for x in arches:
-			self.subarchmap.update(arches[x].__subarch_map)
-			for machine in arches[x].__machine_map:
-				machinemap[machine] = arches[x]
-			for subarch in arches[x].__subarch_map:
-				machinemap[subarch] = arches[x]
+			self.subarchmap.update(arches[x]._subarch_map)
+			for machine in arches[x]._machine_map:
+				machinemap[machine] = x
+			for subarch in arches[x]._subarch_map:
+				machinemap[subarch] = x
 
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
@@ -434,12 +434,12 @@ class generic_stage_target(generic_target):
 		""" ROOT= variable for emerges """
 		self.settings["root_path"]="/"
 
-	def set_valid_build_kernel_vars(self,addlargs):
-		if "boot/kernel" in addlargs:
-			if type(addlargs["boot/kernel"])==types.StringType:
-				loopy=[addlargs["boot/kernel"]]
+	def set_valid_build_kernel_vars(self):
+		if "boot/kernel" in self.settings:
+			if type(self.settings["boot/kernel"])==types.StringType:
+				loopy=[self.settings["boot/kernel"]]
 			else:
-				loopy=addlargs["boot/kernel"]
+				loopy=self.settings["boot/kernel"]
 
 			for x in loopy:
 				self.valid_values.append("boot/kernel/"+x+"/aliases")
@@ -454,11 +454,11 @@ class generic_stage_target(generic_target):
 				self.valid_values.append("boot/kernel/"+x+"/softlevel")
 				self.valid_values.append("boot/kernel/"+x+"/use")
 				self.valid_values.append("boot/kernel/"+x+"/packages")
-				if "boot/kernel/"+x+"/packages" in addlargs:
-					if type(addlargs["boot/kernel/"+x+\
+				if "boot/kernel/"+x+"/packages" in self.settings:
+					if type(self.settings["boot/kernel/"+x+\
 						"/packages"])==types.StringType:
-						addlargs["boot/kernel/"+x+"/packages"]=\
-							[addlargs["boot/kernel/"+x+"/packages"]]
+						self.settings["boot/kernel/"+x+"/packages"]=\
+							[self.settings["boot/kernel/"+x+"/packages"]]
 
 	def kill_chroot_pids(self):
 		msg("Checking for processes running in chroot and killing them.")
@@ -1122,7 +1122,8 @@ class generic_stage_target(generic_target):
 			msg("--- Running action sequence: " + x)
 			sys.stdout.flush()
 			try:
-				apply(getattr(self,x))
+				func = getattr(self, x)
+				func()
 			except:
 				self.mount_safety_check()
 				raise

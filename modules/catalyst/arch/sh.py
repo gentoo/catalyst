@@ -69,7 +69,7 @@ class arch_sh4eb(generic_sheb):
 		self.settings["CFLAGS"]="-O2 -m4 -pipe"
 		self.settings["CHOST"]="sh4eb-unknown-linux-gnu"
 
-__subarch_map = {
+_subarch_map = {
 	"sh"	:arch_sh,
 	"sh2"	:arch_sh2,
 	"sh3"	:arch_sh3,
@@ -80,5 +80,5 @@ __subarch_map = {
 	"sh4eb"	:arch_sh4eb
 }
 
-__machine_map = ("sh2","sh3","sh4","sh2eb","sh3eb","sh4eb")
+_machine_map = ("sh2","sh3","sh4","sh2eb","sh3eb","sh4eb")
 

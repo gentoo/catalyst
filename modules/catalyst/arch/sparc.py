@@ -34,10 +34,10 @@ class arch_sparc64(generic_sparc64):
 		self.settings["CFLAGS"]="-O2 -mcpu=ultrasparc -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
-__subarch_map = {
+_subarch_map = {
 	"sparc"		: arch_sparc,
 	"sparc64"	: arch_sparc64
 }
 
-__machine_map = ("sparc","sparc64")
+_machine_map = ("sparc","sparc64")
 
