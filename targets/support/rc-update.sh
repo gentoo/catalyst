@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if portageq has_version / '>=sys-apps/baselayout-2*'
+if portageq has_version / '>=sys-apps/baselayout-2'
 then
 	# We need to add a few here for baselayout-2
 	[[ -e /etc/init.d/device-mapper ]] && rc-update add device-mapper boot
