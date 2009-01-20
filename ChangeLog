@@ -2,6 +2,11 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  20 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
+  targets/stage1/stage1-chroot.sh:
+  Remove --noreplace from run_merge call so that baselayout gets rebuilt
+  with USE=build
+
   16 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/rc-update.sh:
   Change invalid atom '>=sys-apps/baselayout-2*' to
