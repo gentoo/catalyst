@@ -877,7 +877,7 @@ class generic_stage_target(generic_target):
 				"/etc/make.conf",env=self.env)
 			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
-			myf.write("# Please consult /etc/make.conf.example for a more detailed example.\n")
+			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
 			if "CFLAGS" in self.settings:
 				myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 			if "CXXFLAGS" in self.settings:
