@@ -54,6 +54,10 @@ Global:
         - dependency calculation
         - unpacking seeds
   - easily retrievable (text files? BDB? SQLite? configurable?) for monitoring
+- enhance support for catalystrc
+  - source before each build step
+  - more like /etc/portage/bashrc or profile.bashrc
+  - adds ability for user-defined hooks
 
 Config:
 - security
