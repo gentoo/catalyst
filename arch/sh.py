@@ -42,6 +42,13 @@ class arch_sh4(generic_sh):
 		self.settings["CFLAGS"]="-O2 -m4 -pipe"
 		self.settings["CHOST"]="sh4-unknown-linux-gnu"
 
+class arch_sh4a(generic_sh):
+	"Builder class for SH-4a [Little-endian]"
+	def __init__(self,myspec):
+		generic_sh.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -m4a -pipe"
+		self.settings["CHOST"]="sh4a-unknown-linux-gnu"
+
 class arch_sheb(generic_sheb):
 	"Builder class for SH [Big-endian]"
 	def __init__(self,myspec):
@@ -70,6 +77,13 @@ class arch_sh4eb(generic_sheb):
 		self.settings["CFLAGS"]="-O2 -m4 -pipe"
 		self.settings["CHOST"]="sh4eb-unknown-linux-gnu"
 
+class arch_sh4aeb(generic_sheb):
+	"Builder class for SH-4a [Big-endian]"
+	def __init__(self,myspec):
+		generic_sheb.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -m4a -pipe"
+		self.settings["CHOST"]="sh4aeb-unknown-linux-gnu"
+
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
@@ -77,8 +91,10 @@ def register():
 			"sh2"	:arch_sh2,
 			"sh3"	:arch_sh3,
 			"sh4"	:arch_sh4,
+			"sh4a"	:arch_sh4a,
 			"sheb"	:arch_sheb,
 			"sh2eb" :arch_sh2eb,
 			"sh3eb"	:arch_sh3eb,
-			"sh4eb"	:arch_sh4eb
-	}, ("sh2","sh3","sh4","sh2eb","sh3eb","sh4eb"))
+			"sh4eb"	:arch_sh4eb,
+			"sh4aeb" :arch_sh4aeb
+	}, ("sh2","sh3","sh4","sh4a","sh2eb","sh3eb","sh4eb","sh4aeb"))
