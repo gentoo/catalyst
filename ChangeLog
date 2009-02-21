@@ -2,6 +2,10 @@
 # Copyright 2002-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 
+  21 Feb 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/arm.py, modules/catalyst/arch/sh.py:
+  Apply modified patch from gentoo bug #255793 for enhanced sh/arm support
+
   30 Jan 2009; Andrew Gaffney <agaffney@gentoo.org> TODO:
   Add note to TODO about enhanced catalystrc support
 
