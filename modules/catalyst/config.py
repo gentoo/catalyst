@@ -169,9 +169,10 @@ class Spec:
 		self.target = target
 
 	def get_values(self, target=None):
+		tmp = self.values['global']
 		if target is None:
 			target = self.target
-		tmp = self.values['global']
+			tmp['target'] = target
 		if target in self.values:
 			tmp.update(self.values[target])
 		return tmp

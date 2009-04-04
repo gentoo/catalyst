@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 
   04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/config.py:
+  Explicitly set target: in per-target spec values
+
+  04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/arch/arm.py:
   Apply additional patch from gentoo bug #255793 for arm subarches
 
