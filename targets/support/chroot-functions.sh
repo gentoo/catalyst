@@ -210,7 +210,6 @@ cleanup_stages() {
 	esac
 
 	rm -f /var/log/emerge.log /var/log/portage/elog/*
-	rm -rf /var/tmp/*
 }
 
 update_env_settings(){
