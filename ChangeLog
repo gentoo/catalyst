@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 
   04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/arch/arm.py:
+  Apply additional patch from gentoo bug #255793 for arm subarches
+
+  04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:
   Apply patch from gentoo bug #264457 to prevent deleting of ccache cache
 
