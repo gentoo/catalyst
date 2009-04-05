@@ -5,10 +5,10 @@ be filed at http://tinyurl.com/79slrk (http://bugs.gentoo.org) under the
 Catalyst component.
 
 Global:
-- remove spec_prefix from all exported variables
+- remove spec_prefix from all exported variables (DONE)
   - variables without spec_prefix are global and used in all targets
   - variables with spec_prefix only apply to that target
-- add multiple target support for spec files
+- add multiple target support for spec files (DONE)
   - target: stage1
   - targets: stage1 stage2 stage3 stage4 livecd netboot
 - add more validation and checking to code
@@ -133,7 +133,7 @@ Targets:
     - %DISTRIBUTION%
     - %AUTHOR%
 - add new targets
-  - system
+  - system (proof of concept)
     - aligned with current stage3, but has all lower-level work done (toolchain)
       - mkdir -p /tmp/stage3root/etc
       - cp -a /etc/make.conf /etc/make.globals make.profile /tmp/stage3root/etc/
