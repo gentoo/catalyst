@@ -133,13 +133,14 @@ def parse_config(myconfig):
 			conf_values[x[1]] = "1"
 
 	if "digests" in myconf:
-		conf_values["digests"]=myconf["digests"]
+		conf_values["digests"] = myconf["digests"]
+
 	if "contents" in myconf:
-		conf_values["contents"]=myconf["contents"]
+		conf_values["contents"] = myconf["contents"]
 
 	if "envscript" in myconf:
 		msg("Envscript support enabled.")
-		conf_values["ENVSCRIPT"]=myconf["envscript"]
+		conf_values["ENVSCRIPT"] = myconf["envscript"]
 
 def build_target(addlargs, targetmap):
 	try:
@@ -247,20 +248,20 @@ if __name__ == "__main__":
 
 		if o in ("-C", "--cli"):
 			run = True
-			x=sys.argv.index(o)+1
+			x = sys.argv.index(o) + 1
 			while x < len(sys.argv):
 				mycmdline.append(sys.argv[x])
-				x=x+1
+				x = x + 1
 
 		if o in ("-f", "--file"):
 			run = True
-			myspecfile=a
+			myspecfile = a
 
 		if o in ("-F", "--fetchonly"):
-			conf_values["FETCH"]="1"
+			conf_values["FETCH"] = "1"
 
 		if o in ("-v", "--verbose"):
-			conf_values["VERBOSE"]="1"
+			conf_values["VERBOSE"] = "1"
 
 		if o in ("-s", "--snapshot"):
 			if len(sys.argv) < 3:
@@ -292,7 +293,7 @@ if __name__ == "__main__":
 
 	targetmap = catalyst.target.build_target_map()
 
-	addlargs={}
+	addlargs = {}
 	spec = catalyst.config.Spec()
 
 	if myspecfile:
