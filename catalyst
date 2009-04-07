@@ -19,7 +19,7 @@ from catalyst.hash import hash_map
 __maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
 __version__="2.99"
 
-conf_values={}
+conf_values = {}
 config = catalyst.config.config()
 
 def usage():
@@ -80,7 +80,7 @@ def parse_config(myconfig):
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
 		msg("Using default Catalyst configuration file, /etc/catalyst/catalyst.conf")
-		config_file="/etc/catalyst/catalyst.conf"
+		config_file = "/etc/catalyst/catalyst.conf"
 
 	# can't find a config file (we are screwed), so bail out
 	else:
@@ -103,10 +103,10 @@ def parse_config(myconfig):
 	for x in confdefaults.keys():
 		if x in myconf:
 			msg("Setting " + x + " to config file value '" + myconf[x] + "'")
-			conf_values[x]=myconf[x]
+			conf_values[x] = myconf[x]
 		else:
-			msg("Setting " + x + " to default value '"+confdefaults[x] + "'")
-			conf_values[x]=confdefaults[x]
+			msg("Setting " + x + " to default value '" + confdefaults[x] + "'")
+			conf_values[x] = confdefaults[x]
 
 	options = (
 		("autoresume", "AUTORESUME", "Autoresuming support enabled."),
