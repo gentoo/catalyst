@@ -164,6 +164,9 @@ class Spec:
 				if not parts[0] in self.values:
 					self.values[parts[0]] = {}
 				self.values[parts[0]]['/'.join(parts[1:])] = values[x]
+		if 'target' in self.values['global']:
+			self.values['global']['targets'] = set((self.values['global']['target'], ))
+			del self.values['global']['target']
 
 	def set_target(self, target):
 		self.target = target
@@ -214,6 +217,7 @@ class config:
 		if not hasattr(self, 'spec'):
 			self.spec = None
 			self.conf = {}
+			self.targetmap = None
 
 	def set_spec(self, spec):
 		self.spec = spec
@@ -229,3 +233,9 @@ class config:
 
 	def get_conf(self):
 		return self.conf
+
+	def set_targetmap(self, targetmap):
+		self.targetmap = targetmap
+
+	def get_targetmap(self):
+		return self.targetmap

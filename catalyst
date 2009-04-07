@@ -142,21 +142,27 @@ def parse_config(myconfig):
 		msg("Envscript support enabled.")
 		conf_values["ENVSCRIPT"] = myconf["envscript"]
 
-def build_target(addlargs, targetmap):
-	try:
-		if not addlargs["target"] in targetmap:
-			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
+def build_targets():
+	spec_values = config.get_spec().get_values()
+	targetmap = config.get_targetmap()
 
-		config.get_spec().set_target(addlargs["target"])
-#		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
-		mytarget=targetmap[addlargs["target"]]()
+	if not "targets" in spec_values or not spec_values['targets']:
+		raise CatalystError, "No target(s) specified."
 
-		mytarget.run()
+	for x in spec_values['targets']:
+		if not x in targetmap:
+			raise CatalystError("Target \"" + x + "\" is not a known target.")
 
-	except:
-		catalyst.util.print_traceback()
-		warn("Error encountered during run of target " + addlargs["target"])
-		raise
+	for x in spec_values['targets']:
+		try:
+			config.get_spec().set_target(x)
+			mytarget = targetmap[x]()
+			mytarget.run()
+
+		except:
+			catalyst.util.print_traceback()
+			warn("Error encountered during run of target " + x)
+			raise
 
 def verify_digest_and_hash_functions():
 	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
@@ -292,14 +298,11 @@ if __name__ == "__main__":
 	verify_digest_and_hash_functions()
 
 	targetmap = catalyst.target.build_target_map()
-
-	addlargs = {}
 	spec = catalyst.config.Spec()
 
 	if myspecfile:
 		specparser = catalyst.config.SpecParser(myspecfile)
 		spec_values = specparser.get_values()
-		addlargs.update(spec_values)
 		spec.parse_values(spec_values)
 
 	if mycmdline:
@@ -307,20 +310,17 @@ if __name__ == "__main__":
 			cmdline = catalyst.config.ConfigParser()
 			cmdline.parse_lines(mycmdline)
 			cmdline_values = cmdline.get_values()
-			addlargs.update(cmdline.get_values())
 			spec.parse_values(cmdline_values)
 		except CatalystError:
 			die("Could not parse commandline, exiting.")
 
 	config.set_spec(spec)
 	config.set_conf(conf_values)
-
-	if not "target" in addlargs:
-		raise CatalystError, "Required value \"target\" not specified."
+	config.set_targetmap(targetmap)
 
 	# everything is setup, so the build is a go
 	try:
-		build_target(addlargs, targetmap)
+		build_targets()
 
 	except CatalystError:
 		msg()
