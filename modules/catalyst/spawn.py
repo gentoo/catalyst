@@ -27,30 +27,31 @@ except:
 spawned_pids = []
 
 def cleanup(pids,block_exceptions=True):
-        """function to go through and reap the list of pids passed to it"""
-        global spawned_pids
-        if type(pids) == int:
-                pids = [pids]
-        for x in pids:
-                try:
-                        os.kill(x,signal.SIGTERM)
-                        if os.waitpid(x,os.WNOHANG)[1] == 0:
-                                # feisty bugger, still alive.
-                                os.kill(x,signal.SIGKILL)
-                                os.waitpid(x,0)
-
-                except OSError, oe:
-                        if block_exceptions:
-                                pass
-                        if oe.errno not in (10,3):
-                                raise oe
-                except SystemExit:
-                        raise
-                except Exception:
-                        if block_exceptions:
-                                pass
-                try:                    spawned_pids.remove(x)
-                except IndexError:      pass
+	"""function to go through and reap the list of pids passed to it"""
+	global spawned_pids
+	if type(pids) == int:
+		pids = [pids]
+	for x in pids:
+		try:
+			os.kill(x,signal.SIGTERM)
+			if os.waitpid(x,os.WNOHANG)[1] == 0:
+				# feisty bugger, still alive.
+				os.kill(x,signal.SIGKILL)
+				os.waitpid(x,0)
+		except OSError, oe:
+			if block_exceptions:
+				pass
+			if oe.errno not in (10,3):
+				raise oe
+		except SystemExit:
+			raise
+		except Exception:
+			if block_exceptions:
+				pass
+		try:                    
+			spawned_pids.remove(x)
+		except IndexError:
+			pass
 
 
 def spawn_bash(mycommand,env={},debug=False,opt_name=None,**keywords):
