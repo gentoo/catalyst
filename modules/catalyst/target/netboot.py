@@ -73,10 +73,10 @@ class netboot_target(generic_stage_target):
 
 			for x in loopy:
 				if "netboot/packages/"+x+"/files" in self.settings:
-				    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
-					    myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
-				    else:
-					    myfiles.append(self.settings["netboot/packages/"+x+"/files"])
+					if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+						myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
+					else:
+						myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 			if "netboot/extra_files" in self.settings:
 				if type(self.settings["netboot/extra_files"]) == types.ListType:
@@ -148,11 +148,11 @@ class netboot_target(generic_stage_target):
 		self.set_autoresume("empty")
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",
-	    				"setup_confdir","portage_overlay","bind","chroot_setup",\
-					"setup_environment","build_packages","root_overlay",\
-					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
-					"remove","empty","unbind","clean","clear_autoresume"]
+		self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",
+				"setup_confdir","portage_overlay","bind","chroot_setup",\
+				"setup_environment","build_packages","root_overlay",\
+				"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
+				"remove","empty","unbind","clean","clear_autoresume"]
 
 __target_map = {"netboot":netboot_target}
 
