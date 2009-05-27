@@ -26,3 +26,5 @@ class generic_arch:
 
 	def __init__(self, myspec):
 		self.settings = myspec
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

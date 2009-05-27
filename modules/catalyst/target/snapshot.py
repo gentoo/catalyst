@@ -84,3 +84,5 @@ class snapshot_target(catalyst.target.generic.generic_target):
 			os.chmod(myemp,mystat[stat.ST_MODE])
 
 __target_map = {"snapshot":snapshot_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

@@ -28,3 +28,5 @@ class stage3_target(generic_stage_target):
 		self.settings["cleanables"].extend(["/etc/portage"])
 
 __target_map = {"stage3":stage3_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

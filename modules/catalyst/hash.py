@@ -160,3 +160,4 @@ hash_map={
 	 "whirlpool":[calc_hash2,"shash","-a WHIRLPOOL","WHIRLPOOL"],
 }
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

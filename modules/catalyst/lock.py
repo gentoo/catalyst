@@ -466,3 +466,5 @@ if __name__ == "__main__":
     ##Lock1.write_lock()
     #time.sleep(2)
     #Lock1.unlock()
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

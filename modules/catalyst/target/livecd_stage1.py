@@ -65,3 +65,5 @@ class livecd_stage1_target(generic_stage_target):
 			generic_stage_target.set_pkgcache_path(self)
 
 __target_map = {"livecd-stage1":livecd_stage1_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

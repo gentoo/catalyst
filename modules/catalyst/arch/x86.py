@@ -151,3 +151,4 @@ _subarch_map = {
 
 _machine_map = ('i386', 'i486', 'i586', 'i686')
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

@@ -162,3 +162,5 @@ _subarch_map = {
 }
 
 _machine_map = ("arm", "armv4l", "armv4tl", "armv5l", "armv5tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "armeb", "armv5teb")
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

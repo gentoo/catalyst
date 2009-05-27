@@ -135,3 +135,5 @@ class livecd_stage2_target(generic_stage_target):
 		self.settings["action_sequence"].append("clear_autoresume")
 
 __target_map = {"livecd-stage2":livecd_stage2_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

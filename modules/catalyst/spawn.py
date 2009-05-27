@@ -319,3 +319,4 @@ def process_exit_code(retval,throw_signals=False):
                 return (retval & 0xff) << 8 # interrupted by signal
 
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

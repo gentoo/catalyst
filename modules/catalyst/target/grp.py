@@ -111,3 +111,5 @@ class grp_target(generic_stage_target):
 					    "generate_digests","clear_autoresume"]
 
 __target_map = {"grp":grp_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

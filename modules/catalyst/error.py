@@ -27,3 +27,4 @@ class LockInUse(Exception):
 			warn("lock file in use: " + message)
 			msg()
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

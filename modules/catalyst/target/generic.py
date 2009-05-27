@@ -62,3 +62,4 @@ class generic_target:
 			cmd("/bin/bash " + self.settings["controller_file"] + " " + command, \
 				action + " script failed.", env=self.env)
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

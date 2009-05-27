@@ -29,3 +29,5 @@ def build_target_map():
 		if hasattr(targets[x], '__target_map'):
 			target_map.update(targets[x].__target_map)
 	return target_map
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

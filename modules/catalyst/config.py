@@ -239,3 +239,5 @@ class config:
 
 	def get_targetmap(self):
 		return self.targetmap
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

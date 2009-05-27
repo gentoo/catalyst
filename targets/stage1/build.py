@@ -34,3 +34,5 @@ for idx in range(0, len(pkgs)):
 	except: pass
 
 for b in buildpkgs: sys.stdout.write(b+" ")
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

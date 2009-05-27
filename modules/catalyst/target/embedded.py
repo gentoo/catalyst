@@ -38,3 +38,5 @@ class embedded_target(generic_stage_target):
 		msg("embedded root path is " + self.settings["root_path"])
 
 __target_map = {"embedded":embedded_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

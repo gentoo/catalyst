@@ -195,3 +195,4 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

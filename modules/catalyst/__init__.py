@@ -15,3 +15,5 @@ error = catalyst.error
 spawn = catalyst.spawn
 target = catalyst.target
 config = catalyst.config
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

@@ -20,3 +20,4 @@ def die(message, exitcode=1):
 	warn(message)
 	sys.exit(exitcode)
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

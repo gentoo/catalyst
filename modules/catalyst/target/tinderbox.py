@@ -38,3 +38,5 @@ class tinderbox_target(generic_stage_target):
 		              "clear_autoresume"]
 
 __target_map = {"tinderbox":tinderbox_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

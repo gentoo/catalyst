@@ -113,3 +113,4 @@ _subarch_map = {
 
 _machine_map = ("sh2","sh2a","sh3","sh4","sh4a","sh2eb","sh2aeb","sh3eb","sh4eb","sh4aeb")
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

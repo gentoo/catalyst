@@ -41,3 +41,4 @@ _subarch_map = {
 
 _machine_map = ("sparc","sparc64")
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

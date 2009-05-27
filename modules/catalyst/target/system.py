@@ -91,3 +91,5 @@ class system_target(generic_stage_target):
 
 
 __target_map = {"system": system_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

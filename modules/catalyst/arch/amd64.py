@@ -72,3 +72,4 @@ _subarch_map = {
 
 _machine_map = ("x86_64","amd64","nocona")
 
+# vim: ts=4 sw=4 sta noet sts=4 ai

@@ -155,3 +155,5 @@ class netboot_target(generic_stage_target):
 					"remove","empty","unbind","clean","clear_autoresume"]
 
 __target_map = {"netboot":netboot_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai

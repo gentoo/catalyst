@@ -64,3 +64,5 @@ class stage2_target(generic_stage_target):
 				msg()
 
 __target_map = {"stage2":stage2_target}
+
+# vim: ts=4 sw=4 sta noet sts=4 ai
