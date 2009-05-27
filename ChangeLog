@@ -6,6 +6,9 @@
   modules/catalyst/config.py:
   import catalyst_support for gentoo bug #271368
 
+  24 Apr 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
+  Rolling an official catalyst 2.0.6.904 version.
+
   04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org> arch/arm.py:
   Apply additional patch from gentoo bug #255793 for arm subarches
 
