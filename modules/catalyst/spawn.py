@@ -306,18 +306,17 @@ def cmd(mycmd,myexc="",env={}):
 		raise
 
 def process_exit_code(retval,throw_signals=False):
-        """process a waitpid returned exit code, returning exit code if it exit'd, or the
-        signal if it died from signalling
-        if throw_signals is on, it raises a SystemExit if the process was signaled.
-        This is intended for usage with threads, although at the moment you can't signal individual
-        threads in python, only the master thread, so it's a questionable option."""
-        if (retval & 0xff)==0:
-                return retval >> 8 # return exit code
-        else:
-                if throw_signals:
-                        #use systemexit, since portage is stupid about exception catching.
-                        raise SystemExit()
-                return (retval & 0xff) << 8 # interrupted by signal
-
+	"""process a waitpid returned exit code, returning exit code if it exit'd, or the
+	signal if it died from signalling
+	if throw_signals is on, it raises a SystemExit if the process was signaled.
+	This is intended for usage with threads, although at the moment you can't signal individual
+	threads in python, only the master thread, so it's a questionable option."""
+	if (retval & 0xff)==0:
+		return retval >> 8 # return exit code
+	else:
+		if throw_signals:
+			#use systemexit, since portage is stupid about exception catching.
+			raise SystemExit()
+		return (retval & 0xff) << 8 # interrupted by signal
 
 # vim: ts=4 sw=4 sta noet sts=4 ai
