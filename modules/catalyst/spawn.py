@@ -57,11 +57,11 @@ def spawn_bash(mycommand,env={},debug=False,opt_name=None,**keywords):
 	"""spawn mycommand as an arguement to bash"""
 	args=[BASH_BINARY]
 	if not opt_name:
-	    opt_name=mycommand.split()[0]
+		opt_name=mycommand.split()[0]
 	if not "BASH_ENV" in env:
-	    env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
+		env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
 	if debug:
-	    args.append("-x")
+		args.append("-x")
 	args.append("-c")
 	args.append(mycommand)
 	return spawn(args,env=env,opt_name=opt_name,**keywords)
