@@ -1422,4 +1422,4 @@ class generic_stage_target(generic_target):
 			msg("clearing kerncache ...")
 			self.clear_kerncache()
 
-# vim: ts=4 sw=4 sta et sts=4 ai
+# vim: ts=4 sw=4 sta noet sts=4 ai
