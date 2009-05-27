@@ -126,15 +126,15 @@ def file_locate(settings, filelist, expand=True):
 	for myfile in filelist:
 		if myfile in settings:
 			# filenames such as cdtar are optional, so we don't assume the variable is defined.
-		    if not len(settings[myfile]):
-			    raise CatalystError, "File variable \"" + myfile + "\" has a length of zero (not specified)"
-		    if settings[myfile].startswith('/'):
-			    if not os.path.exists(settings[myfile]):
-				    raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile]
-		    elif expand and os.path.exists(os.getcwd() + "/" + settings[myfile]):
-			    settings[myfile] = os.getcwd() + "/" + settings[myfile]
-		    else:
-			    raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile] + " (2nd try)"
+			if not len(settings[myfile]):
+				raise CatalystError, "File variable \"" + myfile + "\" has a length of zero (not specified)"
+			if settings[myfile].startswith('/'):
+				if not os.path.exists(settings[myfile]):
+					raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile]
+			elif expand and os.path.exists(os.getcwd() + "/" + settings[myfile]):
+				settings[myfile] = os.getcwd() + "/" + settings[myfile]
+			else:
+				raise CatalystError, "Cannot locate specified " + myfile + ": " + settings[myfile] + " (2nd try)"
 
 def parse_makeconf(mylines):
 	mymakeconf={}
@@ -154,8 +154,8 @@ def parse_makeconf(mylines):
 			mobj=pat.match(myline)
 			pos += 1
 			if mobj.group(2):
-			    clean_string = re.sub(r"\"",r"",mobj.group(2))
-			    mymakeconf[mobj.group(1)]=clean_string
+				clean_string = re.sub(r"\"",r"",mobj.group(2))
+				mymakeconf[mobj.group(1)]=clean_string
 	return mymakeconf
 
 def read_makeconf(mymakeconffile):
