@@ -60,15 +60,15 @@ class grp_target(generic_stage_target):
 				raise CatalystError,"GRP build aborting due to error."
 
 	def set_use(self):
-	    generic_stage_target.set_use(self)
-	    if "use" in self.settings:
-	    	self.settings["use"].append("bindist")
-	    else:
-	    	self.settings["use"]=["bindist"]
+		generic_stage_target.set_use(self)
+		if "use" in self.settings:
+			self.settings["use"].append("bindist")
+		else:
+			self.settings["use"]=["bindist"]
 
 	def set_mounts(self):
-	    self.mounts.append("/tmp/grp")
-            self.mountmap["/tmp/grp"]=self.settings["target_path"]
+		self.mounts.append("/tmp/grp")
+		self.mountmap["/tmp/grp"]=self.settings["target_path"]
 
 	def generate_digests(self):
 		for pkgset in self.settings["grp"]:
@@ -105,10 +105,10 @@ class grp_target(generic_stage_target):
 						catalyst.hash.gen_digest_file(catalyst.util.normpath(destdir+"/"+i), self.settings)
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-					    "config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
-	    				    "setup_environment","run_local","unbind",\
-					    "generate_digests","clear_autoresume"]
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+				"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
+				"setup_environment","run_local","unbind",\
+				"generate_digests","clear_autoresume"]
 
 __target_map = {"grp":grp_target}
 
