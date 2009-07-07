@@ -4,27 +4,27 @@
 
   28 Jun 2009; Andrew Gaffney <agaffney@gentoo.org> livecd/files/README.txt,
   livecd/files/x86-F6.msg:
-  Apply patch to document espeakup support for gentoo bug #267708
+  Apply patch to document espeakup support for Gentoo bug #267708
 
   27 May 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/config.py:
-  import catalyst_support for gentoo bug #271368
+  import catalyst_support for Gentoo bug #271368
 
   24 Apr 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
   Rolling an official catalyst 2.0.6.904 version.
 
   04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org> arch/arm.py:
-  Apply additional patch from gentoo bug #255793 for arm subarches
+  Apply additional patch from Gentoo bug #255793 for arm subarches
 
   04 Apr 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:
-  Apply patch from gentoo bug #264457 to prevent deleting of ccache cache
+  Apply patch from Gentoo bug #264457 to prevent deleting of ccache cache
 
   24 Feb 2009; Andrew Gaffney <agaffney@gentoo.org> arch/sh.py:
-  Additional sh patch from gentoo bug #255793
+  Additional sh patch from Gentoo bug #255793
 
   21 Feb 2009; Andrew Gaffney <agaffney@gentoo.org> arch/arm.py, arch/sh.py:
-  Apply patch from gentoo bug #255793 for enhanced sh/arm support
+  Apply patch from Gentoo bug #255793 for enhanced sh/arm support
 
   21 Jan 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
@@ -105,7 +105,7 @@
 
   07 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/generic_stage_target.py:
-  Add support for digests="all" for gentoo bug #209611
+  Add support for digests="all" for Gentoo bug #209611
 
   07 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   examples/netboot2_template.spec, targets/support/kmerge.sh:
@@ -121,7 +121,7 @@
 
   01 Dec 2008; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst_support.py:
-  Default to umask 022 for spawn() unless otherwise specified for gentoo bug
+  Default to umask 022 for spawn() unless otherwise specified for Gentoo bug
   #239048
 
   29 Nov 2008; Andrew Gaffney <agaffney@gentoo.org> catalyst,
