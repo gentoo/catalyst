@@ -1,6 +1,10 @@
 # ChangeLog for catalyst
-# Copyright 2003-2008 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
+# Copyright 1999-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
+
+  23 Aug 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/livecd_stage2_target.py:
+  Apply patch for module blacklisting from gentoo bug #282148
 
   07 Jul 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
   Version bumping to 2.0.6.905 for release.

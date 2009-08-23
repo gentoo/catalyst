@@ -59,14 +59,14 @@ class livecd_stage2_target(generic_stage_target):
 		# what modules do we want to blacklist?
 		if self.settings.has_key("livecd/modblacklist"):
 			try:
-				myf=open(self.settings["chroot_path"]+"/etc/hotplug/blacklist","a")
+				myf=open(self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf","a")
 			except:
 				self.unbind()
-				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/hotplug/blacklist."
+				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf."
 			
 			myf.write("\n#Added by Catalyst:")
 			for x in self.settings["livecd/modblacklist"]:
-				myf.write("\n"+x)
+				myf.write("\nblacklist "+x)
 			myf.close()
 	
 	def unpack(self):
