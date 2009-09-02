@@ -3,6 +3,7 @@
 # Maintained in full by:
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
+# $Id$
 
 import os, sys, imp, string, getopt
 import pdb
@@ -49,7 +50,7 @@ def usage():
 def version():
 	print "Catalyst, version "+__version__
 	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008 various authors"
+	print "Copyright 2008-2009 various authors"
 	print "Distributed under the GNU General Public License version 2.1\n"
 
 def parse_config(myconfig):
@@ -175,7 +176,7 @@ def import_modules():
 				fh=open(conf_values["sharedir"]+"/modules/"+x+".py")
 				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
 				fh.close()
-        	
+
 			except IOError:
 				raise CatalystError,"Can't find "+x+".py plugin in "+\
 					conf_values.settings["sharedir"]+"/modules/"
@@ -186,7 +187,7 @@ def import_modules():
 				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
 				module.register(targetmap)
 				fh.close()
-        	
+
 			except IOError:
 				raise CatalystError,"Can't find "+x+".py plugin in "+\
 					conf_values.settings["sharedir"]+"/modules/"
@@ -313,7 +314,8 @@ if __name__ == "__main__":
 	sys.path.append(conf_values["sharedir"]+"/modules")
 	from catalyst_support import *
 	
-	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
+	# Start checking that digests are valid now that the hash_map was imported
+	# from catalyst_support
 	if conf_values.has_key("digests"):
 		for i in conf_values["digests"].split():
 			if not hash_map.has_key(i):
@@ -335,7 +337,8 @@ if __name__ == "__main__":
 	if conf_values.has_key("hash_function"):
 		if not hash_map.has_key(conf_values["hash_function"]):
 			print
-			print conf_values["hash_function"]+" is not a valid hash_function entry"
+			print conf_values["hash_function"]+\
+				" is not a valid hash_function entry"
 			print "Valid hash_function entries:"
 			print hash_map.keys()
 			print
