@@ -2,7 +2,7 @@
 
 # Maintained in full by:
 # Andrew Gaffney <agaffney@gentoo.org>
-# Chris Gianelloni <wolf31o2@gentoo.org>
+# Chris Gianelloni <wolf31o2@wolf31o2.org>
 # $Id$
 
 import os, sys, getopt
@@ -17,7 +17,7 @@ from catalyst.output import *
 from catalyst.error import *
 from catalyst.hash import hash_map
 
-__maintainer__="Chris Gianelloni <wolf31o2@gentoo.org>"
+__maintainer__="Chris Gianelloni <wolf31o2@wolf31o2.org>"
 __version__="2.99"
 
 conf_values = {}
