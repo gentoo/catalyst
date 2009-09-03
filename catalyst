@@ -3,6 +3,7 @@
 # Maintained in full by:
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@gentoo.org>
+# $Id$
 
 import os, sys, getopt
 
