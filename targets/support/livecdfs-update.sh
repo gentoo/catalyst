@@ -272,7 +272,7 @@ case ${clst_livecd_type} in
 
 		# Remove locking on screensaver
 		gconftool-2 --direct \
-			-config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s \
+			--config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s \
 			-t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
 
 		# Setup GDM
