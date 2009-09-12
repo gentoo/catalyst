@@ -34,7 +34,6 @@ class generic_target:
 		if not os.path.exists(self.settings["autoresume_path"]):
 			os.makedirs(self.settings["autoresume_path"],0755)
 
-
 	def check_autoresume(self, step=None):
 		if "AUTORESUME" in self.settings:
 			if step:
