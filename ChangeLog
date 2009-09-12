@@ -4,6 +4,10 @@
 # $Id$
 
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/util.py:
+  Remove unnecessary os.path import
+
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/lock.py, modules/catalyst/spawn.py,
   modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
   modules/catalyst/target/livecd_stage1.py,
