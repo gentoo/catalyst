@@ -9,6 +9,8 @@ from catalyst.spawn import cmd
 
 class generic_target:
 
+	_autoresume_invalid = False
+
 	def __init__(self):
 #		if myspec and addlargs:
 #			catalyst.util.addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
@@ -37,9 +39,12 @@ class generic_target:
 	def check_autoresume(self, step=None):
 		if "AUTORESUME" in self.settings:
 			if step:
-				if os.path.exists(self.settings["autoresume_path"] + step):
+				if self._autoresume_invalid:
+					return False
+				elif os.path.exists(self.settings["autoresume_path"] + step):
 					return True
 				else:
+					self._autoresume_invalid = True
 					return False
 			else:
 				return True

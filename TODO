@@ -164,6 +164,8 @@ Targets:
   - normal and debug kernels/userlands
 - perform fetches before builds
 - smarter auto-resume/caching
+  - record file/dir metadata (such as for portage_confdir) to invalidate autoresume
+  - one failed autoresume invalidates all remaining autoresume points
   - store failure info
     - attempt normal --resume or equivalent auto-resume
     - remove object from seed/package caches
