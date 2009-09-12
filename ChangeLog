@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/livecdfs-update.sh:
+  Apply patch from Gentoo bug #284585
+
   02 Sep 2009; Chris Gianelloni <wolf31o2@wolf31o2.org> catalyst:
   Clean up a few extraneous spaces, line wrap a comment, and add Id.
 
