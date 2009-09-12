@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
+  Set a default value for livecd/iso
+
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
   Move commandline parsing to function
 

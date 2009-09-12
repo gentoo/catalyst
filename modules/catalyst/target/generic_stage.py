@@ -278,16 +278,17 @@ class generic_stage_target(generic_target):
 			os.makedirs(self.settings["storedir"]+"/builds/")
 
 	def set_iso(self):
-		if "iso" in self.settings:
-			if self.settings["iso"].startswith('/'):
-				self.settings["iso"]=\
-					catalyst.util.normpath(self.settings["iso"])
-			else:
-				# This automatically prepends the build dir to the ISO output path
-				# if it doesn't start with a /
-				self.settings["iso"] = catalyst.util.normpath(self.settings["storedir"] + \
-					"/builds/" + self.settings["rel_type"] + "/" + \
-					self.settings["iso"])
+		if not "iso" in self.settings:
+			self.settings["iso"] = "livecd-" + self.settings["subarch"] + "-" + self.settings["version_stamp"] + ".iso"
+		if self.settings["iso"].startswith('/'):
+			self.settings["iso"]=\
+				catalyst.util.normpath(self.settings["iso"])
+		else:
+			# This automatically prepends the build dir to the ISO output path
+			# if it doesn't start with a /
+			self.settings["iso"] = catalyst.util.normpath(self.settings["storedir"] + \
+				"/builds/" + self.settings["rel_type"] + "/" + \
+				self.settings["iso"])
 
 	def set_fstype(self):
 		if not "fstype" in self.settings:
