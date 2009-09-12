@@ -58,7 +58,6 @@ def show_version():
 def parse_config():
 	# search a couple of different areas for the main config file
 	myconf = {}
-	config_file = ""
 
 	confdefaults = {
 		"storedir": "/var/tmp/catalyst",
@@ -74,14 +73,13 @@ def parse_config():
 	if "config_file" in conf_values:
 		if os.path.exists(conf_values["config_file"]):
 			msg("Using command line specified Catalyst configuration file, " + conf_values["config_file"])
-			config_file = conf_values["config_file"]
 		else:
 			die("specified configuration file " + conf_values["config_file"] + " does not exist")
 
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
 		msg("Using default Catalyst configuration file, /etc/catalyst/catalyst.conf")
-		config_file = "/etc/catalyst/catalyst.conf"
+		conf_values["config_file"] = "/etc/catalyst/catalyst.conf"
 
 	# can't find a config file (we are screwed), so bail out
 	else:
@@ -94,7 +92,7 @@ def parse_config():
 
 	# now, try and parse the config file "config_file"
 	try:
-		myconfig = catalyst.config.ConfigParser(config_file)
+		myconfig = catalyst.config.ConfigParser(conf_values["config_file"])
 		myconf.update(myconfig.get_values())
 
 	except:
