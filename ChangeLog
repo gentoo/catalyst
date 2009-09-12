@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst:
+  Move commandline parsing to function
+
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/config.py, modules/catalyst/target/generic.py:
   Stick optional config file values in a tuple and concatenate with required

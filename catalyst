@@ -55,7 +55,7 @@ def show_version():
 	msg("Copyright 2008 various authors")
 	msg("Distributed under the GNU General Public License version 2.1")
 
-def parse_config(myconfig):
+def parse_config():
 	# search a couple of different areas for the main config file
 	myconf = {}
 	config_file = ""
@@ -71,12 +71,12 @@ def parse_config(myconfig):
 	}
 
 	# first, try the one passed (presumably from the cmdline)
-	if myconfig:
-		if os.path.exists(myconfig):
-			msg("Using command line specified Catalyst configuration file, " + myconfig)
-			config_file = myconfig
+	if "config_file" in conf_values:
+		if os.path.exists(conf_values["config_file"]):
+			msg("Using command line specified Catalyst configuration file, " + conf_values["config_file"])
+			config_file = conf_values["config_file"]
 		else:
-			die("specified configuration file " + myconfig + " does not exist")
+			die("specified configuration file " + conf_values["config_file"] + " does not exist")
 
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
@@ -98,7 +98,7 @@ def parse_config(myconfig):
 		myconf.update(myconfig.get_values())
 
 	except:
-		die("Unable to parse configuration file, " + myconfig)
+		die("Unable to parse configuration file, " + conf_values["config_file"])
 
 	# now, load up the values into conf_values so that we can use them
 	for x in confdefaults.keys():
@@ -204,14 +204,7 @@ def verify_digest_and_hash_functions():
 			msg("Catalyst aborting....")
 			sys.exit(2)
 
-if __name__ == "__main__":
-
-	show_version()
-
-	if os.getuid() != 0:
-		# catalyst cannot be run as a normal user due to chroots, mounts, etc
-		die("This script requires root privileges to operate", 2)
-
+def parse_commandline():
 	# parse out the command line arguments
 	try:
 		opts,args = getopt.getopt(sys.argv[1:], "apPhvdc:C:f:FVs:", ["purge", "purgeonly", "help", "version", "debug",\
@@ -222,13 +215,7 @@ if __name__ == "__main__":
 		sys.exit(2)
 
 	# defaults for commandline opts
-	debug=False
-	verbose=False
-	fetch=False
-	myconfig=""
-	myspecfile=""
-	mycmdline=[]
-	myopts=[]
+	conf_values["command_line"] = []
 
 	# check preconditions
 	if len(opts) == 0:
@@ -251,18 +238,18 @@ if __name__ == "__main__":
 			conf_values["VERBOSE"]="1"
 
 		if o in ("-c", "--config"):
-			myconfig=a
+			conf_values["config_file"] = a
 
 		if o in ("-C", "--cli"):
 			run = True
 			x = sys.argv.index(o) + 1
 			while x < len(sys.argv):
-				mycmdline.append(sys.argv[x])
+				conf_values["command_line"].append(sys.argv[x])
 				x = x + 1
 
 		if o in ("-f", "--file"):
 			run = True
-			myspecfile = a
+			conf_values["spec_file"] = a
 
 		if o in ("-F", "--fetchonly"):
 			conf_values["FETCH"] = "1"
@@ -277,8 +264,8 @@ if __name__ == "__main__":
 				sys.exit(2)
 			else:
 				run = True
-				mycmdline.append("target=snapshot")
-				mycmdline.append("version_stamp="+a)
+				conf_values["command_line"].append("target=snapshot")
+				conf_values["command_line"].append("version_stamp="+a)
 
 		if o in ("-p", "--purge"):
 			conf_values["PURGE"] = "1"
@@ -294,22 +281,32 @@ if __name__ == "__main__":
 		usage()
 		sys.exit(2)
 
-	parse_config(myconfig)
+if __name__ == "__main__":
+
+	show_version()
+
+	if os.getuid() != 0:
+		# catalyst cannot be run as a normal user due to chroots, mounts, etc
+		die("This script requires root privileges to operate", 2)
+
+	parse_commandline()
+
+	parse_config()
 
 	verify_digest_and_hash_functions()
 
 	targetmap = catalyst.target.build_target_map()
 	spec = catalyst.config.Spec()
 
-	if myspecfile:
-		specparser = catalyst.config.SpecParser(myspecfile)
+	if "spec_file" in conf_values:
+		specparser = catalyst.config.SpecParser(conf_values["spec_file"])
 		spec_values = specparser.get_values()
 		spec.parse_values(spec_values)
 
-	if mycmdline:
+	if "command_line" in conf_values:
 		try:
 			cmdline = catalyst.config.ConfigParser()
-			cmdline.parse_lines(mycmdline)
+			cmdline.parse_lines(conf_values["command_line"])
 			cmdline_values = cmdline.get_values()
 			spec.parse_values(cmdline_values)
 		except CatalystError:
