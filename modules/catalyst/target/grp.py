@@ -3,7 +3,7 @@
 The builder class for GRP (Gentoo Reference Platform) builds.
 """
 
-import os,types,glob
+import os, glob
 from generic_stage import *
 import catalyst
 from catalyst.error import *
@@ -23,11 +23,11 @@ class grp_target(generic_stage_target):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
 
 		self.required_values.extend(["grp"])
-		if type(self.settings["grp"])==types.StringType:
+		if isinstance(self.settings["grp"], str):
 			self.settings["grp"]=[self.settings["grp"]]
 
 		if "grp/use" in self.settings:
-		    if type(self.settings["grp/use"])==types.StringType:
+		    if isinstance(self.settings["grp/use"], str):
 			    self.settings["grp/use"]=[self.settings["grp/use"]]
 
 		for x in self.settings["grp"]:

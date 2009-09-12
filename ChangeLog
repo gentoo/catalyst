@@ -4,6 +4,13 @@
 # $Id$
 
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/lock.py, modules/catalyst/spawn.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/netboot.py:
+  Replace usage of types module and type() with isinstance()
+
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py,
   modules/catalyst/target/livecd_stage1.py,
   modules/catalyst/target/netboot.py, modules/catalyst/target/snapshot.py,

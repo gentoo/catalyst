@@ -2,7 +2,7 @@
 This module contains all the functions related to spawning external commands
 """
 
-import sys, os, types, signal
+import sys, os, signal
 import catalyst.util
 from catalyst.error import *
 from catalyst.output import *
@@ -95,7 +95,7 @@ def spawn_get_output(mycommand,raw_exit_code=False,emulate_gso=True, \
 
         mypid=spawn_bash(mycommand,fd_pipes=fd_pipes,**keywords)
         os.close(pw)
-        if type(mypid) != types.ListType:
+        if not isinstance(mypid, list):
                 os.close(pr)
                 return [mypid, "%s: No such file or directory" % mycommand.split()[0]]
 
@@ -143,7 +143,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 
 	myc=''
 	if not func_call:
-		if type(mycommand)==types.StringType:
+		if isinstance(mycommand, str):
 			mycommand=mycommand.split()
 		myc = mycommand[0]
 		if not os.access(myc, os.X_OK):
@@ -186,7 +186,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 		# this may look ugly, but basically it moves file descriptors around to ensure no
 		# handles that are needed are accidentally closed during the final dup2 calls.
 		trg_fd=[]
-		if type(fd_pipes)==types.DictType:
+		if isinstance(fd_pipes, dict):
 			src_fd=[]
 			k=fd_pipes.keys()
 			k.sort()

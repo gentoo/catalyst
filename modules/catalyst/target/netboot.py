@@ -3,7 +3,7 @@
 Builder class for a netboot build, version 2
 """
 
-import os,string,types
+import os, string
 from generic_stage import *
 import catalyst.util
 from catalyst.error import *
@@ -30,7 +30,7 @@ class netboot_target(generic_stage_target):
 
 		try:
 			if "netboot/packages" in self.settings:
-				if type(self.settings["netboot/packages"]) == types.StringType:
+				if isinstance(self.settings["netboot/packages"], str):
 					loopy=[self.settings["netboot/packages"]]
 				else:
 					loopy=self.settings["netboot/packages"]
@@ -66,20 +66,20 @@ class netboot_target(generic_stage_target):
 				msg("Resume point detected, skipping target path setup operation...")
 		else:
 			if "netboot/packages" in self.settings:
-				if type(self.settings["netboot/packages"]) == types.StringType:
+				if isinstance(self.settings["netboot/packages"], str):
 					loopy=[self.settings["netboot/packages"]]
 				else:
 					loopy=self.settings["netboot/packages"]
 
 			for x in loopy:
 				if "netboot/packages/"+x+"/files" in self.settings:
-					if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+					if isinstance(self.settings["netboot/packages/"+x+"/files"], list):
 						myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
 					else:
 						myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 			if "netboot/extra_files" in self.settings:
-				if type(self.settings["netboot/extra_files"]) == types.ListType:
+				if isinstance(self.settings["netboot/extra_files"], list):
 					myfiles.extend(self.settings["netboot/extra_files"])
 				else:
 					myfiles.append(self.settings["netboot/extra_files"])
@@ -130,7 +130,7 @@ class netboot_target(generic_stage_target):
 			msg("Resume point detected, skipping empty operation...")
 		else:
 			if "netboot/empty" in self.settings:
-				if type(self.settings["netboot/empty"])==types.StringType:
+				if isinstance(self.settings["netboot/empty"], str):
 					self.settings["netboot/empty"]=self.settings["netboot/empty"].split()
 				for x in self.settings["netboot/empty"]:
 					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x

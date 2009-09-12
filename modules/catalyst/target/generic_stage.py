@@ -4,7 +4,7 @@ This class does all of the chroot setup, copying of files, etc. It is
 the driver class for pretty much everything that Catalyst does.
 """
 
-import os, types
+import os
 import catalyst
 from catalyst.output import *
 from catalyst.spawn import cmd
@@ -221,7 +221,7 @@ class generic_stage_target(generic_target):
 
 	def set_install_mask(self):
 		if "install_mask" in self.settings:
-			if type(self.settings["install_mask"])!=types.StringType:
+			if not isinstance(self.settings["install_mask"], str):
 				self.settings["install_mask"]=\
 					" ".join(self.settings["install_mask"])
 
@@ -234,13 +234,13 @@ class generic_stage_target(generic_target):
 				self.settings["version_stamp"]
 
 	def set_source_subpath(self):
-		if type(self.settings["source_subpath"])!=types.StringType:
+		if  not isinstance(self.settings["source_subpath"], str):
 			raise CatalystError,\
 				"source_subpath should have been a string. Perhaps you have something wrong in your spec file?"
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
-			if type(self.settings["pkgcache_path"])!=types.StringType:
+			if not isinstance(self.settings["pkgcache_path"], str):
 				self.settings["pkgcache_path"]=\
 					catalyst.util.normpath(" ".join(self.settings["pkgcache_path"]))
 		else:
@@ -250,7 +250,7 @@ class generic_stage_target(generic_target):
 
 	def set_kerncache_path(self):
 		if "kerncache_path" in self.settings:
-			if type(self.settings["kerncache_path"])!=types.StringType:
+			if not isinstance(self.settings["kerncache_path"], str):
 				self.settings["kerncache_path"]=\
 					catalyst.util.normpath(" ".join(self.settings["kerncache_path"]))
 		else:
@@ -391,7 +391,7 @@ class generic_stage_target(generic_target):
 
 	def set_use(self):
 		if "use" in self.settings:
-			if type(self.settings["use"])==types.StringType:
+			if isinstance(self.settings["use"], str):
 				self.settings["use"]=self.settings["use"].split()
 				self.settings["use"].append("bindist")
 
@@ -406,13 +406,13 @@ class generic_stage_target(generic_target):
 
 	def set_rm(self):
 		if "rm" in self.settings:
-			if type(self.settings["rm"])==types.StringType:
+			if isinstance(self.settings["rm"], str):
 				self.settings["rm"]=\
 					self.settings["rm"].split()
 
 	def set_portage_overlay(self):
 		if "portage_overlay" in self.settings:
-			if type(self.settings["portage_overlay"])==types.StringType:
+			if isinstance(self.settings["portage_overlay"], str):
 				self.settings["portage_overlay"]=\
 					self.settings["portage_overlay"].split()
 			msg("portage_overlay directories are set to: '" + \
@@ -420,13 +420,13 @@ class generic_stage_target(generic_target):
 
 	def set_overlay(self):
 		if "overlay" in self.settings:
-			if type(self.settings["overlay"])==types.StringType:
+			if isinstance(self.settings["overlay"], str):
 				self.settings["overlay"]=\
 					self.settings["overlay"].split()
 
 	def set_root_overlay(self):
 		if "root_overlay" in self.settings:
-			if type(self.settings["root_overlay"])==types.StringType:
+			if isinstance(self.settings["root_overlay"], str):
 				self.settings["root_overlay"]=\
 					self.settings["root_overlay"].split()
 
@@ -436,7 +436,7 @@ class generic_stage_target(generic_target):
 
 	def set_valid_build_kernel_vars(self):
 		if "boot/kernel" in self.settings:
-			if type(self.settings["boot/kernel"])==types.StringType:
+			if isinstance(self.settings["boot/kernel"], str):
 				loopy=[self.settings["boot/kernel"]]
 			else:
 				loopy=self.settings["boot/kernel"]
@@ -455,8 +455,7 @@ class generic_stage_target(generic_target):
 				self.valid_values.append("boot/kernel/"+x+"/use")
 				self.valid_values.append("boot/kernel/"+x+"/packages")
 				if "boot/kernel/"+x+"/packages" in self.settings:
-					if type(self.settings["boot/kernel/"+x+\
-						"/packages"])==types.StringType:
+					if isinstance(self.settings["boot/kernel/" + x + "/packages"], str):
 						self.settings["boot/kernel/"+x+"/packages"]=\
 							[self.settings["boot/kernel/"+x+"/packages"]]
 
@@ -974,7 +973,7 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping empty operation...")
 		else:
 			if "empty" in self.settings:
-				if type(self.settings["empty"])==types.StringType:
+				if isinstance(self.settings["empty"], str):
 					self.settings["empty"]=\
 						self.settings["empty"].split()
 				for x in self.settings["empty"]:
@@ -1064,14 +1063,14 @@ class generic_stage_target(generic_target):
 			varname="clst_"+string.replace(x,"/","_")
 			varname=string.replace(varname,"-","_")
 			varname=string.replace(varname,".","_")
-			if type(self.settings[x])==types.StringType:
+			if isinstance(self.settings[x], str):
 				""" Prefix to prevent namespace clashes """
 				#os.environ[varname]=self.settings[x]
 				self.env[varname]=self.settings[x]
-			elif type(self.settings[x])==types.ListType:
+			elif isinstance(self.settings[x], list):
 				#os.environ[varname] = " ".join(self.settings[x])
 				self.env[varname] = " ".join(self.settings[x])
-			elif type(self.settings[x])==types.BooleanType:
+			elif isinstance(self.settings[x], bool):
 				if self.settings[x]:
 					self.env[varname]="true"
 				else:
@@ -1115,7 +1114,7 @@ class generic_stage_target(generic_target):
 			msg("Resume point detected, skipping unmerge operation...")
 		else:
 			if "unmerge" in self.settings:
-				if type(self.settings["unmerge"])==types.StringType:
+				if isinstance(self.settings["unmerge"], str):
 					self.settings["unmerge"]=\
 						[self.settings["unmerge"]]
 				myunmerge=\
@@ -1194,7 +1193,7 @@ class generic_stage_target(generic_target):
 			if "boot/kernel" in self.settings:
 				try:
 					mynames=self.settings["boot/kernel"]
-					if type(mynames)==types.StringType:
+					if isinstance(mynames, str):
 						mynames=[mynames]
 					"""
 					Execute the script that sets up the kernel build environment
@@ -1238,7 +1237,7 @@ class generic_stage_target(generic_target):
 								myopts=self.settings["boot/kernel/"+kname+\
 									"/kernelopts"]
 
-								if type(myopts) != types.StringType:
+								if not isinstance(myopts, str):
 									myopts = " ".join(myopts)
 									self.env[kname+"_kernelopts"]=myopts
 

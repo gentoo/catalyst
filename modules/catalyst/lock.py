@@ -223,7 +223,7 @@ class LockDir:
 					# Why test lockfilename?  Because we may have been handed an
 					# fd originally, and the caller might not like having their
 					# open fd closed automatically on them.
-					#if type(lockfilename) == types.StringType:
+					#if isinstance(lockfilename, str):
 					#        os.close(myfd)
 
 		if (self.myfd != None):
