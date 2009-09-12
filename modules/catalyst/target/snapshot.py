@@ -3,7 +3,7 @@
 Builder class for snapshots.
 """
 
-import os, shutil, stat
+import os
 import catalyst
 from catalyst.target.generic import generic_target
 from catalyst.spawn import cmd
@@ -27,9 +27,6 @@ class snapshot_target(catalyst.target.generic.generic_target):
 		x=catalyst.util.normpath(self.settings["storedir"]+"/snapshots")
 		if not os.path.exists(x):
 			os.makedirs(x)
-
-	def mount_safety_check(self):
-		pass
 
 	def run(self):
 		if "PURGEONLY" in self.settings:
@@ -60,28 +57,15 @@ class snapshot_target(catalyst.target.generic.generic_target):
 		self.cleanup()
 		msg("snapshot: complete!")
 
-	def kill_chroot_pids(self):
-		pass
-
 	def cleanup(self):
+		# What is the point of this?
 		msg("Cleaning up...")
 
 	def purge(self):
 		myemp=self.settings["tmp_path"]
 		if os.path.isdir(myemp):
 			msg("Emptying directory " + myemp)
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			mystat=os.stat(myemp)
-			""" There's no easy way to change flags recursively in python """
-			if os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg "+myemp)
-			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
-			os.chown(myemp,mystat[stat.ST_UID],mystat[stat.ST_GID])
-			os.chmod(myemp,mystat[stat.ST_MODE])
+			catalyst.util.empty_dir(myemp)
 
 __target_map = {"snapshot":snapshot_target}
 

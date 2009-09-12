@@ -4,8 +4,7 @@ This class does all of the chroot setup, copying of files, etc. It is
 the driver class for pretty much everything that Catalyst does.
 """
 
-import os, string, types, shutil
-from stat import *
+import os, types
 import catalyst
 from catalyst.output import *
 from catalyst.spawn import cmd
@@ -224,7 +223,7 @@ class generic_stage_target(generic_target):
 		if "install_mask" in self.settings:
 			if type(self.settings["install_mask"])!=types.StringType:
 				self.settings["install_mask"]=\
-					string.join(self.settings["install_mask"])
+					" ".join(self.settings["install_mask"])
 
 	def set_target_profile(self):
 		self.settings["target_profile"]=self.settings["profile"]
@@ -243,7 +242,7 @@ class generic_stage_target(generic_target):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"])!=types.StringType:
 				self.settings["pkgcache_path"]=\
-					catalyst.util.normpath(string.join(self.settings["pkgcache_path"]))
+					catalyst.util.normpath(" ".join(self.settings["pkgcache_path"]))
 		else:
 			self.settings["pkgcache_path"]=\
 				catalyst.util.normpath(self.settings["storedir"]+"/packages/"+\
@@ -253,7 +252,7 @@ class generic_stage_target(generic_target):
 		if "kerncache_path" in self.settings:
 			if type(self.settings["kerncache_path"])!=types.StringType:
 				self.settings["kerncache_path"]=\
-					catalyst.util.normpath(string.join(self.settings["kerncache_path"]))
+					catalyst.util.normpath(" ".join(self.settings["kerncache_path"]))
 		else:
 			self.settings["kerncache_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 				"/kerncache/"+self.settings["target_subpath"]+"/")
@@ -907,7 +906,7 @@ class generic_stage_target(generic_target):
 			if myusevars:
 				myf.write("# These are the USE flags that were used in addition to what is provided by the\n# profile used for building.\n")
 				myusevars = sorted(set(myusevars))
-				myf.write('USE="'+string.join(myusevars)+'"\n')
+				myf.write('USE="' + " ".join(myusevars)+'"\n')
 				if '-*' in myusevars:
 					msg("\nWarning!!!  ")
 					msg("\tThe use of -* in " + "use will cause portage to ignore")
@@ -984,15 +983,7 @@ class generic_stage_target(generic_target):
 						msg(x + " not a directory or does not exist, skipping 'empty' operation.")
 						continue
 					msg("Emptying directory" + x)
-					"""
-					stat the dir, delete the dir, recreate the dir and set
-					the proper perms and ownership
-					"""
-					mystat=os.stat(myemp)
-					shutil.rmtree(myemp)
-					os.makedirs(myemp,0755)
-					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-					os.chmod(myemp,mystat[ST_MODE])
+					catalyst.util.empty_dir(myemp)
 			self.set_autoresume("empty")
 
 	def remove(self):
@@ -1033,7 +1024,7 @@ class generic_stage_target(generic_target):
 			""" Capture target in a tarball """
 			mypath=self.settings["target_path"].split("/")
 			""" Remove filename from path """
-			mypath=string.join(mypath[:-1],"/")
+			mypath = " ".join(mypath[:-1],"/")
 
 			""" Now make sure path exists """
 			if not os.path.exists(mypath):
@@ -1078,8 +1069,8 @@ class generic_stage_target(generic_target):
 				#os.environ[varname]=self.settings[x]
 				self.env[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
-				#os.environ[varname]=string.join(self.settings[x])
-				self.env[varname]=string.join(self.settings[x])
+				#os.environ[varname] = " ".join(self.settings[x])
+				self.env[varname] = " ".join(self.settings[x])
 			elif type(self.settings[x])==types.BooleanType:
 				if self.settings[x]:
 					self.env[varname]="true"
@@ -1136,7 +1127,7 @@ class generic_stage_target(generic_target):
 					things like "<" to remain intact
 					"""
 					myunmerge[x]="'"+myunmerge[x]+"'"
-				myunmerge=string.join(myunmerge)
+				myunmerge = " ".join(myunmerge)
 
 				""" Before cleaning, unmerge stuff """
 				try:
@@ -1248,7 +1239,7 @@ class generic_stage_target(generic_target):
 									"/kernelopts"]
 
 								if type(myopts) != types.StringType:
-									myopts = string.join(myopts)
+									myopts = " ".join(myopts)
 									self.env[kname+"_kernelopts"]=myopts
 
 								else:
@@ -1336,19 +1327,7 @@ class generic_stage_target(generic_target):
 		myemp=self.settings["chroot_path"]
 		if os.path.isdir(myemp):
 			msg("Emptying directory " + myemp)
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			mystat=os.stat(myemp)
-			#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-			""" There's no easy way to change flags recursively in python """
-			if os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg "+myemp)
-			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
+			catalyst.util.empty_dir(myemp)
 
 	def clear_packages(self):
 		if "PKGCACHE" in self.settings:
@@ -1357,16 +1336,7 @@ class generic_stage_target(generic_target):
 			myemp=self.settings["pkgcache_path"]
 			if os.path.isdir(myemp):
 				msg("Emptying directory " + myemp)
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+				catalyst.util.empty_dir(myemp)
 
 	def clear_kerncache(self):
 		if "KERNCACHE" in self.settings:
@@ -1375,16 +1345,7 @@ class generic_stage_target(generic_target):
 			myemp=self.settings["kerncache_path"]
 			if os.path.isdir(myemp):
 				msg("Emptying directory " + myemp)
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+				catalyst.util.empty_dir(myemp)
 
 	def clear_autoresume(self):
 		""" Clean resume points since they are no longer needed """
@@ -1393,20 +1354,7 @@ class generic_stage_target(generic_target):
 			myemp=self.settings["autoresume_path"]
 			if os.path.isdir(myemp):
 				msg("Emptying directory " + myemp)
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				if os.uname()[0] == "FreeBSD":
-					cmd("chflags -R noschg "+myemp,\
-						"Could not remove immutable flag for file "\
-						+myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+				catalyst.util.empty_dir(myemp)
 
 	def purge(self):
 		catalyst.util.countdown(10, "Purging Caches ...")

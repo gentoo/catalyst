@@ -3,6 +3,13 @@
 # Distributed under the GPL v2
 # $Id$
 
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/snapshot.py,
+  modules/catalyst/util.py:
+  Create catalyst.util.empty_tree() helper function and use it all over
+
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org> TODO,
   modules/catalyst/target/generic.py:
   Add ability to invalidate all further autoresume points

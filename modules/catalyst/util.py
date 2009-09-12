@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback, os, os.path, re, time
+import sys, traceback, os, os.path, re, time, shutil
 import catalyst
 from catalyst.error import *
 from catalyst.output import *
@@ -194,5 +194,17 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	for x in requiredspec:
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
+
+def empty_dir(path):
+	mystat = os.stat(path)
+	if os.uname()[0] == "FreeBSD":
+		cmd("chflags -R noschg " + path, \
+			"Could not remove immutable flag for file " \
+			+ path)
+	shutil.rmtree(path)
+	os.makedirs(path, 0755)
+	os.chown(path, mystat[stat.ST_UID], mystat[stat.ST_GID])
+	os.chmod(path, mystat[stat.ST_MODE])
+
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

@@ -138,13 +138,7 @@ class netboot_target(generic_stage_target):
 						msg(x + " not a directory or does not exist, skipping 'empty' operation.")
 						continue
 					msg("Emptying directory " + x)
-					# stat the dir, delete the dir, recreate the dir and set
-					# the proper perms and ownership
-					mystat=os.stat(myemp)
-					shutil.rmtree(myemp)
-					os.makedirs(myemp,0755)
-					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-					os.chmod(myemp,mystat[ST_MODE])
+					catalyst.util.empty_dir(x)
 		self.set_autoresume("empty")
 
 	def set_action_sequence(self):

@@ -60,7 +60,7 @@ class livecd_stage1_target(generic_stage_target):
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"]) != types.StringType:
-				self.settings["pkgcache_path"]=catalyst.util.normpath(string.join(self.settings["pkgcache_path"]))
+				self.settings["pkgcache_path"] = catalyst.util.normpath(" ".join(self.settings["pkgcache_path"]))
 		else:
 			generic_stage_target.set_pkgcache_path(self)
 
