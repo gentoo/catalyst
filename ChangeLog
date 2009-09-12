@@ -4,6 +4,11 @@
 # $Id$
 
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/config.py:
+  Add ability to specify default values for all specs and add
+  rel_type=default to it
+
+  12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py:
   Set a default value for livecd/iso
 

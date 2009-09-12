@@ -135,6 +135,10 @@ class ConfigParser(ParserBase):
 class Spec:
 
 	special_prefixes = ('boot', )
+	default_values = {
+		# Do we really still need this?
+		'rel_type': 'default'
+	}
 
 	def __init__(self, values=None):
 		self.values = { 'global': {} }
@@ -159,7 +163,9 @@ class Spec:
 		self.target = target
 
 	def get_values(self, target=None):
-		tmp = self.values['global']
+		tmp = {}
+		tmp.update(self.default_values)
+		tmp.update(self.values['global'])
 		if target is None:
 			target = self.target
 			tmp['target'] = target
