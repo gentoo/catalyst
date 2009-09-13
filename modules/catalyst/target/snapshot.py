@@ -44,8 +44,8 @@ class snapshot_target(catalyst.target.generic.generic_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
-			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
+		catalyst.util.rsync(self.settings["portdir"] + "/", mytmp + "/portage/", delete=True, \
+			extra_opts="--exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-*")
 
 		msg("Compressing Portage snapshot tarball...")
 		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\

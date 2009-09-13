@@ -238,4 +238,9 @@ def create_symlink(src, dest, remove_existing=False):
 	except:
 		raise CatalystError("Could not create symlink '%s' to '%s'" % (dest, src))
 
+def rsync(src, dest, delete=False, extra_opts=""):
+	retval = catalyst.spawn.spawn_bash("rsync -a --delete %s %s %s" % (extra_opts, src, dest))
+	if retval != 0:
+		raise CatalystError("Could not rsync '%s' to '%s'" % (src, dest))
+
 # vim: ts=4 sw=4 sta noet sts=4 ai
