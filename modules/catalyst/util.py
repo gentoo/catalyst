@@ -221,7 +221,7 @@ def empty_dir(path):
 	try:
 		mystat = os.stat(path)
 		remove_path(path, False)
-		os.makedirs(path, 0755)
+		mkdir(path)
 		os.chown(path, mystat[stat.ST_UID], mystat[stat.ST_GID])
 		os.chmod(path, mystat[stat.ST_MODE])
 	except:
@@ -267,5 +267,11 @@ def unpack_tarball(src, dest, keep_perm=True):
 	retval = catalyst.spawn.spawn_bash(unpack_cmd)
 	if retval != 0:
 		raise CatalystError("Could not unpack tarball '%s'" % (src,))
+
+def mkdir(path, perms=0755):
+	try:
+		os.makedirs(path, perms)
+	except:
+		raise CatalystError("Could not create directory '%s'" % (path,))
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

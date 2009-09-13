@@ -713,9 +713,7 @@ class generic_stage_target(generic_target):
 			for x in self.settings["portage_overlay"]:
 				if os.path.exists(x):
 					msg("Copying overlay dir " + x)
-					cmd("mkdir -p "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
-						"Could not make portage_overlay dir",env=self.env)
+					catalyst.util.mkdir(self.settings["chroot_path"] + "/usr/local/portage")
 					cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+\
 						"/usr/local/portage",\
 						"Could not copy portage_overlay",env=self.env)
@@ -843,7 +841,7 @@ class generic_stage_target(generic_target):
 				and not "portage_confdir" in self.settings:
 				if not os.path.exists(self.settings["chroot_path"]+\
 					"/etc/portage"):
-					cmd("mkdir "+self.settings["chroot_path"]+"/etc/portage")
+					catalyst.util.mkdir(self.settings["chroot_path"] + "/etc/portage")
 				myf=open(self.settings["chroot_path"]+\
 					"/etc/portage/modules","a")
 				myf.write("portdbapi.auxdbmodule = cache.metadata_overlay.database\n")
@@ -1246,11 +1244,10 @@ class generic_stage_target(generic_target):
 										self.settings["boot/kernel/" + kname + \
 										"/initramfs_overlay"])
 
-									cmd("mkdir -p "+\
-										self.settings["chroot_path"]+\
-										"/tmp/initramfs_overlay/"+\
-										self.settings["boot/kernel/"+kname+\
-										"/initramfs_overlay"],env=self.env)
+									catalyst.util.mkdir(self.settings["chroot_path"] + \
+										"/tmp/initramfs_overlay/" + \
+										self.settings["boot/kernel/" + kname + \
+										"/initramfs_overlay"])
 
 									cmd("cp -R "+self.settings["boot/kernel/"+\
 										kname+"/initramfs_overlay"]+"/* "+\
