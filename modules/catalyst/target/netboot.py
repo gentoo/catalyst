@@ -99,8 +99,7 @@ class netboot_target(generic_stage_target):
 			if "netboot/overlay" in self.settings:
 				for x in self.settings["netboot/overlay"]:
 					if os.path.exists(x):
-						cmd("rsync -a "+x+"/ "+\
-							self.settings["chroot_path"] + self.settings["merge_path"], "netboot/overlay: "+x+" copy failed.",env=self.env)
+						catalyst.util.rsync(x + "/", self.settings["chroot_path"] + self.settings["merge_path"])
 				self.set_autoresume("setup_overlay")
 
 	def move_kernels(self):

@@ -257,5 +257,15 @@ def create_tarball(target, src, working_dir=None, keep_perm=False):
 	if retval != 0:
 		raise CatalystError("Could not create tarball '%s'" % (target,))
 
+def unpack_tarball(src, dest, keep_perm=True):
+	unpack_cmd = "tar "
+	if keep_perm:
+		unpack_cmd += "xjpf "
+	else:
+		unpack_cmd += "xjf "
+	unpack_cmd += src + " -C " + dest
+	retval = catalyst.spawn.spawn_bash(unpack_cmd)
+	if retval != 0:
+		raise CatalystError("Could not unpack tarball '%s'" % (src,))
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

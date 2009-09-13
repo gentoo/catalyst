@@ -4,6 +4,13 @@
 # $Id$
 
   13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/util.py:
+  Create catalyst.util.create_tarball() helper function
+  Replace more manual calls to rsync with catalyst.util.rsync()
+  Replace manual calls to 'tar cjf' with catalyst.util.create_tarball()
+
+  13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/snapshot.py, modules/catalyst/util.py:
   Add catalyst.util.create_tarball() helper function and modify snapshot
   target to use it

@@ -726,10 +726,7 @@ class generic_stage_target(generic_target):
 			for x in self.settings["root_overlay"]:
 				if os.path.exists(x):
 					msg("Copying root_overlay: " + x)
-					cmd("rsync -a "+x+"/ "+\
-						self.settings["chroot_path"],\
-						"root_overlay: "+x+\
-						" copy failed.",env=self.env)
+					catalyst.util.rsync(x + "/", self.settings["chroot_path"])
 
 	def base_dirs(self):
 		pass
@@ -1024,9 +1021,7 @@ class generic_stage_target(generic_target):
 
 			msg("Creating stage tarball...")
 
-			cmd("tar cjpf "+self.settings["target_path"]+" -C "+\
-				self.settings["stage_path"]+" .",\
-				"Couldn't create stage tarball",env=self.env)
+			catalyst.util.create_tarball(self.settings["target_path"], ".", working_dir=self.settings["stage_path"], keep_perm=True)
 
 			catalyst.hash.gen_contents_file(self.settings["target_path"], self.settings)
 			catalyst.hash.gen_digest_file(self.settings["target_path"], self.settings)
