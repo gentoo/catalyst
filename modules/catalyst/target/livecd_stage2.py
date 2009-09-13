@@ -48,11 +48,11 @@ class livecd_stage2_target(generic_stage_target):
 		else:
 			# first clean up any existing target stuff
 			if os.path.isdir(self.settings["target_path"]):
-				cmd("rm -rf "+self.settings["target_path"],
-				"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
-				self.set_autoresume("setup_target_path")
+				catalyst.util.remove_path(self.settings["target_path"])
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
+
+			self.set_autoresume("setup_target_path")
 
 	def run_local(self):
 		# what modules do we want to blacklist?

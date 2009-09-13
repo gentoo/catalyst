@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback, os, re, time, shutil
+import sys, traceback, os, re, time, shutil, glob
 import catalyst
 from catalyst.error import *
 from catalyst.output import *
@@ -195,25 +195,47 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
-def remove_dir(path):
-	if os.uname()[0] == "FreeBSD":
-		cmd("chflags -R noschg " + path, \
-			"Could not remove immutable flag for file " \
-			+ path)
-	try:
-		shutil.rmtree(path)
-	except:
-		raise CatalystError("Could not remove directory '%s'" % (path,))
+def remove_path(path, glob=True):
+	paths = None
+	if glob:
+		paths = glob.glob(path)
+	else:
+		paths = [path]
+	for x in paths:
+		if os.uname()[0] == "FreeBSD":
+			cmd("chflags -R noschg " + x, \
+				"Could not remove immutable flag for path " \
+				+ x)
+		if os.path.is_dir(x):
+			try:
+				shutil.rmtree(x)
+			except:
+				raise CatalystError("Could not remove directory '%s'" % (x,))
+		else:
+			try:
+				os.remove(x)
+			except:
+				raise CatalystError("Could not remove file '%s'" % (x,))
 
 def empty_dir(path):
 	try:
 		mystat = os.stat(path)
-		remove_dir(path)
+		remove_path(path, False)
 		os.makedirs(path, 0755)
 		os.chown(path, mystat[stat.ST_UID], mystat[stat.ST_GID])
 		os.chmod(path, mystat[stat.ST_MODE])
 	except:
 		raise CatalystError("Could not empty directory '%s'" % (path,))
 
+def create_symlink(src, dest, remove_existing=False):
+	if os.path.exists(dest):
+		if remove_existing:
+			remove_path(dest)
+		else:
+			raise CatalystError("Could not create symlink at '%s' due to existing file" % (dest,))
+	try:
+		os.symlink(src, dest)
+	except:
+		raise CatalystError("Could not create symlink '%s' to '%s'" % (dest, src))
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

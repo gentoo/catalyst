@@ -50,12 +50,12 @@ class netboot_target(generic_stage_target):
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
-				cmd("rm -f "+self.settings["target_path"], \
-					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
-				self.set_autoresume("setup_target_path")
+				catalyst.util.remove_path(self.settings["target_path"])
 
-		if not os.path.exists(self.settings["storedir"]+"/builds/"):
-			os.makedirs(self.settings["storedir"]+"/builds/")
+			if not os.path.exists(self.settings["storedir"]+"/builds/"):
+				os.makedirs(self.settings["storedir"]+"/builds/")
+
+			self.set_autoresume("setup_target_path")
 
 	def copy_files_to_image(self):
 		# copies specific files from the buildroot to merge_path
@@ -120,10 +120,8 @@ class netboot_target(generic_stage_target):
 		else:
 			if "rm" in self.settings:
 				for x in self.settings["rm"]:
-					# we're going to shell out for all these cleaning operations,
-					# so we get easy glob handling
 					msg("netboot: removing " + x)
-					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
+					catalyst.util.remove_path(self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):
 		if self.check_autoresume("empty"):

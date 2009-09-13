@@ -4,6 +4,15 @@
 # $Id$
 
   13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/util.py:
+  Modify code to use catalyst.util.remove_path() helper everywhere
+  Include globbing support in remove_path()
+  Create catalyst.util.create_symlink() helper and modify code to use it
+
+  13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/util.py:
   Add catalyst.util.remove_dir() helper function
 

@@ -664,8 +664,7 @@ class generic_stage_target(generic_target):
 				self.snapshot_lock_object.write_lock()
 			if os.path.exists(destdir):
 				msg(cleanup_msg)
-				cleanup_cmd="rm -rf "+destdir
-				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
+				catalyst.util.remove_path(destdir)
 			if not os.path.exists(destdir):
 				os.makedirs(destdir,0755)
 
@@ -692,12 +691,8 @@ class generic_stage_target(generic_target):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			msg("Configuring profile link...")
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile",\
-					"Error zapping profile link",env=self.env)
-			cmd("ln -sf ../usr/portage/profiles/"+\
-				self.settings["target_profile"]+" "+\
-				self.settings["chroot_path"]+"/etc/make.profile",\
-				"Error creating profile link",env=self.env)
+			catalyst.util.create_symlink("../usr/portage/profiles/" + self.settings["target_profile"], \
+				self.settings["chroot_path"] + "/etc/make.profile", True)
 			self.set_autoresume("config_profile_link")
 
 	def setup_confdir(self):
@@ -706,8 +701,7 @@ class generic_stage_target(generic_target):
 		else:
 			if "portage_confdir" in self.settings:
 				msg("Configuring /etc/portage...")
-				cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage",\
-					"Error zapping /etc/portage",env=self.env)
+				catalyst.util.remove_path(self.settings["chroot_path"] + "/etc/portage")
 				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
 					self.settings["chroot_path"]+"/etc/portage",\
 					"Error copying /etc/portage",env=self.env)
@@ -871,9 +865,7 @@ class generic_stage_target(generic_target):
 					"Could not copy /etc/hosts",env=self.env)
 
 			""" Modify and write out make.conf (for the chroot) """
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf",\
-				"Could not remove "+self.settings["chroot_path"]+\
-				"/etc/make.conf",env=self.env)
+			catalyst.util.remove_path(self.settings["chroot_path"] + "/etc/make.conf")
 			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
@@ -942,8 +934,7 @@ class generic_stage_target(generic_target):
 		else:
 			for x in self.settings["cleanables"]:
 				msg("Cleaning chroot: " + x +"...")
-				cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+\
-					x,env=self.env)
+				catalyst.util.remove_path(self.settings["destpath"] + x)
 
 		""" Put /etc/hosts back into place """
 		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
@@ -953,8 +944,7 @@ class generic_stage_target(generic_target):
 
 		""" Remove our overlay """
 		if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
-			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage",\
-				"Could not remove /usr/local/portage",env=self.env)
+			catalyst.util.remove_path(self.settings["chroot_path"] + "/usr/local/portage")
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
 				"/etc/make.conf",\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
@@ -996,7 +986,10 @@ class generic_stage_target(generic_target):
 					operations, so we get easy glob handling.
 					"""
 					msg("livecd: removing " + x)
-					os.system("rm -rf "+self.settings["chroot_path"]+x)
+					try:
+						catalyst.util.remove_path(self.settings["chroot_path"] + x)
+					except:
+						pass
 				try:
 					self.run_controller_action("clean")
 					self.set_autoresume("remove")
@@ -1282,8 +1275,8 @@ class generic_stage_target(generic_target):
 								if os.path.exists(self.settings["chroot_path"]+\
 									"/tmp/initramfs_overlay/"):
 									msg("Cleaning up temporary overlay dir")
-									cmd("rm -R "+self.settings["chroot_path"]+\
-										"/tmp/initramfs_overlay/",env=self.env)
+									catalyst.util.remove_path(self.settings["chroot_path"] + \
+										"/tmp/initramfs_overlay/")
 
 							self.set_autoresume("build_kernel_" + kname)
 
