@@ -847,9 +847,8 @@ class generic_stage_target(generic_target):
 			specialties in there
 			"""
 			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
-				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
-					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
-					"Could not backup /etc/hosts",env=self.env)
+				catalyst.util.move(self.settings["chroot_path"] + "/etc/hosts", \
+					self.settings["chroot_path"] + "/etc/hosts.catalyst")
 				catalyst.util.copy("/etc/hosts", self.settings["chroot_path"] + "/etc/hosts")
 
 			""" Modify and write out make.conf (for the chroot) """
@@ -925,9 +924,8 @@ class generic_stage_target(generic_target):
 
 		""" Put /etc/hosts back into place """
 		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
-			cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.catalyst "+\
-				self.settings["chroot_path"]+"/etc/hosts",\
-				"Could not replace /etc/hosts",env=self.env)
+			catalyst.util.move(self.settings["chroot_path"] + "/etc/hosts.catalyst", \
+				self.settings["chroot_path"]+"/etc/hosts", force=True)
 
 		""" Remove our overlay """
 		if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):

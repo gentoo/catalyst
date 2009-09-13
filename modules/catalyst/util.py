@@ -283,4 +283,12 @@ def copy(src, dest, recursive=False):
 	if retval != 0:
 		raise CatalystError("Could not copy path '%s'" % (src,))
 
+def move(src, dest, force=False):
+	try:
+		if os.path.exists(dest):
+			remove_path(dest)
+		os.rename(src, dest)
+	except:
+		raise CatalystError("Could not rename '%s' to '%s'" % (src, dest))
+
 # vim: ts=4 sw=4 sta noet sts=4 ai
