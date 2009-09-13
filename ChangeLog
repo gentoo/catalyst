@@ -5,6 +5,11 @@
 
   13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/snapshot.py, modules/catalyst/util.py:
+  Add catalyst.util.create_tarball() helper function and modify snapshot
+  target to use it
+
+  13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/snapshot.py, modules/catalyst/util.py:
   Create catalyst.util.rsync() helper function
 
   13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>

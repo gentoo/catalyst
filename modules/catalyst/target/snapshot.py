@@ -40,7 +40,7 @@ class snapshot_target(catalyst.target.generic.generic_target):
 		msg("Creating Portage tree snapshot " + self.settings["version_stamp"] + \
 			" from " + self.settings["portdir"] + "...")
 
-		mytmp=self.settings["tmp_path"]
+		mytmp = self.settings["tmp_path"]
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 
@@ -48,8 +48,7 @@ class snapshot_target(catalyst.target.generic.generic_target):
 			extra_opts="--exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-*")
 
 		msg("Compressing Portage snapshot tarball...")
-		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
-			"Snapshot creation failure",env=self.env)
+		catalyst.util.create_tarball(self.settings["snapshot_path"], "portage", mytmp)
 
 		catalyst.hash.gen_contents_file(self.settings["snapshot_path"], self.settings)
 		catalyst.hash.gen_digest_file(self.settings["snapshot_path"], self.settings)
@@ -62,7 +61,7 @@ class snapshot_target(catalyst.target.generic.generic_target):
 		msg("Cleaning up...")
 
 	def purge(self):
-		myemp=self.settings["tmp_path"]
+		myemp = self.settings["tmp_path"]
 		if os.path.isdir(myemp):
 			msg("Emptying directory " + myemp)
 			catalyst.util.empty_dir(myemp)

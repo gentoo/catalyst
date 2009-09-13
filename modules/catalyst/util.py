@@ -243,4 +243,19 @@ def rsync(src, dest, delete=False, extra_opts=""):
 	if retval != 0:
 		raise CatalystError("Could not rsync '%s' to '%s'" % (src, dest))
 
+def create_tarball(target, src, working_dir=None, keep_perm=False):
+	pack_cmd = "tar "
+	if keep_perm:
+		pack_cmd += "cjpf "
+	else:
+		pack_cmd += "cjf "
+	pack_cmd += target
+	if working_dir:
+		pack_cmd += " -C " + working_dir
+	pack_cmd += " " + src
+	retval = catalyst.spawn.spawn_bash(pack_cmd)
+	if retval != 0:
+		raise CatalystError("Could not create tarball '%s'" % (target,))
+
+
 # vim: ts=4 sw=4 sta noet sts=4 ai
