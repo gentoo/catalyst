@@ -702,9 +702,7 @@ class generic_stage_target(generic_target):
 			if "portage_confdir" in self.settings:
 				msg("Configuring /etc/portage...")
 				catalyst.util.remove_path(self.settings["chroot_path"] + "/etc/portage")
-				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
-					self.settings["chroot_path"]+"/etc/portage",\
-					"Error copying /etc/portage",env=self.env)
+				catalyst.util.copy(self.settings["portage_confdir"] + "/", self.settings["chroot_path"] + "/etc/portage", recursive=True)
 				self.set_autoresume("setup_confdir")
 
 	def portage_overlay(self):
@@ -714,9 +712,8 @@ class generic_stage_target(generic_target):
 				if os.path.exists(x):
 					msg("Copying overlay dir " + x)
 					catalyst.util.mkdir(self.settings["chroot_path"] + "/usr/local/portage")
-					cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
-						"Could not copy portage_overlay",env=self.env)
+					# Perhaps we should use rsync here?
+					catalyst.util.copy(x + "/*", self.settings["chroot_path"] + "/usr/local/portage", recursive=True)
 
 	def root_overlay(self):
 		""" Copy over the root_overlay """
@@ -815,8 +812,7 @@ class generic_stage_target(generic_target):
 
 			#self.makeconf=catalyst.util.read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
 
-			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
-				"Could not copy resolv.conf into place.",env=self.env)
+			catalyst.util.copy("/etc/resolv.conf", self.settings["chroot_path"] + "/etc")
 
 			""" Copy over the envscript, if applicable """
 			if "ENVSCRIPT" in self.settings:
@@ -832,9 +828,7 @@ class generic_stage_target(generic_target):
 				msg("\tCatalyst Maintainers use VERY minimal envscripts if used at all")
 				msg("\tYou have been warned\n")
 
-				cmd("cp "+self.settings["ENVSCRIPT"]+" "+\
-					self.settings["chroot_path"]+"/tmp/envscript",\
-					"Could not copy envscript into place.",env=self.env)
+				catalyst.util.copy(self.settings["ENVSCRIPT"], self.settings["chroot_path"] + "/tmp/envscript")
 
 			""" Setup metadata_overlay """
 			if "METADATA_OVERLAY" in self.settings \
@@ -856,8 +850,7 @@ class generic_stage_target(generic_target):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
 					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
 					"Could not backup /etc/hosts",env=self.env)
-				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts",\
-					"Could not copy /etc/hosts",env=self.env)
+				catalyst.util.copy("/etc/hosts", self.settings["chroot_path"] + "/etc/hosts")
 
 			""" Modify and write out make.conf (for the chroot) """
 			catalyst.util.remove_path(self.settings["chroot_path"] + "/etc/make.conf")
@@ -903,9 +896,8 @@ class generic_stage_target(generic_target):
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
 			myf.close()
-			cmd("cp "+self.settings["chroot_path"]+"/etc/make.conf "+\
-				self.settings["chroot_path"]+"/etc/make.conf.catalyst",\
-				"Could not backup /etc/make.conf",env=self.env)
+			catalyst.util.copy(self.settings["chroot_path"] + "/etc/make.conf", \
+				self.settings["chroot_path"] + "/etc/make.conf.catalyst")
 			self.set_autoresume("chroot_setup")
 
 	def fsscript(self):
@@ -1200,13 +1192,8 @@ class generic_stage_target(generic_target):
 									"Required value boot/kernel/config not specified"
 
 							try:
-								cmd("cp "+self.settings["boot/kernel/"+kname+\
-									"/config"]+" "+\
-									self.settings["chroot_path"]+"/var/tmp/"+\
-									kname+".config",\
-									"Couldn't copy kernel config: "+\
-									self.settings["boot/kernel/"+kname+\
-									"/config"],env=self.env)
+								catalyst.util.copy(self.settings["boot/kernel/" + kname + "/config"],
+									self.settings["chroot_path"] + "/var/tmp/" + kname + ".config")
 
 							except CatalystError:
 								self.unbind()
@@ -1249,12 +1236,10 @@ class generic_stage_target(generic_target):
 										self.settings["boot/kernel/" + kname + \
 										"/initramfs_overlay"])
 
-									cmd("cp -R "+self.settings["boot/kernel/"+\
-										kname+"/initramfs_overlay"]+"/* "+\
-										self.settings["chroot_path"]+\
-										"/tmp/initramfs_overlay/"+\
-										self.settings["boot/kernel/"+kname+\
-										"/initramfs_overlay"],env=self.env)
+									catalyst.util.copy(self.settings["boot/kernel/" + kname + "/initramfs_overlay"] + "/*",
+										self.settings["chroot_path"] + "/tmp/initramfs_overlay/" + \
+										self.settings["boot/kernel/" + kname + "/initramfs_overlay"], \
+										recursive=True)
 
 							""" Execute the script that builds the kernel """
 							self.run_controller_action("kernel", kname)

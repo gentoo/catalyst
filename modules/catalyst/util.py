@@ -274,4 +274,13 @@ def mkdir(path, perms=0755):
 	except:
 		raise CatalystError("Could not create directory '%s'" % (path,))
 
+def copy(src, dest, recursive=False):
+	copy_cmd = "copy "
+	if recursive:
+		copy_cmd += "-R "
+	copy_cmd += src + " " + dest
+	retval = catalyst.spawn.spawn_bash(copy_cmd)
+	if retval != 0:
+		raise CatalystError("Could not copy path '%s'" % (src,))
+
 # vim: ts=4 sw=4 sta noet sts=4 ai
