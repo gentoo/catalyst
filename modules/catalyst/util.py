@@ -195,16 +195,25 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
-def empty_dir(path):
-	mystat = os.stat(path)
+def remove_dir(path):
 	if os.uname()[0] == "FreeBSD":
 		cmd("chflags -R noschg " + path, \
 			"Could not remove immutable flag for file " \
 			+ path)
-	shutil.rmtree(path)
-	os.makedirs(path, 0755)
-	os.chown(path, mystat[stat.ST_UID], mystat[stat.ST_GID])
-	os.chmod(path, mystat[stat.ST_MODE])
+	try:
+		shutil.rmtree(path)
+	except:
+		raise CatalystError("Could not remove directory '%s'" % (path,))
+
+def empty_dir(path):
+	try:
+		mystat = os.stat(path)
+		remove_dir(path)
+		os.makedirs(path, 0755)
+		os.chown(path, mystat[stat.ST_UID], mystat[stat.ST_GID])
+		os.chmod(path, mystat[stat.ST_MODE])
+	except:
+		raise CatalystError("Could not empty directory '%s'" % (path,))
 
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

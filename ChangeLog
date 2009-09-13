@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/util.py:
+  Add catalyst.util.remove_dir() helper function
+
   12 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/util.py:
   Remove unnecessary os.path import
