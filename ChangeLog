@@ -4,6 +4,10 @@
 # $Id$
 
   13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/snapshot.py:
+  Add --exclude /packages/ to the rsync line for the snapshot
+
+  13 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py, modules/catalyst/util.py:
   Create catalyst.util.move() helper and use it
 

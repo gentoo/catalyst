@@ -45,10 +45,10 @@ class snapshot_target(catalyst.target.generic.generic_target):
 			os.makedirs(mytmp)
 
 		catalyst.util.rsync(self.settings["portdir"] + "/", mytmp + "/portage/", delete=True, \
-			extra_opts="--exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-*")
+			extra_opts="--exclude /distfiles/ --exclude /local/ --exclude /packages/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-*")
 
 		msg("Compressing Portage snapshot tarball...")
-		catalyst.util.create_tarball(self.settings["snapshot_path"], "portage", mytmp)
+		catalyst.util.create_tarball(self.settings["snapshot_path"], "portage", working_dir=mytmp)
 
 		catalyst.hash.gen_contents_file(self.settings["snapshot_path"], self.settings)
 		catalyst.hash.gen_digest_file(self.settings["snapshot_path"], self.settings)
