@@ -1140,10 +1140,7 @@ class generic_stage_target(generic_target):
 			if "overlay" in self.settings:
 				for x in self.settings["overlay"]:
 					if os.path.exists(x):
-						cmd("rsync -a "+x+"/ "+\
-							self.settings["target_path"],\
-							"overlay: "+x+\
-							" copy failed.",env=self.env)
+						catalyst.util.rsync(x + "/", self.settings["target_path"])
 				self.set_autoresume("setup_overlay")
 
 	def create_iso(self):
