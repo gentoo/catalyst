@@ -9,8 +9,6 @@ from catalyst.spawn import cmd
 
 class generic_target:
 
-	_autoresume_invalid = False
-
 	def __init__(self):
 #		if myspec and addlargs:
 #			catalyst.util.addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
@@ -39,21 +37,40 @@ class generic_target:
 	def check_autoresume(self, step=None):
 		if "AUTORESUME" in self.settings:
 			if step:
-				if self._autoresume_invalid:
-					return False
-				elif os.path.exists(self.settings["autoresume_path"] + step):
-					return True
+				if os.path.exists(self.settings["autoresume_path"] + step):
+					autoresume_size = os.path.getsize(self.settings["autoresume_path"] + step)
+					if autoresume_size == 0:
+						return True
+					else:
+						metadata = catalyst.util.readfile(self.settings["autoresume_path"] + step)
+						metadata = metadata.split()
+						if os.path.exists(metadata[0]):
+							if os.path.isfile(metadata[0]):
+								path_hash = catalyst.hash.generate_hash(metadata[0], hash_function=self.settings["hash_function"], verbose=False)
+								if path_hash != metadata[1]:
+									self.clear_autoresume()
+									return False
+						else:
+							self.clear_autoresume()
+							return False
+						return True
 				else:
-					self._autoresume_invalid = True
+					self.clear_autoresume()
 					return False
 			else:
 				return True
 		return False
 
-	def set_autoresume(self, step, value=""):
-		if value:
+	def set_autoresume(self, step, path=None):
+		if path:
+			metadata = ""
+			if os.path.isfile(path):
+				path_hash = catalyst.hash.generate_hash(path, hash_function=self.settings["hash_function"], verbose=False)
+				metadata = path + " " + path_hash
+			else:
+				metadata = path
 			myf=open(self.settings["autoresume_path"] + step, "w")
-			myf.write(value)
+			myf.write(metadata)
 			myf.close()
 		else:
 			catalyst.util.touch(self.settings["autoresume_path"] + step)
