@@ -310,12 +310,10 @@ class generic_stage_target(generic_target):
 			self.settings["source_path"]=catalyst.util.normpath(self.settings["storedir"]+\
 				"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
-				# XXX: Is this even necessary if the previous check passes?
-				if os.path.exists(self.settings["source_path"]):
-					self.settings["source_path_hash"]=\
-						catalyst.hash.generate_hash(self.settings["source_path"],\
-						hash_function=self.settings["hash_function"],\
-						verbose=False)
+				self.settings["source_path_hash"]=\
+					catalyst.hash.generate_hash(self.settings["source_path"],\
+					hash_function=self.settings["hash_function"],\
+					verbose=False)
 		msg("Source path set to " + self.settings["source_path"])
 		if os.path.isdir(self.settings["source_path"]):
 			msg("\tIf this is not desired, remove this directory or turn off")

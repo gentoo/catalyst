@@ -116,9 +116,7 @@ class livecd_stage2_target(generic_stage_target):
 			cmd(unpack_cmd,error_msg,env=self.env)
 
 			if "source_path_hash" in self.settings:
-				myf=open(self.settings["autoresume_path"]+"unpack","w")
-				myf.write(self.settings["source_path_hash"])
-				myf.close()
+				self.set_autoresume("unpack", self.settings["source_path_hash"])
 			else:
 				self.set_autoresume("unpack")
 
