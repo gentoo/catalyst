@@ -5,6 +5,10 @@
 
   14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py:
+  Rewrite unpack_snapshot() to suck less
+
+  14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
   Rewrite unpack() so it doesn't suck
 
   14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>

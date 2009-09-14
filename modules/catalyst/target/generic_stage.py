@@ -531,66 +531,35 @@ class generic_stage_target(generic_target):
 		self.set_autoresume("unpack", self.settings["source_path"])
 
 	def unpack_snapshot(self):
-		unpack=True
-		snapshot_hash = catalyst.util.readfile(self.settings["autoresume_path"]+\
-			"unpack_portage")
+		if "SNAPCACHE" in self.settings:
+			snapshot_cache_hash = catalyst.util.readfile(self.settings["snapshot_cache_path"] + "catalyst-hash")
+			if snapshot_cache_hash = self.settings["snapshot_path_hash"]:
+				msg("Valid snapshot cache, skipping unpack of portage tree...")
+				return
+
+		if self.check_autoresume("unpack_snapshot"):
+			msg("Valid Resume point detected, skipping unpack of portage tree...")
+			return
+
+		msg("Unpacking portage tree (This can take a long time) ...")
 
 		if "SNAPCACHE" in self.settings:
-			snapshot_cache_hash = \
-				catalyst.util.readfile(self.settings["snapshot_cache_path"]+\
-				"catalyst-hash")
-			destdir=self.settings["snapshot_cache_path"]
-			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+destdir
-			unpack_errmsg="Error unpacking snapshot"
-			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
-				self.settings["snapshot_cache_path"]+\
-				" (This can take a long time)..."
-			cleanup_errmsg="Error removing existing snapshot cache directory."
-			self.snapshot_lock_object=self.snapcache_lock
-
-			if self.settings["snapshot_path_hash"]==snapshot_cache_hash:
-				msg("Valid snapshot cache, skipping unpack of portage tree...")
-				unpack=False
+			self.snapcache_lock.write_lock()
+			if os.path.exists(self.settings["snapshot_cache_path"]):
+				catalyst.util.remove_path(self.settings["snapshot_cache_path"])
+			catalyst.util.mkdir(self.settings["snapshot_cache_path"])
+			catalyst.util.unpack_tarball(self.settings["snapshot_path"], self.settings["snapshot_cache_path"])
+			self.snapcache_lock.unlock()
 		else:
-			destdir=catalyst.util.normpath(self.settings["chroot_path"]+"/usr/portage")
-			cleanup_errmsg="Error removing existing snapshot directory."
-			cleanup_msg=\
-				"Cleaning up existing portage tree (This can take a long time)..."
-			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+\
-				self.settings["chroot_path"]+"/usr"
-			unpack_errmsg="Error unpacking snapshot"
+			if os.path.exists(self.settings["chroot_path"] + "/usr/portage"):
+				catalyst.util.remove_path(self.settings["chroot_path"] + "/usr/portage")
+			catalyst.util.mkdir(self.settings["chroot_path"] + "/usr/portage")
+			catalyst.util.unpack_tarball(self.settings["snapshot_path"], self.settings["chroot_path"] + "/usr/portage")
 
-			if self.check_autoresume("unpack_portage") \
-				and os.path.exists(self.settings["chroot_path"]+\
-					"/usr/portage/") \
-				and self.settings["snapshot_path_hash"] == snapshot_hash:
-					msg("Valid Resume point detected, skipping unpack of portage tree...")
-					unpack=False
-
-		if unpack:
-			if "SNAPCACHE" in self.settings:
-				self.snapshot_lock_object.write_lock()
-			if os.path.exists(destdir):
-				msg(cleanup_msg)
-				catalyst.util.remove_path(destdir)
-			if not os.path.exists(destdir):
-				os.makedirs(destdir,0755)
-
-			msg("Unpacking portage tree (This can take a long time) ...")
-			cmd(unpack_cmd,unpack_errmsg,env=self.env)
-
-			if "SNAPCACHE" in self.settings:
-				myf=open(self.settings["snapshot_cache_path"]+"catalyst-hash","w")
-				myf.write(self.settings["snapshot_path_hash"])
-				myf.close()
-			else:
-				msg("Setting snapshot autoresume point")
-				myf=open(self.settings["autoresume_path"]+"unpack_portage","w")
-				myf.write(self.settings["snapshot_path_hash"])
-				myf.close()
-
-			if "SNAPCACHE" in self.settings:
-				self.snapshot_lock_object.unlock()
+		self.set_autoresume("unpack_portage", self.settings["snapshot_path"])
+		myf = open(self.settings["snapshot_cache_path"] + "catalyst-hash")
+		myf.write(self.settings["snapshot_path_hash"])
+		myf.close()
 
 	def config_profile_link(self):
 		if self.check_autoresume("config_profile_link"):
@@ -644,7 +613,7 @@ class generic_stage_target(generic_target):
 
 			src=self.mountmap[x]
 			if "SNAPCACHE" in self.settings and x == "/usr/portage":
-				self.snapshot_lock_object.read_lock()
+				self.snapcache_lock.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
 					retval=os.system("mount -t devfs none "+\
@@ -693,7 +662,7 @@ class generic_stage_target(generic_target):
 					This is because mount safety check calls unbind before the
 					target is fully initialized
 					"""
-					self.snapshot_lock_object.unlock()
+					self.snapcache_lock.unlock()
 				except:
 					pass
 		if ouch:
