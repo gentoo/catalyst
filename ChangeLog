@@ -4,6 +4,10 @@
 # $Id$
 
   14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
+  Rewrite unpack() so it doesn't suck
+
+  14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic.py:
   Beef up autoresume to record path metadata and check it later
 

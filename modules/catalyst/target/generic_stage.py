@@ -501,124 +501,34 @@ class generic_stage_target(generic_target):
 					raise CatalystError, "Unable to auto-unbind "+x
 
 	def unpack(self):
-		unpack=True
-
-		clst_unpack_hash = catalyst.util.readfile(self.settings["autoresume_path"]+\
-			"unpack")
-
-		if "SEEDCACHE" in self.settings:
-			if os.path.isdir(self.settings["source_path"]):
-				""" SEEDCACHE Is a directory, use rsync """
-				unpack_cmd="rsync -a --delete "+self.settings["source_path"]+\
-					" "+self.settings["chroot_path"]
-				display_msg="\nStarting rsync from "+\
-					self.settings["source_path"]+"\nto "+\
-					self.settings["chroot_path"]+\
-					" (This may take some time) ...\n"
-				error_msg="Rsync of "+self.settings["source_path"]+" to "+\
-					self.settings["chroot_path"]+" failed."
-			else:
-				""" SEEDCACHE is a not a directory, try untar'ing """
-				msg("Referenced SEEDCACHE does not appear to be a directory, trying to untar...")
-				display_msg="\nStarting tar extract from "+\
-					self.settings["source_path"]+"\nto "+\
-					self.settings["chroot_path"]+\
-						" (This may take some time) ...\n"
-				unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+\
-					self.settings["chroot_path"]
-				error_msg="Tarball extraction of "+\
-					self.settings["source_path"]+" to "+\
-					self.settings["chroot_path"]+" failed."
-		else:
-			""" No SEEDCACHE, use tar """
-			display_msg="\nStarting tar extract from "+\
-				self.settings["source_path"]+"\nto "+\
-				self.settings["chroot_path"]+\
-				" (This may take some time) ...\n"
-			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+\
-				self.settings["chroot_path"]
-			error_msg="Tarball extraction of "+self.settings["source_path"]+\
-				" to "+self.settings["chroot_path"]+" failed."
-
-		if self.check_autoresume():
-			if os.path.isdir(self.settings["source_path"]) \
-				and self.check_autoresume("unpack"):
-				""" Autoresume is valid, SEEDCACHE is valid """
-				unpack=False
-				invalid_snapshot=False
-
-			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"]==clst_unpack_hash:
-				""" Autoresume is valid, tarball is valid """
-				unpack=False
-				invalid_snapshot=True
-
-			elif os.path.isdir(self.settings["source_path"]) \
-				and not self.check_autoresume("unpack"):
-				""" Autoresume is invalid, SEEDCACHE """
-				unpack=True
-				invalid_snapshot=False
-
-			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"]!=clst_unpack_hash:
-				""" Autoresume is invalid, tarball """
-				unpack=True
-				invalid_snapshot=True
-		else:
-			""" No autoresume, SEEDCACHE """
-			if "SEEDCACHE" in self.settings:
-				""" SEEDCACHE so let's run rsync and let it clean up """
-				if os.path.isdir(self.settings["source_path"]):
-					unpack=True
-					invalid_snapshot=False
-				elif os.path.isfile(self.settings["source_path"]):
-					""" Tarball so unpack and remove anything already there """
-					unpack=True
-					invalid_snapshot=True
-				""" No autoresume, no SEEDCACHE """
-			else:
-				""" Tarball so unpack and remove anything already there """
-				if os.path.isfile(self.settings["source_path"]):
-					unpack=True
-					invalid_snapshot=True
-				elif os.path.isdir(self.settings["source_path"]):
-					""" We should never reach this, so something is very wrong """
-					raise CatalystError,\
-						"source path is a dir but seedcache is not enabled"
-
-		if unpack:
-			self.mount_safety_check()
-
-			if invalid_snapshot:
-				if self.check_autoresume():
-					msg("No Valid Resume point detected, cleaning up...")
-
-				self.clear_autoresume()
-				self.clear_chroot()
-
-			if not os.path.exists(self.settings["chroot_path"]):
-				os.makedirs(self.settings["chroot_path"])
-
-			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
-
-			if "PKGCACHE" in self.settings:
-				if not os.path.exists(self.settings["pkgcache_path"]):
-					os.makedirs(self.settings["pkgcache_path"],0755)
-
-			if "KERNCACHE" in self.settings:
-				if not os.path.exists(self.settings["kerncache_path"]):
-					os.makedirs(self.settings["kerncache_path"],0755)
-
-			msg(display_msg)
-			cmd(unpack_cmd,error_msg,env=self.env)
-
-			if "source_path_hash" in self.settings:
-				self.set_autoresume("unpack", self.settings["source_path_hash"])
-			else:
-				self.set_autoresume("unpack")
-		else:
+		if self.check_autoresume("unpack"):
 			msg("Resume point detected, skipping unpack operation...")
+			return
+
+		self.mount_safety_check()
+
+		self.clear_chroot()
+
+		if not os.path.exists(self.settings["chroot_path"]):
+			catalyst.util.mkdir(self.settings["chroot_path"])
+
+		if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
+			catalyst.util.mkdir(self.settings["chroot_path"]+"/tmp", 1777)
+
+		if "PKGCACHE" in self.settings:
+			if not os.path.exists(self.settings["pkgcache_path"]):
+				catalyst.util.mkdir(self.settings["pkgcache_path"])
+
+		if "KERNCACHE" in self.settings:
+			if not os.path.exists(self.settings["kerncache_path"]):
+				catalyst.util.mkdir(self.settings["kerncache_path"])
+
+		if "SEEDCACHE" in self.settings and os.path.isdir(self.settings["source_path"]):
+			catalyst.util.rsync(self.settings["source_path"], self.settings["chroot_path"], delete=True)
+		else:
+			catalyst.util.unpack_tarball(self.settings["source_path"], self.settings["chroot_path"])
+
+		self.set_autoresume("unpack", self.settings["source_path"])
 
 	def unpack_snapshot(self):
 		unpack=True
