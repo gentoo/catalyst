@@ -533,7 +533,7 @@ class generic_stage_target(generic_target):
 	def unpack_snapshot(self):
 		if "SNAPCACHE" in self.settings:
 			snapshot_cache_hash = catalyst.util.readfile(self.settings["snapshot_cache_path"] + "catalyst-hash")
-			if snapshot_cache_hash = self.settings["snapshot_path_hash"]:
+			if snapshot_cache_hash == self.settings["snapshot_path_hash"]:
 				msg("Valid snapshot cache, skipping unpack of portage tree...")
 				return
 

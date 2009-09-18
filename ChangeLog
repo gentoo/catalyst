@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  18 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
+  Fix typo for Gentoo bug #285484
+
   14 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py:
   Rewrite unpack_snapshot() to suck less
