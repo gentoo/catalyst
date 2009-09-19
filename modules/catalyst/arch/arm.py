@@ -146,6 +146,7 @@ _subarch_map = {
 	"armv4tl": arch_armv4tl,
 	"armv5l" : arch_armv5l,
 	"armv5tl": arch_armv5tl,
+	"armv5teb" : arch_armv5teb,
 	"armv5tel": arch_armv5tel,
 	"armv5tejl": arch_armv5tejl,
 	"armv6l" : arch_armv6l,
@@ -157,8 +158,7 @@ _subarch_map = {
 	"armv7al" : arch_armv7al,
 	"armv7rl" : arch_armv7rl,
 	"armv7ml" : arch_armv7ml,
-	"armeb"  : arch_armeb,
-	"armv5b" : arch_armv5b
+	"armeb"  : arch_armeb
 }
 
 _machine_map = ("arm", "armv4l", "armv4tl", "armv5l", "armv5tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "armeb", "armv5teb")
