@@ -9,6 +9,9 @@ from catalyst.output import *
 
 class system_target(generic_stage_target):
 
+	# We're leaving this empty since we can't do automatic source_subpath calculation for system
+	depends = ()
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -90,6 +93,6 @@ class system_target(generic_stage_target):
 		self.mountmap[self.settings["root_path"] + "/proc"]="/proc"
 
 
-__target_map = {"system": system_target}
+__target_map = { "system": system_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

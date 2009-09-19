@@ -10,6 +10,8 @@ from catalyst.spawn import cmd
 
 class tinderbox_target(generic_stage_target):
 
+	depends = ('system', 'stage3')
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -37,6 +39,6 @@ class tinderbox_target(generic_stage_target):
 				"setup_environment","run_local","preclean","unbind","clean",\
 				"clear_autoresume"]
 
-__target_map = {"tinderbox":tinderbox_target}
+__target_map = { "tinderbox": tinderbox_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

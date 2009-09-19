@@ -7,6 +7,8 @@ from generic_stage import *
 
 class stage3_target(generic_stage_target):
 
+	depends = ('stage2', )
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -27,6 +29,6 @@ class stage3_target(generic_stage_target):
 		generic_stage_target.set_cleanables(self)
 		self.settings["cleanables"].extend(["/etc/portage"])
 
-__target_map = {"stage3":stage3_target}
+__target_map = { "stage3": stage3_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

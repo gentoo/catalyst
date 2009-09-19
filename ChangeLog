@@ -3,6 +3,18 @@
 # Distributed under the GPL v2
 # $Id$
 
+  19 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/embedded.py, modules/catalyst/target/generic.py,
+  modules/catalyst/target/generic_stage.py, modules/catalyst/target/grp.py,
+  modules/catalyst/target/livecd_stage1.py,
+  modules/catalyst/target/livecd_stage2.py,
+  modules/catalyst/target/netboot.py, modules/catalyst/target/snapshot.py,
+  modules/catalyst/target/stage1.py, modules/catalyst/target/stage2.py,
+  modules/catalyst/target/stage3.py, modules/catalyst/target/stage4.py,
+  modules/catalyst/target/system.py, modules/catalyst/target/tinderbox.py:
+  Add dependency information for each target
+  Add function to automatically calculate source_subpath
+
   18 Sep 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic_stage.py:
   Fix typo for Gentoo bug #285484

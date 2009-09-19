@@ -9,6 +9,9 @@ from catalyst.output import *
 
 class stage1_target(generic_stage_target):
 
+	# We're leaving this empty since we can't do automatic source_subpath calculation for stage1
+	depends = ()
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -94,6 +97,6 @@ class stage1_target(generic_stage_target):
 		self.mountmap["/tmp/stage1root/proc"]="/proc"
 
 
-__target_map = {"stage1":stage1_target}
+__target_map = { "stage1": stage1_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

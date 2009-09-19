@@ -11,6 +11,9 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class livecd_stage2_target(generic_stage_target):
+
+	depends = ('livecd-stage1', )
+
 	def __init__(self):
 		self.required_values=["boot/kernel"]
 
@@ -132,6 +135,6 @@ class livecd_stage2_target(generic_stage_target):
 				"setup_overlay","create_iso"]
 		self.settings["action_sequence"].append("clear_autoresume")
 
-__target_map = {"livecd-stage2":livecd_stage2_target}
+__target_map = { "livecd-stage2": livecd_stage2_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

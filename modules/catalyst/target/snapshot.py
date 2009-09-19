@@ -11,6 +11,8 @@ from catalyst.output import *
 
 class snapshot_target(catalyst.target.generic.generic_target):
 
+	depends = ()
+
 	def __init__(self):
 		generic_target.__init__(self)
 
@@ -66,6 +68,6 @@ class snapshot_target(catalyst.target.generic.generic_target):
 			msg("Emptying directory " + myemp)
 			catalyst.util.empty_dir(myemp)
 
-__target_map = {"snapshot":snapshot_target}
+__target_map = { "snapshot": snapshot_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

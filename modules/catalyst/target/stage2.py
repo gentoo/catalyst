@@ -9,6 +9,8 @@ from catalyst.output import *
 
 class stage2_target(generic_stage_target):
 
+	depends = ('stage1', )
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -63,6 +65,6 @@ class stage2_target(generic_stage_target):
 				msg("\tDont say we did not warn you")
 				msg()
 
-__target_map = {"stage2":stage2_target}
+__target_map = { "stage2": stage2_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

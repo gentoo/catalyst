@@ -7,6 +7,8 @@ from generic_stage import *
 
 class stage4_target(generic_stage_target):
 
+	depends = ('system', 'stage3')
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -35,6 +37,6 @@ class stage4_target(generic_stage_target):
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
 
-__target_map = {"stage4":stage4_target}
+__target_map = { "stage4": stage4_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

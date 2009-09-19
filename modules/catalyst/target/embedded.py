@@ -15,6 +15,8 @@ from catalyst.output import *
 
 class embedded_target(generic_stage_target):
 
+	depends = ('system', 'stage3')
+
 	def __init__(self):
 		self.valid_values = ["empty","rm","unmerge","fs-prepare","fs-finish","mergeroot","packages","fs-type"]
 		self.valid_values += ["runscript","boot/kernel","linuxrc", "use", "fs-ops"]
@@ -37,6 +39,6 @@ class embedded_target(generic_stage_target):
 		self.settings["root_path"]=catalyst.util.normpath("/tmp/mergeroot")
 		msg("embedded root path is " + self.settings["root_path"])
 
-__target_map = {"embedded":embedded_target}
+__target_map = { "embedded": embedded_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

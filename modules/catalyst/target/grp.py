@@ -11,6 +11,9 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class grp_target(generic_stage_target):
+
+	depends = ('system', 'stage3')
+
 	def __init__(self):
 		generic_stage_target.__init__(self)
 
@@ -110,6 +113,6 @@ class grp_target(generic_stage_target):
 				"setup_environment","run_local","unbind",\
 				"generate_digests","clear_autoresume"]
 
-__target_map = {"grp":grp_target}
+__target_map = { "grp": grp_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

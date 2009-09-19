@@ -83,4 +83,12 @@ class generic_target:
 			cmd("/bin/bash " + self.settings["controller_file"] + " " + command, \
 				action + " script failed.", env=self.env)
 
+	def calculate_source_subpath(self):
+		depends = self.depends
+		subpaths = []
+		for x in depends:
+			foo = self.settings['rel_type'] + '/' + x + '-' + self.settings['subarch'] + '-' + self.settings['version_stamp']
+			subpaths.append(foo)
+		return subpaths
+
 # vim: ts=4 sw=4 sta noet sts=4 ai

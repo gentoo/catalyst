@@ -9,6 +9,9 @@ from catalyst.spawn import cmd
 from catalyst.output import *
 
 class livecd_stage1_target(generic_stage_target):
+
+	depends = ('system', 'stage3')
+
 	def __init__(self):
 		self.required_values=["livecd/packages"]
 		self.valid_values=self.required_values[:]
@@ -63,6 +66,6 @@ class livecd_stage1_target(generic_stage_target):
 		else:
 			generic_stage_target.set_pkgcache_path(self)
 
-__target_map = {"livecd-stage1":livecd_stage1_target}
+__target_map = { "livecd-stage1": livecd_stage1_target }
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

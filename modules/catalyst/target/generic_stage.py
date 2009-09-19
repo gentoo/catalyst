@@ -234,6 +234,9 @@ class generic_stage_target(generic_target):
 				self.settings["version_stamp"]
 
 	def set_source_subpath(self):
+		if not 'source_subpath' in self.settings:
+			subpaths = self.calculate_source_subpath()
+			msg("Possible source_subpath settings are: " + ', '.join(subpaths))
 		if  not isinstance(self.settings["source_subpath"], str):
 			raise CatalystError,\
 				"source_subpath should have been a string. Perhaps you have something wrong in your spec file?"
