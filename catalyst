@@ -119,7 +119,6 @@ def parse_config():
 		("purge", "PURGE", "Purge support enabled."),
 		("seedcache", "SEEDCACHE", "Seed cache support enabled."),
 		("snapcache", "SNAPCACHE", "Snapshot cache support enabled."),
-		("metadata_overlay", "METADATA_OVERLAY", "Use of metadata_overlay module for portage enabled."),
 #		("tarball", "TARBALL", "Tarball creation enabled.")
 	)
 

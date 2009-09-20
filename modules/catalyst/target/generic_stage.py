@@ -710,18 +710,6 @@ class generic_stage_target(generic_target):
 
 				catalyst.util.copy(self.settings["ENVSCRIPT"], self.settings["chroot_path"] + "/tmp/envscript")
 
-			""" Setup metadata_overlay """
-			if "METADATA_OVERLAY" in self.settings \
-				and not "portage_confdir" in self.settings:
-				if not os.path.exists(self.settings["chroot_path"]+\
-					"/etc/portage"):
-					catalyst.util.mkdir(self.settings["chroot_path"] + "/etc/portage")
-				myf=open(self.settings["chroot_path"]+\
-					"/etc/portage/modules","a")
-				myf.write("portdbapi.auxdbmodule = cache.metadata_overlay.database\n")
-				myf.close()
-
-
 			"""
 			Copy over /etc/hosts from the host in case there are any
 			specialties in there
