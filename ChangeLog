@@ -4,6 +4,10 @@
 # $Id$
 
   28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/__init__.py:
+  Add initial built_target support
+
+  28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/util.py:
   change os.path.is_dir() to isdir()
 
