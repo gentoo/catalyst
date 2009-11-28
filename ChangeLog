@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/util.py:
+  change os.path.is_dir() to isdir()
+
   20 Sep 2009; Andrew Gaffney <agaffney@gentoo.org> catalyst,
   files/catalyst.conf, modules/catalyst/target/generic_stage.py:
   Remove metadata_overlay option, since it doesn't make sense with

@@ -206,7 +206,7 @@ def remove_path(path, glob=True):
 			cmd("chflags -R noschg " + x, \
 				"Could not remove immutable flag for path " \
 				+ x)
-		if os.path.is_dir(x):
+		if os.path.isdir(x):
 			try:
 				shutil.rmtree(x)
 			except:
