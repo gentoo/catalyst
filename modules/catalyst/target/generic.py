@@ -15,7 +15,7 @@ class generic_target(catalyst.target.target):
 #			self.settings=myspec
 #		else:
 		self.config = catalyst.config.config()
-		self.settings = self.config.get_spec().get_values()
+		self.settings = self.config.get_spec().get_values(self.get_target_name())
 		self.settings.update(self.config.get_conf())
 
 		self.required_values = []
@@ -28,7 +28,11 @@ class generic_target(catalyst.target.target):
 		self._rel_type = self.settings["rel_type"]
 		self._version_stamp = self.settings["version_stamp"]
 		self._media = self.settings["build"]
-		self._target = self.settings["target"]
+		self._target = self.get_target_name()
+
+	def get_target_name(self):
+		class_name = self.__class__.__name__
+		return class_name.rsplit('_', 1)[0]
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"] = catalyst.util.normpath(self.settings["storedir"] + \
