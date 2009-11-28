@@ -46,10 +46,10 @@ def build_targets():
 
 	for target in buildplan:
 		try:
-			target.run()
+			target['object'].run()
 		except:
 			catalyst.util.print_traceback()
-			catalyst.output.warn("Error encountered during run of target " + x)
+			catalyst.output.warn("Error encountered during run of target " + target['info']['target'])
 			raise
 
 def build_target_buildplan():
@@ -59,7 +59,7 @@ def build_target_buildplan():
 	spec_values = spec.get_values()
 	targetmap = config.get_targetmap()
 
-	built_targets = find_built_targets(spec_values['storedir'] + '/builds/')
+	built_targets = find_built_targets(config.get_conf()['storedir'] + '/builds/')
 
 	if not "targets" in spec_values or not spec_values['targets']:
 		raise CatalystError, "No target(s) specified."
@@ -78,7 +78,7 @@ def build_target_buildplan():
 			targets[i]['parent'] = 'pass'
 			continue
 
-		for x target['depends']:
+		for x in target['depends']:
 			for y in built_targets:
 				info = y.get_target_info()
 				if info['target'] == y and info['version_stamp'] == target['info']['version_stamp'] and \

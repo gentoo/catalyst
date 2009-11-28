@@ -24,10 +24,11 @@ class generic_target(catalyst.target.target):
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
 
-		self._arch = self.settings["subarch"]
+		if 'subarch' in self.settings:
+			self._arch = self.settings["subarch"]
 		self._rel_type = self.settings["rel_type"]
 		self._version_stamp = self.settings["version_stamp"]
-		self._media = self.settings["build"]
+		self._media = "build"
 		self._target = self.get_target_name()
 
 	def get_target_name(self):
