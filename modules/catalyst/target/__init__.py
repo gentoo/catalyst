@@ -41,14 +41,36 @@ def find_built_targets(build_dir):
 
 	return built_targets
 
-class built_target:
+class target:
 
-	_filename = None
 	_target = None
 	_version_stamp = None
 	_arch = None
 	_rel_type = None
 	_media = None
+
+	def get_target(self):
+		return self._target
+
+	def get_arch(self):
+		return self._arch
+
+	def get_version_stamp(self):
+		return self._version_stamp
+
+	def get_media(self):
+		return self._media
+
+	def get_rel_type(self):
+		return self._rel_type
+
+	def get_target_info(self):
+		foo = { 'target': self._target, 'arch': self._arch, 'version_stamp': self._version_stamp, 'rel_type': self._rel_type, 'media': self._media }
+		return foo
+
+class built_target(target):
+
+	_filename = None
 
 	def __init__(self, filename=None):
 		if filename:
@@ -71,24 +93,5 @@ class built_target:
 		self._target = target
 		self._arch = arch
 		self._version_stamp = version_stamp
-
-	def get_target(self):
-		return self._target
-
-	def get_arch(self):
-		return self._arch
-
-	def get_version_stamp(self):
-		return self._version_stamp
-
-	def get_media(self):
-		return self._media
-
-	def get_rel_type(self):
-		return self._rel_type
-
-	def get_values(self):
-		foo = { 'target': self._target, 'arch': self._arch, 'version_stamp': self._version_stamp, 'rel_type': self._rel_type, 'media': self._media }
-		return foo
 
 # vim: ts=4 sw=4 sta noet sts=4 ai

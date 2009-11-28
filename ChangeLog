@@ -5,6 +5,10 @@
 
   28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/__init__.py:
+  Split up built_target into target and built_target
+
+  28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/__init__.py:
   Add initial built_target support
 
   28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
