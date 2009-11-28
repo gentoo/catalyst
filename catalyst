@@ -140,28 +140,6 @@ def parse_config():
 		msg("Envscript support enabled.")
 		conf_values["ENVSCRIPT"] = myconf["envscript"]
 
-def build_targets():
-	spec_values = config.get_spec().get_values()
-	targetmap = config.get_targetmap()
-
-	if not "targets" in spec_values or not spec_values['targets']:
-		raise CatalystError, "No target(s) specified."
-
-	for x in spec_values['targets']:
-		if not x in targetmap:
-			raise CatalystError("Target \"" + x + "\" is not a known target.")
-
-	for x in spec_values['targets']:
-		try:
-			config.get_spec().set_target(x)
-			mytarget = targetmap[x]()
-			mytarget.run()
-
-		except:
-			catalyst.util.print_traceback()
-			warn("Error encountered during run of target " + x)
-			raise
-
 def verify_digest_and_hash_functions():
 	# Start checking that digests are valid now that the hash_map was imported from catalyst_support
 	if "digests" in conf_values:
@@ -315,7 +293,7 @@ if __name__ == "__main__":
 
 	# everything is setup, so the build is a go
 	try:
-		build_targets()
+		catalyst.target.build_targets()
 
 	except CatalystError:
 		msg()
