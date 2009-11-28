@@ -7,7 +7,7 @@ import catalyst
 from catalyst.output import *
 from catalyst.spawn import cmd
 
-class generic_target:
+class generic_target(catalyst.target.target):
 
 	def __init__(self):
 #		if myspec and addlargs:
@@ -23,6 +23,12 @@ class generic_target:
 
 		self.env={}
 		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
+
+		self._arch = self.settings["subarch"]
+		self._rel_type = self.settings["rel_type"]
+		self._version_stamp = self.settings["version_stamp"]
+		self._media = self.settings["build"]
+		self._target = self.settings["target"]
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"] = catalyst.util.normpath(self.settings["storedir"] + \
