@@ -4,6 +4,10 @@
 # $Id$
 
   28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/__init__.py:
+  Add initial target buildplan logic
+
+  28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/generic.py:
   Add initialization of values for catalyst.target.target in
   generic_target's __init__()

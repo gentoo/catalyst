@@ -41,6 +41,84 @@ def find_built_targets(build_dir):
 
 	return built_targets
 
+def build_targets():
+	buildplan = build_target_buildplan()
+
+	for target in buildplan:
+		try:
+			target.run()
+		except:
+			catalyst.util.print_traceback()
+			catalyst.output.warn("Error encountered during run of target " + x)
+			raise
+
+def build_target_buildplan():
+	targets = []
+	config = catalyst.config.config()
+	spec = config.get_spec()
+	spec_values = spec.get_values()
+	targetmap = config.get_targetmap()
+
+	built_targets = find_built_targets(spec_values['storedir'] + '/builds/')
+
+	if not "targets" in spec_values or not spec_values['targets']:
+		raise CatalystError, "No target(s) specified."
+
+	for x in spec_values['targets']:
+		if not x in targetmap:
+			raise CatalystError("Target \"" + x + "\" is not a known target.")
+		config.get_spec().set_target(x)
+		target_tmp = { 'object': targetmap[x](), 'parent': '' }
+		target_tmp['info'] = target_tmp['object'].get_target_info()
+		target_tmp['depends'] = target_tmp['object'].depends
+		targets.append(target_tmp)
+
+	for i, target in enumerate(targets):
+		if len(target['depends']) == 0:
+			targets[i]['parent'] = 'pass'
+			continue
+
+		for x target['depends']:
+			for y in built_targets:
+				info = y.get_target_info()
+				if info['target'] == y and info['version_stamp'] == target['info']['version_stamp'] and \
+					info['arch'] == target['info']['arch'] and info['rel_type'] == target['info']['rel_type']:
+					targets[i]['parent'] = 'built'
+					break
+
+			for y in targets:
+				info = y.get_target_info()
+				if info['target'] == y and info['version_stamp'] == target['info']['version_stamp'] and \
+					info['arch'] == target['info']['arch'] and info['rel_type'] == target['info']['rel_type']:
+					targets[i]['parent'] = info['target']
+					break
+
+		if targets[i]['parent']:
+			continue
+
+		raise CatalystError("Failed to resolve depedencies for target '%s'" % (target['info']['target'],))
+
+	while True:
+		did_something = False
+		for i, target in enumerate(targets):
+			if target['parent'] in ('built', 'pass'):
+				continue
+			else:
+				for j, foo in enumerate(targets):
+					if foo['target'] == target['parent']:
+						if i < j:
+							tmp_target = targets.pop(j)
+							targets.insert(i, tmp_target)
+							did_something = True
+							break
+				if did_something:
+					break
+		if not did_something:
+			break
+
+	return targets
+
+
 class target:
 
 	_target = None
