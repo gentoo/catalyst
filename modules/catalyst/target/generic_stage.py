@@ -562,7 +562,7 @@ class generic_stage_target(generic_target):
 			catalyst.util.unpack_tarball(self.settings["snapshot_path"], self.settings["chroot_path"] + "/usr/portage")
 
 		self.set_autoresume("unpack_portage", self.settings["snapshot_path"])
-		myf = open(self.settings["snapshot_cache_path"] + "catalyst-hash")
+		myf = open(self.settings["snapshot_cache_path"] + "catalyst-hash", 'w')
 		myf.write(self.settings["snapshot_path_hash"])
 		myf.close()
 
