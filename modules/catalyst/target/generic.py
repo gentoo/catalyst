@@ -32,8 +32,8 @@ class generic_target(catalyst.target.target):
 		self._target = self.get_target_name()
 
 	def get_target_name(self):
-		class_name = self.__class__.__name__
-		return class_name.rsplit('_', 1)[0]
+		class_name = self.__class__.__name__.rsplit('_', 1)[0]
+		return class_name
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"] = catalyst.util.normpath(self.settings["storedir"] + \
