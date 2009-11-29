@@ -195,9 +195,9 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		if not x in myspec:
 			raise CatalystError, "Required argument \""+x+"\" not specified."
 
-def remove_path(path, glob=True):
+def remove_path(path, globbing=True):
 	paths = None
-	if glob:
+	if globbing:
 		paths = glob.glob(path)
 	else:
 		paths = [path]
