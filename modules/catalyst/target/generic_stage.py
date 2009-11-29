@@ -906,9 +906,9 @@ class generic_stage_target(generic_target):
 		"""
 		for x in self.settings.keys():
 			""" Sanitize var names by doing "s|/-.|_|g" """
-			varname="clst_"+string.replace(x,"/","_")
-			varname=string.replace(varname,"-","_")
-			varname=string.replace(varname,".","_")
+			varname = "clst_" + x.replace("/", "_")
+			varname = varname.replace("-", "_")
+			varname = varname.replace(".", "_")
 			if isinstance(self.settings[x], str):
 				""" Prefix to prevent namespace clashes """
 				#os.environ[varname]=self.settings[x]

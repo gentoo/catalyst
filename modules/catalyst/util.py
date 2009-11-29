@@ -2,7 +2,7 @@
 Collection of utility functions for catalyst
 """
 
-import sys, traceback, os, re, time, shutil, glob
+import sys, traceback, os, re, time, shutil, glob, stat
 import catalyst
 from catalyst.error import *
 from catalyst.output import *
