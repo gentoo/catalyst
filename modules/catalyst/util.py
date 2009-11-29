@@ -228,7 +228,7 @@ def empty_dir(path):
 		raise CatalystError("Could not empty directory '%s'" % (path,))
 
 def create_symlink(src, dest, remove_existing=False):
-	if os.path.exists(dest):
+	if os.path.lexists(dest):
 		if remove_existing:
 			remove_path(dest)
 		else:
