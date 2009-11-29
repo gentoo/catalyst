@@ -4,6 +4,7 @@ Parent module of all target modules
 
 import os
 import catalyst.util
+from catalyst.error import CatalystError
 from catalyst.output import warn
 
 def find_target_modules():
@@ -44,6 +45,10 @@ def find_built_targets(build_dir):
 def build_targets():
 	buildplan = build_target_buildplan()
 
+	print "buildplan = "
+	for x in buildplan:
+		print "\t" + str(x)
+
 	for target in buildplan:
 		try:
 			target['object'].run()
@@ -79,16 +84,19 @@ def build_target_buildplan():
 			continue
 
 		for x in target['depends']:
+			if target['parent']:
+				break
+
 			for y in built_targets:
 				info = y.get_target_info()
-				if info['target'] == y and info['version_stamp'] == target['info']['version_stamp'] and \
+				if info['target'] == x and info['version_stamp'] == target['info']['version_stamp'] and \
 					info['arch'] == target['info']['arch'] and info['rel_type'] == target['info']['rel_type']:
 					targets[i]['parent'] = 'built'
 					break
 
 			for y in targets:
-				info = y.get_target_info()
-				if info['target'] == y and info['version_stamp'] == target['info']['version_stamp'] and \
+				info = y['info']
+				if info['target'] == x and info['version_stamp'] == target['info']['version_stamp'] and \
 					info['arch'] == target['info']['arch'] and info['rel_type'] == target['info']['rel_type']:
 					targets[i]['parent'] = info['target']
 					break
@@ -105,7 +113,7 @@ def build_target_buildplan():
 				continue
 			else:
 				for j, foo in enumerate(targets):
-					if foo['target'] == target['parent']:
+					if foo['info']['target'] == target['parent']:
 						if i < j:
 							tmp_target = targets.pop(j)
 							targets.insert(i, tmp_target)
