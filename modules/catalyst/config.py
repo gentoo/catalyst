@@ -168,7 +168,7 @@ class Spec:
 		tmp.update(self.values['global'])
 		if target is None:
 			target = self.target
-			tmp['target'] = target
+		tmp['target'] = target
 		if target in self.values:
 			tmp.update(self.values[target])
 		return tmp
