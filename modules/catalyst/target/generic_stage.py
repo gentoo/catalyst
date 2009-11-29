@@ -871,7 +871,7 @@ class generic_stage_target(generic_target):
 			""" Capture target in a tarball """
 			mypath=self.settings["target_path"].split("/")
 			""" Remove filename from path """
-			mypath = " ".join(mypath[:-1],"/")
+			mypath = "/".join(mypath[:-1])
 
 			""" Now make sure path exists """
 			if not os.path.exists(mypath):
