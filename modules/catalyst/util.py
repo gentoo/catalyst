@@ -275,7 +275,7 @@ def mkdir(path, perms=0755):
 		raise CatalystError("Could not create directory '%s'" % (path,))
 
 def copy(src, dest, recursive=False):
-	copy_cmd = "copy "
+	copy_cmd = "cp "
 	if recursive:
 		copy_cmd += "-R "
 	copy_cmd += src + " " + dest
