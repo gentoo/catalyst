@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  29 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/generic_stage.py:
+  Split up huge __init__() into startup and run-time init functions
+
   28 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/__init__.py:
   Add initial target buildplan logic

@@ -82,6 +82,8 @@ class generic_stage_target(generic_target):
 		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
 			self.settings["buildarch"])
 
+	def run_init(self):
+
 		""" Call arch constructor, pass our settings """
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
@@ -924,6 +926,8 @@ class generic_stage_target(generic_target):
 
 	def run(self):
 		self.chroot_lock.write_lock()
+
+		self.run_init()
 
 		""" Kill any pids in the chroot "" """
 		self.kill_chroot_pids()
