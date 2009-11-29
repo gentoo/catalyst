@@ -925,9 +925,9 @@ class generic_stage_target(generic_target):
 			self.env["MAKEOPTS"]=self.settings["makeopts"]
 
 	def run(self):
-		self.chroot_lock.write_lock()
-
 		self.run_init()
+
+		self.chroot_lock.write_lock()
 
 		""" Kill any pids in the chroot "" """
 		self.kill_chroot_pids()
