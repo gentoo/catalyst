@@ -5,6 +5,10 @@
 
   19 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/__init__.py:
+  Be verbose about why we're not considering certain built targets
+
+  19 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/target/__init__.py:
   Use a regex to parse the built target filenames
 
   29 Nov 2009; Andrew Gaffney <agaffney@gentoo.org>

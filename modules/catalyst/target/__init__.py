@@ -5,8 +5,8 @@ Parent module of all target modules
 import os
 import re
 import catalyst.util
+import catalyst.output
 from catalyst.error import CatalystError
-from catalyst.output import warn
 
 def find_target_modules():
 	search_dir = os.path.abspath(os.path.dirname(__file__))
@@ -19,7 +19,7 @@ def get_targets():
 	for x in find_target_modules():
 		target_modules[x] = catalyst.util.load_module("catalyst.target." + x)
 		if target_modules[x] is None:
-			warn("Cannot import catalyst.target." + x + ". This usually only " + \
+			catalyst.output.warn("Cannot import catalyst.target." + x + ". This usually only " + \
 				"happens due to a syntax error, which should be reported as " \
 				"a bug.")
 	return target_modules
@@ -37,7 +37,10 @@ def find_built_targets(build_dir):
 	for root, dir, files in os.walk(build_dir):
 		for file in files:
 			try:
-				built_targets.append(built_target(root + '/' + file))
+				foo = built_target(root + '/' + file)
+				# We don't even want to consider files like .CONTENTS and .DIGESTS
+				if foo.get_media_extra() is None:
+					built_targets.append(foo)
 			except:
 				catalyst.output.warn("Failed to parse '%s' as a built target" % (file,))
 
@@ -94,6 +97,8 @@ def build_target_buildplan():
 					info['arch'] == target['info']['arch'] and info['rel_type'] == target['info']['rel_type']:
 					targets[i]['parent'] = 'built'
 					break
+				else:
+					catalyst.output.warn("Not considering %s/%s-%s-%s.%s due to not matching arch, rel_type, version_stamp, or needed target type" % (info['rel_type'], info['target'], info['arch'], info['version_stamp'], info['media']))
 
 			for y in targets:
 				info = y['info']
@@ -173,7 +178,7 @@ class built_target(target):
 		(rel_type, file) = filename.split('/')[-2:]
 		self._rel_type = rel_type
 
-		matches = re.search(r'^([^-]+)-([^-]+)-(.+?)\.(tar\..+?)(?:\.(DIGESTS|CONTENTS))?$', file)
+		matches = re.search(r'^([^-]+)-([^-]+)-(.+?)\.(tar\..+?)(?:\.((?:DIGESTS|CONTENTS).*))?$', file)
 		if matches is None:
 			raise CatalystError("The file '%s' cannot be parsed as a built target" % (filename,))
 
