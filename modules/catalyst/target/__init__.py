@@ -3,6 +3,7 @@ Parent module of all target modules
 """
 
 import os
+import re
 import catalyst.util
 from catalyst.error import CatalystError
 from catalyst.output import warn
@@ -134,6 +135,7 @@ class target:
 	_arch = None
 	_rel_type = None
 	_media = None
+	_media_extra = None
 
 	def get_target(self):
 		return self._target
@@ -147,11 +149,14 @@ class target:
 	def get_media(self):
 		return self._media
 
+	def get_media_extra(self):
+		return self._media_extra
+
 	def get_rel_type(self):
 		return self._rel_type
 
 	def get_target_info(self):
-		foo = { 'target': self._target, 'arch': self._arch, 'version_stamp': self._version_stamp, 'rel_type': self._rel_type, 'media': self._media }
+		foo = { 'target': self._target, 'arch': self._arch, 'version_stamp': self._version_stamp, 'rel_type': self._rel_type, 'media': self._media, 'media_extra': self._media_extra }
 		return foo
 
 class built_target(target):
@@ -167,17 +172,15 @@ class built_target(target):
 
 		(rel_type, file) = filename.split('/')[-2:]
 		self._rel_type = rel_type
-		(target_full, media) = file.split('.', 1)
-		self._media = media
-		target_parts = target_full.split('-')
 
-		if len(target_parts) != 3:
+		matches = re.search(r'^([^-]+)-([^-]+)-(.+?)\.(tar\..+?)(?:\.(DIGESTS|CONTENTS))?$', file)
+		if matches is None:
 			raise CatalystError("The file '%s' cannot be parsed as a built target" % (filename,))
 
-		(target, arch, version_stamp) = target_parts
-
-		self._target = target
-		self._arch = arch
-		self._version_stamp = version_stamp
+		self._target = matches.group(1)
+		self._arch = matches.group(2)
+		self._version_stamp = matches.group(3)
+		self._media = matches.group(4)
+		self._media_extra = matches.group(5)
 
 # vim: ts=4 sw=4 sta noet sts=4 ai
