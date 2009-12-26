@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  26 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/rc-update.sh:
+  Add patch to start hald before xdm for Gentoo bug #280209
+
   19 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/target/__init__.py:
   Be verbose about why we're not considering certain built targets

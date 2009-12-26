@@ -32,6 +32,7 @@ then
 			;;
 		gentoo-release-live*)
 			rc-update add spind default
+			rc-update add hald default
 			rc-update add xdm default
 			;;
 		generic-livecd)
