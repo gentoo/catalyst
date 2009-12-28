@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  28 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Run depclean at the end of stage generation (for Gentoo bug #295132)
+
   26 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/rc-update.sh:
   Add patch to start hald before xdm for Gentoo bug #280209
