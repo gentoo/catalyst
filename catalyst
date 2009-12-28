@@ -17,7 +17,7 @@ import catalyst.config
 import catalyst.util
 
 __maintainer__="Chris Gianelloni <wolf31o2@wolf31o2.org>"
-__version__="2.0.6.905"
+__version__="2.0.6.906"
 
 conf_values={}
 
