@@ -208,6 +208,14 @@ cleanup_stages() {
 			echo "Skipping removal of world file for ${clst_target}"
 			;;
 	esac
+	case ${clst_target} in
+		stage1|stage2|stage3|stage4|system)
+			run_merge --depclean --with-bdeps=n
+			;;
+		*)
+			echo "Skipping depclean operation for ${clst_target}"
+			;;
+	esac
 
 	rm -f /var/log/emerge.log /var/log/portage/elog/*
 }
