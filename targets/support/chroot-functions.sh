@@ -200,20 +200,20 @@ cleanup_stages() {
 		cleanup_icecream
 	fi
 	case ${clst_target} in
+		stage3|system)
+			run_merge --depclean --with-bdeps=n
+			;;
+		*)
+			echo "Skipping depclean operation for ${clst_target}"
+			;;
+	esac
+	case ${clst_target} in
 		stage1|stage2|stage3)
 			rm -f /var/lib/portage/world
 			touch /var/lib/portage/world
 			;;
 		*)
 			echo "Skipping removal of world file for ${clst_target}"
-			;;
-	esac
-	case ${clst_target} in
-		stage1|stage2|stage3|stage4|system)
-			run_merge --depclean --with-bdeps=n
-			;;
-		*)
-			echo "Skipping depclean operation for ${clst_target}"
 			;;
 	esac
 
