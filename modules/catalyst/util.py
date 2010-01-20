@@ -57,7 +57,7 @@ def list_bashify(mylist):
 		# surround args with quotes for passing to bash,
 		# allows things like "<" to remain intact
 		mypack[x] = "'" + mypack[x] + "'"
-	mypack = "".join(mypack)
+	mypack = " ".join(mypack)
 	return mypack
 
 def list_to_string(mylist):
