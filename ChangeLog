@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  22 Jan 2010; Andrew Gaffney <agaffney@gentoo.org>
+  modules/catalyst/util.py:
+  Actually pay attention to the 'delete' parameter for Gentoo bug #301769
+
   20 Jan 2010; Andrew Gaffney <agaffney@gentoo.org>
   modules/catalyst/util.py:
   Missing space in catalyst.util.list_bashify()
