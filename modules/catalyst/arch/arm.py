@@ -113,7 +113,7 @@ class arch_armv7m(generic_arm):
 		self.settings["CFLAGS"]+=" -march=armv7-m -mfpu=vfp -mfloat-abi=softfp"
 
 class arch_armv7a_hardfp(generic_arm):
-	"Builder class for armv7a hardfloat target, requires >=gcc-4.5"
+	"Builder class for armv7a hardfloat target, needs >=gcc-4.5"
 	def __init__(self,myspec):
 		generic_arm.__init__(self,myspec)
 		self.settings["CHOST"]="armv7a-hardfloat-linux-gnueabi"
