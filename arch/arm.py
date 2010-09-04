@@ -102,7 +102,7 @@ class arch_armv7r(generic_arm):
 	"Builder class for armv7r target"
 	def __init__(self,myspec):
 		generic_arm.__init__(self,myspec)
-		self.settings["CHOST"]="armv7rl-unknown-linux-gnueabi"
+		self.settings["CHOST"]="armv7r-unknown-linux-gnueabi"
 		self.settings["CFLAGS"]+=" -march=armv7-r -mfpu=vfp -mfloat-abi=softfp"
 
 class arch_armv7m(generic_arm):
@@ -112,6 +112,12 @@ class arch_armv7m(generic_arm):
 		self.settings["CHOST"]="armv7m-unknown-linux-gnueabi"
 		self.settings["CFLAGS"]+=" -march=armv7-m -mfpu=vfp -mfloat-abi=softfp"
 
+class arch_armv7a_hardfp(generic_arm):
+	"Builder class for armv7a hardfloat target, needs >=gcc-4.5"
+	def __init__(self,myspec):
+		generic_arm.__init__(self,myspec)
+		self.settings["CHOST"]="armv7a-hardfloat-linux-gnueabi"
+		self.settings["CFLAGS"]+=" -march=armv7-a -mfpu=vfp -mfloat-abi=hardfp"
 
 class arch_armv5teb(generic_armeb):
 	"Builder class for armv5teb (XScale) target"
@@ -136,6 +142,7 @@ def register():
 		"armv7a" : arch_armv7a,
 		"armv7r" : arch_armv7r,
 		"armv7m" : arch_armv7m,
+		"armv7a_hardfp" : arch_armv7a_hardfp,
 		"armeb"  : arch_armeb,
 		"armv5teb" : arch_armv5teb
 	}, ("arm", "armv4l", "armv4tl", "armv5tl", "armv5tel", "armv5tejl", "armv6l", 
