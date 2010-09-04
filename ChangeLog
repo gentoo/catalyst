@@ -1,7 +1,13 @@
 # ChangeLog for catalyst
-# Copyright 1999-2009 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
+# Copyright 1999-2010 Gentoo Foundation; 2008-2009 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 # $Id$
+
+  04 Sep 2010; Raúl Porcel <armin76@gentoo.org>
+  targets/support/bootloader-setup.sh, targets/support/create-iso.sh,
+  targets/support/pre-kmerge.sh:
+  Apply patch from Guy Martin <gmsoft@gentoo.org> to fix installcd for hppa,
+  gentoo bug #317423
 
   29 Dec 2009; Andrew Gaffney <agaffney@gentoo.org>
   targets/support/chroot-functions.sh:

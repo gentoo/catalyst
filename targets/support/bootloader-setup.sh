@@ -43,9 +43,16 @@ case ${clst_hostarch} in
 		icfg=$1/boot/palo.conf
 		kmsg=$1/boot/kernels.msg
 		hmsg=$1/boot/help.msg
-		echo "--commandline=0/${first} initrd=${first}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts}" >> ${icfg}
+		# Make sure we strip the extension to the kernel to allow palo to choose
+		boot_kernel_common_name=${first/%32/}
+		boot_kernel_common_name=${boot_kernel_common_name/%64/}
+		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz root=/dev/ram0 init=/linuxrc cdroot ${cmdline_opts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
+		for x in ${clst_boot_kernel}
+		do
+			echo "--recoverykernel=boot/${x}" >> ${icfg}
+		done
 	;;
 	ppc*|powerpc*)
 		# NO SOFTLEVEL SUPPORT YET
