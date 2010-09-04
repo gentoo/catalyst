@@ -92,7 +92,9 @@ case ${clst_hostarch} in
 		echo ">> Running mkisofs to create iso image...."
 		echo ">> mkisofs -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
 		mkisofs -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
+		pushd ${clst_target_path}
 		palo -f boot/palo.conf -C ${1}
+		popd
 	;;
 	ia64)
 		if [ ! -e ${clst_target_path}/gentoo.efimg ]
