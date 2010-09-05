@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  05 Sep 2010; Raúl Porcel <armin76@gentoo.org> catalyst:
+  This is catalyst-2.0.6.908
+
   05 Sep 2010; Raúl Porcel <armin76@gentoo.org>
   modules/generic_stage_target.py:
   Restore old behaviour on the CXXFLAGS variable on the created make.conf
