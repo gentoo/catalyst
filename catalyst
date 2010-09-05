@@ -50,7 +50,7 @@ def usage():
 def version():
 	print "Catalyst, version "+__version__
 	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008-2009 various authors"
+	print "Copyright 2008-2010 various authors"
 	print "Distributed under the GNU General Public License version 2.1\n"
 
 def parse_config(myconfig):
