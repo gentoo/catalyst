@@ -1005,7 +1005,10 @@ class generic_stage_target(generic_target):
 			if self.settings.has_key("CFLAGS"):
 				myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
 			if self.settings.has_key("CXXFLAGS"):
-				myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
+				if self.settings["CXXFLAGS"]!=self.settings["CFLAGS"]:
+					myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
+				else:
+					myf.write('CXXFLAGS="${CFLAGS}"\n')
 			else:
 				myf.write('CXXFLAGS="${CFLAGS}"\n')
 
