@@ -32,7 +32,7 @@ case ${clst_hostarch} in
 		sleep 0
 		;;
 	sparc*)
-		if [ "${clst_hostarch}" == "sparc" ]; then
+		if [ "${clst_subarch}" == "sparc" ]; then
 			piggyback=piggyback
 		else
 			piggyback=piggyback64
