@@ -125,15 +125,16 @@ setup_myemergeopts(){
 		clst_myemergeopts="--verbose"
 	else
 		clst_myemergeopts="--quiet"
+		bootstrap_opts="${bootstrap_opts} -q"
 	fi
 	if [ -n "${clst_FETCH}" ]
 	then
-		export bootstrap_opts="-f"
+		export bootstrap_opts="${bootstrap_opts} -f"
 		export clst_myemergeopts="${clst_myemergeopts} -f"
 	elif [ -n "${clst_PKGCACHE}" ]
 	then
 		export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
-		export bootstrap_opts="-r"
+		export bootstrap_opts="${bootstrap_opts} -r"
 	fi
 }
 

@@ -7,6 +7,11 @@
   This is catalyst-2.0.6.909
 
   11 Sep 2010; Raúl Porcel <armin76@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Apply patch to make stage2 quiet, thanks to Alexandre Nuno Milheiro
+  <nunomilheiro@gmail.com>, gentoo bug #273664
+
+  11 Sep 2010; Raúl Porcel <armin76@gentoo.org>
   targets/support/netboot2-final.sh:
   Fix sparc bug, gentoo bug 297231
 
