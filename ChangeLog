@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  26 Sep 2010; Raúl Porcel <armin76@gentoo.org>
+  modules/catalyst/arch/arm.py:
+  ARM fixes
+
   11 Sep 2010; Raúl Porcel <armin76@gentoo.org>
   targets/support/chroot-functions.sh:
   Apply patch to make stage2 quiet, thanks to Alexandre Nuno Milheiro
