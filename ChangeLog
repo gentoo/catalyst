@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  09 Oct 2010; Raúl Porcel <armin76@gentoo.org> arch/arm.py:
+  Replace -Os with -O2 for ARM
+
   26 Sep 2010; Raúl Porcel <armin76@gentoo.org> arch/arm.py:
   Arm fixes
 
