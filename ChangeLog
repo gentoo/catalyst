@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  01 Nov 2010; Raúl Porcel <armin76@gentoo.org> catalyst:
+  This is catalyst 2.0.6.912
+
   01 Nov 2010; Raúl Porcel <armin76@gentoo.org> arch/mips.py:
   Add patch for Loongson support, patch by Zhang Le <r0bertz at gentoo dot
   org>, bug #330241
