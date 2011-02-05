@@ -61,13 +61,12 @@ _subarch_map = {
 	"athlon64"	: arch_k8,
 	"athlonfx"	: arch_k8,
 	"nocona"	: arch_nocona,
-# uncomment when gcc 4.3 is stable and delete this line
-#	"core2"		: arch_core2,
-#	"k8-sse3"	: arch_k8_sse3,
-#	"opteron-sse3"	: arch_k8_sse3,
-#	"athlon64-sse3"	: arch_k8_sse3,
-#	"amdfam10"	: arch_amdfam10,
-#	"barcelona"	: arch_amdfam10
+	"core2"		: arch_core2,
+	"k8-sse3"	: arch_k8_sse3,
+	"opteron-sse3"	: arch_k8_sse3,
+	"athlon64-sse3"	: arch_k8_sse3,
+	"amdfam10"	: arch_amdfam10,
+	"barcelona"	: arch_amdfam10
 }
 
 _machine_map = ("x86_64","amd64","nocona")
