@@ -1,7 +1,10 @@
 # ChangeLog for catalyst
-# Copyright 1999-2010 Gentoo Foundation; 2008-2010 Various authors (see AUTHORS)
+# Copyright 1999-2011 Gentoo Foundation; 2008-2010 Various authors (see AUTHORS)
 # Distributed under the GPL v2
 # $Id$
+
+  05 Feb 2011; Raúl Porcel <armin76@gentoo.org> arch/amd64.py, catalyst:
+  Enable new amd64 subarches
 
   01 Nov 2010; Raúl Porcel <armin76@gentoo.org> catalyst:
   This is catalyst 2.0.6.913
