@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  05 Feb 2011; Raúl Porcel <armin76@gentoo.org> catalyst:
+  This is catalyst 2.0.6.914
+
   05 Feb 2011; Raúl Porcel <armin76@gentoo.org> arch/amd64.py, catalyst:
   Enable new amd64 subarches
 
