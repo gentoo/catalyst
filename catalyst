@@ -17,7 +17,7 @@ import catalyst.config
 import catalyst.util
 
 __maintainer__="Chris Gianelloni <wolf31o2@wolf31o2.org>"
-__version__="2.0.6.914"
+__version__="2.0.6.915"
 
 conf_values={}
 
@@ -50,7 +50,7 @@ def usage():
 def version():
 	print "Catalyst, version "+__version__
 	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008-2010 various authors"
+	print "Copyright 2008-2011 various authors"
 	print "Distributed under the GNU General Public License version 2.1\n"
 
 def parse_config(myconfig):
