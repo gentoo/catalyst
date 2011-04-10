@@ -167,7 +167,7 @@ setup_pkgmgr(){
 	# portage to avoid frying our /etc/make.conf file.  Otherwise, we could
 	# just let emerge system could merge it.
 	[ -e /etc/make.conf ] && echo 'USE="${USE} build"' >> /etc/make.conf
-	run_merge --oneshot --nodeps virtual/portage
+	run_merge --oneshot --nodeps sys-apps/portage
 	sed -i '/USE="${USE} build"/d' /etc/make.conf
 }
 
