@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  14 Apr 2011; Raúl Porcel <armin76@gentoo.org>
+  targets/support/bootloader-setup.sh:
+  Add gentoo-ilo option for the bootloader on ia64
+
   10 Apr 2011; Raúl Porcel <armin76@gentoo.org>
   targets/support/chroot-functions.sh:
   Replace virtual/portage with sys-apps/portage, bug #358847

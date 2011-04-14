@@ -235,6 +235,11 @@ case ${clst_hostarch} in
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
 			echo >> ${iacfg}
 			echo "image=/efi/boot/${x}" >> ${iacfg}
+			echo "  label=${x}-ilo">> ${iacfg}
+			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS3,9600"' >> ${iacfg}
+			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
+			echo >> ${iacfg}
+			echo "image=/efi/boot/${x}" >> ${iacfg}
 			echo "  label=${x}-sgi">> ${iacfg}
 			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttySG0,115200"' >> ${iacfg}
 			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
