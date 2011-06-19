@@ -257,6 +257,7 @@ case ${clst_hostarch} in
 			kmsg=$1/isolinux/kernels.msg
 			echo "default ${first}" > ${icfg}
 			echo "timeout 150" >> ${icfg}
+			echo "ontimeout localhost" >> ${icfg}
 			echo "prompt 1" >> ${icfg}
 			echo "display boot.msg" >> ${icfg}
 			echo "F1 kernels.msg" >> ${icfg}
@@ -319,6 +320,10 @@ case ${clst_hostarch} in
 				echo "label memtest86" >> $icfg
 				echo "  kernel memtest86" >> $icfg
 			fi
+			echo >> $icfg
+			echo "label localhost" >> $icfg
+			echo "  localboot -1" >> $icfg
+			echo "  MENU HIDE" >> $icfg
 		fi
 
 		if [ -e $1/boot/efi/elilo.efi ]
