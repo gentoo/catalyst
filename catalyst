@@ -179,7 +179,7 @@ def import_modules():
 
 			except IOError:
 				raise CatalystError,"Can't find "+x+".py plugin in "+\
-					conf_values.settings["sharedir"]+"/modules/"
+					conf_values["sharedir"]+"/modules/"
 
 		for x in valid_build_targets:
 			try:
@@ -190,7 +190,7 @@ def import_modules():
 
 			except IOError:
 				raise CatalystError,"Can't find "+x+".py plugin in "+\
-					conf_values.settings["sharedir"]+"/modules/"
+					conf_values["sharedir"]+"/modules/"
 
 	except ImportError:
 		print "!!! catalyst: Python modules not found in "+\
