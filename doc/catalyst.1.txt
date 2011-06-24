@@ -1,0 +1,139 @@
+CATALYST(1)
+===========
+:man source:   catalyst {catalystversion}
+:man manual:   catalyst {catalystversion}
+
+
+NAME
+----
+catalyst - The Gentoo Linux Release Engineering meta-tool
+
+
+SYNOPSIS
+--------
+*catalyst* ['OPTIONS'] [*-f* 'FILE' | *-C* 'KEYS' | *-s* 'DATE'] ...
+
+
+DESCRIPTION
+-----------
+*catalyst* is the tool that the Gentoo Release Engineering team
+utilizes to build all Gentoo Linux releases. It is capable of building
+installation stages, bootable LiveCDs, netboot images, and Gentoo Reference
+Platform (GRP) sets. *catalyst* is also capable of providing a simple
+tinderbox environment for ebuild/package testing.
+
+For more information, please visit the *catalyst* project page
+on the web at 'http://www.gentoo.org/proj/en/releng/catalyst'.
+
+
+OPTIONS
+-------
+*--clear-autoresume*::
+*-a*::
+This option is to be used to clear any autoresume points that have been saved
+for this target. It is used in conjunction with *-f*, *-C*, or both.
+
+*--cli*|*-C* 'KEY'='VALUE' ..::
+This option is to be used in place of a specfile. All options are passed
+to *catalyst* on the commandline. Please note that this option must
+be the last option passed to *catalyst* for everything to work correctly.
+
+*--config*|*-c* 'FILE'::
+Tell *catalyst* to use a user-defined configuration file. A sample
+configuration file is installed at '/etc/catalyst/catalyst.conf'.
+
+*--debug*::
+*-d*::
+Enable debugging mode
+
+*--fetchonly*::
+*-F*::
+This tells *catalyst* to only fetch distfiles for the given packages without
+performing any building.
+
+*--file*|*-f* 'FILE'::
+Tell *catalyst* to use the user supplied specfile.
+
+*--help*::
+*-h*::
+Print the help message and exit
+
+*--purge*::
+*-p*::
+Tell *catalyst* to clear all temporary directories, package caches, and
+autoresume flags for the given target.
+
+*--snapshot*|*-s* 'DATE'::
+Create a Portage snapshot using the specified identifier stamp.
+
+*--verbose*::
+*-v*::
+Enable verbose mode.
+
+*--version*::
+*-V*::
+Print the version information and exit
+
+
+EXAMPLES
+--------
+Using the commandline option (*-C*, *--cli*) to build a Portage snapshot:
+---------------------------------------------------
+# catalyst -C target=snapshot version_stamp=my_date
+---------------------------------------------------
+
+Using the specfile option (*-f*, *--file*) to build a stage target:
+---------------------------------------------------
+# catalyst -f stage1-specfile.spec
+---------------------------------------------------
+
+Using the snapshot option (*-s*, *--snapshot*) to package a Portage snapshot
+using the datestamp 20051208:
+---------------------------------------------------
+# catalyst -s 20051208
+---------------------------------------------------
+
+
+FILES
+-----
+Example specfiles can be found in '/usr/share/doc/catalyst-{catalystversion}/examples'.
+An example configuration file can be found at '/etc/catalyst/catalyst.conf'.
+
+
+SUPPORTED ARCHITECTURES
+-----------------------
+The following table shows the list of supported architectures as well as
+the list of valid strings for key 'subarch'.
+
+include::subarches.generated.txt[tabsize=4]
+
+
+BUGS
+----
+An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
+Linux bug-tracking system at 'http://bugs.gentoo.org'.
+
+
+SEE ALSO
+--------
+A more in-depth examination of Catalyst options and procedures can be found
+linked from the *catalyst* project page, which is located at
+'http://www.gentoo.org/proj/en/releng/catalyst'.
+
+
+NOTES
+-----
+*catalyst* is conceptually derived from the Gentoo livecd-ng and Gentoo
+stager projects, both of which were used to create pre-1.4 Gentoo releases.
+
+*catalyst* was originally conceived and coded by both Daniel Robbins and
+John Davis. It is currently maintained by Chris Gianelloni and Eric Edgar and
+has been mostly re-written.
+
+
+AUTHORS
+-------
+- John Davis <zhen@gentoo.org>
+- Chris Gianelloni <wolf31o2@gentoo.org>
+- Raúl Porcel <armin76@gentoo.org>
+- Sebastian Pipping <sping@gentoo.org>
