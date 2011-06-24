@@ -1,1 +1,4 @@
 *.py[co]
+/files/catalyst.1
+/doc/subarches.generated.txt
+/doc/subarches.generated.xml

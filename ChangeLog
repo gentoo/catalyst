@@ -27,6 +27,10 @@
   modules/catalyst/arch/mips.py: Remove mips2 classes
   Linux doesn't even run on mips2
 
+  24 Jun 2011; Sebastian Pipping <sping@gentoo.org> Makefile,
+  doc/asciidoc.conf, doc/catalyst.1.txt, doc/make_subarch_table_guidexml.py:
+  Include list of supported subarches in man page.
+
   14 Apr 2011; Raúl Porcel <armin76@gentoo.org>
   targets/support/bootloader-setup.sh:
   Add gentoo-ilo option for the bootloader on ia64
