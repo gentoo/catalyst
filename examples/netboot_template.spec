@@ -1,3 +1,6 @@
+# The subarch can be any of the supported catalyst subarches (like athlon-xp).
+# Refer to "man catalyst" or <http://www.gentoo.org/proj/en/releng/catalyst/>
+# for supported subarches
 subarch: mips3
 version_stamp: 2006.0
 target: netboot
