@@ -4,6 +4,10 @@
 # $Id$
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  modules/catalyst/arch/mips.py: create generic mips64 classes
+  and inherit from them to simplify other classes
+
+  25 Jun 2011; Matt Turner <mattst88@gentoo.org>
   modules/catalyst/arch/mips.py: fix CFLAGS in loongson class
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
