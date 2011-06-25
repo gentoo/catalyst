@@ -135,5 +135,5 @@ AUTHORS
 -------
 - John Davis <zhen@gentoo.org>
 - Chris Gianelloni <wolf31o2@gentoo.org>
-- Raúl Porcel <armin76@gentoo.org>
+- Raul Porcel <armin76@gentoo.org>
 - Sebastian Pipping <sping@gentoo.org>
