@@ -4,6 +4,9 @@
 # $Id$
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  modules/catalyst/arch/mips.py: add multilib (and missing n64) classes
+
+  25 Jun 2011; Matt Turner <mattst88@gentoo.org>
   modules/catalyst/arch/mips.py: remove n32/n64 USE flags
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
