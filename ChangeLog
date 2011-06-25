@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  25 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  modules/catalyst/arch/mips.py: Remove mips2 classes
+  Linux doesn't even run on mips2
+
   24 Jun 2011; Sebastian Pipping <sping@gentoo.org> Makefile,
   doc/asciidoc.conf, doc/catalyst.1.txt, doc/make_subarch_table_guidexml.py:
   Include list of supported subarches in man page.
