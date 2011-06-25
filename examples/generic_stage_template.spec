@@ -2,8 +2,8 @@
 # used to build a stage1, stage2, or stage3 installation tarball
 
 # The subarch can be any of the supported catalyst subarches (like athlon-xp).
-# Refer to the catalyst reference manual for suppurted subarches.
-# http://www.gentoo.org/proj/en/releng/catalyst/
+# Refer to "man catalyst" or <http://www.gentoo.org/proj/en/releng/catalyst/>
+# for supported subarches
 # example:
 # subarch: athlon-xp
 subarch:
