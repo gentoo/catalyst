@@ -2,19 +2,19 @@
 # Licensed under GPL v2 or later
 
 PACKAGE_VERSION = `fgrep '__version__=' catalyst | sed 's|^__version__="\(.*\)"$$|\1|'`
-CLEAN_FILES = files/catalyst.1 doc/subarches.generated.txt
 EXTRA_DIST = files/catalyst.1
+CLEAN_FILES = $(EXTRA_DIST) doc/subarches.generated.txt
 
 distdir = catalyst-$(PACKAGE_VERSION)
 
 
-all: files/catalyst.1
+all: $(EXTRA_DIST)
 
 files/catalyst.1: doc/catalyst.1.txt doc/subarches.generated.txt doc/asciidoc.conf Makefile catalyst
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=manpage -D files "$<"
 
-doc/subarches.generated.txt:
+doc/subarches.generated.txt: $(wildcard arch/*.py)
 	./doc/make_subarch_table_guidexml.py
 
 clean:
