@@ -11,7 +11,7 @@ catalyst - The Gentoo Linux Release Engineering meta-tool
 
 SYNOPSIS
 --------
-*catalyst* ['OPTIONS'] [*-f* 'FILE' | *-C* 'KEYS' | *-s* 'DATE'] ...
+*catalyst* ['OPTIONS'] [*-f* 'FILE' | *-C* 'KEY'='VALUE' ... | *-s* 'DATE']
 
 
 DESCRIPTION
@@ -33,7 +33,7 @@ OPTIONS
 This option is to be used to clear any autoresume points that have been saved
 for this target. It is used in conjunction with *-f*, *-C*, or both.
 
-*--cli*|*-C* 'KEY'='VALUE' ..::
+*--cli*|*-C* 'KEY'='VALUE' ...::
 This option is to be used in place of a specfile. All options are passed
 to *catalyst* on the commandline. Please note that this option must
 be the last option passed to *catalyst* for everything to work correctly.
