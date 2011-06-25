@@ -15,6 +15,20 @@ class generic_mipsel(catalyst.arch.generic_arch):
 		self.settings["CHROOT"]="chroot"
 		self.settings["CHOST"]="mipsel-unknown-linux-gnu"
 
+class generic_mips64(catalyst.arch.generic_arch):
+	"Abstract base class for all mips64 builders [Big-endian]"
+	def __init__(self,myspec):
+		catalyst.arch.generic_arch.__init__(self,myspec)
+		self.settings["CHROOT"]="chroot"
+		self.settings["CHOST"]="mips64-unknown-linux-gnu"
+
+class generic_mips64el(catalyst.arch.generic_arch):
+	"Abstract base class for all mips64el builders [Little-endian]"
+	def __init__(self,myspec):
+		catalyst.arch.generic_arch.__init__(self,myspec)
+		self.settings["CHROOT"]="chroot"
+		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
+
 class arch_mips1(generic_mips):
 	"Builder class for MIPS I [Big-endian]"
 	def __init__(self,myspec):
@@ -27,42 +41,38 @@ class arch_mips3(generic_mips):
 		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32 -pipe"
 
-class arch_mips3_n32(generic_mips):
+class arch_mips3_n32(generic_mips64):
 	"Builder class for MIPS III [Big-endian N32]"
 	def __init__(self,myspec):
-		generic_mips.__init__(self,myspec)
+		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=n32 -pipe"
-		self.settings["CHOST"]="mips64-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
-class arch_mips3_n64(generic_mips):
+class arch_mips3_n64(generic_mips64):
 	"Builder class for MIPS III [Big-endian N64]"
 	def __init__(self,myspec):
-		generic_mips.__init__(self,myspec)
+		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=64 -pipe"
-		self.settings["CHOST"]="mips64-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n64"]
 
-class arch_mips4(generic_mips):
+class arch_mips4(generic_mips64):
 	"Builder class for MIPS IV [Big-endian]"
 	def __init__(self,myspec):
-		generic_mips.__init__(self,myspec)
+		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -pipe"
 
-class arch_mips4_n32(generic_mips):
+class arch_mips4_n32(generic_mips64):
 	"Builder class for MIPS IV [Big-endian N32]"
 	def __init__(self,myspec):
-		generic_mips.__init__(self,myspec)
+		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -pipe"
-		self.settings["CHOST"]="mips64-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
-class arch_mips4_n64(generic_mips):
+class arch_mips4_n64(generic_mips64):
 	"Builder class for MIPS IV [Big-endian N64]"
 	def __init__(self,myspec):
-		generic_mips.__init__(self,myspec)
+		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=64 -pipe"
-		self.settings["CHOST"]="mips64-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n64"]
 
 class arch_mipsel1(generic_mipsel):
@@ -77,12 +87,11 @@ class arch_mipsel3(generic_mipsel):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=32 -pipe"
 
-class arch_mipsel3_n32(generic_mipsel):
+class arch_mipsel3_n32(generic_mips64el):
 	"Builder class for all MIPS III [Little-endian N32]"
 	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=n32 -pipe"
-		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
 class arch_loongson2e(generic_mipsel):
@@ -91,12 +100,11 @@ class arch_loongson2e(generic_mipsel):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=loongson2e -mabi=32 -pipe -mplt"
 
-class arch_loongson2e_n32(generic_mipsel):
+class arch_loongson2e_n32(generic_mips64el):
 	"Builder class for all Loongson 2E [Little-endian N32]"
 	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=loongson2e -mabi=n32 -pipe -mplt"
-		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
 class arch_loongson2f(generic_mipsel):
@@ -105,26 +113,24 @@ class arch_loongson2f(generic_mipsel):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=32 -pipe -mplt -Wa,-mfix-loongson2f-nop"
 
-class arch_loongson2f_n32(generic_mipsel):
+class arch_loongson2f_n32(generic_mips64el):
 	"Builder class for all Loongson 2F [Little-endian N32]"
 	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=n32 -pipe -mplt -Wa,-mfix-loongson2f-nop"
-		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
-class arch_mipsel4(generic_mipsel):
+class arch_mipsel4(generic_mips64el):
 	"Builder class for all MIPS IV [Little-endian]"
 	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -pipe"
 
-class arch_mipsel4_n32(generic_mipsel):
+class arch_mipsel4_n32(generic_mips64el):
 	"Builder class for all MIPS IV [Little-endian N32]"
 	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -pipe"
-		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["n32"]
 
 class arch_cobalt(generic_mipsel):
@@ -132,13 +138,12 @@ class arch_cobalt(generic_mipsel):
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=r5000 -mabi=32 -pipe"
-		self.settings["CHOST"]="mipsel-unknown-linux-gnu"
 		self.settings["HOSTUSE"]=["cobalt"]
 
-class arch_cobalt_n32(generic_mipsel):
+class arch_cobalt_n32(generic_mips64el):
 	"Builder class for all cobalt [Little-endian N32]"
 	def __init__(self,myspec):
-		arch_mipsel4_n32.__init__(self,myspec)
+		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=r5000 -mabi=n32 -pipe"
 		self.settings["HOSTUSE"]=["cobalt","n32"]
 
