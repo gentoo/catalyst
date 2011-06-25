@@ -47,14 +47,12 @@ class arch_mips3_n32(generic_mips64):
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=n32 -pipe"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_mips3_n64(generic_mips64):
 	"Builder class for MIPS III [Big-endian N64]"
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=64 -pipe"
-		self.settings["HOSTUSE"]=["n64"]
 
 class arch_mips4(generic_mips64):
 	"Builder class for MIPS IV [Big-endian]"
@@ -67,14 +65,12 @@ class arch_mips4_n32(generic_mips64):
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -pipe"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_mips4_n64(generic_mips64):
 	"Builder class for MIPS IV [Big-endian N64]"
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=64 -pipe"
-		self.settings["HOSTUSE"]=["n64"]
 
 class arch_mipsel1(generic_mipsel):
 	"Builder class for all MIPS I [Little-endian]"
@@ -93,7 +89,6 @@ class arch_mipsel3_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips3 -mabi=n32 -pipe"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_loongson2e(generic_mipsel):
 	"Builder class for all Loongson 2E [Little-endian]"
@@ -106,7 +101,6 @@ class arch_loongson2e_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=loongson2e -mabi=n32 -pipe -mplt"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_loongson2f(generic_mipsel):
 	"Builder class for all Loongson 2F [Little-endian]"
@@ -119,7 +113,6 @@ class arch_loongson2f_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=n32 -pipe -mplt -Wa,-mfix-loongson2f-nop"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_mipsel4(generic_mips64el):
 	"Builder class for all MIPS IV [Little-endian]"
@@ -132,7 +125,6 @@ class arch_mipsel4_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=n32 -pipe"
-		self.settings["HOSTUSE"]=["n32"]
 
 class arch_cobalt(generic_mipsel):
 	"Builder class for all cobalt [Little-endian]"
@@ -146,7 +138,7 @@ class arch_cobalt_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=r5000 -mabi=n32 -pipe"
-		self.settings["HOSTUSE"]=["cobalt","n32"]
+		self.settings["HOSTUSE"]=["cobalt"]
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
