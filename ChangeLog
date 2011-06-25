@@ -3,6 +3,9 @@
 # Distributed under the GPL v2
 # $Id$
 
+  25 Jun 2011; Raúl Porcel <armin76@gentoo.org> modules/catalyst/arch/sh.py:
+  Add sh4aeb
+
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
   targets/support/chroot-functions.sh:
   Use get_libdir instead of hard-coding lib for distcc

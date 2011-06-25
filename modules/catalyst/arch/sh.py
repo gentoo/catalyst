@@ -97,6 +97,13 @@ class arch_sh4eb(generic_sheb):
 		self.settings["CFLAGS"]="-O2 -m4 -pipe"
 		self.settings["CHOST"]="sh4eb-unknown-linux-gnu"
 
+class arch_sh4aeb(generic_sheb):
+	"Builder class for SH-4A [Big-endian]"
+	def __init__(self,myspec):
+		generic_sheb.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -m4a -pipe"
+		self.settings["CHOST"]="sh4aeb-unknown-linux-gnu"
+
 _subarch_map = {
 	"sh"	:arch_sh,
 	"sh2"	:arch_sh2,
@@ -105,10 +112,11 @@ _subarch_map = {
 	"sh4"	:arch_sh4,
 	"sh4a"	:arch_sh4a,
 	"sheb"	:arch_sheb,
-	"sh2aeb":arch_sh2aeb,
+	"sh2aeb" :arch_sh2aeb,
 	"sh2eb" :arch_sh2eb,
 	"sh3eb"	:arch_sh3eb,
-	"sh4eb"	:arch_sh4eb
+	"sh4eb"	:arch_sh4eb,
+	"sh4aeb" :arch_sh4aeb
 }
 
 _machine_map = ("sh2","sh2a","sh3","sh4","sh4a","sh2eb","sh2aeb","sh3eb","sh4eb","sh4aeb")
