@@ -137,3 +137,4 @@ AUTHORS
 - Chris Gianelloni <wolf31o2@gentoo.org>
 - Raul Porcel <armin76@gentoo.org>
 - Sebastian Pipping <sping@gentoo.org>
+- Matt Turner <mattst88@gentoo.org>
