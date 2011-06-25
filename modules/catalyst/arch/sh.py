@@ -62,13 +62,6 @@ class arch_sheb(generic_sheb):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="sheb-unknown-linux-gnu"
 
-class arch_sh4aeb(generic_sheb):
-	"Builder class for SH-4A [Big-endian]"
-	def __init__(self,myspec):
-		generic_sheb.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -m4a -pipe"
-		self.settings["CHOST"]="sh4aeb-unknown-linux-gnu"
-
 class arch_sh2eb(generic_sheb):
 	"Builder class for SH-2 [Big-endian]"
 	def __init__(self,myspec):
