@@ -143,53 +143,11 @@ class arch_cobalt_n32(generic_mipsel):
 		self.settings["CFLAGS"]="-O2 -march=r5000 -mabi=n32 -pipe"
 		self.settings["HOSTUSE"]=["cobalt","n32"]
 
-class arch_ip27(generic_mipsel):
-	"Builder class for all IP27 [Big-endian]"
-	def __init__(self,myspec):
-		arch_mips4.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip27"]
-
-class arch_ip27_n32(generic_mipsel):
-	"Builder class for all IP27 [Big-endian N32]"
-	def __init__(self,myspec):
-		arch_mips4_n32.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip27","n32"]
-
-class arch_ip28(generic_mipsel):
-	"Builder class for all IP28 [Big-endian]"
-	def __init__(self,myspec):
-		arch_mips4.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip28"]
-
-class arch_ip28_n32(generic_mipsel):
-	"Builder class for all IP28 [Big-endian N32]"
-	def __init__(self,myspec):
-		arch_mips4_n32.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip28","n32"]
-
-class arch_ip30(generic_mipsel):
-	"Builder class for all IP30 [Big-endian]"
-	def __init__(self,myspec):
-		arch_mips4.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip30"]
-
-class arch_ip30_n32(generic_mipsel):
-	"Builder class for all IP30 [Big-endian N32]"
-	def __init__(self,myspec):
-		arch_mips4_n32.__init__(self,myspec)
-		self.settings["HOSTUSE"]=["ip30","n32"]
-
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({ 
 			"cobalt"		: arch_cobalt,
 			"cobalt_n32"	: arch_cobalt_n32,
-			"ip27"			: arch_ip27,
-			"ip27_n32"		: arch_ip27_n32,
-			"ip28"			: arch_ip28,
-			"ip28_n32"		: arch_ip28_n32,
-			"ip30"			: arch_ip30,
-			"ip30_n32"		: arch_ip30_n32,
 			"mips"			: arch_mips1,
 			"mips1"			: arch_mips1,
 			"mips3"			: arch_mips3,
