@@ -101,7 +101,7 @@ if __name__ == '__main__':
 	subarch_title_to_subarch_id = dict()
 	subarch_id_to_pattern_arch_genericrch_id = dict()
 
-	for (dirpath, dirnames, filenames) in os.walk('arch'):
+	for (dirpath, dirnames, filenames) in os.walk('modules/catalyst/arch'):
 		for _fn in filenames:
 			if not _fn.endswith('.py'):
 				continue
