@@ -103,7 +103,7 @@ class arch_loongson2f(generic_mipsel):
 	"Builder class for all Loongson 2F [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=32 -pipe -mplt --Wa,-mfix-loongson2f-nop"
+		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=32 -pipe -mplt -Wa,-mfix-loongson2f-nop"
 
 class arch_loongson2f_n32(generic_mipsel):
 	"Builder class for all Loongson 2F [Little-endian N32]"
