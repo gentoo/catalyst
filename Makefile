@@ -14,7 +14,7 @@ files/catalyst.1: doc/catalyst.1.txt doc/subarches.generated.txt doc/asciidoc.co
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=manpage -D files "$<"
 
-doc/subarches.generated.txt: $(wildcard modules/catalyst/arch/*.py)
+doc/subarches.generated.txt: $(wildcard modules/catalyst/arch/*.py) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
 
 clean:
