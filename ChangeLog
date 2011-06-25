@@ -4,6 +4,10 @@
 # $Id$
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Use get_libdir instead of hard-coding lib for distcc
+
+  25 Jun 2011; Matt Turner <mattst88@gentoo.org>
   modules/catalyst/arch/mips.py: add multilib (and missing n64) classes
 
   25 Jun 2011; Matt Turner <mattst88@gentoo.org>
