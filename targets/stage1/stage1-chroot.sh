@@ -7,7 +7,7 @@ source /tmp/chroot-functions.sh
 
 # Setup our environment
 STAGE1_USE="$(portageq envvar STAGE1_USE)"
-FEATURES="${clst_myfeatures} nodoc noman noinfo"
+FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 ## Sanity check profile
 if [ -z "${clst_buildpkgs}" ]

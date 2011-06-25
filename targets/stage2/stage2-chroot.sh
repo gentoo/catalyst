@@ -3,7 +3,7 @@
 source /tmp/chroot-functions.sh
 
 # Setup the environment
-export FEATURES="${clst_myfeatures} nodoc noman noinfo"
+export FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 if [ "${clst_VERBOSE}" ]
 then
