@@ -86,8 +86,6 @@ setup_myfeatures(){
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
-		# We need to run distcc-config, since it might not have gotten run
-		[ -x /usr/bin/distcc-config ] && /usr/bin/distcc-config --install
 
 		# This sets up automatic cross-distcc-fu according to
 		# http://www.gentoo.org/doc/en/cross-compiling-distcc.xml
