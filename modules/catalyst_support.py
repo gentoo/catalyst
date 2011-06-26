@@ -676,15 +676,19 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
 	global valid_config_file_values
 	
+	messages = []
 	for x in addlargs.keys():
 		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
-			raise CatalystError, "Argument \""+x+"\" not recognized."
+			messages.append("Argument \""+x+"\" not recognized.")
 		else:
 			myspec[x]=addlargs[x]
 	
 	for x in requiredspec:
 		if not myspec.has_key(x):
-			raise CatalystError, "Required argument \""+x+"\" not specified."
+			messages.append("Required argument \""+x+"\" not specified.")
+
+	if messages:
+		raise CatalystError, '\n\tAlso: '.join(messages)
 	
 def touch(myfile):
 	try:
