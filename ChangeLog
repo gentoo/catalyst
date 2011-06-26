@@ -5,6 +5,10 @@
 
   26 Jun 2011; Matt Turner <mattst88@gentoo.org>
   targets/support/chroot-functions.sh:
+  Emerge sys-apps/shadow before distcc
+
+  26 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  targets/support/chroot-functions.sh:
   Don't run 'distcc-config --install'
 
   25 Jun 2011; Sebastian Pipping <sping@gentoo.org>
