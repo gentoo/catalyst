@@ -3,6 +3,10 @@
 # Distributed under the GPL v2
 # $Id$
 
+  26 Jun 2011; Matt Turner <mattst88@gentoo.org>
+  targets/support/chroot-functions.sh:
+  Don't run 'distcc-config --install'
+
   26 Jun 2011; Sebastian Pipping <sping@gentoo.org>
   modules/catalyst_support.py:
   Warn about multiple argument errors at the same time
