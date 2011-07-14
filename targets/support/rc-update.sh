@@ -24,6 +24,7 @@ then
 	[[ -e /etc/init.d/sysklogd ]] && rc-update add sysklogd default
 	[[ -e /etc/init.d/metalog ]] && rc-update add metalog default
 	[[ -e /etc/init.d/syslog-ng ]] && rc-update add syslog-ng default
+	[[ -e /etc/init.d/fixinittab ]] && rc-update add fixinittab default
 
 	# Do some livecd_type specific rc-update changes
 	case ${clst_livecd_type} in
