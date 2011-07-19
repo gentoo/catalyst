@@ -16,6 +16,7 @@ _pattern_arch_genericliases = {
 	'armeb':'arm',
 	'sheb':'sh',
 	'mipsel':'mips',
+	'mips64el':'mips64',
 }
 
 
