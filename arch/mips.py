@@ -46,7 +46,7 @@ class arch_mips32(generic_mips):
 	"Builder class for MIPS 32 [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=mips32 -mfix-24k -mabi=32 -pipe"
+		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
 
 class arch_mips3(generic_mips):
 	"Builder class for MIPS III [Big-endian]"
@@ -133,7 +133,7 @@ class arch_mips32el(generic_mipsel):
 	"Builder class for all MIPS 32 [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -march=mips32 -mfix-24k -mabi=32 -pipe"
+		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
 
 class arch_mipsel3(generic_mipsel):
 	"Builder class for all MIPS III [Little-endian]"
