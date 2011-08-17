@@ -75,7 +75,7 @@ class arch_mips3_multilib(generic_mips64):
 class arch_mips4(generic_mips):
 	"Builder class for MIPS IV [Big-endian]"
 	def __init__(self,myspec):
-		generic_mips64.__init__(self,myspec)
+		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -pipe"
 
 class arch_mips4_n32(generic_mips64):
@@ -99,7 +99,7 @@ class arch_mips4_multilib(generic_mips64):
 class arch_mips64(generic_mips):
 	"Builder class for MIPS 64 [Big-endian]"
 	def __init__(self,myspec):
-		generic_mips64.__init__(self,myspec)
+		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips64 -mabi=32 -pipe"
 
 class arch_mips64_n32(generic_mips64):
@@ -213,7 +213,7 @@ class arch_loongson2f_n32(generic_mips64el):
 class arch_mipsel4(generic_mipsel):
 	"Builder class for all MIPS IV [Little-endian]"
 	def __init__(self,myspec):
-		generic_mips64el.__init__(self,myspec)
+		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -mabi=32 -pipe"
 
 class arch_mipsel4_n32(generic_mips64el):
@@ -237,7 +237,7 @@ class arch_mipsel4_multilib(generic_mips64el):
 class arch_mips64el(generic_mipsel):
 	"Builder class for all MIPS 64 [Little-endian]"
 	def __init__(self,myspec):
-		generic_mips64el.__init__(self,myspec)
+		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips64 -mabi=32 -pipe"
 
 class arch_mips64el_n32(generic_mips64el):
