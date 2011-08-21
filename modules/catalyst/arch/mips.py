@@ -95,6 +95,30 @@ class arch_mips4_multilib(generic_mips64):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -mips4 -pipe"
 
+class arch_mips4_r10k(generic_mips):
+	"Builder class for MIPS IV R10k [Big-endian]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r10k -mabi=32 -pipe"
+
+class arch_mips4_r10k_n32(generic_mips64):
+	"Builder class for MIPS IV R10k [Big-endian N32]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r10k -mabi=n32 -pipe"
+
+class arch_mips4_r10k_n64(generic_mips64):
+	"Builder class for MIPS IV R10k [Big-endian N64]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r10k -mabi=64 -pipe"
+
+class arch_mips4_r10k_multilib(generic_mips64):
+	"Builder class for MIPS IV R10k [Big-endian multilib]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r10k -pipe"
+
 class arch_mips64(generic_mips):
 	"Builder class for MIPS 64 [Big-endian]"
 	def __init__(self,myspec):
@@ -310,6 +334,10 @@ _subarch_map = {
 	"mips4_n32"		: arch_mips4_n32,
 	"mips4_n64"		: arch_mips4_n64,
 	"mips4_multilib": arch_mips4_multilib,
+	"mips4_r10k"	: arch_mips4_r10k,
+	"mips4_r10k_n32": arch_mips4_r10k_n32,
+	"mips4_r10k_n64": arch_mips4_r10k_n64,
+	"mips4_r10k_multilib": arch_mips4_r10k_multilib,
 	"mips64"		: arch_mips64,
 	"mips64_n32"	: arch_mips64_n32,
 	"mips64_n64"	: arch_mips64_n64,
