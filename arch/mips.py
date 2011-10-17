@@ -42,11 +42,25 @@ class arch_mips32(generic_mips):
 		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
 
+class arch_mips32_softfloat(generic_mips):
+	"Builder class for MIPS 32 [Big-endian softfloat]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
+		self.settings["CHOST"]="mips-softfloat-linux-gnu"
+
 class arch_mips32r2(generic_mips):
 	"Builder class for MIPS 32r2 [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips32r2 -mabi=32 -pipe"
+
+class arch_mips32r2_softfloat(generic_mips):
+	"Builder class for MIPS 32r2 [Big-endian softfloat]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips32r2 -mabi=32 -pipe"
+		self.settings["CHOST"]="mips-softfloat-linux-gnu"
 
 class arch_mips3(generic_mips):
 	"Builder class for MIPS III [Big-endian]"
@@ -180,11 +194,25 @@ class arch_mips32el(generic_mipsel):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
 
+class arch_mips32el_softfloat(generic_mipsel):
+	"Builder class for MIPS 32 [Little-endian softfloat]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips32 -mabi=32 -pipe"
+		self.settings["CHOST"]="mipsel-softfloat-linux-gnu"
+
 class arch_mips32r2el(generic_mipsel):
 	"Builder class for MIPS 32r2 [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips32r2 -mabi=32 -pipe"
+
+class arch_mips32r2el_softfloat(generic_mipsel):
+	"Builder class for MIPS 32r2 [Little-endian softfloat]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips32r2 -mabi=32 -pipe"
+		self.settings["CHOST"]="mipsel-softfloat-linux-gnu"
 
 class arch_mipsel3(generic_mipsel):
 	"Builder class for MIPS III [Little-endian]"
@@ -328,7 +356,9 @@ def register():
 			"mips"			: arch_mips1,
 			"mips1"			: arch_mips1,
 			"mips32"		: arch_mips32,
+			"mips32_softfloat"		: arch_mips32_softfloat,
 			"mips32r2"		: arch_mips32r2,
+			"mips32r2_softfloat"	: arch_mips32r2_softfloat,
 			"mips3"			: arch_mips3,
 			"mips3_n32"		: arch_mips3_n32,
 			"mips3_n64"		: arch_mips3_n64,
@@ -352,7 +382,9 @@ def register():
 			"mipsel"		: arch_mipsel1,
 			"mipsel1"		: arch_mipsel1,
 			"mips32el"		: arch_mips32el,
+			"mips32el_softfloat"	: arch_mips32el_softfloat,
 			"mips32r2el"	: arch_mips32r2el,
+			"mips32r2el_softfloat"	: arch_mips32r2el_softfloat,
 			"mipsel3"		: arch_mipsel3,
 			"mipsel3_n32"	: arch_mipsel3_n32,
 			"mipsel3_n64"	: arch_mipsel3_n64,
