@@ -31,8 +31,8 @@ make_destpath /tmp/stage1root
 
 # Now, we install our packages
 [ -e /etc/make.conf ] && \
-	echo "USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"" \
+	echo "USE=\"-* bindist build cxx ${STAGE1_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/make.conf
 run_merge "--oneshot ${clst_buildpkgs}"
-sed -i "/USE=\"-* bindist build ${STAGE1_USE} ${clst_HOSTUSE}\"/d" \
+sed -i "/USE=\"-* bindist build cxx ${STAGE1_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/make.conf
