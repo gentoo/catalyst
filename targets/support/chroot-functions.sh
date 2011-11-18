@@ -291,7 +291,7 @@ show_debug() {
 		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside /etc/portage/bashrc
 		# XXX: Also, portageq does *not* source profile.bashrc at any time.
 		echo
-		echo "STAGE1_USE:            $(portageq envvar STAGE1_USE)"
+		echo "BOOTSTRAP_USE:            $(portageq envvar BOOTSTRAP_USE)"
 		echo
 		echo "USE (profile):         $(portageq envvar USE)"
 		echo "FEATURES (profile):    $(portageq envvar FEATURES)"

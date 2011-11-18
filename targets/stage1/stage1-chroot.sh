@@ -6,7 +6,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 source /tmp/chroot-functions.sh
 
 # Setup our environment
-STAGE1_USE="$(portageq envvar STAGE1_USE)"
+BOOTSTRAP0_USE="$(portageq envvar BOOTSTRAP_USE)"
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 ## Sanity check profile
@@ -31,8 +31,8 @@ make_destpath /tmp/stage1root
 
 # Now, we install our packages
 [ -e /etc/make.conf ] && \
-	echo "USE=\"-* bindist build cxx ${STAGE1_USE} ${clst_HOSTUSE}\"" \
+	echo "USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/make.conf
 run_merge "--oneshot ${clst_buildpkgs}"
-sed -i "/USE=\"-* bindist build cxx ${STAGE1_USE} ${clst_HOSTUSE}\"/d" \
+sed -i "/USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/make.conf
