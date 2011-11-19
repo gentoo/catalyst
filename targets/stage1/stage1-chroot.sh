@@ -6,7 +6,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 source /tmp/chroot-functions.sh
 
 # Setup our environment
-BOOTSTRAP0_USE="$(portageq envvar BOOTSTRAP_USE)"
+BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 ## Sanity check profile
