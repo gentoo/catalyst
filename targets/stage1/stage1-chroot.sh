@@ -14,7 +14,7 @@ if [ -z "${clst_buildpkgs}" ]
 then
 	echo "Your profile seems to be broken."
 	echo "Could not build a list of build packages."
-	echo "Double check your /etc/make.profile link and the 'packages' files."
+	echo "Double check your /etc/portage/make.profile link and the 'packages' files."
 	exit 1
 fi
 

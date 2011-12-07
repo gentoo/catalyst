@@ -813,11 +813,12 @@ class generic_stage_target(generic_target):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			print "Configuring profile link..."
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.profile",\
+			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
 					"Error zapping profile link",env=self.env)
-			cmd("ln -sf ../usr/portage/profiles/"+\
+			cmd("mkdir "+self.settings["chroot_path"]+"/etc/portage/")
+			cmd("ln -sf ../../usr/portage/profiles/"+\
 				self.settings["target_profile"]+" "+\
-				self.settings["chroot_path"]+"/etc/make.profile",\
+				self.settings["chroot_path"]+"/etc/portage/make.profile",\
 				"Error creating profile link",env=self.env)
 			touch(self.settings["autoresume_path"]+"config_profile_link")
 

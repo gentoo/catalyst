@@ -13,7 +13,7 @@ case $1 in
 		
 		# Setup make.conf and make.profile link in "ROOT in chroot":
 		copy_to_chroot ${clst_chroot_path}/etc/make.conf /${clst_root_path}/etc
-		copy_to_chroot ${clst_chroot_path}/etc/make.profile \
+		copy_to_chroot ${clst_chroot_path}/etc/portage/make.profile \
 			/${clst_root_path}/etc
 
 		# Enter chroot, execute our build script
