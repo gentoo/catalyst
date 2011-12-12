@@ -972,18 +972,6 @@ class generic_stage_target(generic_target):
 					self.settings["chroot_path"]+"/tmp/envscript",\
 					"Could not copy envscript into place.",env=self.env)
 
-			""" Setup metadata_overlay """
-			if self.settings.has_key("METADATA_OVERLAY") \
-				and not self.settings.has_key("portage_confdir"):
-				if not os.path.exists(self.settings["chroot_path"]+\
-					"/etc/portage"):
-					cmd("mkdir "+self.settings["chroot_path"]+"/etc/portage")
-				myf=open(self.settings["chroot_path"]+\
-					"/etc/portage/modules","a")
-				myf.write("portdbapi.auxdbmodule = cache.metadata_overlay.database\n")
-				myf.close()
-
-
 			"""
 			Copy over /etc/hosts from the host in case there are any
 			specialties in there
