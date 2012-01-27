@@ -20,6 +20,7 @@ class arch_nocona(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=nocona -pipe"
+		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
 
 # Requires gcc 4.3 to use this class
@@ -28,6 +29,7 @@ class arch_core2(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=core2 -pipe"
+		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2","ssse3"]
 
 class arch_k8(generic_amd64):
