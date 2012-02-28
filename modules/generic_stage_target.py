@@ -1237,6 +1237,10 @@ class generic_stage_target(generic_target):
 		if self.settings.has_key("CLEAR_AUTORESUME"):
 			self.clear_autoresume()
 
+		if self.settings.has_key("PURGETMPONLY"):
+			self.purge()
+			return
+
 		if self.settings.has_key("PURGEONLY"):
 			self.purge()
 			return
@@ -1629,15 +1633,16 @@ class generic_stage_target(generic_target):
 
 	def purge(self):
 		countdown(10,"Purging Caches ...")
-		if self.settings.has_key("PURGE") or self.settings.has_key("PURGEONLY"):
+		if self.settings.has_key("PURGE") or self.settings.has_key("PURGEONLY") or self.settings.has_key("PURGETMPONLY"):
 			print "clearing autoresume ..."
 			self.clear_autoresume()
 
 			print "clearing chroot ..."
 			self.clear_chroot()
 
-			print "clearing package cache ..."
-			self.clear_packages()
+			if not self.settings.has_key("PURGETMPONLY"):
+				print "clearing package cache ..."
+				self.clear_packages()
 
 			print "clearing kerncache ..."
 			self.clear_kerncache()

@@ -32,6 +32,7 @@ def usage():
 	print " -h --help       print this help message"
 	print " -p --purge      clear tmp dirs,package cache and autoresume flags"
 	print " -P --purgeonly  clear tmp dirs,package cache and autoresume flags and exit"
+	print " -T --purgetmponly  clear tmp dirs and autoresume flags and exit"
 	print " -s --snapshot   generate a release snapshot"
 	print " -V --version    display version information"
 	print " -v --verbose    verbose output"
@@ -225,7 +226,7 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "apPhvdc:C:f:FVs:", ["purge", "purgeonly", "help", "version", "debug",\
+		opts,args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:", ["purge", "purgeonly", "purgetmponly", "help", "version", "debug",\
 			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 	
 	except getopt.GetoptError:
@@ -296,6 +297,9 @@ if __name__ == "__main__":
 
 		if o in ("-P", "--purgeonly"):
 			conf_values["PURGEONLY"] = "1"
+
+		if o in ("-T", "--purgetmponly"):
+			conf_values["PURGETMPONLY"] = "1"
 
 		if o in ("-a", "--clear-autoresume"):
 			conf_values["CLEAR_AUTORESUME"] = "1"
