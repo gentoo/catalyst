@@ -249,6 +249,18 @@ class arch_loongson2e_n32(generic_mips64el):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=loongson2e -mabi=n32 -mplt -pipe"
 
+class arch_loongson2e_n64(generic_mips64el):
+	"Builder class for Loongson 2E [Little-endian N64]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson2e -mabi=64 -pipe"
+
+class arch_loongson2e_multilib(generic_mips64el):
+	"Builder class for Loongson 2E [Little-endian multilib]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson2e -mplt -pipe"
+
 class arch_loongson2f(generic_mipsel):
 	"Builder class for Loongson 2F [Little-endian]"
 	def __init__(self,myspec):
@@ -260,6 +272,18 @@ class arch_loongson2f_n32(generic_mips64el):
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+class arch_loongson2f_n64(generic_mips64el):
+	"Builder class for Loongson 2F [Little-endian N64]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O3 -march=loongson2f -mabi=64 -Wa,-mfix-loongson2f-nop -pipe"
+
+class arch_loongson2f_multilib(generic_mips64el):
+	"Builder class for Loongson 2F [Little-endian multilib]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O3 -march=loongson2f -mplt -Wa,-mfix-loongson2f-nop -pipe"
 
 class arch_mipsel4(generic_mipsel):
 	"Builder class for MIPS IV [Little-endian]"
@@ -400,8 +424,12 @@ _subarch_map = {
 	"mips64r2el_multilib"	: arch_mips64r2el_multilib,
 	"loongson2e"			: arch_loongson2e,
 	"loongson2e_n32"		: arch_loongson2e_n32,
+	"loongson2e_n64"		: arch_loongson2e_n64,
+	"loongson2e_multilib"	: arch_loongson2e_multilib,
 	"loongson2f"			: arch_loongson2f,
 	"loongson2f_n32"		: arch_loongson2f_n32,
+	"loongson2f_n64"		: arch_loongson2f_n64,
+	"loongson2f_multilib"	: arch_loongson2f_multilib,
 }
 
 _machine_map = ("mips","mips64")
