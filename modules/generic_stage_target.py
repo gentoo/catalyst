@@ -815,7 +815,7 @@ class generic_stage_target(generic_target):
 			print "Configuring profile link..."
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
 					"Error zapping profile link",env=self.env)
-			cmd("mkdir "+self.settings["chroot_path"]+"/etc/portage/")
+			cmd("mkdir -p "+self.settings["chroot_path"]+"/etc/portage/")
 			cmd("ln -sf ../../usr/portage/profiles/"+\
 				self.settings["target_profile"]+" "+\
 				self.settings["chroot_path"]+"/etc/portage/make.profile",\
