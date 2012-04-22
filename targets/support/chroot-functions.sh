@@ -202,7 +202,7 @@ cleanup_stages() {
 	fi
 	case ${clst_target} in
 		stage3|system)
-			run_merge --depclean --with-bdeps=n
+			run_merge --depclean --with-bdeps=y
 			;;
 		*)
 			echo "Skipping depclean operation for ${clst_target}"
