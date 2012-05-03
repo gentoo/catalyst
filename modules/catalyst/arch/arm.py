@@ -91,6 +91,13 @@ class arch_armv7a(generic_arm):
 		self.settings["CHOST"]="armv7a-unknown-linux-gnueabi"
 		self.settings["CFLAGS"]+=" -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=softfp"
 
+class arch_armv6j_hardfp(generic_arm):
+	"Builder class for armv6j hardfloat target, needs >=gcc-4.5"
+	def __init__(self,myspec):
+		generic_arm.__init__(self,myspec)
+		self.settings["CHOST"]="armv6j-hardfloat-linux-gnueabi"
+		self.settings["CFLAGS"]+=" -march=armv6j -mfpu=vfp -mfloat-abi=hard"
+
 class arch_armv7a_hardfp(generic_arm):
 	"Builder class for armv7a hardfloat target, needs >=gcc-4.5"
 	def __init__(self,myspec):
@@ -116,6 +123,7 @@ _subarch_map = {
 	"armv6z" : arch_armv6z,
 	"armv6zk" : arch_armv6zk,
 	"armv7a" : arch_armv7a,
+	"armv6j_hardfp" : arch_armv6j_hardfp,
 	"armv7a_hardfp" : arch_armv7a_hardfp,
 	"armeb"  : arch_armeb,
 	"armv5teb" : arch_armv5teb
