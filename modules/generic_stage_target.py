@@ -830,10 +830,8 @@ class generic_stage_target(generic_target):
 		else:
 			if self.settings.has_key("portage_confdir"):
 				print "Configuring /etc/portage..."
-				cmd("rm -rf "+self.settings["chroot_path"]+"/etc/portage",\
-					"Error zapping /etc/portage",env=self.env)
-				cmd("cp -R "+self.settings["portage_confdir"]+"/ "+\
-					self.settings["chroot_path"]+"/etc/portage",\
+				cmd("rsync -a "+self.settings["portage_confdir"]+"/ "+\
+					self.settings["chroot_path"]+"/etc/portage/",\
 					"Error copying /etc/portage",env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_confdir")
 
