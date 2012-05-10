@@ -22,8 +22,6 @@ class stage3_target(generic_stage_target):
 
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
-		# Not sure where /etc/make.profile is being created
-		self.settings["cleanables"].extend(["/etc/make.profile"])
 
 def register(foo):
 	foo.update({"stage3":stage3_target})
