@@ -936,7 +936,7 @@ class generic_stage_target(generic_target):
 
 	def chroot_setup(self):
 		self.makeconf=read_makeconf(self.settings["chroot_path"]+\
-			"/etc/make.conf")
+			"/etc/portage/make.conf")
 		self.override_cbuild()
 		self.override_chost()
 		self.override_cflags()
@@ -948,7 +948,7 @@ class generic_stage_target(generic_target):
 		else:
 			print "Setting up chroot..."
 			
-			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/make.conf")
+			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/portage/make.conf")
 			
 			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
 				"Could not copy resolv.conf into place.",env=self.env)
@@ -983,10 +983,10 @@ class generic_stage_target(generic_target):
 					"Could not copy /etc/hosts",env=self.env)
 
 			""" Modify and write out make.conf (for the chroot) """
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/make.conf",\
+			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.conf",\
 				"Could not remove "+self.settings["chroot_path"]+\
-				"/etc/make.conf",env=self.env)
-			myf=open(self.settings["chroot_path"]+"/etc/make.conf","w")
+				"/etc/portage/make.conf",env=self.env)
+			myf=open(self.settings["chroot_path"]+"/etc/portage/make.conf","w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
 			if self.settings.has_key("CFLAGS"):
@@ -1032,9 +1032,9 @@ class generic_stage_target(generic_target):
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
 			myf.close()
-			cmd("cp "+self.settings["chroot_path"]+"/etc/make.conf "+\
-				self.settings["chroot_path"]+"/etc/make.conf.catalyst",\
-				"Could not backup /etc/make.conf",env=self.env)
+			cmd("cp "+self.settings["chroot_path"]+"/etc/portage/make.conf "+\
+				self.settings["chroot_path"]+"/etc/portage/make.conf.catalyst",\
+				"Could not backup /etc/portage/make.conf",env=self.env)
 			touch(self.settings["autoresume_path"]+"chroot_setup")
 
 	def fsscript(self):
@@ -1079,7 +1079,7 @@ class generic_stage_target(generic_target):
 			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage",\
 				"Could not remove /usr/local/portage",env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				"/etc/make.conf",\
+				"/etc/portage/make.conf",\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
 		""" Clean up old and obsoleted files in /etc """

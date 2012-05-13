@@ -72,8 +72,8 @@ setup_myfeatures(){
 	then
 		export clst_myfeatures="${clst_myfeatures} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
-		[ -e /etc/make.conf ] && \
-			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/make.conf
+		[ -e /etc/portage/make.conf ] && \
+			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/portage/make.conf
 		# We install distcc to / on stage1, then use --noreplace, so we need to
 		# have some way to check if we need to reinstall distcc without being
 		# able to rely on USE, so we check for the distcc user and force a
@@ -84,7 +84,7 @@ setup_myfeatures(){
 		else
 			clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/distcc || exit 1
 		fi
-		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/make.conf
+		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/portage/make.conf
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
@@ -163,12 +163,12 @@ setup_gcc(){
 
 setup_pkgmgr(){
 	# We need to merge our package manager with USE="build" set in case it is
-	# portage to avoid frying our /etc/make.conf file.  Otherwise, we could
+	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
 	# just let emerge system could merge it.
 	# Use --update or portage won't reinstall the same version.
-	[ -e /etc/make.conf ] && echo 'USE="${USE} build"' >> /etc/make.conf
+	[ -e /etc/portage/make.conf ] && echo 'USE="${USE} build"' >> /etc/portage/make.conf
 	run_merge --oneshot --nodeps --update sys-apps/portage
-	sed -i '/USE="${USE} build"/d' /etc/make.conf
+	sed -i '/USE="${USE} build"/d' /etc/portage/make.conf
 }
 
 cleanup_distcc() {
@@ -234,11 +234,11 @@ die() {
 
 make_destpath() {
 	# ROOT is / by default, so remove any ROOT= settings from make.conf
-	sed -i '/ROOT=/d' /etc/make.conf
+	sed -i '/ROOT=/d' /etc/portage/make.conf
 	export ROOT=/
 	if [ "${1}" != "/" -a -n "${1}" ] 
 	then
-		echo "ROOT=\"${1}\"" >> /etc/make.conf
+		echo "ROOT=\"${1}\"" >> /etc/portage/make.conf
 		export ROOT=${1}
 	fi
 	if [ ! -d ${ROOT} ]

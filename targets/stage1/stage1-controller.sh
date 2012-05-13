@@ -12,7 +12,7 @@ case $1 in
 		install -d ${clst_chroot_path}/${clst_root_path}/etc
 		
 		# Setup make.conf and make.profile link in "ROOT in chroot":
-		copy_to_chroot ${clst_chroot_path}/etc/make.conf /${clst_root_path}/etc
+		copy_to_chroot ${clst_chroot_path}/etc/portage/make.conf /${clst_root_path}/etc
 		copy_to_chroot ${clst_chroot_path}/etc/portage/make.profile \
 			/${clst_root_path}/etc
 

@@ -20,19 +20,19 @@ fi
 
 ## START BUILD
 # First, we drop in a known-good baselayout
-[ -e /etc/make.conf ] && \
-	echo 'USE="${USE} -build"' >> /etc/make.conf
+[ -e /etc/portage/make.conf ] && \
+	echo 'USE="${USE} -build"' >> /etc/portage/make.conf
 run_merge "--oneshot --nodeps sys-apps/baselayout"
-sed -i '/USE="${USE} -build"/d' /etc/make.conf
+sed -i '/USE="${USE} -build"/d' /etc/portage/make.conf
 
 # Next, we install the package manager
 clst_root_path=/ setup_pkgmgr
 make_destpath /tmp/stage1root
 
 # Now, we install our packages
-[ -e /etc/make.conf ] && \
+[ -e /etc/portage/make.conf ] && \
 	echo "USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
-	>> /etc/make.conf
+	>> /etc/portage/make.conf
 run_merge "--oneshot ${clst_buildpkgs}"
 sed -i "/USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
-	/etc/make.conf
+	/etc/portage/make.conf
