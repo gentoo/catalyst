@@ -3,6 +3,7 @@
 # Maintained in full by:
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
+# Release Engineering Team <releng@gentoo.org>
 # $Id$
 
 import os, sys, imp, string, getopt
@@ -16,8 +17,8 @@ sys.path.append(__selfpath__ + "/modules")
 import catalyst.config
 import catalyst.util
 
-__maintainer__="Chris Gianelloni <wolf31o2@wolf31o2.org>"
-__version__="2.0.8.1"
+__maintainer__="Chris Gianelloni <releng@gentoo.org>"
+__version__="2.0.9"
 
 conf_values={}
 
