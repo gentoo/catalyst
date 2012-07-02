@@ -9,11 +9,6 @@ show_debug
 
 cleanup_stages
 
-if [ -n "${clst_CCACHE}" ]
-then
-	run_merge -C dev-util/ccache || exit 1
-fi
-
 if [ -n "${clst_DISTCC}" ]
 then
 	run_merge -C sys-devel/distcc || exit 1
