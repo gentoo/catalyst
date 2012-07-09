@@ -15,8 +15,13 @@ import glob
 import re
 
 
+def key_netboot_before_netboot2((target_name, module)):
+	return target_name + '1'
+
+
 if __name__ == '__main__':
 	extractor = re.compile('^modules/(([^ ]+)_target).py$')
+	targets = list()
 	for filename in sorted(glob.glob('modules/*_target.py')):
 		if 'generic' in filename:
 			continue
@@ -28,6 +33,9 @@ if __name__ == '__main__':
 		__import__(module_name)
 		module = _sys.modules[module_name]
 
+		targets.append((target_name, module))
+
+	for target_name, module in sorted(targets, key=key_netboot_before_netboot2):
 		print('`%s`;;' % target_name)
 		# Replace blank lines with `+` (asciidoc list item continuation)
 		print(module.__doc__.strip().replace('\n\n', '\n+\n'))
