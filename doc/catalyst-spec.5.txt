@@ -114,7 +114,7 @@ explained below.
   `gentoo-gamecd`;; This creates an official Gentoo GameCD.
   `generic-livecd`;; This should be used for all non-official media.
 
-This setting is supported by the `livecd` target.
+This setting is supported by the livecd targets.
 
 *<target>/builddate*::
 Set the build date of the `<target>` (example: `20060107`).  This
@@ -124,7 +124,7 @@ setting is supported by the `netboot2` target.
 This is for the README.txt on the root of the CD.  For Gentoo
 releases, we use a default README.txt, and this will be used on your
 CD if you do not provide one yourself.  We do not use this for the
-official releases.  This setting is supported by the `livecd` target.
+official releases.  This setting is supported by the livecd targets.
 
 *grp*::
 Since GRP is capable of building packages/source sets for more than
