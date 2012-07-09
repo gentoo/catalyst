@@ -13,7 +13,11 @@ distdir = catalyst-$(PACKAGE_VERSION)
 
 all: $(EXTRA_DIST)
 
-$(MAN_PAGES): files/%: doc/%.txt $(MAN_PAGE_INCLUDES) doc/asciidoc.conf Makefile catalyst
+files/catalyst.1: doc/catalyst.1.txt doc/subarches.generated.txt doc/asciidoc.conf Makefile catalyst
+	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
+		 --format=manpage -D files "$<"
+
+files/catalyst-spec.5: doc/catalyst-spec.5.txt doc/subarches.generated.txt doc/targets.generated.txt doc/asciidoc.conf Makefile catalyst
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=manpage -D files "$<"
 
