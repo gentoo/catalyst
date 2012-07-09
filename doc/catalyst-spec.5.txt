@@ -19,7 +19,7 @@ DESCRIPTION
 
 *catalyst(1)* reads the specification file given with *-f* on the
 command line.  The file contains keyword-argument pairs, one per line,
-separated by a colon (`:`).  Subsequent intented lines continue the
+separated by a colon (`:`).  Subsequent indented lines continue the
 argument.  Lines starting with `#` and empty lines are interpreted as
 comments.  For example:
 
