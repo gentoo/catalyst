@@ -24,7 +24,7 @@ argument.  Lines starting with `#` and empty lines are interpreted as
 comments.  For example:
 
   # Select the subarch
-  subarch: athalon-xp
+  subarch: athlon-xp
 
   boot/use:
     -*
