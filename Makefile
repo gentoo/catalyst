@@ -2,9 +2,10 @@
 # Licensed under GPL v2 or later
 
 PACKAGE_VERSION = `fgrep '__version__=' catalyst | sed 's|^__version__="\(.*\)"$$|\1|'`
-MAN_PAGES = catalyst.1 catalyst-spec.5
+MAN_PAGE_SOURCES = $(wildcard doc/*.?.txt)
+MAN_PAGES = $(patsubst doc/%.txt,files/%,$(MAN_PAGE_SOURCES))
 MAN_PAGE_INCLUDES = doc/subarches.generated.txt doc/targets.generated.txt
-EXTRA_DIST = $(MAN_PAGES:%=files/%)
+EXTRA_DIST = $(MAN_PAGES)
 CLEAN_FILES = $(EXTRA_DIST) $(MAN_PAGE_INCLUDES)
 
 distdir = catalyst-$(PACKAGE_VERSION)
@@ -12,7 +13,7 @@ distdir = catalyst-$(PACKAGE_VERSION)
 
 all: $(EXTRA_DIST)
 
-$(MAN_PAGES:%=files/%): files/%: doc/%.txt $(MAN_PAGE_INCLUDES) doc/asciidoc.conf Makefile catalyst
+$(MAN_PAGES): files/%: doc/%.txt $(MAN_PAGE_INCLUDES) doc/asciidoc.conf Makefile catalyst
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=manpage -D files "$<"
 
