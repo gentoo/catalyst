@@ -20,7 +20,7 @@ $(MAN_PAGES): files/%: doc/%.txt $(MAN_PAGE_INCLUDES) doc/asciidoc.conf Makefile
 doc/subarches.generated.txt: $(wildcard arch/*.py) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
 
-doc/targets.generated.txt: doc/make_target_table.py $(wildcard modules/catalyst/targets/*.py)
+doc/targets.generated.txt: doc/make_target_table.py $(wildcard modules/*_target.py)
 	"./$<" > "$@"
 
 clean:
