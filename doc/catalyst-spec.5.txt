@@ -23,14 +23,16 @@ separated by a colon (`:`).  Subsequent indented lines continue the
 argument.  Lines starting with `#` and empty lines are interpreted as
 comments.  For example:
 
-  # Select the subarch
-  subarch: athlon-xp
+---------------------------------
+# Select the subarch
+subarch: athlon-xp
 
-  boot/use:
-    -*
-    multicall
-    readline
-    ssl
+boot/use:
+  -*
+  multicall
+  readline
+  ssl
+---------------------------------
 
 The possible keywords and their meanings are as follows:
 
