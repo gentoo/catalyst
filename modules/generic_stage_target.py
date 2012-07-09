@@ -1,9 +1,3 @@
-
-"""
-This class does all of the chroot setup, copying of files, etc. It is
-the driver class for pretty much everything that Catalyst does.
-"""
-
 import os,string,imp,types,shutil
 from catalyst_support import *
 from generic_target import *
@@ -11,7 +5,10 @@ from stat import *
 import catalyst_lock
 
 class generic_stage_target(generic_target):
-
+	"""
+	This class does all of the chroot setup, copying of files, etc. It is
+	the driver class for pretty much everything that Catalyst does.
+	"""
 	def __init__(self,myspec,addlargs):
 		self.required_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"])

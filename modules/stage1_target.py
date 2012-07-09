@@ -1,12 +1,15 @@
-
 """
-Builder class for a stage1 installation tarball build.
+stage1 target
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst_support import *
 from generic_stage_target import *
 
 class stage1_target(generic_stage_target):
+	"""
+	Builder class for a stage1 installation tarball build.
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=["chost"]

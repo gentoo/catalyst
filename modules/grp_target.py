@@ -1,13 +1,16 @@
-
 """
-The builder class for GRP (Gentoo Reference Platform) builds.
+Gentoo Reference Platform (GRP) target
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os,types,glob
 from catalyst_support import *
 from generic_stage_target import *
 
 class grp_target(generic_stage_target):
+	"""
+	The builder class for GRP (Gentoo Reference Platform) builds.
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"]

@@ -1,12 +1,15 @@
-
 """
-Builder class for LiveCD stage1.
+LiveCD stage1 target
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst_support import *
 from generic_stage_target import *
 
 class livecd_stage1_target(generic_stage_target):
+	"""
+	Builder class for LiveCD stage1.
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=["livecd/packages"]
 		self.valid_values=self.required_values[:]

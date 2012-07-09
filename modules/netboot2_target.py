@@ -1,13 +1,16 @@
-
 """
-Builder class for a netboot build, version 2
+netboot target, version 2
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os,string,types
 from catalyst_support import *
 from generic_stage_target import *
 
 class netboot2_target(generic_stage_target):
+	"""
+	Builder class for a netboot build, version 2
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=[
 			"boot/kernel"

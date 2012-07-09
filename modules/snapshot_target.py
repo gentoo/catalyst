@@ -1,6 +1,5 @@
-
 """
-Builder class for snapshots.
+Snapshot target
 """
 
 import os
@@ -8,6 +7,9 @@ from catalyst_support import *
 from generic_stage_target import *
 
 class snapshot_target(generic_stage_target):
+	"""
+	Builder class for snapshots.
+	"""
 	def __init__(self,myspec,addlargs):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
