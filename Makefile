@@ -6,7 +6,7 @@ MAN_PAGE_SOURCES = $(wildcard doc/*.?.txt)
 MAN_PAGES = $(patsubst doc/%.txt,files/%,$(MAN_PAGE_SOURCES))
 MAN_PAGE_INCLUDES = doc/subarches.generated.txt doc/targets.generated.txt
 EXTRA_DIST = $(MAN_PAGES)
-CLEAN_FILES = $(EXTRA_DIST) $(MAN_PAGE_INCLUDES)
+GENERATED_FILES = $(MAN_PAGES) $(MAN_PAGE_INCLUDES)
 
 distdir = catalyst-$(PACKAGE_VERSION)
 
@@ -24,7 +24,7 @@ doc/targets.generated.txt: doc/make_target_table.py $(wildcard modules/catalyst/
 	"./$<" > "$@"
 
 clean:
-	rm -f $(CLEAN_FILES)
+	rm -f $(GENERATED_FILES)
 	find -name '*.pyo' -delete
 
 check-git-repository:
