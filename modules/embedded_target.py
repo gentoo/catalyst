@@ -1,13 +1,14 @@
-
 """
-This class works like a 'stage3'.  A stage2 tarball is unpacked, but instead
-of building a stage3, it emerges a 'system' into another directory
-inside the 'stage2' system.  This way we do not have to emerge gcc/portage
+Enbedded target, similar to the stage2 target, builds upon a stage2 tarball.
+
+A stage2 tarball is unpacked, but instead
+of building a stage3, it emerges @system into another directory
+inside the stage2 system.  This way, we do not have to emerge GCC/portage
 into the staged system.
-
-It sounds real complicated but basically it runs
-ROOT=/tmp/submerge emerge --blahblah foo bar
+It may sound complicated but basically it runs
+ROOT=/tmp/submerge emerge --something foo bar .
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os,string,imp,types,shutil
 from catalyst_support import *
@@ -15,7 +16,9 @@ from generic_stage_target import *
 from stat import *
 
 class embedded_target(generic_stage_target):
-
+	"""
+	Builder class for embedded target
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=[]

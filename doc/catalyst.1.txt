@@ -114,13 +114,6 @@ An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
 Linux bug-tracking system at 'http://bugs.gentoo.org'.
 
 
-SEE ALSO
---------
-A more in-depth examination of Catalyst options and procedures can be found
-linked from the *catalyst* project page, which is located at
-'http://www.gentoo.org/proj/en/releng/catalyst'.
-
-
 NOTES
 -----
 *catalyst* is conceptually derived from the Gentoo livecd-ng and Gentoo
@@ -138,3 +131,12 @@ AUTHORS
 - Raul Porcel <armin76@gentoo.org>
 - Sebastian Pipping <sping@gentoo.org>
 - Matt Turner <mattst88@gentoo.org>
+
+
+SEE ALSO
+--------
+*catalyst-spec(5)*
+
+Also, a more in-depth examination of Catalyst options and procedures can be found
+linked from the *catalyst* project page, which is located at
+'http://www.gentoo.org/proj/en/releng/catalyst'.

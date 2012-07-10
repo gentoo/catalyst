@@ -1,12 +1,15 @@
-
 """
-Builder class for a stage3 installation tarball build.
+stage3 target, builds upon previous stage2/stage3 tarball
 """
+# NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst_support import *
 from generic_stage_target import *
 
 class stage3_target(generic_stage_target):
+	"""
+	Builder class for a stage3 installation tarball build.
+	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=[]
