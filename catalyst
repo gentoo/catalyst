@@ -1,9 +1,10 @@
 #!/usr/bin/python -OO
 
 # Maintained in full by:
+# Catalyst Team <catalyst@gentoo.org>
+# Release Engineering Team <releng@gentoo.org>
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
-# Release Engineering Team <releng@gentoo.org>
 # $Id$
 
 import os, sys, imp, string, getopt
@@ -17,7 +18,7 @@ sys.path.append(__selfpath__ + "/modules")
 import catalyst.config
 import catalyst.util
 
-__maintainer__="Chris Gianelloni <releng@gentoo.org>"
+__maintainer__="Catalyst <catalyst@gentoo.org>"
 __version__="2.0.10.1"
 
 conf_values={}
@@ -52,7 +53,7 @@ def usage():
 def version():
 	print "Catalyst, version "+__version__
 	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008-2011 various authors"
+	print "Copyright 2008-2012 various authors"
 	print "Distributed under the GNU General Public License version 2.1\n"
 
 def parse_config(myconfig):
