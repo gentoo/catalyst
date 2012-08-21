@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set the profile
+eselect profile set ${clst_target_profile}
+
 # Trap these signals and kill ourselves if recieved
 # Force ourselves to die if any of these signals are recieved
 # most likely our controlling terminal is gone
