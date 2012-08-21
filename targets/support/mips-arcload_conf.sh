@@ -37,7 +37,7 @@ serial="serial {\n\
 dbg="debug {\n\
 \tdescription\t\"Debug Shell\";\n\
 \timage\t\t\"\";\n\
-\tappend\t\t\"real_root=shell\" \"nox\";\n}\n\n"		
+\tappend\t\t\"real_root=shell\" \"nox\";\n}\n\n"
 
 cmt1="comment\t\t\"\\\n\\\n\";\n\
 comment\t\t\"Bootable Images & Options:\\\n\\\r\\\n\\\r\";\n"

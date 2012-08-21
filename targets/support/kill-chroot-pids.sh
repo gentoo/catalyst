@@ -41,17 +41,17 @@ then
 	echo
 	echo "Killing process(es)"
 	echo "pid: process name"
-	for pid in ${pids[@]} 
-	do 
+	for pid in ${pids[@]}
+	do
 		P_NAME=$(ls -la --color=never /proc/${pid} 2>&1 |grep exe|grep ${clst_chroot_path}|awk '{print $11}')
 		echo ${pid}: ${P_NAME}
 	done
-	echo 
+	echo
 	echo "Press Ctrl-C within 10 seconds to abort"
-	
+
 	sleep 10
 
-	for pid in ${pids[@]} 
+	for pid in ${pids[@]}
 	do
 		kill -9 ${pid}
 	done

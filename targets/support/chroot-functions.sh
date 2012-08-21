@@ -251,8 +251,8 @@ run_merge() {
 	# Sets up the ROOT= parameter
 	# with no options ROOT=/
 	make_destpath ${clst_root_path}
-	
-	export EMERGE_WARNING_DELAY=0 	
+
+	export EMERGE_WARNING_DELAY=0
 	export CLEAN_DELAY=0
 	export EBEEP_IGNORE=0
 	export EPAUSE_IGNORE=0
@@ -349,7 +349,7 @@ function copy_symlink() {
 	STACK=${2}
 	[ "${STACK}" = "" ] && STACK=16 || STACK=$((${STACK} - 1 ))
 
-	if [ ${STACK} -le 0 ] 
+	if [ ${STACK} -le 0 ]
 	then
 		echo "WARNING : ${TARGET} : too many levels of symbolic links !"
 		return
@@ -359,7 +359,7 @@ function copy_symlink() {
 		mkdir -p ${clst_root_path}/`dirname ${1}`
 	[ ! -e ${clst_root_path}/${1} ] && \
 		cp -vfdp ${1} ${clst_root_path}/${1}
-	
+
 	if [[ -n $(type -p realpath) ]]; then
 		TARGET=`realpath ${1}`
 	else
@@ -412,4 +412,3 @@ Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
 
 # We do this everywhere, so why not put it in this script
 run_default_funcs
-

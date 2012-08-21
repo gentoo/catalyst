@@ -49,7 +49,7 @@ setup_gk_args() {
 	then
 		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
 	fi
-	
+
 	if [ -n "${clst_linuxrc}" ]
 	then
 		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"
@@ -77,7 +77,7 @@ genkernel_compile(){
 
 	setup_gk_args
 	#echo "The GK_ARGS are"
-	#echo ${GK_ARGS}	
+	#echo ${GK_ARGS}
 	export clst_kernel_merge
 	export clst_initramfs_overlay
 	# Build our list of kernel packages
@@ -141,15 +141,15 @@ fi
 # USE variables (and thus different patches enabled/disabled.) Also, there's no
 # real benefit in using the pkgcache for kernel source ebuilds.
 
-USE_MATCH=0 
+USE_MATCH=0
 if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
 then
 	STR1=$(for i in `cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
 	STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
 	if [ "${STR1}" = "${STR2}" ]
-	then 
+	then
 		#echo "USE Flags match"
-		USE_MATCH=1 
+		USE_MATCH=1
 	else
 		if [ -n "${clst_KERNCACHE}" ]
 		then
@@ -167,7 +167,7 @@ then
 	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
 	STR2=${clst_kextraversion}
 	if [ "${STR1}" = "${STR2}" ]
-	then 
+	then
 		if [ -n "${clst_KERNCACHE}" ]
 		then
 			#echo "EXTRAVERSION match"
@@ -182,7 +182,7 @@ then
 	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
 	STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
 	if [ "${STR1}" = "${STR2}" ]
-	then 
+	then
 		if [ -n "${clst_KERNCACHE}" ]
 		then
 			#echo "CONFIG match"
@@ -204,7 +204,7 @@ then
 		mkdir -p /etc/portage/profile
 		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
 	else
-		if ( ! grep -q "^${KERNELVERSION}\$"  /etc/portage/profile/package.provided ) 
+		if ( ! grep -q "^${KERNELVERSION}\$"  /etc/portage/profile/package.provided )
 		then
 			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
 		fi
@@ -226,7 +226,7 @@ then
 		echo "Setting extraversion to ${clst_kextraversion}"
 		sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
 		echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
-	else 
+	else
 		touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	fi
 fi

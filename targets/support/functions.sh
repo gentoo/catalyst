@@ -37,14 +37,14 @@ exec_in_chroot(){
 		chroot_path=${clst_chroot_path}${subdir}
 		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
 			${subdir}/tmp/
-		echo "Running ${file_name} in chroot ${chroot_path}" 
+		echo "Running ${file_name} in chroot ${chroot_path}"
 		${clst_CHROOT} ${chroot_path} /tmp/${file_name} || exit 1
 	else
 		copy_to_chroot ${1} tmp/
 		chroot_path=${clst_chroot_path}
 		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
 			tmp/
-		echo "Running ${file_name} in chroot ${chroot_path}" 
+		echo "Running ${file_name} in chroot ${chroot_path}"
 		${clst_CHROOT} ${chroot_path}/ /tmp/${file_name} || exit 1
 	fi
 
@@ -97,12 +97,12 @@ extract_kernels() {
 
 		[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 		mkdir -p ${1}/
-		tar xjf ${kbinary} -C ${1}/ 
+		tar xjf ${kbinary} -C ${1}/
 
 		# change config name from "config-*" to "gentoo", for example
 		#mv ${1}/config-* ${1}/${x}-config
-		rm ${1}/config-* 
-		
+		rm ${1}/config-*
+
 		# change kernel name from "kernel" to "gentoo", for example
 		if [ -e ${1}/kernel-* ]
 		then
@@ -117,12 +117,12 @@ extract_kernels() {
 
 		# change initrd name from "initrd" to "gentoo.igz", for example
 		if [ -e ${1}/initrd-* ]
-		then 
+		then
 			mv ${1}/initrd-* ${1}/${x}.igz
 		fi
 
 		if [ -e ${1}/initramfs-* ]
-		then 
+		then
 			mv ${1}/initramfs-* ${1}/${x}.igz
 		fi
 
@@ -135,7 +135,7 @@ extract_kernels() {
 
 extract_modules() {
 	# $1 = Destination
-	# $2 = kname	
+	# $2 = kname
 	kmodules="${clst_chroot_path}/tmp/kerncache/${2}-modules-${clst_version_stamp}.tar.bz2"
 
 	if [ -f "${kmodules}" ]
@@ -208,7 +208,7 @@ check_filesystem_type(){
 			cmdline_opts="${cmdline_opts} looptype=cramfs loop=/image.cramfs"
 		;;
 	esac
-}																												
+}
 
 run_crossdev() {
 	crossdev ${clst_CHOST}
