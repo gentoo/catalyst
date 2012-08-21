@@ -1,9 +1,9 @@
 #!/bin/bash
 
+source /tmp/chroot-functions.sh
+
 # We do this first, so we know our package list for --debug
 export clst_buildpkgs="$(/tmp/build.py)"
-
-source /tmp/chroot-functions.sh
 
 # Setup our environment
 BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
