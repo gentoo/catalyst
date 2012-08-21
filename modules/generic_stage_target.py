@@ -457,7 +457,7 @@ class generic_stage_target(generic_target):
 	def set_action_sequence(self):
 		""" Default action sequence for run method """
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"config_profile_link","setup_confdir","portage_overlay",\
+				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
 				"run_local","preclean","unbind","clean"]
 #		if self.settings.has_key("TARBALL") or \
