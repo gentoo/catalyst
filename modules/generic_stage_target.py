@@ -404,12 +404,20 @@ class generic_stage_target(generic_target):
 
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
-			"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
+			"/snapshots/portage-"+self.settings["snapshot"]+".tar.xz")
 
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"]=\
 				generate_hash(self.settings["snapshot_path"],\
 				hash_function=self.settings["hash_function"],verbose=False)
+		else:
+			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
+				"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
+
+			if os.path.exists(self.settings["snapshot_path"]):
+				self.settings["snapshot_path_hash"]=\
+					generate_hash(self.settings["snapshot_path"],\
+					hash_function=self.settings["hash_function"],verbose=False)
 
 	def set_snapcache_path(self):
 		if self.settings.has_key("SNAPCACHE"):
@@ -635,7 +643,7 @@ class generic_stage_target(generic_target):
 					self.settings["source_path"]+"\nto "+\
 					self.settings["chroot_path"]+\
 						" (This may take some time) ...\n"
-				unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+\
+				unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 				error_msg="Tarball extraction of "+\
 					self.settings["source_path"]+" to "+\
@@ -646,7 +654,7 @@ class generic_stage_target(generic_target):
 				self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+\
 				" (This may take some time) ...\n"
-			unpack_cmd="tar xjpf "+self.settings["source_path"]+" -C "+\
+			unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
 				self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+\
 				" to "+self.settings["chroot_path"]+" failed."
@@ -744,7 +752,7 @@ class generic_stage_target(generic_target):
 				read_from_clst(self.settings["snapshot_cache_path"]+\
 				"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
-			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+destdir
+			unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
@@ -760,7 +768,7 @@ class generic_stage_target(generic_target):
 			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."
-			unpack_cmd="tar xjpf "+self.settings["snapshot_path"]+" -C "+\
+			unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+\
 				self.settings["chroot_path"]+"/usr"
 			unpack_errmsg="Error unpacking snapshot"
 
