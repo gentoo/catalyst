@@ -25,7 +25,7 @@ fi
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 
 # Update stage3
-UPDATE_SEED_STAGE="yes"
+#UPDATE_SEED_STAGE="yes"
 if [ -n ${UPDATE_SEED_STAGE} ]; then
 	echo "Updating seed stage..."
 	clst_root_path=/ run_merge "--update --deep --newuse @world"
