@@ -82,7 +82,7 @@ class arch_pentium_m(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium-m -pipe"
-		self.settings["HOSTUSER"]=["mmx","sse","sse2"]
+		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
 
 class arch_prescott(generic_x86):
 	"improved version of Intel Pentium 4 CPU with MMX, SSE, SSE2 and SSE3 support"
@@ -90,6 +90,7 @@ class arch_prescott(generic_x86):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=prescott -pipe"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
+		self.settings["CHOST"]="i686-pc-linux-gnu"
 
 class arch_k6(generic_x86):
 	"AMD K6 CPU with MMX support"
