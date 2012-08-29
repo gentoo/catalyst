@@ -15,7 +15,7 @@ class stage1_target(generic_stage_target):
 		self.valid_values=["chost"]
 		self.valid_values.extend(["update_seed"])
 		generic_stage_target.__init__(self,spec,addlargs)
-        self.set_update_seed()
+		self.set_update_seed()
 	
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
