@@ -98,7 +98,7 @@ class stage1_target(generic_stage_target):
 		self.mountmap["/tmp/stage1root/proc"]="/proc"
 
 	def set_update_seed(self):
-		if self.settings.has_key(self.settings["update_seed"]):
+		if self.settings.has_key("update_seed"):
 			self.settings["update_seed_cache"]=self.settings["update_seed"]
 
 def register(foo):
