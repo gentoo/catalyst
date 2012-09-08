@@ -56,6 +56,14 @@ class arch_amdfam10(generic_amd64):
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		self.settings["HOSTUSE"]=["mmx","sse","sse2","3dnow"]
 
+class arch_x32(generic_amd64):
+	"builder class for generic x32 (Intel and AMD)"
+	def __init__(self,myspec):
+		generic_amd64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["CHOST"]="x86_64-pc-linux-gnux32"
+		self.settings["HOSTUSE"]=["mmx","sse","sse2"]
+
 def register():
 	"inform main catalyst program of the contents of this plugin"
 	return ({
@@ -70,6 +78,7 @@ def register():
 		"opteron-sse3"	: arch_k8_sse3,
 		"athlon64-sse3"	: arch_k8_sse3,
 		"amdfam10"	: arch_amdfam10,
-		"barcelona"	: arch_amdfam10
+		"barcelona"	: arch_amdfam10,
+		"x32"		: arch_x32,
 	}, ("x86_64","amd64","nocona"))
 
