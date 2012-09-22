@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. ${clst_sharedir}/targets/support/functions.sh
-. ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_sharedir}/targets/support/functions.sh
+source ${clst_sharedir}/targets/support/filesystem-functions.sh
 
 
 extract_kernels ${clst_target_path}boot

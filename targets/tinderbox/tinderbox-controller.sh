@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ${clst_sharedir}/targets/support/functions.sh
+source ${clst_sharedir}/targets/support/functions.sh
 
 case $1 in
 	run)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ${clst_sharedir}/targets/support/functions.sh
+source ${clst_sharedir}/targets/support/functions.sh
 
 # Only put commands in this section that you want every target to execute.
 # This is a global default file and will affect every target

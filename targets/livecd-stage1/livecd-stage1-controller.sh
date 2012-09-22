@@ -1,5 +1,5 @@
 
-. ${clst_sharedir}/targets/support/functions.sh
+source ${clst_sharedir}/targets/support/functions.sh
 
 ## START RUNSCRIPT
 
