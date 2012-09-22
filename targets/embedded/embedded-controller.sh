@@ -20,7 +20,7 @@ case ${1} in
 #	package)
 #		export root_fs_path="${clst_chroot_path}/tmp/mergeroot"
 #		install -d ${clst_image_path}
-		
+
 #		${clst_sharedir}/targets/embedded/embedded-fs-runscript.sh \
 #			${clst_embedded_fs_type} || exit 1
 #		imagesize=`du -sk ${clst_image_path}/root.img | cut -f1`
@@ -68,7 +68,7 @@ case ${1} in
 
 		${clst_sharedir}/targets/support/bootloader-setup.sh ${1}
 	;;
-	
+
 	iso)
 		shift
 		${clst_sharedir}/targets/support/create-iso.sh ${1}

@@ -7,7 +7,7 @@ update_env_settings
 echo ">>> Copying initramfs files to ${clst_merge_path} (in chroot) ..."
 [ ! -d "${clst_merge_path}" ] && mkdir -p ${clst_merge_path}
 for f in ${clst_files}
-do 
+do
 	# copy it to the merge path
 	cp -pPRf --parents $(eval echo ${f}) ${clst_merge_path}
 

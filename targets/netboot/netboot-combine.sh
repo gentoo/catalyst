@@ -53,7 +53,7 @@ do
 		alpha)
 			# Until aboot is patched this is broken currently.
 			# please use catalyst 1.1.5 or older
-		
+
 			#TEST TEST TEST TEST
 			#http://lists.debian.org/debian-alpha/2004/07/msg00094.html
 			#make \

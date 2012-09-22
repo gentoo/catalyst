@@ -5,6 +5,7 @@ source ${clst_sharedir}/targets/support/functions.sh
 case $1 in
 	enter)
 	;;
+
 	run)
 		cp ${clst_sharedir}/targets/stage1/build.py ${clst_chroot_path}/tmp
 
@@ -20,9 +21,11 @@ case $1 in
 			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh \
 			|| exit 1
 	;;
+
 	preclean)
 		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
 	;;
+
 	clean)
 		# Clean out man, info and doc files
 		rm -rf usr/share/{man,doc,info}/*
@@ -34,6 +37,7 @@ case $1 in
 			grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | \
 			grep -v 'libgcc_eh.a' | xargs rm -f
 	;;
+
 	*)
 		exit 1
 	;;

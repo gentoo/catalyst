@@ -239,7 +239,7 @@ make_destpath() {
 	# ROOT is / by default, so remove any ROOT= settings from make.conf
 	sed -i '/ROOT=/d' /etc/portage/make.conf
 	export ROOT=/
-	if [ "${1}" != "/" -a -n "${1}" ] 
+	if [ "${1}" != "/" -a -n "${1}" ]
 	then
 		echo "ROOT=\"${1}\"" >> /etc/portage/make.conf
 		export ROOT=${1}

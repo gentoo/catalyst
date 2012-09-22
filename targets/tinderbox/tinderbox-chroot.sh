@@ -8,7 +8,7 @@ setup_pkgmgr
 # Backup pristine system
 
 rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / \
-	/tmp/rsync-bak/ 
+	/tmp/rsync-bak/
 
 for x in ${clst_tinderbox_packages}
 do
@@ -30,7 +30,7 @@ do
 
 	if [ "$?" != "0" ]
 	then
-		echo "! $x" >> /tmp/tinderbox.log	
+		echo "! $x" >> /tmp/tinderbox.log
 	else
 		echo "$x" >> /tmp/tinderbox.log
 	fi

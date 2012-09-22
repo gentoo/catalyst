@@ -12,14 +12,17 @@ case ${1} in
 		exec_in_chroot \
 		${clst_sharedir}/targets/${clst_target}/${clst_target}-pkg.sh
 	;;
+
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 	;;
+
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
 	;;
+
 	kernel)
 		shift
 		export clst_kname="$1"
@@ -44,6 +47,7 @@ case ${1} in
 		#16:13 <@solar> eval clst_boot_kernel_${kernel_name}_config=bar
 		#16:13 <@solar> eval echo \$clst_boot_kernel_${kernel_name}_config
 	;;
+
 	image)
 		# Creates the base initramfs image for the netboot
 		echo -e ">>> Preparing Image ..."
@@ -54,13 +58,16 @@ case ${1} in
 		exec_in_chroot \
 		${clst_sharedir}/targets/${clst_target}/${clst_target}-copyfile.sh
 	;;
+
 	final)
 		# For each arch, fetch the kernel images and put them in builds/
 		echo -e ">>> Copying completed kernels to ${clst_target_path} ..."
 		${clst_sharedir}/targets/support/netboot2-final.sh
 	;;
+
 	clean)
 		exit 0;;
+
 	*)
 		exit 1;;
 esac

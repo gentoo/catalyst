@@ -19,4 +19,3 @@ fi
 
 ## START BUILD
 /usr/portage/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
-

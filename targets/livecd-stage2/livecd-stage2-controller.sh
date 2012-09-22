@@ -7,10 +7,12 @@ case $1 in
 		# Sets up the build environment before any kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
 		;;
+
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
 		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
 		;;
+
 	kernel)
 		shift
 		export clst_kname="$1"
@@ -53,7 +55,7 @@ case $1 in
 				fi
 			;;
 		esac
-	
+
 		# move over the environment
 		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
 			${clst_chroot_path}/root/.bashrc
@@ -61,7 +63,7 @@ case $1 in
 			${clst_chroot_path}/root/.bash_profile
 		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
-		
+
 		# execute copy gamecd.conf if we're a gamecd
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
 		then
@@ -74,6 +76,7 @@ case $1 in
 			fi
 		fi
 		;;
+
 	livecd-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot ${clst_sharedir}/targets/support/livecdfs-update.sh
@@ -87,12 +90,15 @@ case $1 in
 				${clst_chroot_path}/etc/X11/xinit/xinitrc
 		fi
 		;;
+
 	rc-update)
 		exec_in_chroot ${clst_sharedir}/targets/support/rc-update.sh
 		;;
+
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
 		;;
+
 	clean)
 		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
 		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
@@ -112,6 +118,7 @@ case $1 in
 			grep -v 'libgcc_eh.a' | xargs rm -f
 		rm -f ${clst_chroot_path}/tmp/packages.txt
 		;;
+
 	bootloader)
 		shift
 		# Here is where we poke in our identifier
@@ -184,15 +191,18 @@ case $1 in
 
 		${clst_sharedir}/targets/support/bootloader-setup.sh $1
 		;;
+
     unmerge)
         shift
         export clst_packages="$*"
         exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh
     ;;
+
 	target_image_setup)
 		shift
 		${clst_sharedir}/targets/support/target_image_setup.sh $1
 		;;
+
 	iso)
 		shift
 		${clst_sharedir}/targets/support/create-iso.sh $1

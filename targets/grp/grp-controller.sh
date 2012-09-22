@@ -6,6 +6,7 @@ case $1 in
 	enter)
 		${clst_CHROOT} ${clst_chroot_path}
 	;;
+
 	run)
 		shift
 		export clst_grp_type=$1
@@ -24,7 +25,7 @@ case $1 in
 	clean)
 		exit 0
 	;;
-	
+
 	*)
 		exit 1
 	;;
