@@ -131,4 +131,3 @@ def register():
 		"armv5teb" : arch_armv5teb
 	}, ("arm", "armv4l", "armv4tl", "armv5tl", "armv5tel", "armv5tejl", "armv6l", 
 "armv7l", "armeb", "armv5teb") )
-

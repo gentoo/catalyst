@@ -81,4 +81,3 @@ def register():
 		"barcelona"	: arch_amdfam10,
 		"x32"		: arch_x32,
 	}, ("x86_64","amd64","nocona"))
-

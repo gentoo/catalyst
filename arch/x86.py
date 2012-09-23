@@ -151,4 +151,3 @@ def register():
 		"athlon-xp"		: arch_athlon_xp,
 		"athlon-mp"		: arch_athlon_xp
 	}, ('i386', 'i486', 'i586', 'i686'))
-

@@ -38,4 +38,3 @@ def register():
 			"hppa1.1":	arch_hppa1_1,
 			"hppa2.0":	arch_hppa2_0
 	}, ("parisc","parisc64","hppa","hppa64") )
-

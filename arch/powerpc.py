@@ -122,4 +122,3 @@ def register():
 		"ppc"		: arch_ppc,
 		"ppc64"		: arch_ppc64
 	}, ("ppc","ppc64","powerpc","powerpc64"))
-
