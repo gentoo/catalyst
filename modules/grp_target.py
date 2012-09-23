@@ -14,24 +14,24 @@ class grp_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"]
-		
+
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["grp/use"])
 		if not addlargs.has_key("grp"):
 			raise CatalystError,"Required value \"grp\" not specified in spec."
-		
+
 		self.required_values.extend(["grp"])
 		if type(addlargs["grp"])==types.StringType:
 			addlargs["grp"]=[addlargs["grp"]]
-		
+
 		if addlargs.has_key("grp/use"):
-		    if type(addlargs["grp/use"])==types.StringType:
-			    addlargs["grp/use"]=[addlargs["grp/use"]]
-			
+			if type(addlargs["grp/use"])==types.StringType:
+				addlargs["grp/use"]=[addlargs["grp/use"]]
+
 		for x in addlargs["grp"]:
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
-			
+
 		generic_stage_target.__init__(self,spec,addlargs)
 
 	def set_target_path(self):
@@ -56,7 +56,7 @@ class grp_target(generic_stage_target):
 			try:
 				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
 					+" "+pkgset+" "+mypackages,env=self.env)
-			
+
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"GRP build aborting due to error."
@@ -71,12 +71,12 @@ class grp_target(generic_stage_target):
 	def set_mounts(self):
 	    self.mounts.append("/tmp/grp")
             self.mountmap["/tmp/grp"]=self.settings["target_path"]
-	
+
 	def generate_digests(self):
 		for pkgset in self.settings["grp"]:
 			if self.settings["grp/"+pkgset+"/type"] == "pkgset":
 				destdir=normpath(self.settings["target_path"]+"/"+pkgset+"/All")
-				print "Digesting files in the pkgset....."			
+				print "Digesting files in the pkgset....."
 				digests=glob.glob(destdir+'/*.DIGESTS')
 				for i in digests:
 					if os.path.exists(i):
@@ -91,8 +91,8 @@ class grp_target(generic_stage_target):
 						self.gen_digest_file(normpath(destdir+"/"+i))
 			else:
 				destdir=normpath(self.settings["target_path"]+"/"+pkgset)
-				print "Digesting files in the srcset....."			
-			
+				print "Digesting files in the srcset....."
+
 				digests=glob.glob(destdir+'/*.DIGESTS')
 				for i in digests:
 					if os.path.exists(i):
@@ -108,9 +108,9 @@ class grp_target(generic_stage_target):
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-					    "config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
-	    				    "setup_environment","run_local","unbind",\
-					    "generate_digests","clear_autoresume"]
+					"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
+					"setup_environment","run_local","unbind",\
+					"generate_digests","clear_autoresume"]
 
 def register(foo):
 	foo.update({"grp":grp_target})

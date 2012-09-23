@@ -13,9 +13,9 @@ class livecd_stage2_target(generic_stage_target):
 	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=["boot/kernel"]
-		
+
 		self.valid_values=[]
-		
+
 		self.valid_values.extend(self.required_values)
 		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
@@ -25,13 +25,13 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/root_overlay","livecd/users","portage_overlay",\
 			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
 			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
-		
+
 		generic_stage_target.__init__(self,spec,addlargs)
 		if not self.settings.has_key("livecd/type"):
 			self.settings["livecd/type"] = "generic-livecd"
 
 		file_locate(self.settings, ["cdtar","controller_file"])
-	
+
 	def set_source_path(self):
 		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
@@ -40,7 +40,7 @@ class livecd_stage2_target(generic_stage_target):
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
 			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
-	
+
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
 
@@ -66,12 +66,12 @@ class livecd_stage2_target(generic_stage_target):
 			except:
 				self.unbind()
 				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf."
-			
+
 			myf.write("\n#Added by Catalyst:")
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\nblacklist "+x)
 			myf.close()
-	
+
 	def unpack(self):
 		unpack=True
 		display_msg=None

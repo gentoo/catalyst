@@ -14,7 +14,7 @@ class stage2_target(generic_stage_target):
 		self.required_values=[]
 		self.valid_values=["chost"]
 		generic_stage_target.__init__(self,spec,addlargs)
-		
+
 	def set_source_path(self):
 		if self.settings.has_key("SEEDCACHE") and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")

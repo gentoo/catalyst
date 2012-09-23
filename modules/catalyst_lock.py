@@ -20,6 +20,7 @@ class LockDir:
 		self.delete_lock_from_path_list()
 		if self.islocked():
 			self.fcntl_unlock()
+
 	def __init__(self,lockdir):
 		self.locked=False
 		self.myfd=None
@@ -28,15 +29,13 @@ class LockDir:
 		self.set_lockdir(lockdir)
 		self.set_lockfilename(".catalyst_lock")
 		self.set_lockfile()
-	
+
 		if LockDir.lock_dirs_in_use.count(lockdir)>0:
 			raise "This directory already associated with a lock object"
 		else:
 			LockDir.lock_dirs_in_use.append(lockdir)
-	
-		self.hardlock_paths={}
-	
 
+		self.hardlock_paths={}
 
 	def delete_lock_from_path_list(self):
 		i=0
@@ -59,7 +58,7 @@ class LockDir:
 	def set_gid(self,gid):
 		if not self.islocked():
 #			if self.settings.has_key("DEBUG"):
-#				print "setting gid to", gid 
+#				print "setting gid to", gid
 			self.gid=gid
 
 	def set_lockdir(self,lockdir):
@@ -94,7 +93,7 @@ class LockDir:
 			print "HARDLOCKING doesnt support shared-read locks"
 			print "using exclusive write locks"
 			self.hard_lock()
-    
+
 	def write_lock(self):
 		if not self.locking_method == "HARDLOCK":
 			self.fcntl_lock("write")
@@ -128,7 +127,7 @@ class LockDir:
 				os.umask(old_mask)
 			else:
 				self.myfd = os.open(self.lockfile, os.O_CREAT|os.O_RDWR,0660)
-	
+
 		try:
 			if locktype == "read":
 				self.locking_method(self.myfd,fcntl.LOCK_SH|fcntl.LOCK_NB)
@@ -161,8 +160,7 @@ class LockDir:
 		else:
 			self.locked=True
 			#writemsg("Lockfile obtained\n")
-	    
-			    
+
 	def fcntl_unlock(self):
 		import fcntl
 		unlinkfile = 1
@@ -225,7 +223,7 @@ class LockDir:
 					# open fd closed automatically on them.
 					#if type(lockfilename) == types.StringType:
 					#        os.close(myfd)
-	
+
 		if (self.myfd != None):
 			os.close(self.myfd)
 			self.myfd=None
@@ -297,7 +295,7 @@ class LockDir:
 		#mypath = self.normpath(path)
 		if os.path.isdir(self.lockdir) and os.path.isfile(self.myhardlock):
 			self.hardlock_paths[self.lockdir]=self.myhardlock
-    
+
 	def remove_hardlock_file_from_cleanup(self):
 		if self.hardlock_paths.has_key(self.lockdir):
 			del self.hardlock_paths[self.lockdir]
@@ -310,7 +308,6 @@ class LockDir:
 			if newpath[1] == "/":
 				newpath = "/"+newpath.lstrip("/")
 		return newpath
-
 
 	def hardlink_is_mine(self,link,lock):
 		import stat
@@ -361,7 +358,7 @@ class LockDir:
 				pid   = hostpid[-1]
 			if not mylist.has_key(filename):
 				mylist[filename] = {}
-			    
+
 			if not mylist[filename].has_key(host):
 				mylist[filename][host] = []
 				mylist[filename][host].append(pid)
@@ -410,11 +407,10 @@ class LockDir:
 						pass
 		return results
 
-
 if __name__ == "__main__":
 
 	def lock_work():
-		print 
+		print
 		for i in range(1,6):
 			print i,time.time()
 			time.sleep(1)
@@ -429,40 +425,41 @@ if __name__ == "__main__":
 	print "Lock 5 starting"
 	import time
 	Lock1=LockDir("/tmp/lock_path")
-	Lock1.write_lock() 
+	Lock1.write_lock()
 	print "Lock1 write lock"
-	
+
 	lock_work()
-	
-	Lock1.unlock() 
-	print "Lock1 unlock"
-	
-	Lock1.read_lock()
-	print "Lock1 read lock"
-	
-	lock_work()
-	
-	Lock1.unlock() 
+
+	Lock1.unlock()
 	print "Lock1 unlock"
 
 	Lock1.read_lock()
 	print "Lock1 read lock"
-	
-	Lock1.write_lock()
-	print "Lock1 write lock"
-	
+
 	lock_work()
-	
+
 	Lock1.unlock()
 	print "Lock1 unlock"
-	
+
 	Lock1.read_lock()
 	print "Lock1 read lock"
-	
+
+	Lock1.write_lock()
+	print "Lock1 write lock"
+
 	lock_work()
-	
+
 	Lock1.unlock()
 	print "Lock1 unlock"
+
+	Lock1.read_lock()
+	print "Lock1 read lock"
+
+	lock_work()
+
+	Lock1.unlock()
+	print "Lock1 unlock"
+
 #Lock1.write_lock()
 #time.sleep(2)
 #Lock1.unlock()

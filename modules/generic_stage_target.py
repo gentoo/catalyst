@@ -298,7 +298,7 @@ class generic_stage_target(generic_target):
 		else:
 			""" First clean up any existing target stuff """
 			# XXX WTF are we removing the old tarball before we start building the
-			# XXX new one? If the build fails, you don't want to be left with 
+			# XXX new one? If the build fails, you don't want to be left with
 			# XXX nothing at all
 #			if os.path.isfile(self.settings["target_path"]):
 #				cmd("rm -f "+self.settings["target_path"],\
@@ -460,7 +460,7 @@ class generic_stage_target(generic_target):
 				raise CatalystError,\
 					"ISO volume ID must not exceed 32 characters."
 		else:
-			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"] 
+			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"]
 
 	def set_action_sequence(self):
 		""" Default action sequence for run method """
@@ -595,7 +595,7 @@ class generic_stage_target(generic_target):
 
 		"""
 		Check and verify that none of our paths in mypath are mounted. We don't
-		want to clean up with things still mounted, and this allows us to check. 
+		want to clean up with things still mounted, and this allows us to check.
 		Returns 1 on ok, 0 on "something is still mounted" case.
 		"""
 
@@ -626,7 +626,7 @@ class generic_stage_target(generic_target):
 			"unpack")
 
 		if self.settings.has_key("SEEDCACHE"):
-			if os.path.isdir(self.settings["source_path"]): 
+			if os.path.isdir(self.settings["source_path"]):
 				""" SEEDCACHE Is a directory, use rsync """
 				unpack_cmd="rsync -a --delete "+self.settings["source_path"]+\
 					" "+self.settings["chroot_path"]
@@ -671,7 +671,7 @@ class generic_stage_target(generic_target):
 				""" Autoresume is valid, tarball is valid """
 				unpack=False
 				invalid_snapshot=True
-			
+
 			elif os.path.isdir(self.settings["source_path"]) \
 				and not os.path.exists(self.settings["autoresume_path"]+\
 				"unpack"):
@@ -747,7 +747,7 @@ class generic_stage_target(generic_target):
 		snapshot_hash=read_from_clst(self.settings["autoresume_path"]+\
 			"unpack_portage")
 
-		if self.settings.has_key("SNAPCACHE"): 
+		if self.settings.has_key("SNAPCACHE"):
 			snapshot_cache_hash=\
 				read_from_clst(self.settings["snapshot_cache_path"]+\
 				"catalyst-hash")
@@ -783,7 +783,7 @@ class generic_stage_target(generic_target):
 					unpack=False
 
 		if unpack:
-			if self.settings.has_key("SNAPCACHE"): 
+			if self.settings.has_key("SNAPCACHE"):
 				self.snapshot_lock_object.write_lock()
 			if os.path.exists(destdir):
 				print cleanup_msg
@@ -795,7 +795,7 @@ class generic_stage_target(generic_target):
 			print "Unpacking portage tree (This can take a long time) ..."
 			cmd(unpack_cmd,unpack_errmsg,env=self.env)
 
-			if self.settings.has_key("SNAPCACHE"): 
+			if self.settings.has_key("SNAPCACHE"):
 				myf=open(self.settings["snapshot_cache_path"]+"catalyst-hash","w")
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
@@ -805,7 +805,7 @@ class generic_stage_target(generic_target):
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 
-			if self.settings.has_key("SNAPCACHE"): 
+			if self.settings.has_key("SNAPCACHE"):
 				self.snapshot_lock_object.unlock()
 
 	def config_profile_link(self):
@@ -843,7 +843,7 @@ class generic_stage_target(generic_target):
 	def portage_overlay(self):
 		""" We copy the contents of our overlays to /usr/local/portage """
 		if self.settings.has_key("portage_overlay"):
-			for x in self.settings["portage_overlay"]: 
+			for x in self.settings["portage_overlay"]:
 				if os.path.exists(x):
 					print "Copying overlay dir " +x
 					cmd("mkdir -p "+self.settings["chroot_path"]+\
@@ -857,7 +857,7 @@ class generic_stage_target(generic_target):
 		""" Copy over the root_overlay """
 		if self.settings.has_key(self.settings["spec_prefix"]+"/root_overlay"):
 			for x in self.settings[self.settings["spec_prefix"]+\
-				"/root_overlay"]: 
+				"/root_overlay"]:
 				if os.path.exists(x):
 					print "Copying root_overlay: "+x
 					cmd("rsync -a "+x+"/ "+\
@@ -869,7 +869,7 @@ class generic_stage_target(generic_target):
 		pass
 
 	def bind(self):
-		for x in self.mounts: 
+		for x in self.mounts:
 			if not os.path.exists(self.settings["chroot_path"]+x):
 				os.makedirs(self.settings["chroot_path"]+x,0755)
 
@@ -945,19 +945,19 @@ class generic_stage_target(generic_target):
 		self.override_cbuild()
 		self.override_chost()
 		self.override_cflags()
-		self.override_cxxflags()	
-		self.override_ldflags()	
+		self.override_cxxflags()
+		self.override_ldflags()
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"chroot_setup"):
 			print "Resume point detected, skipping chroot_setup operation..."
 		else:
 			print "Setting up chroot..."
-			
+
 			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/portage/make.conf")
-			
+
 			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
 				"Could not copy resolv.conf into place.",env=self.env)
-		
+
 			""" Copy over the envscript, if applicable """
 			if self.settings.has_key("ENVSCRIPT"):
 				if not os.path.exists(self.settings["ENVSCRIPT"]):
@@ -1068,7 +1068,7 @@ class generic_stage_target(generic_target):
 			and os.path.exists(self.settings["autoresume_path"]+"clean"):
 			print "Resume point detected, skipping clean operation..."
 		else:
-			for x in self.settings["cleanables"]: 
+			for x in self.settings["cleanables"]:
 				print "Cleaning chroot: "+x+"... "
 				cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+\
 					x,env=self.env)
@@ -1115,7 +1115,7 @@ class generic_stage_target(generic_target):
 						print x,"not a directory or does not exist, skipping 'empty' operation."
 						continue
 					print "Emptying directory",x
-					""" 
+					"""
 					stat the dir, delete the dir, recreate the dir and set
 					the proper perms and ownership
 					"""
@@ -1158,7 +1158,7 @@ class generic_stage_target(generic_target):
 					cmd("/bin/bash "+self.settings["controller_file"]+\
 						" preclean","preclean script failed.",env=self.env)
 					touch(self.settings["autoresume_path"]+"preclean")
-		
+
 			except:
 				self.unbind()
 				raise CatalystError, "Build failed, could not execute preclean"
@@ -1260,7 +1260,7 @@ class generic_stage_target(generic_target):
 			except:
 				self.mount_safety_check()
 				raise
-		
+
 		self.chroot_lock.unlock()
 
 	def unmerge(self):
@@ -1312,7 +1312,7 @@ class generic_stage_target(generic_target):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
 			if self.settings.has_key(self.settings["spec_prefix"]+"/overlay"):
-				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]: 
+				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
 							self.settings["target_path"],\
@@ -1651,4 +1651,4 @@ class generic_stage_target(generic_target):
 			print "clearing kerncache ..."
 			self.clear_kerncache()
 
-# vim: ts=4 sw=4 sta et sts=4 ai 
+# vim: ts=4 sw=4 sta et sts=4 ai

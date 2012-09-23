@@ -23,21 +23,18 @@ class netboot_target(generic_stage_target):
 			"netboot/packages"
 		]
 		self.required_values=[]
-			
+
 		try:
 			if addlargs.has_key("netboot/packages"):
 				if type(addlargs["netboot/packages"]) == types.StringType:
 					loopy=[addlargs["netboot/packages"]]
 				else:
 					loopy=addlargs["netboot/packages"]
-			
+
 		#	for x in loopy:
 		#		self.required_values.append("netboot/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot/packages."
-		
-		
-		
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
@@ -47,11 +44,10 @@ class netboot_target(generic_stage_target):
 		# Custom Kernel Tarball --- use that instead ...
 
 		# unless the user wants specific CFLAGS/CXXFLAGS, let's use -Os
-		
+
 		for envvar in "CFLAGS", "CXXFLAGS":
 			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
 				self.settings[envvar] = "-Os -pipe"
-	
 
 	def set_root_path(self):
 		# ROOT= variable for emerges
@@ -67,7 +63,7 @@ class netboot_target(generic_stage_target):
 #		except CatalystError:
 #			self.unbind()
 #			raise CatalystError,"netboot build aborting due to error."
-	
+
 	def build_busybox(self):
 		# build busybox
 		if self.settings.has_key("netboot/busybox_config"):
@@ -79,7 +75,6 @@ class netboot_target(generic_stage_target):
 		except CatalystError:
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
-	
 
 	def copy_files_to_image(self):
 		# create image
@@ -89,7 +84,7 @@ class netboot_target(generic_stage_target):
 				loopy=[self.settings["netboot/packages"]]
 			else:
 				loopy=self.settings["netboot/packages"]
-		
+
 		for x in loopy:
 			if self.settings.has_key("netboot/packages/"+x+"/files"):
 			    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
@@ -110,7 +105,6 @@ class netboot_target(generic_stage_target):
 			self.unbind()
 			raise CatalystError,"netboot build aborting due to error."
 
-
 	def create_netboot_files(self):
 		# finish it all up
 		try:
@@ -121,7 +115,6 @@ class netboot_target(generic_stage_target):
 
 		# end
 		print "netboot: build finished !"
-
 
 	def set_action_sequence(self):
 	    self.settings["action_sequence"]=["unpack","unpack_snapshot",

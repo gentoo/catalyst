@@ -37,7 +37,7 @@ class netboot2_target(generic_stage_target):
 					self.valid_values.append("netboot2/packages/"+x+"/files")
 		except:
 			raise CatalystError,"configuration error in netboot2/packages."
-		
+
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
 		self.settings["merge_path"]=normpath("/tmp/image/")
@@ -72,7 +72,7 @@ class netboot2_target(generic_stage_target):
 					loopy=[self.settings["netboot2/packages"]]
 				else:
 					loopy=self.settings["netboot2/packages"]
-		
+
 			for x in loopy:
 				if self.settings.has_key("netboot2/packages/"+x+"/files"):
 				    if type(self.settings["netboot2/packages/"+x+"/files"]) == types.ListType:
@@ -95,13 +95,13 @@ class netboot2_target(generic_stage_target):
 
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
-	def setup_overlay(self):	
+	def setup_overlay(self):
 		if self.settings.has_key("AUTORESUME") \
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
 			if self.settings.has_key("netboot2/overlay"):
-				for x in self.settings["netboot2/overlay"]: 
+				for x in self.settings["netboot2/overlay"]:
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
 							self.settings["chroot_path"] + self.settings["merge_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
@@ -131,7 +131,7 @@ class netboot2_target(generic_stage_target):
 					print "netboot2: removing " + x
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
-	def empty(self):		
+	def empty(self):
 		if self.settings.has_key("AUTORESUME") \
 			and os.path.exists(self.settings["autoresume_path"]+"empty"):
 			print "Resume point detected, skipping empty operation..."
