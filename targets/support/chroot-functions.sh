@@ -68,7 +68,7 @@ setup_myfeatures(){
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
-		clst_root_path=/ run_merge --oneshot --nodeps --noreplace dev-util/ccache || exit 1
+		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
@@ -83,9 +83,9 @@ setup_myfeatures(){
 		# reinstall if it isn't found.
 		if [ "$(getent passwd distcc | cut -d: -f1)" != "distcc" ]
 		then
-			clst_root_path=/ run_merge --oneshot --nodeps sys-devel/distcc || exit 1
+			clst_root_path=/ run_merge --oneshot sys-devel/distcc || exit 1
 		else
-			clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/distcc || exit 1
+			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc || exit 1
 		fi
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/portage/make.conf
 		mkdir -p /etc/distcc
@@ -104,7 +104,7 @@ setup_myfeatures(){
 
 	if [ -n "${clst_ICECREAM}" ]
 	then
-		clst_root_path=/ run_merge --oneshot --nodeps --noreplace sys-devel/icecream || exit 1
+		clst_root_path=/ run_merge --oneshot --noreplace sys-devel/icecream || exit 1
 
 		# This sets up automatic cross-icecc-fu according to
 		# http://gentoo-wiki.com/HOWTO_Setup_An_ICECREAM_Compile_Cluster#Icecream_and_cross-compiling
