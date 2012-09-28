@@ -358,6 +358,30 @@ class arch_mips64r2el_multilib(generic_mips64el):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips64r2 -mplt -pipe"
 
+class arch_loongson3a(generic_mipsel):
+	"Builder class for Loongson 3A [Little-endian]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson3a -mabi=32 -mplt -pipe"
+
+class arch_loongson3a_n32(generic_mips64el):
+	"Builder class for Loongson 3A [Little-endian N32]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson3a -mabi=n32 -mplt -pipe"
+
+class arch_loongson3a_n64(generic_mips64el):
+	"Builder class for Loongson 3A [Little-endian N64]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson3a -mabi=64 -pipe"
+
+class arch_loongson3a_multilib(generic_mips64el):
+	"Builder class for Loongson 3A [Little-endian multilib]"
+	def __init__(self,myspec):
+		generic_mips64el.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=loongson3a -mplt -pipe"
+
 class arch_cobalt(generic_mipsel):
 	"Builder class for cobalt [Little-endian]"
 	def __init__(self,myspec):
@@ -433,4 +457,8 @@ def register():
 			"loongson2f_n32"		: arch_loongson2f_n32,
 			"loongson2f_n64"		: arch_loongson2f_n64,
 			"loongson2f_multilib"	: arch_loongson2f_multilib,
+			"loongson3a"			: arch_loongson3a,
+			"loongson3a_n32"		: arch_loongson3a_n32,
+			"loongson3a_n64"		: arch_loongson3a_n64,
+			"loongson3a_multilib"	: arch_loongson3a_multilib,
 	}, ("mips","mips64"))
