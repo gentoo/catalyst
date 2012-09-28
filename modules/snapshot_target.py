@@ -50,7 +50,7 @@ class snapshot_target(generic_stage_target):
 			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
 
 		print "Compressing Portage snapshot tarball..."
-		cmd("tar cjf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
+		cmd("tar -I lbzip2 -cf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
 			"Snapshot creation failure",env=self.env)
 
 		self.gen_contents_file(self.settings["snapshot_path"])

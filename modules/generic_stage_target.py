@@ -1179,7 +1179,7 @@ class generic_stage_target(generic_target):
 
 			print "Creating stage tarball..."
 
-			cmd("tar cjpf "+self.settings["target_path"]+" -C "+\
+			cmd("tar -I lbzip2 -cpf "+self.settings["target_path"]+" -C "+\
 				self.settings["stage_path"]+" .",\
 				"Couldn't create stage tarball",env=self.env)
 

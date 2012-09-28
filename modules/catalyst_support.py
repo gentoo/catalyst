@@ -108,7 +108,7 @@ contents_map={
 	#"find"		:[calc_contents,"find %(path)s"],
 	"tar-tv":[calc_contents,"tar tvf %(file)s"],
 	"tar-tvz":[calc_contents,"tar tvzf %(file)s"],
-	"tar-tvj":[calc_contents,"tar tvjf %(file)s"],
+	"tar-tvj":[calc_contents,"tar -I lbzip2 -tvf %(file)s"],
 	"isoinfo-l":[calc_contents,"isoinfo -l -i %(file)s"],
 	# isoinfo-f should be a last resort only
 	"isoinfo-f":[calc_contents,"isoinfo -f -i %(file)s"],
