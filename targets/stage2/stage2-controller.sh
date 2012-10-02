@@ -17,7 +17,7 @@ case $1 in
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh ${clst_root_path}
+		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh
 	;;
 
 	clean)

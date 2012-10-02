@@ -23,7 +23,7 @@ case $1 in
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh /tmp/stage1root || exit 1
+		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh || exit 1
 	;;
 
 	clean)
