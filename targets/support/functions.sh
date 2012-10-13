@@ -115,7 +115,7 @@ extract_modules() {
 	if [ -f "${kmodules}" ]
 	then
 		mkdir -p ${1}/
-		tar xjf ${kmodules} -C ${1} lib
+		tar xjf ${kmodules} --strip-components 1 -C ${1}/lib lib
 	else
 		echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
 	fi
