@@ -109,13 +109,6 @@ case $1 in
 			# Zap all .pyc and .pyo files
 			find ${clst_chroot_path}/usr/lib* -iname "*.py[co]" -exec rm -f {} \;
 		fi
-		# Cleanup all .a files except libgcc.a, *_nonshared.a and
-		# /usr/lib/portage/bin/*.a
-		find ${clst_chroot_path}usr/lib* -type f -iname "*.a" | \
-			grep -v 'libgcc.a' | \
-			grep -v 'nonshared.a' | \
-			grep -v '/usr/lib/portage/bin/' | \
-			grep -v 'libgcc_eh.a' | xargs rm -f
 		rm -f ${clst_chroot_path}/tmp/packages.txt
 		;;
 
