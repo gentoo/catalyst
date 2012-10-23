@@ -18,14 +18,18 @@ then
 	exit 1
 fi
 
+## Setup seed pkgmgr to ensure latest
+clst_root_path=/ setup_pkgmgr
+
 # Update stage3
 if [ -n "${clst_update_seed_cache}" ]; then
 	echo "Updating seed stage..."
-	clst_root_path=/ setup_pkgmgr
 	clst_root_path=/ run_merge "--update --deep --newuse @world"
 else
 	echo "Skipping seed stage update..."
 fi
+
+make_destpath /tmp/stage1root
 
 ## START BUILD
 # First, we drop in a known-good baselayout
@@ -34,10 +38,6 @@ fi
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 
 sed -i '/USE="${USE} -build"/d' /etc/portage/make.conf
-
-# Next, we install the package manager
-clst_root_path=/ setup_pkgmgr
-make_destpath /tmp/stage1root
 
 # Now, we install our packages
 [ -e /etc/portage/make.conf ] && \
