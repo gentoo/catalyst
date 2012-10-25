@@ -174,14 +174,14 @@ class generic_stage_target(generic_target):
 
 		""" Setup our mount points """
 		if self.settings.has_key("SNAPCACHE"):
-			self.mounts=["/proc","/dev","/usr/portage","/usr/portage/distfiles"]
+			self.mounts=["/proc","/dev","/usr/portage","/usr/portage/distfiles","/var/tmp/portage"]
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
-				"/usr/portage/distfiles":self.settings["distdir"]}
+				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		else:
-			self.mounts=["/proc","/dev","/usr/portage/distfiles"]
+			self.mounts=["/proc","/dev","/usr/portage/distfiles","/var/tmp/portage"]
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
-				"/usr/portage/distfiles":self.settings["distdir"]}
+				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		if os.uname()[0] == "Linux":
 			self.mounts.append("/dev/pts")
 
@@ -887,8 +887,14 @@ class generic_stage_target(generic_target):
 					retval=os.system("mount_nullfs "+src+" "+\
 						self.settings["chroot_path"]+x)
 			else:
-				retval=os.system("mount --bind "+src+" "+\
-					self.settings["chroot_path"]+x)
+				if src == "tmpfs":
+					if self.settings.has_key("var_tmpfs_portage"):
+						retval=os.system("mount -t tmpfs -o size="+\
+							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
+							self.settings["chroot_path"]+x)
+				else:
+					retval=os.system("mount --bind "+src+" "+\
+						self.settings["chroot_path"]+x)
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount "+src

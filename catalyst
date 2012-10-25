@@ -165,6 +165,9 @@ def parse_config(myconfig):
 		print "Envscript support enabled."
 		conf_values["ENVSCRIPT"]=myconf["envscript"]
 
+	if myconf.has_key("var_tmpfs_portage"):
+		conf_values["var_tmpfs_portage"]=myconf["var_tmpfs_portage"];
+
 def import_modules():
 	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
 	targetmap={}
