@@ -226,6 +226,12 @@ class generic_stage_target(generic_target):
 			self.mountmap["/var/cache/icecream"]="/var/cache/icecream"
 			self.env["PATH"]="/usr/lib/icecc/bin:"+self.env["PATH"]
 
+		if self.settings.has_key("port_logdir"):
+			self.mounts.append("/var/log/portage")
+			self.mountmap["/var/log/portage"]=self.settings["port_logdir"]
+			self.env["PORT_LOGDIR"]="/var/log/portage"
+			self.env["PORT_LOGDIR_CLEAN"]='find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
+
 	def override_cbuild(self):
 		if self.makeconf.has_key("CBUILD"):
 			self.settings["CBUILD"]=self.makeconf["CBUILD"]
