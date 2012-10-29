@@ -28,7 +28,7 @@ class stage1_target(generic_stage_target):
 
 	def set_cleanables(self):
 		generic_stage_target.set_cleanables(self)
-		self.settings["cleanables"].extend(["/usr/share/gettext",\
+		self.settings["cleanables"].extend([\
 		"/usr/lib/python2.2/test", "/usr/lib/python2.2/email",\
 		"/usr/lib/python2.2/lib-tk", "/usr/lib/python2.3/test",\
 		"/usr/lib/python2.3/email", "/usr/lib/python2.3/lib-tk",\
