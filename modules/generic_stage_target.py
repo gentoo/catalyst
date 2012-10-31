@@ -649,8 +649,12 @@ class generic_stage_target(generic_target):
 					self.settings["source_path"]+"\nto "+\
 					self.settings["chroot_path"]+\
 						" (This may take some time) ...\n"
-				unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
-					self.settings["chroot_path"]
+				if "bz2" == self.settings["chroot_path"][-3:]:
+					unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+						self.settings["chroot_path"]
+				else:
+					unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+						self.settings["chroot_path"]
 				error_msg="Tarball extraction of "+\
 					self.settings["source_path"]+" to "+\
 					self.settings["chroot_path"]+" failed."
@@ -660,8 +664,12 @@ class generic_stage_target(generic_target):
 				self.settings["source_path"]+"\nto "+\
 				self.settings["chroot_path"]+\
 				" (This may take some time) ...\n"
-			unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
-				self.settings["chroot_path"]
+			if "bz2" == self.settings["chroot_path"][-3:]:
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+					self.settings["chroot_path"]
+			else:
+				unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+					self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+\
 				" to "+self.settings["chroot_path"]+" failed."
 
@@ -758,7 +766,10 @@ class generic_stage_target(generic_target):
 				read_from_clst(self.settings["snapshot_cache_path"]+\
 				"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
-			unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+destdir
+			if "bz2" == self.settings["chroot_path"][-3:]:
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
+			else:
+				unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
@@ -774,8 +785,12 @@ class generic_stage_target(generic_target):
 			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."
-			unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+\
-				self.settings["chroot_path"]+"/usr"
+			if "bz2" == self.settings["chroot_path"][-3:]:
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
+					self.settings["chroot_path"]+"/usr"
+			else:
+				unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+\
+					self.settings["chroot_path"]+"/usr"
 			unpack_errmsg="Error unpacking snapshot"
 
 			if self.settings.has_key("AUTORESUME") \

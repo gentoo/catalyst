@@ -46,7 +46,7 @@ extract_cdtar() {
 	# boot-loader/filesystem skeleton for the ISO.
 	cdtar=${clst_cdtar}
 	[ -z "${cdtar}" ] && die "Required key cdtar not defined, exiting"
-	tar xjpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
+	tar -I lbzip2 -xpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
 }
 
 extract_kernels() {
@@ -71,7 +71,7 @@ extract_kernels() {
 
 		[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 		mkdir -p ${1}/
-		tar xjf ${kbinary} -C ${1}/
+		tar -I lbzip2 -xf ${kbinary} -C ${1}/
 
 		# change config name from "config-*" to "gentoo", for example
 		#mv ${1}/config-* ${1}/${x}-config
@@ -115,7 +115,7 @@ extract_modules() {
 	if [ -f "${kmodules}" ]
 	then
 		mkdir -p ${1}/
-		tar xjf ${kmodules} --strip-components 1 -C ${1}/lib lib
+		tar -I lbzip2 -xf ${kmodules} --strip-components 1 -C ${1}/lib lib
 	else
 		echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
 	fi
@@ -127,7 +127,7 @@ extract_kernel() {
 	kbinary="${clst_chroot_path}/tmp/kerncache/${2}-kernel-initrd-${clst_version_stamp}.tar.bz2"
 	[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
 	mkdir -p ${1}/
-	tar xjf ${kbinary} -C ${1}/
+	tar -I lbzip2 -xf ${kbinary} -C ${1}/
 	# change config name from "config-*" to "gentoo", for example
 	#mv ${1}/config-* ${1}/${2}-config
 	rm ${1}/config-*
