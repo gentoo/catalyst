@@ -20,7 +20,8 @@ exec_in_chroot(){
 # and executes it.
 	local file_name=$(basename ${1})
 	local subdir=${2}
-	local destdir=".${subdir}/tmp"
+	local destdir=${subdir}/tmp
+	destdir=${destdir#/}
 
 	copy_to_chroot ${1} ${destdir}
 	chroot_path=${clst_chroot_path}${subdir}
