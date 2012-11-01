@@ -1,7 +1,6 @@
 copy_to_chroot() {
 	local src_file=$1
 	local dest_dir=${clst_chroot_path}${2:-/tmp}
-	mkdir -p ${dest_dir}
 	echo "copying ${src_file##*/} to ${dest_dir}"
 	cp -pPR "${src_file}" "${dest_dir}"/
 }
@@ -19,19 +18,34 @@ exec_in_chroot(){
 # copies the file to the /tmp directory of the chroot
 # and executes it.
 	local file_name=$(basename ${1})
-	local subdir=${2}
-	local destdir=${subdir}/tmp
-	destdir=${destdir#/}
+	local subdir=${2#/}
 
-	copy_to_chroot ${1} ${destdir}
-	chroot_path=${clst_chroot_path}${subdir}
-	copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
-		${destdir}
-	echo "Running ${file_name} in chroot ${chroot_path}"
-	${clst_CHROOT} ${chroot_path} ${destdir}/${file_name} || exit 1
+	if [ "${subdir}" != "" ]
+	then
+		copy_to_chroot ${1} ${subdir}/tmp/
+		chroot_path=${clst_chroot_path}${subdir}
+		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
+			${subdir}/tmp/
+		echo "Running ${file_name} in chroot ${chroot_path}"
+		${clst_CHROOT} ${chroot_path} /tmp/${file_name} || exit 1
+	else
+		copy_to_chroot ${1} tmp/
+		chroot_path=${clst_chroot_path}
+		copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
+			tmp/
+		echo "Running ${file_name} in chroot ${chroot_path}"
+		${clst_CHROOT} ${chroot_path}/ /tmp/${file_name} || exit 1
+	fi
 
-	delete_from_chroot ${destdir}/${file_name}
-	delete_from_chroot ${destdir}/chroot-functions.sh
+	rm -f ${chroot_path}/tmp/${file_name}
+	if [ "${subdir}" != "" ]
+	then
+		delete_from_chroot ${subdir}/tmp/${file_name}
+		delete_from_chroot ${subdir}/tmp/chroot-functions.sh
+	else
+		delete_from_chroot tmp/chroot-functions.sh
+		delete_from_chroot tmp/${file_name}
+	fi
 }
 
 #return codes
