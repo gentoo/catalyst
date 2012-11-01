@@ -895,7 +895,8 @@ class generic_stage_target(generic_target):
 				os.makedirs(self.settings["chroot_path"]+x,0755)
 
 			if not os.path.exists(self.mountmap[x]):
-				os.makedirs(self.mountmap[x],0755)
+				if not self.mountmap[x] == "tmpfs":
+					os.makedirs(self.mountmap[x],0755)
 
 			src=self.mountmap[x]
 			if self.settings.has_key("SNAPCACHE") and x == "/usr/portage":
