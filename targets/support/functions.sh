@@ -22,10 +22,15 @@ exec_in_chroot(){
 	local subdir=${2}
 	local destdir=".${subdir}/tmp"
 
+	echo "Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
-	chroot_path=${clst_chroot_path}${subdir}
 	copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
 		${destdir}
+
+	echo "Ensure the file has the executable bit set"
+	chmod +x ${destdir}/${file_name}
+
+	chroot_path=${clst_chroot_path}${subdir}
 	echo "Running ${file_name} in chroot ${chroot_path}"
 	${clst_CHROOT} ${chroot_path} ${destdir}/${file_name} || exit 1
 
