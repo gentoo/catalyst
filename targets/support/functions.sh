@@ -1,8 +1,19 @@
-copy_to_chroot() {
-	local src_file=$1
-	local dest_dir=${clst_chroot_path}${2:-/tmp}
-	echo "copying ${src_file##*/} to ${dest_dir}"
-	cp -pPR "${src_file}" "${dest_dir}"/
+copy_to_chroot(){
+	local file_name=$(basename ${1})
+	local dest_dir=${clst_chroot_path}${2}
+	if [ "${2}" != "" ]
+	then
+		echo "copying ${file_name} to ${dest_dir}"
+		mkdir -p ${dest_dir}
+		cp -pPR ${1} ${dest_dir}
+		[ "${file_name}" != "make.profile" ] && \
+			chmod 755 ${dest_dir}/${file_name}
+	else
+		echo "copying ${file_name} to ${clst_chroot_path}/tmp"
+		mkdir -p ${chroot_path}/tmp
+		cp -pPR ${1} ${clst_chroot_path}/tmp
+		chmod 755 ${clst_chroot_path}/tmp/${file_name}
+	fi
 }
 
 delete_from_chroot(){
