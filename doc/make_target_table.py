@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # Copyright (C) 2012 W. Trevor King <wking@drexel.edu>
 # Copyright (C) 2012 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GPL v2 or later
