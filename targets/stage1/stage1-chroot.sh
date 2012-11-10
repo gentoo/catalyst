@@ -24,7 +24,7 @@ clst_root_path=/ setup_pkgmgr
 # Update stage3
 if [ -n "${clst_update_seed_cache}" ]; then
 	echo "Updating seed stage..."
-	clst_root_path=/ run_merge "--update --deep --newuse @world"
+	clst_root_path=/ run_merge "${clst_update_seed_cache}"
 else
 	echo "Skipping seed stage update..."
 fi
