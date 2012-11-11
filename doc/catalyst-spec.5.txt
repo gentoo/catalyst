@@ -131,6 +131,11 @@ Since GRP is capable of building packages/source sets for more than
 one CD, this defines the layout for the directories under
 `$storedir/builds` (example: `src cd2`).
 
+*update_seed*::
+This is an optional setting supported by stage1 that runs an emerge
+command on the seed stage before starting the stage1 build. (example:
+`--update dev-libs/mpfr dev-libs/mpc dev-libs/gmp`)
+
 Compilation
 ~~~~~~~~~~~
 
