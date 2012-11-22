@@ -485,10 +485,13 @@ class generic_stage_target(generic_target):
 			self.settings["use"]=\
 				self.settings[self.settings["spec_prefix"]+"/use"]
 			del self.settings[self.settings["spec_prefix"]+"/use"]
-		if self.settings.has_key("use"):
-			if type(self.settings["use"])==types.StringType:
-				self.settings["use"]=self.settings["use"].split()
-				self.settings["use"].append("bindist")
+		if not self.settings.has_key("use"):
+			self.settings["use"]=""
+		if type(self.settings["use"])==types.StringType:
+			self.settings["use"]=self.settings["use"].split()
+
+		# Force bindist for all targets
+		self.settings["use"].append("bindist")
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"])
