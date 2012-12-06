@@ -22,9 +22,18 @@ fi
 clst_root_path=/ setup_pkgmgr
 
 # Update stage3
-if [ -n "${clst_update_seed_cache}" ]; then
-	echo "Updating seed stage..."
-	clst_root_path=/ run_merge "${clst_update_seed_cache}"
+if [ -n "${clst_update_seed}" ]; then
+	if [ "${clst_update_seed}" == "yes" ]; then
+		echo "Updating seed stage..."
+		if [ -n "${clst_update_command}" ]; then
+			clst_root_path=/ run_merge "${clst_update_command}"
+		else
+			clst_root_path=/ run_merge "--update --deep --newuse --onlydeps gcc"
+		fi
+	else if [ "${clst_update_seed}" != "no" ];
+		echo "Invalid setting for update_seed: ${clst_update_seed}"
+		exit 1
+	fi
 else
 	echo "Skipping seed stage update..."
 fi

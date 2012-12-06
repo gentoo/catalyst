@@ -13,9 +13,8 @@ class stage1_target(generic_stage_target):
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=["chost"]
-		self.valid_values.extend(["update_seed"])
+		self.valid_values.extend(["update_seed","update_seed_command"])
 		generic_stage_target.__init__(self,spec,addlargs)
-		self.set_update_seed()
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
@@ -91,10 +90,6 @@ class stage1_target(generic_stage_target):
 		# alter the mount mappings to bind mount proc onto it
 		self.mounts.append("/tmp/stage1root/proc")
 		self.mountmap["/tmp/stage1root/proc"]="/proc"
-
-	def set_update_seed(self):
-		if self.settings.has_key("update_seed"):
-			self.settings["update_seed_cache"]=self.settings["update_seed"]
 
 def register(foo):
 	foo.update({"stage1":stage1_target})
