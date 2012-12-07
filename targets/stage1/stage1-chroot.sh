@@ -30,7 +30,7 @@ if [ -n "${clst_update_seed}" ]; then
 		else
 			clst_root_path=/ run_merge "--update --deep --newuse --onlydeps gcc"
 		fi
-	else if [ "${clst_update_seed}" != "no" ];
+	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
 		exit 1
 	fi
