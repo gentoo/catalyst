@@ -31,9 +31,9 @@ class stage4_target(generic_stage_target):
 					"preclean","rcupdate","unmerge","unbind","remove","empty",\
 					"clean"]
 
-#		if self.settings.has_key("TARBALL") or \
-#			not self.settings.has_key("FETCH"):
-		if not self.settings.has_key("FETCH"):
+#		if "TARBALL" in self.settings or \
+#			"FETCH" not in self.settings:
+		if "FETCH" not in self.settings:
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
 

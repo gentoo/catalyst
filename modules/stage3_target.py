@@ -17,7 +17,7 @@ class stage3_target(generic_stage_target):
 
 	def set_portage_overlay(self):
 		generic_stage_target.set_portage_overlay(self)
-		if self.settings.has_key("portage_overlay"):
+		if "portage_overlay" in self.settings:
 			print "\nWARNING !!!!!"
 			print "\tUsing an overlay for earlier stages could cause build issues."
 			print "\tIf you break it, you buy it. Don't complain to us about it."

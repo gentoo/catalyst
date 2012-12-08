@@ -25,7 +25,7 @@ class netboot_target(generic_stage_target):
 		self.required_values=[]
 
 		try:
-			if addlargs.has_key("netboot/packages"):
+			if "netboot/packages" in addlargs:
 				if type(addlargs["netboot/packages"]) == types.StringType:
 					loopy=[addlargs["netboot/packages"]]
 				else:
@@ -38,7 +38,7 @@ class netboot_target(generic_stage_target):
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
-		if addlargs.has_key("netboot/busybox_config"):
+		if "netboot/busybox_config" in addlargs:
 			file_locate(self.settings, ["netboot/busybox_config"])
 
 		# Custom Kernel Tarball --- use that instead ...
@@ -46,7 +46,7 @@ class netboot_target(generic_stage_target):
 		# unless the user wants specific CFLAGS/CXXFLAGS, let's use -Os
 
 		for envvar in "CFLAGS", "CXXFLAGS":
-			if not os.environ.has_key(envvar) and not addlargs.has_key(envvar):
+			if envvar not in os.environ and envvar not in addlargs:
 				self.settings[envvar] = "-Os -pipe"
 
 	def set_root_path(self):
@@ -56,7 +56,7 @@ class netboot_target(generic_stage_target):
 
 #	def build_packages(self):
 #		# build packages
-#		if self.settings.has_key("netboot/packages"):
+#		if "netboot/packages" in self.settings:
 #			mypack=list_bashify(self.settings["netboot/packages"])
 #		try:
 #			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack,env=self.env)
@@ -66,7 +66,7 @@ class netboot_target(generic_stage_target):
 
 	def build_busybox(self):
 		# build busybox
-		if self.settings.has_key("netboot/busybox_config"):
+		if "netboot/busybox_config" in self.settings:
 			mycmd = self.settings["netboot/busybox_config"]
 		else:
 			mycmd = ""
@@ -79,20 +79,20 @@ class netboot_target(generic_stage_target):
 	def copy_files_to_image(self):
 		# create image
 		myfiles=[]
-		if self.settings.has_key("netboot/packages"):
+		if "netboot/packages" in self.settings:
 			if type(self.settings["netboot/packages"]) == types.StringType:
 				loopy=[self.settings["netboot/packages"]]
 			else:
 				loopy=self.settings["netboot/packages"]
 
 		for x in loopy:
-			if self.settings.has_key("netboot/packages/"+x+"/files"):
+			if "netboot/packages/"+x+"/files" in self.settings:
 			    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
 				    myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
 			    else:
 				    myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
-		if self.settings.has_key("netboot/extra_files"):
+		if "netboot/extra_files" in self.settings:
 			if type(self.settings["netboot/extra_files"]) == types.ListType:
 				myfiles.extend(self.settings["netboot/extra_files"])
 			else:

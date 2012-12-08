@@ -31,11 +31,11 @@ class snapshot_target(generic_stage_target):
 		pass
 
 	def run(self):
-		if self.settings.has_key("PURGEONLY"):
+		if "PURGEONLY" in self.settings:
 			self.purge()
 			return
 
-		if self.settings.has_key("PURGE"):
+		if "PURGE" in self.settings:
 			self.purge()
 
 		self.setup()

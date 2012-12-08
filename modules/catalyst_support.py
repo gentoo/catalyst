@@ -295,7 +295,7 @@ def spawn_bash(mycommand,env={},debug=False,opt_name=None,**keywords):
 	args=[BASH_BINARY]
 	if not opt_name:
 	    opt_name=mycommand.split()[0]
-	if not env.has_key("BASH_ENV"):
+	if "BASH_ENV" not in env:
 	    env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
 	if debug:
 	    args.append("-x")
@@ -558,7 +558,7 @@ def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and
 	# expanded to os.getcwd()+"/"+localpath if file exists
 	for myfile in filelist:
-		if not settings.has_key(myfile):
+		if myfile not in settings:
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
 		else:
@@ -680,7 +680,7 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 			myspec[x]=addlargs[x]
 
 	for x in requiredspec:
-		if not myspec.has_key(x):
+		if x not in myspec:
 			messages.append("Required argument \""+x+"\" not specified.")
 
 	if messages:
