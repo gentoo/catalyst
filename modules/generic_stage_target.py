@@ -872,10 +872,10 @@ class generic_stage_target(generic_target):
 				if os.path.exists(x):
 					print "Copying overlay dir " +x
 					cmd("mkdir -p "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
+						self.settings["local_overlay"],\
 						"Could not make portage_overlay dir",env=self.env)
 					cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
+						self.settings["local_overlay"],\
 						"Could not copy portage_overlay",env=self.env)
 
 	def root_overlay(self):
@@ -1116,9 +1116,9 @@ class generic_stage_target(generic_target):
 				"Could not replace /etc/hosts",env=self.env)
 
 		""" Remove our overlay """
-		if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
-			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage",\
-				"Could not remove /usr/local/portage",env=self.env)
+		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
+			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
+				"Could not remove " + self.settings["local_overlay"], env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
 				"/etc/portage/make.conf",\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
