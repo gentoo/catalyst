@@ -179,8 +179,8 @@ class generic_stage_target(generic_target):
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		else:
-			self.mounts = ["proc","/dev","/usr/portage/distfiles","/var/tmp/portage"]
-			self.mountmap = {"proc":"/proc", "/dev":"/dev", "/dev/pts":"/dev/pts",\
+			self.mounts = ["proc", "dev","/usr/portage/distfiles", "/var/tmp/portage"]
+			self.mountmap = {"proc":"/proc", "dev":"/dev", "/dev/pts":"/dev/pts",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		if os.uname()[0] == "Linux":
 			self.mounts.append("/dev/pts")
