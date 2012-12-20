@@ -406,7 +406,7 @@ class generic_stage_target(generic_target):
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*",\
-			"/root/*","/usr/portage"]
+			"/root/*", self.settings["portdir"]]
 
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
@@ -785,7 +785,7 @@ class generic_stage_target(generic_target):
 				print "Valid snapshot cache, skipping unpack of portage tree..."
 				unpack=False
 		else:
-			destdir=normpath(self.settings["chroot_path"]+"/usr/portage")
+			destdir = normpath(self.settings["chroot_path"] + self.settings["portdir"])
 			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."
@@ -799,7 +799,7 @@ class generic_stage_target(generic_target):
 
 			if "AUTORESUME" in self.settings \
 				and os.path.exists(self.settings["chroot_path"]+\
-					"/usr/portage/") \
+					self.settings["portdir"]) \
 				and os.path.exists(self.settings["autoresume_path"]\
 					+"unpack_portage") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
@@ -846,7 +846,7 @@ class generic_stage_target(generic_target):
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
 					"Error zapping profile link",env=self.env)
 			cmd("mkdir -p "+self.settings["chroot_path"]+"/etc/portage/")
-			cmd("ln -sf ../../usr/portage/profiles/"+\
+			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" + \
 				self.settings["target_profile"]+" "+\
 				self.settings["chroot_path"]+"/etc/portage/make.profile",\
 				"Error creating profile link",env=self.env)
