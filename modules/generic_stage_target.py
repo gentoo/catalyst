@@ -195,9 +195,8 @@ class generic_stage_target(generic_target):
 			self.set_pkgcache_path()
 			print "Location of the package cache is "+\
 				self.settings["pkgcache_path"]
-			self.mounts.append("/usr/portage/packages")
-			self.mountmap["/usr/portage/packages"]=\
-				self.settings["pkgcache_path"]
+			self.mounts.append("packagedir")
+			self.mountmap["packagedir"] = self.settings["pkgcache_path"]
 
 		if "KERNCACHE" in self.settings:
 			self.set_kerncache_path()
