@@ -615,21 +615,21 @@ class generic_stage_target(generic_target):
 			return
 
 		for x in self.mounts:
-			if not os.path.exists(mypath+x):
+			if not os.path.exists(mypath + self.mountmap[x]):
 				continue
 
-			if ismount(mypath+x):
+			if ismount(mypath + self.mountmap[x]):
 				""" Something is still mounted "" """
 				try:
-					print x+" is still mounted; performing auto-bind-umount...",
+					print self.mountmap[x] + " is still mounted; performing auto-bind-umount...",
 					""" Try to umount stuff ourselves """
 					self.unbind()
-					if ismount(mypath+x):
-						raise CatalystError, "Auto-unbind failed for "+x
+					if ismount(mypath + self.mountmap[x]):
+						raise CatalystError, "Auto-unbind failed for " + self.mountmap[x]
 					else:
 						print "Auto-unbind successful..."
 				except CatalystError:
-					raise CatalystError, "Unable to auto-unbind "+x
+					raise CatalystError, "Unable to auto-unbind " + self.mountmap[x]
 
 	def unpack(self):
 		unpack=True
@@ -897,7 +897,7 @@ class generic_stage_target(generic_target):
 
 	def bind(self):
 		for x in self.mounts:
-			if not os.path.exists(self.settings["chroot_path"]+x):
+			if not os.path.exists(self.settings["chroot_path"] + self.mountmap[x]):
 				os.makedirs(self.settings["chroot_path"]+x,0755)
 
 			if not os.path.exists(self.mountmap[x]):
@@ -909,11 +909,11 @@ class generic_stage_target(generic_target):
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					retval=os.system("mount -t devfs none "+\
-						self.settings["chroot_path"]+x)
+					retval = os.system("mount -t devfs none " +
+						self.settings["chroot_path"] + src)
 				else:
-					retval=os.system("mount_nullfs "+src+" "+\
-						self.settings["chroot_path"]+x)
+					retval = os.system("mount_nullfs " + src + " " +
+						self.settings["chroot_path"] + src)
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
@@ -921,11 +921,11 @@ class generic_stage_target(generic_target):
 							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
 							self.settings["chroot_path"]+x)
 				else:
-					retval=os.system("mount --bind "+src+" "+\
-						self.settings["chroot_path"]+x)
+					retval = os.system("mount --bind " + src + " " +
+						self.settings["chroot_path"] + src)
 			if retval!=0:
 				self.unbind()
-				raise CatalystError,"Couldn't bind mount "+src
+				raise CatalystError,"Couldn't bind mount " + src
 
 	def unbind(self):
 		ouch=0
@@ -934,25 +934,26 @@ class generic_stage_target(generic_target):
 		myrevmounts.reverse()
 		""" Unmount in reverse order for nested bind-mounts """
 		for x in myrevmounts:
-			if not os.path.exists(mypath+x):
+			if not os.path.exists(mypath + self.mountmap[x]):
 				continue
 
-			if not ismount(mypath+x):
+			if not ismount(mypath + self.mountmap[x]):
 				continue
 
 			retval=os.system("umount "+\
-				os.path.join(mypath,x.lstrip(os.path.sep)))
+				os.path.join(mypath, self.mountmap[x].lstrip(os.path.sep)))
 
 			if retval!=0:
-				warn("First attempt to unmount: "+mypath+x+" failed.")
+				warn("First attempt to unmount: " + mypath +
+					self.mountmap[x] +" failed.")
 				warn("Killing any pids still running in the chroot")
 
 				self.kill_chroot_pids()
 
-				retval2=os.system("umount "+mypath+x)
+				retval2 = os.system("umount " + mypath + self.mountmap[x])
 				if retval2!=0:
 					ouch=1
-					warn("Couldn't umount bind mount: "+mypath+x)
+					warn("Couldn't umount bind mount: " + mypath + self.mountmap[x])
 
 			if "SNAPCACHE" in self.settings and x == "/usr/portage":
 				try:
