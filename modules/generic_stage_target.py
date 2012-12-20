@@ -215,8 +215,8 @@ class generic_stage_target(generic_target):
 				raise CatalystError,\
 					"Compiler cache support can't be enabled (can't find "+\
 					ccdir+")"
-			self.mounts.append("/var/tmp/ccache")
-			self.mountmap["/var/tmp/ccache"]=ccdir
+			self.mounts.append("ccache")
+			self.mountmap["ccache"] = ccdir
 			""" for the chroot: """
 			self.env["CCACHE_DIR"]="/var/tmp/ccache"
 
