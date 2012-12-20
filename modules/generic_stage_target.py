@@ -1068,7 +1068,7 @@ class generic_stage_target(generic_target):
 
 			myf.write('PORTDIR="%s"\n' % self.settings['portdir'])
 			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
-			myf.write('PKGDIR="${PORTDIR}/packages"\n')
+			myf.write('PKGDIR="%s"\n' % self.settings['packagedir'])
 
 			""" Setup the portage overlay """
 			if "portage_overlay" in self.settings:
