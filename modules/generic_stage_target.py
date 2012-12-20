@@ -180,10 +180,10 @@ class generic_stage_target(generic_target):
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		else:
 			self.mounts = ["proc", "dev", "distdir", "port_tmpdir"]
-			self.mountmap = {"proc":"/proc", "dev":"/dev", "/dev/pts":"/dev/pts",\
+			self.mountmap = {"proc":"/proc", "dev":"/dev", "devpts":"/dev/pts",
 				"distdir":self.settings["distdir"], "port_tmpdir":"tmpfs"}
 		if os.uname()[0] == "Linux":
-			self.mounts.append("/dev/pts")
+			self.mounts.append("devpts")
 
 		self.set_mounts()
 
