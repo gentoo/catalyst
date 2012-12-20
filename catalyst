@@ -62,8 +62,11 @@ def parse_config(myconfig):
 	config_file=""
 
 	confdefaults={
+		"distdir": "/usr/portage/distfiles",
 		"hash_function": "crc32",
+		"packagedir": "/usr/portage/packages",
 		"portdir": "/usr/portage",
+		"port_tmpdir": "/var/tmp/portage",
 		"repo_name": "portage",
 		"sharedir": "/usr/lib/catalyst",
 		"snapshot_name": "portage-",

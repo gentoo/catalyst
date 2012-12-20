@@ -179,11 +179,11 @@ class generic_stage_target(generic_target):
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		else:
-			self.mounts=["/proc","/dev","/usr/portage/distfiles","/var/tmp/portage"]
-			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
-				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
+			self.mounts=["proc","dev", "distdir", "port_tmpdir"]
+			self.mountmap={"proc":"/proc", "dev":"/dev", "pts":"/dev/pts",
+				"distdir":self.settings["distdir"], "port_tmpdir":"tmpfs"}
 		if os.uname()[0] == "Linux":
-			self.mounts.append("/dev/pts")
+			self.mounts.append("pts")
 
 		self.set_mounts()
 
@@ -195,16 +195,15 @@ class generic_stage_target(generic_target):
 			self.set_pkgcache_path()
 			print "Location of the package cache is "+\
 				self.settings["pkgcache_path"]
-			self.mounts.append("/usr/portage/packages")
-			self.mountmap["/usr/portage/packages"]=\
-				self.settings["pkgcache_path"]
+			self.mounts.append("packagedir")
+			self.mountmap["packagedir"] = self.settings["pkgcache_path"]
 
 		if "KERNCACHE" in self.settings:
 			self.set_kerncache_path()
 			print "Location of the kerncache is "+\
 				self.settings["kerncache_path"]
-			self.mounts.append("/tmp/kerncache")
-			self.mountmap["/tmp/kerncache"]=self.settings["kerncache_path"]
+			self.mounts.append("kerncache")
+			self.mountmap["kerncache"]=self.settings["kerncache_path"]
 
 		if "CCACHE" in self.settings:
 			if "CCACHE_DIR" in os.environ:
@@ -216,8 +215,8 @@ class generic_stage_target(generic_target):
 				raise CatalystError,\
 					"Compiler cache support can't be enabled (can't find "+\
 					ccdir+")"
-			self.mounts.append("/var/tmp/ccache")
-			self.mountmap["/var/tmp/ccache"]=ccdir
+			self.mounts.append("ccache")
+			self.mountmap["ccache"]=ccdir
 			""" for the chroot: """
 			self.env["CCACHE_DIR"]="/var/tmp/ccache"
 
@@ -406,7 +405,7 @@ class generic_stage_target(generic_target):
 
 	def set_cleanables(self):
 		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*",\
-			"/root/*","/usr/portage"]
+			"/root/*", self.settings["portdir"]]
 
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
@@ -615,21 +614,21 @@ class generic_stage_target(generic_target):
 			return
 
 		for x in self.mounts:
-			if not os.path.exists(mypath+x):
+			if not os.path.exists(mypath + self.mountmap[x]):
 				continue
 
-			if ismount(mypath+x):
+			if ismount(mypath +self.mountmap[x]):
 				""" Something is still mounted "" """
 				try:
-					print x+" is still mounted; performing auto-bind-umount...",
+					print self.mountmap[x] + " is still mounted; performing auto-bind-umount...",
 					""" Try to umount stuff ourselves """
 					self.unbind()
-					if ismount(mypath+x):
-						raise CatalystError, "Auto-unbind failed for "+x
+					if ismount(mypath + self.mountmap[x]):
+						raise CatalystError, "Auto-unbind failed for " + self.mountmap[x]
 					else:
 						print "Auto-unbind successful..."
 				except CatalystError:
-					raise CatalystError, "Unable to auto-unbind "+x
+					raise CatalystError, "Unable to auto-unbind " + self.mountmap[x]
 
 	def unpack(self):
 		unpack=True
@@ -787,7 +786,7 @@ class generic_stage_target(generic_target):
 				print "Valid snapshot cache, skipping unpack of portage tree..."
 				unpack=False
 		else:
-			destdir=normpath(self.settings["chroot_path"]+"/usr/portage")
+			destdir=normpath(self.settings["chroot_path"] + self.settings["portdir"])
 			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."
@@ -801,7 +800,7 @@ class generic_stage_target(generic_target):
 
 			if "AUTORESUME" in self.settings \
 				and os.path.exists(self.settings["chroot_path"]+\
-					"/usr/portage/") \
+					self.settings["portdir"]) \
 				and os.path.exists(self.settings["autoresume_path"]\
 					+"unpack_portage") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
@@ -848,7 +847,7 @@ class generic_stage_target(generic_target):
 			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
 					"Error zapping profile link",env=self.env)
 			cmd("mkdir -p "+self.settings["chroot_path"]+"/etc/portage/")
-			cmd("ln -sf ../../usr/portage/profiles/"+\
+			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/"+\
 				self.settings["target_profile"]+" "+\
 				self.settings["chroot_path"]+"/etc/portage/make.profile",\
 				"Error creating profile link",env=self.env)
@@ -874,10 +873,10 @@ class generic_stage_target(generic_target):
 				if os.path.exists(x):
 					print "Copying overlay dir " +x
 					cmd("mkdir -p "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
+						self.settings["local_overlay"],\
 						"Could not make portage_overlay dir",env=self.env)
 					cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+\
-						"/usr/local/portage",\
+						self.settings["local_overlay"],\
 						"Could not copy portage_overlay",env=self.env)
 
 	def root_overlay(self):
@@ -897,7 +896,7 @@ class generic_stage_target(generic_target):
 
 	def bind(self):
 		for x in self.mounts:
-			if not os.path.exists(self.settings["chroot_path"]+x):
+			if not os.path.exists(self.settings["chroot_path"] + self.mountmap[x]):
 				os.makedirs(self.settings["chroot_path"]+x,0755)
 
 			if not os.path.exists(self.mountmap[x]):
@@ -909,11 +908,11 @@ class generic_stage_target(generic_target):
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					retval=os.system("mount -t devfs none "+\
-						self.settings["chroot_path"]+x)
+					retval=os.system("mount -t devfs none " +
+						self.settings["chroot_path"] + src)
 				else:
-					retval=os.system("mount_nullfs "+src+" "+\
-						self.settings["chroot_path"]+x)
+					retval=os.system("mount_nullfs " + src + " " +
+						self.settings["chroot_path"] + src)
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
@@ -921,11 +920,11 @@ class generic_stage_target(generic_target):
 							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
 							self.settings["chroot_path"]+x)
 				else:
-					retval=os.system("mount --bind "+src+" "+\
-						self.settings["chroot_path"]+x)
+					retval=os.system("mount --bind " + src + " " +
+						self.settings["chroot_path"] + src)
 			if retval!=0:
 				self.unbind()
-				raise CatalystError,"Couldn't bind mount "+src
+				raise CatalystError,"Couldn't bind mount " + src
 
 	def unbind(self):
 		ouch=0
@@ -934,25 +933,26 @@ class generic_stage_target(generic_target):
 		myrevmounts.reverse()
 		""" Unmount in reverse order for nested bind-mounts """
 		for x in myrevmounts:
-			if not os.path.exists(mypath+x):
+			if not os.path.exists(mypath + self.mountmap[x]):
 				continue
 
-			if not ismount(mypath+x):
+			if not ismount(mypath + self.mountmap[x]):
 				continue
 
 			retval=os.system("umount "+\
-				os.path.join(mypath,x.lstrip(os.path.sep)))
+				os.path.join(mypath, self.mountmap[x].lstrip(os.path.sep)))
 
 			if retval!=0:
-				warn("First attempt to unmount: "+mypath+x+" failed.")
+				warn("First attempt to unmount: " + mypath +
+					self.mountmap[x] +" failed.")
 				warn("Killing any pids still running in the chroot")
 
 				self.kill_chroot_pids()
 
-				retval2=os.system("umount "+mypath+x)
+				retval2=os.system("umount " + mypath + self.mountmap[x])
 				if retval2!=0:
 					ouch=1
-					warn("Couldn't umount bind mount: "+mypath+x)
+					warn("Couldn't umount bind mount: " + mypath + self.mountmap[x])
 
 			if "SNAPCACHE" in self.settings and x == "/usr/portage":
 				try:
@@ -1118,9 +1118,9 @@ class generic_stage_target(generic_target):
 				"Could not replace /etc/hosts",env=self.env)
 
 		""" Remove our overlay """
-		if os.path.exists(self.settings["chroot_path"]+"/usr/local/portage"):
-			cmd("rm -rf "+self.settings["chroot_path"]+"/usr/local/portage",\
-				"Could not remove /usr/local/portage",env=self.env)
+		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
+			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
+				"Could not remove " + self.settings["local_overlay"], env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
 				"/etc/portage/make.conf",\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
