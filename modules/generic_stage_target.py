@@ -202,8 +202,8 @@ class generic_stage_target(generic_target):
 			self.set_kerncache_path()
 			print "Location of the kerncache is "+\
 				self.settings["kerncache_path"]
-			self.mounts.append("/tmp/kerncache")
-			self.mountmap["/tmp/kerncache"]=self.settings["kerncache_path"]
+			self.mounts.append("kerncache")
+			self.mountmap["kerncache"] = self.settings["kerncache_path"]
 
 		if "CCACHE" in self.settings:
 			if "CCACHE_DIR" in os.environ:
