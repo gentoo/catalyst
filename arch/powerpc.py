@@ -25,7 +25,7 @@ class arch_ppc(generic_ppc):
 	"builder class for generic powerpc"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -pipe"
 
 class arch_ppc64(generic_ppc64):
 	"builder class for generic ppc64"
@@ -51,31 +51,31 @@ class arch_cell(arch_ppc64):
 class arch_g3(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G3 -mtune=G3 -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G3 -mtune=G3 -pipe"
 
 class arch_g4(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_g5(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_power(generic_ppc):
 	"builder class for generic power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=power -mtune=power -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=power -mtune=power -pipe"
 
 class arch_power_ppc(generic_ppc):
 	"builder class for generic powerpc/power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=common -mtune=common -fno-strict-aliasing -pipe"
+		self.settings["CFLAGS"]="-O2 -mcpu=common -mtune=common -pipe"
 
 class arch_power3(arch_ppc64):
 	"builder class for power3 under ppc64"
