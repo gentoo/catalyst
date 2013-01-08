@@ -61,11 +61,15 @@ def parse_config(myconfig):
 	myconf={}
 	config_file=""
 
-	confdefaults={ "storedir":"/var/tmp/catalyst",\
-		"sharedir":"/usr/share/catalyst","distdir":"/usr/portage/distfiles",\
-		"portdir":"/usr/portage","options":"",\
-		"snapshot_cache":"/var/tmp/catalyst/snapshot_cache",\
-		"hash_function":"crc32"}
+	confdefaults = {
+		"distdir": "/usr/portage/distfiles",
+		"hash_function": "crc32",
+		"options": "",
+		"portdir": "/usr/portage",
+		"sharedir": "/usr/share/catalyst",
+		"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
+		"storedir": "/var/tmp/catalyst",
+		}
 
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
