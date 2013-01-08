@@ -66,6 +66,7 @@ def parse_config(myconfig):
 		"hash_function": "crc32",
 		"options": "",
 		"portdir": "/usr/portage",
+		"repo_name": "portage",
 		"sharedir": "/usr/share/catalyst",
 		"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
 		"storedir": "/var/tmp/catalyst",

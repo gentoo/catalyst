@@ -46,11 +46,14 @@ class snapshot_target(generic_stage_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
-			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ " +
+			"--exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* " +
+			self.settings["portdir"] + "/ " + mytmp + "/%s/" % self.settings["repo_name"],
+			"Snapshot failure", env=self.env)
 
 		print "Compressing Portage snapshot tarball..."
-		cmd("tar -I lbzip2 -cf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
+		cmd("tar -I lbzip2 -cf " + self.settings["snapshot_path"] + " -C " +
+			mytmp + " " + self.settings["repo_name"],
 			"Snapshot creation failure",env=self.env)
 
 		self.gen_contents_file(self.settings["snapshot_path"])
