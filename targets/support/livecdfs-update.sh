@@ -227,7 +227,7 @@ fi
 if [ -n "$(ls /lib/firmware)" ]
 then
 	cd /lib/firmware
-	/bin/tar -I lbzip2 -cpf /lib/firmware.tar.bz2 .
+	/bin/tar -I bzip2 -cpf /lib/firmware.tar.bz2 .
 	rm -rf /lib/firmware/*
 fi
 
