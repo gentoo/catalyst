@@ -68,6 +68,7 @@ def parse_config(myconfig):
 		"portdir": "/usr/portage",
 		"repo_name": "portage",
 		"sharedir": "/usr/share/catalyst",
+		"snapshot_name": "portage-",
 		"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
 		"storedir": "/var/tmp/catalyst",
 		}

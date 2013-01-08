@@ -410,7 +410,8 @@ class generic_stage_target(generic_target):
 
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
-			"/snapshots/portage-"+self.settings["snapshot"]+".tar.xz")
+			"/snapshots/" + self.settings["snapshot_name"] +
+			self.settings["snapshot"] + ".tar.xz")
 
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"]=\
@@ -418,7 +419,8 @@ class generic_stage_target(generic_target):
 				hash_function=self.settings["hash_function"],verbose=False)
 		else:
 			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
-				"/snapshots/portage-"+self.settings["snapshot"]+".tar.bz2")
+				"/snapshots/" + self.settings["snapshot_name"] +
+				self.settings["snapshot"] + ".tar.bz2")
 
 			if os.path.exists(self.settings["snapshot_path"]):
 				self.settings["snapshot_path_hash"]=\

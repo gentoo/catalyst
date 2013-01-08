@@ -18,8 +18,9 @@ class snapshot_target(generic_stage_target):
 		self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
-			+".tar.bz2")
+		self.settings["snapshot_path"] = normpath(st + "/snapshots/"
+			+ self.settings["snapshot_name"]
+			+ self.settings["version_stamp"] + ".tar.bz2")
 		self.settings["tmp_path"]=normpath(st+"/tmp/"+self.settings["target_subpath"])
 
 	def setup(self):
