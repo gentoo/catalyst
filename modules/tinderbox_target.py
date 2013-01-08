@@ -29,8 +29,8 @@ class tinderbox_target(generic_stage_target):
 			raise CatalystError,"Tinderbox aborting due to error."
 
 	def set_cleanables(self):
-	    self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",\
-					"/usr/portage"]
+	    self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",
+					self.settings['portdir']]
 
 	def set_action_sequence(self):
 		#Default action sequence for run method

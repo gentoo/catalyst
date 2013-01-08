@@ -18,8 +18,9 @@ class snapshot_target(generic_stage_target):
 		self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
-		self.settings["snapshot_path"]=normpath(st+"/snapshots/portage-"+self.settings["version_stamp"]\
-			+".tar.bz2")
+		self.settings["snapshot_path"]=normpath(st + "/snapshots/"
+			+ self.settings["snapshot_name"]
+			+ self.settings["version_stamp"] + ".tar.bz2")
 		self.settings["tmp_path"]=normpath(st+"/tmp/"+self.settings["target_subpath"])
 
 	def setup(self):
@@ -46,11 +47,14 @@ class snapshot_target(generic_stage_target):
 		if not os.path.exists(mytmp):
 			os.makedirs(mytmp)
 
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ --exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* "+\
-			self.settings["portdir"]+"/ "+mytmp+"/portage/","Snapshot failure",env=self.env)
+		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ " +
+			"--exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* " +
+			self.settings["portdir"] + "/ " + mytmp + "/%s/" % self.settings["repo_name"],
+			"Snapshot failure",env=self.env)
 
 		print "Compressing Portage snapshot tarball..."
-		cmd("tar -I lbzip2 -cf "+self.settings["snapshot_path"]+" -C "+mytmp+" portage",\
+		cmd("tar -I lbzip2 -cf " + self.settings["snapshot_path"] + " -C " +
+			mytmp + " %s" % self.settings["repo_name"],
 			"Snapshot creation failure",env=self.env)
 
 		self.gen_contents_file(self.settings["snapshot_path"])
