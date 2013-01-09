@@ -24,31 +24,33 @@ __version__="2.0.15"
 conf_values={}
 
 def usage():
-	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
-	print " -a --clear-autoresume	clear autoresume flags"
-	print " -c --config     use specified configuration file"
-	print " -C --cli        catalyst commandline (MUST BE LAST OPTION)"
-	print " -d --debug      enable debugging"
-	print " -f --file       read specfile"
-	print " -F --fetchonly  fetch files only"
-	print " -h --help       print this help message"
-	print " -p --purge      clear tmp dirs,package cache and autoresume flags"
-	print " -P --purgeonly  clear tmp dirs,package cache and autoresume flags and exit"
-	print " -T --purgetmponly  clear tmp dirs and autoresume flags and exit"
-	print " -s --snapshot   generate a release snapshot"
-	print " -V --version    display version information"
-	print " -v --verbose    verbose output"
-	print
-	print "Usage examples:"
-	print
-	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
-	print "catalyst -C target=snapshot version_stamp=my_date"
-	print
-	print "Using the snapshot option (-s, --snapshot) to build a release snapshot:"
-	print "catalyst -s 20071121"
-	print
-	print "Using the specfile option (-f, --file) to build a stage target:"
-	print "catalyst -f stage1-specfile.spec"
+	print """Usage catalyst [options] [-C variable=value...] [ -s identifier]
+ -a --clear-autoresume  clear autoresume flags
+ -c --config            use specified configuration file
+ -C --cli               catalyst commandline (MUST BE LAST OPTION)
+ -d --debug             enable debugging
+ -f --file              read specfile
+ -F --fetchonly         fetch files only
+ -h --help              print this help message
+ -p --purge             clear tmp dirs,package cache, autoresume flags
+ -P --purgeonly         clear tmp dirs,package cache, autoresume flags and exit
+ -T --purgetmponly      clear tmp dirs and autoresume flags and exit
+ -s --snapshot          generate a release snapshot
+ -V --version           display version information
+ -v --verbose           verbose output
+
+Usage examples:
+
+Using the commandline option (-C, --cli) to build a Portage snapshot:
+catalyst -C target=snapshot version_stamp=my_date
+
+Using the snapshot option (-s, --snapshot) to build a release snapshot:
+catalyst -s 20071121"
+
+Using the specfile option (-f, --file) to build a stage target:
+catalyst -f stage1-specfile.spec
+"""
+
 
 def version():
 	print "Catalyst, version "+__version__
