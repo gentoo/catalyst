@@ -24,31 +24,33 @@ __version__="2.0.15"
 conf_values={}
 
 def usage():
-	print "Usage catalyst [options] [-C variable=value...] [ -s identifier]"
-	print " -a --clear-autoresume	clear autoresume flags"
-	print " -c --config     use specified configuration file"
-	print " -C --cli        catalyst commandline (MUST BE LAST OPTION)"
-	print " -d --debug      enable debugging"
-	print " -f --file       read specfile"
-	print " -F --fetchonly  fetch files only"
-	print " -h --help       print this help message"
-	print " -p --purge      clear tmp dirs,package cache and autoresume flags"
-	print " -P --purgeonly  clear tmp dirs,package cache and autoresume flags and exit"
-	print " -T --purgetmponly  clear tmp dirs and autoresume flags and exit"
-	print " -s --snapshot   generate a release snapshot"
-	print " -V --version    display version information"
-	print " -v --verbose    verbose output"
-	print
-	print "Usage examples:"
-	print
-	print "Using the commandline option (-C, --cli) to build a Portage snapshot:"
-	print "catalyst -C target=snapshot version_stamp=my_date"
-	print
-	print "Using the snapshot option (-s, --snapshot) to build a release snapshot:"
-	print "catalyst -s 20071121"
-	print
-	print "Using the specfile option (-f, --file) to build a stage target:"
-	print "catalyst -f stage1-specfile.spec"
+	print """Usage catalyst [options] [-C variable=value...] [ -s identifier]
+ -a --clear-autoresume  clear autoresume flags
+ -c --config            use specified configuration file
+ -C --cli               catalyst commandline (MUST BE LAST OPTION)
+ -d --debug             enable debugging
+ -f --file              read specfile
+ -F --fetchonly         fetch files only
+ -h --help              print this help message
+ -p --purge             clear tmp dirs,package cache, autoresume flags
+ -P --purgeonly         clear tmp dirs,package cache, autoresume flags and exit
+ -T --purgetmponly      clear tmp dirs and autoresume flags and exit
+ -s --snapshot          generate a release snapshot
+ -V --version           display version information
+ -v --verbose           verbose output
+
+Usage examples:
+
+Using the commandline option (-C, --cli) to build a Portage snapshot:
+catalyst -C target=snapshot version_stamp=my_date
+
+Using the snapshot option (-s, --snapshot) to build a release snapshot:
+catalyst -s 20071121"
+
+Using the specfile option (-f, --file) to build a stage target:
+catalyst -f stage1-specfile.spec
+"""
+
 
 def version():
 	print "Catalyst, version "+__version__
@@ -77,7 +79,8 @@ def parse_config(myconfig):
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
 		if os.path.exists(myconfig):
-			print "Using command line specified Catalyst configuration file, "+myconfig
+			print "Using command line specified Catalyst configuration file, "+\
+				myconfig
 			config_file=myconfig
 
 		else:
@@ -87,7 +90,8 @@ def parse_config(myconfig):
 
 	# next, try the default location
 	elif os.path.exists("/etc/catalyst/catalyst.conf"):
-		print "Using default Catalyst configuration file, /etc/catalyst/catalyst.conf"
+		print "Using default Catalyst configuration file," + \
+			" /etc/catalyst/catalyst.conf"
 		config_file="/etc/catalyst/catalyst.conf"
 
 	# can't find a config file (we are screwed), so bail out
@@ -183,14 +187,16 @@ def parse_config(myconfig):
 		conf_values["port_logdir"]=myconf["port_logdir"];
 
 def import_modules():
-	# import catalyst's own modules (i.e. catalyst_support and the arch modules)
+	# import catalyst's own modules
+	# (i.e. catalyst_support and the arch modules)
 	targetmap={}
 
 	try:
 		for x in required_build_targets:
 			try:
 				fh=open(conf_values["sharedir"]+"/modules/"+x+".py")
-				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
+				module=imp.load_module(x,fh,"modules/"+x+".py",
+					(".py","r",imp.PY_SOURCE))
 				fh.close()
 
 			except IOError:
@@ -200,7 +206,8 @@ def import_modules():
 		for x in valid_build_targets:
 			try:
 				fh=open(conf_values["sharedir"]+"/modules/"+x+".py")
-				module=imp.load_module(x,fh,"modules/"+x+".py",(".py","r",imp.PY_SOURCE))
+				module=imp.load_module(x,fh,"modules/"+x+".py",
+					(".py","r",imp.PY_SOURCE))
 				module.register(targetmap)
 				fh.close()
 
@@ -218,15 +225,17 @@ def import_modules():
 def build_target(addlargs, targetmap):
 	try:
 		if addlargs["target"] not in targetmap:
-			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
+			raise CatalystError, \
+				"Target \"%s\" not available." % addlargs["target"]
 
 		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
 
 		mytarget.run()
 
 	except:
-		modules.catalyst.util.print_traceback()
-		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
+		catalyst.util.print_traceback()
+		print "!!! catalyst: Error encountered during run of target " + \
+			addlargs["target"]
 		sys.exit(1)
 
 if __name__ == "__main__":
@@ -245,8 +254,12 @@ if __name__ == "__main__":
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:", ["purge", "purgeonly", "purgetmponly", "help", "version", "debug",\
-			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
+		opts,args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:",
+			["purge", "purgeonly", "purgetmponly", "help", "version", "debug",
+			"clear-autoresume", "config=", "cli=", "file=", "fetch",
+			"verbose","snapshot="
+			]
+		)
 
 	except getopt.GetoptError:
 		usage()
