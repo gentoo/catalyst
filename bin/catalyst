@@ -1,0 +1,46 @@
+#!/usr/bin/python -OO
+
+# Maintained in full by:
+# Catalyst Team <catalyst@gentoo.org>
+# Release Engineering Team <releng@gentoo.org>
+# Andrew Gaffney <agaffney@gentoo.org>
+# Chris Gianelloni <wolf31o2@wolf31o2.org>
+# $Id$
+
+
+from __future__ import print_function
+
+import sys
+
+__maintainer__="Catalyst <catalyst@gentoo.org>"
+__version__="2.0.12.2"
+
+
+# This block ensures that ^C interrupts are handled quietly.
+try:
+	import signal
+
+	def exithandler(signum,frame):
+		signal.signal(signal.SIGINT, signal.SIG_IGN)
+		signal.signal(signal.SIGTERM, signal.SIG_IGN)
+		print()
+		sys.exit(1)
+
+	signal.signal(signal.SIGINT, exithandler)
+	signal.signal(signal.SIGTERM, exithandler)
+	signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
+except KeyboardInterrupt:
+	print()
+	sys.exit(1)
+
+
+from catalyst.main import main
+
+try:
+	main()
+except KeyboardInterrupt:
+	print("Aborted.")
+	sys.exit(130)
+sys.exit(0)
+
