@@ -78,16 +78,18 @@ class generic_stage_target(generic_target):
 		self.archmap = {}
 		self.subarchmap = {}
 		machinemap = {}
-		for x in [x[:-3] for x in os.listdir(self.settings["sharedir"]+\
-			"/arch/") if x.endswith(".py")]:
+		arch_dir = self.settings["PythonDir"] + "/arch/"
+		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")]:
+			if x == "__init__":
+				continue
 			try:
-				fh=open(self.settings["sharedir"]+"/arch/"+x+".py")
+				fh=open(arch_dir + x + ".py")
 				"""
 				This next line loads the plugin as a module and assigns it to
 				archmap[x]
 				"""
-				self.archmap[x]=imp.load_module(x,fh,"arch/"+x+\
-					".py",(".py","r",imp.PY_SOURCE))
+				self.archmap[x]=imp.load_module(x,fh,"../arch/" + x + ".py",
+					(".py", "r", imp.PY_SOURCE))
 				"""
 				This next line registers all the subarches supported in the
 				plugin
@@ -105,8 +107,7 @@ class generic_stage_target(generic_target):
 				the dir should load just fine. If it doesn't, it's probably a
 				syntax error in the module
 				"""
-				msg("Can't find/load "+x+".py plugin in "+\
-					self.settings["sharedir"]+"/arch/")
+				msg("Can't find/load " + x + ".py plugin in " + arch_dir)
 
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
