@@ -1,5 +1,6 @@
+
 import re
-from modules.catalyst_support import *
+from catalyst.support import *
 
 class ParserBase:
 

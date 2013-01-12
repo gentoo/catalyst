@@ -4,7 +4,7 @@ LiveCD stage2 target, builds upon previous LiveCD stage1 tarball
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os,string,types,stat,shutil
-from catalyst_support import *
+from catalyst.support import *
 from generic_stage_target import *
 
 class livecd_stage2_target(generic_stage_target):

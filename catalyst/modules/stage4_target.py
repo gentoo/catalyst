@@ -3,7 +3,7 @@ stage4 target, builds upon previous stage3/stage4 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst_support import *
+from catalyst.support import *
 from generic_stage_target import *
 
 class stage4_target(generic_stage_target):
