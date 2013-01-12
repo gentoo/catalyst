@@ -200,11 +200,11 @@ def import_modules():
 	targetmap={}
 
 	try:
-		module_dir = __selfpath__ + "/modules/"
+		module_dir = __selfpath__ + "/targets/"
 		for x in required_build_targets:
 			try:
 				fh=open(module_dir + x + ".py")
-				module=imp.load_module(x, fh,"modules/" + x + ".py",
+				module=imp.load_module(x, fh,"targets/" + x + ".py",
 					(".py", "r", imp.PY_SOURCE))
 				fh.close()
 
@@ -214,7 +214,7 @@ def import_modules():
 		for x in valid_build_targets:
 			try:
 				fh=open(module_dir + x + ".py")
-				module=imp.load_module(x, fh, "modules/" + x + ".py",
+				module=imp.load_module(x, fh, "targets/" + x + ".py",
 					(".py", "r", imp.PY_SOURCE))
 				module.register(targetmap)
 				fh.close()
