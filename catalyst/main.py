@@ -21,7 +21,7 @@ sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
 import catalyst.util
-from catalyst.modules.catalyst_support import (required_build_targets,
+from catalyst.support import (required_build_targets,
 	valid_build_targets, CatalystError, hash_map, find_binary, LockInUse)
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
@@ -197,7 +197,7 @@ def parse_config(myconfig):
 
 def import_modules():
 	# import catalyst's own modules
-	# (i.e. catalyst_support and the arch modules)
+	# (i.e. stage and the arch modules)
 	targetmap={}
 
 	try:
@@ -354,7 +354,7 @@ def main():
 	parse_config(myconfig)
 
 	# Start checking that digests are valid now that the hash_map was imported
-	# from catalyst_support
+	# from catalyst.support
 	if "digests" in conf_values:
 		for i in conf_values["digests"].split():
 			if i not in hash_map:

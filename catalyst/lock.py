@@ -5,7 +5,7 @@ import errno
 import sys
 import string
 import time
-from catalyst_support import *
+from catalyst.support import *
 
 def writemsg(mystr):
 	sys.stderr.write(mystr)

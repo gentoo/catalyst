@@ -1,8 +1,8 @@
 import os,string,imp,types,shutil
-from catalyst_support import *
+from catalyst.support import *
 from generic_target import *
 from stat import *
-import catalyst_lock
+from catalyst.lock import LockDir
 
 class generic_stage_target(generic_target):
 	"""
@@ -431,7 +431,7 @@ class generic_stage_target(generic_target):
 				normpath(self.settings["snapshot_cache"]+"/"+\
 				self.settings["snapshot"]+"/")
 			self.snapcache_lock=\
-				catalyst_lock.LockDir(self.settings["snapshot_cache_path"])
+				LockDir(self.settings["snapshot_cache_path"])
 			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
 
 	def set_chroot_path(self):
@@ -441,7 +441,7 @@ class generic_stage_target(generic_target):
 		"""
 		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
 			"/tmp/"+self.settings["target_subpath"]+"/")
-		self.chroot_lock=catalyst_lock.LockDir(self.settings["chroot_path"])
+		self.chroot_lock=LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"]=normpath(self.settings["storedir"]+\

@@ -1,6 +1,8 @@
 
-import builder,os
-from catalyst_support import *
+import os
+
+from catalyst import builder
+from catalyst.support import *
 
 class generic_sh(builder.generic):
 	"Abstract base class for all sh builders [Little-endian]"
