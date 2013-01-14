@@ -6,14 +6,16 @@ selinux_capable = False
 #fakeroot_capable = False
 BASH_BINARY             = "/bin/bash"
 
+# set it to 0 for the soft limit, 1 for the hard limit
+DESIRED_RLIMIT = 0
 try:
-        import resource
-        max_fd_limit=resource.getrlimit(RLIMIT_NOFILE)
+	import resource
+	max_fd_limit=resource.getrlimit(resource.RLIMIT_NOFILE)[DESIRED_RLIMIT]
 except SystemExit, e:
-        raise
+	raise
 except:
-        # hokay, no resource module.
-        max_fd_limit=256
+	# hokay, no resource module.
+	max_fd_limit=256
 
 # pids this process knows of.
 spawned_pids = []
