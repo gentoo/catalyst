@@ -21,8 +21,15 @@ sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
 import catalyst.util
-from catalyst.support import (required_build_targets,
-	valid_build_targets, CatalystError, hash_map, find_binary, LockInUse)
+from catalyst.support import CatalystError, find_binary, LockInUse
+from defaults import (required_build_targets, valid_build_targets,
+	hash_definitions
+	)
+
+from hash_utils import HashMap
+from defaults import  contents_definitions
+from contents import ContentsMap
+
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
 __version__="2.0.15"
@@ -183,7 +190,8 @@ def parse_config(myconfig):
 	if "digests" in myconf:
 		conf_values["digests"]=myconf["digests"]
 	if "contents" in myconf:
-		conf_values["contents"]=myconf["contents"]
+		# replace '-' with '_' (for compatibility with existing configs)
+		conf_values["contents"] = myconf["contents"].replace("-", '_')
 
 	if "envscript" in myconf:
 		print "Envscript support enabled."
@@ -224,9 +232,10 @@ def import_modules():
 				raise CatalystError,"Can't find " + x + ".py plugin in " + \
 					module_dir
 
-	except ImportError:
+	except ImportError as e:
 		print "!!! catalyst: Python modules not found in "+\
 			module_dir + "; exiting."
+		print e
 		sys.exit(1)
 
 	return targetmap
@@ -353,40 +362,47 @@ def main():
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 
-	# Start checking that digests are valid now that the hash_map was imported
-	# from catalyst.support
+	# initialize our contents generator
+	contents_map = ContentsMap(contents_definitions)
+	conf_values["contents_map"] = contents_map
+
+	# initialze our hash and contents generators
+	hash_map = HashMap(hash_definitions)
+	conf_values["hash_map"] = hash_map
+
+	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:
 		for i in conf_values["digests"].split():
-			if i not in hash_map:
+			if i not in hash_definitions:
 				print
 				print i+" is not a valid digest entry"
 				print "Valid digest entries:"
-				print hash_map.keys()
+				print hash_definitions.keys()
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
-			if find_binary(hash_map[i][1]) == None:
+			if find_binary(hash_map.hash_map[i].cmd) == None:
 				print
-				print "digest="+i
-				print "\tThe "+hash_map[i][1]+\
+				print "digest=" + i
+				print "\tThe " + hash_map.hash_map[i].cmd + \
 					" binary was not found. It needs to be in your system path"
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
 	if "hash_function" in conf_values:
-		if conf_values["hash_function"] not in hash_map:
+		if conf_values["hash_function"] not in hash_definitions:
 			print
 			print conf_values["hash_function"]+\
 				" is not a valid hash_function entry"
 			print "Valid hash_function entries:"
-			print hash_map.keys()
+			print hash_definitions.keys()
 			print
 			print "Catalyst aborting...."
 			sys.exit(2)
-		if find_binary(hash_map[conf_values["hash_function"]][1]) == None:
+		if find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd) == None:
 			print
 			print "hash_function="+conf_values["hash_function"]
-			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\
+			print "\tThe "+hash_map.hash_map[conf_values["hash_function"]].cmd + \
 				" binary was not found. It needs to be in your system path"
 			print
 			print "Catalyst aborting...."
