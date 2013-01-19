@@ -21,6 +21,22 @@ valid_config_file_values.extend(["PKGCACHE", "KERNCACHE", "CCACHE", "DISTCC",
 
 verbosity = 1
 
+confdefaults={
+	"distdir": "/usr/portage/distfiles",
+	"hash_function": "crc32",
+	"icecream": "/var/cache/icecream",
+	"local_overlay": "/usr/local/portage",
+	"options": "",
+	"packagedir": "/usr/portage/packages",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "/var/tmp/portage",
+	"repo_name": "portage",
+	"sharedir": "/usr/lib/catalyst",
+	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
+	"snapshot_name": "portage-",
+	"storedir": "/var/tmp/catalyst",
+	}
+
 PORT_LOGDIR_CLEAN = \
 	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
 
@@ -48,3 +64,4 @@ SOURCE_MOUNT_DEFAULTS = {
 	"proc": "/proc",
 	"shm": "shmfs",
 	}
+
