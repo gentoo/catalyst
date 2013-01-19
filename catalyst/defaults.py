@@ -66,3 +66,18 @@ contents_definitions = {
 	# isoinfo_f should be a last resort only
 	"isoinfo_f":["calc_contents","isoinfo -f -i %(file)s"],
 }
+
+
+confdefaults={
+	"distdir": "/usr/portage/distfiles",
+	"hash_function": "crc32",
+	"packagedir": "/usr/portage/packages",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "/var/tmp/portage",
+	"repo_name": "portage",
+	"sharedir": "/usr/lib/catalyst",
+	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
+	"snapshot_name": "portage-",
+	"storedir": "/var/tmp/catalyst",
+	}
+

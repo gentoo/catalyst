@@ -22,8 +22,8 @@ sys.path.append(__selfpath__ + "/modules")
 import catalyst.config
 import catalyst.util
 from catalyst.support import CatalystError, find_binary, LockInUse
-from defaults import (required_build_targets, valid_build_targets,
-	hash_definitions
+from catalyst.defaults import (required_build_targets, valid_build_targets,
+	hash_definitions, confdefaults
 	)
 
 from hash_utils import HashMap
@@ -76,19 +76,6 @@ def parse_config(myconfig):
 	myconf={}
 	config_file=""
 
-	confdefaults={
-		"distdir": "/usr/portage/distfiles",
-		"hash_function": "crc32",
-		"packagedir": "/usr/portage/packages",
-		"portdir": "/usr/portage",
-		"port_tmpdir": "/var/tmp/portage",
-		"repo_name": "portage",
-		"sharedir": "/usr/lib/catalyst",
-		"snapshot_name": "portage-",
-		"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
-		"storedir": "/var/tmp/catalyst",
-		}
-
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
 		if os.path.exists(myconfig):
@@ -123,7 +110,7 @@ def parse_config(myconfig):
 		sys.exit(1)
 
 	# now, load up the values into conf_values so that we can use them
-	for x in confdefaults.keys():
+	for x in list(confdefaults):
 		if x in myconf:
 			print "Setting",x,"to config file value \""+myconf[x]+"\""
 			conf_values[x]=myconf[x]
