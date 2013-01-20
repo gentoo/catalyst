@@ -1,12 +1,19 @@
 
-import sys,string,os,types,re,signal,traceback,time
-#import md5,sha
+import sys
+import string
+import os
+import types
+import re
+import signal
+import traceback
+import time
 
 from catalyst.defaults import verbosity, valid_config_file_values
 
 selinux_capable = False
 #userpriv_capable = (os.getuid() == 0)
 #fakeroot_capable = False
+
 BASH_BINARY             = "/bin/bash"
 
 # set it to 0 for the soft limit, 1 for the hard limit
@@ -25,35 +32,35 @@ spawned_pids = []
 
 
 def cleanup(pids,block_exceptions=True):
-        """function to go through and reap the list of pids passed to it"""
-        global spawned_pids
-        if type(pids) == int:
-                pids = [pids]
-        for x in pids:
-                try:
-                        os.kill(x,signal.SIGTERM)
-                        if os.waitpid(x,os.WNOHANG)[1] == 0:
-                                # feisty bugger, still alive.
-                                os.kill(x,signal.SIGKILL)
-                                os.waitpid(x,0)
+	"""function to go through and reap the list of pids passed to it"""
+	global spawned_pids
+	if type(pids) == int:
+		pids = [pids]
+	for x in pids:
+		try:
+			os.kill(x,signal.SIGTERM)
+			if os.waitpid(x,os.WNOHANG)[1] == 0:
+				# feisty bugger, still alive.
+				os.kill(x,signal.SIGKILL)
+				os.waitpid(x,0)
+		except OSError, oe:
+			if block_exceptions:
+				pass
+			if oe.errno not in (10,3):
+				raise oe
+		except SystemExit:
+					raise
+		except Exception:
+			if block_exceptions:
+				pass
+		try:
+			spawned_pids.remove(x)
+		except IndexError:
+			pass
 
-                except OSError, oe:
-                        if block_exceptions:
-                                pass
-                        if oe.errno not in (10,3):
-                                raise oe
-                except SystemExit:
-                        raise
-                except Exception:
-                        if block_exceptions:
-                                pass
-                try:                    spawned_pids.remove(x)
-                except IndexError:      pass
 
-
-
-# a function to turn a string of non-printable characters into a string of
-# hex characters
+# a function to turn a string of non-printable characters
+# into a string of hex characters
 def hexify(str):
 	hexStr = string.hexdigits
 	r = ''
@@ -61,7 +68,6 @@ def hexify(str):
 		i = ord(ch)
 		r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
 	return r
-# hexify()
 
 
 def read_from_clst(file):
@@ -77,7 +83,6 @@ def read_from_clst(file):
 	    myline = myline + line
 	myf.close()
 	return myline
-# read_from_clst
 
 
 def list_bashify(mylist):
@@ -92,6 +97,7 @@ def list_bashify(mylist):
 	mypack=string.join(mypack)
 	return mypack
 
+
 def list_to_string(mylist):
 	if type(mylist)==types.StringType:
 		mypack=[mylist]
@@ -104,6 +110,7 @@ def list_to_string(mylist):
 	mypack=string.join(mypack)
 	return mypack
 
+
 class CatalystError(Exception):
 	def __init__(self, message):
 		if message:
@@ -115,84 +122,83 @@ class CatalystError(Exception):
 			print "!!! catalyst: "+message
 			print
 
+
 def die(msg=None):
 	warn(msg)
 	sys.exit(1)
 
+
 def warn(msg):
 	print "!!! catalyst: "+msg
 
+
 def find_binary(myc):
 	"""look through the environmental path for an executable file named whatever myc is"""
-        # this sucks. badly.
-        p=os.getenv("PATH")
-        if p == None:
-                return None
-        for x in p.split(":"):
-                #if it exists, and is executable
-                if os.path.exists("%s/%s" % (x,myc)) and os.stat("%s/%s" % (x,myc))[0] & 0x0248:
-                        return "%s/%s" % (x,myc)
-        return None
+	# this sucks. badly.
+	p=os.getenv("PATH")
+	if p == None:
+		return None
+	for x in p.split(":"):
+		#if it exists, and is executable
+		if os.path.exists("%s/%s" % (x,myc)) and os.stat("%s/%s" % (x,myc))[0] & 0x0248:
+			return "%s/%s" % (x,myc)
+	return None
+
 
 def spawn_bash(mycommand,env={},debug=False,opt_name=None,**keywords):
 	"""spawn mycommand as an arguement to bash"""
 	args=[BASH_BINARY]
 	if not opt_name:
-	    opt_name=mycommand.split()[0]
+		opt_name=mycommand.split()[0]
 	if "BASH_ENV" not in env:
-	    env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
+		env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
 	if debug:
-	    args.append("-x")
+		args.append("-x")
 	args.append("-c")
 	args.append(mycommand)
 	return spawn(args,env=env,opt_name=opt_name,**keywords)
 
-#def spawn_get_output(mycommand,spawn_type=spawn,raw_exit_code=False,emulate_gso=True, \
-#        collect_fds=[1],fd_pipes=None,**keywords):
 
 def spawn_get_output(mycommand,raw_exit_code=False,emulate_gso=True, \
-        collect_fds=[1],fd_pipes=None,**keywords):
-        """call spawn, collecting the output to fd's specified in collect_fds list
-        emulate_gso is a compatability hack to emulate commands.getstatusoutput's return, minus the
-        requirement it always be a bash call (spawn_type controls the actual spawn call), and minus the
-        'lets let log only stdin and let stderr slide by'.
+	collect_fds=[1],fd_pipes=None,**keywords):
+	"""call spawn, collecting the output to fd's specified in collect_fds list
+	emulate_gso is a compatability hack to emulate commands.getstatusoutput's return, minus the
+	requirement it always be a bash call (spawn_type controls the actual spawn call), and minus the
+	'lets let log only stdin and let stderr slide by'.
 
-        emulate_gso was deprecated from the day it was added, so convert your code over.
-        spawn_type is the passed in function to call- typically spawn_bash, spawn, spawn_sandbox, or spawn_fakeroot"""
-        global selinux_capable
-        pr,pw=os.pipe()
+	emulate_gso was deprecated from the day it was added, so convert your code over.
+	spawn_type is the passed in function to call- typically spawn_bash, spawn, spawn_sandbox, or spawn_fakeroot"""
+	global selinux_capable
+	pr,pw=os.pipe()
 
-        #if type(spawn_type) not in [types.FunctionType, types.MethodType]:
-        #        s="spawn_type must be passed a function, not",type(spawn_type),spawn_type
-        #        raise Exception,s
+	if fd_pipes==None:
+			fd_pipes={}
+			fd_pipes[0] = 0
 
-        if fd_pipes==None:
-                fd_pipes={}
-                fd_pipes[0] = 0
+	for x in collect_fds:
+			fd_pipes[x] = pw
+	keywords["returnpid"]=True
 
-        for x in collect_fds:
-                fd_pipes[x] = pw
-        keywords["returnpid"]=True
+	mypid=spawn_bash(mycommand,fd_pipes=fd_pipes,**keywords)
+	os.close(pw)
+	if type(mypid) != types.ListType:
+			os.close(pr)
+			return [mypid, "%s: No such file or directory" % mycommand.split()[0]]
 
-        mypid=spawn_bash(mycommand,fd_pipes=fd_pipes,**keywords)
-        os.close(pw)
-        if type(mypid) != types.ListType:
-                os.close(pr)
-                return [mypid, "%s: No such file or directory" % mycommand.split()[0]]
+	fd=os.fdopen(pr,"r")
+	mydata=fd.readlines()
+	fd.close()
+	if emulate_gso:
+			mydata=string.join(mydata)
+			if len(mydata) and mydata[-1] == "\n":
+					mydata=mydata[:-1]
+	retval=os.waitpid(mypid[0],0)[1]
+	cleanup(mypid)
+	if raw_exit_code:
+			return [retval,mydata]
+	retval=process_exit_code(retval)
+	return [retval, mydata]
 
-        fd=os.fdopen(pr,"r")
-        mydata=fd.readlines()
-        fd.close()
-        if emulate_gso:
-                mydata=string.join(mydata)
-                if len(mydata) and mydata[-1] == "\n":
-                        mydata=mydata[:-1]
-        retval=os.waitpid(mypid[0],0)[1]
-        cleanup(mypid)
-        if raw_exit_code:
-                return [retval,mydata]
-        retval=process_exit_code(retval)
-        return [retval, mydata]
 
 # base spawn function
 def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,returnpid=False,\
@@ -230,8 +236,8 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 				return None
 			myc = find_binary(myc)
 			if myc == None:
-			    return None
-        mypid=[]
+				return None
+	mypid=[]
 	if logfile:
 		pr,pw=os.pipe()
 		mypid.extend(spawn(('tee','-i','-a',logfile),returnpid=True,fd_pipes={0:pr,1:1,2:2}))
@@ -295,77 +301,77 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 			if x not in trg_fd:
 				try:
 					os.close(x)
-                                except SystemExit, e:
-                                        raise
-                                except:
-                                        pass
+				except SystemExit, e:
+					raise
+				except:
+					pass
 
-                # note this order must be preserved- can't change gid/groups if you change uid first.
-                if selinux_capable and selinux_context:
-                        import selinux
-                        selinux.setexec(selinux_context)
-                if gid:
-                        os.setgid(gid)
-                if groups:
-                        os.setgroups(groups)
-                if uid:
-                        os.setuid(uid)
-                if umask:
-                        os.umask(umask)
-                else:
-                        os.umask(022)
+		# note this order must be preserved- can't change gid/groups if you change uid first.
+		if selinux_capable and selinux_context:
+			import selinux
+			selinux.setexec(selinux_context)
+		if gid:
+			os.setgid(gid)
+		if groups:
+			os.setgroups(groups)
+		if uid:
+			os.setuid(uid)
+		if umask:
+			os.umask(umask)
+		else:
+			os.umask(022)
 
-                try:
-                        #print "execing", myc, myargs
-                        if func_call:
-                                # either use a passed in func for interpretting the results, or return if no exception.
-                                # note the passed in list, and dict are expanded.
-                                if len(mycommand) == 4:
-                                        os._exit(mycommand[3](mycommand[0](*mycommand[1],**mycommand[2])))
-                                try:
-                                        mycommand[0](*mycommand[1],**mycommand[2])
-                                except Exception,e:
-                                        print "caught exception",e," in forked func",mycommand[0]
-                                sys.exit(0)
+		try:
+			#print "execing", myc, myargs
+			if func_call:
+				# either use a passed in func for interpretting the results, or return if no exception.
+				# note the passed in list, and dict are expanded.
+				if len(mycommand) == 4:
+					os._exit(mycommand[3](mycommand[0](*mycommand[1],**mycommand[2])))
+				try:
+					mycommand[0](*mycommand[1],**mycommand[2])
+				except Exception,e:
+					print "caught exception",e," in forked func",mycommand[0]
+				sys.exit(0)
 
-			#os.execvp(myc,myargs)
-                        os.execve(myc,myargs,env)
-                except SystemExit, e:
-                        raise
-                except Exception, e:
-                        if not func_call:
-                                raise str(e)+":\n   "+myc+" "+string.join(myargs)
-                        print "func call failed"
+			os.execve(myc,myargs,env)
+		except SystemExit, e:
+			raise
+		except Exception, e:
+			if not func_call:
+				raise str(e)+":\n   "+myc+" "+string.join(myargs)
+			print "func call failed"
 
-                # If the execve fails, we need to report it, and exit
-                # *carefully* --- report error here
-                os._exit(1)
-                sys.exit(1)
-                return # should never get reached
+		# If the execve fails, we need to report it, and exit
+		# *carefully* --- report error here
+		os._exit(1)
+		sys.exit(1)
+		return # should never get reached
 
-        # if we were logging, kill the pipes.
-        if logfile:
-                os.close(pr)
-                os.close(pw)
+	# if we were logging, kill the pipes.
+	if logfile:
+			os.close(pr)
+			os.close(pw)
 
-        if returnpid:
-                return mypid
+	if returnpid:
+			return mypid
 
-        # loop through pids (typically one, unless logging), either waiting on their death, or waxing them
-        # if the main pid (mycommand) returned badly.
-        while len(mypid):
-                retval=os.waitpid(mypid[-1],0)[1]
-                if retval != 0:
-                        cleanup(mypid[0:-1],block_exceptions=False)
-                        # at this point we've killed all other kid pids generated via this call.
-                        # return now.
-                        if raw_exit_code:
-                                return retval
-                        return process_exit_code(retval,throw_signals=raise_signals)
-                else:
-                        mypid.pop(-1)
-        cleanup(mypid)
-        return 0
+	# loop through pids (typically one, unless logging), either waiting on their death, or waxing them
+	# if the main pid (mycommand) returned badly.
+	while len(mypid):
+		retval=os.waitpid(mypid[-1],0)[1]
+		if retval != 0:
+			cleanup(mypid[0:-1],block_exceptions=False)
+			# at this point we've killed all other kid pids generated via this call.
+			# return now.
+			if raw_exit_code:
+				return retval
+			return process_exit_code(retval,throw_signals=raise_signals)
+		else:
+			mypid.pop(-1)
+	cleanup(mypid)
+	return 0
+
 
 def cmd(mycmd,myexc="",env={}):
 	try:
@@ -376,19 +382,21 @@ def cmd(mycmd,myexc="",env={}):
 	except:
 		raise
 
+
 def process_exit_code(retval,throw_signals=False):
-        """process a waitpid returned exit code, returning exit code if it exit'd, or the
-        signal if it died from signalling
-        if throw_signals is on, it raises a SystemExit if the process was signaled.
-        This is intended for usage with threads, although at the moment you can't signal individual
-        threads in python, only the master thread, so it's a questionable option."""
-        if (retval & 0xff)==0:
-                return retval >> 8 # return exit code
-        else:
-                if throw_signals:
-                        #use systemexit, since portage is stupid about exception catching.
-                        raise SystemExit()
-                return (retval & 0xff) << 8 # interrupted by signal
+	"""process a waitpid returned exit code, returning exit code if it exit'd, or the
+	signal if it died from signalling
+	if throw_signals is on, it raises a SystemExit if the process was signaled.
+	This is intended for usage with threads, although at the moment you can't signal individual
+	threads in python, only the master thread, so it's a questionable option."""
+	if (retval & 0xff)==0:
+		return retval >> 8 # return exit code
+	else:
+		if throw_signals:
+			#use systemexit, since portage is stupid about exception catching.
+			raise SystemExit()
+		return (retval & 0xff) << 8 # interrupted by signal
+
 
 def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and
@@ -398,15 +406,18 @@ def file_locate(settings,filelist,expand=1):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
 		else:
-		    if len(settings[myfile])==0:
-			    raise CatalystError, "File variable \""+myfile+"\" has a length of zero (not specified.)"
-		    if settings[myfile][0]=="/":
-			    if not os.path.exists(settings[myfile]):
-				    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]
-		    elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
-			    settings[myfile]=os.getcwd()+"/"+settings[myfile]
-		    else:
-			    raise CatalystError, "Cannot locate specified "+myfile+": "+settings[myfile]+" (2nd try)"
+			if len(settings[myfile])==0:
+				raise CatalystError("File variable \"" + myfile +
+					"\" has a length of zero (not specified.)")
+			if settings[myfile][0]=="/":
+				if not os.path.exists(settings[myfile]):
+					raise CatalystError("Cannot locate specified " + myfile +
+						": "+settings[myfile])
+			elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
+				settings[myfile]=os.getcwd()+"/"+settings[myfile]
+			else:
+				raise CatalystError("Cannot locate specified " + myfile +
+					": "+settings[myfile]+" (2nd try)" +
 """
 Spec file format:
 
@@ -427,6 +438,8 @@ that the order of multiple-value items is preserved, but the order that the item
 defined are not preserved. In other words, "foo", "bar", "oni" ordering is preserved but "item1"
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
 """
+					)
+
 
 def parse_makeconf(mylines):
 	mymakeconf={}
@@ -449,6 +462,7 @@ def parse_makeconf(mylines):
 			    clean_string = re.sub(r"\"",r"",mobj.group(2))
 			    mymakeconf[mobj.group(1)]=clean_string
 	return mymakeconf
+
 
 def read_makeconf(mymakeconffile):
 	if os.path.exists(mymakeconffile):
@@ -475,9 +489,11 @@ def read_makeconf(mymakeconffile):
 		makeconf={}
 		return makeconf
 
+
 def msg(mymsg,verblevel=1):
 	if verbosity>=verblevel:
 		print mymsg
+
 
 def pathcompare(path1,path2):
 	# Change double slashes to slash
@@ -491,6 +507,7 @@ def pathcompare(path1,path2):
 		return 1
 	return 0
 
+
 def ismount(path):
 	"enhanced to handle bind mounts"
 	if os.path.ismount(path):
@@ -503,6 +520,7 @@ def ismount(path):
 		if pathcompare(path,mysplit[2]):
 			return 1
 	return 0
+
 
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
@@ -522,6 +540,7 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	if messages:
 		raise CatalystError, '\n\tAlso: '.join(messages)
 
+
 def touch(myfile):
 	try:
 		myf=open(myfile,"w")
@@ -529,8 +548,9 @@ def touch(myfile):
 	except IOError:
 		raise CatalystError, "Could not touch "+myfile+"."
 
+
 def countdown(secs=5, doing="Starting"):
-        if secs:
+	if secs:
 		print ">>> Waiting",secs,"seconds before starting..."
 		print ">>> (Control-C to abort)...\n"+doing+" in: ",
 		ticks=range(secs)
@@ -541,14 +561,15 @@ def countdown(secs=5, doing="Starting"):
 			time.sleep(1)
 		print
 
+
 def normpath(mypath):
 	TrailingSlash=False
-        if mypath[-1] == "/":
-	    TrailingSlash=True
-        newpath = os.path.normpath(mypath)
-        if len(newpath) > 1:
-                if newpath[:2] == "//":
-                        newpath = newpath[1:]
+	if mypath[-1] == "/":
+		TrailingSlash=True
+	newpath = os.path.normpath(mypath)
+	if len(newpath) > 1:
+		if newpath[:2] == "//":
+			newpath = newpath[1:]
 	if TrailingSlash:
-	    newpath=newpath+'/'
-        return newpath
+		newpath=newpath+'/'
+	return newpath
