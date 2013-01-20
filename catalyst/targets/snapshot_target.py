@@ -3,10 +3,15 @@ Snapshot target
 """
 
 import os
-from catalyst.support import *
-from generic_stage_target import *
+import shutil
+from stat import ST_UID, ST_GID, ST_MODE
 
-class snapshot_target(generic_stage_target):
+
+from catalyst.support import normpath, cmd
+from catalyst.targets.targetbase import TargetBase
+from catalyst.targets.genbase import GenBase
+
+class snapshot_target(TargetBase, GenBase):
 	"""
 	Builder class for snapshots.
 	"""
@@ -14,8 +19,9 @@ class snapshot_target(generic_stage_target):
 		self.required_values=["version_stamp","target"]
 		self.valid_values=["version_stamp","target"]
 
-		generic_target.__init__(self,myspec,addlargs)
-		self.settings=myspec
+		TargetBase.__init__(self, myspec, addlargs)
+		GenBase.__init__(self,myspec)
+		#self.settings=myspec
 		self.settings["target_subpath"]="portage"
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"] = normpath(st + "/snapshots/"

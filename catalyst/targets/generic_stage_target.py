@@ -1,17 +1,26 @@
-import os,string,imp,types,shutil
-from catalyst.support import *
-from generic_target import *
-from stat import *
-from catalyst.lock import LockDir
 
-from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
-	PORT_LOGDIR_CLEAN)
+import os
+import string
+import imp
+import types
+import shutil
+import sys
+from stat import ST_UID, ST_GID, ST_MODE
 
 # for convienience
 pjoin = os.path.join
 
+from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
+	PORT_LOGDIR_CLEAN)
+from catalyst.support import (CatalystError, msg, file_locate, normpath,
+	touch, cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount)
+from catalyst.targets.targetbase import TargetBase
+from catalyst.targets.clearbase import ClearBase
+from catalyst.targets.genbase import GenBase
+from catalyst.lock import LockDir
 
-class generic_stage_target(generic_target):
+
+class generic_stage_target(TargetBase, ClearBase, GenBase):
 	"""
 	This class does all of the chroot setup, copying of files, etc. It is
 	the driver class for pretty much everything that Catalyst does.
@@ -26,7 +35,9 @@ class generic_stage_target(generic_target):
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 
 		self.set_valid_build_kernel_vars(addlargs)
-		generic_target.__init__(self,myspec,addlargs)
+		TargetBase.__init__(self, myspec, addlargs)
+		GenBase.__init__(self, myspec)
+		ClearBase.__init__(self, myspec)
 
 		"""
 		The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
@@ -1615,143 +1626,5 @@ class generic_stage_target(generic_target):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError,"build aborting due to livecd_update error."
-
-	def clear_chroot(self):
-		myemp=self.settings["chroot_path"]
-		if os.path.isdir(myemp):
-			print "Emptying directory",myemp
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			mystat=os.stat(myemp)
-			#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-			""" There's no easy way to change flags recursively in python """
-			if os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg "+myemp)
-			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
-
-	def clear_packages(self):
-		if "pkgcache" in self.settings["options"]:
-			print "purging the pkgcache ..."
-
-			myemp=self.settings["pkgcache_path"]
-			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
-
-	def clear_kerncache(self):
-		if "kerncache" in self.settings["options"]:
-			print "purging the kerncache ..."
-
-			myemp=self.settings["kerncache_path"]
-			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
-
-	def clear_autoresume(self):
-		""" Clean resume points since they are no longer needed """
-		if "autoresume" in self.settings["options"]:
-			print "Removing AutoResume Points: ..."
-		myemp=self.settings["autoresume_path"]
-		if os.path.isdir(myemp):
-				if "autoresume" in self.settings["options"]:
-					print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				if os.uname()[0] == "FreeBSD":
-					cmd("chflags -R noschg "+myemp,\
-						"Could not remove immutable flag for file "\
-						+myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
-				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
-
-	def gen_contents_file(self,file):
-		if os.path.exists(file+".CONTENTS"):
-			os.remove(file+".CONTENTS")
-		if "contents" in self.settings:
-			contents_map = self.settings["contents_map"]
-			if os.path.exists(file):
-				myf=open(file+".CONTENTS","w")
-				keys={}
-				for i in self.settings["contents"].split():
-					keys[i]=1
-					array=keys.keys()
-					array.sort()
-				for j in array:
-					contents = contents_map.generate_contents(file, j,
-						verbose="VERBOSE" in self.settings)
-					if contents:
-						myf.write(contents)
-				myf.close()
-
-	def gen_digest_file(self,file):
-		if os.path.exists(file+".DIGESTS"):
-			os.remove(file+".DIGESTS")
-		if "digests" in self.settings:
-			hash_map = self.settings["hash_map"]
-			if os.path.exists(file):
-				myf=open(file+".DIGESTS","w")
-				keys={}
-				for i in self.settings["digests"].split():
-					keys[i]=1
-					array=keys.keys()
-					array.sort()
-				for f in [file, file+'.CONTENTS']:
-					if os.path.exists(f):
-						if "all" in array:
-							for k in list(hash_map.hash_map):
-								hash = hash_map.generate_hash(f, hash_ = k,
-									verbose = "VERBOSE" in self.settings)
-								myf.write(hash)
-						else:
-							for j in array:
-								hash = hash_map.generate_hash(f, hash_ = j,
-									verbose = "VERBOSE" in self.settings)
-								myf.write(hash)
-				myf.close()
-
-	def purge(self):
-		countdown(10,"Purging Caches ...")
-		if any(k in self.settings["options"] for k in ("purge","purgeonly","purgetmponly")):
-			print "clearing autoresume ..."
-			self.clear_autoresume()
-
-			print "clearing chroot ..."
-			self.clear_chroot()
-
-			if "PURGETMPONLY" not in self.settings:
-				print "clearing package cache ..."
-				self.clear_packages()
-
-			print "clearing kerncache ..."
-			self.clear_kerncache()
 
 # vim: ts=4 sw=4 sta et sts=4 ai
