@@ -22,11 +22,10 @@ from . import __version__
 import catalyst.config
 import catalyst.util
 from catalyst.support import CatalystError, find_binary, LockInUse
-from catalyst.defaults import (required_build_targets, valid_build_targets,
-	confdefaults)
+from catalyst.defaults import (confdefaults, option_messages,
+	required_build_targets, valid_build_targets)
 from hash_utils import HashMap, HASH_DEFINITIONS
 from contents import ContentsMap, CONTENTS_DEFINITIONS
-
 
 
 conf_values={}
@@ -106,7 +105,10 @@ def parse_config(myconfig):
 	for x in list(confdefaults):
 		if x in myconf:
 			print "Setting",x,"to config file value \""+myconf[x]+"\""
-			conf_values[x]=myconf[x]
+			if x == 'options':
+				conf_values[x] = set(myconf[x].split())
+			else:
+				conf_values[x]=myconf[x]
 		else:
 			print "Setting",x,"to default value \""+confdefaults[x]+"\""
 			conf_values[x]=confdefaults[x]
@@ -114,74 +116,23 @@ def parse_config(myconfig):
 	# add our python base directory to use for loading target arch's
 	conf_values["PythonDir"] = __selfpath__
 
-	# parse out the rest of the options from the config file
-	if "autoresume" in string.split(conf_values["options"]):
-		print "Autoresuming support enabled."
-		conf_values["AUTORESUME"]="1"
 
-	if "bindist" in string.split(conf_values["options"]):
-		print "Binary redistribution enabled"
-		conf_values["BINDIST"]="1"
-	else:
-		print "Bindist is not enabled in catalyst.conf"
-		print "Binary redistribution of generated stages/isos may be prohibited by law."
-		print "Please see the use description for bindist on any package you are including."
+	# print out any options messages
+	for opt in conf_values['options']:
+		if opt in option_messages:
+			print option_messages[opt]
 
-	if "ccache" in string.split(conf_values["options"]):
-		print "Compiler cache support enabled."
-		conf_values["CCACHE"]="1"
+	for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir"]:
+		if key in myconf:
+			conf_values[key] = myconf[key]
 
-	if "clear-autoresume" in string.split(conf_values["options"]):
-		print "Cleaning autoresume flags support enabled."
-		conf_values["CLEAR_AUTORESUME"]="1"
-
-	if "distcc" in string.split(conf_values["options"]):
-		print "Distcc support enabled."
-		conf_values["DISTCC"]="1"
-
-	if "icecream" in string.split(conf_values["options"]):
-		print "Icecream compiler cluster support enabled."
-		conf_values["ICECREAM"]="1"
-
-	if "kerncache" in string.split(conf_values["options"]):
-		print "Kernel cache support enabled."
-		conf_values["KERNCACHE"]="1"
-
-	if "pkgcache" in string.split(conf_values["options"]):
-		print "Package cache support enabled."
-		conf_values["PKGCACHE"]="1"
-
-	if "preserve_libs" in string.split(conf_values["options"]):
-		print "Preserving libs during unmerge."
-		conf_values["PRESERVE_LIBS"]="1"
-
-	if "purge" in string.split(conf_values["options"]):
-		print "Purge support enabled."
-		conf_values["PURGE"]="1"
-
-	if "seedcache" in string.split(conf_values["options"]):
-		print "Seed cache support enabled."
-		conf_values["SEEDCACHE"]="1"
-
-	if "snapcache" in string.split(conf_values["options"]):
-		print "Snapshot cache support enabled."
-		conf_values["SNAPCACHE"]="1"
-
-	if "digests" in myconf:
-		conf_values["digests"]=myconf["digests"]
 	if "contents" in myconf:
 		# replace '-' with '_' (for compatibility with existing configs)
 		conf_values["contents"] = myconf["contents"].replace("-", '_')
 
 	if "envscript" in myconf:
 		print "Envscript support enabled."
-		conf_values["ENVSCRIPT"]=myconf["envscript"]
 
-	if "var_tmpfs_portage" in myconf:
-		conf_values["var_tmpfs_portage"]=myconf["var_tmpfs_portage"];
-
-	if "port_logdir" in myconf:
-		conf_values["port_logdir"]=myconf["port_logdir"];
 
 def import_modules():
 	# import catalyst's own modules
@@ -272,6 +223,8 @@ def main():
 		usage()
 		sys.exit(2)
 
+	options = set()
+
 	run = False
 	for o, a in opts:
 		if o in ("-h", "--help"):
@@ -283,8 +236,8 @@ def main():
 			sys.exit(1)
 
 		if o in ("-d", "--debug"):
-			conf_values["DEBUG"]="1"
-			conf_values["VERBOSE"]="1"
+			conf_values["DEBUG"] = True
+			conf_values["VERBOSE"] = True
 
 		if o in ("-c", "--config"):
 			myconfig=a
@@ -301,7 +254,7 @@ def main():
 			myspecfile=a
 
 		if o in ("-F", "--fetchonly"):
-			conf_values["FETCH"]="1"
+			options.add("fetch")
 
 		if o in ("-v", "--verbose"):
 			conf_values["VERBOSE"]="1"
@@ -317,16 +270,18 @@ def main():
 				mycmdline.append("version_stamp="+a)
 
 		if o in ("-p", "--purge"):
-			conf_values["PURGE"] = "1"
+			options.add("purge")
 
 		if o in ("-P", "--purgeonly"):
-			conf_values["PURGEONLY"] = "1"
+			options.add("purgeonly")
 
 		if o in ("-T", "--purgetmponly"):
-			conf_values["PURGETMPONLY"] = "1"
+			options.add("purgetmponly")
 
 		if o in ("-a", "--clear-autoresume"):
-			conf_values["CLEAR_AUTORESUME"] = "1"
+			options.add("clear-autoresume")
+
+	#print "MAIN: cli options =", options
 
 	if not run:
 		print "!!! catalyst: please specify one of either -f or -C\n"
@@ -335,6 +290,9 @@ def main():
 
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
+
+	conf_values["options"].update(options)
+	#print "MAIN: conf_values['options'] =", conf_values["options"]
 
 	# initialize our contents generator
 	contents_map = ContentsMap(CONTENTS_DEFINITIONS)

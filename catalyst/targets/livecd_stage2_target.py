@@ -48,7 +48,7 @@ class livecd_stage2_target(generic_stage_target):
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -90,7 +90,7 @@ class livecd_stage2_target(generic_stage_target):
 			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
 			invalid_snapshot=False
 
-		if "AUTORESUME" in self.settings:
+		if "autoresume" in self.settings["options"]:
 			if os.path.isdir(self.settings["source_path"]) and \
 				os.path.exists(self.settings["autoresume_path"]+"unpack"):
 				print "Resume point detected, skipping unpack operation..."
@@ -114,7 +114,7 @@ class livecd_stage2_target(generic_stage_target):
 			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
 				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
 
-			if "PKGCACHE" in self.settings:
+			if "pkgcache" in self.settings["options"]:
 				if not os.path.exists(self.settings["pkgcache_path"]):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 
@@ -136,7 +136,7 @@ class livecd_stage2_target(generic_stage_target):
 				"config_profile_link","setup_confdir","portage_overlay",\
 				"bind","chroot_setup","setup_environment","run_local",\
 				"build_kernel"]
-		if "FETCH" not in self.settings:
+		if "fetch" not in self.settings["options"]:
 			self.settings["action_sequence"] += ["bootloader","preclean",\
 				"livecd_update","root_overlay","fsscript","rcupdate","unmerge",\
 				"unbind","remove","empty","target_setup",\
