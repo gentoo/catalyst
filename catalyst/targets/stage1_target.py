@@ -95,7 +95,3 @@ class stage1_target(StageBase):
 		# alter the mount mappings to bind mount proc onto it
 		self.mounts.append("/tmp/stage1root/proc")
 		self.mountmap["/tmp/stage1root/proc"]="/proc"
-
-def register(foo):
-	foo.update({"stage1":stage1_target})
-	return foo

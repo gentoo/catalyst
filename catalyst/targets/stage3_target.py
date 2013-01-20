@@ -26,7 +26,3 @@ class stage3_target(StageBase):
 
 	def set_cleanables(self):
 		StageBase.set_cleanables(self)
-
-def register(foo):
-	foo.update({"stage3":stage3_target})
-	return foo

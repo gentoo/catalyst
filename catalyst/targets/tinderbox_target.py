@@ -44,7 +44,3 @@ class tinderbox_target(StageBase):
 		              "config_profile_link","setup_confdir","bind","chroot_setup",\
 		              "setup_environment","run_local","preclean","unbind","clean",\
 		              "clear_autoresume"]
-
-def register(foo):
-	foo.update({"tinderbox":tinderbox_target})
-	return foo

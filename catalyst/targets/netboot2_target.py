@@ -170,7 +170,3 @@ class netboot2_target(StageBase):
 					"setup_environment","build_packages","root_overlay",\
 					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
 					"remove","empty","unbind","clean","clear_autoresume"]
-
-def register(foo):
-	foo.update({"netboot2":netboot2_target})
-	return foo

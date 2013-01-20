@@ -63,7 +63,3 @@ class stage2_target(StageBase):
 				print "\tUsing an portage overlay for earlier stages could cause build issues."
 				print "\tIf you break it, you buy it. Don't complain to us about it."
 				print "\tDont say we did not warn you\n"
-
-def register(foo):
-	foo.update({"stage2":stage2_target})
-	return foo

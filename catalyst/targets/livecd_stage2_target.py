@@ -154,7 +154,3 @@ class livecd_stage2_target(StageBase):
 				"unbind","remove","empty","target_setup",\
 				"setup_overlay","create_iso"]
 		self.settings["action_sequence"].append("clear_autoresume")
-
-def register(foo):
-	foo.update({"livecd-stage2":livecd_stage2_target})
-	return foo

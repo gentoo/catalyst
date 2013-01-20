@@ -119,7 +119,3 @@ class grp_target(StageBase):
 					"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
 					"setup_environment","run_local","unbind",\
 					"generate_digests","clear_autoresume"]
-
-def register(foo):
-	foo.update({"grp":grp_target})
-	return foo
