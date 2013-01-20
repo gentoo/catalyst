@@ -2,11 +2,11 @@
 
 from catalyst.support import addl_arg_parse
 
-class generic_target:
+class TargetBase(object):
 	"""
-	The toplevel class for generic_stage_target. This is about as generic as we get.
+	The toplevel class for all targets. This is about as generic as we get.
 	"""
-	def __init__(self,myspec,addlargs):
+	def __init__(self, myspec, addlargs):
 		addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
 		self.settings=myspec
 		self.env={}
