@@ -3,9 +3,15 @@ netboot target, version 1
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,string,types
-from catalyst.support import *
-from generic_stage_target import *
+import os
+import types
+
+
+from catalyst.support import (CatalystError, normpath,
+	cmd, list_bashify, file_locate)
+
+from generic_stage_target import generic_stage_target
+
 
 class netboot_target(generic_stage_target):
 	"""
@@ -34,7 +40,7 @@ class netboot_target(generic_stage_target):
 		#	for x in loopy:
 		#		self.required_values.append("netboot/packages/"+x+"/files")
 		except:
-			raise CatalystError,"configuration error in netboot/packages."
+			raise CatalystError("configuration error in netboot/packages.")
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
@@ -62,7 +68,8 @@ class netboot_target(generic_stage_target):
 #			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack,env=self.env)
 #		except CatalystError:
 #			self.unbind()
-#			raise CatalystError,"netboot build aborting due to error."
+#			raise CatalystError("netboot build aborting due to error.",
+#					print_traceback=True)
 
 	def build_busybox(self):
 		# build busybox
@@ -74,7 +81,8 @@ class netboot_target(generic_stage_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 	def copy_files_to_image(self):
 		# create image
@@ -103,7 +111,8 @@ class netboot_target(generic_stage_target):
 				" image " + list_bashify(myfiles),env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 	def create_netboot_files(self):
 		# finish it all up
@@ -111,7 +120,8 @@ class netboot_target(generic_stage_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+" finish",env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 		# end
 		print "netboot: build finished !"

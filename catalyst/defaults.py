@@ -1,7 +1,7 @@
 
 
 # these should never be touched
-required_build_targets = ["generic_target", "generic_stage_target"]
+required_build_targets = ["generic_stage_target"]
 
 # new build types should be added here
 valid_build_targets = ["stage1_target", "stage2_target", "stage3_target",

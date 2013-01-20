@@ -122,7 +122,7 @@ class LockDir:
 		if self.myfd==None:
 			if not os.path.exists(os.path.dirname(self.lockdir)):
 				raise CatalystError("DirectoryNotFound: %s"
-					% os.path.dirname(self.lockdir))
+					% os.path.dirname(self.lockdir), print_traceback=True)
 			if not os.path.exists(self.lockfile):
 				old_mask=os.umask(000)
 				self.myfd = os.open(self.lockfile, os.O_CREAT|os.O_RDWR,0660)
@@ -265,7 +265,8 @@ class LockDir:
 			self.add_hardlock_file_to_cleanup()
 			if not os.path.exists(self.myhardlock):
 				raise CatalystError("FileNotFound: Created lockfile is missing: "
-					"%(filename)s" % {"filename":self.myhardlock})
+					"%(filename)s" % {"filename":self.myhardlock},
+					print_traceback=True)
 			try:
 				os.link(self.myhardlock, self.lockfile)
 			except SystemExit:

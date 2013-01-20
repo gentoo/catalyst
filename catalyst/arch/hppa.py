@@ -1,8 +1,5 @@
 
-import os
-
 from catalyst import builder
-from catalyst.support import *
 
 class generic_hppa(builder.generic):
 	"Abstract base class for all hppa builders"

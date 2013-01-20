@@ -3,8 +3,13 @@ Tinderbox target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+
+import os
+
+
+from catalyst.support import cmd, list_bashify, CatalystError
+from generic_stage_target import generic_stage_target
+
 
 class tinderbox_target(generic_stage_target):
 	"""
@@ -26,7 +31,8 @@ class tinderbox_target(generic_stage_target):
 
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"Tinderbox aborting due to error."
+			raise CatalystError("Tinderbox aborting due to error.",
+				print_traceback=True)
 
 	def set_cleanables(self):
 	    self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/root/*",

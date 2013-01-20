@@ -3,8 +3,16 @@ LiveCD stage1 target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+import os
+import types
+import string
+
+
+from catalyst.support import (normpath,
+	touch, cmd)
+
+from generic_stage_target import generic_stage_target
+
 
 class livecd_stage1_target(generic_stage_target):
 	"""
@@ -37,9 +45,6 @@ class livecd_stage1_target(generic_stage_target):
 
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
-
-	def set_target_path(self):
-		pass
 
 	def set_spec_prefix(self):
 	                self.settings["spec_prefix"]="livecd"

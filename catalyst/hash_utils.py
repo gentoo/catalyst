@@ -49,8 +49,8 @@ class HashMap(object):
 				verbose
 				)
 		except:
-			raise CatalystError,"Error generating hash, is appropriate " + \
-				"utility installed on your system?"
+			raise CatalystError("Error generating hash, is appropriate " + \
+				"utility installed on your system?", traceback=True)
 
 
 	def calc_hash(self, file_, hash_, verbose=False):
@@ -71,7 +71,7 @@ class HashMap(object):
 		mylines=mylines[0].split()
 		result=mylines[0]
 		if verbose:
-			print _hash_.id + " (%s) = %s" % (file_, result)
+			print _hash.id + " (%s) = %s" % (file_, result)
 		return result
 
 

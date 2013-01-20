@@ -3,9 +3,13 @@ LiveCD stage2 target, builds upon previous LiveCD stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,string,types,stat,shutil
-from catalyst.support import *
-from generic_stage_target import *
+import os
+
+
+from catalyst.support import (normpath, file_locate, CatalystError, cmd,
+	read_from_clst, touch)
+from generic_stage_target import generic_stage_target
+
 
 class livecd_stage2_target(generic_stage_target):
 	"""
@@ -35,11 +39,15 @@ class livecd_stage2_target(generic_stage_target):
 	def set_source_path(self):
 		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
-			self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
+			self.settings["source_path_hash"] = \
+				self.settings["hash_map"].generate_hash(
+					self.settings["source_path"])
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
-			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
+			raise CatalystError("Source Path: " +
+				self.settings["source_path"] + " does not exist.",
+					print_traceback=True)
 
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
@@ -65,7 +73,10 @@ class livecd_stage2_target(generic_stage_target):
 				myf=open(self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf","a")
 			except:
 				self.unbind()
-				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf."
+				raise CatalystError("Couldn't open " +
+					self.settings["chroot_path"] +
+					"/etc/modprobe.d/blacklist.conf.",
+					print_traceback=True)
 
 			myf.write("\n#Added by Catalyst:")
 			# workaround until config.py is using configparser
@@ -117,7 +128,10 @@ class livecd_stage2_target(generic_stage_target):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 
 			if not display_msg:
-				raise CatalystError,"Could not find appropriate source. Please check the 'source_subpath' setting in the spec file."
+				raise CatalystError("Could not find appropriate source.\n"
+					"Please check the 'source_subpath' "
+					"setting in the spec file.",
+					print_traceback=True)
 
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)

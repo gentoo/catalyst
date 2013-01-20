@@ -3,9 +3,17 @@ netboot target, version 2
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,string,types
-from catalyst.support import *
-from generic_stage_target import *
+import os
+import types
+import shutil
+from stat import ST_UID, ST_GID, ST_MODE
+
+
+from catalyst.support import (CatalystError, normpath,
+	touch, cmd, list_bashify)
+
+from generic_stage_target import generic_stage_target
+
 
 class netboot2_target(generic_stage_target):
 	"""
@@ -36,7 +44,7 @@ class netboot2_target(generic_stage_target):
 				for x in loopy:
 					self.valid_values.append("netboot2/packages/"+x+"/files")
 		except:
-			raise CatalystError,"configuration error in netboot2/packages."
+			raise CatalystError("configuration error in netboot2/packages.")
 
 		generic_stage_target.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
@@ -91,7 +99,8 @@ class netboot2_target(generic_stage_target):
 					" image " + list_bashify(myfiles),env=self.env)
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"Failed to copy files to image!"
+				raise CatalystError("Failed to copy files to image!",
+					print_traceback=True)
 
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
@@ -117,7 +126,8 @@ class netboot2_target(generic_stage_target):
 			print ">>> Netboot Build Finished!"
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"Failed to move kernel images!"
+			raise CatalystError("Failed to move kernel images!",
+				print_traceback=True)
 
 	def remove(self):
 		if "autoresume" in self.settings["options"] \

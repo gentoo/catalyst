@@ -3,8 +3,12 @@ stage2 target, builds upon previous stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+import os
+
+
+from catalyst.support import normpath, list_to_string
+from generic_stage_target import generic_stage_target
+
 
 class stage2_target(generic_stage_target):
 	"""
