@@ -6,6 +6,7 @@ netboot target, version 1
 import os
 import types
 
+
 from catalyst.support import (CatalystError, normpath,
 	cmd, list_bashify, file_locate)
 
@@ -39,7 +40,7 @@ class netboot(StageBase):
 		#	for x in loopy:
 		#		self.required_values.append("netboot/packages/"+x+"/files")
 		except:
-			raise CatalystError,"configuration error in netboot/packages."
+			raise CatalystError("configuration error in netboot/packages.")
 
 		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
@@ -67,7 +68,8 @@ class netboot(StageBase):
 #			cmd(self.settings["controller_file"]+" packages "+mypack,env=self.env)
 #		except CatalystError:
 #			self.unbind()
-#			raise CatalystError,"netboot build aborting due to error."
+#			raise CatalystError("netboot build aborting due to error.",
+#					print_traceback=True)
 
 	def build_busybox(self):
 		# build busybox
@@ -79,7 +81,8 @@ class netboot(StageBase):
 			cmd(self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 	def copy_files_to_image(self):
 		# create image
@@ -108,7 +111,8 @@ class netboot(StageBase):
 				" image " + list_bashify(myfiles),env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 	def create_netboot_files(self):
 		# finish it all up
@@ -116,7 +120,8 @@ class netboot(StageBase):
 			cmd(self.settings["controller_file"]+" finish",env=self.env)
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"netboot build aborting due to error."
+			raise CatalystError("netboot build aborting due to error.",
+				print_traceback=True)
 
 		# end
 		print "netboot: build finished !"

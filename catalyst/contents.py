@@ -69,10 +69,10 @@ class ContentsMap(object):
 				func = getattr(self, '_%s_' % self.contents_map[getter].func)
 				return func(file_, self.contents_map[getter].cmd, verbose)
 		except:
-			raise CatalystError,\
-				"Error generating contents, is appropriate utility " +\
-				"(%s) installed on your system?" \
-				% (self.contents_map[getter].cmd)
+			raise CatalystError(
+				"Error generating contents, is appropriate utility " +
+				"(%s) installed on your system?"
+				% (self.contents_map[getter].cmd), print_traceback=True)
 
 
 	@staticmethod

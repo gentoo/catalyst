@@ -29,7 +29,8 @@ class tinderbox(StageBase):
 
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"Tinderbox aborting due to error."
+			raise CatalystError("Tinderbox aborting due to error.",
+				print_traceback=True)
 
 	def set_cleanables(self):
 		self.settings['cleanables'] = [

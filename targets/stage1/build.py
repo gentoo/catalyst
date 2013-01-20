@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
-import os,portage,sys
+import os
+import sys
+import portage
 
 # this loads files from the profiles ...
 # wrap it here to take care of the different

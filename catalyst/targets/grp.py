@@ -25,7 +25,7 @@ class grp(StageBase):
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["grp/use"])
 		if "grp" not in addlargs:
-			raise CatalystError,"Required value \"grp\" not specified in spec."
+			raise CatalystError("Required value \"grp\" not specified in spec.")
 
 		self.required_values.extend(["grp"])
 		if type(addlargs["grp"])==types.StringType:
@@ -66,7 +66,8 @@ class grp(StageBase):
 
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"GRP build aborting due to error."
+				raise CatalystError("GRP build aborting due to error.",
+					print_traceback=True)
 
 	def set_use(self):
 		StageBase.set_use(self)

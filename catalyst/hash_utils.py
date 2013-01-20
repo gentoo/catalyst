@@ -80,8 +80,8 @@ class HashMap(object):
 				verbose
 				)
 		except:
-			raise CatalystError,"Error generating hash, is appropriate " + \
-				"utility installed on your system?"
+			raise CatalystError("Error generating hash, is appropriate " + \
+				"utility installed on your system?", traceback=True)
 
 
 	def calc_hash(self, file_, hash_, verbose=False):

@@ -43,7 +43,7 @@ class netboot2(StageBase):
 				for x in loopy:
 					self.valid_values.append("netboot2/packages/"+x+"/files")
 		except:
-			raise CatalystError,"configuration error in netboot2/packages."
+			raise CatalystError("configuration error in netboot2/packages.")
 
 		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
@@ -98,7 +98,8 @@ class netboot2(StageBase):
 					" image " + list_bashify(myfiles),env=self.env)
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"Failed to copy files to image!"
+				raise CatalystError("Failed to copy files to image!",
+					print_traceback=True)
 
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
@@ -124,7 +125,8 @@ class netboot2(StageBase):
 			print ">>> Netboot Build Finished!"
 		except CatalystError:
 			self.unbind()
-			raise CatalystError,"Failed to move kernel images!"
+			raise CatalystError("Failed to move kernel images!",
+				print_traceback=True)
 
 	def remove(self):
 		if "autoresume" in self.settings["options"] \

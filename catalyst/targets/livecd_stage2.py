@@ -44,7 +44,9 @@ class livecd_stage2(StageBase):
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):
-			raise CatalystError,"Source Path: "+self.settings["source_path"]+" does not exist."
+			raise CatalystError("Source Path: " +
+				self.settings["source_path"] + " does not exist.",
+					print_traceback=True)
 
 	def set_spec_prefix(self):
 	    self.settings["spec_prefix"]="livecd"
@@ -70,7 +72,10 @@ class livecd_stage2(StageBase):
 				myf=open(self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf","a")
 			except:
 				self.unbind()
-				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf."
+				raise CatalystError("Couldn't open " +
+					self.settings["chroot_path"] +
+					"/etc/modprobe.d/blacklist.conf.",
+					print_traceback=True)
 
 			myf.write("\n#Added by Catalyst:")
 			# workaround until config.py is using configparser
@@ -122,7 +127,10 @@ class livecd_stage2(StageBase):
 					os.makedirs(self.settings["pkgcache_path"],0755)
 
 			if not display_msg:
-				raise CatalystError,"Could not find appropriate source. Please check the 'source_subpath' setting in the spec file."
+				raise CatalystError("Could not find appropriate source.\n"
+					"Please check the 'source_subpath' "
+					"setting in the spec file.",
+					print_traceback=True)
 
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)

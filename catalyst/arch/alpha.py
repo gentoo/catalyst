@@ -1,8 +1,7 @@
 
-import os
 
 from catalyst import builder
-from catalyst.support import *
+
 
 class generic_alpha(builder.generic):
 	"abstract base class for all alpha builders"

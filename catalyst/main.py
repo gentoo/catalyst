@@ -8,10 +8,7 @@
 
 import os
 import sys
-import imp
-import string
 import getopt
-import pdb
 import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
@@ -168,7 +165,8 @@ def build_target(addlargs):
 	except:
 		print "Target run() exception:  Python traceback output follows:"
 		catalyst.util.print_traceback()
-		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
+		print "!!! catalyst: Error encountered during run of target " + \
+			addlargs["target"]
 		sys.exit(1)
 
 def main():
@@ -193,14 +191,9 @@ def main():
 		usage()
 		sys.exit(2)
 
-	# defaults for commandline opts
-	debug=False
-	verbose=False
-	fetch=False
 	myconfig=""
 	myspecfile=""
 	mycmdline=[]
-	myopts=[]
 
 	# check preconditions
 	if len(opts) == 0:
@@ -341,7 +334,7 @@ def main():
 			sys.exit(1)
 
 	if "target" not in addlargs:
-		raise CatalystError, "Required value \"target\" not specified."
+		raise CatalystError("Required value \"target\" not specified.")
 
 	# everything is setup, so the build is a go
 	try:

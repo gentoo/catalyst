@@ -98,7 +98,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
 			if hostmachine not in machinemap:
-				raise CatalystError, "Unknown host machine type "+hostmachine
+				raise CatalystError("Unknown host machine type "+hostmachine)
 			self.settings["hostarch"]=machinemap[hostmachine]
 		else:
 			hostmachine = self.settings["subarch"]
@@ -110,7 +110,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			buildmachine = os.uname()[4]
 		if buildmachine not in machinemap:
-			raise CatalystError, "Unknown build machine type "+buildmachine
+			raise CatalystError("Unknown build machine type "+buildmachine)
 		self.settings["buildarch"]=machinemap[buildmachine]
 		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
 			self.settings["buildarch"])
@@ -237,9 +237,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			else:
 				ccdir="/root/.ccache"
 			if not os.path.isdir(ccdir):
-				raise CatalystError,\
+				raise CatalystError(
 					"Compiler cache support can't be enabled (can't find "+\
-					ccdir+")"
+					ccdir+")")
 			self.mounts.append("ccache")
 			self.mountmap["ccache"] = ccdir
 			""" for the chroot: """
@@ -296,8 +296,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_source_subpath(self):
 		if type(self.settings["source_subpath"])!=types.StringType:
-			raise CatalystError,\
-				"source_subpath should have been a string. Perhaps you have something wrong in your spec file?"
+			raise CatalystError(
+				"source_subpath should have been a string. Perhaps you have " +\
+				"something wrong in your spec file?")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
@@ -498,8 +499,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["iso_volume_id"]=\
 				self.settings[self.settings["spec_prefix"]+"/volid"]
 			if len(self.settings["iso_volume_id"])>32:
-				raise CatalystError,\
-					"ISO volume ID must not exceed 32 characters."
+				raise CatalystError(
+					"ISO volume ID must not exceed 32 characters.")
 		else:
 			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"]
 
@@ -658,11 +659,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					""" Try to umount stuff ourselves """
 					self.unbind()
 					if ismount(target):
-						raise CatalystError, "Auto-unbind failed for " + target
+						raise CatalystError("Auto-unbind failed for " + target)
 					else:
 						print "Auto-unbind successful..."
 				except CatalystError:
-					raise CatalystError, "Unable to auto-unbind " + target
+					raise CatalystError("Unable to auto-unbind " + target)
 
 	def unpack(self):
 		unpack=True
@@ -755,8 +756,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					invalid_snapshot=True
 				elif os.path.isdir(self.settings["source_path"]):
 					""" We should never reach this, so something is very wrong """
-					raise CatalystError,\
-						"source path is a dir but seedcache is not enabled"
+					raise CatalystError(
+						"source path is a dir but seedcache is not enabled")
 
 		if unpack:
 			self.mount_safety_check()
@@ -968,7 +969,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					retval=os.system(cmd)
 			if retval!=0:
 				self.unbind()
-				raise CatalystError,"Couldn't bind mount " + src
+				raise CatalystError("Couldn't bind mount " + src)
 
 	def unbind(self):
 		ouch=0
@@ -1013,8 +1014,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			this to potentially prevent an upcoming bash stage cleanup script
 			from wiping our bind mounts.
 			"""
-			raise CatalystError,\
-				"Couldn't umount one or more bind-mounts; aborting for safety."
+			raise CatalystError(
+				"Couldn't umount one or more bind-mounts; aborting for safety.")
 
 	def chroot_setup(self):
 		self.makeconf=read_makeconf(normpath(self.settings["chroot_path"]+
@@ -1038,8 +1039,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			""" Copy over the envscript, if applicable """
 			if "envscript" in self.settings:
 				if not os.path.exists(self.settings["envscript"]):
-					raise CatalystError,\
-						"Can't find envscript "+self.settings["envscript"]
+					raise CatalystError(
+						"Can't find envscript " + self.settings["envscript"],
+						print_traceback=True)
 
 				print "\nWarning!!!!"
 				print "\tOverriding certain env variables may cause catastrophic failure."
@@ -1250,7 +1252,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			except:
 				self.unbind()
-				raise CatalystError, "Build failed, could not execute preclean"
+				raise CatalystError("Build failed, could not execute preclean")
 
 	def capture(self):
 		capture_resume = pjoin(self.settings["autoresume_path"], "capture")
@@ -1293,7 +1295,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"Stage build aborting due to error."
+				raise CatalystError("Stage build aborting due to error.",
+					print_traceback=True)
 
 	def setup_environment(self):
 		"""
@@ -1466,8 +1469,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						touch(build_packages_resume)
 					except CatalystError:
 						self.unbind()
-						raise CatalystError,self.settings["spec_prefix"]+\
-							"build aborting due to error."
+						raise CatalystError(self.settings["spec_prefix"]+\
+							"build aborting due to error.")
 
 	def build_kernel(self):
 		'''Build all configured kernels'''
@@ -1493,8 +1496,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					touch(build_kernel_resume)
 				except CatalystError:
 					self.unbind()
-					raise CatalystError,\
-						"build aborting due to kernel build error."
+					raise CatalystError(
+						"build aborting due to kernel build error.",
+						print_traceback=True)
 
 	def _build_kernel(self, kname):
 		"Build a single configured kernel by name"
@@ -1557,10 +1561,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "boot/kernel/"+kname+"/config" in self.settings:
 			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
 				self.unbind()
-				raise CatalystError,\
+				raise CatalystError(
 					"Can't find kernel config: "+\
 					self.settings["boot/kernel/"+kname+\
-					"/config"]
+					"/config"])
 
 			try:
 				cmd("cp "+self.settings["boot/kernel/"+kname+\
@@ -1608,7 +1612,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				touch(bootloader_resume)
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"Script aborting due to error."
+				raise CatalystError("Script aborting due to error.")
 
 	def livecd_update(self):
 		livecd_update_resume = pjoin(self.settings["autoresume_path"],
@@ -1624,6 +1628,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			except CatalystError:
 				self.unbind()
-				raise CatalystError,"build aborting due to livecd_update error."
+				raise CatalystError("build aborting due to livecd_update error.")
 
 # vim: ts=4 sw=4 sta et sts=4 ai

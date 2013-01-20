@@ -8,7 +8,6 @@ import traceback
 import time
 from subprocess import Popen
 
-
 from catalyst.defaults import verbosity, valid_config_file_values
 
 selinux_capable = False
@@ -50,7 +49,7 @@ def read_from_clst(file):
 		myf=open(file,"r")
 	except:
 		return -1
-		#raise CatalystError, "Could not open file "+file
+		#raise CatalystError("Could not open file "+file)
 	for line in myf.readlines():
 		#line = string.replace(line, "\n", "") # drop newline
 		myline = myline + line
@@ -85,12 +84,14 @@ def list_to_string(mylist):
 
 
 class CatalystError(Exception):
-	def __init__(self, message):
+	def __init__(self, message, print_traceback=False):
 		if message:
-			(type,value)=sys.exc_info()[:2]
-			if value!=None:
-				print
-				print traceback.print_exc(file=sys.stdout)
+			if print_traceback:
+				(type,value)=sys.exc_info()[:2]
+				if value!=None:
+					print
+					print "Traceback valuse found.  listing..."
+					print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
 			print
@@ -147,17 +148,17 @@ def file_locate(settings,filelist,expand=1):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
 		else:
-			if len(settings[myfile])==0:
-				raise CatalystError("File variable \"" + myfile +
-					"\" has a length of zero (not specified.)")
-			if settings[myfile][0]=="/":
-				if not os.path.exists(settings[myfile]):
-					raise CatalystError("Cannot locate specified " + myfile +
-						": "+settings[myfile])
-			elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
-				settings[myfile]=os.getcwd()+"/"+settings[myfile]
-			else:
-				raise CatalystError("Cannot locate specified " + myfile +
+		    if len(settings[myfile])==0:
+			    raise CatalystError("File variable \"" + myfile +
+					"\" has a length of zero (not specified.)", print_traceback=True)
+		    if settings[myfile][0]=="/":
+			    if not os.path.exists(settings[myfile]):
+				    raise CatalystError("Cannot locate specified " + myfile +
+						": "+settings[myfile], print_traceback=True)
+		    elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
+			    settings[myfile]=os.getcwd()+"/"+settings[myfile]
+		    else:
+			    raise CatalystError("Cannot locate specified " + myfile +
 					": "+settings[myfile]+" (2nd try)" +
 """
 Spec file format:
@@ -178,9 +179,8 @@ would contain an ordered list as well: [ "meep", "bark", "gleep", "moop" ]. It's
 that the order of multiple-value items is preserved, but the order that the items themselves are
 defined are not preserved. In other words, "foo", "bar", "oni" ordering is preserved but "item1"
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
-"""
-					)
-
+""",
+					print_traceback=True)
 
 def parse_makeconf(mylines):
 	mymakeconf={}
@@ -225,7 +225,8 @@ def read_makeconf(mymakeconffile):
 						myf.close()
 						return parse_makeconf(mylines)
 		except:
-			raise CatalystError, "Could not parse make.conf file "+mymakeconffile
+			raise CatalystError("Could not parse make.conf file " +
+				mymakeconffile, print_traceback=True)
 	else:
 		makeconf={}
 		return makeconf
@@ -279,7 +280,7 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 			messages.append("Required argument \""+x+"\" not specified.")
 
 	if messages:
-		raise CatalystError, '\n\tAlso: '.join(messages)
+		raise CatalystError('\n\tAlso: '.join(messages))
 
 
 def touch(myfile):
@@ -287,7 +288,7 @@ def touch(myfile):
 		myf=open(myfile,"w")
 		myf.close()
 	except IOError:
-		raise CatalystError, "Could not touch "+myfile+"."
+		raise CatalystError("Could not touch "+myfile+".", print_traceback=True)
 
 
 def countdown(secs=5, doing="Starting"):

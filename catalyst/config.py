@@ -1,6 +1,6 @@
 
 import re
-from catalyst.support import *
+from catalyst.support import CatalystError
 
 class ParserBase:
 
@@ -27,7 +27,8 @@ class ParserBase:
 		try:
 			myf = open(filename, "r")
 		except:
-			raise CatalystError, "Could not open file " + filename
+			raise CatalystError("Could not open file " + filename,
+				print_traceback=True)
 		self.lines = myf.readlines()
 		myf.close()
 		self.filename = filename
@@ -42,7 +43,7 @@ class ParserBase:
 		cur_array = []
 
 		trailing_comment=re.compile('\s*#.*$')
-		white_space=re.compile('\s+')
+		#white_space=re.compile('\s+')
 
 		for x, myline in enumerate(self.lines):
 			myline = myline.strip()
@@ -84,7 +85,7 @@ class ParserBase:
 #					cur_array += mobjs
 					cur_array += myline.split()
 				else:
-					raise CatalystError, "Syntax error: " + x
+					raise CatalystError("Syntax error: " + x, print_traceback=True)
 
 			# XXX: Do we really still need this "single value is a string" behavior?
 			if len(cur_array) == 2:

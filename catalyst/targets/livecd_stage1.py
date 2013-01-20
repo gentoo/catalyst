@@ -7,6 +7,7 @@ import os
 import types
 import string
 
+
 from catalyst.support import (normpath,
 	touch, cmd)
 
@@ -44,9 +45,6 @@ class livecd_stage1(StageBase):
 
 			if not os.path.exists(self.settings["target_path"]):
 				os.makedirs(self.settings["target_path"])
-
-	def set_target_path(self):
-		pass
 
 	def set_spec_prefix(self):
 	                self.settings["spec_prefix"]="livecd"
