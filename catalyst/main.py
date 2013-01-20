@@ -21,7 +21,8 @@ sys.path.append(__selfpath__ + "/modules")
 
 import catalyst.config
 import catalyst.util
-from catalyst.support import CatalystError, find_binary, LockInUse
+from catalyst.lock import LockInUse
+from catalyst.support import CatalystError, find_binary
 from catalyst.defaults import (required_build_targets, valid_build_targets,
 	hash_definitions, confdefaults, option_messages
 	)
