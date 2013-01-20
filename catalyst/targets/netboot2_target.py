@@ -45,7 +45,7 @@ class netboot2_target(generic_stage_target):
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -63,7 +63,7 @@ class netboot2_target(generic_stage_target):
 		myfiles=[]
 
 		# check for autoresume point
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"copy_files_to_image"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
@@ -96,7 +96,7 @@ class netboot2_target(generic_stage_target):
 			touch(self.settings["autoresume_path"]+"copy_files_to_image")
 
 	def setup_overlay(self):
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
@@ -120,7 +120,7 @@ class netboot2_target(generic_stage_target):
 			raise CatalystError,"Failed to move kernel images!"
 
 	def remove(self):
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"remove"):
 			print "Resume point detected, skipping remove operation..."
 		else:
@@ -132,7 +132,7 @@ class netboot2_target(generic_stage_target):
 					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
 
 	def empty(self):
-		if "AUTORESUME" in self.settings \
+		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"empty"):
 			print "Resume point detected, skipping empty operation..."
 		else:

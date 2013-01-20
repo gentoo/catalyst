@@ -32,8 +32,8 @@ class stage4_target(generic_stage_target):
 					"clean"]
 
 #		if "TARBALL" in self.settings or \
-#			"FETCH" not in self.settings:
-		if "FETCH" not in self.settings:
+#			"fetch" not in self.settings['options']:
+		if "fetch" not in self.settings['options']:
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
 

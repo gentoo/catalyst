@@ -13,10 +13,9 @@ valid_build_targets = ["stage1_target", "stage2_target", "stage3_target",
 required_config_file_values = ["storedir", "sharedir", "distdir", "portdir"]
 
 valid_config_file_values = required_config_file_values[:]
-valid_config_file_values.extend(["PKGCACHE", "KERNCACHE", "CCACHE", "DISTCC",
-	"ICECREAM", "ENVSCRIPT", "AUTORESUME", "FETCH", "CLEAR_AUTORESUME",
-	"options", "DEBUG", "VERBOSE", "PURGE", "PURGEONLY", "SNAPCACHE",
-	"snapshot_cache", "hash_function", "digests", "contents", "SEEDCACHE"
+valid_config_file_values.extend([ "distcc", "envscript",
+	"options", "DEBUG", "VERBOSE",
+	"snapshot_cache", "hash_function", "digests", "contents"
 	])
 
 verbosity = 1
@@ -81,3 +80,18 @@ confdefaults={
 	"storedir": "/var/tmp/catalyst",
 	}
 
+# legend:  key: message
+option_messages = {
+	"autoresume": "Autoresuming support enabled.",
+	"ccache": "Compiler cache support enabled.",
+	"clear-autoresume": "Cleaning autoresume flags support enabled.",
+	#"compress": "Compression enabled.",
+	"distcc": "Distcc support enabled.",
+	"icecream": "Icecream compiler cluster support enabled.",
+	"kerncache": "Kernel cache support enabled.",
+	"pkgcache": "Package cache support enabled.",
+	"purge": "Purge support enabled.",
+	"seedcache": "Seed cache support enabled.",
+	"snapcache": "Snapshot cache support enabled.",
+	#"tarball": "Tarball creation enabled.",
+	}
