@@ -11,7 +11,7 @@ from catalyst.support import normpath, cmd
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.genbase import GenBase
 
-class snapshot_target(TargetBase, GenBase):
+class snapshot(TargetBase, GenBase):
 	"""
 	Builder class for snapshots.
 	"""
@@ -91,7 +91,3 @@ class snapshot_target(TargetBase, GenBase):
 			os.makedirs(myemp,0755)
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])
-
-def register(foo):
-	foo.update({"snapshot":snapshot_target})
-	return foo

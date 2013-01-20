@@ -127,7 +127,3 @@ class netboot_target(StageBase):
 						"setup_environment","build_packages","build_busybox",\
 						"build_kernel","copy_files_to_image",\
 						"clean","create_netboot_files","unbind","clear_autoresume"]
-
-def register(foo):
-	foo.update({"netboot":netboot_target})
-	return foo

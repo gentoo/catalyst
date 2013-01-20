@@ -76,7 +76,3 @@ class livecd_stage1_target(StageBase):
 				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
 		else:
 			StageBase.set_pkgcache_path(self)
-
-def register(foo):
-	foo.update({"livecd-stage1":livecd_stage1_target})
-	return foo

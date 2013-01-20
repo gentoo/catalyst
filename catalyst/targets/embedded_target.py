@@ -45,7 +45,3 @@ class embedded_target(StageBase):
 	def set_root_path(self):
 		self.settings["root_path"]=normpath("/tmp/mergeroot")
 		print "embedded root path is "+self.settings["root_path"]
-
-def register(foo):
-	foo.update({"embedded":embedded_target})
-	return foo

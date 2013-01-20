@@ -16,20 +16,19 @@ import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
-sys.path.append(__selfpath__ + "/modules")
 
 from . import __version__
 import catalyst.config
 import catalyst.util
+from catalyst.contents import ContentsMap, CONTENTS_DEFINITIONS
+from catalyst.defaults import confdefaults, option_messages
+from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
 from catalyst.lock import LockInUse
 from catalyst.support import CatalystError, find_binary
-from catalyst.defaults import (confdefaults, option_messages,
-	required_build_targets, valid_build_targets)
-from hash_utils import HashMap, HASH_DEFINITIONS
-from contents import ContentsMap, CONTENTS_DEFINITIONS
 
 
 conf_values={}
+
 
 def usage():
 	print """Usage catalyst [options] [-C variable=value...] [ -s identifier]
@@ -135,59 +134,40 @@ def parse_config(myconfig):
 		print "Envscript support enabled."
 
 
-def import_modules():
-	# import catalyst's own modules
-	# (i.e. stage and the arch modules)
-	targetmap={}
-
+def import_module(target):
+	"""
+	import catalyst's own modules
+	(i.e. targets and the arch modules)
+	"""
 	try:
-		module_dir = __selfpath__ + "/targets/"
-		for x in required_build_targets:
-			try:
-				fh=open(module_dir + x + ".py")
-				module=imp.load_module(x, fh,"targets/" + x + ".py",
-					(".py", "r", imp.PY_SOURCE))
-				fh.close()
-
-			except IOError:
-				raise CatalystError, "Can't find " + x + ".py plugin in " + \
-					module_dir
-		for x in valid_build_targets:
-			try:
-				fh=open(module_dir + x + ".py")
-				module=imp.load_module(x, fh, "targets/" + x + ".py",
-					(".py", "r", imp.PY_SOURCE))
-				module.register(targetmap)
-				fh.close()
-
-			except IOError:
-				raise CatalystError,"Can't find " + x + ".py plugin in " + \
-					module_dir
-
+		mod_name = "catalyst.targets." + target
+		module = __import__(mod_name, [],[], ["not empty"])
 	except ImportError as e:
-		print "!!! catalyst: Python modules not found in "+\
-			module_dir + "; exiting."
-		print e
+		print "!!! catalyst: Python module import error: %s " % target + \
+			"in catalyst/targets/ ... exiting."
+		print "ERROR was: ", e
 		sys.exit(1)
+	return module
 
-	return targetmap
 
-def build_target(addlargs, targetmap):
+def build_target(addlargs):
 	try:
-		if addlargs["target"] not in targetmap:
-			raise CatalystError,"Target \""+addlargs["target"]+"\" not available."
+		module = import_module(addlargs["target"])
+		target = getattr(module, addlargs["target"])(conf_values, addlargs)
+	except AttributeError:
+		raise CatalystError(
+			"Target \"%s\" not available." % addlargs["target"],
+			print_traceback=True)
 
-		mytarget=targetmap[addlargs["target"]](conf_values, addlargs)
-
-		mytarget.run()
-
+	try:
+		target.run()
 	except:
+		print "Target run() exception:  Python traceback output follows:"
 		catalyst.util.print_traceback()
 		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
 		sys.exit(1)
 
 def main():
-	targetmap={}
 
 	version()
 	if os.getuid() != 0:
@@ -341,9 +321,6 @@ def main():
 			print "Catalyst aborting...."
 			sys.exit(2)
 
-	# import the rest of the catalyst modules
-	targetmap=import_modules()
-
 	addlargs={}
 
 	if myspecfile:
@@ -364,7 +341,7 @@ def main():
 
 	# everything is setup, so the build is a go
 	try:
-		build_target(addlargs, targetmap)
+		build_target(addlargs)
 
 	except CatalystError:
 		print
