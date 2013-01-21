@@ -207,9 +207,7 @@ def main():
 		usage()
 		sys.exit(2)
 
-	# initialize it if it's not already
-	if 'options' not in conf_values:
-		conf_values['options'] = set()
+	options = set()
 
 	run = False
 	for o, a in opts:
@@ -240,7 +238,7 @@ def main():
 			myspecfile=a
 
 		if o in ("-F", "--fetchonly"):
-			conf_values['options'].add("fetch")
+			options.add("fetch")
 
 		if o in ("-v", "--verbose"):
 			conf_values["VERBOSE"]="1"
@@ -256,16 +254,18 @@ def main():
 				mycmdline.append("version_stamp="+a)
 
 		if o in ("-p", "--purge"):
-			conf_values['options'].add("purge")
+			options.add("purge")
 
 		if o in ("-P", "--purgeonly"):
-			conf_values['options'].add("purgeonly")
+			options.add("purgeonly")
 
 		if o in ("-T", "--purgetmponly"):
-			conf_values['options'].add("purgetmponly")
+			options.add("purgetmponly")
 
 		if o in ("-a", "--clear-autoresume"):
-			conf_values['options'].add("clear-autoresume")
+			options.add("clear-autoresume")
+
+	#print "MAIN: cli options =", options
 
 	if not run:
 		print "!!! catalyst: please specify one of either -f or -C\n"
@@ -274,6 +274,9 @@ def main():
 
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
+
+	conf_values["options"].update(options)
+	#print "MAIN: conf_values['options'] =", conf_values["options"]
 
 	# initialize our contents generator
 	contents_map = ContentsMap(contents_definitions)
