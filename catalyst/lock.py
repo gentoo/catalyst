@@ -4,7 +4,10 @@ import fcntl
 import errno
 import sys
 import time
-from catalyst.support import CatalystError
+
+
+from catalyst.support import CatalystError, normpath
+
 
 def writemsg(mystr):
 	sys.stderr.write(mystr)
@@ -80,7 +83,7 @@ class LockDir:
 			if not self.islocked():
 				if lockdir[-1] == "/":
 					lockdir=lockdir[:-1]
-				self.lockdir=normpath(lockdir)
+				self.lockdir = normpath(lockdir)
 #				if "DEBUG" in self.settings:
 #					print "setting lockdir to", self.lockdir
 		else:
@@ -94,7 +97,7 @@ class LockDir:
 
 	def set_lockfile(self):
 		if not self.islocked():
-			self.lockfile=normpath(self.lockdir+'/'+self.lockfilename)
+			self.lockfile = normpath(self.lockdir+'/'+self.lockfilename)
 #			if "DEBUG" in self.settings:
 #				print "setting lockfile to", self.lockfile
 
@@ -430,12 +433,6 @@ if __name__ == "__main__":
 			print i,time.time()
 			time.sleep(1)
 		print
-	def normpath(mypath):
-		newpath = os.path.normpath(mypath)
-		if len(newpath) > 1:
-			if newpath[1] == "/":
-				newpath = "/"+newpath.lstrip("/")
-		return newpath
 
 	print "Lock 5 starting"
 	Lock1=LockDir("/tmp/lock_path")
@@ -474,9 +471,3 @@ if __name__ == "__main__":
 	Lock1.unlock()
 	print "Lock1 unlock"
 
-#Lock1.write_lock()
-#time.sleep(2)
-#Lock1.unlock()
-    ##Lock1.write_lock()
-    #time.sleep(2)
-    #Lock1.unlock()
