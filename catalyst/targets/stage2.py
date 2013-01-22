@@ -10,7 +10,7 @@ from catalyst.support import normpath, list_to_string
 from catalyst.base.stagebase import StageBase
 
 
-class stage2_target(StageBase):
+class stage2(StageBase):
 	"""
 	Builder class for a stage2 installation tarball build.
 	"""

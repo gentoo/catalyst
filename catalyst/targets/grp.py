@@ -14,7 +14,7 @@ from catalyst.support import (CatalystError, normpath,
 from catalyst.base.stagebase import StageBase
 
 
-class grp_target(StageBase):
+class grp(StageBase):
 	"""
 	The builder class for GRP (Gentoo Reference Platform) builds.
 	"""
