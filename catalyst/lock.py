@@ -27,11 +27,17 @@ class LockDir:
 	locking_method=fcntl.flock
 	lock_dirs_in_use=[]
 	die_on_failed_lock=True
+
 	def __del__(self):
+		#print "Lock.__del__() 1"
 		self.clean_my_hardlocks()
+		#print "Lock.__del__() 2"
 		self.delete_lock_from_path_list()
+		#print "Lock.__del__() 3"
 		if self.islocked():
+			#print "Lock.__del__() 4"
 			self.fcntl_unlock()
+		#print "Lock.__del__() finnished"
 
 	def __init__(self,lockdir):
 		self.locked=False
@@ -179,7 +185,9 @@ class LockDir:
 		unlinkfile = 1
 		if not os.path.exists(self.lockfile):
 			print "lockfile does not exist '%s'" % self.lockfile
+			#print "fcntl_unlock() , self.myfd:", self.myfd, type(self.myfd)
 			if (self.myfd != None):
+				#print "fcntl_unlock() trying to close it "
 				try:
 					os.close(self.myfd)
 					self.myfd=None
@@ -193,11 +201,13 @@ class LockDir:
 					unlinkfile = 1
 					self.locking_method(self.myfd,fcntl.LOCK_UN)
 			except SystemExit, e:
-				raise
+				raise e
 			except Exception, e:
-				os.close(self.myfd)
-				self.myfd=None
-				raise IOError, "Failed to unlock file '%s'\n" % self.lockfile
+				#if self.myfd is not None:
+					#print "fcntl_unlock() trying to close", self.myfd
+					#os.close(self.myfd)
+					#self.myfd=None
+				#raise IOError, "Failed to unlock file '%s'\n%s" % (self.lockfile, str(e))
 				try:
 					# This sleep call was added to allow other processes that are
 					# waiting for a lock to be able to grab it before it is deleted.
@@ -224,7 +234,7 @@ class LockDir:
 #						if "DEBUG" in self.settings:
 #							print "Unlinked lockfile..."
 				except SystemExit, e:
-					raise
+					raise e
 				except Exception, e:
 					# We really don't care... Someone else has the lock.
 					# So it is their problem now.
@@ -236,7 +246,7 @@ class LockDir:
 					# open fd closed automatically on them.
 					#if type(lockfilename) == types.StringType:
 					#        os.close(myfd)
-
+		#print "fcntl_unlock() trying a last ditch close", self.myfd
 		if (self.myfd != None):
 			os.close(self.myfd)
 			self.myfd=None
@@ -420,6 +430,7 @@ class LockDir:
 					except Exception:
 						pass
 		return results
+
 
 if __name__ == "__main__":
 
