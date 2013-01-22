@@ -6,7 +6,7 @@ stage4 target, builds upon previous stage3/stage4 tarball
 from catalyst.base.stagebase import StageBase
 
 
-class stage4_target(StageBase):
+class stage4(StageBase):
 	"""
 	Builder class for stage4.
 	"""

@@ -13,7 +13,7 @@ from catalyst.support import (normpath,
 from catalyst.base.stagebase import StageBase
 
 
-class livecd_stage1_target(StageBase):
+class livecd_stage1(StageBase):
 	"""
 	Builder class for LiveCD stage1.
 	"""

@@ -10,7 +10,7 @@ from catalyst.support import (normpath, file_locate, CatalystError, cmd,
 from catalyst.base.stagebase import StageBase
 
 
-class livecd_stage2_target(StageBase):
+class livecd_stage2(StageBase):
 	"""
 	Builder class for a LiveCD stage2 build.
 	"""

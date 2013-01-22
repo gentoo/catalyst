@@ -9,7 +9,7 @@ from catalyst.support import cmd, list_bashify, CatalystError
 from catalyst.base.stagebase import StageBase
 
 
-class tinderbox_target(StageBase):
+class tinderbox(StageBase):
 	"""
 	Builder class for the tinderbox target
 	"""

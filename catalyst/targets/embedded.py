@@ -15,7 +15,7 @@ from catalyst.support import normpath
 
 from catalyst.base.stagebase import StageBase
 
-class embedded_target(StageBase):
+class embedded(StageBase):
 	"""
 	Builder class for embedded target
 	"""

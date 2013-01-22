@@ -12,7 +12,7 @@ from catalyst.support import (CatalystError, normpath,
 from catalyst.base.stagebase import StageBase
 
 
-class netboot_target(StageBase):
+class netboot(StageBase):
 	"""
 	Builder class for a netboot build.
 	"""
