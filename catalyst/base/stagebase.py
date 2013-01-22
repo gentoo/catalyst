@@ -1020,7 +1020,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def chroot_setup(self):
 		self.makeconf=read_makeconf(normpath(self.settings["chroot_path"]+
-			self.settings["make.conf"]))
+			self.settings["make_conf"]))
 		self.override_cbuild()
 		self.override_chost()
 		self.override_cflags()
@@ -1068,7 +1068,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			""" Modify and write out make.conf (for the chroot) """
 			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make.conf"])
+				self.settings["make_conf"])
 			cmd("rm -f " + makepath,\
 				"Could not remove " + makepath, env=self.env)
 			myf=open(makepath, "w")
@@ -1122,9 +1122,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			myf.close()
 			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make.conf"])
+				self.settings["make_conf"])
 			cmd("cp " + makepath + " " + makepath + ".catalyst",\
-				"Could not backup " + self.settings["make.conf"],env=self.env)
+				"Could not backup " + self.settings["make_conf"],env=self.env)
 			touch(self.settings["autoresume_path"]+"chroot_setup")
 
 	def fsscript(self):
@@ -1172,7 +1172,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				"/etc/portage/make.conf",\
+				self.settings["make_conf"],\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
 		""" Clean up old and obsoleted files in /etc """
