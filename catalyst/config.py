@@ -54,11 +54,7 @@ class ParserBase:
 			# Skip any blank lines
 			if not myline: continue
 
-			# Look for separator
-			msearch = myline.find(self.key_value_separator)
-
-			# If separator found assume its a new key
-			if msearch != -1:
+			if self.key_value_separator in myline:
 				# Split on the first occurence of the separator creating two strings in the array mobjs
 				mobjs = myline.split(self.key_value_separator, 1)
 				mobjs[1] = mobjs[1].strip().strip('"')
