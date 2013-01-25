@@ -62,11 +62,12 @@ class grp_target(generic_stage_target):
 				raise CatalystError,"GRP build aborting due to error."
 
 	def set_use(self):
-	    generic_stage_target.set_use(self)
-	    if "use" in self.settings:
-	    	self.settings["use"].append("bindist")
-	    else:
-	    	self.settings["use"]=["bindist"]
+		generic_stage_target.set_use(self)
+		if "BINDIST" in self.settings:
+			if "use" in self.settings:
+				self.settings["use"].append("bindist")
+			else:
+				self.settings["use"]=["bindist"]
 
 	def set_mounts(self):
 	    self.mounts.append("/tmp/grp")

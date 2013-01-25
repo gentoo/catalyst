@@ -7,6 +7,8 @@ export clst_buildpkgs="$(/tmp/build.py)"
 
 # Setup our environment
 BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
+[ -n "${clst_BINDIST}" ] && BOOTSTRAP_USE="${BOOTSTRAP_USE} bindist"
+
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 ## Sanity check profile
@@ -50,8 +52,8 @@ sed -i '/USE="${USE} -build"/d' /etc/portage/make.conf
 
 # Now, we install our packages
 [ -e /etc/portage/make.conf ] && \
-	echo "USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
+	echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/portage/make.conf
 run_merge "--oneshot ${clst_buildpkgs}"
-sed -i "/USE=\"-* bindist build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
+sed -i "/USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/portage/make.conf

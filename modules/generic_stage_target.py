@@ -490,8 +490,9 @@ class generic_stage_target(generic_target):
 		if type(self.settings["use"])==types.StringType:
 			self.settings["use"]=self.settings["use"].split()
 
-		# Force bindist for all targets
-		self.settings["use"].append("bindist")
+		# Force bindist when options ask for it
+		if "BINDIST" in self.settings:
+			self.settings["use"].append("bindist")
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"])
