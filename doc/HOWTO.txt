@@ -233,9 +233,15 @@ Running catalyst from a Git checkout
 
 If you're developing catalyst, you'll want to test your altered
 version.  An easy way to run it without reinstalling is to setup a
-local configuration file and run:
+local configuration file.  The checkout also includes a testpath file
+which when sourced adds it's bin/ to PATH and it's checkout dir to
+PYTHONPATH.  That terminal will then use the checkout bin/catalyst and
+the checkout's python modules.
 
-    # ./catalyst -c catalyst.conf -f path/to/your.spec
+cd into the checkout directory and run:
+
+    # source ./testpath
+    # catalyst -c catalyst.conf -f path/to/your.spec
 
 The local configuration file can use all the defaults except for
 `sharedir`, which you should change to point to your development

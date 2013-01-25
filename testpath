@@ -1,0 +1,18 @@
+
+# edit the following 2 paths to point to your catalyst git checkout if nessecary
+# then in a terminal window you wish to run the git code in...
+# cd ~/catalyst
+# source ./testpath
+# edit a config catalyst.conf file. Make similar path changes for it to
+# find and use/run the git checkout code.
+# The catalyst code can then be run on a system without being installed or
+# replacing an existing catalyst install which may be used for production.
+#
+# then run catalyst from there
+#  eg:
+#
+# catalyst -c catalyst.conf -p -f stage1.spec
+
+export PATH="$(dirname ${BASH_SOURCE[0]})/bin:${PATH}"
+
+export PYTHONPATH="$(dirname ${BASH_SOURCE[0]})${PYTHONPATH:+:}${PYTHONPATH}"
