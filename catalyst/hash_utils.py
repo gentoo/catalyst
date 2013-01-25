@@ -97,7 +97,7 @@ class HashMap(object):
 		h_f = lines[1].split()
 		hash_result = h_f[0]
 		short_file = os.path.split(h_f[1])[1]
-		result = header + hash_result + "  " + short_file + "\n"
+		result = header + "\n" + hash_result + "  " + short_file + "\n"
 		if verbose:
 			print header+" (%s) = %s" % (short_file, result)
 		return result

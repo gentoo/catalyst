@@ -419,7 +419,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def set_dest_path(self):
 		if "root_path" in self.settings:
 			self.settings["destpath"]=normpath(self.settings["chroot_path"]+\
-				self.settings["root_path"])
+				"/" + self.settings["root_path"])
 		else:
 			self.settings["destpath"]=normpath(self.settings["chroot_path"])
 
@@ -465,7 +465,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		Things *will* break without it!
 		"""
 		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
-			"/tmp/"+self.settings["target_subpath"]+"/")
+			"/tmp/"+self.settings["target_subpath"])
 		self.chroot_lock=LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
@@ -479,8 +479,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			os.makedirs(self.settings["autoresume_path"],0755)
 
 	def set_controller_file(self):
-		self.settings["controller_file"]=normpath(self.settings["sharedir"]+\
-			self.settings["sharedir"]+self.settings["target"]+"/"+self.settings["target"]+\
+		self.settings["controller_file"]=normpath(self.settings["shdir"] + "/" +
+			self.settings["target"] + "/" + self.settings["target"] +
 			"-controller.sh")
 
 	def set_iso_volume_id(self):
@@ -1212,7 +1212,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					operations, so we get easy glob handling.
 					"""
 					print "livecd: removing "+x
-					os.system("rm -rf "+self.settings["chroot_path"]+x)
+					os.system("rm -rf "+self.settings["chroot_path"] + "/" + x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
 						cmd(self.settings["controller_file"]+\
@@ -1303,7 +1303,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if type(self.settings[x])==types.StringType:
 				""" Prefix to prevent namespace clashes """
 				#os.environ[varname]=self.settings[x]
-				self.env[varname]=self.settings[x]
+				self.env[varname]=self.settings[x].rstrip('/')
 			elif type(self.settings[x])==types.ListType:
 				#os.environ[varname]=string.join(self.settings[x])
 				self.env[varname]=string.join(self.settings[x])
