@@ -131,8 +131,8 @@ def cmd(mycmd, myexc="", env={}, debug=False):
 		args.append("-c")
 		args.append(mycmd)
 
-		if debug:
-			print "cmd(); args =", args
+		#if debug:
+		print "***** cmd(); args =", args
 		proc = Popen(args, env=env)
 		if proc.wait() != 0:
 			raise CatalystError("cmd() NON-zero return value from: %s" % myexc,
