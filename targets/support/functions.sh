@@ -2,14 +2,14 @@ copy_to_chroot() {
 	local src_file=$1
 	local dest_dir=${clst_chroot_path}${2:-/tmp}
 	mkdir -p ${dest_dir}
-	echo "copying ${src_file##*/} to ${dest_dir}"
+	echo "--- Copying ${src_file##*/} to ${dest_dir}"
 	cp -pPR "${src_file}" "${dest_dir}"/
 }
 
 delete_from_chroot(){
 	if [ -e ${clst_chroot_path}${1} ]
 	then
-		echo "removing ${clst_chroot_path}${1} from the chroot"
+		echo "--- Removing ${clst_chroot_path}${1} from the chroot"
 		rm -f ${clst_chroot_path}${1}
 	fi
 }
@@ -22,17 +22,17 @@ exec_in_chroot(){
 	local subdir=${2}
 	local destdir=".${subdir}/tmp"
 
-	echo "Copying ${file_name} to ${destdir}"
+	echo "--- Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
 	copy_to_chroot ${clst_shdir}/support/chroot-functions.sh \
 		${destdir}
 
 	chroot_path=${clst_chroot_path}${subdir}
 
-	echo "Ensure the file has the executable bit set"
+	echo "--- Ensure the file has the executable bit set"
 	chmod +x ${chroot_path}/${destdir}/${file_name}
 
-	echo "Running ${file_name} in chroot ${chroot_path}"
+	echo "--- Running ${file_name} in chroot ${chroot_path}"
 	${clst_CHROOT} ${chroot_path} ${destdir}/${file_name} || exit 1
 
 	delete_from_chroot ${destdir}/${file_name}
@@ -123,7 +123,7 @@ extract_modules() {
 		mkdir -p ${1}/
 		tar -I lbzip2 -xf ${kmodules} --strip-components 1 -C ${1}/lib lib
 	else
-		echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
+		echo "--- Can't find kernel modules tarball at ${kmodules}.  Skipping...."
 	fi
 }
 extract_kernel() {
