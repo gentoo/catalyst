@@ -116,7 +116,6 @@ def parse_config(myconfig):
 	# add our python base directory to use for loading target arch's
 	conf_values["PythonDir"] = __selfpath__
 
-
 	# print out any options messages
 	for opt in conf_values['options']:
 		if opt in option_messages:
@@ -132,6 +131,11 @@ def parse_config(myconfig):
 
 	if "envscript" in myconf:
 		print "Envscript support enabled."
+
+	# take care of any variable substitutions that may be left
+	for x in list(conf_values):
+		if isinstance(conf_values[x], str):
+			conf_values[x] = conf_values[x] % conf_values
 
 
 def import_module(target):
