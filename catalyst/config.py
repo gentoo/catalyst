@@ -67,6 +67,9 @@ class ParserBase:
 				# Start a new array using the first element of mobjs
 				cur_array = [mobjs[0]]
 				if mobjs[1]:
+					# do any variable substitiution embeded in it with
+					# the values already obtained
+					mobjs[1] = mobjs[1] % values
 					if self.multiple_values:
 						# split on white space creating additional array elements
 #						subarray = white_space.split(mobjs[1])
