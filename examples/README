@@ -1,0 +1,5 @@
+For further examples, see the releases/weekly/specs directory [1] in
+the releng Git repository [2].
+
+[1]: http://git.overlays.gentoo.org/gitweb/?p=proj/releng.git;a=tree;f=releases/weekly/specs;hb=HEAD
+[2]: http://git.overlays.gentoo.org/gitweb/?p=proj/releng.git;a=summary
