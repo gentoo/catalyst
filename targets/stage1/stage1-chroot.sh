@@ -28,9 +28,9 @@ if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
-			clst_root_path=/ run_merge "${clst_update_seed_command}"
+			clst_root_path=/ run_merge "--buildpkg=n ${clst_update_seed_command}"
 		else
-			clst_root_path=/ run_merge "--update --deep --newuse --onlydeps gcc"
+			clst_root_path=/ run_merge "--buildpkg=n --update --deep --newuse --onlydeps gcc"
 		fi
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
