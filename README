@@ -60,3 +60,11 @@ There are many more options that can be set, but those defaults are good
 for out of the box operation. For more documentation on what you can do
 with catalyst, please check the man page or the online documentation at
 http://www.gentoo.org/proj/en/releng/catalyst.
+
+Bugs
+========================
+
+If you have questions or wish to help with development, contact the
+gentoo-catalyst@lists.gentoo.org mailing list.  Bug reports should be
+filed at http://tinyurl.com/79slrk (http://bugs.gentoo.org) under the
+"Catalyst" component of the "Gentoo Hosted Projects" product.
