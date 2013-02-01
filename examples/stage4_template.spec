@@ -8,7 +8,8 @@
 # subarch: athlon-xp
 subarch:
 
-# The version stamp is an identifier for the build.  It can be anything you wish# it to be, but it is usually a date.
+# The version stamp is an identifier for the build.  It can be anything you wish
+# it to be, but it is usually a date.
 # example:
 # version_stamp: 2006.1
 version_stamp:
@@ -26,7 +27,8 @@ target:
 # rel_type: default
 rel_type:
 
-# This is the system profile to be used by catalyst to build this target.  It is# specified as a relative path from /usr/portage/profiles.
+# This is the system profile to be used by catalyst to build this target.  It is
+# specified as a relative path from /usr/portage/profiles.
 # example:
 # profile: default-linux/x86/2006.1
 profile:
@@ -37,7 +39,8 @@ profile:
 snapshot:
 
 # This specifies where the seed stage comes from for this target,  The path is
-# relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix# for the seed.
+# relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix
+# for the seed.
 # example:
 # default/stage3-x86-2006.1
 source_subpath:
@@ -119,7 +122,8 @@ stage4/splash_theme:
 # stage4/gk_mainargs: --lvm --dmraid
 stage4/gk_mainargs:
 
-# This option allows you to specify your own linuxrc script for genkernel to use# when building your CD.  This is not checked for functionality, so it is up to
+# This option allows you to specify your own linuxrc script for genkernel to use
+# when building your CD.  This is not checked for functionality, so it is up to
 # you to debug your own script.  We do not use one for the official release
 # media, so there will not be one listed below.
 # example:
