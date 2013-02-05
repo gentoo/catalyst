@@ -29,7 +29,19 @@ case ${clst_hostarch} in
 		sleep 0
 		;;
 	hppa)
-		sleep 0
+		# Only one kernel should be there
+		kname=${clst_boot_kernel[0]}
+		rm -f ${clst_target_path}/${kname}-hppa.lif
+
+		palo \
+			-k ${clst_target_path}/kernels/${kname} \
+			-r ${clst_target_path}/kernels/misc/${kname}.igz \
+			-s ${clst_target_path}/${kname}-hppa.lif \
+			-f /dev/null \
+			-b /usr/share/palo/iplboot \
+			-c "0/vmlinux initrd=0/ramdisk root=/dev/ram0" \
+			|| exit 1
+
 		;;
 	sparc*)
 		if [ "${clst_subarch}" == "sparc" ]; then
