@@ -1143,7 +1143,7 @@ class generic_stage_target(generic_target):
 						"/empty"].split()
 				for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
 					myemp=self.settings["destpath"]+x
-					if not os.path.isdir(myemp):
+					if not os.path.isdir(myemp) or os.path.islink(myemp):
 						print x,"not a directory or does not exist, skipping 'empty' operation."
 						continue
 					print "Emptying directory",x
