@@ -1426,7 +1426,6 @@ class generic_stage_target(generic_target):
 				+"build_kernel_"+kname):
 			print "Resume point detected, skipping build_kernel for "+kname+" operation..."
 			return
-		# TODO: make this not require a kernel config
 		self._copy_kernel_config(kname=kname)
 
 		"""
@@ -1478,7 +1477,7 @@ class generic_stage_target(generic_target):
 			"Runscript post-kmerge failed",env=self.env)
 
 	def _copy_kernel_config(self, kname):
-		try:
+		if "boot/kernel/"+kname+"/config" in self.settings:
 			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
 				self.unbind()
 				raise CatalystError,\
@@ -1486,21 +1485,17 @@ class generic_stage_target(generic_target):
 					self.settings["boot/kernel/"+kname+\
 					"/config"]
 
-		except TypeError:
-			raise CatalystError,\
-				"Required value boot/kernel/config not specified"
+			try:
+				cmd("cp "+self.settings["boot/kernel/"+kname+\
+					"/config"]+" "+\
+					self.settings["chroot_path"]+"/var/tmp/"+\
+					kname+".config",\
+					"Couldn't copy kernel config: "+\
+					self.settings["boot/kernel/"+kname+\
+					"/config"],env=self.env)
 
-		try:
-			cmd("cp "+self.settings["boot/kernel/"+kname+\
-				"/config"]+" "+\
-				self.settings["chroot_path"]+"/var/tmp/"+\
-				kname+".config",\
-				"Couldn't copy kernel config: "+\
-				self.settings["boot/kernel/"+kname+\
-				"/config"],env=self.env)
-
-		except CatalystError:
-			self.unbind()
+			except CatalystError:
+				self.unbind()
 
 	def _copy_initramfs_overlay(self, kname):
 		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
