@@ -109,8 +109,11 @@ genkernel_compile(){
 	else
 		genkernel ${GK_ARGS} || exit 1
 	fi
-	md5sum /var/tmp/${clst_kname}.config | awk '{print $1}' > \
-		/tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
+	if [ -e /var/tmp/${clst_kname}.config ]
+	then
+		md5sum /var/tmp/${clst_kname}.config | awk '{print $1}' > \
+			/tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
+	fi
 }
 
 build_kernel() {
@@ -177,15 +180,17 @@ then
 fi
 
 CONFIG_MATCH=0
-if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
+if [ -n "${clst_KERNCACHE}" -a
+     -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
 then
-	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
-	STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
-	if [ "${STR1}" = "${STR2}" ]
+	if [ ! -e /var/tmp/${clst_kname}.config ]
 	then
-		if [ -n "${clst_KERNCACHE}" ]
+		CONFIG_MATCH=1
+	else
+		STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
+		STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
+		if [ "${STR1}" = "${STR2}" ]
 		then
-			#echo "CONFIG match"
 			CONFIG_MATCH=1
 		fi
 	fi
