@@ -1452,25 +1452,7 @@ class generic_stage_target(generic_target):
 			self.settings["boot/kernel/"+kname+\
 			"/extraversion"]
 
-		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
-			if os.path.exists(self.settings["boot/kernel/"+\
-				kname+"/initramfs_overlay"]):
-				print "Copying initramfs_overlay dir "+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"]
-
-				cmd("mkdir -p "+\
-					self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"],env=self.env)
-
-				cmd("cp -R "+self.settings["boot/kernel/"+\
-					kname+"/initramfs_overlay"]+"/* "+\
-					self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"],env=self.env)
+		self._copy_initramfs_overlay(kname=kname)
 
 		""" Execute the script that builds the kernel """
 		cmd("/bin/bash "+self.settings["controller_file"]+\
@@ -1519,6 +1501,27 @@ class generic_stage_target(generic_target):
 
 		except CatalystError:
 			self.unbind()
+
+	def _copy_initramfs_overlay(self, kname):
+		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
+			if os.path.exists(self.settings["boot/kernel/"+\
+				kname+"/initramfs_overlay"]):
+				print "Copying initramfs_overlay dir "+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"]
+
+				cmd("mkdir -p "+\
+					self.settings["chroot_path"]+\
+					"/tmp/initramfs_overlay/"+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"],env=self.env)
+
+				cmd("cp -R "+self.settings["boot/kernel/"+\
+					kname+"/initramfs_overlay"]+"/* "+\
+					self.settings["chroot_path"]+\
+					"/tmp/initramfs_overlay/"+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"],env=self.env)
 
 	def bootloader(self):
 		if "AUTORESUME" in self.settings \
