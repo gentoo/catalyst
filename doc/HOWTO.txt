@@ -1,0 +1,204 @@
+Catalyst is a release-buildcing tool for Gentoo.  If you use Gentoo
+and want to roll your own live CD or bootable USB stick, this is the
+way to go.  First, get a Gentoo development box and install the
+necessary tools:
+
+    # emerge -av dev-util/catalyst
+
+Configure catalyst by editing `/etc/catalyst/catalyst.conf`, which is
+well commented.  This sets up defaults such as hashing algorithms and
+storage directories.  The defaults will probably be fine unless disk
+space is an issue.
+
+Assembling a starting point
+---------------------------
+
+Portage snapshot
+~~~~~~~~~~~~~~~~
+
+Create a snapshot of your current Portage tree (you may want to
+`emerge --sync` first):
+
+    # catalyst --snapshot 20130131
+    # ls /var/tmp/catalyst/snapshots/
+    portage-20130131.tar.bz2
+    portage-20130131.tar.bz2.CONTENTS
+    portage-20130131.tar.bz2.DIGESTS
+
+where the storage location is relative to the default
+`$storedir=/var/tmp/catalyst`.
+
+Stage3 tarball
+~~~~~~~~~~~~~~
+
+Get a stage3 tarball (containing the build tools you'll need to
+construct your stage1) from your local
+http://www.gentoo.org/main/en/mirrors.xml[Gentoo mirror].
+
+    $GENTOO_MIRROR/releases/$ARCH/current-stage3/
+
+For example,
+
+    http://distfiles.gentoo.org/releases/amd64/current-stage3/stage3-amd64-20121213.tar.bz2
+
+Grab the tarball and put it where catalyst will find it:
+
+    # wget http://…/stage3-amd64-20121213.tar.bz2
+    # wget http://…/stage3-amd64-20121213.tar.bz2.CONTENTS
+    # wget http://…/stage3-amd64-20121213.tar.bz2.DIGESTS.asc
+    # sha512sum -c stage3-amd64-20121213.tar.bz2.DIGESTS.asc
+    # gpg --verify stage3-amd64-20121213.tar.bz2.DIGESTS.asc
+    # mv stage3-amd64-20121213.tar.bz2* /var/tmp/catalyst/builds/default/
+
+where the storage dir is `$storedir/builds/$source_subpath`
+(`$storedir` from `catalyst.conf`, `$source_subpath` from your
+`*.spec` file).
+
+`.*spec` files
+~~~~~~~~~~~~~~
+
+`.*spec` files tell catalyst about the system you're trying to build.
+There are a number of examples distributed with catalyst.  Look in
+`/usr/share/doc/catalyst-*/examples/`.  A minimal `*.spec` file for
+this example is:
+
+    # cat default-stage1-amd64-2013.1.spec
+    subarch: amd64
+    version_stamp: 2013.1
+    target: stage1
+    rel_type: default
+    profile: default/linux/amd64/10.0/no-multilib
+    snapshot: 20130131
+    source_subpath: default/stage3-amd64-20121213
+
+You may need to adjust the `subarch`, `snapshot`, and `source_subpath`
+fields of the `*.spec` to match your target host, Portage snapshot,
+and stage3 tarball name respectively.
+
+For more details on what can go into a `*.spec` file, see
+`catalyst-spec(5)`.
+
+Building stage1
+---------------
+
+Now that everything's setup, run catalyst:
+
+    # catalyst -f default-stage1-amd64-2013.1.spec
+
+which will build the target and install something like:
+
+    # ls /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.*
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.CONTENTS
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.DIGESTS
+
+The name is an expansion of
+`$storedir/builds/$rel_type/$target-$subarch-$version_stamp…`.
+
+Building stage2 and stage3
+--------------------------
+
+Once you've built the stage1 from your seed stage3, you can use that
+stage1 to build a stage2 and stage3.  The `*.spec` files are similar:
+
+    $ diff -u default-stage{1,2}-amd64-2013.1.spec
+    --- default-stage1-amd64-2013.1.spec
+    +++ default-stage2-amd64-2013.1.spec
+    @@ -1,7 +1,7 @@
+     subarch: amd64
+     version_stamp: 2013.1
+    -target: stage1
+    +target: stage2
+     rel_type: default
+     profile: default/linux/amd64/10.0/no-multilib
+     snapshot: 20130131
+    -source_subpath: default/stage3-amd64-20121213
+    +source_subpath: default/stage1-amd64-2013.1
+    $ diff default-stage{2,3}-amd64-2013.1.spec
+    --- default-stage2-amd64-2013.1.spec
+    +++ default-stage3-amd64-2013.1.spec
+    @@ -1,7 +1,7 @@
+     subarch: amd64
+     version_stamp: 2013.1
+    -target: stage2
+    +target: stage3
+     rel_type: default
+     profile: default/linux/amd64/10.0/no-multilib
+     snapshot: 20130131
+    -source_subpath: default/stage1-amd64-2013.1
+    +source_subpath: default/stage2-amd64-2013.1
+
+Gentoo stages
+-------------
+
+You can't compile a big pile of source code without an already
+compiled toolchain, which is where Gentoo's stages come in.  The “base
+system” contains the necessary build tools and supporting
+infrastructure to get things going.  The stages are:
+
+1. System must be bootstrapped and the base system must be compiled
+   (a new toolchain built with external seed tools).
+2. Stage1 + bootstrapped (a new toolchain build with stage1 tools).
+3. Stage2 + base system compiled (the base system built with stage2 tools).
+4. Stage3 + non-base packages.
+
+For more details on the differences between the stages, look at the
+target helper scripts (e.g. `targets/stage1/*.sh`).
+
+Building with a kernel
+----------------------
+
+If you're shooting for a live CD or bootable USB stick, you'll need to
+compile your own kernel.  Here's how that works.
+
+Genkernel
+~~~~~~~~~
+
+When you don't know exactly which kernel options you need, add
+something like the following to your `*.spec`:
+
+    boot/kernel: gentoo
+    boot/kernel/gentoo/sources: gentoo-sources
+
+You can still set `boot/kernel/<label>/config` when you're using
+genkernel if you want to give genkernel some hints.
+
+Genkernel alternatives
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't want to use a genkernel, your options are fairly limited.
+The currently suggested route is to create your own binary kernel
+package.
+
+Stage4
+------
+
+`examples/stage4_template.spec` is a good template for building a
+stage4 tarball.  Besides setting `target: stage4` and adjusting
+`source_subpath`, I usually use `stage4/packages`, `stage4/rcadd`, and
+the `boot/kernel` stuff described above.  This gives an almost
+bootable stage that you can dump on a USB flash drive.
+
+Live CDs
+--------
+
+Live CDs should be built in two stages: `livecd-stage1` (based on a
+stage3 source) for building extra packages (along the same lines as a
+stage4) and `livecd-stage2` (based on `livecd-stage1`) for setting up
+the kernel, bootloader, filesystem, and other details.  See
+`examples/livecd-stage*_template.spec` for some ideas.
+
+Live USBs
+---------
+
+The easiest way to create a live USB is currently to install a live CD
+ISO using
+http://www.syslinux.org/wiki/index.php/Doc/isolinux#HYBRID_CD-ROM.2FHARD_DISK_MODE[isohybrid]
+and `dd`:
+
+    # isohybrid filename.iso
+    # dd if=filename.iso of=/dev/sdX
+
+replacing `X` with the appropriate drive letter for your USB disk.
+See https://bugs.gentoo.org/show_bug.cgi?id=251719[bug 251719] for
+details.
