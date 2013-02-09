@@ -202,3 +202,18 @@ and `dd`:
 replacing `X` with the appropriate drive letter for your USB disk.
 See https://bugs.gentoo.org/show_bug.cgi?id=251719[bug 251719] for
 details.
+
+Running catalyst from a Git checkout
+------------------------------------
+
+If you're developing catalyst, you'll want to test your altered
+version.  An easy way to run it without reinstalling is to setup a
+local configuration file and run:
+
+    # ./catalyst -c catalyst.conf -f path/to/your.spec
+
+The local configuration file can use all the defaults except for
+`sharedir`, which you should change to point to your development
+directory:
+
+    sharedir="/home/wking/src/catalyst"
