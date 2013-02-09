@@ -1426,29 +1426,7 @@ class generic_stage_target(generic_target):
 				+"build_kernel_"+kname):
 			print "Resume point detected, skipping build_kernel for "+kname+" operation..."
 		else: # TODO: make this not require a kernel config
-			try:
-				if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
-					self.unbind()
-					raise CatalystError,\
-						"Can't find kernel config: "+\
-						self.settings["boot/kernel/"+kname+\
-						"/config"]
-
-			except TypeError:
-				raise CatalystError,\
-					"Required value boot/kernel/config not specified"
-
-			try:
-				cmd("cp "+self.settings["boot/kernel/"+kname+\
-					"/config"]+" "+\
-					self.settings["chroot_path"]+"/var/tmp/"+\
-					kname+".config",\
-					"Couldn't copy kernel config: "+\
-					self.settings["boot/kernel/"+kname+\
-					"/config"],env=self.env)
-
-			except CatalystError:
-				self.unbind()
+			self._copy_kernel_config(kname=kname)
 
 			"""
 			If we need to pass special options to the bootloader
@@ -1515,6 +1493,31 @@ class generic_stage_target(generic_target):
 			cmd("/bin/bash "+self.settings["controller_file"]+\
 				" post-kmerge ",
 				"Runscript post-kmerge failed",env=self.env)
+
+	def _copy_kernel_config(self, kname):
+		try:
+			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
+				self.unbind()
+				raise CatalystError,\
+					"Can't find kernel config: "+\
+					self.settings["boot/kernel/"+kname+\
+					"/config"]
+
+		except TypeError:
+			raise CatalystError,\
+				"Required value boot/kernel/config not specified"
+
+		try:
+			cmd("cp "+self.settings["boot/kernel/"+kname+\
+				"/config"]+" "+\
+				self.settings["chroot_path"]+"/var/tmp/"+\
+				kname+".config",\
+				"Couldn't copy kernel config: "+\
+				self.settings["boot/kernel/"+kname+\
+				"/config"],env=self.env)
+
+		except CatalystError:
+			self.unbind()
 
 	def bootloader(self):
 		if "AUTORESUME" in self.settings \
