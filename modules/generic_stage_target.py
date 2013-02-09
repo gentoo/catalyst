@@ -1425,74 +1425,75 @@ class generic_stage_target(generic_target):
 			and os.path.exists(self.settings["autoresume_path"]\
 				+"build_kernel_"+kname):
 			print "Resume point detected, skipping build_kernel for "+kname+" operation..."
-		else: # TODO: make this not require a kernel config
-			self._copy_kernel_config(kname=kname)
+			return
+		# TODO: make this not require a kernel config
+		self._copy_kernel_config(kname=kname)
 
-			"""
-			If we need to pass special options to the bootloader
-			for this kernel put them into the environment
-			"""
-			if "boot/kernel/"+kname+"/kernelopts" in self.settings:
-				myopts=self.settings["boot/kernel/"+kname+\
-					"/kernelopts"]
+		"""
+		If we need to pass special options to the bootloader
+		for this kernel put them into the environment
+		"""
+		if "boot/kernel/"+kname+"/kernelopts" in self.settings:
+			myopts=self.settings["boot/kernel/"+kname+\
+				"/kernelopts"]
 
-				if type(myopts) != types.StringType:
-					myopts = string.join(myopts)
-					self.env[kname+"_kernelopts"]=myopts
+			if type(myopts) != types.StringType:
+				myopts = string.join(myopts)
+				self.env[kname+"_kernelopts"]=myopts
 
-				else:
-					self.env[kname+"_kernelopts"]=""
+			else:
+				self.env[kname+"_kernelopts"]=""
 
-			if "boot/kernel/"+kname+"/extraversion" not in self.settings:
-				self.settings["boot/kernel/"+kname+\
-					"/extraversion"]=""
+		if "boot/kernel/"+kname+"/extraversion" not in self.settings:
+			self.settings["boot/kernel/"+kname+\
+				"/extraversion"]=""
 
-			self.env["clst_kextraversion"]=\
-				self.settings["boot/kernel/"+kname+\
-				"/extraversion"]
+		self.env["clst_kextraversion"]=\
+			self.settings["boot/kernel/"+kname+\
+			"/extraversion"]
 
-			if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
-				if os.path.exists(self.settings["boot/kernel/"+\
-					kname+"/initramfs_overlay"]):
-					print "Copying initramfs_overlay dir "+\
-						self.settings["boot/kernel/"+kname+\
-						"/initramfs_overlay"]
+		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
+			if os.path.exists(self.settings["boot/kernel/"+\
+				kname+"/initramfs_overlay"]):
+				print "Copying initramfs_overlay dir "+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"]
 
-					cmd("mkdir -p "+\
-						self.settings["chroot_path"]+\
-						"/tmp/initramfs_overlay/"+\
-						self.settings["boot/kernel/"+kname+\
-						"/initramfs_overlay"],env=self.env)
+				cmd("mkdir -p "+\
+					self.settings["chroot_path"]+\
+					"/tmp/initramfs_overlay/"+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"],env=self.env)
 
-					cmd("cp -R "+self.settings["boot/kernel/"+\
-						kname+"/initramfs_overlay"]+"/* "+\
-						self.settings["chroot_path"]+\
-						"/tmp/initramfs_overlay/"+\
-						self.settings["boot/kernel/"+kname+\
-						"/initramfs_overlay"],env=self.env)
+				cmd("cp -R "+self.settings["boot/kernel/"+\
+					kname+"/initramfs_overlay"]+"/* "+\
+					self.settings["chroot_path"]+\
+					"/tmp/initramfs_overlay/"+\
+					self.settings["boot/kernel/"+kname+\
+					"/initramfs_overlay"],env=self.env)
 
-			""" Execute the script that builds the kernel """
-			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" kernel "+kname,\
-				"Runscript kernel build failed",env=self.env)
+		""" Execute the script that builds the kernel """
+		cmd("/bin/bash "+self.settings["controller_file"]+\
+			" kernel "+kname,\
+			"Runscript kernel build failed",env=self.env)
 
-			if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
-				if os.path.exists(self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"):
-					print "Cleaning up temporary overlay dir"
-					cmd("rm -R "+self.settings["chroot_path"]+\
-						"/tmp/initramfs_overlay/",env=self.env)
+		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
+			if os.path.exists(self.settings["chroot_path"]+\
+				"/tmp/initramfs_overlay/"):
+				print "Cleaning up temporary overlay dir"
+				cmd("rm -R "+self.settings["chroot_path"]+\
+					"/tmp/initramfs_overlay/",env=self.env)
 
-			touch(self.settings["autoresume_path"]+\
-				"build_kernel_"+kname)
+		touch(self.settings["autoresume_path"]+\
+			"build_kernel_"+kname)
 
-			"""
-			Execute the script that cleans up the kernel build
-			environment
-			"""
-			cmd("/bin/bash "+self.settings["controller_file"]+\
-				" post-kmerge ",
-				"Runscript post-kmerge failed",env=self.env)
+		"""
+		Execute the script that cleans up the kernel build
+		environment
+		"""
+		cmd("/bin/bash "+self.settings["controller_file"]+\
+			" post-kmerge ",
+			"Runscript post-kmerge failed",env=self.env)
 
 	def _copy_kernel_config(self, kname):
 		try:
