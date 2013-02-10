@@ -170,14 +170,15 @@ setup_pkgmgr(){
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
 	# just let emerge @system could merge it.
 	# Use --update or portage might just waste time/cycles and reinstall the same version.
+	# Use --newuse to make sure it rebuilds with any changed use flags.
 	if [ -n "$1" ];then
 		echo "Adding USE='${USE} $1' to make.conf for portage build"
 		[ -e /etc/portage/make.conf ] && echo 'USE="${USE} $1"' >> /etc/portage/make.conf
-		run_merge --oneshot --update sys-apps/portage
+		run_merge --oneshot --update --newuse sys-apps/portage
 		sed -i '/USE="${USE} $1"/d' /etc/portage/make.conf
 	else
 		echo "Updating portage with USE='${USE}'"
-		run_merge --oneshot --update sys-apps/portage
+		run_merge --oneshot --update --newuse sys-apps/portage
 	fi
 }
 
