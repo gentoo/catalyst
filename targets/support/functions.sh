@@ -20,7 +20,7 @@ exec_in_chroot(){
 # and executes it.
 	local file_name=$(basename ${1})
 	local subdir=${2}
-	local destdir=".${subdir}/tmp"
+	local destdir="${subdir}/tmp"
 
 	echo "--- Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
@@ -33,7 +33,7 @@ exec_in_chroot(){
 	chmod +x ${chroot_path}/${destdir}/${file_name}
 
 	echo "--- Running ${file_name} in chroot ${chroot_path}"
-	${clst_CHROOT} ${chroot_path} ${destdir}/${file_name} || exit 1
+	${clst_CHROOT} ${chroot_path} .${destdir}/${file_name} || exit 1
 
 	delete_from_chroot ${destdir}/${file_name}
 	delete_from_chroot ${destdir}/chroot-functions.sh
