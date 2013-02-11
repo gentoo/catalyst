@@ -34,7 +34,7 @@ exec_in_chroot(){
 
 	echo "Running ${file_name} in chroot:"
 	echo "    ${clst_CHROOT} ${chroot_path} ${destdir}/${file_name}"
-	${clst_CHROOT} ${chroot_path} ${destdir}/${file_name} || exit 1
+	${clst_CHROOT} ${chroot_path} .${destdir}/${file_name} || exit 1
 
 	delete_from_chroot ${destdir}/${file_name}
 	delete_from_chroot ${destdir}/chroot-functions.sh
