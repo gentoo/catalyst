@@ -95,7 +95,7 @@ class netboot2_target(generic_stage_target):
 					myfiles.append(self.settings["netboot2/extra_files"])
 
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
+				cmd(self.settings["controller_file"]+\
 					" image " + list_bashify(myfiles),env=self.env)
 			except CatalystError:
 				self.unbind()
@@ -121,7 +121,7 @@ class netboot2_target(generic_stage_target):
 		# no auto resume here as we always want the
 		# freshest images moved
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+\
+			cmd(self.settings["controller_file"]+\
 				" final",env=self.env)
 			print ">>> Netboot Build Finished!"
 		except CatalystError:

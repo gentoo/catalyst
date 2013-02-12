@@ -65,7 +65,7 @@ class netboot_target(generic_stage_target):
 #		if "netboot/packages" in self.settings:
 #			mypack=list_bashify(self.settings["netboot/packages"])
 #		try:
-#			cmd("/bin/bash "+self.settings["controller_file"]+" packages "+mypack,env=self.env)
+#			cmd(self.settings["controller_file"]+" packages "+mypack,env=self.env)
 #		except CatalystError:
 #			self.unbind()
 #			raise CatalystError("netboot build aborting due to error.",
@@ -78,7 +78,7 @@ class netboot_target(generic_stage_target):
 		else:
 			mycmd = ""
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
+			cmd(self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",
@@ -107,7 +107,7 @@ class netboot_target(generic_stage_target):
 				myfiles.append(self.settings["netboot/extra_files"])
 
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+\
+			cmd(self.settings["controller_file"]+\
 				" image " + list_bashify(myfiles),env=self.env)
 		except CatalystError:
 			self.unbind()
@@ -117,7 +117,7 @@ class netboot_target(generic_stage_target):
 	def create_netboot_files(self):
 		# finish it all up
 		try:
-			cmd("/bin/bash "+self.settings["controller_file"]+" finish",env=self.env)
+			cmd(self.settings["controller_file"]+" finish",env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",
