@@ -1136,7 +1136,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 		else:
 			if "fsscript" in self.settings:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+\
+					cmd(self.settings["controller_file"]+\
 						" fsscript","fsscript script failed.",env=self.env)
 					touch(fsscript_resume)
 
@@ -1147,7 +1147,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping rcupdate operation..."
 		else:
 			if os.path.exists(self.settings["controller_file"]):
-				cmd("/bin/bash "+self.settings["controller_file"]+" rc-update",\
+				cmd(self.settings["controller_file"]+" rc-update",\
 					"rc-update script failed.",env=self.env)
 				touch(rcupdate_resume)
 
@@ -1183,7 +1183,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 				"Could not remove stray files in /etc",env=self.env)
 
 		if os.path.exists(self.settings["controller_file"]):
-			cmd("/bin/bash "+self.settings["controller_file"]+" clean",\
+			cmd(self.settings["controller_file"]+" clean",\
 				"clean script failed.",env=self.env)
 			touch(clean_resume)
 
@@ -1232,7 +1232,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
-						cmd("/bin/bash "+self.settings["controller_file"]+\
+						cmd(self.settings["controller_file"]+\
 							" clean","Clean  failed.",env=self.env)
 						touch(remove_resume)
 				except:
@@ -1247,7 +1247,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+\
+					cmd(self.settings["controller_file"]+\
 						" preclean","preclean script failed.",env=self.env)
 					touch(preclean_resume)
 
@@ -1289,7 +1289,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd("/bin/bash "+self.settings["controller_file"]+" run",\
+					cmd(self.settings["controller_file"]+" run",\
 						"run script failed.",env=self.env)
 					touch(run_local_resume)
 
@@ -1388,7 +1388,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 
 				""" Before cleaning, unmerge stuff """
 				try:
-					cmd("/bin/bash "+self.settings["controller_file"]+\
+					cmd(self.settings["controller_file"]+\
 						" unmerge "+ myunmerge,"Unmerge script failed.",\
 						env=self.env)
 					print "unmerge shell script"
@@ -1405,7 +1405,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping target_setup operation..."
 		else:
 			print "Setting up filesystems per filesystem type"
-			cmd("/bin/bash "+self.settings["controller_file"]+\
+			cmd(self.settings["controller_file"]+\
 				" target_image_setup "+ self.settings["target_path"],\
 				"target_image_setup script failed.",env=self.env)
 			touch(target_setup_resume)
@@ -1434,7 +1434,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 		else:
 			""" Create the ISO """
 			if "iso" in self.settings:
-				cmd("/bin/bash "+self.settings["controller_file"]+" iso "+\
+				cmd(self.settings["controller_file"]+" iso "+\
 					self.settings["iso"],"ISO creation script failed.",\
 					env=self.env)
 				self.gen_contents_file(self.settings["iso"])
@@ -1461,7 +1461,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 						list_bashify(self.settings[self.settings["spec_prefix"]\
 						+"/packages"])
 					try:
-						cmd("/bin/bash "+self.settings["controller_file"]+\
+						cmd(self.settings["controller_file"]+\
 							" build_packages "+mypack,\
 							"Error in attempt to build packages",env=self.env)
 						touch(build_packages_resume)
@@ -1486,7 +1486,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 					"""
 					Execute the script that sets up the kernel build environment
 					"""
-					cmd("/bin/bash "+self.settings["controller_file"]+\
+					cmd(self.settings["controller_file"]+\
 						" pre-kmerge ","Runscript pre-kmerge failed",\
 						env=self.env)
 					for kname in mynames:
@@ -1603,7 +1603,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping bootloader operation..."
 		else:
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
+				cmd(self.settings["controller_file"]+\
 					" bootloader " + self.settings["target_path"],\
 					"Bootloader script failed.",env=self.env)
 				touch(bootloader_resume)
@@ -1619,7 +1619,7 @@ class generic_stage_target(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping build_packages operation..."
 		else:
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+\
+				cmd(self.settings["controller_file"]+\
 					" livecd-update","livecd-update failed.",env=self.env)
 				touch(livecd_update_resume)
 

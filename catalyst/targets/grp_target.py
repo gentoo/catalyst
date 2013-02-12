@@ -54,7 +54,7 @@ class grp_target(generic_stage_target):
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
 			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
-				cmd("/bin/bash "+self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
+				cmd(self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
 					+" "+pkgset+" "+mypackages,env=self.env)
 
 			except CatalystError:
