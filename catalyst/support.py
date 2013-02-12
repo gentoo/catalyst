@@ -23,10 +23,6 @@ except:
 # pids this process knows of.
 spawned_pids = []
 
-try:
-        import urllib
-except SystemExit, e:
-        raise
 
 def cleanup(pids,block_exceptions=True):
         """function to go through and reap the list of pids passed to it"""
