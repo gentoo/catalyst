@@ -8,8 +8,8 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 
 from catalyst.support import normpath, cmd
-from catalyst.targets.targetbase import TargetBase
-from catalyst.targets.genbase import GenBase
+from catalyst.base.targetbase import TargetBase
+from catalyst.base.genbase import GenBase
 
 class snapshot_target(TargetBase, GenBase):
 	"""

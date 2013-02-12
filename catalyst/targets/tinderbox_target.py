@@ -3,10 +3,13 @@ Tinderbox target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+import os
 
-class tinderbox_target(generic_stage_target):
+from catalyst.support import cmd, list_bashify, CatalystError
+from catalyst.base.stagebase import StageBase
+
+
+class tinderbox_target(StageBase):
 	"""
 	Builder class for the tinderbox target
 	"""
@@ -14,7 +17,7 @@ class tinderbox_target(generic_stage_target):
 		self.required_values=["tinderbox/packages"]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["tinderbox/use"])
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 
 	def run_local(self):
 		# tinderbox

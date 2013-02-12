@@ -3,17 +3,20 @@ stage2 target, builds upon previous stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+import os
 
-class stage2_target(generic_stage_target):
+from catalyst.support import normpath, list_to_string
+from catalyst.base.stagebase import StageBase
+
+
+class stage2_target(StageBase):
 	"""
 	Builder class for a stage2 installation tarball build.
 	"""
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=["chost"]
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 
 	def set_source_path(self):
 		if "seedcache" in self.settings["options"] and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root/")):
@@ -34,7 +37,7 @@ class stage2_target(generic_stage_target):
 			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2\n")
 
 	# XXX: How do these override_foo() functions differ from the ones in
-	# generic_stage_target and why aren't they in stage3_target?
+	# StageBase and why aren't they in stage3_target?
 
 	def override_chost(self):
 		if "chost" in self.settings:
@@ -53,7 +56,7 @@ class stage2_target(generic_stage_target):
 			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
 	def set_portage_overlay(self):
-			generic_stage_target.set_portage_overlay(self)
+			StageBase.set_portage_overlay(self)
 			if "portage_overlay" in self.settings:
 				print "\nWARNING !!!!!"
 				print "\tUsing an portage overlay for earlier stages could cause build issues."

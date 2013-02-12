@@ -3,10 +3,17 @@ LiveCD stage1 target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-from catalyst.support import *
-from generic_stage_target import *
+import os
+import types
+import string
 
-class livecd_stage1_target(generic_stage_target):
+from catalyst.support import (normpath,
+	touch, cmd)
+
+from catalyst.base.stagebase import StageBase
+
+
+class livecd_stage1_target(StageBase):
 	"""
 	Builder class for LiveCD stage1.
 	"""
@@ -15,7 +22,7 @@ class livecd_stage1_target(generic_stage_target):
 		self.valid_values=self.required_values[:]
 
 		self.valid_values.extend(["livecd/use"])
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
@@ -45,7 +52,7 @@ class livecd_stage1_target(generic_stage_target):
 	                self.settings["spec_prefix"]="livecd"
 
 	def set_use(self):
-		generic_stage_target.set_use(self)
+		StageBase.set_use(self)
 		if "use" in self.settings:
 			self.settings["use"].append("livecd")
 			if "BINDIST" in self.settings:
@@ -56,7 +63,7 @@ class livecd_stage1_target(generic_stage_target):
 				self.settings["use"].append("bindist")
 
 	def set_packages(self):
-		generic_stage_target.set_packages(self)
+		StageBase.set_packages(self)
 		if self.settings["spec_prefix"]+"/packages" in self.settings:
 			if type(self.settings[self.settings["spec_prefix"]+"/packages"]) == types.StringType:
 				self.settings[self.settings["spec_prefix"]+"/packages"] = \
@@ -68,7 +75,7 @@ class livecd_stage1_target(generic_stage_target):
 			if type(self.settings["pkgcache_path"]) != types.StringType:
 				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
 		else:
-			generic_stage_target.set_pkgcache_path(self)
+			StageBase.set_pkgcache_path(self)
 
 def register(foo):
 	foo.update({"livecd-stage1":livecd_stage1_target})

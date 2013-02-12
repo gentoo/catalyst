@@ -3,11 +3,18 @@ Gentoo Reference Platform (GRP) target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,types,glob
-from catalyst.support import *
-from generic_stage_target import *
+import os
+import types
+import glob
 
-class grp_target(generic_stage_target):
+
+from catalyst.support import (CatalystError, normpath,
+	touch, cmd, list_bashify)
+
+from catalyst.base.stagebase import StageBase
+
+
+class grp_target(StageBase):
 	"""
 	The builder class for GRP (Gentoo Reference Platform) builds.
 	"""
@@ -32,7 +39,7 @@ class grp_target(generic_stage_target):
 			self.required_values.append("grp/"+x+"/packages")
 			self.required_values.append("grp/"+x+"/type")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
@@ -62,16 +69,15 @@ class grp_target(generic_stage_target):
 				raise CatalystError,"GRP build aborting due to error."
 
 	def set_use(self):
-		generic_stage_target.set_use(self)
-		if "BINDIST" in self.settings:
-			if "use" in self.settings:
-				self.settings["use"].append("bindist")
-			else:
-				self.settings["use"]=["bindist"]
+		StageBase.set_use(self)
+		if "use" in self.settings:
+			self.settings["use"].append("bindist")
+		else:
+			self.settings["use"]=["bindist"]
 
 	def set_mounts(self):
-	    self.mounts.append("/tmp/grp")
-            self.mountmap["/tmp/grp"]=self.settings["target_path"]
+		self.mounts.append("/tmp/grp")
+		self.mountmap["/tmp/grp"]=self.settings["target_path"]
 
 	def generate_digests(self):
 		for pkgset in self.settings["grp"]:
@@ -108,7 +114,7 @@ class grp_target(generic_stage_target):
 						self.gen_digest_file(normpath(destdir+"/"+i))
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",\
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay","bind","chroot_setup",\
 					"setup_environment","run_local","unbind",\
 					"generate_digests","clear_autoresume"]

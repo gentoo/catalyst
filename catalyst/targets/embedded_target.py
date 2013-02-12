@@ -10,12 +10,12 @@ ROOT=/tmp/submerge emerge --something foo bar .
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,string,imp,types,shutil
-from catalyst.support import *
-from generic_stage_target import *
-from stat import *
 
-class embedded_target(generic_stage_target):
+from catalyst.support import normpath
+
+from catalyst.base.stagebase import StageBase
+
+class embedded_target(StageBase):
 	"""
 	Builder class for embedded target
 	"""
@@ -27,7 +27,7 @@ class embedded_target(generic_stage_target):
 		if "embedded/fs-type" in addlargs:
 			self.valid_values.append("embedded/fs-ops")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
 
 	def set_action_sequence(self):

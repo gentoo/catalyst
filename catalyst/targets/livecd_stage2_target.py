@@ -3,11 +3,14 @@ LiveCD stage2 target, builds upon previous LiveCD stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os,string,types,stat,shutil
-from catalyst.support import *
-from generic_stage_target import *
+import os
 
-class livecd_stage2_target(generic_stage_target):
+from catalyst.support import (normpath, file_locate, CatalystError, cmd,
+	read_from_clst, touch)
+from catalyst.base.stagebase import StageBase
+
+
+class livecd_stage2_target(StageBase):
 	"""
 	Builder class for a LiveCD stage2 build.
 	"""
@@ -26,7 +29,7 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
 			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		if "livecd/type" not in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"
 
