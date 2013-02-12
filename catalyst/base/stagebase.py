@@ -631,11 +631,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		"""
 		self.setup_environment()
 
-		if os.path.exists(self.settings["sharedir"]+\
-			"/targets/support/kill-chroot-pids.sh"):
-			cmd("/bin/bash "+self.settings["sharedir"]+\
-				"/targets/support/kill-chroot-pids.sh",\
-				"kill-chroot-pids script failed.",env=self.env)
+		killcmd = normpath(self.settings["sharedir"] +
+			self.settings["shdir"] + "/support/kill-chroot-pids.sh")
+		if os.path.exists(killcmd):
+			cmd(killcmd, "kill-chroot-pids script failed.",env=self.env)
 
 	def mount_safety_check(self):
 		"""
@@ -647,10 +646,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if not os.path.exists(self.settings["chroot_path"]):
 			return
 
-		print "self.mounts =", self.mounts
+		#print "self.mounts =", self.mounts
 		for x in self.mounts:
 			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
-			print "mount_safety_check() x =", x, target
+			#print "mount_safety_check() x =", x, target
 			if not os.path.exists(target):
 				continue
 
@@ -1020,8 +1019,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"Couldn't umount one or more bind-mounts; aborting for safety."
 
 	def chroot_setup(self):
-		self.makeconf=read_makeconf(self.settings["chroot_path"]+\
-			"/etc/portage/make.conf")
+		self.makeconf=read_makeconf(normpath(self.settings["chroot_path"]+
+			self.settings["make.conf"]))
 		self.override_cbuild()
 		self.override_chost()
 		self.override_cflags()
@@ -1034,8 +1033,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping chroot_setup operation..."
 		else:
 			print "Setting up chroot..."
-
-			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/portage/make.conf")
 
 			cmd("cp /etc/resolv.conf " + self.settings["chroot_path"] + "/etc/",
 				"Could not copy resolv.conf into place.",env=self.env)
@@ -1070,10 +1067,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					"Could not copy /etc/hosts",env=self.env)
 
 			""" Modify and write out make.conf (for the chroot) """
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.conf",\
-				"Could not remove "+self.settings["chroot_path"]+\
-				"/etc/portage/make.conf",env=self.env)
-			myf=open(self.settings["chroot_path"]+"/etc/portage/make.conf","w")
+			makepath = normpath(self.settings["chroot_path"] +
+				self.settings["make.conf"])
+			cmd("rm -f " + makepath,\
+				"Could not remove " + makepath, env=self.env)
+			myf=open(makepath, "w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
 			if "CFLAGS" in self.settings:
@@ -1123,10 +1121,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
 			myf.close()
-			cmd("cp "+self.settings["chroot_path"]+"/etc/portage/make.conf "+\
-				self.settings["chroot_path"]+"/etc/portage/make.conf.catalyst",\
-				"Could not backup /etc/portage/make.conf",env=self.env)
-			touch(chroot_setup_resume)
+			makepath = normpath(self.settings["chroot_path"] +
+				self.settings["make.conf"])
+			cmd("cp " + makepath + " " + makepath + ".catalyst",\
+				"Could not backup " + self.settings["make.conf"],env=self.env)
+			touch(self.settings["autoresume_path"]+"chroot_setup")
 
 	def fsscript(self):
 		fsscript_resume = pjoin(self.settings["autoresume_path"], "fsscript")
@@ -1289,6 +1288,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
+					print "run_local() starting controller script..."
 					cmd(self.settings["controller_file"]+" run",\
 						"run script failed.",env=self.env)
 					touch(run_local_resume)
@@ -1324,11 +1324,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.env[varname]=string.join(self.settings[x])
 			elif type(self.settings[x])==types.BooleanType:
 				if self.settings[x]:
-					self.env[varname]="true"
+					self.env[varname] = "true"
 				else:
-					self.env[varname]="false"
+					self.env[varname] = "false"
 		if "makeopts" in self.settings:
 			self.env["MAKEOPTS"]=self.settings["makeopts"]
+		#print "setup_environment(); env =", self.env
 
 	def run(self):
 		self.chroot_lock.write_lock()
