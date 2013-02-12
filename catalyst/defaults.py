@@ -58,6 +58,9 @@ contents_definitions = {
 
 
 confdefaults={
+<<<<<<< HEAD
+=======
+>>>>>>> 10e951d... Break out more repeated (path1 + path2)'s...
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
 	"local_overlay": "/usr/local/portage",
@@ -68,6 +71,7 @@ confdefaults={
 	"port_tmpdir": "/var/tmp/portage",
 	"repo_name": "portage",
 	"sharedir": "/usr/lib/catalyst",
+	"shdir": "/usr/lib/catalyst/targets/",
 	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
 	"snapshot_name": "portage-",
 	"storedir": "/var/tmp/catalyst",
