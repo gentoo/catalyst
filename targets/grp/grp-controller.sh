@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
+source ${clst_shdir}/support/functions.sh
 
 case $1 in
 	enter)
@@ -15,11 +15,11 @@ case $1 in
 		shift
 
 		export clst_grp_packages="$*"
-		exec_in_chroot ${clst_sharedir}/targets/grp/grp-chroot.sh
+		exec_in_chroot ${clst_shdir}/grp/grp-chroot.sh
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_sharedir}/targets/grp/grp-preclean-chroot.sh
+		exec_in_chroot ${clst_shdir}/grp/grp-preclean-chroot.sh
 	;;
 
 	clean)

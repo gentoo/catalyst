@@ -1,16 +1,16 @@
 
-source ${clst_sharedir}/targets/support/functions.sh
-source ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_shdir}/support/functions.sh
+source ${clst_shdir}/support/filesystem-functions.sh
 
 case $1 in
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
-		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
 		;;
 
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
-		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/post-kmerge.sh
 		;;
 
 	kernel)
@@ -22,7 +22,7 @@ case $1 in
 		then
 			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
-		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 		delete_from_chroot tmp/linuxrc
 
 		extract_modules ${clst_chroot_path} ${clst_kname}
@@ -79,7 +79,7 @@ case $1 in
 
 	livecd-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
-		exec_in_chroot ${clst_sharedir}/targets/support/livecdfs-update.sh
+		exec_in_chroot ${clst_shdir}/support/livecdfs-update.sh
 
 		# Move over the xinitrc (if applicable)
 		# This is moved here, so we can override any default xinitrc
@@ -92,7 +92,7 @@ case $1 in
 		;;
 
 	rc-update)
-		exec_in_chroot ${clst_sharedir}/targets/support/rc-update.sh
+		exec_in_chroot ${clst_shdir}/support/rc-update.sh
 		;;
 
 	fsscript)
@@ -182,23 +182,23 @@ case $1 in
 			;;
 		esac
 
-		${clst_sharedir}/targets/support/bootloader-setup.sh $1
+		${clst_shdir}/support/bootloader-setup.sh $1
 		;;
 
     unmerge)
         shift
         export clst_packages="$*"
-        exec_in_chroot ${clst_sharedir}/targets/support/unmerge.sh
+        exec_in_chroot ${clst_shdir}/support/unmerge.sh
     ;;
 
 	target_image_setup)
 		shift
-		${clst_sharedir}/targets/support/target_image_setup.sh $1
+		${clst_shdir}/support/target_image_setup.sh $1
 		;;
 
 	iso)
 		shift
-		${clst_sharedir}/targets/support/create-iso.sh $1
+		${clst_shdir}/support/create-iso.sh $1
 		;;
 esac
 exit $?

@@ -1,14 +1,14 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
+source ${clst_shdir}/support/functions.sh
 
 case $1 in
 	run)
 		shift
-		exec_in_chroot ${clst_sharedir}/targets/tinderbox/tinderbox-chroot.sh
+		exec_in_chroot ${clst_shdir}/tinderbox/tinderbox-chroot.sh
 	;;
 	preclean)
-		#exec_in_chroot ${clst_sharedir}/targets/tinderbox/tinderbox-preclean-chroot.sh
+		#exec_in_chroot ${clst_shdir}/tinderbox/tinderbox-preclean-chroot.sh
 		delete_from_chroot /tmp/chroot-functions.sh
 	;;
 	clean)

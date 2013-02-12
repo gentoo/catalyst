@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
+source ${clst_shdir}/support/functions.sh
 
 # Only put commands in this section that you want every target to execute.
 # This is a global default file and will affect every target
@@ -12,11 +12,11 @@ case $1 in
 	run)
 		shift
 		export clst_packages="$*"
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
+		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh
+		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh
 	;;
 
 	clean)

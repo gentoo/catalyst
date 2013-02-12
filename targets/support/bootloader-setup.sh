@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
-source ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_shdir}/support/functions.sh
+source ${clst_shdir}/support/filesystem-functions.sh
 
 # $1 is the destination root
 
@@ -455,7 +455,7 @@ case ${clst_hostarch} in
 		[ -d "${1}/boot" ] && rmdir ${1}/boot
 
 		# Source the arcload source file to generated required sections of arc.cf
-		source ${clst_sharedir}/targets/support/mips-arcload_conf.sh
+		source ${clst_shdir}/support/mips-arcload_conf.sh
 
 		# Generate top portions of the config
 		echo -e "${topofconfig}${serial}${dbg}${cmt1}" >> ${scratch}/arc.cf

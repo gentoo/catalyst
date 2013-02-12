@@ -1,13 +1,13 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
+source ${clst_shdir}/support/functions.sh
 
 case $1 in
 	enter)
 	;;
 
 	run)
-		cp ${clst_sharedir}/targets/stage1/build.py ${clst_chroot_path}/tmp
+		cp ${clst_shdir}/stage1/build.py ${clst_chroot_path}/tmp
 
 		# Setup "ROOT in chroot" dir
 		install -d ${clst_chroot_path}${clst_root_path}/etc
@@ -18,12 +18,12 @@ case $1 in
 
 		# Enter chroot, execute our build script
 		exec_in_chroot \
-			${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh \
+			${clst_shdir}/${clst_target}/${clst_target}-chroot.sh \
 			|| exit 1
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_sharedir}/targets/${clst_target}/${clst_target}-preclean-chroot.sh || exit 1
+		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh || exit 1
 	;;
 
 	clean)
