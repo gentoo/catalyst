@@ -13,9 +13,9 @@ ROOT=/tmp/submerge emerge --something foo bar .
 
 from catalyst.support import normpath
 
-from generic_stage_target import generic_stage_target
+from catalyst.base.stagebase import StageBase
 
-class embedded_target(generic_stage_target):
+class embedded_target(StageBase):
 	"""
 	Builder class for embedded target
 	"""
@@ -27,7 +27,7 @@ class embedded_target(generic_stage_target):
 		if "embedded/fs-type" in addlargs:
 			self.valid_values.append("embedded/fs-ops")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
 
 	def set_action_sequence(self):

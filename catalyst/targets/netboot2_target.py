@@ -12,10 +12,10 @@ from stat import ST_UID, ST_GID, ST_MODE
 from catalyst.support import (CatalystError, normpath,
 	touch, cmd, list_bashify)
 
-from generic_stage_target import generic_stage_target
+from catalyst.base.stagebase import StageBase
 
 
-class netboot2_target(generic_stage_target):
+class netboot2_target(StageBase):
 	"""
 	Builder class for a netboot build, version 2
 	"""
@@ -46,7 +46,7 @@ class netboot2_target(generic_stage_target):
 		except:
 			raise CatalystError("configuration error in netboot2/packages.")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars()
 		self.settings["merge_path"]=normpath("/tmp/image/")
 

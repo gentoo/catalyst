@@ -10,13 +10,13 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 from catalyst.support import (CatalystError, msg, file_locate, normpath,
 	touch, cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount)
-from catalyst.targets.targetbase import TargetBase
-from catalyst.targets.clearbase import ClearBase
-from catalyst.targets.genbase import GenBase
+from catalyst.base.targetbase import TargetBase
+from catalyst.base.clearbase import ClearBase
+from catalyst.base.genbase import GenBase
 from catalyst.lock import LockDir
 
 
-class generic_stage_target(TargetBase, ClearBase, GenBase):
+class StageBase(TargetBase, ClearBase, GenBase):
 	"""
 	This class does all of the chroot setup, copying of files, etc. It is
 	the driver class for pretty much everything that Catalyst does.

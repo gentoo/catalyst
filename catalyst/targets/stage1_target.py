@@ -8,10 +8,10 @@ import os
 
 
 from catalyst.support import normpath, list_to_string
-from generic_stage_target import generic_stage_target
+from catalyst.base.stagebase import StageBase
 
 
-class stage1_target(generic_stage_target):
+class stage1_target(StageBase):
 	"""
 	Builder class for a stage1 installation tarball build.
 	"""
@@ -19,7 +19,7 @@ class stage1_target(generic_stage_target):
 		self.required_values=[]
 		self.valid_values=["chost"]
 		self.valid_values.extend(["update_seed","update_seed_command"])
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
@@ -31,11 +31,11 @@ class stage1_target(generic_stage_target):
 		print "stage1 root path is "+self.settings["root_path"]
 
 	def set_cleanables(self):
-		generic_stage_target.set_cleanables(self)
+		StageBase.set_cleanables(self)
 		self.settings["cleanables"].extend([\
 		"/usr/share/zoneinfo", "/etc/portage/package*"])
 
-	# XXX: How do these override_foo() functions differ from the ones in generic_stage_target and why aren't they in stage3_target?
+	# XXX: How do these override_foo() functions differ from the ones in StageBase and why aren't they in stage3_target?
 
 	def override_chost(self):
 		if "chost" in self.settings:
@@ -54,7 +54,7 @@ class stage1_target(generic_stage_target):
 			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
 	def set_portage_overlay(self):
-		generic_stage_target.set_portage_overlay(self)
+		StageBase.set_portage_overlay(self)
 		if "portage_overlay" in self.settings:
 			print "\nWARNING !!!!!"
 			print "\tUsing an portage overlay for earlier stages could cause build issues."

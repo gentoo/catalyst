@@ -8,10 +8,10 @@ import os
 
 from catalyst.support import (normpath, file_locate, CatalystError, cmd,
 	read_from_clst, touch)
-from generic_stage_target import generic_stage_target
+from catalyst.base.stagebase import StageBase
 
 
-class livecd_stage2_target(generic_stage_target):
+class livecd_stage2_target(StageBase):
 	"""
 	Builder class for a LiveCD stage2 build.
 	"""
@@ -30,7 +30,7 @@ class livecd_stage2_target(generic_stage_target):
 			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
 			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid"])
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		if "livecd/type" not in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"
 

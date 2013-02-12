@@ -10,10 +10,10 @@ import types
 from catalyst.support import (CatalystError, normpath,
 	cmd, list_bashify, file_locate)
 
-from generic_stage_target import generic_stage_target
+from catalyst.base.stagebase import StageBase
 
 
-class netboot_target(generic_stage_target):
+class netboot_target(StageBase):
 	"""
 	Builder class for a netboot build.
 	"""
@@ -42,7 +42,7 @@ class netboot_target(generic_stage_target):
 		except:
 			raise CatalystError("configuration error in netboot/packages.")
 
-		generic_stage_target.__init__(self,spec,addlargs)
+		StageBase.__init__(self,spec,addlargs)
 		self.set_build_kernel_vars(addlargs)
 		if "netboot/busybox_config" in addlargs:
 			file_locate(self.settings, ["netboot/busybox_config"])
