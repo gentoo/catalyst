@@ -66,17 +66,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.archmap = {}
 		self.subarchmap = {}
 		machinemap = {}
-		arch_dir = self.settings["PythonDir"] + "/arch/"
-		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")]:
-			if x == "__init__":
-				continue
+		arch_dir = self.settings["archdir"] + "/"
+		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py") and x != "__init__.py"]:
 			try:
 				fh=open(arch_dir + x + ".py")
 				"""
 				This next line loads the plugin as a module and assigns it to
 				archmap[x]
 				"""
-				self.archmap[x]=imp.load_module(x,fh,"../arch/" + x + ".py",
+				self.archmap[x]=imp.load_module(x,fh, arch_dir + x + ".py",
 					(".py", "r", imp.PY_SOURCE))
 				"""
 				This next line registers all the subarches supported in the

@@ -21,6 +21,7 @@ valid_config_file_values.extend([ "distcc", "envscript",
 verbosity = 1
 
 confdefaults={
+	"archdir": "%(PythonDir)s/arch",
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
 	"icecream": "/var/cache/icecream",
@@ -30,6 +31,7 @@ confdefaults={
 	"packagedir": "/usr/portage/packages",
 	"portdir": "/usr/portage",
 	"port_tmpdir": "/var/tmp/portage",
+	"PythonDir": "./catalyst",
 	"repo_name": "portage",
 	"sharedir": "/usr/lib/catalyst",
 	"shdir": "/usr/lib/catalyst/targets/",
