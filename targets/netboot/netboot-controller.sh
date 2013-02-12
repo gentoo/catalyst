@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
-source ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_shdir}/support/functions.sh
+source ${clst_shdir}/support/filesystem-functions.sh
 
 
 case ${1} in
@@ -11,7 +11,7 @@ case ${1} in
 		clst_root_path="/" \
 		clst_packages="$*" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 	;;
 
 	busybox)
@@ -30,26 +30,26 @@ case ${1} in
 		clst_myemergeopts="${clst_myemergeopts} -O" \
 		clst_packages="busybox" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 	;;
 
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
-		#exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+		#exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
 	;;
 
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
-		#exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+		#exec_in_chroot ${clst_shdir}/support/post-kmerge.sh
 	;;
 
 	kernel)
 		shift
 		export clst_kname="$1"
 		export clst_root_path="/"
-		#exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
-		#exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
-		#exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+		#exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
+		#exec_in_chroot ${clst_shdir}/support/kmerge.sh
+		#exec_in_chroot ${clst_shdir}/support/post-kmerge.sh
 		#extract_kernels kernels
 	;;
 
@@ -61,15 +61,15 @@ case ${1} in
 		clst_myemergeopts="${clst_myemergeopts} --nodeps" \
 		clst_packages="netboot-base" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 
 		clst_files="${@}" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-image.sh
+		${clst_shdir}/${clst_target}/${clst_target}-image.sh
 	;;
 
 	finish)
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-combine.sh
+		${clst_shdir}/${clst_target}/${clst_target}-combine.sh
 	;;
 
 	clean)

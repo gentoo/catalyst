@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/functions.sh
-source ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_shdir}/support/functions.sh
+source ${clst_shdir}/support/filesystem-functions.sh
 
 case ${1} in
 	build_packages)
@@ -10,17 +10,17 @@ case ${1} in
 		clst_root_path="/" \
 		clst_packages="$*" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-pkg.sh
+		${clst_shdir}/${clst_target}/${clst_target}-pkg.sh
 	;;
 
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
-		exec_in_chroot ${clst_sharedir}/targets/support/pre-kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
 	;;
 
 	post-kmerge)
 		# Cleans up the build environment after the kernels are compiled
-		exec_in_chroot ${clst_sharedir}/targets/support/post-kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/post-kmerge.sh
 	;;
 
 	kernel)
@@ -37,7 +37,7 @@ case ${1} in
 			cp ${clst_busybox_config} ${clst_chroot_path}/tmp/busy-config
 		fi
 
-		exec_in_chroot ${clst_sharedir}/targets/support/kmerge.sh
+		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 
 		delete_from_chroot tmp/linuxrc
 		delete_from_chroot tmp/busy-config
@@ -56,13 +56,13 @@ case ${1} in
 		# Copy remaining files over to the initramfs target
 		clst_files="${@}" \
 		exec_in_chroot \
-		${clst_sharedir}/targets/${clst_target}/${clst_target}-copyfile.sh
+		${clst_shdir}/${clst_target}/${clst_target}-copyfile.sh
 	;;
 
 	final)
 		# For each arch, fetch the kernel images and put them in builds/
 		echo -e ">>> Copying completed kernels to ${clst_target_path} ..."
-		${clst_sharedir}/targets/support/netboot2-final.sh
+		${clst_shdir}/support/netboot2-final.sh
 	;;
 
 	clean)

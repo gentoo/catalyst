@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source ${clst_sharedir}/targets/support/chroot-functions.sh
-source ${clst_sharedir}/targets/support/functions.sh
-source ${clst_sharedir}/targets/support/filesystem-functions.sh
+source ${clst_shdir}/support/chroot-functions.sh
+source ${clst_shdir}/support/functions.sh
+source ${clst_shdir}/support/filesystem-functions.sh
 
 update_env_settings
 

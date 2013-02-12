@@ -24,7 +24,7 @@ exec_in_chroot(){
 
 	echo "Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
-	copy_to_chroot ${clst_sharedir}/targets/support/chroot-functions.sh \
+	copy_to_chroot ${clst_shdir}/support/chroot-functions.sh \
 		${destdir}
 
 	chroot_path=${clst_chroot_path}${subdir}
