@@ -433,15 +433,7 @@ def spawn(mycommand,env={},raw_exit_code=False,opt_name=None,fd_pipes=None,retur
 				if trg_fd[x] == src_fd[x]:
 					continue
 				if trg_fd[x] in src_fd[x+1:]:
-					new=os.dup2(trg_fd[x],max(src_fd) + 1)
 					os.close(trg_fd[x])
-					try:
-						while True:
-							src_fd[s.index(trg_fd[x])]=new
-					except SystemExit, e:
-						raise
-					except:
-						pass
 
 			# transfer the fds to their final pre-exec position.
 			for x in range(0,len(trg_fd)):
