@@ -13,6 +13,7 @@ from catalyst.support import (CatalystError, msg, file_locate, normpath,
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
+from catalyst.defaults import target_mounts
 from catalyst.lock import LockDir
 
 
@@ -63,7 +64,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.subarchmap = {}
 		machinemap = {}
 		arch_dir = self.settings["PythonDir"] + "/arch/"
-		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")]:
+		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py") and x != "__init__.py"]:
 			try:
 				fh=open(arch_dir + x + ".py")
 				"""
@@ -90,6 +91,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				syntax error in the module
 				"""
 				msg("Can't find/load " + x + ".py plugin in " + arch_dir)
+			except:
+				msg("Failure loading " + x + " plugin")
+				raise
 
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
@@ -186,10 +190,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			file_locate(self.settings,["portage_confdir"],expand=0)
 
 		""" Setup our mount points """
+		self.target_mounts = target_mounts.copy()
 		if "snapcache" in self.settings["options"]:
 			self.mounts=["proc", "dev", 'portdir', 'distdir', 'port_tmpdir']
-			self.mountmap={"proc":"proc", "dev":"/dev", "pts":"/dev/pts",
-				"portdir":self.settings["snapshot_cache_path"]+"/" + self.settings["repo_name"],
+			self.mountmap={"proc":"/proc", "dev":"/dev", "pts":"/dev/pts",
+				"portdir":normpath(self.settings["snapshot_cache_path"]+"/" + self.settings["repo_name"]),
 				"distdir":self.settings["distdir"],"port_tmpdir":"tmpfs"}
 		else:
 			self.mounts=["proc","dev", "distdir", "port_tmpdir"]
@@ -231,17 +236,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.mounts.append("ccache")
 			self.mountmap["ccache"]=ccdir
 			""" for the chroot: """
-			self.env["CCACHE_DIR"]="/var/tmp/ccache"
+			self.env["CCACHE_DIR"] = self.target_mounts["ccache"]
 
 		if "icecream" in self.settings["options"]:
 			self.mounts.append("icecream")
-			self.mountmap["icecream"]="/var/cache/icecream"
+			self.mountmap["icecream"] = self.target_mounts["icecream"]
 			self.env["PATH"]="/usr/lib/icecc/bin:"+self.env["PATH"]
 
 		if "port_logdir" in self.settings:
-			self.mounts.append("/var/log/portage")
-			self.mountmap["/var/log/portage"]=self.settings["port_logdir"]
-			self.env["PORT_LOGDIR"]="/var/log/portage"
+			self.mounts.append("port_logdir")
+			self.mountmap["port_logdir"]=self.settings["port_logdir"]
+			self.env["PORT_LOGDIR"]=self.settings["port_logdir"]
 			self.env["PORT_LOGDIR_CLEAN"]='find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
 
 	def override_cbuild(self):
@@ -399,9 +404,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
 					self.settings["source_path_hash"]=\
-						generate_hash(self.settings["source_path"],\
-						hash_function=self.settings["hash_function"],\
-						verbose=False)
+						self.settings["hash_map"].generate_hash(
+							self.settings["source_path"],\
+							self.settings["hash_function"],\
+							verbose=False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
 			print "\tIf this is not desired, remove this directory or turn off"
@@ -428,8 +434,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"]=\
-				generate_hash(self.settings["snapshot_path"],\
-				hash_function=self.settings["hash_function"],verbose=False)
+				self.settings["hash_map"].generate_hash(
+					self.settings["snapshot_path"],\
+					self.settings["hash_function"],
+					verbose=False)
 		else:
 			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
 				"/snapshots/" + self.settings["snapshot_name"] +
@@ -437,14 +445,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if os.path.exists(self.settings["snapshot_path"]):
 				self.settings["snapshot_path_hash"]=\
-					generate_hash(self.settings["snapshot_path"],\
-					hash_function=self.settings["hash_function"],verbose=False)
+					self.settings["hash_map"].generate_hash(
+						self.settings["snapshot_path"],\
+						self.settings["hash_function"],
+						verbose=False)
 
 	def set_snapcache_path(self):
 		if "snapcache" in self.settings["options"]:
 			self.settings["snapshot_cache_path"]=\
 				normpath(self.settings["snapshot_cache"]+"/"+\
-				self.settings["snapshot"]+"/")
+				self.settings["snapshot"])
 			self.snapcache_lock=\
 				LockDir(self.settings["snapshot_cache_path"])
 			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
@@ -470,7 +480,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_controller_file(self):
 		self.settings["controller_file"]=normpath(self.settings["sharedir"]+\
-			"/targets/"+self.settings["target"]+"/"+self.settings["target"]+\
+			self.settings["sharedir"]+self.settings["target"]+"/"+self.settings["target"]+\
 			"-controller.sh")
 
 	def set_iso_volume_id(self):
@@ -616,7 +626,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"kill-chroot-pids script failed.",env=self.env)
 
 	def mount_safety_check(self):
-		mypath=self.settings["chroot_path"]
+		#mypath=self.settings["chroot_path"]
 
 		"""
 		Check and verify that none of our paths in mypath are mounted. We don't
@@ -624,27 +634,30 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		Returns 1 on ok, 0 on "something is still mounted" case.
 		"""
 
-		if not os.path.exists(mypath):
+		if not os.path.exists(self.settings["chroot_path"]):
 			return
 
+		print "self.mounts =", self.mounts
 		for x in self.mounts:
-			if not os.path.exists(mypath + self.mountmap[x]):
+			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
+			print "mount_safety_check() x =", x, target
+			if not os.path.exists(target):
 				continue
 
-			if ismount(mypath +self.mountmap[x]):
+			if ismount(target):
 				""" Something is still mounted "" """
 				try:
-					print self.mountmap[x] + " is still mounted; performing auto-bind-umount...",
+					print target + " is still mounted; performing auto-bind-umount...",
 					""" Try to umount stuff ourselves """
 					self.unbind()
-					if ismount(mypath + self.mountmap[x]):
+					if ismount(target):
 						raise CatalystError("Auto-unbind failed for " +
-							self.mountmap[x])
+							target, print_traceback=True)
 					else:
 						print "Auto-unbind successful..."
 				except CatalystError:
 					raise CatalystError("Unable to auto-unbind " +
-						self.mountmap[x])
+						target, print_traceback=True)
 
 	def unpack(self):
 		unpack=True
@@ -748,7 +761,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if "autoresume" in self.settings["options"]:
 					print "No Valid Resume point detected, cleaning up..."
 
+				print "unpack()  clear_autoresume"
 				self.clear_autoresume()
+				print "unpack()  clear_chroot()"
 				self.clear_chroot()
 
 			if not os.path.exists(self.settings["chroot_path"]):
@@ -912,35 +927,40 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def bind(self):
 		for x in self.mounts:
-			if not os.path.exists(self.settings["chroot_path"] + self.mountmap[x]):
-				os.makedirs(self.settings["chroot_path"]+x,0755)
+			#print "bind(); x =", x
+			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
+			if not os.path.exists(target):
+				os.makedirs(target, 0755)
 
 			if not os.path.exists(self.mountmap[x]):
 				if not self.mountmap[x] == "tmpfs":
 					os.makedirs(self.mountmap[x],0755)
 
 			src=self.mountmap[x]
+			#print "bind(); src =", src
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					retval=os.system("mount -t devfs none " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount -t devfs none " + target
+					retval=os.system(cmd)
 				else:
-					retval=os.system("mount_nullfs " + src + " " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount_nullfs " + src + " " + target
+					retval=os.system(cmd)
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
-						retval=os.system("mount -t tmpfs -o size="+\
-							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
-							self.settings["chroot_path"]+x)
+						cmd = "mount -t tmpfs -o size=" + \
+							self.settings["var_tmpfs_portage"] + "G " + \
+							src + " " + target
+						retval=os.system(cmd)
 				else:
-					retval=os.system("mount --bind " + src + " " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount --bind " + src + " " + target
+					#print "bind(); cmd =", cmd
+					retval=os.system(cmd)
 			if retval!=0:
 				self.unbind()
-				raise CatalystError("Couldn't bind mount " + src)
+				raise CatalystError("Couldn't bind mount " + src + "\n" + cmd)
 
 	def unbind(self):
 		ouch=0
@@ -949,26 +969,25 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		myrevmounts.reverse()
 		""" Unmount in reverse order for nested bind-mounts """
 		for x in myrevmounts:
-			if not os.path.exists(mypath + self.mountmap[x]):
+			target = normpath(mypath + self.target_mounts[x])
+			if not os.path.exists(target):
 				continue
 
-			if not ismount(mypath + self.mountmap[x]):
+			if not ismount(target):
 				continue
 
-			retval=os.system("umount "+\
-				os.path.join(mypath, self.mountmap[x].lstrip(os.path.sep)))
+			retval=os.system("umount "+ target)
 
 			if retval!=0:
-				warn("First attempt to unmount: " + mypath +
-					self.mountmap[x] +" failed.")
+				warn("First attempt to unmount: " + target +" failed.")
 				warn("Killing any pids still running in the chroot")
 
 				self.kill_chroot_pids()
 
-				retval2=os.system("umount " + mypath + self.mountmap[x])
+				retval2=os.system("umount " + target)
 				if retval2!=0:
 					ouch=1
-					warn("Couldn't umount bind mount: " + mypath + self.mountmap[x])
+					warn("Couldn't umount bind mount: " + target)
 
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				try:
@@ -1031,18 +1050,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			Copy over /etc/hosts from the host in case there are any
 			specialties in there
 			"""
-			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
-				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
-					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
-					"Could not backup /etc/hosts",env=self.env)
-				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts",\
+			hostpath = normpath(self.settings["chroot_path"]+"/etc/hosts")
+			if os.path.exists(hostpath):
+				cmd("mv " + hostpath + " " + hostpath +".catalyst",
+					"Could not backup /etc/hosts", env=self.env)
+				cmd("cp /etc/hosts " + hostpath,
 					"Could not copy /etc/hosts",env=self.env)
 
 			""" Modify and write out make.conf (for the chroot) """
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.conf",\
-				"Could not remove "+self.settings["chroot_path"]+\
-				"/etc/portage/make.conf",env=self.env)
-			myf=open(self.settings["chroot_path"]+"/etc/portage/make.conf","w")
+			makepath = normpath(self.settings["chroot_path"]+\
+				"/etc/portage/make.conf")
+			cmd("rm -f " + makepath,\
+				"Could not remove " + makepath, env=self.env)
+			myf=open(makepath, "w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
 			if "CFLAGS" in self.settings:
@@ -1089,7 +1109,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			""" Setup the portage overlay """
 			if "portage_overlay" in self.settings:
-				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
+				myf.write('PORTDIR_OVERLAY="%s"\n' % self.settings['local_overlay'])
 
 			myf.close()
 			cmd("cp "+self.settings["chroot_path"]+"/etc/portage/make.conf "+\
@@ -1129,17 +1149,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					x,env=self.env)
 
 		""" Put /etc/hosts back into place """
-		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
-			cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.catalyst "+\
-				self.settings["chroot_path"]+"/etc/hosts",\
+		hostpath = normpath(self.settings["chroot_path"]+"/etc/hosts")
+		if os.path.exists(hostpath + ".catalyst"):
+			cmd("mv -f " + hostpath + ".catalyst" + " " + hostpath,\
 				"Could not replace /etc/hosts",env=self.env)
 
 		""" Remove our overlay """
-		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
-			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
+		overlay = self.settings["chroot_path"] + self.settings["local_overlay"]
+		if os.path.exists(overlay):
+			cmd("rm -rf " + overlay,
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				"/etc/portage/make.conf",\
+				self.settings["make.conf"],\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
 		""" Clean up old and obsoleted files in /etc """
@@ -1244,15 +1265,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			touch(self.settings["autoresume_path"]+"capture")
 
 	def run_local(self):
+		print "run_local()"
 		if "autoresume" in self.settings["options"] \
 			and os.path.exists(self.settings["autoresume_path"]+"run_local"):
 			print "Resume point detected, skipping run_local operation..."
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
+					print "run_local() starting fresh..."
 					cmd(self.settings["controller_file"]+" run",\
 						"run script failed.",env=self.env)
 					touch(self.settings["autoresume_path"]+"run_local")
+				else:
+					print "run_local() no controller_file found...", self.settings["controller_file"]
 
 			except CatalystError:
 				self.unbind()
@@ -1286,6 +1311,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.env["MAKEOPTS"]=self.settings["makeopts"]
 
 	def run(self):
+		#print "StageBase: run() !!!!!!!! options =", self.settings["options"]
 		self.chroot_lock.write_lock()
 
 		""" Kill any pids in the chroot "" """
@@ -1295,19 +1321,24 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.mount_safety_check()
 
 		if "clear-autoresume" in self.settings["options"]:
+			print "StageBase: run() clear-autoresume"
 			self.clear_autoresume()
 
 		if "purgetmponly" in self.settings["options"]:
+			#print "StageBase: run() purgetmponly"
 			self.purge()
 			return
 
-		if "PURGEONLY" in self.settings:
+		if "purgeonly" in self.settings["options"]:
+			#print "StageBase: run() purgeonly"
 			self.purge()
 			return
 
 		if "purge" in self.settings["options"]:
+			#print "StageBase: run() purge"
 			self.purge()
 
+		print "--- Running action sequences:", self.settings["action_sequence"]
 		for x in self.settings["action_sequence"]:
 			print "--- Running action sequence: "+x
 			sys.stdout.flush()

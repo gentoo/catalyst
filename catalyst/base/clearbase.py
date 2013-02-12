@@ -100,16 +100,16 @@ class ClearBase(object):
 	def purge(self):
 		countdown(10,"Purging Caches ...")
 		if any(k in self.settings["options"] for k in ("purge","purgeonly","purgetmponly")):
-			print "clearing autoresume ..."
+			print "purge(); clearing autoresume ..."
 			self.clear_autoresume()
 
-			print "clearing chroot ..."
+			print "purge(); clearing chroot ..."
 			self.clear_chroot()
 
-			if "PURGETMPONLY" not in self.settings:
-				print "clearing package cache ..."
+			if "purgetmponly" not in self.settings["options"]:
+				print "purge(); clearing package cache ..."
 				self.clear_packages()
 
-			print "clearing kerncache ..."
+			print "purge(); clearing kerncache ..."
 			self.clear_kerncache()
 

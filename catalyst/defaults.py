@@ -60,6 +60,9 @@ contents_definitions = {
 confdefaults={
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
+	"local_overlay": "/usr/local/portage",
+	"make.conf": "/etc/portage/make.conf",
+	"options": set(),
 	"packagedir": "/usr/portage/packages",
 	"portdir": "/usr/portage",
 	"port_tmpdir": "/var/tmp/portage",
@@ -68,6 +71,20 @@ confdefaults={
 	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
 	"snapshot_name": "portage-",
 	"storedir": "/var/tmp/catalyst",
+	}
+
+target_mounts = {
+	"proc": "/proc",
+	"dev": "/dev",
+	"pts": "/dev/pts",
+	"portdir": "/usr/portage",
+	"distdir": "/usr/portage/distfiles",
+	"packagedir": "/usr/portage/packages",
+	"port_tmpdir": "/var/tmp/portage",
+	"kerncache": "/tmp/kerncache",
+	"ccache": "/var/tmp/ccache",
+	"icecream": "/var/cache/icecream",
+	"port_logdir": "/var/log/portage",
 	}
 
 # legend:  key: message

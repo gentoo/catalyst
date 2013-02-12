@@ -93,5 +93,6 @@ class stage1_target(StageBase):
 			os.makedirs(self.settings["stage_path"]+"/proc")
 
 		# alter the mount mappings to bind mount proc onto it
-		self.mounts.append("/tmp/stage1root/proc")
-		self.mountmap["/tmp/stage1root/proc"]="/proc"
+		self.mounts.append("stage1root/proc")
+		self.target_mounts["stage1root/proc"] = "/tmp/stage1root/proc"
+		self.mountmap["stage1root/proc"]="/proc"
