@@ -58,6 +58,7 @@ contents_definitions = {
 
 
 confdefaults={
+	"archdir": "%(PythonDir)s/arch",
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
 	"local_overlay": "/usr/local/portage",
@@ -66,6 +67,7 @@ confdefaults={
 	"packagedir": "/usr/portage/packages",
 	"portdir": "/usr/portage",
 	"port_tmpdir": "/var/tmp/portage",
+	"PythonDir": "./catalyst",
 	"repo_name": "portage",
 	"sharedir": "/usr/lib/catalyst",
 	"shdir": "/usr/lib/catalyst/targets/",
