@@ -196,22 +196,22 @@ then
 	fi
 fi
 
-[ -e /etc/portage/make.conf ] && \
-	echo "USE=\"\${USE} ${clst_kernel_use} \"" >> /etc/portage/make.conf
+[ -e ${clst_make_conf} ] && \
+	echo "USE=\"\${USE} ${clst_kernel_use} build\"" >> ${clst_make_conf}
 
 if [ -n "${clst_KERNCACHE}" ]
 then
 	mkdir -p /tmp/kerncache/${clst_kname}
 	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --update --newuse" run_merge "${clst_ksource}" || exit 1
 	KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
-	if [ ! -e /etc/portage/profile/package.provided ]
+	if [ ! -e ${clst_port_conf}/profile/package.provided ]
 	then
-		mkdir -p /etc/portage/profile
-		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
+		mkdir -p ${clst_port_conf}/profile
+		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
 	else
-		if ( ! grep -q "^${KERNELVERSION}\$"  /etc/portage/profile/package.provided )
+		if ( ! grep -q "^${KERNELVERSION}\$"  ${clst_port_conf}/profile/package.provided )
 		then
-			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
+			echo "${KERNELVERSION}" >> ${clst_port_conf}/profile/package.provided
 		fi
 	fi
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
@@ -237,7 +237,7 @@ then
 fi
 
 build_kernel
-sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" /etc/portage/make.conf
+sed -i "/USE=\"\${USE} ${clst_kernel_use} build\"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
@@ -253,8 +253,8 @@ echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_vers
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-	if [ -e /etc/portage/profile/package.provided ]
+	if [ -e ${clst_port_conf}/profile/package.provided ]
 	then
-		sed -i "/^$(echo "${KERNELVERSION}" | sed -e 's|/|\\/|g')\$/d" /etc/portage/profile/package.provided
+		sed -i "/^$(echo "${KERNELVERSION}" | sed -e 's|/|\\/|g')\$/d" ${clst_port_conf}/profile/package.provided
 	fi
 fi

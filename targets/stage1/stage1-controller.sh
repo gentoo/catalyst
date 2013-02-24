@@ -11,10 +11,10 @@ case $1 in
 
 		# Setup "ROOT in chroot" dir
 		install -d ${clst_chroot_path}/${clst_root_path}/etc
-		install -d ${clst_chroot_path}/${clst_root_path}/etc/portage
+		install -d ${clst_chroot_path}/${clst_root_path}${clst_port_conf}
 
 		# Setup make.conf and make.profile link in "ROOT in chroot":
-		copy_to_chroot ${clst_chroot_path}/etc/portage/make.conf ${clst_root_path}/etc/portage
+		copy_to_chroot ${clst_chroot_path}${clst_make_conf} ${clst_root_path}${clst_port_conf}
 
 		# Enter chroot, execute our build script
 		exec_in_chroot \

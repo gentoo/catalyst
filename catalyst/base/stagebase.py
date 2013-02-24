@@ -874,12 +874,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			print "Configuring profile link..."
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
-					"Error zapping profile link",env=self.env)
-			cmd("mkdir -p "+self.settings["chroot_path"]+"/etc/portage/")
-			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/"+\
-				self.settings["target_profile"]+" "+\
-				self.settings["chroot_path"]+"/etc/portage/make.profile",\
+			cmd("rm -f " + self.settings["chroot_path"] +
+				self.settings["port_conf"] + "/make.profile",
+				"Error zapping profile link",env=self.env)
+			cmd("mkdir -p " + self.settings["chroot_path"] +
+				self.settings["port_conf"])
+			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
+				self.settings["target_profile"] + " " +
+				self.settings["chroot_path"] +
+				self.settings["port_conf"] + "/make.profile",
 				"Error creating profile link",env=self.env)
 			touch(self.settings["autoresume_path"]+"config_profile_link")
 
@@ -890,10 +893,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "Resume point detected, skipping setup_confdir operation..."
 		else:
 			if "portage_confdir" in self.settings:
-				print "Configuring /etc/portage..."
-				cmd("rsync -a "+self.settings["portage_confdir"]+"/ "+\
-					self.settings["chroot_path"]+"/etc/portage/",\
-					"Error copying /etc/portage",env=self.env)
+				print "Configuring %s..." % self.settings["port_conf"]
+				cmd("rsync -a " + self.settings["portage_confdir"] + "/ " +
+					self.settings["chroot_path"] + self.settings["port_conf"],
+					"Error copying %s" % self.settings["port_conf"],
+					env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_confdir")
 
 	def portage_overlay(self):
@@ -1009,7 +1013,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def chroot_setup(self):
 		self.makeconf=read_makeconf(normpath(self.settings["chroot_path"]+
-			self.settings["make.conf"]))
+			self.settings["make_conf"]))
 		self.override_cbuild()
 		self.override_chost()
 		self.override_cflags()
@@ -1056,7 +1060,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			""" Modify and write out make.conf (for the chroot) """
 			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make.conf"])
+				self.settings["make_conf"])
 			cmd("rm -f " + makepath,\
 				"Could not remove " + makepath, env=self.env)
 			myf=open(makepath, "w")
@@ -1110,9 +1114,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			myf.close()
 			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make.conf"])
+				self.settings["make_conf"])
 			cmd("cp " + makepath + " " + makepath + ".catalyst",\
-				"Could not backup " + self.settings["make.conf"],env=self.env)
+				"Could not backup " + self.settings["make_conf"],env=self.env)
 			touch(self.settings["autoresume_path"]+"chroot_setup")
 
 	def fsscript(self):
@@ -1158,7 +1162,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("rm -rf " + overlay,
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
 			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				self.settings["make.conf"],\
+				self.settings["make_conf"],\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
 		""" Clean up old and obsoleted files in /etc """
