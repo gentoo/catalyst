@@ -875,12 +875,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			print "Configuring profile link..."
-			cmd("rm -f "+self.settings["chroot_path"]+"/etc/portage/make.profile",\
-					"Error zapping profile link",env=self.env)
-			cmd("mkdir -p "+self.settings["chroot_path"]+"/etc/portage/")
-			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" + \
-				self.settings["target_profile"]+" "+\
-				self.settings["chroot_path"]+"/etc/portage/make.profile",\
+			cmd("rm -f " + self.settings["chroot_path"] +
+				self.settings["port_conf"] + "/make.profile",
+				"Error zapping profile link",env=self.env)
+			cmd("mkdir -p " + self.settings["chroot_path"] +
+				self.settings["port_conf"])
+			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
+				self.settings["target_profile"] + " " +
+				self.settings["chroot_path"] +
+				self.settings["port_conf"] + "/make.profile",
 				"Error creating profile link",env=self.env)
 			self.resume.enable("config_profile_link")
 

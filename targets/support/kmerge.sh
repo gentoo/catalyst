@@ -209,12 +209,12 @@ then
 
 	if [ ! -e ${clst_port_conf}/profile/package.provided ]
 	then
-		mkdir -p /etc/portage/profile
-		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
+		mkdir -p ${clst_port_conf}/profile
+		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
 	else
-		if ( ! grep -q "^${KERNELVERSION}\$"  /etc/portage/profile/package.provided )
+		if ( ! grep -q "^${KERNELVERSION}\$"  ${clst_port_conf}/profile/package.provided )
 		then
-			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
+			echo "${KERNELVERSION}" >> ${clst_port_conf}/profile/package.provided
 		fi
 	fi
 
@@ -271,7 +271,7 @@ make_destpath
 
 
 build_kernel
-sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" /etc/portage/make.conf
+sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`

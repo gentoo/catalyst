@@ -75,8 +75,8 @@ setup_myfeatures(){
 	then
 		export clst_myfeatures="${clst_myfeatures} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
-		[ -e /etc/portage/make.conf ] && \
-			echo 'USE="${USE} -avahi -gtk -gnome"' >> /etc/portage/make.conf
+		[ -e ${clst_make_conf} ] && \
+			echo 'USE="${USE} -avahi -gtk -gnome"' >> ${clst_make_conf}
 		# We install distcc to / on stage1, then use --noreplace, so we need to
 		# have some way to check if we need to reinstall distcc without being
 		# able to rely on USE, so we check for the distcc user and force a
@@ -87,7 +87,7 @@ setup_myfeatures(){
 		else
 			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc || exit 1
 		fi
-		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' /etc/portage/make.conf
+		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' ${clst_make_conf}
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
@@ -173,9 +173,9 @@ setup_pkgmgr(){
 	# Use --newuse to make sure it rebuilds with any changed use flags.
 	if [ -n "$1" ];then
 		echo "Adding USE='${USE} $1' to make.conf for portage build"
-		[ -e /etc/portage/make.conf ] && echo 'USE="${USE} $1"' >> /etc/portage/make.conf
+		[ -e ${clst_make_conf} ] && echo 'USE="${USE} $1"' >> ${clst_make_conf}
 		run_merge --oneshot --update --newuse sys-apps/portage
-		sed -i '/USE="${USE} $1"/d' /etc/portage/make.conf
+		sed -i '/USE="${USE} $1"/d' ${clst_make_conf}
 	else
 		echo "Updating portage with USE='${USE}'"
 		run_merge --oneshot --update --newuse sys-apps/portage
@@ -245,11 +245,11 @@ die() {
 
 make_destpath() {
 	# ROOT is / by default, so remove any ROOT= settings from make.conf
-	sed -i '/ROOT=/d' /etc/portage/make.conf
+	sed -i '/ROOT=/d' ${clst_make_conf}
 	export ROOT=/
 	if [ "${1}" != "/" -a -n "${1}" ]
 	then
-		echo "ROOT=\"${1}\"" >> /etc/portage/make.conf
+		echo "ROOT=\"${1}\"" >> ${clst_make_conf}
 		export ROOT=${1}
 	fi
 	if [ ! -d ${ROOT} ]
@@ -300,7 +300,7 @@ show_debug() {
 		emerge --info
 		# TODO: grab our entire env
 		# <zmedico> to get see the ebuild env you can do something like:
-		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside /etc/portage/bashrc
+		# `set > /tmp/env_dump.${EBUILD_PHASE}` inside ${clst_port_conf}/bashrc
 		# XXX: Also, portageq does *not* source profile.bashrc at any time.
 		echo
 		echo "BOOTSTRAP_USE:            $(portageq envvar BOOTSTRAP_USE)"

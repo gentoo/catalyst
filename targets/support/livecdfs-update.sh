@@ -105,12 +105,12 @@ fi
 
 # Tweak the livecd make.conf so that users know not to edit it
 # http://bugs.gentoo.org/show_bug.cgi?id=144647
-mv /etc/portage/make.conf /etc/portage/make.conf.old
-echo "####################################################" >> /etc/portage/make.conf
-echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> /etc/portage/make.conf
-echo "## PLEASE EDIT /mnt/gentoo/etc/portage/make.conf INSTEAD  ##" >> /etc/portage/make.conf
-echo "####################################################" >> /etc/portage/make.conf
-cat /etc/portage/make.conf.old >> /etc/portage/make.conf
+mv ${clst_make_conf} ${clst_make_conf}.old
+echo "####################################################" >> ${clst_make_conf}
+echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> ${clst_make_conf}
+echo "## PLEASE EDIT /mnt/gentoo${clst_make_conf} INSTEAD  ##" >> ${clst_make_conf}
+echo "####################################################" >> ${clst_make_conf}
+cat ${clst_make_conf}.old >> ${clst_make_conf}
 
 # devfs tweaks
 [ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
