@@ -24,7 +24,7 @@ class tinderbox(StageBase):
 		# example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
 			if os.path.exists(self.settings["controller_file"]):
-			    cmd(self.settings["controller_file"]+" run "+\
+				cmd(self.settings["controller_file"]+" run "+\
 				list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
 
 		except CatalystError:
@@ -43,6 +43,6 @@ class tinderbox(StageBase):
 	def set_action_sequence(self):
 		#Default action sequence for run method
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-		              "config_profile_link","setup_confdir","bind","chroot_setup",\
-		              "setup_environment","run_local","preclean","unbind","clean",\
-		              "clear_autoresume"]
+			"config_profile_link","setup_confdir","bind","chroot_setup",\
+			"setup_environment","run_local","preclean","unbind","clean",\
+			"clear_autoresume"]

@@ -164,8 +164,8 @@ class netboot2(StageBase):
 		touch(self.settings["autoresume_path"]+"empty")
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",
-	    				"setup_confdir","portage_overlay","bind","chroot_setup",\
-					"setup_environment","build_packages","root_overlay",\
-					"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
-					"remove","empty","unbind","clean","clear_autoresume"]
+		self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",
+			"setup_confdir","portage_overlay","bind","chroot_setup",\
+			"setup_environment","build_packages","root_overlay",\
+			"copy_files_to_image","setup_overlay","build_kernel","move_kernels",\
+			"remove","empty","unbind","clean","clear_autoresume"]
