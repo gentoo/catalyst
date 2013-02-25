@@ -1296,7 +1296,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			except CatalystError:
 				self.unbind()
 				raise CatalystError("Stage build aborting due to error.",
-					print_traceback=True)
+					print_traceback=False)
 
 	def setup_environment(self):
 		"""

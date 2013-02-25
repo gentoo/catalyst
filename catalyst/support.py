@@ -90,7 +90,7 @@ class CatalystError(Exception):
 				(type,value)=sys.exc_info()[:2]
 				if value!=None:
 					print
-					print "Traceback valuse found.  listing..."
+					print "Traceback values found.  listing..."
 					print traceback.print_exc(file=sys.stdout)
 			print
 			print "!!! catalyst: "+message
