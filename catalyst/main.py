@@ -168,9 +168,6 @@ def build_target(addlargs):
 	try:
 		target.run()
 	except:
-		print "Target run() exception:  Python traceback output follows:"
-		catalyst.util.print_traceback()
-		print
 		print "!!! catalyst: Error encountered during run of target " + \
 			addlargs["target"]
 		sys.exit(1)
