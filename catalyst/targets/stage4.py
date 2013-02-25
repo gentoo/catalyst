@@ -15,10 +15,10 @@ class stage4(StageBase):
 		self.required_values=["stage4/packages"]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend(["stage4/use","boot/kernel",\
-				"stage4/root_overlay","stage4/fsscript",\
-				"stage4/gk_mainargs","splash_theme",\
-				"portage_overlay","stage4/rcadd","stage4/rcdel",\
-				"stage4/linuxrc","stage4/unmerge","stage4/rm","stage4/empty"])
+			"stage4/root_overlay","stage4/fsscript",\
+			"stage4/gk_mainargs","splash_theme",\
+			"portage_overlay","stage4/rcadd","stage4/rcdel",\
+			"stage4/linuxrc","stage4/unmerge","stage4/rm","stage4/empty"])
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_cleanables(self):
@@ -26,11 +26,11 @@ class stage4(StageBase):
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-					"config_profile_link","setup_confdir","portage_overlay",\
-					"bind","chroot_setup","setup_environment","build_packages",\
-					"build_kernel","bootloader","root_overlay","fsscript",\
-					"preclean","rcupdate","unmerge","unbind","remove","empty",\
-					"clean"]
+			"config_profile_link","setup_confdir","portage_overlay",\
+			"bind","chroot_setup","setup_environment","build_packages",\
+			"build_kernel","bootloader","root_overlay","fsscript",\
+			"preclean","rcupdate","unmerge","unbind","remove","empty",\
+			"clean"]
 
 #		if "TARBALL" in self.settings or \
 #			"fetch" not in self.settings['options']:

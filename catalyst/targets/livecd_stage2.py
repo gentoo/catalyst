@@ -50,7 +50,7 @@ class livecd_stage2(StageBase):
 					print_traceback=True)
 
 	def set_spec_prefix(self):
-	    self.settings["spec_prefix"]="livecd"
+		self.settings["spec_prefix"]="livecd"
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")

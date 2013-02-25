@@ -122,13 +122,12 @@ class netboot(StageBase):
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",
 				print_traceback=True)
-
 		# end
 		print "netboot: build finished !"
 
 	def set_action_sequence(self):
-	    self.settings["action_sequence"]=["unpack","unpack_snapshot",
-	    				"config_profile_link","setup_confdir","bind","chroot_setup",\
-						"setup_environment","build_packages","build_busybox",\
-						"build_kernel","copy_files_to_image",\
-						"clean","create_netboot_files","unbind","clear_autoresume"]
+		self.settings["action_sequence"]=["unpack","unpack_snapshot",
+			"config_profile_link","setup_confdir","bind","chroot_setup",\
+			"setup_environment","build_packages","build_busybox",\
+			"build_kernel","copy_files_to_image",\
+			"clean","create_netboot_files","unbind","clear_autoresume"]
