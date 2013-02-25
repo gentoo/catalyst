@@ -1,1 +1,5 @@
 *.py[co]
+test.*
+*.geany
+Scratch
+
