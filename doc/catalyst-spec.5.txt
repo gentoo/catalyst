@@ -138,7 +138,9 @@ it should update the seed stage or not (valid values: `yes no`).
 *update_seed_command*::
 This is an optional command to pass to emerge for updating the seed
 stage (example: `--update dev-libs/mpfr dev-libs/mpc dev-libs/gmp`)
-If not specified, catalyst will update gcc deps.
+If not specified, catalyst will update gcc's deps, and rebuild gcc if any of
+it's deps are updated with a new version. Even if it itself is not updated.
+This prevents gcc breakage when it's dependency lib sonames have changed.
 This setting requires enabling update_seed.
 
 Compilation

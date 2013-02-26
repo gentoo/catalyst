@@ -26,12 +26,17 @@ clst_root_path=/ setup_pkgmgr
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
-		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
-			clst_root_path=/ run_merge "--buildpkg=n ${clst_update_seed_command}"
+			echo "--- Updating seed stage with USER defined update_seed_command"
+			clst_root_path=/ run_merge "${clst_update_seed_command}"
 		else
-			clst_root_path=/ run_merge "--update --deep --newuse --complete-graph --rebuild-if-new-ver gcc"
+			echo "--- Updating seed stage with DEFAULT update_seed_command"
+			update_cmd="--update --deep --complete-graph --rebuild-if-new-ver gcc"
+			clst_root_path=/ run_merge ${update_cmd}
 		fi
+
+		# reset the emerge options for the target
+		clst_update_seed=no setup_myemergeopts
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
 		exit 1
