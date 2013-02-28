@@ -8,7 +8,7 @@ class generic_arm(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-O2 -pipe"
-   
+
 class generic_armeb(builder.generic):
 	"Abstract base class for all arm (big endian) builders"
 	def __init__(self,myspec):
@@ -129,5 +129,5 @@ def register():
 		"armv7a_hardfp" : arch_armv7a_hardfp,
 		"armeb"  : arch_armeb,
 		"armv5teb" : arch_armv5teb
-	}, ("arm", "armv4l", "armv4tl", "armv5tl", "armv5tel", "armv5tejl", "armv6l", 
+	}, ("arm", "armv4l", "armv4tl", "armv5tl", "armv5tel", "armv5tejl", "armv6l",
 "armv7l", "armeb", "armv5teb") )

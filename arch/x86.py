@@ -55,7 +55,7 @@ class arch_pentium_mmx(generic_x86):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium-mmx -pipe"
 		self.settings["HOSTUSE"]=["mmx"]
-	
+
 class arch_pentium2(generic_x86):
 	"Intel Pentium 2 CPU with MMX support"
 	def __init__(self,myspec):

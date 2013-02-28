@@ -12,7 +12,7 @@ subarch:
 # it to be, but it is usually a date.
 # example:
 # version_stamp: 2006.1
-version_stamp: 
+version_stamp:
 
 # The target specifies what target we want catalyst to do. For stages, the
 # supported targets are: stage1 stage2 stage3
@@ -45,7 +45,7 @@ snapshot:
 # default/stage3-x86-2006.1
 source_subpath:
 
-# These are the hosts used as distcc slaves when distcc is enabled in your 
+# These are the hosts used as distcc slaves when distcc is enabled in your
 # catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
 # is entirely optional.
 # example:

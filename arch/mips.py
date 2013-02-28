@@ -398,7 +398,7 @@ class arch_cobalt_n32(generic_mips64el):
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
-	return ({ 
+	return ({
 			"cobalt"				: arch_cobalt,
 			"cobalt_n32"			: arch_cobalt_n32,
 			"mips"					: arch_mips1,

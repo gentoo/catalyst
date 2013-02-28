@@ -17,7 +17,7 @@ version_stamp:
 # supported targets are: grp
 # example:
 # target: grp
-target: grp 
+target: grp
 
 # The rel_type defines what kind of build we are doing.  This is merely another
 # identifier, but it useful for allowing multiple concurrent builds.  Usually,

@@ -110,7 +110,7 @@ livecd/cdtar:
 livecd/iso:
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
-# after the kernel(s) and any external modules have been compiled and is 
+# after the kernel(s) and any external modules have been compiled and is
 # executed within the chroot.  It can contain any commands that are available
 # via the packages installed by our stages or by the packages installed during
 # the livecd-stage1 build.  We do not use one for the official release media, so
@@ -204,7 +204,7 @@ livecd/rcdel:
 
 # This overlay is dropped onto the CD filesystem and is outside any loop which
 # has been configured.  This is typically used for adding the documentation,
-# distfiles, snapshots, and stages to the official media.  These files will not 
+# distfiles, snapshots, and stages to the official media.  These files will not
 # be available if docache is enabled, as they are outside the loop.
 # example:
 # livecd/overlay: /tmp/overlay-minimal
@@ -323,7 +323,7 @@ boot/kernel/gentoo/machine_type:
 # This is only supported on ppc64 currently.  This entry sets up the console=
 # boot parameters required for sending the output to the appropriate console.
 # example:
-# boot/kernel/gentoo/console: hvsi0 
+# boot/kernel/gentoo/console: hvsi0
 # boot/kernel/gentoo/console: hvc0
 # boot/kernel/gentoo/console: tty0 ttyS0
 boot/kernel/gentoo/console:

@@ -1798,7 +1798,7 @@
   Removed famd from the default runlevel for gentoo-release-livecd. It really
   shouldn't cause a problem, but I prefer it stay a bit clean.
 
-  11 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org> 
+  11 Jul 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   modules/generic_stage_target.py, targets/support/bootloader-setup.sh,
   targets/support/create-iso.sh, targets/support/kmerge.sh,
   targets/support/livecdfs-update.sh, targets/support/mips-arcload_conf.sh:
@@ -2432,7 +2432,7 @@
   10 Jan 2006; Eric Edgar <rocket@gentoo.org>
   modules/generic_stage_target.py, targets/support/kmerge.sh:
   filter kname - and . for kmerge.sh
-  
+
   10 Jan 2006; Chris Gianelloni <wolf31o2@gentoo.org>
   targets/support/create-iso.sh:
   Added sparc64 to sparc lines for create-iso.sh to fix ISO creation on sparc64.
@@ -3437,7 +3437,7 @@
 
   06 Jul 2005; Eric Edgar <rocket@gentoo.org> targets/support/create-iso.sh:
   Fix iso creation script.  Case statement out of place
-  
+
   05 Jul 2005; Chris Gianelloni <wolf31o2@gentoo.org> arch/alpha.py,
   arch/amd64.py, arch/hppa.py, arch/ia64.py, arch/mips.py, arch/ppc.py,
   arch/ppc64.py, arch/s390.py, arch/sparc.py, arch/sparc64.py, arch/x86.py,
@@ -4762,10 +4762,10 @@
   fixes for bugs #55192 and #54137
   added a new key for all specfiles, portage_confdir.
   this should point to a directory similar in functionality to /etc/portage.
-  
+
   cleaned up the module code a bit so that unnecessary modules
   are not imported.
-  
+
   more work on resuming. it is getting there, but it still needs a ton of work,
   so please test, and report bugs.
 
@@ -4790,7 +4790,7 @@
   of me doing this is that SIGINT (ctrl-c) makes catalyst die nice and proper
   now. Additionally, catalyst will stop when there is an error with an ebuild
   ... it didn't do this before, it just plowed along and packed things up.
-  
+
   Much thanks to <carpaski@gentoo.org> for (writing) pointing me to the spawn()
   code in portage.py and then answering my noob questions.
 
@@ -4974,7 +4974,7 @@
   05 Apr 2004; John Davis <zhen@gentoo.org> modules/targets.py:
   bugfix for #46861
 
-  04 Apr 2004; Benjamin Judas <beejay@gentoo.org> 
+  04 Apr 2004; Benjamin Judas <beejay@gentoo.org>
   livecd/kconfig/config-2004.1-gentoo-dev-sources-2.6.3-r1,
   livecd/kconfig/config-2004.1-xfs-sources-2.4.24-r3:
   Added the two kernel-configs for 2004.1 x86
@@ -5052,8 +5052,8 @@
   examples/livecd/runscript/alpha-archscript.sh, files/catalyst.conf:
   fixes for bugs 43676, 43701. Alpha support added as well.
 
-  25 Feb 2004; Pieter Van den Abeele <pvdabeel@gentoo.org>: 
-  added powerpc livecd support, preparing for 2004.0 release. Preliminary 
+  25 Feb 2004; Pieter Van den Abeele <pvdabeel@gentoo.org>:
+  added powerpc livecd support, preparing for 2004.0 release. Preliminary
   kde/gnome cd specs added.
 
   18 Feb 2004; John Davis <zhen@gentoo.org> files/catalyst.conf:
@@ -5070,7 +5070,7 @@
   point to a file to use in place of /etc/catalyst.conf. By setting this
   variable in your shell, catalyst can easily be used by multiple people on the
   same machine. Also, ccache support now works for genkernel.
-  
+
   11 Feb 2004; Daniel Robbins <drobbins@gentoo.org>:
   removed file for livecd-stage2 target, as this is handled by the runscript
   now. Added support for "/boot/kernel/foo/use", "/boot/kernel/foo/packages,"
@@ -5097,34 +5097,34 @@
 
   29 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
   Tinderbox target added. See tinderbox examples in examples/ dir.
-  
+
   08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
   spec file support integrated into catalyst. Use "-f/--file specfile" as
   argument; see examples dir for examples.
   "grp" target now functional. See examples/x86-grp-20031102.spec for an
   example of how to use it.
- 
+
   08 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
   support functions for spec file parsing and reading added. Will get added to
   the code soon.
-  
+
   05 Nov 2003; Daniel Robbins <drobbins@gentoo.org>:
   Many bug fixes later, things seem to be working well for stage1/2/3 so I've
   added a README.
-  
+
   28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
   Significant rework of code structure. Everything is falling nicely into place.
-  
+
   28 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
   Exception handling fully-integrated into current prototype code.
-  
+
   27 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
   beginning of exception handling integration, got some of the target code
   nicely fleshed out.
-  
+
   24 Oct 2003; Daniel Robbins <drobbins@gentoo.org>:
   major code rework in progress on the python parts.
-  
+
   17 Oct 2003; John Davis <zhen@gentoo.org> files/grp/x86/x86.conf,
   files/grp/x86/x86.pkg.cd1, files/grp/x86/x86.pkg.cd2, files/grp/x86/x86.src,
   files/livecd/x86-basic/base.pkg, files/livecd/x86-basic/kern.pkg:
@@ -5146,7 +5146,7 @@
 
   12 Oct 2003; Daniel Robbins <drobins@gentoo.org>:
   subarch test outsourced to python catalyst-subarches function.
-  
+
   12 Oct 2003; John Davis <zhen@gentoo.org> include/build_functions.sh:
   fixed the entry in include/build_functions.sh for location of bootstrap.sh
 
@@ -5159,7 +5159,7 @@
   12 Oct 2003; Robin H. Johnson <robbat2@gentoo.org> catalyst:
   Fix valid subarch test.
 
-  12 Oct 2003; John Davis <zhen@gentoo.org> catalyst, 
+  12 Oct 2003; John Davis <zhen@gentoo.org> catalyst,
   include/build_functions.sh, include/functions.sh:
   thanks to robbat2, the cmdline argument handling is now fixed. I moved
   start_build to build_functions.sh cleaning up the main catalyst script some
@@ -5183,7 +5183,7 @@
   08 Oct 2003; John Davis <zhen@gentoo.org> catalyst:
   I changed the is_special handling so that it is cleaner and faster
 
-  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst, include/functions.sh, 
+  08 Oct 2003; John Davis <zhen@gentoo.org> catalyst, include/functions.sh,
   livecd/foundations/x86-basic/base.pkg, livecd/foundations/x86-basic/kern.pkg,
   livecd/foundations/x86-basic/post-clean.sh,
   livecd/foundations/x86-basic/pre-clean.sh,
@@ -5231,7 +5231,7 @@
   stage*-arch-etdyn-ssp.* re method's request. This will not be the first time
   I change naming conventions, as catalyst will be eventually extended to
   do selinux-* stages also.
-  
+
   Additionally, I updated README.catalyst to include profile information.
 
   10 Sep 2003; John Davis <zhen@gentoo.org> README.catalyst, README.stager,
