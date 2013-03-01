@@ -180,7 +180,7 @@ then
 fi
 
 CONFIG_MATCH=0
-if [ -n "${clst_KERNCACHE}" -a
+if [ -n "${clst_KERNCACHE}" -a \
      -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
 then
 	if [ ! -e /var/tmp/${clst_kname}.config ]
