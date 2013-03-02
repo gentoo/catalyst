@@ -171,8 +171,7 @@ fi
 # Setup configured default X Session
 if [ -n "${clst_livecd_xsession}" ]
 then
-	sed -i "s:#XSESSION=\"Gnome\":XSESSION=\"${clst_livecd_xsession}\":" \
-		/etc/rc.conf
+	echo "XSESSION=\"${clst_livecd_xsession}\"" > /etc/env.d/90xsession
 fi
 
 # touch /etc/asound.state
