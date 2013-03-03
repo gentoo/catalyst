@@ -5,7 +5,7 @@ RUN_DEFAULT_FUNCS="no"
 source /tmp/chroot-functions.sh
 
 # Allow root logins to our CD by default
-if [ -e /etc/sshd/sshd_config ]
+if [ -e /etc/ssh/sshd_config ]
 then
 	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
 		/etc/ssh/sshd_config
