@@ -30,12 +30,15 @@ if [ -n "${clst_update_seed}" ]; then
 		if [ -n "${clst_update_seed_command}" ]; then
 			clst_root_path=/ run_merge "--buildpkg=n ${clst_update_seed_command}"
 		else
-			clst_root_path=/ run_merge "--buildpkg=n --update --deep --newuse --onlydeps gcc"
+			clst_root_path=/ run_merge "--update --deep --newuse --complete-graph --rebuild-if-new-ver gcc"
 		fi
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
 		exit 1
 	fi
+
+	# reset emerge options for the target
+	clst_update_seed=no setup_myemergeopts
 else
 	echo "Skipping seed stage update..."
 fi
