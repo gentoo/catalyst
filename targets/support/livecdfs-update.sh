@@ -377,9 +377,7 @@ esac
 # We want the first user to be used when auto-starting X
 if [ -e /etc/startx ]
 then
-	sed -i \
-		"s:##STARTX:source /etc/profile && su - ${first_user} -c startx:" \
-		/root/.bashrc
+	sed -i "s:##STARTX:echo startx | su - '${first_user}':" /root/.bashrc
 fi
 
 if [ -e /lib/rcscripts/addons/udev-start.sh ]
