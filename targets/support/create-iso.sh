@@ -264,6 +264,7 @@ case ${clst_hostarch} in
 					echo "Creating ISO using ISOLINUX bootloader"
 					echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}"
 					mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
+					isohybrid ${1}
 				elif [ -e ${clst_target_path}/gentoo.efimg ]
 				then
 					echo "Creating ISO using both ISOLINUX and EFI bootloader"
@@ -274,6 +275,7 @@ case ${clst_hostarch} in
 				echo "Creating ISO using ISOLINUX bootloader"
 				echo "mkisofs -J -R -l ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}"
 				mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path} || die "Cannot make ISO image"
+				isohybrid ${1}
 			fi
 		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
 		then
