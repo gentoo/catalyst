@@ -147,6 +147,9 @@ def parse_config(myconfig):
 	if "pkgcache" in string.split(conf_values["options"]):
 		print "Package cache support enabled."
 		conf_values["PKGCACHE"]="1"
+	if "preserve_libs" in string.split(conf_values["options"]);
+		print "Preserving libs during unmerge."
+		conf_values["PRESERVE_LIBS"]="1"
 
 	if "purge" in string.split(conf_values["options"]):
 		print "Purge support enabled."
