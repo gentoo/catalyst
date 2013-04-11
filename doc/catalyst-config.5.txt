@@ -1,0 +1,192 @@
+CATALYST-CONFIG(5)
+================
+:man source:   catalyst {catalystversion}
+:man manual:   catalyst {catalystversion}
+
+
+NAME
+----
+catalyst-config - Catalyst configuration files
+
+
+SYNOPSIS
+--------
+*catalyst* ['OPTIONS'] *-c* 'FILE'
+
+
+DESCRIPTION
+-----------
+
+*catalyst(1)* reads the configuration file given with `-c` or
+`--config` on the command line.  The file contains keyword-argument
+pairs using a POSIX Shell variable syntax.  Lines starting with `#`
+and empty lines are interpreted as comments.  For example:
+
+---------------------------------
+# /etc/catalyst/catalyst.conf
+digests="md5 sha1 sha512 whirlpool"
+contents="auto"
+distdir="/usr/portage/distfiles"
+envscript="/etc/catalyst/catalystrc"
+options="autoresume bindist kerncache pkgcache seedcache snapcache"
+portdir="/usr/portage"
+sharedir="/usr/lib/catalyst"
+snapshot_cache="/var/tmp/catalyst/snapshot_cache"
+storedir="/var/tmp/catalyst"
+---------------------------------
+
+The possible keywords and their meanings are as follows:
+
+Basic configuration
+~~~~~~~~~~~~~~~~~~~
+
+*digests*::
+Create a `.DIGESTS` file containing the hash output from any of the
+supported options below.  Adding them all may take a long time.
+(example: `md5 sha1 sha512 whirlpool`).  See the *SUPPORTED HASHES*
+section for a list of supported hashes.
+
+*contents*::
+Create a `.CONTENTS` file listing the contents of the file.  If this
+variable is empty, no `.CONTENTS` will be generated at all.  Supported
+values:
++
+--
+auto::
+Strongly recommended
+
+tar-tv::
+Do `tar tvf FILE`
+
+tar-tvz::
+Do `tar tvzf FILE`
+
+tar-tvy::
+Do `tar tvyf FILE`
+
+isoinfo-l::
+Do `isoinfo -l -i FILE`
+
+isoinfo-f::
+Do `isoinfo -f -i FILE`.  'isoinfo-f' is the only option not chosen
+by the automatic algorithm.
+--
+
+*distdir*::
+Distfiles location.  `/usr/portage/distfiles` should work for most
+default installations.
+
+*envscript*::
+Environment script location, which allows users to set options such as
+HTTP proxies, `MAKEOPTS`, `GENTOO_MIRRORS`, or any other environment
+variables needed for building.  The envscript file sets environment
+variables using POSIX shell notation:
++
+---------------------------------
+export FOO="bar"
+---------------------------------
+
+*hash_function*::
+Internal hash function catalyst should use for things like autoresume,
+seedcache, etc.  The default and fastest is `crc32`.  You should not
+ever need to change this unless your OS does not support it.  See the
+*SUPPORTED HASHES* section for a list of supported hashes.
+
+**options*::
+Set different build-time options (example: `autoresume bindist
+kerncache pkgcache seedcache snapcache`).  Supported values:
++
+--
+autoresume::
+Attempt to resume a failed build.  Clear the autoresume flags with the
+`-a` option to the catalyst command line.  `-p` will clear the
+autoresume flags as well as your pkgcache and kerncache.
+
+bindist::
+Enable the `bindist` `USE` flag.  This is recommended if you will be
+redistributing builds, but see the package specific definitions for
+details.
+
+ccache::
+Enable build time ccache support.  WARNING: ccache has been known to
+cause random build failures and bugs reported with ccache enabled may
+be closed invalid.
+
+distcc::
+Enable distcc support for building. You have to set distcc_hosts in
+your spec file.
+
+icecream::
+Enable icecream compiler cluster support for building.
+
+kerncache::
+Keep a copy of the built kernel and modules.  This is useful if your
+build dies during `livecd-stage2`.
+
+pkgcache::
+Enable `--usepkg` and `--buildpkg` for most *emerge(1)* runs.  This is
+useful if your build dies prematurely.  However, you may experience
+linking problems.
+
+seedcache::
+Use the build output of a previous target if it exists to speed up the
+creation of a new stage.  This avoids unpacking the seed tarball.
+
+snapcache::
+Cache the snapshot so that it can be bind-mounted into the chroot.
+WARNING: moving parts of the portage tree from within fsscript *will*
+break your cache.  The cache is unlinked before any empty or rm
+processing.
+--
+
+*portdir*::
+Portage tree location.  `/usr/portage/` should work for most default
+installations.
+
+*sharedir*::
+Catalyst runtime script location.  `/usr/lib/catalyst` should work for
+most default installations.  If you are running catalyst from a Git
+checkout, you should change this to point to your checkout directory.
+
+*storedir*::
+Location for built seeds, temporary files, and caches (example:
+`/var/tmp/catalyst`).
+
+*port_logdir*::
+Location for build logs (example: `/var/tmp/catalyst/tmp`).  This dir
+will be automatically cleaned of all logs over 30 days old. If left
+undefined the logs will remain in the build directory as usual and get
+cleaned every time a stage build is restarted.
+
+*var_tmpfs_portage*::
+Set the size of a `/var/tmp/portage` tmpfs in gigabytes (example:
+`16`).  If set, this mounts a tmpfs for `/var/tmp/portage` so building
+takes place in RAM.  This feature requires a pretty large tmpfs
+({open,libre}office needs ~8GB to build).  WARNING: If you use too
+much RAM everything will fail horribly and it is not our fault.
+
+
+SUPPORTED HASHES
+----------------
+Supported hashes: adler32, crc32, crc32b, gost, haval128, haval160,
+haval192, haval224, haval256, md2, md4, md5, ripemd128, ripemd160,
+ripemd256, ripemd320, sha1, sha224, sha256, sha384, sha512, snefru128,
+snefru256, tiger, tiger128, tiger160, whirlpool.
+
+
+FILES
+-----
+An example configuration file can be found at
+`/etc/catalyst/catalyst.conf`.
+
+
+BUGS
+----
+An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
+Linux bug-tracking system at `http://bugs.gentoo.org`.
+
+
+SEE ALSO
+--------
+*catalyst(1)*
+*catalyst-spec(5)*
