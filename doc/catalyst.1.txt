@@ -135,6 +135,7 @@ AUTHORS
 
 SEE ALSO
 --------
+*catalyst-config(5)*
 *catalyst-spec(5)*
 
 Also, a more in-depth examination of Catalyst options and procedures can be found

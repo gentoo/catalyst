@@ -496,7 +496,6 @@ specific options for the game.  This is not used on the release media.
 FILES
 -----
 Example specfiles can be found in '/usr/share/doc/catalyst-{catalystversion}/examples'.
-An example configuration file can be found at '/etc/catalyst/catalyst.conf'.
 
 
 SUPPORTED ARCHITECTURES
@@ -516,3 +515,4 @@ Linux bug-tracking system at 'http://bugs.gentoo.org'.
 SEE ALSO
 --------
 *catalyst(1)*
+*catalyst-config(5)*
