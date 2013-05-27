@@ -657,7 +657,7 @@ class generic_stage_target(generic_target):
 					unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				else:
-					unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+					unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				error_msg="Tarball extraction of "+\
 					self.settings["source_path"]+" to "+\
@@ -672,7 +672,7 @@ class generic_stage_target(generic_target):
 				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			else:
-				unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+\
 				" to "+self.settings["chroot_path"]+" failed."
