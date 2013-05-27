@@ -26,7 +26,7 @@ from contents import ContentsMap
 
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
-__version__="2.0.15"
+__version__="rewrite-git"
 
 conf_values={}
 
