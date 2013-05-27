@@ -47,7 +47,7 @@ class livecd_stage1(StageBase):
 				os.makedirs(self.settings["target_path"])
 
 	def set_spec_prefix(self):
-	                self.settings["spec_prefix"]="livecd"
+		self.settings["spec_prefix"]="livecd"
 
 	def set_use(self):
 		StageBase.set_use(self)
