@@ -657,7 +657,7 @@ class generic_stage_target(generic_target):
 					unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				else:
-					unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+					unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				error_msg="Tarball extraction of "+\
 					self.settings["source_path"]+" to "+\
@@ -672,7 +672,7 @@ class generic_stage_target(generic_target):
 				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			else:
-				unpack_cmd="tar xpf "+self.settings["source_path"]+" -C "+\
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+\
 				" to "+self.settings["chroot_path"]+" failed."
@@ -773,7 +773,7 @@ class generic_stage_target(generic_target):
 			if "bz2" == self.settings["chroot_path"][-3:]:
 				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			else:
-				unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+destdir
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
@@ -793,7 +793,7 @@ class generic_stage_target(generic_target):
 				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			else:
-				unpack_cmd="tar xpf "+self.settings["snapshot_path"]+" -C "+\
+				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			unpack_errmsg="Error unpacking snapshot"
 
