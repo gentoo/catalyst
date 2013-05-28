@@ -104,5 +104,6 @@ option_messages = {
 	"purge": "Purge support enabled.",
 	"seedcache": "Seed cache support enabled.",
 	"snapcache": "Snapshot cache support enabled.",
+	'preserve_libs': "Preserving libs during unmerge.",
 	#"tarball": "Tarball creation enabled.",
 	}
