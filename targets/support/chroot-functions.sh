@@ -133,7 +133,8 @@ setup_myemergeopts(){
 	then
 		export bootstrap_opts="${bootstrap_opts} -f"
 		export clst_myemergeopts="${clst_myemergeopts} -f"
-	elif [ -n "${clst_PKGCACHE}" -a -z "${clst_update_seed}" ]
+	# if we have PKGCACHE, and either update_seed is empty or 'no', make and use binpkgs
+	elif [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
 	then
 		export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --newuse"
 		export bootstrap_opts="${bootstrap_opts} -r"
