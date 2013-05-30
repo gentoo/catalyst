@@ -23,10 +23,9 @@ from catalyst.defaults import hash_definitions, confdefaults, option_messages
 from hash_utils import HashMap
 from defaults import  contents_definitions
 from contents import ContentsMap
-
+from catalyst.version import get_version
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
-__version__="rewrite-git"
 
 conf_values={}
 
@@ -60,7 +59,7 @@ catalyst -f stage1-specfile.spec
 
 
 def version():
-	print "Catalyst, version "+__version__
+	print get_version()
 	print "Copyright 2003-2008 Gentoo Foundation"
 	print "Copyright 2008-2012 various authors"
 	print "Distributed under the GNU General Public License version 2.1\n"
@@ -174,8 +173,8 @@ def build_target(addlargs):
 
 def main():
 
-	version()
 	if os.getuid() != 0:
+		version()
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
 		print "!!! catalyst: This script requires root privileges to operate"
 		sys.exit(2)
@@ -213,11 +212,12 @@ def main():
 	run = False
 	for o, a in opts:
 		if o in ("-h", "--help"):
+			version()
 			usage()
 			sys.exit(1)
 
 		if o in ("-V", "--version"):
-			print "Catalyst version "+__version__
+			print get_version()
 			sys.exit(1)
 
 		if o in ("-d", "--debug"):
@@ -273,6 +273,8 @@ def main():
 		usage()
 		sys.exit(2)
 
+	# made it this far so start by outputting our version info
+	version()
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 
