@@ -15,7 +15,7 @@ from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
 from catalyst.defaults import target_mounts
 from catalyst.lock import LockDir
-
+from catalyst.fileops import ensure_dirs, pjoin
 
 class StageBase(TargetBase, ClearBase, GenBase):
 	"""
@@ -330,8 +330,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 #					+self.settings["target_path"],env=self.env)
 			touch(self.settings["autoresume_path"]+"setup_target_path")
 
-			if not os.path.exists(self.settings["storedir"]+"/builds/"):
-				os.makedirs(self.settings["storedir"]+"/builds/")
+			ensure_dirs(self.settings["storedir"] + "/builds/")
 
 	def set_fsscript(self):
 		if self.settings["spec_prefix"]+"/fsscript" in self.settings:
@@ -475,8 +474,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["version_stamp"]+"/")
 		if "autoresume" in self.settings["options"]:
 			print "The autoresume path is " + self.settings["autoresume_path"]
-		if not os.path.exists(self.settings["autoresume_path"]):
-			os.makedirs(self.settings["autoresume_path"],0755)
+		ensure_dirs(self.settings["autoresume_path"], mode=0755)
 
 	def set_controller_file(self):
 		self.settings["controller_file"]=normpath(self.settings["shdir"] + "/" +
@@ -765,19 +763,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				print "unpack()  clear_chroot()"
 				self.clear_chroot()
 
-			if not os.path.exists(self.settings["chroot_path"]):
-				os.makedirs(self.settings["chroot_path"])
+			ensure_dirs(self.settings["chroot_path"])
 
-			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+			ensure_dirs(self.settings["chroot_path"]+"/tmp",mode=1777)
 
 			if "pkgcache" in self.settings["options"]:
-				if not os.path.exists(self.settings["pkgcache_path"]):
-					os.makedirs(self.settings["pkgcache_path"],0755)
+				ensure_dirs(self.settings["pkgcache_path"],mode=0755)
 
 			if "kerncache" in self.settings["options"]:
-				if not os.path.exists(self.settings["kerncache_path"]):
-					os.makedirs(self.settings["kerncache_path"],0755)
+				ensure_dirs(self.settings["kerncache_path"],mode=0755)
 
 			print display_msg
 			cmd(unpack_cmd,error_msg,env=self.env)
@@ -845,8 +839,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				print cleanup_msg
 				cleanup_cmd="rm -rf "+destdir
 				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
-			if not os.path.exists(destdir):
-				os.makedirs(destdir,0755)
+			ensure_dirs(destdir,mode=0755)
 
 			print "Unpacking portage tree (This can take a long time) ..."
 			cmd(unpack_cmd,unpack_errmsg,env=self.env)
@@ -932,12 +925,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		for x in self.mounts:
 			#print "bind(); x =", x
 			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
-			if not os.path.exists(target):
-				os.makedirs(target, 0755)
+			ensure_dirs(target, mode=0755)
 
 			if not os.path.exists(self.mountmap[x]):
 				if not self.mountmap[x] == "tmpfs":
-					os.makedirs(self.mountmap[x],0755)
+					ensure_dirs(self.mountmap[x], mode=0755)
 
 			src=self.mountmap[x]
 			#print "bind(); src =", src
@@ -1199,7 +1191,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					"""
 					mystat=os.stat(myemp)
 					shutil.rmtree(myemp)
-					os.makedirs(myemp,0755)
+					ensure_dirs(myemp, mode=0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
 			touch(self.settings["autoresume_path"]+"empty")
@@ -1252,8 +1244,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			mypath=string.join(mypath[:-1],"/")
 
 			""" Now make sure path exists """
-			if not os.path.exists(mypath):
-				os.makedirs(mypath)
+			ensure_dirs(mypath)
 
 			print "Creating stage tarball..."
 

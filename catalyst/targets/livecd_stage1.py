@@ -10,6 +10,7 @@ import string
 
 from catalyst.support import (normpath,
 	touch, cmd)
+from catalyst.fileops import ensure_dirs
 
 from catalyst.base.stagebase import StageBase
 
@@ -43,8 +44,7 @@ class livecd_stage1(StageBase):
 					"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
 
-			if not os.path.exists(self.settings["target_path"]):
-				os.makedirs(self.settings["target_path"])
+			ensure_dirs(self.settings["target_path"])
 
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]="livecd"

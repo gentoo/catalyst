@@ -11,6 +11,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 from catalyst.support import (CatalystError, normpath,
 	touch, cmd, list_bashify)
+from catalyst.fileops import ensure_dirs
 
 from catalyst.base.stagebase import StageBase
 
@@ -63,8 +64,7 @@ class netboot2(StageBase):
 					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
 
-		if not os.path.exists(self.settings["storedir"]+"/builds/"):
-			os.makedirs(self.settings["storedir"]+"/builds/")
+		ensure_dirs(self.settings["storedir"]+"/builds/")
 
 	def copy_files_to_image(self):
 		# copies specific files from the buildroot to merge_path
@@ -159,7 +159,7 @@ class netboot2(StageBase):
 					# the proper perms and ownership
 					mystat=os.stat(myemp)
 					shutil.rmtree(myemp)
-					os.makedirs(myemp,0755)
+					ensure_dirs(myemp, mode=0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
 		touch(self.settings["autoresume_path"]+"empty")

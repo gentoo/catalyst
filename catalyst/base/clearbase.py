@@ -5,7 +5,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 
 from catalyst.support import cmd, countdown
-
+from catalyst.fileops import ensure_dirs
 
 class ClearBase(object):
 	"""
@@ -35,7 +35,7 @@ class ClearBase(object):
 						+myemp)
 				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
 				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
+				ensure_dirs(myemp, 0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 
@@ -54,7 +54,7 @@ class ClearBase(object):
 			if os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg "+myemp)
 			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
+			ensure_dirs(myemp, mode=0755)
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])
 
@@ -73,7 +73,7 @@ class ClearBase(object):
 				mystat=os.stat(myemp)
 				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
 				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
+				ensure_dirs(myemp, mode=0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 
@@ -92,7 +92,7 @@ class ClearBase(object):
 				mystat=os.stat(myemp)
 				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
 				shutil.rmtree(myemp)
-				os.makedirs(myemp,0755)
+				ensure_dirs(myemp, mode=0755)
 				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 				os.chmod(myemp,mystat[ST_MODE])
 

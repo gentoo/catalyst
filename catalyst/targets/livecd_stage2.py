@@ -8,6 +8,7 @@ import os
 
 from catalyst.support import (normpath, file_locate, CatalystError, cmd,
 	read_from_clst, touch)
+from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
 
 
@@ -63,8 +64,7 @@ class livecd_stage2(StageBase):
 				cmd("rm -rf "+self.settings["target_path"],
 				"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
 				touch(self.settings["autoresume_path"]+"setup_target_path")
-			if not os.path.exists(self.settings["target_path"]):
-				os.makedirs(self.settings["target_path"])
+			ensure_dirs(self.settings["target_path"])
 
 	def run_local(self):
 		# what modules do we want to blacklist?
@@ -117,15 +117,10 @@ class livecd_stage2(StageBase):
 				self.clear_chroot()
 				#self.dir_setup()
 
-			if not os.path.exists(self.settings["chroot_path"]):
-				os.makedirs(self.settings["chroot_path"])
-
-			if not os.path.exists(self.settings["chroot_path"]+"/tmp"):
-				os.makedirs(self.settings["chroot_path"]+"/tmp",1777)
+			ensure_dirs(self.settings["chroot_path"]+"/tmp", mode=1777)
 
 			if "pkgcache" in self.settings["options"]:
-				if not os.path.exists(self.settings["pkgcache_path"]):
-					os.makedirs(self.settings["pkgcache_path"],0755)
+				ensure_dirs(self.settings["pkgcache_path"], mode=0755)
 
 			if not display_msg:
 				raise CatalystError("Could not find appropriate source.\n"

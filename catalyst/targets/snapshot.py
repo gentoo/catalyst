@@ -10,7 +10,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 from catalyst.support import normpath, cmd
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.genbase import GenBase
-
+from catalyst.fileops import ensure_dirs
 class snapshot(TargetBase, GenBase):
 	"""
 	Builder class for snapshots.
@@ -31,8 +31,7 @@ class snapshot(TargetBase, GenBase):
 
 	def setup(self):
 		x=normpath(self.settings["storedir"]+"/snapshots")
-		if not os.path.exists(x):
-			os.makedirs(x)
+		ensure_dirs(x)
 
 	def mount_safety_check(self):
 		pass
@@ -50,8 +49,7 @@ class snapshot(TargetBase, GenBase):
 			" from "+self.settings["portdir"]+"..."
 
 		mytmp=self.settings["tmp_path"]
-		if not os.path.exists(mytmp):
-			os.makedirs(mytmp)
+		ensure_dirs(mytmp)
 
 		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ " +
 			"--exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* " +
@@ -88,6 +86,6 @@ class snapshot(TargetBase, GenBase):
 			if os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg "+myemp)
 			shutil.rmtree(myemp)
-			os.makedirs(myemp,0755)
+			ensure_dirs(myemp, mode=0755)
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])
