@@ -10,7 +10,7 @@ import glob
 
 from catalyst.support import (CatalystError, normpath,
 	touch, cmd, list_bashify)
-
+from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
 
 
@@ -51,8 +51,7 @@ class grp(StageBase):
 			#if os.path.isdir(self.settings["target_path"]):
 				#cmd("rm -rf "+self.settings["target_path"],
 				#"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
-			if not os.path.exists(self.settings["target_path"]):
-				os.makedirs(self.settings["target_path"])
+			ensure_dirs(self.settings["target_path"])
 
 			touch(self.settings["autoresume_path"]+"setup_target_path")
 

@@ -6,6 +6,7 @@ stage1 target
 import os
 
 from catalyst.support import normpath, list_to_string
+from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
 
 
@@ -64,10 +65,8 @@ class stage1(StageBase):
 			# baselayout no longer creates the .keep files in proc and dev for FreeBSD as it
 			# would create them too late...we need them earlier before bind mounting filesystems
 			# since proc and dev are not writeable, so...create them here
-			if not os.path.exists(self.settings["stage_path"]+"/proc"):
-				os.makedirs(self.settings["stage_path"]+"/proc")
-			if not os.path.exists(self.settings["stage_path"]+"/dev"):
-				os.makedirs(self.settings["stage_path"]+"/dev")
+			ensure_dirs(self.settings["stage_path"]+"/proc")
+			ensure_dirs(self.settings["stage_path"]+"/dev")
 			if not os.path.isfile(self.settings["stage_path"]+"/proc/.keep"):
 				try:
 					proc_keepfile = open(self.settings["stage_path"]+"/proc/.keep","w")
@@ -87,8 +86,7 @@ class stage1(StageBase):
 
 	def set_mounts(self):
 		# stage_path/proc probably doesn't exist yet, so create it
-		if not os.path.exists(self.settings["stage_path"]+"/proc"):
-			os.makedirs(self.settings["stage_path"]+"/proc")
+		ensure_dirs(self.settings["stage_path"]+"/proc")
 
 		# alter the mount mappings to bind mount proc onto it
 		self.mounts.append("stage1root/proc")
