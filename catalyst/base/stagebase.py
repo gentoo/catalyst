@@ -297,7 +297,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"])!=types.StringType:
 				self.settings["pkgcache_path"]=\
-					normpath(string.join(self.settings["pkgcache_path"]))
+					normpath(self.settings["pkgcache_path"])
 		else:
 			self.settings["pkgcache_path"]=\
 				normpath(self.settings["storedir"]+"/packages/"+\
@@ -307,7 +307,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "kerncache_path" in self.settings:
 			if type(self.settings["kerncache_path"])!=types.StringType:
 				self.settings["kerncache_path"]=\
-					normpath(string.join(self.settings["kerncache_path"]))
+					normpath(self.settings["kerncache_path"])
 		else:
 			self.settings["kerncache_path"]=normpath(self.settings["storedir"]+\
 				"/kerncache/"+self.settings["target_subpath"]+"/")
@@ -330,7 +330,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 #					+self.settings["target_path"],env=self.env)
 			self.resume.enable("setup_target_path")
 
-			ensure_dirs(self.settings["storedir"] + "/builds/")
+			ensure_dirs(self.settings["storedir"] + "/builds")
 
 	def set_fsscript(self):
 		if self.settings["spec_prefix"]+"/fsscript" in self.settings:
@@ -395,7 +395,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+\
 				self.settings["source_subpath"]+"/")):
 			self.settings["source_path"]=normpath(self.settings["storedir"]+\
-				"/tmp/"+self.settings["source_subpath"]+"/")
+				"/tmp/"+self.settings["source_subpath"])
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+\
 				"/builds/"+self.settings["source_subpath"]+".tar.bz2")
@@ -452,8 +452,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def set_snapcache_path(self):
 		if "snapcache" in self.settings["options"]:
 			self.settings["snapshot_cache_path"]=\
-				normpath(self.settings["snapshot_cache"]+"/"+\
-				self.settings["snapshot"])
+				normpath(pjoin(self.settings["snapshot_cache"],
+					self.settings["snapshot"]))
 			self.snapcache_lock=\
 				LockDir(self.settings["snapshot_cache_path"])
 			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
@@ -471,7 +471,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.settings["autoresume_path"]=normpath(self.settings["storedir"]+\
 			"/tmp/"+self.settings["rel_type"]+"/"+".autoresume-"+\
 			self.settings["target"]+"-"+self.settings["subarch"]+"-"+\
-			self.settings["version_stamp"]+"/")
+			self.settings["version_stamp"])
 		if "autoresume" in self.settings["options"]:
 			print "The autoresume path is " + self.settings["autoresume_path"]
 		self.resume = AutoResume(self.settings["autoresume_path"], mode=0755)
@@ -819,7 +819,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			unpack_errmsg="Error unpacking snapshot"
 
 			if "autoresume" in self.settings["options"] \
-				and os.path.exists(self.settings["chroot_path"]+\
+				and os.path.exists(self.settings["chroot_path"] +
 					self.settings["portdir"]) \
 				and self.resume.is_enabled("unpack_portage") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
@@ -1230,10 +1230,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("capture"):
 			print "Resume point detected, skipping capture operation..."
 		else:
-			""" Capture target in a tarball """
-			mypath=self.settings["target_path"].split("/")
+			print """ Capture target in a tarball """
 			""" Remove filename from path """
-			mypath=string.join(mypath[:-1],"/")
+			mypath = os.path.dirname(self.settings["target_path"])
 
 			""" Now make sure path exists """
 			ensure_dirs(mypath)
