@@ -137,7 +137,8 @@ class netboot2(StageBase):
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
 					print "netboot2: removing " + x
-					os.system("rm -rf " + self.settings["chroot_path"] + self.settings["merge_path"] + x)
+					os.system("rm -rf " + self.settings["chroot_path"] +
+						self.settings["merge_path"] + x)
 
 	def empty(self):
 		if "autoresume" in self.settings["options"] \
