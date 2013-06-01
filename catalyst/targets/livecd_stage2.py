@@ -55,14 +55,14 @@ class livecd_stage2(StageBase):
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+			and self.resume.is_enabled("setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
 			if os.path.isdir(self.settings["target_path"]):
 				cmd("rm -rf "+self.settings["target_path"],
 				"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_target_path")
+				self.resume.enable("setup_target_path")
 			ensure_dirs(self.settings["target_path"])
 
 	def run_local(self):
@@ -89,7 +89,7 @@ class livecd_stage2(StageBase):
 		unpack=True
 		display_msg=None
 
-		clst_unpack_hash=read_from_clst(self.settings["autoresume_path"]+"unpack")
+		clst_unpack_hash = self.resume.get("unpack")
 
 		if os.path.isdir(self.settings["source_path"]):
 			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
@@ -100,7 +100,7 @@ class livecd_stage2(StageBase):
 
 		if "autoresume" in self.settings["options"]:
 			if os.path.isdir(self.settings["source_path"]) and \
-				os.path.exists(self.settings["autoresume_path"]+"unpack"):
+				self.resume.is_enabled("unpack"):
 				print "Resume point detected, skipping unpack operation..."
 				unpack=False
 			elif "source_path_hash" in self.settings:
@@ -131,11 +131,9 @@ class livecd_stage2(StageBase):
 			cmd(unpack_cmd,error_msg,env=self.env)
 
 			if "source_path_hash" in self.settings:
-				myf=open(self.settings["autoresume_path"]+"unpack","w")
-				myf.write(self.settings["source_path_hash"])
-				myf.close()
+				self.resume.enable("unpack", data=self.settings["source_path_hash"])
 			else:
-				touch(self.settings["autoresume_path"]+"unpack")
+				self.resume.enable("unpack")
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\

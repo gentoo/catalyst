@@ -54,15 +54,14 @@ class netboot2(StageBase):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+\
 			self.settings["target_subpath"]+"/")
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+			and self.resume.is_enabled("setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
 				cmd("rm -f "+self.settings["target_path"], \
 					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_target_path")
-
+				self.resume.enable("setup_target_path")
 		ensure_dirs(self.settings["storedir"]+"/builds/")
 
 	def copy_files_to_image(self):
@@ -71,7 +70,7 @@ class netboot2(StageBase):
 
 		# check for autoresume point
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"copy_files_to_image"):
+			and self.resume.is_enabled("copy_files_to_image"):
 				print "Resume point detected, skipping target path setup operation..."
 		else:
 			if "netboot2/packages" in self.settings:
@@ -101,11 +100,11 @@ class netboot2(StageBase):
 				raise CatalystError("Failed to copy files to image!",
 					print_traceback=True)
 
-			touch(self.settings["autoresume_path"]+"copy_files_to_image")
+			self.resume.enable("copy_files_to_image")
 
 	def setup_overlay(self):
 		if "autoresume" in self.settings["options"] \
-		and os.path.exists(self.settings["autoresume_path"]+"setup_overlay"):
+		and self.resume.is_enabled("setup_overlay"):
 			print "Resume point detected, skipping setup_overlay operation..."
 		else:
 			if "netboot2/overlay" in self.settings:
@@ -113,7 +112,7 @@ class netboot2(StageBase):
 					if os.path.exists(x):
 						cmd("rsync -a "+x+"/ "+\
 							self.settings["chroot_path"] + self.settings["merge_path"], "netboot2/overlay: "+x+" copy failed.",env=self.env)
-				touch(self.settings["autoresume_path"]+"setup_overlay")
+				self.resume.enable("setup_overlay")
 
 	def move_kernels(self):
 		# we're done, move the kernels to builds/*
@@ -130,7 +129,7 @@ class netboot2(StageBase):
 
 	def remove(self):
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"remove"):
+			and self.resume.is_enabled("remove"):
 			print "Resume point detected, skipping remove operation..."
 		else:
 			if self.settings["spec_prefix"]+"/rm" in self.settings:
@@ -142,7 +141,7 @@ class netboot2(StageBase):
 
 	def empty(self):
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"empty"):
+			and self.resume.is_enabled("empty"):
 			print "Resume point detected, skipping empty operation..."
 		else:
 			if "netboot2/empty" in self.settings:
@@ -161,7 +160,7 @@ class netboot2(StageBase):
 					ensure_dirs(myemp, mode=0755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
-		touch(self.settings["autoresume_path"]+"empty")
+		self.resume.enable("empty")
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot","config_profile_link",

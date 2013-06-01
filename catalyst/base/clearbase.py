@@ -13,31 +13,14 @@ class ClearBase(object):
 	"""
 	def __init__(self, myspec):
 		self.settings = myspec
-
+		self.resume = None
 
 
 	def clear_autoresume(self):
 		""" Clean resume points since they are no longer needed """
 		if "autoresume" in self.settings["options"]:
 			print "Removing AutoResume Points: ..."
-		myemp=self.settings["autoresume_path"]
-		if os.path.isdir(myemp):
-				if "autoresume" in self.settings["options"]:
-					print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				if os.uname()[0] == "FreeBSD":
-					cmd("chflags -R noschg "+myemp,\
-						"Could not remove immutable flag for file "\
-						+myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env-self.env)
-				shutil.rmtree(myemp)
-				ensure_dirs(myemp, 0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+			self.resume.clear_all()
 
 
 	def clear_chroot(self):

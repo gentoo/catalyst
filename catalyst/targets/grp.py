@@ -44,7 +44,7 @@ class grp(StageBase):
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+"/")
 		if "autoresume" in self.settings["options"] \
-			and os.path.exists(self.settings["autoresume_path"]+"setup_target_path"):
+			and self.resume.is_enabled("setup_target_path"):
 			print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
@@ -53,7 +53,7 @@ class grp(StageBase):
 				#"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
 			ensure_dirs(self.settings["target_path"])
 
-			touch(self.settings["autoresume_path"]+"setup_target_path")
+			self.resume.enable("setup_target_path")
 
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
