@@ -41,60 +41,20 @@ class ClearBase(object):
 
 
 	def clear_chroot(self):
-		myemp=self.settings["chroot_path"]
-		if os.path.isdir(myemp):
-			print "Emptying directory",myemp
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			mystat=os.stat(myemp)
-			#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-			""" There's no easy way to change flags recursively in python """
-			if os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg "+myemp)
-			shutil.rmtree(myemp)
-			ensure_dirs(myemp, mode=0755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
+		print 'Clearing the chroot path ...'
+		self.clear_dir(self.settings["chroot_path"], 0755, True)
 
 
 	def clear_packages(self):
 		if "pkgcache" in self.settings["options"]:
 			print "purging the pkgcache ..."
-
-			myemp=self.settings["pkgcache_path"]
-			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				ensure_dirs(myemp, mode=0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+			self.clear_dir(self.settings["pkgcache_path"])
 
 
 	def clear_kerncache(self):
 		if "kerncache" in self.settings["options"]:
 			print "purging the kerncache ..."
-
-			myemp=self.settings["kerncache_path"]
-			if os.path.isdir(myemp):
-				print "Emptying directory",myemp
-				"""
-				stat the dir, delete the dir, recreate the dir and set
-				the proper perms and ownership
-				"""
-				mystat=os.stat(myemp)
-				#cmd("rm -rf "+myemp, "Could not remove existing file: "+myemp,env=self.env)
-				shutil.rmtree(myemp)
-				ensure_dirs(myemp, mode=0755)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
+			self.clear_dir(self.settings["kerncache_path"])
 
 
 	def purge(self):
@@ -113,3 +73,28 @@ class ClearBase(object):
 			print "clearing kerncache ..."
 			self.clear_kerncache()
 
+
+	def clear_dir(self, myemp, mode=0755, chg_flags=False):
+		'''Universal directory clearing function
+		'''
+		if not myemp:
+			return False
+		if os.path.isdir(myemp):
+			print "Emptying directory" , myemp
+			"""
+			stat the dir, delete the dir, recreate the dir and set
+			the proper perms and ownership
+			"""
+			try:
+				mystat=os.stat(myemp)
+				""" There's no easy way to change flags recursively in python """
+				if chg_flags and os.uname()[0] == "FreeBSD":
+					os.system("chflags -R noschg " + myemp)
+				shutil.rmtree(myemp)
+				ensure_dirs(myemp, mode=mode)
+				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
+				os.chmod(myemp,mystat[ST_MODE])
+			except Exception as e:
+				print CatalystError("clear_dir(); Exeption: %s" % str(e))
+				return False
+			return True
