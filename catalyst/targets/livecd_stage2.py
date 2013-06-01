@@ -111,10 +111,8 @@ class livecd_stage2(StageBase):
 			self.mount_safety_check()
 			if invalid_snapshot:
 				print "No Valid Resume point detected, cleaning up  ..."
-				#os.remove(self.settings["autoresume_path"]+"dir_setup")
 				self.clear_autoresume()
 				self.clear_chroot()
-				#self.dir_setup()
 
 			ensure_dirs(self.settings["chroot_path"]+"/tmp", mode=1777)
 

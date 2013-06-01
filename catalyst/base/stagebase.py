@@ -508,8 +508,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
 				"run_local","preclean","unbind","clean"]
-#		if "TARBALL" in self.settings or \
-#			"fetch" not in self.settings["options"]:
 		if "fetch" not in self.settings["options"]:
 			self.settings["action_sequence"].append("capture")
 		self.settings["action_sequence"].append("clear_autoresume")
