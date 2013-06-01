@@ -86,7 +86,7 @@ class livecd_stage2(StageBase):
 			myf.close()
 
 	def unpack(self):
-		unpack=True
+		_unpack=True
 		display_msg=None
 
 		clst_unpack_hash = self.resume.get("unpack")
@@ -102,12 +102,12 @@ class livecd_stage2(StageBase):
 			if os.path.isdir(self.settings["source_path"]) and \
 				self.resume.is_enabled("unpack"):
 				print "Resume point detected, skipping unpack operation..."
-				unpack=False
+				_unpack=False
 			elif "source_path_hash" in self.settings:
 				if self.settings["source_path_hash"] != clst_unpack_hash:
 					invalid_snapshot=True
 
-		if unpack:
+		if _unpack:
 			self.mount_safety_check()
 			if invalid_snapshot:
 				print "No Valid Resume point detected, cleaning up  ..."
