@@ -657,7 +657,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						target, print_traceback=True)
 
 	def unpack(self):
-		unpack=True
+		_unpack=True
 
 		clst_unpack_hash = self.resume.get("unpack")
 
@@ -707,49 +707,49 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_enabled("unpack"):
 				""" Autoresume is valid, SEEDCACHE is valid """
-				unpack=False
+				_unpack=False
 				invalid_snapshot=False
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]==clst_unpack_hash:
 				""" Autoresume is valid, tarball is valid """
-				unpack=False
+				_unpack=False
 				invalid_snapshot=True
 
 			elif os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_disabled("unpack"):
 				""" Autoresume is invalid, SEEDCACHE """
-				unpack=True
+				_unpack=True
 				invalid_snapshot=False
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]!=clst_unpack_hash:
 				""" Autoresume is invalid, tarball """
-				unpack=True
+				_unpack=True
 				invalid_snapshot=True
 		else:
 			""" No autoresume, SEEDCACHE """
 			if "seedcache" in self.settings["options"]:
 				""" SEEDCACHE so let's run rsync and let it clean up """
 				if os.path.isdir(self.settings["source_path"]):
-					unpack=True
+					_unpack=True
 					invalid_snapshot=False
 				elif os.path.isfile(self.settings["source_path"]):
 					""" Tarball so unpack and remove anything already there """
-					unpack=True
+					_unpack=True
 					invalid_snapshot=True
 				""" No autoresume, no SEEDCACHE """
 			else:
 				""" Tarball so unpack and remove anything already there """
 				if os.path.isfile(self.settings["source_path"]):
-					unpack=True
+					_unpack=True
 					invalid_snapshot=True
 				elif os.path.isdir(self.settings["source_path"]):
 					""" We should never reach this, so something is very wrong """
 					raise CatalystError(
 						"source path is a dir but seedcache is not enabled")
 
-		if unpack:
+		if _unpack:
 			self.mount_safety_check()
 
 			if invalid_snapshot:
