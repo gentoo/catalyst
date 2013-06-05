@@ -12,10 +12,6 @@ from __future__ import print_function
 
 import sys
 
-__maintainer__="Catalyst <catalyst@gentoo.org>"
-__version__="2.0.12.2"
-
-
 # This block ensures that ^C interrupts are handled quietly.
 try:
 	import signal
@@ -36,6 +32,8 @@ except KeyboardInterrupt:
 
 
 from catalyst.main import main
+from catalyst import __maintainer__
+from catalyst import __version__
 
 try:
 	main()

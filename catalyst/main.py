@@ -18,13 +18,12 @@ __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
 sys.path.append(__selfpath__ + "/modules")
 
+from . import __version__
 import catalyst.config
 import catalyst.util
 from catalyst.support import (required_build_targets,
 	valid_build_targets, CatalystError, hash_map, find_binary, LockInUse)
 
-__maintainer__="Catalyst <catalyst@gentoo.org>"
-__version__="2.0.15"
 
 conf_values={}
 

@@ -1,0 +1,6 @@
+include AUTHORS
+include ChangeLog
+include COPYING
+include Makefile
+recursive-include doc *.conf *.py HOWTO.txt catalyst*.txt
+recursive-include examples README *.example *.spec
