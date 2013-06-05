@@ -24,10 +24,10 @@ $(MAN_PAGES): files/%: doc/%.txt doc/asciidoc.conf Makefile catalyst
 files/catalyst.1: doc/subarches.generated.txt
 files/catalyst-spec.5: doc/subarches.generated.txt doc/targets.generated.txt
 
-doc/subarches.generated.txt: $(wildcard arch/*.py) doc/make_subarch_table_guidexml.py
+doc/subarches.generated.txt: $(wildcard catalyst/arch/*.py) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
 
-doc/targets.generated.txt: doc/make_target_table.py $(wildcard modules/*_target.py)
+doc/targets.generated.txt: doc/make_target_table.py $(wildcard catalyst/targets/*.py)
 	"./$<" > "$@"
 
 $(DOCS): files/%.html: doc/%.txt doc/asciidoc.conf Makefile
