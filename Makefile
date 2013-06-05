@@ -1,7 +1,7 @@
 # Copyright (C) 2011 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GPL v2 or later
 
-PACKAGE_VERSION = `fgrep '__version__=' catalyst | sed 's|^__version__="\(.*\)"$$|\1|'`
+#PACKAGE_VERSION = `fgrep '__version__=' catalyst | sed 's|^__version__="\(.*\)"$$|\1|'`
 MAN_PAGE_SOURCES = $(wildcard doc/*.?.txt)
 MAN_PAGES = $(patsubst doc/%.txt,files/%,$(MAN_PAGE_SOURCES))
 MAN_PAGE_INCLUDES = doc/subarches.generated.txt doc/targets.generated.txt
@@ -24,10 +24,10 @@ $(MAN_PAGES): files/%: doc/%.txt doc/asciidoc.conf Makefile catalyst
 files/catalyst.1: doc/subarches.generated.txt
 files/catalyst-spec.5: doc/subarches.generated.txt doc/targets.generated.txt
 
-doc/subarches.generated.txt: $(wildcard arch/*.py) doc/make_subarch_table_guidexml.py
+doc/subarches.generated.txt: $(wildcard catalyst/arch/*.py) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
 
-doc/targets.generated.txt: doc/make_target_table.py $(wildcard modules/*_target.py)
+doc/targets.generated.txt: doc/make_target_table.py $(wildcard catalyst/targets/*.py)
 	"./$<" > "$@"
 
 $(DOCS): files/%.html: doc/%.txt doc/asciidoc.conf Makefile

@@ -1,5 +1,6 @@
 #! /usr/bin/env python2
 # Copyright (C) 2011 Sebastian Pipping <sebastian@pipping.org>
+# Copyright (C) 2013 Brian dolbec <dolsen@gentoo.org>
 # Licensed under GPL v2 or later
 
 
@@ -102,9 +103,11 @@ if __name__ == '__main__':
 	subarch_title_to_subarch_id = dict()
 	subarch_id_to_pattern_arch_genericrch_id = dict()
 
-	for (dirpath, dirnames, filenames) in os.walk('arch'):
+	for (dirpath, dirnames, filenames) in os.walk('catalyst/arch'):
 		for _fn in filenames:
 			if not _fn.endswith('.py'):
+				continue
+			if _fn == '__init__.py':
 				continue
 
 			fn = os.path.join(dirpath, _fn)
