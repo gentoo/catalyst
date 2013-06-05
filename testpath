@@ -13,6 +13,6 @@
 #
 # catalyst -c ./test.conf -p  -f stage1.spec
 
-export PATH="/home/brian/Dev/git/catalyst/bin:${PATH}"
+export PATH="$(dirname $BASH_SOURCE[0])/bin:${PATH}"
 
-export PYTHONPATH="/home/brian/Dev/git/catalyst/:${PYTHONPATH}"
+export PYTHONPATH="$(dirname $BASH_SOURCE[0]):${PYTHONPATH}"
