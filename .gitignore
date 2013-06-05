@@ -1,5 +1,10 @@
 *.py[co]
+
+build
+dist
+files
+MANIFEST
+
 test.*
 *.geany
 Scratch
-
