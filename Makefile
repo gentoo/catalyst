@@ -16,13 +16,16 @@ distdir = catalyst-$(PACKAGE_VERSION)
 
 all: $(EXTRA_DIST)
 
-$(MAN_PAGES): files/%: doc/%.txt doc/asciidoc.conf Makefile catalyst
+files:
+	mkdir files
+
+$(MAN_PAGES): files/%: doc/%.txt doc/asciidoc.conf Makefile catalyst | files
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=manpage -D files "$<"
 
 # Additional dependencies due to inclusion
-files/catalyst.1: doc/subarches.generated.txt
-files/catalyst-spec.5: doc/subarches.generated.txt doc/targets.generated.txt
+files/catalyst.1: doc/subarches.generated.txt | files
+files/catalyst-spec.5: doc/subarches.generated.txt doc/targets.generated.txt | files
 
 doc/subarches.generated.txt: $(wildcard catalyst/arch/*.py) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
@@ -30,7 +33,7 @@ doc/subarches.generated.txt: $(wildcard catalyst/arch/*.py) doc/make_subarch_tab
 doc/targets.generated.txt: doc/make_target_table.py $(wildcard catalyst/targets/*.py)
 	"./$<" > "$@"
 
-$(DOCS): files/%.html: doc/%.txt doc/asciidoc.conf Makefile
+$(DOCS): files/%.html: doc/%.txt doc/asciidoc.conf Makefile | files
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
 		 --format=xhtml -D files "$<"
 
