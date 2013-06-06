@@ -31,7 +31,7 @@ doc/subarches.generated.txt: $(wildcard catalyst/arch/*.py) doc/make_subarch_tab
 	./doc/make_subarch_table_guidexml.py
 
 doc/targets.generated.txt: doc/make_target_table.py $(wildcard catalyst/targets/*.py)
-	"./$<" > "$@"
+	PYTHONPATH=. "./$<" > "$@"
 
 $(DOCS): files/%.html: doc/%.txt doc/asciidoc.conf Makefile | files
 	a2x --conf-file=doc/asciidoc.conf --attribute="catalystversion=$(PACKAGE_VERSION)" \
