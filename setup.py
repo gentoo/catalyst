@@ -1,11 +1,14 @@
-"Catalyst is the release building tool used by Gentoo Linux"
+"""Catalyst is a release building tool used by Gentoo Linux"""
+
 
 import codecs as _codecs
-from distutils.core import setup as _setup
+from distutils.core import setup as _setup, Command as _Command
 from email.utils import parseaddr as _parseaddr
 import os as _os
 
 from catalyst import __version__, __maintainer__
+from catalyst.version import set_release_version as _set_release_version
+from catalyst.version import get_version as _get_version
 
 
 _this_dir = _os.path.dirname(__file__)
@@ -49,6 +52,30 @@ _data_files.extend(_files('livecd', 'lib/catalyst/'))
 _data_files.extend(_files('targets', 'lib/catalyst/'))
 
 
+class set_version(_Command):
+	'''Saves the specified release version information
+	'''
+	global __version__
+	description = "hardcode script's version using VERSION from environment"
+	user_options = []  # [(long_name, short_name, desc),]
+
+	def initialize_options (self):
+		pass
+
+	def finalize_options (self):
+		pass
+
+	def run(self):
+		try:
+			version = _os.environ['VERSION']
+		except KeyError:
+			print("Try setting 'VERSION=x.y.z' on the command line... Aborting")
+			return
+		_set_release_version(version)
+		__version__ = _get_version()
+		print("Version set to:\n", __version__)
+
+
 _setup(
 	name=_package_name,
 	version=__version__,
@@ -82,4 +109,7 @@ _setup(
 		],
 	data_files=_data_files,
 	provides=[_package_name],
+	cmdclass={
+		'set_version': set_version
+		},
 	)
