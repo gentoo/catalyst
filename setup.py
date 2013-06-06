@@ -1,3 +1,5 @@
+#!/usr/bin/python2 -OO
+
 # Copyright (C) 2013 W. Trevor King <wking@tremily.us>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,14 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"Catalyst is a release building tool used by Gentoo Linux"
+"""Catalyst is a release building tool used by Gentoo Linux"""
+
+# py2.6 compatibility
+from __future__ import print_function
 
 import codecs as _codecs
-from distutils.core import setup as _setup
+from distutils.core import setup as _setup, Command as _Command
 import itertools as _itertools
 import os as _os
 
 from catalyst import __version__
+from catalyst.version import set_release_version as _set_release_version
+from catalyst.version import get_version as _get_version
 
 
 _this_dir = _os.path.dirname(__file__)
@@ -42,6 +49,30 @@ def files(root):
 			if _os.path.sep != '/':
 				path = path.replace(_os.path.sep, '/')
 			yield path
+
+
+class set_version(_Command):
+	'''Saves the specified release version information
+	'''
+	global __version__
+	description = "hardcode script's version using VERSION from environment"
+	user_options = []  # [(long_name, short_name, desc),]
+
+	def initialize_options (self):
+		pass
+
+	def finalize_options (self):
+		pass
+
+	def run(self):
+		try:
+			version = _os.environ['VERSION']
+		except KeyError:
+			print("Try setting 'VERSION=x.y.z' on the command line... Aborting")
+			return
+		_set_release_version(version)
+		__version__ = _get_version()
+		print("Version set to:\n", __version__)
 
 
 _setup(
@@ -86,4 +117,7 @@ _setup(
 			))),
 		],
 	provides=[package_name],
+	cmdclass={
+		'set_version': set_version
+		},
 	)
