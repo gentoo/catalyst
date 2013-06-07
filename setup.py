@@ -22,7 +22,6 @@ from __future__ import print_function
 
 import codecs as _codecs
 from distutils.core import setup as _setup, Command as _Command
-import itertools as _itertools
 import os as _os
 
 from catalyst import __version__
@@ -35,7 +34,10 @@ package_name = 'catalyst'
 tag = '{0}-{1}'.format(package_name, __version__)
 
 
-def files(root):
+if _os.path.sep != '/':
+	raise NotImplementedError('Non-POSIX paths are not supported')
+
+def files(root, target):
 	"""Iterate through all the file paths under `root`
 
 	Distutils wants all paths to be written in the Unix convention
@@ -44,11 +46,18 @@ def files(root):
 	[1]: http://docs.python.org/2/distutils/setupscript.html#writing-the-setup-script
 	"""
 	for dirpath, dirnames, filenames in _os.walk(root):
-		for filename in filenames:
-			path = _os.path.join(dirpath, filename)
-			if _os.path.sep != '/':
-				path = path.replace(_os.path.sep, '/')
-			yield path
+		key = _os.path.join(target, dirpath)
+		filepaths = [_os.path.join(dirpath, filename)
+		             for filename in filenames]
+		yield (key, filepaths)
+
+
+_data_files = [('/etc/catalyst', ['etc/catalyst.conf','etc/catalystrc']),
+	('/usr/share/man/man1', ['files/catalyst.1']),
+	('/usr/share/man/man5', ['files/catalyst-config.5', 'files/catalyst-spec.5'])
+	]
+_data_files.extend(files('livecd', 'lib/catalyst/'))
+_data_files.extend(files('targets', 'lib/catalyst/'))
 
 
 class set_version(_Command):
@@ -106,16 +115,7 @@ _setup(
 		'{0}.base'.format(package_name),
 		'{0}.targets'.format(package_name),
 		],
-	data_files=[
-		('/etc/catalyst', [
-			'etc/catalyst.conf',
-			'etc/catalystrc',
-			]),
-		('lib/catalyst/', list(_itertools.chain(
-			files('livecd'),
-			files('targets'),
-			))),
-		],
+	data_files=_data_files,
 	provides=[package_name],
 	cmdclass={
 		'set_version': set_version
