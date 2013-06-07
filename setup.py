@@ -41,6 +41,14 @@ def _files(prefix, root):
 		yield (install_directory, file_source_paths)
 
 
+_data_files = [('/etc/catalyst', ['etc/catalyst.conf','etc/catalystrc']),
+	('/usr/share/man/man1', ['files/catalyst.1']),
+	('/usr/share/man/man5', ['files/catalyst-config.5', 'files/catalyst-spec.5'])
+	]
+_data_files.extend(_files('livecd', 'lib/catalyst/'))
+_data_files.extend(_files('targets', 'lib/catalyst/'))
+
+
 _setup(
 	name=_package_name,
 	version=__version__,
@@ -69,12 +77,9 @@ _setup(
 	packages=[
 		_package_name,
 		'{0}.arch'.format(_package_name),
+		'{0}.base'.format(_package_name),
 		'{0}.targets'.format(_package_name),
 		],
-	data_files=list(_itertools.chain(
-		_files(prefix='/etc/catalyst', root='etc'),
-		_files(prefix='lib/catalyst/livecd', root='livecd'),
-		_files(prefix='lib/catalyst/targets', root='targets'),
-		)),
+	data_files=_data_files,
 	provides=[_package_name],
 	)
