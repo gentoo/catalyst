@@ -153,11 +153,12 @@ def import_module(target):
 
 def build_target(addlargs):
 	try:
-		module = import_module(addlargs["target"])
-		target = getattr(module, addlargs["target"])(conf_values, addlargs)
+		target = addlargs["target"].replace('-', '_')
+		module = import_module(target)
+		target = getattr(module, target)(conf_values, addlargs)
 	except AttributeError:
 		raise CatalystError(
-			"Target \"%s\" not available." % addlargs["target"],
+			"Target \"%s\" not available." % target,
 			print_traceback=True)
 
 	try:
