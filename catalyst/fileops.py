@@ -1,4 +1,3 @@
-#!/usr/bin/python
 
 # Maintained in full by:
 # Catalyst Team <catalyst@gentoo.org>
