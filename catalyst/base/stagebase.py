@@ -285,7 +285,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def set_target_subpath(self):
 		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+\
 				self.settings["target"]+"-"+self.settings["subarch"]+"-"+\
-				self.settings["version_stamp"]
+				self.settings["version_stamp"] +'/'
 
 	def set_source_subpath(self):
 		if type(self.settings["source_subpath"])!=types.StringType:
