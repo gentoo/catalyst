@@ -4,6 +4,7 @@ build
 dist
 files
 MANIFEST
+outgoing
 
 test.*
 *.geany
