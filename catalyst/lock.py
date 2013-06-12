@@ -1,4 +1,5 @@
-#!/usr/bin/python
+
+
 import os
 import fcntl
 import errno
