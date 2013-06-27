@@ -323,7 +323,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_target_path(self):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+\
-			"/builds/"+self.settings["target_subpath"]+".tar.bz2")
+			"/builds/"+self.settings["target_subpath"].rstrip('/')+".tar.bz2")
 		if "autoresume" in self.settings["options"]\
 			and self.resume.is_enabled("setup_target_path"):
 			print \
@@ -407,7 +407,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"/tmp/" + self.settings["source_subpath"] + "/")
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+\
-				"/builds/"+self.settings["source_subpath"]+".tar.bz2")
+				"/builds/"+self.settings["source_subpath"].rstrip('/')+".tar.bz2")
 			if os.path.isfile(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
@@ -422,7 +422,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "\tseedcache in the options of catalyst.conf the source path"
 			print "\twill then be "+\
 				normpath(self.settings["storedir"]+"/builds/"+\
-				self.settings["source_subpath"]+".tar.bz2\n")
+				self.settings["source_subpath"].rstrip('/')+".tar.bz2\n")
 
 	def set_dest_path(self):
 		if "root_path" in self.settings:
@@ -438,7 +438,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def set_snapshot_path(self):
 		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
 			"/snapshots/" + self.settings["snapshot_name"] +
-			self.settings["snapshot"] + ".tar.xz")
+			self.settings["snapshot"].rstrip('/')+".tar.xz")
 
 		if os.path.exists(self.settings["snapshot_path"]):
 			self.settings["snapshot_path_hash"] = \
@@ -449,7 +449,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
 				"/snapshots/" + self.settings["snapshot_name"] +
-				self.settings["snapshot"] + ".tar.bz2")
+				self.settings["snapshot"].rstrip('/')+".tar.bz2")
 
 			if os.path.exists(self.settings["snapshot_path"]):
 				self.settings["snapshot_path_hash"] = \
