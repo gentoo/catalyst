@@ -168,7 +168,7 @@ setup_gcc(){
 setup_pkgmgr(){
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
-	# just let emerge system could merge it.
+	# just let emerge @system could merge it.
 	# Use --update or portage won't reinstall the same version.
 	[ -e /etc/portage/make.conf ] && echo 'USE="${USE} build"' >> /etc/portage/make.conf
 	run_merge --oneshot --nodeps --update sys-apps/portage
