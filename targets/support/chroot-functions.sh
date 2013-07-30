@@ -287,7 +287,7 @@ show_debug() {
 		echo "DEBUG:"
 		echo "Profile/target info:"
 		echo "Profile inheritance:"
-		python -c 'import portage; print portage.settings.profiles'
+		python -c 'import portage; print(portage.settings.profiles)'
 		echo
 		# TODO: make this work on non-portage
 		emerge --info
