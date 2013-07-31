@@ -1064,6 +1064,10 @@ class generic_stage_target(generic_target):
 						"/use will cause portage to ignore"
 					print "\tpackage.use in the profile and portage_confdir. You've been warned!"
 
+			myf.write('PORTDIR="/usr/portage"\n')
+			myf.write('DISTDIR="${PORTDIR}/distfiles"\n')
+			myf.write('PKGDIR="${PORTDIR}/packages"\n')
+
 			""" Setup the portage overlay """
 			if "portage_overlay" in self.settings:
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
