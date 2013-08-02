@@ -68,6 +68,9 @@ class livecd_stage2_target(generic_stage_target):
 				raise CatalystError,"Couldn't open "+self.settings["chroot_path"]+"/etc/modprobe.d/blacklist.conf."
 
 			myf.write("\n#Added by Catalyst:")
+			# workaround until config.py is using configparser
+			if isinstance(self.settings["livecd/modblacklist"], str):
+				self.settings["livecd/modblacklist"] = self.settings["livecd/modblacklist"].split()
 			for x in self.settings["livecd/modblacklist"]:
 				myf.write("\nblacklist "+x)
 			myf.close()
