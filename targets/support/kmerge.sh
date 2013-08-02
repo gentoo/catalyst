@@ -197,7 +197,7 @@ then
 fi
 
 [ -e /etc/portage/make.conf ] && \
-	echo "USE=\"\${USE} ${clst_kernel_use} build\"" >> /etc/portage/make.conf
+	echo "USE=\"\${USE} ${clst_kernel_use} \"" >> /etc/portage/make.conf
 
 if [ -n "${clst_KERNCACHE}" ]
 then
@@ -237,7 +237,7 @@ then
 fi
 
 build_kernel
-sed -i "/USE=\"\${USE} ${clst_kernel_use} build\"/d" /etc/portage/make.conf
+sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" /etc/portage/make.conf
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
