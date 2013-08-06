@@ -220,17 +220,6 @@ then
 	fi
 fi
 
-# Create firmware directory if it does not exist
-[ ! -d /lib/firmware ] && mkdir -p /lib/firmware
-
-# tar up the firmware so that it does not get clobbered by the livecd mounts
-if [ -n "$(ls /lib/firmware)" ]
-then
-	cd /lib/firmware
-	/bin/tar -I bzip2 -cpf /lib/firmware.tar.bz2 .
-	rm -rf /lib/firmware/*
-fi
-
 # Clear out locales
 case ${clst_livecd_type} in
 	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
