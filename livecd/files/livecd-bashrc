@@ -4,7 +4,7 @@ if [ ! "$(grep nox /proc/cmdline)" ]
 then
 	if [ -x /usr/bin/X ]
 	then
-		if [ -e /etc/startx ]
+		if [ -e /etc/startx -a $(tty) = "/dev/tty1" ];
 		then
 			rm -f /etc/startx
 			##STARTX
