@@ -378,7 +378,7 @@ esac
 if [ -e /etc/startx ]
 then
 	sed -i \
-		"s:##STARTX:source /etc/profile \&\& su - ${first_user} -c startx:" \
+		"s:##STARTX:source /etc/profile && su - ${first_user} -c startx:" \
 		/root/.bashrc
 fi
 
