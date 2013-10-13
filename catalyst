@@ -11,12 +11,8 @@ import os, sys, imp, string, getopt
 import pdb
 import os.path
 
-__selfpath__ = os.path.abspath(os.path.dirname(__file__))
-
-sys.path.append(__selfpath__ + "/modules")
-
-import catalyst.config
-import catalyst.util
+import modules.catalyst.config
+import modules.catalyst.util
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
 __version__="2.0.14"
@@ -91,7 +87,7 @@ def parse_config(myconfig):
 	# now, try and parse the config file "config_file"
 	try:
 #		execfile(config_file, myconf, myconf)
-		myconfig = catalyst.config.ConfigParser(config_file)
+		myconfig = modules.catalyst.config.ConfigParser(config_file)
 		myconf.update(myconfig.get_values())
 
 	except:
@@ -226,7 +222,7 @@ def build_target(addlargs, targetmap):
 		mytarget.run()
 
 	except:
-		catalyst.util.print_traceback()
+		modules.catalyst.util.print_traceback()
 		print "!!! catalyst: Error encountered during run of target " + addlargs["target"]
 		sys.exit(1)
 
@@ -379,12 +375,12 @@ if __name__ == "__main__":
 	addlargs={}
 
 	if myspecfile:
-		spec = catalyst.config.SpecParser(myspecfile)
+		spec = modules.catalyst.config.SpecParser(myspecfile)
 		addlargs.update(spec.get_values())
 
 	if mycmdline:
 		try:
-			cmdline = catalyst.config.ConfigParser()
+			cmdline = modules.catalyst.config.ConfigParser()
 			cmdline.parse_lines(mycmdline)
 			addlargs.update(cmdline.get_values())
 		except CatalystError:
