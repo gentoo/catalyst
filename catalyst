@@ -7,7 +7,11 @@
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
 # $Id$
 
-import os, sys, imp, string, getopt
+import os
+import sys
+import imp
+import string
+import getopt
 import pdb
 import os.path
 
