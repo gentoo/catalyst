@@ -128,10 +128,6 @@ def parse_config(myconfig):
 		print "Cleaning autoresume flags support enabled."
 		conf_values["CLEAR_AUTORESUME"]="1"
 
-#	if "compress" in string.split(conf_values["options"]):
-#		print "Compression enabled."
-#		conf_values["COMPRESS"]="1"
-
 	if "distcc" in string.split(conf_values["options"]):
 		print "Distcc support enabled."
 		conf_values["DISTCC"]="1"
@@ -163,10 +159,6 @@ def parse_config(myconfig):
 	if "snapcache" in string.split(conf_values["options"]):
 		print "Snapshot cache support enabled."
 		conf_values["SNAPCACHE"]="1"
-
-#	if "tarball" in string.split(conf_values["options"]):
-#		print "Tarball creation enabled."
-#		conf_values["TARBALL"]="1"
 
 	if "digests" in myconf:
 		conf_values["digests"]=myconf["digests"]
@@ -414,20 +406,3 @@ if __name__ == "__main__":
 		print "Catalyst aborting...."
 		raise
 		sys.exit(2)
-
-	#except CatalystError:
-	#	print
-	#	print "Catalyst aborting...."
-	#	sys.exit(2)
-	#except KeyError:
-	#	print "\nproblem with command line or spec file ( Key Error )"
-	#	print "Key: "+str(sys.exc_value)+" was not found"
-	#	print "Catalyst aborting...."
-	#	sys.exit(2)
-	#except UnboundLocalError:
-	#	print
-	#	print "UnboundLocalError: "+str(sys.exc_value)+" was not found"
-	#	raise
-	#	print
-	#	print "Catalyst aborting...."
-	#	sys.exit(2)
