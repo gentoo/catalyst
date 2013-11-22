@@ -1065,7 +1065,7 @@ class generic_stage_target(generic_target):
 					print "\tpackage.use in the profile and portage_confdir. You've been warned!"
 
 			myf.write('PORTDIR="%s"\n' % self.settings['portdir'])
-			myf.write('DISTDIR="${PORTDIR}/distfiles"\n')
+			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
 			myf.write('PKGDIR="${PORTDIR}/packages"\n')
 
 			""" Setup the portage overlay """
