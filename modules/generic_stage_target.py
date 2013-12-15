@@ -174,10 +174,10 @@ class generic_stage_target(generic_target):
 
 		""" Setup our mount points """
 		if "SNAPCACHE" in self.settings:
-			self.mounts=["/proc","/dev","/usr/portage","/usr/portage/distfiles","/var/tmp/portage"]
-			self.mountmap={"/proc":"/proc","/dev":"/dev","devpts":"/dev/pts",
-				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
-				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
+			self.mounts=["proc", "dev", "portdir", "distdir", "port_tmpdir"]
+			self.mountmap={"proc": "/proc", "dev": "/dev", "devpts": "/dev/pts",
+				"portdir": self.settings["snapshot_cache_path"] + "/portage",
+				"distdir": self.settings["distdir"], "port_tmpdir": "tmpfs"}
 		else:
 			self.mounts = ["proc", "dev", "distdir", "port_tmpdir"]
 			self.mountmap = {"proc":"/proc", "dev":"/dev", "devpts":"/dev/pts",
@@ -904,7 +904,8 @@ class generic_stage_target(generic_target):
 					os.makedirs(self.mountmap[x],0755)
 
 			src=self.mountmap[x]
-			if "SNAPCACHE" in self.settings and x == "/usr/portage":
+			#print "bind(); src =", src
+			if "SNAPCACHE" in self.settings and x == "portdir":
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
