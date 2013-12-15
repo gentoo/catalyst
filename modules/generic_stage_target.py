@@ -175,7 +175,7 @@ class generic_stage_target(generic_target):
 		""" Setup our mount points """
 		if "SNAPCACHE" in self.settings:
 			self.mounts=["/proc","/dev","/usr/portage","/usr/portage/distfiles","/var/tmp/portage"]
-			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
+			self.mountmap={"/proc":"/proc","/dev":"/dev","devpts":"/dev/pts",
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
 		else:
