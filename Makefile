@@ -7,7 +7,7 @@ MAN_PAGES = $(patsubst doc/%.txt,files/%,$(MAN_PAGE_SOURCES))
 MAN_PAGE_INCLUDES = doc/subarches.generated.txt doc/targets.generated.txt
 DOC_SOURCES = $(filter-out $(MAN_PAGE_SOURCES) $(MAN_PAGE_INCLUDES),$(wildcard doc/*.txt))
 DOCS = $(patsubst doc/%.txt,files/%.html,$(DOC_SOURCES))
-DOC_SIDE_EFFECTS  = files/docbook-xsl.css
+DOC_SIDE_EFFECTS  = files/docbook-xsl.css doc/subarches.generated.xml
 EXTRA_DIST = $(MAN_PAGES) $(DOCS) $(DOC_SIDE_EFFECTS)
 GENERATED_FILES = $(MAN_PAGES) $(MAN_PAGE_INCLUDES) $(DOCS) $(DOC_SIDE_EFFECTS)
 
@@ -27,7 +27,7 @@ $(MAN_PAGES): files/%: doc/%.txt doc/asciidoc.conf Makefile catalyst | files
 files/catalyst.1: doc/subarches.generated.txt | files
 files/catalyst-spec.5: doc/subarches.generated.txt doc/targets.generated.txt | files
 
-doc/subarches.generated.txt: $(wildcard arch/*.toml) doc/make_subarch_table_guidexml.py
+doc/subarches.generated.txt doc/subarches.generated.xml: $(wildcard arch/*.toml) doc/make_subarch_table_guidexml.py
 	./doc/make_subarch_table_guidexml.py
 
 doc/targets.generated.txt: doc/make_target_table.py $(wildcard catalyst/targets/*.py)
