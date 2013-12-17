@@ -8,6 +8,20 @@ import catalyst_lock
 PORT_LOGDIR_CLEAN = \
 	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
 
+TARGET_MOUNTS_DEFAULTS = {
+	"ccache": "/var/tmp/ccache",
+	"dev": "/dev",
+	"devpts": "/dev/pts",
+	"distdir": "/usr/portage/distfiles",
+	"icecream": "/usr/lib/icecc/bin",
+	"kerncache": "/tmp/kerncache",
+	"packagedir": "/usr/portage/packages",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "/var/tmp/portage",
+	"port_logdir": "/var/log/portage",
+	"proc": "/proc",
+	}
+
 
 class generic_stage_target(generic_target):
 	"""
@@ -178,6 +192,8 @@ class generic_stage_target(generic_target):
 			file_locate(self.settings,["portage_confdir"],expand=0)
 
 		""" Setup our mount points """
+		# initialize our target mounts.
+		self.target_mounts = TARGET_MOUNTS_DEFAULTS.copy()
 		if "SNAPCACHE" in self.settings:
 			self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
 			self.mountmap = {
@@ -231,12 +247,13 @@ class generic_stage_target(generic_target):
 			self.mounts.append("ccache")
 			self.mountmap["ccache"] = ccdir
 			""" for the chroot: """
-			self.env["CCACHE_DIR"]="/var/tmp/ccache"
+			self.env["CCACHE_DIR"] = self.target_mounts["ccache"]
 
 		if "ICECREAM" in self.settings:
 			self.mounts.append("/var/cache/icecream")
 			self.mountmap["/var/cache/icecream"]="/var/cache/icecream"
-			self.env["PATH"]="/usr/lib/icecc/bin:"+self.env["PATH"]
+			self.env["PATH"] = self.target_mounts["icecream"] + ":" + \
+				self.env["PATH"]
 
 		if "port_logdir" in self.settings:
 			self.mounts.append("port_logdir")
@@ -615,33 +632,34 @@ class generic_stage_target(generic_target):
 				"kill-chroot-pids script failed.",env=self.env)
 
 	def mount_safety_check(self):
-		mypath=self.settings["chroot_path"]
-
 		"""
 		Check and verify that none of our paths in mypath are mounted. We don't
 		want to clean up with things still mounted, and this allows us to check.
 		Returns 1 on ok, 0 on "something is still mounted" case.
 		"""
 
-		if not os.path.exists(mypath):
+		if not os.path.exists(self.settings["chroot_path"]):
 			return
 
+		print "self.mounts =", self.mounts
 		for x in self.mounts:
-			if not os.path.exists(mypath + self.mountmap[x]):
+			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
+			print "mount_safety_check() x =", x, target
+			if not os.path.exists(target):
 				continue
 
-			if ismount(mypath + self.mountmap[x]):
+			if ismount(target):
 				""" Something is still mounted "" """
 				try:
-					print self.mountmap[x] + " is still mounted; performing auto-bind-umount...",
+					print target + " is still mounted; performing auto-bind-umount...",
 					""" Try to umount stuff ourselves """
 					self.unbind()
-					if ismount(mypath + self.mountmap[x]):
-						raise CatalystError, "Auto-unbind failed for " + self.mountmap[x]
+					if ismount(target):
+						raise CatalystError, "Auto-unbind failed for " + target
 					else:
 						print "Auto-unbind successful..."
 				except CatalystError:
-					raise CatalystError, "Unable to auto-unbind " + self.mountmap[x]
+					raise CatalystError, "Unable to auto-unbind " + target
 
 	def unpack(self):
 		unpack=True
@@ -909,12 +927,14 @@ class generic_stage_target(generic_target):
 
 	def bind(self):
 		for x in self.mounts:
-			if not os.path.exists(self.settings["chroot_path"] + self.mountmap[x]):
-				os.makedirs(self.settings["chroot_path"]+x,0755)
+			#print "bind(); x =", x
+			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
+			if not os.path.exists(target):
+				os.makedirs(target, 0755)
 
 			if not os.path.exists(self.mountmap[x]):
 				if not self.mountmap[x] == "tmpfs":
-					os.makedirs(self.mountmap[x],0755)
+					os.makedirs(self.mountmap[x], 0755)
 
 			src=self.mountmap[x]
 			#print "bind(); src =", src
@@ -922,20 +942,22 @@ class generic_stage_target(generic_target):
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					retval = os.system("mount -t devfs none " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount -t devfs none " + target
+					retval=os.system(cmd)
 				else:
-					retval = os.system("mount_nullfs " + src + " " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount_nullfs " + src + " " + target
+					retval=os.system(cmd)
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
-						retval=os.system("mount -t tmpfs -o size="+\
-							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
-							self.settings["chroot_path"]+x)
+						cmd = "mount -t tmpfs -o size=" + \
+							self.settings["var_tmpfs_portage"] + "G " + \
+							src + " " + target
+						retval=os.system(cmd)
 				else:
-					retval = os.system("mount --bind " + src + " " +
-						self.settings["chroot_path"] + src)
+					cmd = "mount --bind " + src + " " + target
+					#print "bind(); cmd =", cmd
+					retval=os.system(cmd)
 			if retval!=0:
 				self.unbind()
 				raise CatalystError,"Couldn't bind mount " + src
@@ -947,26 +969,25 @@ class generic_stage_target(generic_target):
 		myrevmounts.reverse()
 		""" Unmount in reverse order for nested bind-mounts """
 		for x in myrevmounts:
-			if not os.path.exists(mypath + self.mountmap[x]):
+			target = normpath(mypath + self.target_mounts[x])
+			if not os.path.exists(target):
 				continue
 
-			if not ismount(mypath + self.mountmap[x]):
+			if not ismount(target):
 				continue
 
-			retval=os.system("umount "+\
-				os.path.join(mypath, self.mountmap[x].lstrip(os.path.sep)))
+			retval=os.system("umount " + target)
 
 			if retval!=0:
-				warn("First attempt to unmount: " + mypath +
-					self.mountmap[x] +" failed.")
+				warn("First attempt to unmount: " + target + " failed.")
 				warn("Killing any pids still running in the chroot")
 
 				self.kill_chroot_pids()
 
-				retval2 = os.system("umount " + mypath + self.mountmap[x])
+				retval2 = os.system("umount " + target)
 				if retval2!=0:
 					ouch=1
-					warn("Couldn't umount bind mount: " + mypath + self.mountmap[x])
+					warn("Couldn't umount bind mount: " + target)
 
 			if "SNAPCACHE" in self.settings and x == "/usr/portage":
 				try:
