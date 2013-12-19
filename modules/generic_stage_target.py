@@ -174,10 +174,18 @@ class generic_stage_target(generic_target):
 
 		""" Setup our mount points """
 		if "SNAPCACHE" in self.settings:
-			self.mounts=["proc", "dev", "portdir", "distdir", "port_tmpdir"]
-			self.mountmap={"proc": "/proc", "dev": "/dev", "devpts": "/dev/pts",
-				"portdir": self.settings["snapshot_cache_path"] + "/portage",
-				"distdir": self.settings["distdir"], "port_tmpdir": "tmpfs"}
+			self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
+			self.mountmap = {
+				"dev": "/dev",
+				"devpts": "/dev/pts",
+				"distdir": self.settings["distdir"],
+				"portdir": normpath("/".join([
+					self.settings["snapshot_cache_path"],
+					self.settings["repo_name"],
+					])),
+				"port_tmpdir": "tmpfs",
+				"proc": "/proc",
+				}
 		else:
 			self.mounts = ["proc", "dev", "distdir", "port_tmpdir"]
 			self.mountmap = {"proc":"/proc", "dev":"/dev", "devpts":"/dev/pts",
