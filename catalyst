@@ -66,6 +66,7 @@ def parse_config(myconfig):
 	confdefaults = {
 		"distdir": "/usr/portage/distfiles",
 		"hash_function": "crc32",
+		"local_overlay": "/usr/local/portage",
 		"options": "",
 		"packagedir": "/usr/portage/packages",
 		"portdir": "/usr/portage",
