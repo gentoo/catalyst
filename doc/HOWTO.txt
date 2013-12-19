@@ -136,11 +136,36 @@ compiled toolchain, which is where Gentoo's stages come in.  The “base
 system” contains the necessary build tools and supporting
 infrastructure to get things going.  The stages are:
 
-1. System must be bootstrapped and the base system must be compiled
-   (a new toolchain built with external seed tools).
-2. Stage1 + bootstrapped (a new toolchain build with stage1 tools).
-3. Stage2 + base system compiled (the base system built with stage2 tools).
-4. Stage3 + non-base packages.
+[options="header",frame="topbot",grid="none"]
+|=======================================================================================
+| Source         | Action                                                       | Result
+| seed stage3    | Build packages listed in your profile's `packages.build`     | stage1
+| stage1         | Rebuild the toolchain with the package tree's `bootstrap.sh` | stage2
+| stage2         | Compile the base `@system` packages                          | stage3
+| stage3         | Compile additional `@world` packages                         | stage4
+|=======================================================================================
+
+For stage1, Catalyst builds the stuff your profile says you need to
+get started, using the tools in the seed stage3.  It uses Portage's
+ability to merge packages into an alternatively-rooted filesystem
+(`/tmp/stage1root`, using `ROOT` in `make.conf`).  This ensures that
+only freshly-built packages end up in stage1.
+
+A fresh stage1 has newly-compiled versions of everything you need to
+build a full system, but all of the stage1 binaries were built with
+tools from the seed stage3.  For stage2, Catalyst rebuilds a number of
+critial packages (GCC, glibc, binutils, ...) using the `bootstrap.sh`
+script distributed with the package tree.  Rebuilding the packages
+using the packages themselves (instead of the seed stage3 tools) gives
+an extra layer of separation from any crazy output that the seed
+tooling may have generated.
+
+Once we have a stage2, Catalyst builds all of the base system packages
+for stage3, rebuilding any that were already built in stage2 (`emerge
+-e @system`).  The `@system` set of packages is defined by `packages`
+files in your cascading profile.  See
+http://dev.gentoo.org/~ulm/pms/5/pms.html#x1-520005.2.6[the Package
+Manager Specification] for details.
 
 For more details on the differences between the stages, look at the
 target helper scripts (e.g. `targets/stage1/*.sh`).
