@@ -250,8 +250,8 @@ class generic_stage_target(generic_target):
 			self.env["CCACHE_DIR"] = self.target_mounts["ccache"]
 
 		if "ICECREAM" in self.settings:
-			self.mounts.append("/var/cache/icecream")
-			self.mountmap["/var/cache/icecream"]="/var/cache/icecream"
+			self.mounts.append("icecream")
+			self.mountmap["icecream"] = self.settings["icecream"]
 			self.env["PATH"] = self.target_mounts["icecream"] + ":" + \
 				self.env["PATH"]
 
