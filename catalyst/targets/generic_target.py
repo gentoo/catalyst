@@ -1,3 +1,5 @@
+import os
+
 from catalyst.support import *
 
 class generic_target:
@@ -7,5 +9,7 @@ class generic_target:
 	def __init__(self,myspec,addlargs):
 		addl_arg_parse(myspec,addlargs,self.required_values,self.valid_values)
 		self.settings=myspec
-		self.env={}
-		self.env["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
+		self.env = {
+			'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
+			'TERM': os.getenv('TERM', 'dumb'),
+			}
