@@ -4,6 +4,11 @@ from generic_target import *
 from stat import *
 import catalyst_lock
 
+
+PORT_LOGDIR_CLEAN = \
+	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
+
+
 class generic_stage_target(generic_target):
 	"""
 	This class does all of the chroot setup, copying of files, etc. It is
@@ -234,10 +239,10 @@ class generic_stage_target(generic_target):
 			self.env["PATH"]="/usr/lib/icecc/bin:"+self.env["PATH"]
 
 		if "port_logdir" in self.settings:
-			self.mounts.append("/var/log/portage")
-			self.mountmap["/var/log/portage"]=self.settings["port_logdir"]
-			self.env["PORT_LOGDIR"]="/var/log/portage"
-			self.env["PORT_LOGDIR_CLEAN"]='find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
+			self.mounts.append("port_logdir")
+			self.mountmap["port_logdir"] = self.settings["port_logdir"]
+			self.env["PORT_LOGDIR"] = self.settings["port_logdir"]
+			self.env["PORT_LOGDIR_CLEAN"] = PORT_LOGDIR_CLEAN
 
 	def override_cbuild(self):
 		if "CBUILD" in self.makeconf:
