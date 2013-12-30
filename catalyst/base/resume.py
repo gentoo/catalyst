@@ -16,7 +16,7 @@ import shutil
 from stat import ST_UID, ST_GID, ST_MODE
 import traceback
 
-from catalyst.fileops import ensure_dirs, pjoin, listdir_files
+from catalyst.fileops import ensure_dirs, pjoin, listdir_files, clear_dir
 from catalyst.support import touch
 
 
@@ -139,28 +139,12 @@ class AutoResume(object):
 		return list(self._points)
 
 
-	def clear_all(self):
+	def clear_all(self, remove=False):
 		'''Clear all active resume points
 
 		@return boolean
 		'''
-		try:
-			print "Emptying directory---", self.basedir
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			mystat=os.stat(self.basedir)
-			if os.uname()[0] == "FreeBSD":
-				cmd("chflags -R noschg " + self.basedir,\
-					"Could not remove immutable flag for file "\
-					+ self.basedir)
-			shutil.rmtree(self.basedir)
-			ensure_dirs(self.basedir, 0755)
-			os.chown(self.basedir,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(self.basedir,mystat[ST_MODE])
+		if clear_dir(self.basedir, mode=0755, chg_flags=True, remove=remove):
 			self._points = {}
-		except Exception as e:
-			print AutoResumeError(str(e))
-			return False
-		return True
+			return True
+		return False

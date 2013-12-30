@@ -10,7 +10,13 @@ ensuring directories exist,... imports snakeoils osutils
 functions for use throughout catalyst.
 '''
 
-from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs, normpath,
+import os
+import shutil
+from stat import ST_UID, ST_GID, ST_MODE
+
+# NOTE: pjoin and listdir_files are imported here for export
+# to other catalyst modules
+from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs,
 	pjoin, listdir_files)
 from catalyst.support import CatalystError
 
@@ -42,3 +48,38 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True,
 			raise CatalystError(
 				"Failed to create directory: %s" % path, print_traceback=True)
 	return succeeded
+
+
+def clear_dir(target, mode=0755, chg_flags=False, remove=False):
+	'''Universal directory clearing function
+	'''
+	#print "fileops.clear_dir()"
+	if not target:
+		#print "fileops.clear_dir(), no target... returning"
+		return False
+	if os.path.isdir(target):
+		print "Emptying directory" , target
+		"""
+		stat the dir, delete the dir, recreate the dir and set
+		the proper perms and ownership
+		"""
+		try:
+			#print "fileops.clear_dir(), os.stat()"
+			mystat=os.stat(target)
+			""" There's no easy way to change flags recursively in python """
+			if chg_flags and os.uname()[0] == "FreeBSD":
+				os.system("chflags -R noschg " + target)
+			#print "fileops.clear_dir(), shutil.rmtree()"
+			shutil.rmtree(target)
+			if not remove:
+				#print "fileops.clear_dir(), ensure_dirs()"
+				ensure_dirs(target, mode=mode)
+				os.chown(target, mystat[ST_UID], mystat[ST_GID])
+				os.chmod(target, mystat[ST_MODE])
+		except Exception as e:
+			print CatalystError("clear_dir(); Exeption: %s" % str(e))
+			return False
+	else:
+		print "fileops.clear_dir(), %s is not a directory" % (target)
+	#print "fileops.clear_dir(), DONE, returning True"
+	return True

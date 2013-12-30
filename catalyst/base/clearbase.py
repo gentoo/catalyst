@@ -5,7 +5,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 
 from catalyst.support import cmd, countdown
-from catalyst.fileops import ensure_dirs
+from catalyst.fileops import ensure_dirs, clear_dir
 
 class ClearBase(object):
 	"""
@@ -16,68 +16,43 @@ class ClearBase(object):
 		self.resume = None
 
 
-	def clear_autoresume(self):
+	def clear_autoresume(self, remove=False):
 		""" Clean resume points since they are no longer needed """
 		if "autoresume" in self.settings["options"]:
 			print "Removing AutoResume Points: ..."
 			self.resume.clear_all()
 
 
-	def clear_chroot(self):
+	def clear_chroot(self, remove=False):
 		print 'Clearing the chroot path ...'
-		self.clear_dir(self.settings["chroot_path"], 0755, True)
+		clear_dir(self.settings["chroot_path"], 0755, True, remove)
 
 
-	def clear_packages(self):
+	def clear_packages(self, remove=False):
 		if "pkgcache" in self.settings["options"]:
 			print "purging the pkgcache ..."
-			self.clear_dir(self.settings["pkgcache_path"])
+			clear_dir(self.settings["pkgcache_path"], remove=remove)
 
 
-	def clear_kerncache(self):
+	def clear_kerncache(self, remove=False):
 		if "kerncache" in self.settings["options"]:
 			print "purging the kerncache ..."
-			self.clear_dir(self.settings["kerncache_path"])
+			clear_dir(self.settings["kerncache_path"], remove=remove)
 
 
-	def purge(self):
+	def purge(self, remove=False):
 		countdown(10,"Purging Caches ...")
-		if any(k in self.settings["options"] for k in ("purge","purgeonly","purgetmponly")):
-			print "clearing autoresume ..."
-			self.clear_autoresume()
+		if any(k in self.settings["options"] for k in ("purge",
+				"purgeonly", "purgetmponly")):
+			print "purge(); clearing autoresume ..."
+			self.clear_autoresume(remove)
 
-			print "clearing chroot ..."
-			self.clear_chroot()
+			print "purge(); clearing chroot ..."
+			self.clear_chroot(remove)
 
-			if "PURGETMPONLY" not in self.settings:
-				print "clearing package cache ..."
-				self.clear_packages()
+			if "purgetmponly" not in self.settings["options"]:
+				print "purge(); clearing package cache ..."
+				self.clear_packages(remove)
 
-			print "clearing kerncache ..."
-			self.clear_kerncache()
-
-
-	def clear_dir(self, myemp, mode=0755, chg_flags=False):
-		'''Universal directory clearing function
-		'''
-		if not myemp:
-			return False
-		if os.path.isdir(myemp):
-			print "Emptying directory" , myemp
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
-			try:
-				mystat=os.stat(myemp)
-				""" There's no easy way to change flags recursively in python """
-				if chg_flags and os.uname()[0] == "FreeBSD":
-					os.system("chflags -R noschg " + myemp)
-				shutil.rmtree(myemp)
-				ensure_dirs(myemp, mode=mode)
-				os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-				os.chmod(myemp,mystat[ST_MODE])
-			except Exception as e:
-				print CatalystError("clear_dir(); Exeption: %s" % str(e))
-				return False
-			return True
+			print "purge(); clearing kerncache ..."
+			self.clear_kerncache(remove)
