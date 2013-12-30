@@ -22,6 +22,15 @@ TARGET_MOUNTS_DEFAULTS = {
 	"proc": "/proc",
 	}
 
+SOURCE_MOUNTS_DEFAULTS = {
+	"dev": "/dev",
+	"devpts": "/dev/pts",
+	"distdir": "/usr/portage/distfiles",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "tmpfs",
+	"proc": "/proc",
+	}
+
 
 class generic_stage_target(generic_target):
 	"""
@@ -194,23 +203,19 @@ class generic_stage_target(generic_target):
 		""" Setup our mount points """
 		# initialize our target mounts.
 		self.target_mounts = TARGET_MOUNTS_DEFAULTS.copy()
-		if "SNAPCACHE" in self.settings:
-			self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
-			self.mountmap = {
-				"dev": "/dev",
-				"devpts": "/dev/pts",
-				"distdir": self.settings["distdir"],
-				"portdir": normpath("/".join([
-					self.settings["snapshot_cache_path"],
-					self.settings["repo_name"],
-					])),
-				"port_tmpdir": "tmpfs",
-				"proc": "/proc",
-				}
-		else:
-			self.mounts = ["proc", "dev", "distdir", "port_tmpdir"]
-			self.mountmap = {"proc":"/proc", "dev":"/dev", "devpts":"/dev/pts",
-				"distdir":self.settings["distdir"], "port_tmpdir":"tmpfs"}
+
+		self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
+		# initialize our source mounts
+		self.mountmap = SOURCE_MOUNTS_DEFAULTS.copy()
+		# update them from settings
+		self.mountmap["distdir"] = self.settings["distdir"]
+		self.mountmap["portdir"] = normpath("/".join([
+			self.settings["snapshot_cache_path"],
+			self.settings["repo_name"],
+			]))
+		if "SNAPCACHE" not in self.settings:
+			self.mounts.remove("portdir")
+			#self.mountmap["portdir"] = None
 		if os.uname()[0] == "Linux":
 			self.mounts.append("devpts")
 
