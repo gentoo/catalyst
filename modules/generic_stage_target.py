@@ -20,6 +20,7 @@ TARGET_MOUNTS_DEFAULTS = {
 	"port_tmpdir": "/var/tmp/portage",
 	"port_logdir": "/var/log/portage",
 	"proc": "/proc",
+	"shm": "/dev/shm",
 	}
 
 SOURCE_MOUNTS_DEFAULTS = {
@@ -29,6 +30,7 @@ SOURCE_MOUNTS_DEFAULTS = {
 	"portdir": "/usr/portage",
 	"port_tmpdir": "tmpfs",
 	"proc": "/proc",
+	"shm": "shmfs",
 	}
 
 
@@ -218,6 +220,7 @@ class generic_stage_target(generic_target):
 			#self.mountmap["portdir"] = None
 		if os.uname()[0] == "Linux":
 			self.mounts.append("devpts")
+			self.mounts.append("shm")
 
 		self.set_mounts()
 
@@ -938,7 +941,7 @@ class generic_stage_target(generic_target):
 				os.makedirs(target, 0755)
 
 			if not os.path.exists(self.mountmap[x]):
-				if not self.mountmap[x] == "tmpfs":
+				if self.mountmap[x] not in ["tmpfs", "shmfs"]:
 					os.makedirs(self.mountmap[x], 0755)
 
 			src=self.mountmap[x]
@@ -959,6 +962,9 @@ class generic_stage_target(generic_target):
 							self.settings["var_tmpfs_portage"] + "G " + \
 							src + " " + target
 						retval=os.system(cmd)
+				elif src == "shmfs":
+					cmd = "mount -t tmpfs -o noexec,nosuid,nodev shm " + target
+					retval=os.system(cmd)
 				else:
 					cmd = "mount --bind " + src + " " + target
 					#print "bind(); cmd =", cmd
