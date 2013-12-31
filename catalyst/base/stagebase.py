@@ -1332,9 +1332,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))
-			except:
+			except Exception as e:
+				print "--- Exeption running action sequence:" + x
 				self.mount_safety_check()
-				raise
+				raise e
 
 		self.chroot_lock.unlock()
 
