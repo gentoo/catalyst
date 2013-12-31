@@ -16,16 +16,28 @@ class ClearBase(object):
 		self.resume = None
 
 
-	def clear_autoresume(self, remove=False):
+	def clear_autoresume(self):
 		""" Clean resume points since they are no longer needed """
 		if "autoresume" in self.settings["options"]:
 			print "Removing AutoResume Points: ..."
 			self.resume.clear_all()
 
 
-	def clear_chroot(self, remove=False):
+	def remove_autoresume(self):
+		""" Rmove all resume points since they are no longer needed """
+		if "autoresume" in self.settings["options"]:
+			print "Removing AutoResume: ..."
+			self.resume.clear_all(remove=True)
+
+
+	def clear_chroot(self):
 		print 'Clearing the chroot path ...'
-		clear_dir(self.settings["chroot_path"], 0755, True, remove)
+		clear_dir(self.settings["chroot_path"], 0755, True)
+
+
+	def remove_chroot(self):
+		print 'Removing the chroot path ...'
+		clear_dir(self.settings["chroot_path"], 0755, True, remove=True)
 
 
 	def clear_packages(self, remove=False):
