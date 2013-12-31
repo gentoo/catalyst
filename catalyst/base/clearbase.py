@@ -1,11 +1,7 @@
 
-import os
-import shutil
-from stat import ST_UID, ST_GID, ST_MODE
 
-
-from catalyst.support import cmd, countdown
-from catalyst.fileops import ensure_dirs, clear_dir
+from catalyst.support import countdown
+from catalyst.fileops import clear_dir
 
 class ClearBase(object):
 	"""
