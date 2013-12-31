@@ -27,11 +27,13 @@ class ClearBase(object):
 
 
 	def clear_chroot(self):
+		self.chroot_lock.unlock()
 		print 'Clearing the chroot path ...'
 		clear_dir(self.settings["chroot_path"], 0755, True)
 
 
 	def remove_chroot(self):
+		self.chroot_lock.unlock()
 		print 'Removing the chroot path ...'
 		clear_dir(self.settings["chroot_path"], 0755, True, remove=True)
 
