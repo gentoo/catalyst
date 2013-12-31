@@ -174,16 +174,21 @@ class generic_stage_target(generic_target):
 
 		""" Setup our mount points """
 		if "SNAPCACHE" in self.settings:
-			self.mounts=["/proc","/dev","/usr/portage","/usr/portage/distfiles","/var/tmp/portage"]
+			self.mounts=["/proc", "/dev", "/usr/portage",
+				"/usr/portage/distfiles", "/var/tmp/portage"]
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
-				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
+				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs",
+				"/dev/shm": "/dev/shm"}
 		else:
-			self.mounts=["/proc","/dev","/usr/portage/distfiles","/var/tmp/portage"]
+			self.mounts=["/proc", "/dev", "/usr/portage/distfiles",
+				"/var/tmp/portage"]
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
-				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs"}
+				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs",
+				"/dev/shm": "/dev/shm"}
 		if os.uname()[0] == "Linux":
 			self.mounts.append("/dev/pts")
+			self.mounts.append("/dev/shm")
 
 		self.set_mounts()
 
