@@ -52,6 +52,12 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True,
 
 def clear_dir(target, mode=0755, chg_flags=False, remove=False):
 	'''Universal directory clearing function
+
+	@target: string, path to be cleared or removed
+	@mode: integer, desired mode to set the directory to
+	@chg_flags: boolean used for FreeBSD hoosts
+	@remove: boolean, passed through to clear_dir()
+	@return boolean
 	'''
 	#print "fileops.clear_dir()"
 	if not target:

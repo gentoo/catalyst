@@ -142,6 +142,7 @@ class AutoResume(object):
 	def clear_all(self, remove=False):
 		'''Clear all active resume points
 
+		@remove: boolean, passed through to clear_dir()
 		@return boolean
 		'''
 		if clear_dir(self.basedir, mode=0755, chg_flags=True, remove=remove):
