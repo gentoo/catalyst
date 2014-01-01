@@ -179,13 +179,13 @@ class generic_stage_target(generic_target):
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
 				"/usr/portage":self.settings["snapshot_cache_path"]+"/portage",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs",
-				"/dev/shm": "/dev/shm"}
+				"/dev/shm": "shmfs"}
 		else:
 			self.mounts=["/proc", "/dev", "/usr/portage/distfiles",
 				"/var/tmp/portage"]
 			self.mountmap={"/proc":"/proc","/dev":"/dev","/dev/pts":"/dev/pts",\
 				"/usr/portage/distfiles":self.settings["distdir"],"/var/tmp/portage":"tmpfs",
-				"/dev/shm": "/dev/shm"}
+				"/dev/shm": "shmfs"}
 		if os.uname()[0] == "Linux":
 			self.mounts.append("/dev/pts")
 			self.mounts.append("/dev/shm")
@@ -904,7 +904,7 @@ class generic_stage_target(generic_target):
 				os.makedirs(self.settings["chroot_path"]+x,0755)
 
 			if not os.path.exists(self.mountmap[x]):
-				if not self.mountmap[x] == "tmpfs":
+				if self.mountmap[x] != "tmpfs" and self.mountmap[x] != "shmfs":
 					os.makedirs(self.mountmap[x],0755)
 
 			src=self.mountmap[x]
@@ -923,6 +923,9 @@ class generic_stage_target(generic_target):
 						retval=os.system("mount -t tmpfs -o size="+\
 							self.settings["var_tmpfs_portage"]+"G "+src+" "+\
 							self.settings["chroot_path"]+x)
+				elif src == "shmfs":
+					retval=os.system("mount -t tmpfs -o noexec,nosuid,nodev shm "+\
+						self.settings["chroot_path"]+x)
 				else:
 					retval=os.system("mount --bind "+src+" "+\
 						self.settings["chroot_path"]+x)
