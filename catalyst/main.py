@@ -227,9 +227,10 @@ def import_modules():
 				raise CatalystError,"Can't find " + x + ".py plugin in " + \
 					module_dir
 
-	except ImportError:
+	except ImportError as e:
 		print "!!! catalyst: Python modules not found in "+\
 			module_dir + "; exiting."
+		print e
 		sys.exit(1)
 
 	return targetmap
