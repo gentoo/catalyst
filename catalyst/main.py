@@ -25,6 +25,7 @@ from catalyst.support import (required_build_targets,
 	valid_build_targets, CatalystError, find_binary, LockInUse)
 
 from hash_utils import HashMap, HASH_DEFINITIONS
+from contents import ContentsMap, CONTENTS_DEFINITIONS
 
 
 
@@ -184,7 +185,8 @@ def parse_config(myconfig):
 	if "digests" in myconf:
 		conf_values["digests"]=myconf["digests"]
 	if "contents" in myconf:
-		conf_values["contents"]=myconf["contents"]
+		# replace '-' with '_' (for compatibility with existing configs)
+		conf_values["contents"] = myconf["contents"].replace("-", '_')
 
 	if "envscript" in myconf:
 		print "Envscript support enabled."
@@ -347,6 +349,10 @@ def main():
 
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
+
+	# initialize our contents generator
+	contents_map = ContentsMap(CONTENTS_DEFINITIONS)
+	conf_values["contents_map"] = contents_map
 
 	# initialze our hash and contents generators
 	hash_map = HashMap(HASH_DEFINITIONS)

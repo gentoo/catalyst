@@ -1703,6 +1703,7 @@ class generic_stage_target(generic_target):
 		if os.path.exists(file+".CONTENTS"):
 			os.remove(file+".CONTENTS")
 		if "contents" in self.settings:
+			contents_map = self.settings["contents_map"]
 			if os.path.exists(file):
 				myf=open(file+".CONTENTS","w")
 				keys={}
@@ -1711,7 +1712,7 @@ class generic_stage_target(generic_target):
 					array=keys.keys()
 					array.sort()
 				for j in array:
-					contents=generate_contents(file,contents_function=j,\
+					contents = contents_map.generate_contents(file, j,
 						verbose="VERBOSE" in self.settings)
 					if contents:
 						myf.write(contents)

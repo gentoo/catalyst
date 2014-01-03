@@ -62,58 +62,6 @@ def hexify(str):
 	return r
 # hexify()
 
-def generate_contents(file,contents_function="auto",verbose=False):
-	try:
-		_ = contents_function
-		if _ == 'auto' and file.endswith('.iso'):
-			_ = 'isoinfo-l'
-		if (_ in ['tar-tv','auto']):
-			if file.endswith('.tgz') or file.endswith('.tar.gz'):
-				_ = 'tar-tvz'
-			elif file.endswith('.tbz2') or file.endswith('.tar.bz2'):
-				_ = 'tar-tvj'
-			elif file.endswith('.tar'):
-				_ = 'tar-tv'
-
-		if _ == 'auto':
-			warn('File %r has unknown type for automatic detection.' % (file, ))
-			return None
-		else:
-			contents_function = _
-			_ = contents_map[contents_function]
-			return _[0](file,_[1],verbose)
-	except:
-		raise CatalystError,\
-			"Error generating contents, is appropriate utility (%s) installed on your system?" \
-			% (contents_function, )
-
-def calc_contents(file,cmd,verbose):
-	args={ 'file': file }
-	cmd=cmd % dict(args)
-	a=os.popen(cmd)
-	mylines=a.readlines()
-	a.close()
-	result="".join(mylines)
-	if verbose:
-		print result
-	return result
-
-# This has map must be defined after the function calc_content
-# It is possible to call different functions from this but they must be defined
-# before hash_map
-# Key,function,cmd
-contents_map={
-	# 'find' is disabled because it requires the source path, which is not
-	# always available
-	#"find"		:[calc_contents,"find %(path)s"],
-	"tar-tv":[calc_contents,"tar tvf %(file)s"],
-	"tar-tvz":[calc_contents,"tar tvzf %(file)s"],
-	"tar-tvj":[calc_contents,"tar -I lbzip2 -tvf %(file)s"],
-	"isoinfo-l":[calc_contents,"isoinfo -l -i %(file)s"],
-	# isoinfo-f should be a last resort only
-	"isoinfo-f":[calc_contents,"isoinfo -f -i %(file)s"],
-}
-
 
 def read_from_clst(file):
 	line = ''
