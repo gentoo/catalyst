@@ -22,7 +22,10 @@ from . import __version__
 import catalyst.config
 import catalyst.util
 from catalyst.support import (required_build_targets,
-	valid_build_targets, CatalystError, hash_map, find_binary, LockInUse)
+	valid_build_targets, CatalystError, find_binary, LockInUse)
+
+from hash_utils import HashMap, HASH_DEFINITIONS
+
 
 
 conf_values={}
@@ -345,40 +348,43 @@ def main():
 	# import configuration file and import our main module using those settings
 	parse_config(myconfig)
 
-	# Start checking that digests are valid now that the hash_map was imported
-	# from catalyst.support
+	# initialze our hash and contents generators
+	hash_map = HashMap(HASH_DEFINITIONS)
+	conf_values["hash_map"] = hash_map
+
+	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:
 		for i in conf_values["digests"].split():
-			if i not in hash_map:
+			if i not in HASH_DEFINITIONS:
 				print
 				print i+" is not a valid digest entry"
 				print "Valid digest entries:"
-				print hash_map.keys()
+				print HASH_DEFINITIONS.keys()
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
-			if find_binary(hash_map[i][1]) == None:
+			if find_binary(hash_map.hash_map[i].cmd) == None:
 				print
-				print "digest="+i
-				print "\tThe "+hash_map[i][1]+\
+				print "digest=" + i
+				print "\tThe " + hash_map.hash_map[i].cmd + \
 					" binary was not found. It needs to be in your system path"
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
 	if "hash_function" in conf_values:
-		if conf_values["hash_function"] not in hash_map:
+		if conf_values["hash_function"] not in HASH_DEFINITIONS:
 			print
 			print conf_values["hash_function"]+\
 				" is not a valid hash_function entry"
 			print "Valid hash_function entries:"
-			print hash_map.keys()
+			print HASH_DEFINITIONS.keys()
 			print
 			print "Catalyst aborting...."
 			sys.exit(2)
-		if find_binary(hash_map[conf_values["hash_function"]][1]) == None:
+		if find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd) == None:
 			print
 			print "hash_function="+conf_values["hash_function"]
-			print "\tThe "+hash_map[conf_values["hash_function"]][1]+\
+			print "\tThe "+hash_map.hash_map[conf_values["hash_function"]].cmd + \
 				" binary was not found. It needs to be in your system path"
 			print
 			print "Catalyst aborting...."

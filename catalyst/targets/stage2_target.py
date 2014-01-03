@@ -23,8 +23,11 @@ class stage2_target(generic_stage_target):
 			if os.path.isfile(self.settings["source_path"]):
 				if os.path.exists(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
-					self.settings["source_path_hash"]=generate_hash(self.settings["source_path"],\
-						hash_function=self.settings["hash_function"],verbose=False)
+					self.settings["source_path_hash"] = \
+						self.settings["hash_map"].generate_hash(
+							self.settings["source_path"],\
+							hash_=self.settings["hash_function"],
+							verbose=False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
 			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"

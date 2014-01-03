@@ -35,7 +35,9 @@ class livecd_stage2_target(generic_stage_target):
 	def set_source_path(self):
 		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"]+".tar.bz2")
 		if os.path.isfile(self.settings["source_path"]):
-			self.settings["source_path_hash"]=generate_hash(self.settings["source_path"])
+			self.settings["source_path_hash"] = \
+				self.settings["hash_map"].generate_hash(
+					self.settings["source_path"])
 		else:
 			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/")
 		if not os.path.exists(self.settings["source_path"]):

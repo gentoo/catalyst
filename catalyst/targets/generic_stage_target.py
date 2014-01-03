@@ -428,10 +428,11 @@ class generic_stage_target(generic_target):
 			if os.path.isfile(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
-					self.settings["source_path_hash"]=\
-						generate_hash(self.settings["source_path"],\
-						hash_function=self.settings["hash_function"],\
-						verbose=False)
+					self.settings["source_path_hash"] = \
+						self.settings["hash_map"].generate_hash(
+							self.settings["source_path"],
+							hash_ = self.settings["hash_function"],
+							verbose = False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
 			print "\tIf this is not desired, remove this directory or turn off"
@@ -457,18 +458,22 @@ class generic_stage_target(generic_target):
 			self.settings["snapshot"] + ".tar.xz")
 
 		if os.path.exists(self.settings["snapshot_path"]):
-			self.settings["snapshot_path_hash"]=\
-				generate_hash(self.settings["snapshot_path"],\
-				hash_function=self.settings["hash_function"],verbose=False)
+			self.settings["snapshot_path_hash"] = \
+				self.settings["hash_map"].generate_hash(
+					self.settings["snapshot_path"],
+					hash_ = self.settings["hash_function"],
+					verbose = False)
 		else:
 			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
 				"/snapshots/" + self.settings["snapshot_name"] +
 				self.settings["snapshot"] + ".tar.bz2")
 
 			if os.path.exists(self.settings["snapshot_path"]):
-				self.settings["snapshot_path_hash"]=\
-					generate_hash(self.settings["snapshot_path"],\
-					hash_function=self.settings["hash_function"],verbose=False)
+				self.settings["snapshot_path_hash"] = \
+					self.settings["hash_map"].generate_hash(
+						self.settings["snapshot_path"],
+						hash_ = self.settings["hash_function"],
+						verbose = False)
 
 	def set_snapcache_path(self):
 		if "SNAPCACHE" in self.settings:
@@ -1716,6 +1721,7 @@ class generic_stage_target(generic_target):
 		if os.path.exists(file+".DIGESTS"):
 			os.remove(file+".DIGESTS")
 		if "digests" in self.settings:
+			hash_map = self.settings["hash_map"]
 			if os.path.exists(file):
 				myf=open(file+".DIGESTS","w")
 				keys={}
@@ -1726,14 +1732,14 @@ class generic_stage_target(generic_target):
 				for f in [file, file+'.CONTENTS']:
 					if os.path.exists(f):
 						if "all" in array:
-							for k in hash_map.keys():
-								hash=generate_hash(f,hash_function=k,verbose=\
-									"VERBOSE" in self.settings)
+							for k in list(hash_map.hash_map):
+								hash = hash_map.generate_hash(f, hash_ = k,
+									verbose = "VERBOSE" in self.settings)
 								myf.write(hash)
 						else:
 							for j in array:
-								hash=generate_hash(f,hash_function=j,verbose=\
-									"VERBOSE" in self.settings)
+								hash = hash_map.generate_hash(f, hash_ = j,
+									verbose = "VERBOSE" in self.settings)
 								myf.write(hash)
 				myf.close()
 
