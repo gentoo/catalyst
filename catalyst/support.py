@@ -1,6 +1,9 @@
 
 import sys,string,os,types,re,signal,traceback,time
 #import md5,sha
+
+from catalyst.defaults import verbosity, valid_config_file_values
+
 selinux_capable = False
 #userpriv_capable = (os.getuid() == 0)
 #fakeroot_capable = False
@@ -80,38 +83,6 @@ def read_from_clst(file):
 	return myline
 # read_from_clst
 
-# these should never be touched
-required_build_targets=["generic_target","generic_stage_target"]
-
-# new build types should be added here
-valid_build_targets=["stage1_target","stage2_target","stage3_target","stage4_target","grp_target",
-			"livecd_stage1_target","livecd_stage2_target","embedded_target",
-			"tinderbox_target","snapshot_target","netboot_target","netboot2_target"]
-
-required_config_file_values=["storedir","sharedir","distdir","portdir"]
-valid_config_file_values=required_config_file_values[:]
-valid_config_file_values.append("PKGCACHE")
-valid_config_file_values.append("KERNCACHE")
-valid_config_file_values.append("CCACHE")
-valid_config_file_values.append("DISTCC")
-valid_config_file_values.append("ICECREAM")
-valid_config_file_values.append("ENVSCRIPT")
-valid_config_file_values.append("AUTORESUME")
-valid_config_file_values.append("FETCH")
-valid_config_file_values.append("CLEAR_AUTORESUME")
-valid_config_file_values.append("options")
-valid_config_file_values.append("DEBUG")
-valid_config_file_values.append("VERBOSE")
-valid_config_file_values.append("PURGE")
-valid_config_file_values.append("PURGEONLY")
-valid_config_file_values.append("SNAPCACHE")
-valid_config_file_values.append("snapshot_cache")
-valid_config_file_values.append("hash_function")
-valid_config_file_values.append("digests")
-valid_config_file_values.append("contents")
-valid_config_file_values.append("SEEDCACHE")
-
-verbosity=1
 
 def list_bashify(mylist):
 	if type(mylist)==types.StringType:

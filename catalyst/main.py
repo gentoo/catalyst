@@ -21,9 +21,8 @@ sys.path.append(__selfpath__ + "/modules")
 from . import __version__
 import catalyst.config
 import catalyst.util
-from catalyst.support import (required_build_targets,
-	valid_build_targets, CatalystError, find_binary, LockInUse)
-
+from catalyst.support import CatalystError, find_binary, LockInUse
+from catalyst.defaults import required_build_targets, valid_build_targets
 from hash_utils import HashMap, HASH_DEFINITIONS
 from contents import ContentsMap, CONTENTS_DEFINITIONS
 
