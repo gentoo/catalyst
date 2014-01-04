@@ -4,34 +4,8 @@ from generic_target import *
 from stat import *
 from catalyst.lock import LockDir
 
-
-PORT_LOGDIR_CLEAN = \
-	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
-
-TARGET_MOUNTS_DEFAULTS = {
-	"ccache": "/var/tmp/ccache",
-	"dev": "/dev",
-	"devpts": "/dev/pts",
-	"distdir": "/usr/portage/distfiles",
-	"icecream": "/usr/lib/icecc/bin",
-	"kerncache": "/tmp/kerncache",
-	"packagedir": "/usr/portage/packages",
-	"portdir": "/usr/portage",
-	"port_tmpdir": "/var/tmp/portage",
-	"port_logdir": "/var/log/portage",
-	"proc": "/proc",
-	"shm": "/dev/shm",
-	}
-
-SOURCE_MOUNTS_DEFAULTS = {
-	"dev": "/dev",
-	"devpts": "/dev/pts",
-	"distdir": "/usr/portage/distfiles",
-	"portdir": "/usr/portage",
-	"port_tmpdir": "tmpfs",
-	"proc": "/proc",
-	"shm": "shmfs",
-	}
+from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
+	PORT_LOGDIR_CLEAN)
 
 # for convienience
 pjoin = os.path.join
@@ -208,11 +182,11 @@ class generic_stage_target(generic_target):
 
 		""" Setup our mount points """
 		# initialize our target mounts.
-		self.target_mounts = TARGET_MOUNTS_DEFAULTS.copy()
+		self.target_mounts = TARGET_MOUNT_DEFAULTS.copy()
 
 		self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
 		# initialize our source mounts
-		self.mountmap = SOURCE_MOUNTS_DEFAULTS.copy()
+		self.mountmap = SOURCE_MOUNT_DEFAULTS.copy()
 		# update them from settings
 		self.mountmap["distdir"] = self.settings["distdir"]
 		if "SNAPCACHE" not in self.settings:

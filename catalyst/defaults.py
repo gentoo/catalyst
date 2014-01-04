@@ -21,3 +21,30 @@ valid_config_file_values.extend(["PKGCACHE", "KERNCACHE", "CCACHE", "DISTCC",
 
 verbosity = 1
 
+PORT_LOGDIR_CLEAN = \
+	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
+
+TARGET_MOUNT_DEFAULTS = {
+	"ccache": "/var/tmp/ccache",
+	"dev": "/dev",
+	"devpts": "/dev/pts",
+	"distdir": "/usr/portage/distfiles",
+	"icecream": "/usr/lib/icecc/bin",
+	"kerncache": "/tmp/kerncache",
+	"packagedir": "/usr/portage/packages",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "/var/tmp/portage",
+	"port_logdir": "/var/log/portage",
+	"proc": "/proc",
+	"shm": "/dev/shm",
+	}
+
+SOURCE_MOUNT_DEFAULTS = {
+	"dev": "/dev",
+	"devpts": "/dev/pts",
+	"distdir": "/usr/portage/distfiles",
+	"portdir": "/usr/portage",
+	"port_tmpdir": "tmpfs",
+	"proc": "/proc",
+	"shm": "shmfs",
+	}
