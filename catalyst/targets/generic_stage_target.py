@@ -215,13 +215,14 @@ class generic_stage_target(generic_target):
 		self.mountmap = SOURCE_MOUNTS_DEFAULTS.copy()
 		# update them from settings
 		self.mountmap["distdir"] = self.settings["distdir"]
-		self.mountmap["portdir"] = normpath("/".join([
-			self.settings["snapshot_cache_path"],
-			self.settings["repo_name"],
-			]))
 		if "SNAPCACHE" not in self.settings:
 			self.mounts.remove("portdir")
-			#self.mountmap["portdir"] = None
+			self.mountmap["portdir"] = None
+		else:
+			self.mountmap["portdir"] = normpath("/".join([
+				self.settings["snapshot_cache_path"],
+				self.settings["repo_name"],
+				]))
 		if os.uname()[0] == "Linux":
 			self.mounts.append("devpts")
 			self.mounts.append("shm")
