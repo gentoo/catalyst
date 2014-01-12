@@ -466,20 +466,20 @@ class generic_stage_target(generic_target):
 
 	def set_snapcache_path(self):
 		if "SNAPCACHE" in self.settings:
-			self.settings["snapshot_cache_path"]=\
-				normpath(self.settings["snapshot_cache"]+"/"+\
-				self.settings["snapshot"]+"/")
+			self.settings["snapshot_cache_path"] = \
+				normpath(self.settings["snapshot_cache"] + "/" +
+					self.settings["snapshot"])
 			self.snapcache_lock=\
 				catalyst_lock.LockDir(self.settings["snapshot_cache_path"])
 			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
 
 	def set_chroot_path(self):
 		"""
-		NOTE: the trailing slash is very important!
-		Things *will* break without it!
+		NOTE: the trailing slash has been removed
+		Things *could* break if you don't use a proper join()
 		"""
 		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
-			"/tmp/"+self.settings["target_subpath"]+"/")
+			"/tmp/"+self.settings["target_subpath"])
 		self.chroot_lock=catalyst_lock.LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
@@ -807,8 +807,8 @@ class generic_stage_target(generic_target):
 
 		if "SNAPCACHE" in self.settings:
 			snapshot_cache_hash=\
-				read_from_clst(self.settings["snapshot_cache_path"]+\
-				"catalyst-hash")
+				read_from_clst(self.settings["snapshot_cache_path"] + "/" +
+					"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
 			if "bz2" == self.settings["chroot_path"][-3:]:
 				unpack_cmd="tar -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
@@ -861,7 +861,8 @@ class generic_stage_target(generic_target):
 			cmd(unpack_cmd,unpack_errmsg,env=self.env)
 
 			if "SNAPCACHE" in self.settings:
-				myf=open(self.settings["snapshot_cache_path"]+"catalyst-hash","w")
+				myf=open(self.settings["snapshot_cache_path"] +
+					"/" + "catalyst-hash","w")
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 			else:
