@@ -922,6 +922,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def bind(self):
 		for x in self.mounts:
+			_cmd = ''
 			#print "bind(); x =", x
 			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
 			ensure_dirs(target, mode=0755)
@@ -936,28 +937,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.snapshot_lock_object.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					cmd = "mount -t devfs none " + target
-					retval=os.system(cmd)
+					_cmd = "mount -t devfs none " + target
 				else:
-					cmd = "mount_nullfs " + src + " " + target
-					retval=os.system(cmd)
+					_cmd = "mount_nullfs " + src + " " + target
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
-						cmd = "mount -t tmpfs -o size=" + \
+						_cmd = "mount -t tmpfs -o size=" + \
 							self.settings["var_tmpfs_portage"] + "G " + \
 							src + " " + target
-						retval=os.system(cmd)
 				elif src == "shmfs":
-					cmd = "mount -t tmpfs -o noexec,nosuid,nodev shm " + target
-					retval=os.system(cmd)
+					_cmd = "mount -t tmpfs -o noexec,nosuid,nodev shm " + target
 				else:
-					cmd = "mount --bind " + src + " " + target
-					#print "bind(); cmd =", cmd
-					retval=os.system(cmd)
-			if retval!=0:
-				self.unbind()
-				raise CatalystError("Couldn't bind mount " + src)
+					_cmd = "mount --bind " + src + " " + target
+			#print "bind(); _cmd =", _cmd
+			cmd(_cmd, "Bind mounting Failed", env=self.env, fail_func=self.unbind)
+		#print "bind(); finished :D"
 
 	def unbind(self):
 		ouch=0
