@@ -341,11 +341,6 @@ def main():
 	# everything is setup, so the build is a go
 	try:
 		build_target(addlargs)
-
-	except CatalystError:
-		print
-		print "Catalyst aborting...."
-		sys.exit(2)
 	except KeyboardInterrupt:
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
@@ -353,8 +348,4 @@ def main():
 		sys.exit(2)
 	except LockInUse:
 		print "Catalyst aborting...."
-		sys.exit(2)
-	except:
-		print "Catalyst aborting...."
-		raise
 		sys.exit(2)
