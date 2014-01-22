@@ -119,25 +119,29 @@ def find_binary(myc):
 	return None
 
 
-def cmd(mycmd, myexc="", env={}, debug=False):
-	try:
-		sys.stdout.flush()
-		args=[BASH_BINARY]
-		if "BASH_ENV" not in env:
-			env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
-		if debug:
-			args.append("-x")
-		args.append("-c")
-		args.append(mycmd)
+def cmd(mycmd, myexc="", env={}, debug=False, fail_func=None):
+	#print "***** cmd()"
+	sys.stdout.flush()
+	args=[BASH_BINARY]
+	if "BASH_ENV" not in env:
+		env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
+	if debug:
+		args.append("-x")
+	args.append("-c")
+	args.append(mycmd)
 
-		if debug:
-			print "cmd(); args =", args
+	if debug:
+		print "***** cmd(); args =", args
+	try:
 		proc = Popen(args, env=env)
-		if proc.wait() != 0:
-			raise CatalystError("cmd() NON-zero return value from: %s" % myexc,
-				print_traceback=False)
 	except:
 		raise
+	if proc.wait() != 0:
+		if fail_func:
+			print "CMD(), NON-Zero command return.  Running fail_func()"
+			fail_func()
+		raise CatalystError("cmd() NON-zero return value from: %s" % myexc,
+			print_traceback=False)
 
 
 def file_locate(settings,filelist,expand=1):
