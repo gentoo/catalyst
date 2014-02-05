@@ -14,7 +14,7 @@ mkdir ${clst_target_path}kernels/misc
 for x in ${clst_boot_kernel}; do
 	mv ${clst_target_path}boot/${x} ${clst_target_path}kernels
 	mv ${clst_target_path}boot/${x}.igz ${clst_target_path}kernels/misc
-	mv ${clst_target_path}boot/System.map* ${clst_target_path}kernels/misc/System.map-${x}
+	mv ${clst_target_path}boot/System-${x}.map ${clst_target_path}kernels/misc
 done
 
 rmdir ${clst_target_path}boot
