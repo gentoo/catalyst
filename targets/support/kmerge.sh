@@ -109,7 +109,7 @@ genkernel_compile(){
 	else
 		genkernel ${GK_ARGS} || exit 1
 	fi
-	if [ -e /var/tmp/${clst_kname}.config ]
+	if [ -n "${clst_KERNCACHE}" -a -e /var/tmp/${clst_kname}.config ]
 	then
 		md5sum /var/tmp/${clst_kname}.config | awk '{print $1}' > \
 			/tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
@@ -144,63 +144,58 @@ fi
 # USE variables (and thus different patches enabled/disabled.) Also, there's no
 # real benefit in using the pkgcache for kernel source ebuilds.
 
-USE_MATCH=0
-if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
+
+# Check if we have a match in kerncach
+
+if [ -n "${clst_KERNCACHE}" ]
 then
-	STR1=$(for i in `cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
-	STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
-	if [ "${STR1}" = "${STR2}" ]
+
+	USE_MATCH=0
+	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
 	then
-		#echo "USE Flags match"
-		USE_MATCH=1
-	else
-		if [ -n "${clst_KERNCACHE}" ]
+		STR1=$(for i in `cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
+		STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
+		if [ "${STR1}" = "${STR2}" ]
 		then
-		[ -d /tmp/kerncache/${clst_kname}/ebuilds ] && \
-			rm -r /tmp/kerncache/${clst_kname}/ebuilds
-		[ -e /tmp/kerncache/${clst_kname}/usr/src/linux/.config ] && \
-			rm /tmp/kerncache/${clst_kname}/usr/src/linux/.config
+			#echo "USE Flags match"
+			USE_MATCH=1
+		else
+			[ -d /tmp/kerncache/${clst_kname}/ebuilds ] && \
+				rm -r /tmp/kerncache/${clst_kname}/ebuilds
+			[ -e /tmp/kerncache/${clst_kname}/usr/src/linux/.config ] && \
+				rm /tmp/kerncache/${clst_kname}/usr/src/linux/.config
 		fi
 	fi
-fi
 
-EXTRAVERSION_MATCH=0
-if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION ]
-then
-	STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
-	STR2=${clst_kextraversion}
-	if [ "${STR1}" = "${STR2}" ]
+	EXTRAVERSION_MATCH=0
+	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION ]
 	then
-		if [ -n "${clst_KERNCACHE}" ]
+		STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
+		STR2=${clst_kextraversion}
+		if [ "${STR1}" = "${STR2}" ]
 		then
 			#echo "EXTRAVERSION match"
 			EXTRAVERSION_MATCH=1
 		fi
 	fi
-fi
 
-CONFIG_MATCH=0
-if [ -n "${clst_KERNCACHE}" -a \
-     -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
-then
-	if [ ! -e /var/tmp/${clst_kname}.config ]
+	CONFIG_MATCH=0
+	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
 	then
-		CONFIG_MATCH=1
-	else
-		STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
-		STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
-		if [ "${STR1}" = "${STR2}" ]
+		if [ ! -e /var/tmp/${clst_kname}.config ]
 		then
 			CONFIG_MATCH=1
+		else
+			STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
+			STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
+			if [ "${STR1}" = "${STR2}" ]
+			then
+				CONFIG_MATCH=1
+			fi
 		fi
 	fi
-fi
 
-[ -e /etc/portage/make.conf ] && \
-	echo "USE=\"\${USE} ${clst_kernel_use} \"" >> /etc/portage/make.conf
-
-if [ -n "${clst_KERNCACHE}" ]
-then
+	# Create the kerncache directory if it doesn't exists
 	mkdir -p /tmp/kerncache/${clst_kname}
 	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --update --newuse" run_merge "${clst_ksource}" || exit 1
 	KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
@@ -216,25 +211,38 @@ then
 	fi
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
+
+	# If catalyst has set to a empty string, extraversion wasn't specified so we
+	# skip this part
+	if [ "${EXTRAVERSION_MATCH}" = "0" ]
+	then
+		if [ ! "${clst_kextraversion}" = "" ]
+		then
+			echo "Setting extraversion to ${clst_kextraversion}"
+			sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+			echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+		else
+			touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+		fi
+	fi
+
 else
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	run_merge "${clst_ksource}" || exit 1
-fi
-make_destpath
-
-# If catalyst has set to a empty string, extraversion wasn't specified so we
-# skip this part
-if [ "${EXTRAVERSION_MATCH}" = "0" ]
-then
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
 		echo "Setting extraversion to ${clst_kextraversion}"
 		sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
-		echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
-	else
-		touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 	fi
 fi
+
+
+# Update USE flag in make.conf
+[ -e ${clst_make_conf} ] && \
+	echo "USE=\"\${USE} ${clst_kernel_use} build\"" >> ${clst_make_conf}
+
+make_destpath
+
 
 build_kernel
 sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" /etc/portage/make.conf
@@ -246,12 +254,13 @@ EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
 unset USE
-echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
 
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-	if [ -e /etc/portage/profile/package.provided ]
+	echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
+
+	if [ -e ${clst_port_conf}/profile/package.provided ]
 	then
 		sed -i "/^$(echo "${KERNELVERSION}" | sed -e 's|/|\\/|g')\$/d" /etc/portage/profile/package.provided
 	fi
