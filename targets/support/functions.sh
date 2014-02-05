@@ -51,8 +51,12 @@ extract_cdtar() {
 	# which will normally contains a pre-built binary
 	# boot-loader/filesystem skeleton for the ISO.
 	cdtar=${clst_cdtar}
-	[ -z "${cdtar}" ] && die "Required key cdtar not defined, exiting"
-	tar -I lbzip2 -xpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
+	if [ -z "${cdtar}" ]
+	then
+		echo "No cdtar specified. Skipping."
+	else
+		tar -I lbzip2 -xpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
+	fi
 }
 
 extract_kernels() {
