@@ -47,7 +47,14 @@ case ${clst_hostarch} in
 		# Make sure we strip the extension to the kernel to allow palo to choose
 		boot_kernel_common_name=${first/%32/}
 		boot_kernel_common_name=${boot_kernel_common_name/%64/}
-		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz root=/dev/ram0 init=/linuxrc cdroot ${cmdline_opts}" >> ${icfg}
+
+		for x in ${clst_boot_kernel}
+		do
+			eval kopts=\$clst_boot_kernel_${x}_kernelopts
+			my_kopts="${my_kopts} ${kopts}"
+		done
+
+		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line} ${my_kopts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		for x in ${clst_boot_kernel}
