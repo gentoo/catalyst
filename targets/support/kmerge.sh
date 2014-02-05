@@ -197,9 +197,17 @@ then
 
 	# Create the kerncache directory if it doesn't exists
 	mkdir -p /tmp/kerncache/${clst_kname}
-	clst_root_path=/tmp/kerncache/${clst_kname} PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --update --newuse" run_merge "${clst_ksource}" || exit 1
-	KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
-	if [ ! -e /etc/portage/profile/package.provided ]
+
+	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION ]
+	then
+		KERNELVERSION=$(</tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION)
+		mkdir -p ${clst_port_conf}/profile
+		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
+	else
+		rm -f ${clst_port_conf}/profile/package.provided
+	fi
+
+	if [ ! -e ${clst_port_conf}/profile/package.provided ]
 	then
 		mkdir -p /etc/portage/profile
 		echo "${KERNELVERSION}" > /etc/portage/profile/package.provided
@@ -209,8 +217,26 @@ then
 			echo "${KERNELVERSION}" >> /etc/portage/profile/package.provided
 		fi
 	fi
+
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
-	ln -s /tmp/kerncache/${clst_kname}/usr/src/linux /usr/src/linux
+
+	PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --nodeps --update --newuse" run_merge "${clst_ksource}" || exit 1
+
+	SOURCESDIR="/tmp/kerncache/${clst_kname}/sources"
+	if [ -L /usr/src/linux ]
+	then
+
+		# A kernel was merged, move it to $SOURCESDIR
+		[ -e ${SOURCESDIR} ] && rm -Rf ${SOURCESDIR}
+
+		KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
+		echo "${KERNELVERSION}" > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION
+
+		echo "Moving kernel sources to ${SOURCESDIR} ..."
+		mv `readlink -f /usr/src/linux` ${SOURCESDIR}
+
+	fi
+	ln -sf ${SOURCESDIR} /usr/src/linux
 
 	# If catalyst has set to a empty string, extraversion wasn't specified so we
 	# skip this part
@@ -259,9 +285,4 @@ unset USE
 if [ -n "${clst_KERNCACHE}" ]
 then
 	echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
-
-	if [ -e ${clst_port_conf}/profile/package.provided ]
-	then
-		sed -i "/^$(echo "${KERNELVERSION}" | sed -e 's|/|\\/|g')\$/d" /etc/portage/profile/package.provided
-	fi
 fi
