@@ -41,6 +41,8 @@ case ${clst_hostarch} in
 	;;
 	hppa)
 		# NO SOFTLEVEL SUPPORT YET
+		mkdir -p $1/boot
+
 		icfg=$1/boot/palo.conf
 		kmsg=$1/boot/kernels.msg
 		hmsg=$1/boot/help.msg
@@ -53,6 +55,9 @@ case ${clst_hostarch} in
 			eval kopts=\$clst_boot_kernel_${x}_kernelopts
 			my_kopts="${my_kopts} ${kopts}"
 		done
+
+		# copy the bootloader for the final image
+		cp /usr/share/palo/iplboot $1/boot/
 
 		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line} ${my_kopts}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
