@@ -1,23 +1,26 @@
 # $Id$
 
-This list is split into two alphabetical lists.  The first is a listing of the
-authors of the original Gentoo package.  The copyrights for all of those code
-contributions belong to the Gentoo Foundation.  The second list is the authors
-whom have contributed significant code to the new project.  All code added to
-the new project is copyrighted by the respective authors.
+The copyright for catalyst is held by the Gentoo Foundation and by each
+of the individual contributors.
 
-Gentoo Foundation authors:
-------
+
 Original Authors:
+-----------------
 John Davis <zhen@gentoo.org>
 Daniel Robbins <drobbins@gentoo.org>
 
-Additional Maintainers:
+
+Significant contributors (including the first catalyst3 rewrite):
+-----------------------------------------------------------------
+Andrew Gaffney <agaffney@gentoo.org>
+Chris Gianelloni <wolf31o2@wolf31o2.org>
+
+
+Contributors:
+-------------
 Eric Edgar <rocket@gentoo.org>
 Andrew Gaffney <agaffney@gentoo.org>
 Chris Gianelloni <wolf31o2@gentoo.org>
-
-Contributors:
 David Bryson <mutex@gentoo.org>
 Mike Frysinger <vapier@gentoo.org>
 Rob Holland <tigger@gentoo.org>
@@ -32,9 +35,10 @@ Matsuu Takuto <matsuu@gentoo.org>
 Lars Weiler <pylon@gentoo.org>
 Gustavo Zacarias <gustavoz@gentoo.org>
 Raúl Porcel <armin76@gentoo.org>
+Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
 
-Copyright authors:
-------
-Andrew Gaffney <agaffney@gentoo.org>
-Chris Gianelloni <wolf31o2@wolf31o2.org>
 
+Maintainers:
+------------
+Catalyst maintainers <catalyst@gentoo.org>
+Release Engineering <releng@gentoo.org>
