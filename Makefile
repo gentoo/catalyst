@@ -1,7 +1,7 @@
 # Copyright (C) 2011 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GPL v2 or later
 
-PACKAGE_VERSION = `fgrep '__version__=' catalyst | sed 's|^__version__="\(.*\)"$$|\1|'`
+PACKAGE_VERSION = $(shell PYTHONPATH=. python -c 'import catalyst; print(catalyst.__version__)')
 MAN_PAGE_SOURCES = $(wildcard doc/*.?.txt)
 MAN_PAGES = $(patsubst doc/%.txt,files/%,$(MAN_PAGE_SOURCES))
 MAN_PAGE_INCLUDES = doc/subarches.generated.txt doc/targets.generated.txt
