@@ -55,10 +55,10 @@ class ClearBase(object):
 		if any(k in self.settings["options"] for k in ("purge",
 				"purgeonly", "purgetmponly")):
 			print "purge(); clearing autoresume ..."
-			self.clear_autoresume(remove)
+			self.clear_autoresume()
 
 			print "purge(); clearing chroot ..."
-			self.clear_chroot(remove)
+			self.clear_chroot()
 
 			if "purgetmponly" not in self.settings["options"]:
 				print "purge(); clearing package cache ..."
