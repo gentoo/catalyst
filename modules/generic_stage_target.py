@@ -579,6 +579,7 @@ class generic_stage_target(generic_target):
 				self.valid_values.append("boot/kernel/"+x+"/softlevel")
 				self.valid_values.append("boot/kernel/"+x+"/use")
 				self.valid_values.append("boot/kernel/"+x+"/packages")
+				self.valid_values.append("boot/kernel/"+x+"/kernelopts")
 				if "boot/kernel/"+x+"/packages" in addlargs:
 					if type(addlargs["boot/kernel/"+x+\
 						"/packages"])==types.StringType:
