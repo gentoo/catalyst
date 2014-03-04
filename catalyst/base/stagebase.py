@@ -504,6 +504,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_action_sequence(self):
 		""" Default action sequence for run method """
+		if "purgeonly" in self.settings["options"]:
+			self.settings["action_sequence"] = ["remove_chroot"]
+			return
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
@@ -517,6 +520,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			self.settings["action_sequence"].append("remove_autoresume")
 			self.settings["action_sequence"].append("remove_chroot")
+		return
 
 	def set_use(self):
 		if self.settings["spec_prefix"]+"/use" in self.settings:
@@ -1321,11 +1325,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.purge()
 			return
 
-		if "PURGEONLY" in self.settings:
+		if "purgeonly" in self.settings["options"]:
+			print "StageBase: run() purgeonly"
 			self.purge()
-			return
 
 		if "purge" in self.settings["options"]:
+			print "StageBase: run() purge"
 			self.purge()
 
 		for x in self.settings["action_sequence"]:
