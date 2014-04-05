@@ -1025,7 +1025,7 @@ class generic_stage_target(generic_target):
 
 			#self.makeconf=read_makeconf(self.settings["chroot_path"]+"/etc/portage/make.conf")
 
-			cmd("cp /etc/resolv.conf "+self.settings["chroot_path"]+"/etc",\
+			cmd("cp /etc/resolv.conf " + self.settings["chroot_path"] + "/etc/",
 				"Could not copy resolv.conf into place.",env=self.env)
 
 			""" Copy over the envscript, if applicable """
