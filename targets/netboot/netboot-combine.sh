@@ -46,7 +46,7 @@ do
 	mkdir -p ${clst_chroot_path}/tmp/staging/initrd-${kname}
 	cp -r ${clst_chroot_path}/tmp/image ${clst_chroot_path}/tmp/staging/initrd-${kname}
 	extract_modules ${clst_chroot_path}/tmp/staging/initrd-${kname} ${kname}
-	create_normal_loop ${clst_chroot_path}/tmp/staging/initrd-${kname} ${clst_target_path} initrd-${kname}.igz
+	create_normal_loop ${clst_chroot_path}/tmp/staging/initrd-${kname} ${clst_target_path}/ initrd-${kname}.igz
 	rm -r ${clst_chroot_path}/tmp/staging/initrd-${kname}
 
 	case ${clst_hostarch} in
