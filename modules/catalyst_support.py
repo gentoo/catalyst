@@ -620,8 +620,8 @@ def read_makeconf(mymakeconffile):
 	if os.path.exists(mymakeconffile):
 		try:
 			try:
-				import snakeoil.fileutils
-				return snakeoil.fileutils.read_bash_dict(mymakeconffile, sourcing_command="source")
+				import snakeoil.bash #import snakeoil.fileutils
+				return snakeoil.bash.read_bash_dict(mymakeconffile, sourcing_command="source")
 			except ImportError:
 				try:
 					import portage.util
