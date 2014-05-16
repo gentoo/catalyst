@@ -263,16 +263,18 @@ else
 	fi
 fi
 
+# temp define this until make.conf path is exported to the bash environment
+export clst_make_conf=/etc/portage/make.conf
 
 # Update USE flag in make.conf
-[ -e ${clst_make_conf} ] && \
+[[ -e ${clst_make_conf} ]] && \
 	echo "USE=\"\${USE} ${clst_kernel_use} build\"" >> ${clst_make_conf}
 
 make_destpath
 
 
 build_kernel
-sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" /etc/portage/make.conf
+sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
