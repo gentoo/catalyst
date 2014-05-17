@@ -19,7 +19,7 @@ import modules.catalyst.config
 import modules.catalyst.util
 
 __maintainer__="Catalyst <catalyst@gentoo.org>"
-__version__="2.0.16"
+__version__="2.0.17"
 
 conf_values={}
 
