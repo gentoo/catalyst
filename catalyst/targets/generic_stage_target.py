@@ -1246,6 +1246,8 @@ class generic_stage_target(generic_target):
 		else:
 			""" Capture target in a tarball """
 			mypath=self.settings["target_path"].split("/")
+			""" Capture filename for use in label """
+			filename=mypath[-1]
 			""" Remove filename from path """
 			mypath=string.join(mypath[:-1],"/")
 
@@ -1255,9 +1257,11 @@ class generic_stage_target(generic_target):
 
 			print "Creating stage tarball..."
 
-			cmd("tar -I lbzip2 -cpf "+self.settings["target_path"]+" -C "+\
-				self.settings["stage_path"]+" .",\
-				"Couldn't create stage tarball",env=self.env)
+			cmd("tar -I lbzip2 -cpf "+self.settings["target_path"]+" -C "+
+				self.settings["stage_path"]+" ." +
+				" --posix -V "+filename,
+				"Couldn't create stage tarball",
+				env=self.env)
 
 			self.gen_contents_file(self.settings["target_path"])
 			self.gen_digest_file(self.settings["target_path"])
