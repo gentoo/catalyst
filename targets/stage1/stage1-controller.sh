@@ -31,11 +31,6 @@ case $1 in
 		rm -rf usr/share/{man,doc,info}/*
 		# Zap all .pyc and .pyo files
 		find . -iname "*.py[co]" -exec rm -f {} \;
-		# Cleanup all .a files except libgcc.a, *_nonshared.a and
-		# /usr/lib/portage/bin/*.a
-		find . -type f -iname "*.a" | grep -v 'libgcc.a' | \
-			grep -v 'nonshared.a' | grep -v '/usr/lib/portage/bin/' | \
-			grep -v 'libgcc_eh.a' | xargs rm -f
 	;;
 
 	*)
