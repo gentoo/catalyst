@@ -171,7 +171,7 @@ setup_pkgmgr(){
 	# just let emerge @system could merge it.
 	# Use --update or portage won't reinstall the same version.
 	[ -e /etc/portage/make.conf ] && echo 'USE="${USE} build"' >> /etc/portage/make.conf
-	run_merge --oneshot --nodeps --update sys-apps/portage
+	run_merge --oneshot --update sys-apps/portage
 	sed -i '/USE="${USE} build"/d' /etc/portage/make.conf
 }
 
