@@ -21,7 +21,7 @@ then
 fi
 
 ## Setup seed pkgmgr to ensure latest
-clst_root_path=/ setup_pkgmgr
+clst_root_path=/ setup_pkgmgr "build"
 
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
