@@ -13,7 +13,7 @@ case ${clst_hostarch} in
 		;;
 	*)
 		cdmaker="mkisofs"
-		cdmakerpkg="app-cdr/cdrkit or app/cdr-cdrtools"
+		cdmakerpkg="app-cdr/cdrkit or app-cdr/cdrtools"
 		;;
 esac
 
