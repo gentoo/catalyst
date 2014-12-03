@@ -7,6 +7,9 @@ source ${clst_sharedir}/targets/support/filesystem-functions.sh
 
 # Check for our CD ISO creation tools
 case ${clst_hostarch} in
+	alpha)
+		cdmaker="genisoimage"
+		cdmakerpkg="app-cdr/cdrkit"
 	mips)
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
@@ -82,9 +85,8 @@ fi
 case ${clst_hostarch} in
 	alpha)
 		echo ">> Running mkisofs to create iso image...."
-		echo ">> mkisofs -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
-		mkisofs -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
-		isomarkboot ${1} /boot/bootlx
+		echo ">> genisoimage --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
+		genisoimage --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
 	;;
 	arm)
 	;;
