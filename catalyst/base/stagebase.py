@@ -808,7 +808,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "bz2" == self.settings["chroot_path"][-3:]:
 				unpack_cmd="tar --xattrs --acls -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			else:
-				unpack_cmd="tar --xattrs --acls xpf "+self.settings["snapshot_path"]+" -C "+destdir
+				unpack_cmd="tar --xattrs --acls -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
@@ -828,7 +828,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				unpack_cmd="tar --xattrs --acls -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			else:
-				unpack_cmd="tar --xattrs --acls xpf "+self.settings["snapshot_path"]+" -C "+\
+				unpack_cmd="tar --xattrs --acls -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			unpack_errmsg="Error unpacking snapshot"
 
