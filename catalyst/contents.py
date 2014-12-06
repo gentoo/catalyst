@@ -11,9 +11,9 @@ CONTENTS_DEFINITIONS = {
 	# 'find' is disabled because it requires the source path, which is not
 	# always available
 	#"find"		:["calc_contents","find %(path)s"],
-	"tar_tv":["calc_contents","tar tvf %(file)s"],
-	"tar_tvz":["calc_contents","tar tvzf %(file)s"],
-	"tar_tvj":["calc_contents","tar -I lbzip2 -tvf %(file)s"],
+	"tar_tv":["calc_contents","tar --xattrs tvf %(file)s"],
+	"tar_tvz":["calc_contents","tar --xattrs tvzf %(file)s"],
+	"tar_tvj":["calc_contents","tar --xattrs -I lbzip2 -tvf %(file)s"],
 	"isoinfo_l":["calc_contents","isoinfo -l -i %(file)s"],
 	# isoinfo_f should be a last resort only
 	"isoinfo_f":["calc_contents","isoinfo -f -i %(file)s"],
