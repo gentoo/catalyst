@@ -10,6 +10,7 @@ case ${clst_hostarch} in
 	alpha)
 		cdmaker="genisoimage"
 		cdmakerpkg="app-cdr/cdrkit"
+		;;
 	mips)
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
