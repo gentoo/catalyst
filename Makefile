@@ -39,6 +39,7 @@ $(DOC_SIDE_EFFECTS): $(firstword $(DOCS))
 clean:
 	rm -f $(GENERATED_FILES)
 	find -name '*.pyo' -delete
+	find -name '*.pyc' -delete
 
 check-git-repository:
 	git diff --quiet || { echo 'STOP, you have uncommitted changes in the working directory' ; false ; }
