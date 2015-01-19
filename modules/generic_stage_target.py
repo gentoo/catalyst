@@ -660,10 +660,10 @@ class generic_stage_target(generic_target):
 					self.settings["chroot_path"]+\
 						" (This may take some time) ...\n"
 				if "bz2" == self.settings["chroot_path"][-3:]:
-					unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+					unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				else:
-					unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+					unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 						self.settings["chroot_path"]
 				error_msg="Tarball extraction of "+\
 					self.settings["source_path"]+" to "+\
@@ -675,10 +675,10 @@ class generic_stage_target(generic_target):
 				self.settings["chroot_path"]+\
 				" (This may take some time) ...\n"
 			if "bz2" == self.settings["chroot_path"][-3:]:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			else:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags  --acls --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["source_path"]+" -C "+\
 					self.settings["chroot_path"]
 			error_msg="Tarball extraction of "+self.settings["source_path"]+\
 				" to "+self.settings["chroot_path"]+" failed."
@@ -777,9 +777,9 @@ class generic_stage_target(generic_target):
 				"catalyst-hash")
 			destdir=self.settings["snapshot_cache_path"]
 			if "bz2" == self.settings["chroot_path"][-3:]:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			else:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -xpf "+self.settings["snapshot_path"]+" -C "+destdir
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -xpf "+self.settings["snapshot_path"]+" -C "+destdir
 			unpack_errmsg="Error unpacking snapshot"
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
@@ -796,10 +796,10 @@ class generic_stage_target(generic_target):
 			cleanup_msg=\
 				"Cleaning up existing portage tree (This can take a long time)..."
 			if "bz2" == self.settings["chroot_path"][-3:]:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			else:
-				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -xpf "+self.settings["snapshot_path"]+" -C "+\
+				unpack_cmd="tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -xpf "+self.settings["snapshot_path"]+" -C "+\
 					self.settings["chroot_path"]+"/usr"
 			unpack_errmsg="Error unpacking snapshot"
 
@@ -1224,7 +1224,7 @@ class generic_stage_target(generic_target):
 
 			print "Creating stage tarball..."
 
-			cmd("tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --acls --selinux -I lbzip2 -cpf "+self.settings["target_path"]+" -C "+\
+			cmd("tar --xattrs --xattrs-include=security.capability --xattrs-include=user.pax.flags --selinux -I lbzip2 -cpf "+self.settings["target_path"]+" -C "+\
 				self.settings["stage_path"]+" .",\
 				"Couldn't create stage tarball",env=self.env)
 

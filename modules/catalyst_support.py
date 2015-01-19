@@ -108,9 +108,9 @@ contents_map={
 	# 'find' is disabled because it requires the source path, which is not
 	# always available
 	#"find"		:[calc_contents,"find %(path)s"],
-	"tar-tv":[calc_contents,"tar --xattrs --acls tvf %(file)s"],
-	"tar-tvz":[calc_contents,"tar --xattrs --acls tvzf %(file)s"],
-	"tar-tvj":[calc_contents,"tar --xattrs --acls -I lbzip2 -tvf %(file)s"],
+	"tar-tv":[calc_contents,"tar --xattrs tvf %(file)s"],
+	"tar-tvz":[calc_contents,"tar --xattrs tvzf %(file)s"],
+	"tar-tvj":[calc_contents,"tar --xattrs -I lbzip2 -tvf %(file)s"],
 	"isoinfo-l":[calc_contents,"isoinfo -l -i %(file)s"],
 	# isoinfo-f should be a last resort only
 	"isoinfo-f":[calc_contents,"isoinfo -f -i %(file)s"],
