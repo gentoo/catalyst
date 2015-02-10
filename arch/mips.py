@@ -36,6 +36,12 @@ class arch_mips1(generic_mips):
 		generic_mips.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips1 -mabi=32 -mplt -pipe"
 
+class arch_mips2(generic_mips):
+	"Builder class for MIPS II [Big-endian]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips2 -mabi=32 -mplt -pipe"
+
 class arch_mips32(generic_mips):
 	"Builder class for MIPS 32 [Big-endian]"
 	def __init__(self,myspec):
@@ -134,6 +140,30 @@ class arch_mips4_r10k_multilib(generic_mips64):
 		generic_mips64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=r10k -mplt -pipe"
 
+class arch_mips4_r12k(generic_mips):
+	"Builder class for MIPS IV R12k/R14k/R16k [Big-endian]"
+	def __init__(self,myspec):
+		generic_mips.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r12k -mno-fix-r10000 -mabi=32 -mplt -pipe"
+
+class arch_mips4_r12k_n32(generic_mips64):
+	"Builder class for MIPS IV R12k/R14k/R16k [Big-endian N32]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r12k -mno-fix-r10000 -mabi=n32 -mplt -pipe"
+
+class arch_mips4_r12k_n64(generic_mips64):
+	"Builder class for MIPS IV R12k/R14k/R16k [Big-endian N64]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r12k -mno-fix-r10000 -mabi=64 -pipe"
+
+class arch_mips4_r12k_multilib(generic_mips64):
+	"Builder class for MIPS IV R12k/R14k/R16k [Big-endian multilib]"
+	def __init__(self,myspec):
+		generic_mips64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=r12k -mno-fix-r10000 -mplt -pipe"
+
 class arch_mips64(generic_mips):
 	"Builder class for MIPS 64 [Big-endian]"
 	def __init__(self,myspec):
@@ -187,6 +217,12 @@ class arch_mipsel1(generic_mipsel):
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=mips1 -mabi=32 -mplt -pipe"
+
+class arch_mipsel2(generic_mipsel):
+	"Builder class for MIPS II [Little-endian]"
+	def __init__(self,myspec):
+		generic_mipsel.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
 class arch_mips32el(generic_mipsel):
 	"Builder class for MIPS 32 [Little-endian]"
@@ -399,66 +435,72 @@ class arch_cobalt_n32(generic_mips64el):
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
-			"cobalt"				: arch_cobalt,
+			"cobalt"			: arch_cobalt,
 			"cobalt_n32"			: arch_cobalt_n32,
-			"mips"					: arch_mips1,
-			"mips1"					: arch_mips1,
-			"mips32"				: arch_mips32,
+			"mips"				: arch_mips1,
+			"mips1"				: arch_mips1,
+			"mips2"				: arch_mips2,
+			"mips32"			: arch_mips32,
 			"mips32_softfloat"		: arch_mips32_softfloat,
-			"mips32r2"				: arch_mips32r2,
-			"mips32r2_softfloat"	: arch_mips32r2_softfloat,
-			"mips3"					: arch_mips3,
-			"mips3_n32"				: arch_mips3_n32,
-			"mips3_n64"				: arch_mips3_n64,
+			"mips32r2"			: arch_mips32r2,
+			"mips32r2_softfloat"		: arch_mips32r2_softfloat,
+			"mips3"				: arch_mips3,
+			"mips3_n32"			: arch_mips3_n32,
+			"mips3_n64"			: arch_mips3_n64,
 			"mips3_multilib"		: arch_mips3_multilib,
-			"mips4"					: arch_mips4,
-			"mips4_n32"				: arch_mips4_n32,
-			"mips4_n64"				: arch_mips4_n64,
+			"mips4"				: arch_mips4,
+			"mips4_n32"			: arch_mips4_n32,
+			"mips4_n64"			: arch_mips4_n64,
 			"mips4_multilib"		: arch_mips4_multilib,
 			"mips4_r10k"			: arch_mips4_r10k,
 			"mips4_r10k_n32"		: arch_mips4_r10k_n32,
 			"mips4_r10k_n64"		: arch_mips4_r10k_n64,
-			"mips4_r10k_multilib"	: arch_mips4_r10k_multilib,
-			"mips64"				: arch_mips64,
+			"mips4_r10k_multilib"		: arch_mips4_r10k_multilib,
+			"mips4_r12k"			: arch_mips4_r12k,
+			"mips4_r12k_n32"		: arch_mips4_r12k_n32,
+			"mips4_r12k_n64"		: arch_mips4_r12k_n64,
+			"mips4_r12k_multilib"		: arch_mips4_r12k_multilib,
+			"mips64"			: arch_mips64,
 			"mips64_n32"			: arch_mips64_n32,
 			"mips64_n64"			: arch_mips64_n64,
 			"mips64_multilib"		: arch_mips64_multilib,
-			"mips64r2"				: arch_mips64r2,
+			"mips64r2"			: arch_mips64r2,
 			"mips64r2_n32"			: arch_mips64r2_n32,
 			"mips64r2_n64"			: arch_mips64r2_n64,
 			"mips64r2_multilib"		: arch_mips64r2_multilib,
-			"mipsel"				: arch_mipsel1,
-			"mipsel1"				: arch_mipsel1,
-			"mips32el"				: arch_mips32el,
-			"mips32el_softfloat"	: arch_mips32el_softfloat,
+			"mipsel"			: arch_mipsel1,
+			"mipsel1"			: arch_mipsel1,
+			"mipsel2"			: arch_mipsel2,
+			"mips32el"			: arch_mips32el,
+			"mips32el_softfloat"		: arch_mips32el_softfloat,
 			"mips32r2el"			: arch_mips32r2el,
-			"mips32r2el_softfloat"	: arch_mips32r2el_softfloat,
-			"mipsel3"				: arch_mipsel3,
+			"mips32r2el_softfloat"		: arch_mips32r2el_softfloat,
+			"mipsel3"			: arch_mipsel3,
 			"mipsel3_n32"			: arch_mipsel3_n32,
 			"mipsel3_n64"			: arch_mipsel3_n64,
 			"mipsel3_multilib"		: arch_mipsel3_multilib,
-			"mipsel4"				: arch_mipsel4,
+			"mipsel4"			: arch_mipsel4,
 			"mipsel4_n32"			: arch_mipsel4_n32,
 			"mipsel4_n64"			: arch_mipsel4_n64,
 			"mipsel4_multilib"		: arch_mipsel4_multilib,
-			"mips64el"				: arch_mips64el,
+			"mips64el"			: arch_mips64el,
 			"mips64el_n32"			: arch_mips64el_n32,
 			"mips64el_n64"			: arch_mips64el_n64,
 			"mips64el_multilib"		: arch_mips64el_multilib,
 			"mips64r2el"			: arch_mips64r2el,
 			"mips64r2el_n32"		: arch_mips64r2el_n32,
 			"mips64r2el_n64"		: arch_mips64r2el_n64,
-			"mips64r2el_multilib"	: arch_mips64r2el_multilib,
+			"mips64r2el_multilib"		: arch_mips64r2el_multilib,
 			"loongson2e"			: arch_loongson2e,
 			"loongson2e_n32"		: arch_loongson2e_n32,
 			"loongson2e_n64"		: arch_loongson2e_n64,
-			"loongson2e_multilib"	: arch_loongson2e_multilib,
+			"loongson2e_multilib"		: arch_loongson2e_multilib,
 			"loongson2f"			: arch_loongson2f,
 			"loongson2f_n32"		: arch_loongson2f_n32,
 			"loongson2f_n64"		: arch_loongson2f_n64,
-			"loongson2f_multilib"	: arch_loongson2f_multilib,
+			"loongson2f_multilib"		: arch_loongson2f_multilib,
 			"loongson3a"			: arch_loongson3a,
 			"loongson3a_n32"		: arch_loongson3a_n32,
 			"loongson3a_n64"		: arch_loongson3a_n64,
-			"loongson3a_multilib"	: arch_loongson3a_multilib,
+			"loongson3a_multilib"		: arch_loongson3a_multilib,
 	}, ("mips","mips64"))
