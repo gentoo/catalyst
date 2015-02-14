@@ -1064,7 +1064,7 @@ class generic_stage_target(generic_target):
 				myusevars.extend(self.settings["use"])
 
 			if myusevars:
-				myf.write("# These are the USE flags that were used in addition to what is provided by the\n# profile used for building.\n")
+				myf.write("# These are the USE and USE_EXPAND flags that were used for\n# buidling in addition to what is provided by the profile.\n")
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 				if '-*' in myusevars:
@@ -1072,6 +1072,15 @@ class generic_stage_target(generic_target):
 					print "\tThe use of -* in "+self.settings["spec_prefix"]+\
 						"/use will cause portage to ignore"
 					print "\tpackage.use in the profile and portage_confdir. You've been warned!"
+
+			myuseexpandvars={}
+			if "HOSTUSEEXPAND" in self.settings:
+				for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
+					myuseexpandvars.update({hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
+
+			if myuseexpandvars:
+				for hostuseexpand in myuseexpandvars:
+					myf.write(hostuseexpand+'="'+string.join(myuseexpandvars[hostuseexpand])+'"\n')
 
 			myf.write('PORTDIR="/usr/portage"\n')
 			myf.write('DISTDIR="${PORTDIR}/distfiles"\n')
@@ -1271,6 +1280,26 @@ class generic_stage_target(generic_target):
 					self.env[varname]="true"
 				else:
 					self.env[varname]="false"
+			# This handles a dictionary of objects just one level deep and no deeper!
+			# Its currently used only for USE_EXPAND flags which are dictionaries of
+			# lists in arch/amd64.py and friends.  If we wanted self.settigs[var]
+			# of any depth, we should make this function recursive.
+			elif type(self.settings[x])==types.DictType:
+				self.env[varname]=string.join(self.settings[x].keys())
+				for y in self.settings[x].keys():
+					varname2="clst_"+string.replace(y,"/","_")
+					varname2=string.replace(varname2,"-","_")
+					varname2=string.replace(varname2,".","_")
+					if type(self.settings[x][y])==types.StringType:
+						self.env[varname2]=self.settings[x][y]
+					elif type(self.settings[x][y])==types.ListType:
+						self.env[varname2]=string.join(self.settings[x][y])
+					elif type(self.settings[x][y])==types.BooleanType:
+						if self.settings[x][y]:
+							self.env[varname]="true"
+						else:
+							self.env[varname]="false"
+
 		if "makeopts" in self.settings:
 			self.env["MAKEOPTS"]=self.settings["makeopts"]
 
