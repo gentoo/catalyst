@@ -57,7 +57,7 @@ sed -i '/USE="${USE} -build"/d' /etc/portage/make.conf
 if [ -e /etc/portage/make.conf ]; then
 	echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
 	>> /etc/portage/make.conf
-	for useexpand in "${clst_HOSTUSEEXPAND}"; do
+	for useexpand in ${clst_HOSTUSEEXPAND}; do
 		x="clst_${useexpand}"
 		echo "${useexpand}=\"${!x}\"" \
 		>> /etc/portage/make.conf
@@ -66,8 +66,8 @@ fi
 run_merge "--oneshot ${clst_buildpkgs}"
 sed -i "/USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
 	/etc/portage/make.conf
-for useexpand in "${clst_HOSTUSEEXPAND}"; do
+for useexpand in ${clst_HOSTUSEEXPAND}; do
 	x="clst_${useexpand}"
-	sed -i "${useexpand}=\"${!x}\"" \
+	sed -i "/${useexpand}=\"${!x}\"/d" \
 	/etc/portage/make.conf
 done
