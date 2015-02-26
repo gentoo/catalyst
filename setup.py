@@ -3,7 +3,6 @@
 import codecs as _codecs
 from distutils.core import setup as _setup
 from email.utils import parseaddr as _parseaddr
-import itertools as _itertools
 import os as _os
 
 from catalyst import __version__, __maintainer__
