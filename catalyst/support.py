@@ -152,17 +152,17 @@ def file_locate(settings,filelist,expand=1):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
 		else:
-		    if len(settings[myfile])==0:
-			    raise CatalystError("File variable \"" + myfile +
+			if len(settings[myfile])==0:
+				raise CatalystError("File variable \"" + myfile +
 					"\" has a length of zero (not specified.)", print_traceback=True)
-		    if settings[myfile][0]=="/":
-			    if not os.path.exists(settings[myfile]):
-				    raise CatalystError("Cannot locate specified " + myfile +
-						": "+settings[myfile], print_traceback=True)
-		    elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
-			    settings[myfile]=os.getcwd()+"/"+settings[myfile]
-		    else:
-			    raise CatalystError("Cannot locate specified " + myfile +
+			if settings[myfile][0]=="/":
+				if not os.path.exists(settings[myfile]):
+					raise CatalystError("Cannot locate specified " + myfile +
+						": " + settings[myfile], print_traceback=False)
+			elif expand and os.path.exists(os.getcwd()+"/"+settings[myfile]):
+				settings[myfile]=os.getcwd()+"/"+settings[myfile]
+			else:
+				raise CatalystError("Cannot locate specified " + myfile +
 					": "+settings[myfile]+" (2nd try)" +
 """
 Spec file format:
