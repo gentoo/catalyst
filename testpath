@@ -15,4 +15,4 @@
 # catalyst -c catalyst.conf -p -f stage1.spec
 
 export PATH="$(dirname ${BASH_SOURCE[0]})/bin:${PATH}"
-export PYTHONPATH="$(dirname ${BASH_SOURCE[0]})${PYTHONPATH:+:}${PYTHONPATH}"
+export PYTHONPATH="$(dirname $0)/../pyDeComp/:$(dirname ${BASH_SOURCE[0]})${PYTHONPATH:+:}${PYTHONPATH}"
