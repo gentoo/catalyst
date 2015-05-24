@@ -163,12 +163,12 @@ def build_target(addlargs):
 			"Target \"%s\" not available." % target,
 			print_traceback=True)
 
-	try:
-		target.run()
-	except:
-		print "!!! catalyst: Error encountered during run of target " + \
-			addlargs["target"]
-		sys.exit(1)
+	#try:
+	target.run()
+	#except:
+		#print "!!! catalyst: Error encountered during run of target " + \
+		#	addlargs["target"]
+		#sys.exit(1)
 
 def main():
 
