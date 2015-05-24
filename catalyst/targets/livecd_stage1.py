@@ -33,7 +33,7 @@ class livecd_stage1(StageBase):
 					"unbind", "clean","clear_autoresume"]
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"]+'/')
+		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("setup_target_path"):
 				print "Resume point detected, skipping target path setup operation..."

@@ -13,6 +13,7 @@ import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
+from decomp.compress import COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS
 
 import catalyst.config
 import catalyst.util
@@ -103,6 +104,8 @@ def parse_config(myconfig):
 		if x in myconf:
 			if x == 'options':
 				conf_values[x] = set(myconf[x].split())
+			elif x in ["decompressor_search_order"]:
+				conf_values[x] = myconf[x].split()
 			else:
 				conf_values[x]=myconf[x]
 		else:
@@ -280,6 +283,11 @@ def main():
 	# initialze our hash and contents generators
 	hash_map = HashMap(HASH_DEFINITIONS)
 	conf_values["hash_map"] = hash_map
+
+	# initialize our (de)compression definitions
+	conf_values['decompress_definitions'] = DECOMPRESS_DEFINITIONS
+	conf_values['compress_definitions'] = COMPRESS_DEFINITIONS
+	# TODO add capability to config/spec new definitions
 
 	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:

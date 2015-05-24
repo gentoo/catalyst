@@ -95,10 +95,10 @@ class netboot(StageBase):
 
 		for x in loopy:
 			if "netboot/packages/"+x+"/files" in self.settings:
-			    if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
-				    myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
-			    else:
-				    myfiles.append(self.settings["netboot/packages/"+x+"/files"])
+				if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+					myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
+				else:
+					myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 		if "netboot/extra_files" in self.settings:
 			if type(self.settings["netboot/extra_files"]) == types.ListType:

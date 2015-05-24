@@ -35,15 +35,41 @@ profile:
 
 # This specifies which snapshot to use for building this target.
 # example:
-# snapshot: 2006.1
+# snapshot: 2006.1.tar.bz2
 snapshot:
 
 # This specifies where the seed stage comes from for this target,  The path is
 # relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix
-# for the seed.
+# for the seed.  It must be a complete filename including the extension.
 # example:
-# default/stage3-x86-2006.1
+# default/stage3-x86-2006.1.tar.bz2
 source_subpath:
+
+# The prefered compression/decompression command and algorithm to use
+# for creating the final stage tarballs.  For decompression the configured
+# method will be used if the file's extension is one of it's types listed.
+# Otherwise it will pick one that does.  Of course you must ensure to have
+# the correct package installed that supplies that command/algorithm type.
+# available options are:
+#	Name          Compressor Extension
+#	"rsync"     : None
+#	"lbzip2"    : tar.bz2
+#	"bzip2"     : tar.bz2
+#	"tar"       : tar
+#	"xz"        : tar.xz
+#	"pixz"      : tar.xz
+#	"gzip"      : tar.gz
+#	"squashfs"  : squashfs, sfs
+#
+compression_mode: lbzip2
+
+# The search order to use for determining the decompressor
+# to use on the source file.  i.e. check the extensions it is capable of
+# decompressing to find a match.  Use the list above for the modes available.
+#Note: rsync is a special case, do not include it below.
+#
+decompressor_search_order: lbzip2 bzip2 tar pixz xz gzip squashfs
+
 
 # These are the hosts used as distcc slaves when distcc is enabled in your
 # catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
