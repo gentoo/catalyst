@@ -72,11 +72,11 @@ class snapshot(TargetBase, GenBase):
 			auto_extension=True
 			)
 		if not compressor.compress(infodict):
-			print("Snapshot compression failure")
+			print "Snapshot compression failure"
 		else:
 			filename = '.'.join([self.settings["snapshot_path"],
 				compressor.extension(self.settings["compression_mode"])])
-			print("COMPRESSOR success!!!! filename", filename)
+			print "COMPRESSOR success!!!! filename", filename
 			self.gen_contents_file(filename)
 			self.gen_digest_file(filename)
 

@@ -1308,8 +1308,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			target_filename = ".".join([self.settings["target_path"].rstrip('/'),
 				self.compressor.extension(pack_info['mode'])])
 
-			print("Creating stage tarball... mode:",
-				self.settings["compression_mode"])
+			print "Creating stage tarball... mode:", \
+				self.settings["compression_mode"]
 
 			if self.compressor.compress(pack_info):
 				self.gen_contents_file(target_filename)
