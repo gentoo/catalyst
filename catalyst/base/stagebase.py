@@ -10,7 +10,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 # for convienience
 pjoin = os.path.join
 
-from decomp.compress import CompressMap
+from DeComp.compress import CompressMap
 
 from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
 	PORT_LOGDIR_CLEAN)
@@ -38,10 +38,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.required_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath"])
 
-		self.valid_values.extend(["version_stamp","target","subarch",\
-			"rel_type","profile","snapshot","source_subpath","portage_confdir",\
-			"cflags","cxxflags","fcflags","fflags","ldflags","cbuild","hostuse","portage_overlay",\
-			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
+		self.valid_values.extend(["version_stamp","target","subarch",
+			"rel_type","profile","snapshot","source_subpath","portage_confdir",
+			"cflags","cxxflags","fcflags","fflags","ldflags","cbuild","hostuse","portage_overlay",
+			"distcc_hosts","makeopts","pkgcache_path","kerncache_path",
+			"compression_mode", "decompression_mode"])
 
 		self.set_valid_build_kernel_vars(addlargs)
 		TargetBase.__init__(self, myspec, addlargs)
@@ -1371,6 +1372,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# lists in arch/amd64.py and friends.  If we wanted self.settigs[var]
 			# of any depth, we should make this function recursive.
 			elif type(self.settings[x]) == types.DictType:
+				if x in ["compress_definitions",
+					"decompress_definitions"]:
+					continue
 				self.env[varname] = string.join(self.settings[x].keys())
 				for y in self.settings[x].keys():
 					varname2 = "clst_"+string.replace(y,"/","_")

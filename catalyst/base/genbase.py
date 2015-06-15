@@ -24,7 +24,7 @@ class GenBase(object):
 					array=keys.keys()
 					array.sort()
 				for j in array:
-					contents = contents_map.generate_contents(file, j,
+					contents = contents_map.contents(file, j,
 						verbose="VERBOSE" in self.settings)
 					if contents:
 						myf.write(contents)

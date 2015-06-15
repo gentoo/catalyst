@@ -13,11 +13,12 @@ import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
-from decomp.compress import COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS
+from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
+	CONTENTS_DEFINITIONS)
+from DeComp.contents import ContentsMap
 
 import catalyst.config
 import catalyst.util
-from catalyst.contents import ContentsMap, CONTENTS_DEFINITIONS
 from catalyst.defaults import confdefaults, option_messages
 from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
 from catalyst.lock import LockInUse
