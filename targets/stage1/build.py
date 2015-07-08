@@ -26,11 +26,11 @@ buildpkgs = scan_profile("packages.build")
 # system profile (it may have <,>,=,etc... operators
 # and version numbers)
 for idx in range(0, len(pkgs)):
+	pkg = pkgs[idx].lstrip('*')
 	try:
-		bidx = buildpkgs.index(portage.dep_getkey(pkgs[idx]))
-		buildpkgs[bidx] = pkgs[idx]
-		if buildpkgs[bidx][0:1] == "*":
-			buildpkgs[bidx] = buildpkgs[bidx][1:]
-	except: pass
+		bidx = buildpkgs.index(portage.dep_getkey(pkg))
+		buildpkgs[bidx] = pkg
+	except:
+		pass
 
 for b in buildpkgs: sys.stdout.write(b+" ")
