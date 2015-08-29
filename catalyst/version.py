@@ -12,7 +12,7 @@ import os
 
 from snakeoil.version import get_git_version as get_ver
 
-__version__="git"
+__version__= "git"
 _ver = None
 
 
@@ -24,13 +24,13 @@ def get_git_version(version=__version__):
 
 	if not version_info:
 		s = "extended version info unavailable"
-	elif version_info['tag'] == api_version:
+	elif version_info['tag'] == __version__:
 		s = 'released %s' % (version_info['date'],)
 	else:
 		s = ('vcs version %s, date %s' %
 			 (version_info['rev'], version_info['date']))
 
-	_ver = '%s %s\n%s' % (project, api_version, s)
+	_ver = 'Catalyst %s\n%s' % (__version__, s)
 
 	return _ver
 
