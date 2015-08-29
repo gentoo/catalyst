@@ -10,16 +10,28 @@
 
 import os
 
-from snakeoil.version import get_version as get_ver
+from snakeoil.version import get_git_version as get_ver
 
-__version__="rewrite-git"
+__version__="git"
 _ver = None
 
 
 def get_git_version(version=__version__):
 	"""Return: a string describing our version."""
 	global _ver
-	_ver = get_ver('catalyst-%s' % version, __file__)
+	cwd = os.path.dirname(os.path.abspath(__file__))
+	version_info = get_ver(cwd)
+
+	if not version_info:
+		s = "extended version info unavailable"
+	elif version_info['tag'] == api_version:
+		s = 'released %s' % (version_info['date'],)
+	else:
+		s = ('vcs version %s, date %s' %
+			 (version_info['rev'], version_info['date']))
+
+	_ver = '%s %s\n%s' % (project, api_version, s)
+
 	return _ver
 
 
