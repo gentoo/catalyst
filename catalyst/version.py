@@ -10,7 +10,7 @@
 
 import os
 
-from snakeoil.version import format_version
+from snakeoil.version import get_version as get_ver
 
 __version__="rewrite-git"
 _ver = None
@@ -19,7 +19,7 @@ _ver = None
 def get_git_version(version=__version__):
 	"""Return: a string describing our version."""
 	global _ver
-	_ver = format_version('catalyst',__file__, version)
+	_ver = get_ver('catalyst-%s' % version, __file__)
 	return _ver
 
 
