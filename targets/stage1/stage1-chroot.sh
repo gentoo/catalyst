@@ -59,13 +59,14 @@ run_merge "--oneshot --nodeps sys-apps/baselayout"
 sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
 # Now, we install our packages
-[ -e ${clst_make_conf} ] &&
-echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
-for useexpand in ${clst_HOSTUSEEXPAND}; do
-	x="clst_${useexpand}"
-	echo "${useexpand}=\"${!x}\"" \
-	>> ${clst_make_conf}
-done
+if [ -e ${clst_make_conf} ]; then
+	echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
+	for useexpand in ${clst_HOSTUSEEXPAND}; do
+		x="clst_${useexpand}"
+		echo "${useexpand}=\"${!x}\"" \
+		>> ${clst_make_conf}
+	done
+fi
 
 run_merge "--oneshot ${clst_buildpkgs}"
 sed -i "/USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
