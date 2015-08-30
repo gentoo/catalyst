@@ -48,8 +48,8 @@ _data_files = [('/etc/catalyst', ['etc/catalyst.conf','etc/catalystrc']),
 	('/usr/share/man/man1', ['files/catalyst.1']),
 	('/usr/share/man/man5', ['files/catalyst-config.5', 'files/catalyst-spec.5'])
 	]
-_data_files.extend(_files('livecd', 'lib/catalyst/'))
-_data_files.extend(_files('targets', 'lib/catalyst/'))
+_data_files.extend(_files('lib/catalyst/livecd', 'livecd'))
+_data_files.extend(_files('lib/catalyst/targets', 'targets'))
 
 
 class set_version(_Command):
