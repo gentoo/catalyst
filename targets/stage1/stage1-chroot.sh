@@ -27,19 +27,12 @@ clst_root_path=/ setup_pkgmgr "build"
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
-		# Set USE flags build and bindist if clst_BINDIST is set
-		[ -e ${clst_make_conf} ] && echo "USE=\"${USE} build ${BINDIST}\"" >> ${clst_make_conf}
-
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
 			clst_root_path=/ run_merge "--buildpkg=n ${clst_update_seed_command}"
 		else
 			clst_root_path=/ run_merge "--update --deep --newuse --complete-graph --rebuild-if-new-ver gcc"
 		fi
-
-		# Clean-up USE again
-		sed -i "/USE=\"${USE} build ${BINDIST}\"/d" ${clst_make_conf}
-
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
 		exit 1
