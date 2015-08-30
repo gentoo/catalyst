@@ -28,7 +28,7 @@ clst_root_path=/ setup_pkgmgr "build"
 if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
 		# Set USE flags build and bindist if clst_BINDIST is set
-		[ -e ${clst_make_conf} ] && echo "USE=\"${USE} build ${BINDIST}" >> ${clst_make_conf}
+		[ -e ${clst_make_conf} ] && echo "USE=\"${USE} build ${BINDIST}\"" >> ${clst_make_conf}
 
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
@@ -55,7 +55,7 @@ make_destpath /tmp/stage1root
 
 ## START BUILD
 # First, we drop in a known-good baselayout
-[ -e ${clst_make_conf} ] && echo 'USE="${USE} -build"' >> ${clst_make_conf}
+[ -e ${clst_make_conf} ] && echo "USE=\"${USE} -build\"" >> ${clst_make_conf}
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
