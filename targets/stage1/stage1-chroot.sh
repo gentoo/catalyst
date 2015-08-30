@@ -26,12 +26,19 @@ clst_root_path=/ setup_pkgmgr "build"
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
+		# We might need BOOTSTRAP_USE to avoid blocks related to bindist use flag
+		[ -e ${clst_make_conf} ] && echo "USE=\"${USE} ${BOOTSTRAP_USE}\"" >> ${clst_make_conf}
+
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
 			clst_root_path=/ run_merge "--buildpkg=n ${clst_update_seed_command}"
 		else
 			clst_root_path=/ run_merge "--update --deep --newuse --complete-graph --rebuild-if-new-ver gcc"
 		fi
+
+		# Clean-up USE again
+		sed -i "/USE=\"${USE} ${BOOTSTRAP_USE}\"/d" ${clst_make_conf}
+
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
 		exit 1
@@ -47,22 +54,19 @@ make_destpath /tmp/stage1root
 
 ## START BUILD
 # First, we drop in a known-good baselayout
-[ -e ${clst_make_conf} ] && \
-	echo 'USE="${USE} -build"' >> ${clst_make_conf}
+[ -e ${clst_make_conf} ] && echo 'USE="${USE} -build"' >> ${clst_make_conf}
 run_merge "--oneshot --nodeps sys-apps/baselayout"
-
-sed -i '/USE="${USE} -build"/d' ${clst_make_conf}
+sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
 # Now, we install our packages
-if [ -e ${clst_make_conf} ] && \
-	echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" \
+[ -e ${clst_make_conf} ] &&
+echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
+for useexpand in ${clst_HOSTUSEEXPAND}; do
+	x="clst_${useexpand}"
+	echo "${useexpand}=\"${!x}\"" \
 	>> ${clst_make_conf}
-	for useexpand in ${clst_HOSTUSEEXPAND}; do
-		x="clst_${useexpand}"
-		echo "${useexpand}=\"${!x}\"" \
-		>> ${clst_make_conf}
-	done
-fi
+done
+
 run_merge "--oneshot ${clst_buildpkgs}"
 sed -i "/USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
 	${clst_make_conf}
