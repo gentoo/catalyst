@@ -85,7 +85,7 @@ class ParserBase:
 #					cur_array += mobjs
 					cur_array += myline.split()
 				else:
-					raise CatalystError("Syntax error: " + x, print_traceback=True)
+					raise CatalystError("Syntax error: %s" % x, print_traceback=True)
 
 			# XXX: Do we really still need this "single value is a string" behavior?
 			if len(cur_array) == 2:
