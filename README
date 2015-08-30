@@ -54,7 +54,7 @@ Example catalyst.conf:
 
 distdir="/usr/portage/distfiles"
 options="pkgcache kerncache"
-sharedir="/usr/lib/catalyst"
+sharedir="/usr/share/catalyst"
 
 There are many more options that can be set, but those defaults are good
 for out of the box operation. For more documentation on what you can do

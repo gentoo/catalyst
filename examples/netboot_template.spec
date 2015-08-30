@@ -114,7 +114,7 @@ netboot/busybox_config:
 # This is the full path and filename to the tarball to use as the base for the
 # netboot image.
 # example:
-# netboot/base_tarball: /usr/lib/catalyst/netboot/netboot-base.tar.bz2
+# netboot/base_tarball: /usr/share/catalyst/netboot/netboot-base.tar.bz2
 netboot/base_tarball:
 
 # These are the packages that will be built for your netboot image using the USE

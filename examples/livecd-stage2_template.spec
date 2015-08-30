@@ -103,7 +103,7 @@ livecd/fsops:
 # configuration for the bootloader.  On x86/amd64, it also can include a small
 # memory testing application, called memtest86+.
 # example:
-# livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2
+# livecd/cdtar: /usr/share/catalyst/livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2
 livecd/cdtar:
 
 # This is the full path and filename to the ISO image that the livecd-stage2

@@ -30,7 +30,7 @@ distdir="/usr/portage/distfiles"
 envscript="/etc/catalyst/catalystrc"
 options="autoresume bindist kerncache pkgcache seedcache snapcache"
 portdir="/usr/portage"
-sharedir="/usr/lib/catalyst"
+sharedir="/usr/share/catalyst"
 snapshot_cache="/var/tmp/catalyst/snapshot_cache"
 storedir="/var/tmp/catalyst"
 ---------------------------------
@@ -145,7 +145,7 @@ Portage tree location.  `/usr/portage/` should work for most default
 installations.
 
 *sharedir*::
-Catalyst runtime script location.  `/usr/lib/catalyst` should work for
+Catalyst runtime script location.  `/usr/share/catalyst` should work for
 most default installations.  If you are running catalyst from a Git
 checkout, you should change this to point to your checkout directory.
 

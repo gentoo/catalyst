@@ -210,7 +210,7 @@ The cdtar is essentially the bootloader for the CD.  It also holds the
 main configuration for the bootloader.  On x86/amd64, it also can
 include a small memory testing application, called memtest86+
 (example:
-`/usr/lib/catalyst/livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2`).
+`/usr/share/catalyst/livecd/cdtar/isolinux-2.13-memtest86+-cdtar.tar.bz2`).
 
 Kernel and boot issues
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -312,7 +312,7 @@ supported by the `netboot` and `netboot2` targets.
 *netboot/base_tarball*::
 This is the full path and filename to the tarball to use as the base
 for the netboot image (example:
-`/usr/lib/catalyst/netboot/netboot-base.tar.bz2`).
+`/usr/share/catalyst/netboot/netboot-base.tar.bz2`).
 
 Runlevels
 ~~~~~~~~~
