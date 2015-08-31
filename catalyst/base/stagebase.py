@@ -1119,10 +1119,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
 			myf.close()
-			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make_conf"])
-			cmd("cp " + makepath + " " + makepath + ".catalyst",\
-				"Could not backup " + self.settings["make_conf"],env=self.env)
 			self.resume.enable("chroot_setup")
 
 	def fsscript(self):
