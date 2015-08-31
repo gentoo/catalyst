@@ -78,21 +78,22 @@ class arch_pentium4(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium4 -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#lines like this appears to be trying to set the profile default, better to use the profile
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 class arch_pentium_m(generic_x86):
 	"Intel Pentium M CPU with MMX, SSE and SSE2 support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium-m -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 class arch_prescott(generic_x86):
 	"improved version of Intel Pentium 4 CPU with MMX, SSE, SSE2 and SSE3 support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=prescott -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 		self.settings["CHOST"]="i686-pc-linux-gnu"
 
 class arch_k6(generic_x86):

@@ -13,7 +13,8 @@ class arch_amd64(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#lines like this appears to be trying to set the profile default, better to use the profile
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 class arch_nocona(generic_amd64):
 	"improved version of Intel Pentium 4 CPU with 64-bit extensions, MMX, SSE, SSE2 and SSE3 support"
@@ -21,7 +22,7 @@ class arch_nocona(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=nocona -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 # Requires gcc 4.3 to use this class
 class arch_core2(generic_amd64):
@@ -30,7 +31,7 @@ class arch_core2(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=core2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","ssse3"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","ssse3"]}
 
 class arch_k8(generic_amd64):
 	"generic k8, opteron and athlon64 support"
@@ -38,7 +39,7 @@ class arch_k8(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k8 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_k8_sse3(generic_amd64):
 	"improved versions of k8, opteron and athlon64 with SSE3 support"
@@ -46,7 +47,7 @@ class arch_k8_sse3(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k8-sse3 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_amdfam10(generic_amd64):
 	"AMD Family 10h core based CPUs with x86-64 instruction set support"
@@ -54,7 +55,7 @@ class arch_amdfam10(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=amdfam10 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnu"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_x32(generic_amd64):
 	"builder class for generic x32 (Intel and AMD)"
@@ -62,7 +63,7 @@ class arch_x32(generic_amd64):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="x86_64-pc-linux-gnux32"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 def register():
 	"inform main catalyst program of the contents of this plugin"
