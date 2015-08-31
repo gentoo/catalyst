@@ -269,7 +269,7 @@ run_merge() {
 	export CONFIG_PROTECT="-*"
 
 	# Set bindist USE flag if clst_BINDIST is set
-	[ -e ${clst_make_conf} ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> ${clst_make_conf}
+	[ -e "${clst_make_conf}" ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
 
 	if [ -n "${clst_VERBOSE}" ]
 	then
@@ -289,7 +289,7 @@ run_merge() {
 	emerge ${clst_myemergeopts} $@ || exit 1
 
 	# Clean-up USE again
-	sed -i "/USE=\"${USE} bindist\"/d" ${clst_make_conf}
+	sed -i '/USE="${USE} bindist"/d' "${clst_make_conf}"
 }
 
 show_debug() {
