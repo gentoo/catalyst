@@ -107,8 +107,8 @@ def parse_config(myconfig):
 			else:
 				conf_values[x]=myconf[x]
 		else:
-			conf_values[x] = confdefaults[x] % confdefaults
-			print "Setting",x,"to default value \"" + conf_values[x] + "\""
+			print "Setting",x,"to default value \""+confdefaults[x]+"\""
+			conf_values[x]=confdefaults[x]
 
 	# add our python base directory to use for loading target arch's
 	conf_values["PythonDir"] = __selfpath__
