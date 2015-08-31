@@ -172,12 +172,12 @@ setup_pkgmgr(){
 	# Use --update or portage might just waste time/cycles and reinstall the same version.
 	# Use --newuse to make sure it rebuilds with any changed use flags.
 	if [ -n "$1" ];then
-		echo "Adding USE=\"${USE} $1\" to make.conf for portage build"
-		[ -e "${clst_make_conf}" ] && echo "USE=\"${USE} $1\"" >> "${clst_make_conf}"
+		echo "Adding USE=\"\${USE} $1\" to make.conf for portage build"
+		[ -e "${clst_make_conf}" ] && echo "USE=\"\${USE} $1\"" >> "${clst_make_conf}"
 		run_merge --oneshot --update --newuse sys-apps/portage
-		sed -i "/USE=\"${USE} $1\"/d" "${clst_make_conf}"
+		sed -i "/USE=\"\${USE} $1\"/d" "${clst_make_conf}"
 	else
-		echo "Updating portage with USE=\"${USE}\""
+		echo "Updating portage with USE=\"\${USE}\""
 		run_merge --oneshot --update --newuse sys-apps/portage
 	fi
 }
@@ -270,7 +270,7 @@ run_merge() {
 	export CONFIG_PROTECT="-*"
 
 	# Set bindist USE flag if clst_BINDIST is set
-	[ -e ${clst_make_conf} ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"${USE} bindist\"" >> ${clst_make_conf}
+	[ -e ${clst_make_conf} ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> ${clst_make_conf}
 
 	if [ -n "${clst_VERBOSE}" ]
 	then
