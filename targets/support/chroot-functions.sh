@@ -177,7 +177,6 @@ setup_pkgmgr(){
 		run_merge --oneshot --update --newuse sys-apps/portage
 		sed -i "/USE=\"\${USE} $1\"/d" "${clst_make_conf}"
 	else
-		echo "Updating portage with USE=\"\${USE}\""
 		run_merge --oneshot --update --newuse sys-apps/portage
 	fi
 }
