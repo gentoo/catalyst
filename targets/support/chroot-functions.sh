@@ -289,7 +289,7 @@ run_merge() {
 	emerge ${clst_myemergeopts} $@ || exit 1
 
 	# Clean-up USE again
-	sed -i '/USE="${USE} bindist"/d' "${clst_make_conf}"
+	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
 }
 
 show_debug() {
