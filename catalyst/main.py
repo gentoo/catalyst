@@ -101,13 +101,11 @@ def parse_config(myconfig):
 	# now, load up the values into conf_values so that we can use them
 	for x in list(confdefaults):
 		if x in myconf:
-			print "Setting",x,"to config file value \""+myconf[x]+"\""
 			if x == 'options':
 				conf_values[x] = set(myconf[x].split())
 			else:
 				conf_values[x]=myconf[x]
 		else:
-			print "Setting",x,"to default value \""+confdefaults[x]+"\""
 			conf_values[x]=confdefaults[x]
 
 	# add our python base directory to use for loading target arch's
