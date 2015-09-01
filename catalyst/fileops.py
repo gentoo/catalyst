@@ -21,7 +21,7 @@ from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs,
 from catalyst.support import CatalystError
 
 
-def ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True,
+def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
 		failback=None, fatal=False):
 	'''Wrapper to snakeoil.osutil's ensure_dirs()
 	This additionally allows for failures to run
@@ -40,7 +40,7 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True,
 	:return: True if the directory could be created/ensured to have those
 		permissions, False if not.
 	'''
-	succeeded = snakeoil_ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True)
+	succeeded = snakeoil_ensure_dirs(path, gid=-1, uid=-1, mode=mode, minimal=True)
 	if not succeeded:
 		if failback:
 			failback()
@@ -50,7 +50,7 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0777, minimal=True,
 	return succeeded
 
 
-def clear_dir(target, mode=0755, chg_flags=False, remove=False):
+def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
 	'''Universal directory clearing function
 
 	@target: string, path to be cleared or removed
