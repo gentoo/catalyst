@@ -116,7 +116,8 @@ def parse_config(myconfig):
 		if opt in option_messages:
 			print option_messages[opt]
 
-	for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir"]:
+	for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir",
+				"local_overlay"]:
 		if key in myconf:
 			conf_values[key] = myconf[key]
 
