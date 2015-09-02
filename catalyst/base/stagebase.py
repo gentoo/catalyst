@@ -1097,7 +1097,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myusevars.extend(self.settings["use"])
 
 			if myusevars:
-				myf.write("# These are the USE and USE_EXPAND flags that were used for\n# buidling in addition to what is provided by the profile.\n")
+				myf.write("# These are the USE and USE_EXPAND flags that were used for\n# building in addition to what is provided by the profile.\n")
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="'+string.join(myusevars)+'"\n')
 				if '-*' in myusevars:
