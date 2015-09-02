@@ -166,6 +166,9 @@ setup_gcc(){
 }
 
 setup_pkgmgr(){
+	# Set bindist USE flag if clst_BINDIST is set
+	[ -e "${clst_make_conf}" ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
+
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
 	# just let emerge @system could merge it.
@@ -228,6 +231,9 @@ cleanup_stages() {
 			;;
 	esac
 
+	# Remove bindist from use
+	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
+
 	rm -f /var/log/emerge.log /var/log/portage/elog/*
 }
 
@@ -268,9 +274,6 @@ run_merge() {
 	export EPAUSE_IGNORE=0
 	export CONFIG_PROTECT="-*"
 
-	# Set bindist USE flag if clst_BINDIST is set
-	[ -e "${clst_make_conf}" ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
-
 	if [ -n "${clst_VERBOSE}" ]
 	then
 		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -pt $@" || exit 1
@@ -287,9 +290,6 @@ run_merge() {
 	echo "emerge ${clst_myemergeopts} $@" || exit 1
 
 	emerge ${clst_myemergeopts} $@ || exit 1
-
-	# Clean-up USE again
-	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
 }
 
 show_debug() {
