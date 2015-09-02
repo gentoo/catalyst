@@ -38,7 +38,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		self.valid_values.extend(["version_stamp","target","subarch",\
 			"rel_type","profile","snapshot","source_subpath","portage_confdir",\
-			"cflags","cxxflags","ldflags","cbuild","hostuse","portage_overlay",\
+			"cflags","cxxflags","fcflags","fflags","ldflags","cbuild","hostuse","portage_overlay",\
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path"])
 
 		self.set_valid_build_kernel_vars(addlargs)
@@ -279,6 +279,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def override_cxxflags(self):
 		if "CXXFLAGS" in self.makeconf:
 			self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
+
+	def override_fcflags(self):
+		if "FCFLAGS" in self.makeconf:
+			self.settings["FCFLAGS"]=self.makeconf["FCFLAGS"]
+
+	def override_fflags(self):
+		if "FFLAGS" in self.makeconf:
+			self.settings["FFLAGS"]=self.makeconf["FFLAGS"]
 
 	def override_ldflags(self):
 		if "LDFLAGS" in self.makeconf:
@@ -1020,6 +1028,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.override_chost()
 		self.override_cflags()
 		self.override_cxxflags()
+		self.override_fcflags()
+		self.override_fflags()
 		self.override_ldflags()
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("chroot_setup"):
@@ -1077,6 +1087,20 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					myf.write('CXXFLAGS="${CFLAGS}"\n')
 			else:
 				myf.write('CXXFLAGS="${CFLAGS}"\n')
+			if "FCFLAGS" in self.settings:
+				if self.settings["FCFLAGS"]!=self.settings["CFLAGS"]:
+					myf.write('FCFLAGS="'+self.settings["FCFLAGS"]+'"\n')
+				else:
+					myf.write('FCFLAGS="${CFLAGS}"\n')
+			else:
+				myf.write('FCFLAGS="${CFLAGS}"\n')
+			if "FFLAGS" in self.settings:
+				if self.settings["FFLAGS"]!=self.settings["CFLAGS"]:
+					myf.write('FFLAGS="'+self.settings["FFLAGS"]+'"\n')
+				else:
+					myf.write('FFLAGS="${CFLAGS}"\n')
+			else:
+				myf.write('FFLAGS="${CFLAGS}"\n')
 
 			if "LDFLAGS" in self.settings:
 				myf.write("# LDFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
