@@ -6,7 +6,8 @@ source /tmp/chroot-functions.sh
 export clst_buildpkgs="$(/tmp/build.py)"
 
 # Setup our environment
-BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
+[ -n "${clst_BINDIST}" ] && BINDIST="bindist"
+BOOTSTRAP_USE="${BOOTSTRAP_USE} ${BINDIST}"
 
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 

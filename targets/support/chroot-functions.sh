@@ -167,7 +167,8 @@ setup_gcc(){
 
 setup_pkgmgr(){
 	# Set bindist USE flag if clst_BINDIST is set
-	[ -e "${clst_make_conf}" ] && [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
+	[ "${clst_target}" != "stage1" ] && [ -e "${clst_make_conf}" ] \
+		&& [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
 
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
