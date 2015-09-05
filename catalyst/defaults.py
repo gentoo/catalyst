@@ -1,5 +1,8 @@
 
 
+from DeComp.definitions import DECOMPRESSOR_XATTR_SEARCH_ORDER
+
+
 # these should never be touched
 required_build_targets = ["targetbase", "generic_stage_target"]
 
@@ -23,8 +26,8 @@ verbosity = 1
 
 confdefaults={
 	"archdir": "%(PythonDir)s/arch",
-	"compression_mode": 'lbzip2',
-	"decompressor_search_order": 'lbzip2 bzip2 tar pixz xz gzip squashfs',
+	"compression_mode": 'lbzip2_x',
+	"decompressor_search_order": DECOMPRESSOR_XATTR_SEARCH_ORDER,
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
 	"icecream": "/var/cache/icecream",
