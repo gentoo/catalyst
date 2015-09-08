@@ -500,7 +500,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		Things *could* break if you don't use a proper join()
 		"""
 		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
-			"/tmp/"+self.settings["target_subpath"])
+			"/tmp/"+self.settings["target_subpath"].rstrip('/'))
 		self.chroot_lock=LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
