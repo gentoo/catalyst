@@ -7,7 +7,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 
 # Setup our environment
 [ -n "${clst_BINDIST}" ] && BINDIST="bindist"
-BOOTSTRAP_USE="${BOOTSTRAP_USE} ${BINDIST}"
+BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE) ${BINDIST}"
 
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
