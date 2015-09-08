@@ -1,4 +1,5 @@
 
+import glob
 import sys
 import string
 import os
@@ -144,6 +145,25 @@ def cmd(mycmd, myexc="", env={}, debug=False, fail_func=None):
 			print_traceback=False)
 
 
+def file_check(filepath):
+	'''Check for the files existence and that only one exists
+	if others are found with various extensions
+	'''
+	if os.path.exists(filepath):
+		return filepath
+	# it didn't exist
+	# so check if there are files of that name with an extension
+	files = glob.glob("%s.*" % filepath)
+	# remove any false positive files
+	files = [x for x in files if not x.endswith(".CONTENTS") and not x.endswith(".DIGESTS")]
+	if len(files) is 1:
+		return files[0]
+	elif len(files) > 1:
+		msg = "Ambiguos Filename: %s\nPlease specify the correct extension as well" % filepath
+		raise CatalystError(msg, print_traceback=False)
+	raise CatalystError("File Not Found: %s" % filepath)
+
+
 def file_locate(settings,filelist,expand=1):
 	#if expand=1, non-absolute paths will be accepted and
 	# expanded to os.getcwd()+"/"+localpath if file exists
@@ -185,6 +205,7 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
 "item2" "item3" ordering is not, as the item strings are stored in a dictionary (hash).
 """,
 					print_traceback=True)
+
 
 def parse_makeconf(mylines):
 	mymakeconf={}

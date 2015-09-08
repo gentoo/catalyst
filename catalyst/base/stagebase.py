@@ -15,7 +15,8 @@ from DeComp.compress import CompressMap
 from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
 	PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, msg, file_locate, normpath,
-	touch, cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount)
+	touch, cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount,
+	file_check)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
@@ -193,7 +194,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		on disk.
 		"""
 		#pdb.set_trace()
-		file_locate(self.settings,["source_path","snapshot_path","distdir"],\
+		file_locate(self.settings,["distdir"],\
 			expand=0)
 		""" If we are using portage_confdir, check that as well. """
 		if "portage_confdir" in self.settings:
@@ -430,8 +431,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["source_path"] = normpath(self.settings["storedir"] +
 				"/tmp/" + self.settings["source_subpath"] + "/")
 		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+\
-				"/builds/"+self.settings["source_subpath"])
+			self.settings["source_path"] = file_check(
+				normpath(self.settings["storedir"] + "/builds/" +
+					self.settings["source_subpath"])
+				)
 			if os.path.isfile(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
@@ -460,27 +463,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			"/root/*", self.settings["portdir"]]
 
 	def set_snapshot_path(self):
-		self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
+		self.settings["snapshot_path"]= file_check(normpath(self.settings["storedir"]+\
 			"/snapshots/" + self.settings["snapshot_name"] +
-			self.settings["snapshot"].rstrip('/')+".tar.xz")
-
-		if os.path.exists(self.settings["snapshot_path"]):
-			self.settings["snapshot_path_hash"] = \
-				self.settings["hash_map"].generate_hash(
-					self.settings["snapshot_path"],
-					hash_ = self.settings["hash_function"],
-					verbose = False)
-		else:
-			self.settings["snapshot_path"]=normpath(self.settings["storedir"]+\
-				"/snapshots/" + self.settings["snapshot_name"] +
-				self.settings["snapshot"])
-
-			if os.path.exists(self.settings["snapshot_path"]):
-				self.settings["snapshot_path_hash"] = \
-					self.settings["hash_map"].generate_hash(
-						self.settings["snapshot_path"],
-						hash_ = self.settings["hash_function"],
-						verbose = False)
+			self.settings["snapshot"]))
+		print "*** SNAPSHOT_PATH set to:", self.settings["snapshot_path"]
+		self.settings["snapshot_path_hash"] = \
+			self.settings["hash_map"].generate_hash(
+				self.settings["snapshot_path"],
+				hash_ = self.settings["hash_function"],
+				verbose = False)
 
 	def set_snapcache_path(self):
 		self.settings["snapshot_cache_path"]=\
@@ -723,12 +714,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			else:
 				""" SEEDCACHE is a not a directory, try untar'ing """
 				print "Referenced SEEDCACHE does not appear to be a directory, trying to untar..."
-				unpack_info['mode'] = self.decompressor.determine_mode(
-						self.settings["source_path"])
+				unpack_info['source'] = file_check(unpack_info['source'])
 		else:
 			""" No SEEDCACHE, use tar """
-			unpack_info['mode'] = self.decompressor.determine_mode(
-					unpack_info["source"])
+			unpack_info['source'] = file_check(unpack_info['source'])
 		# endif "seedcache"
 
 		if "autoresume" in self.settings["options"]:
@@ -742,19 +731,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				and self.settings["source_path_hash"]==clst_unpack_hash:
 				""" Autoresume is valid, tarball is valid """
 				_unpack=False
-				invalid_snapshot=True
+				invalid_snapshot=False
 
 			elif os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_disabled("unpack"):
 				""" Autoresume is invalid, SEEDCACHE """
 				_unpack=True
-				invalid_snapshot=False
+				invalid_snapshot=True
+				# check and reset the unpack_info['source']
+				unpack_info['source'] = file_check(unpack_info['source'])
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]!=clst_unpack_hash:
 				""" Autoresume is invalid, tarball """
 				_unpack=True
 				invalid_snapshot=True
+				unpack_info['source'] = file_check(unpack_info['source'])
+
 		else:
 			""" No autoresume, SEEDCACHE """
 			if "seedcache" in self.settings["options"]:
