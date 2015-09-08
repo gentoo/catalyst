@@ -1421,7 +1421,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		for x in self.settings["action_sequence"]:
 			print "--- Running action sequence: "+x
 			sys.stdout.flush()
-			apply(getattr(self,x))
+			try:
+				apply(getattr(self,x))
+			except Exception as error:
+				print "Exception running action sequence %s" % x
+				print "Error:", str(error)
+				print "Running unbind()"
+				self.unbind()
+				break
 
 
 	def unmerge(self):
