@@ -483,7 +483,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings["snapshot"]))
 			self.snapcache_lock=\
 				LockDir(self.settings["snapshot_cache_path"])
-			print "Caching snapshot to "+self.settings["snapshot_cache_path"]
+			print "Setting snapshot cache to "+self.settings["snapshot_cache_path"]
 
 	def set_chroot_path(self):
 		"""
