@@ -41,7 +41,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		self.valid_values.extend(["version_stamp","target","subarch",
 			"rel_type","profile","snapshot","source_subpath","portage_confdir",
-			"cflags","cxxflags","fcflags","fflags","ldflags","cbuild","hostuse","portage_overlay",
+			"cflags","cxxflags","fcflags","fflags","ldflags","asflags","cbuild","hostuse","portage_overlay",
 			"distcc_hosts","makeopts","pkgcache_path","kerncache_path",
 			"compression_mode", "decompression_mode"])
 
@@ -303,6 +303,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def override_ldflags(self):
 		if "LDFLAGS" in self.makeconf:
 			self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
+
+	def override_asflags(self):
+		if "ASFLAGS" in self.makeconf:
+			self.settings["ASFLAGS"]=self.makeconf["ASFLAGS"]
 
 	def set_install_mask(self):
 		if "install_mask" in self.settings:
@@ -1033,6 +1037,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.override_fcflags()
 		self.override_fflags()
 		self.override_ldflags()
+		self.override_asflags()
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("chroot_setup"):
 			print "Resume point detected, skipping chroot_setup operation..."
@@ -1107,6 +1112,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "LDFLAGS" in self.settings:
 				myf.write("# LDFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
 				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
+			if "ASFLAGS" in self.settings:
+				myf.write("# ASFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
+				myf.write('ASFLAGS="'+self.settings["ASFLAGS"]+'"\n')
 			if "CBUILD" in self.settings:
 				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
