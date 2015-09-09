@@ -12,7 +12,6 @@ class arch_amd64(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#lines like this appears to be trying to set the profile default, better to use the profile
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
@@ -21,7 +20,6 @@ class arch_nocona(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=nocona -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 # Requires gcc 4.3 to use this class
@@ -30,7 +28,6 @@ class arch_core2(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=core2 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","ssse3"]}
 
 class arch_k8(generic_amd64):
@@ -38,7 +35,6 @@ class arch_k8(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k8 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_k8_sse3(generic_amd64):
@@ -46,7 +42,6 @@ class arch_k8_sse3(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k8-sse3 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_amdfam10(generic_amd64):
@@ -54,7 +49,6 @@ class arch_amdfam10(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=amdfam10 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2","3dnow"]}
 
 class arch_x32(generic_amd64):
@@ -62,7 +56,6 @@ class arch_x32(generic_amd64):
 	def __init__(self,myspec):
 		generic_amd64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe"
-		self.settings["CHOST"]="x86_64-pc-linux-gnux32"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 def register():

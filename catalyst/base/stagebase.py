@@ -1119,8 +1119,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
 
-			myf.write("# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult http://www.gentoo.org/doc/en/change-chost.xml before changing.\n")
-			myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
+			if "CHOST" in self.settings:
+				myf.write("# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult http://www.gentoo.org/doc/en/change-chost.xml before changing.\n")
+				myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 
 			""" Figure out what our USE vars are for building """
 			myusevars=[]

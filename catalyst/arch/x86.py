@@ -50,14 +50,12 @@ class arch_i686(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=i686 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 
 class arch_pentium_mmx(generic_x86):
 	"Intel Pentium MMX CPU with MMX support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium-mmx -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx"]}
 
 class arch_pentium2(generic_x86):
@@ -65,7 +63,6 @@ class arch_pentium2(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium2 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx"]}
 
 class arch_pentium3(generic_x86):
@@ -73,7 +70,6 @@ class arch_pentium3(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium3 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse"]}
 
 class arch_pentium4(generic_x86):
@@ -81,7 +77,6 @@ class arch_pentium4(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium4 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		#lines like this appears to be trying to set the profile default, better to use the profile
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
@@ -90,7 +85,6 @@ class arch_pentium_m(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=pentium-m -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 class arch_prescott(generic_x86):
@@ -98,7 +92,6 @@ class arch_prescott(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=prescott -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
 
 class arch_k6(generic_x86):
@@ -106,7 +99,6 @@ class arch_k6(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k6 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx"]}
 
 class arch_k6_2(generic_x86):
@@ -114,7 +106,6 @@ class arch_k6_2(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=k6-2 -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow"]}
 
 class arch_athlon(generic_x86):
@@ -122,7 +113,6 @@ class arch_athlon(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=athlon -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow"]}
 
 class arch_athlon_xp(generic_x86):
@@ -130,7 +120,6 @@ class arch_athlon_xp(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -march=athlon-xp -pipe"
-		self.settings["CHOST"]="i686-pc-linux-gnu"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow","sse"]}
 
 def register():
