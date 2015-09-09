@@ -20,7 +20,7 @@ from catalyst.support import (CatalystError, msg, file_locate, normpath,
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
-from catalyst.lock import LockDir
+from catalyst.lock import LockDir, LockInUse
 from catalyst.fileops import ensure_dirs, pjoin
 from catalyst.base.resume import AutoResume
 
@@ -1419,17 +1419,29 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "StageBase: run() purge"
 			self.purge()
 
+		failure = False
 		for x in self.settings["action_sequence"]:
 			print "--- Running action sequence: "+x
 			sys.stdout.flush()
 			try:
 				apply(getattr(self,x))
+			except LockInUse:
+				print "Error, unable to aquire the lock..."
+				print " Catalyst aborting...."
+				failure = True
+				break
 			except Exception as error:
 				print "Exception running action sequence %s" % x
 				print "Error:", str(error)
-				print "Running unbind()"
-				self.unbind()
+				print " Catalyst aborting...."
+				failure = True
 				break
+
+		if failure:
+			print "Cleaning up... Running unbind()"
+			self.unbind()
+			return False
+		return True
 
 
 	def unmerge(self):

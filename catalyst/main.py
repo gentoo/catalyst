@@ -21,7 +21,6 @@ import catalyst.config
 import catalyst.util
 from catalyst.defaults import confdefaults, option_messages
 from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
-from catalyst.lock import LockInUse
 from catalyst.support import CatalystError, find_binary
 from catalyst.version import get_version
 
@@ -164,8 +163,8 @@ def build_target(addlargs):
 			"Target \"%s\" not available." % target,
 			print_traceback=True)
 	except CatalystError:
-		return
-	target.run()
+		return False
+	return target.run()
 
 
 def main():
@@ -345,12 +344,12 @@ def main():
 
 	# everything is setup, so the build is a go
 	try:
-		build_target(addlargs)
+		success = build_target(addlargs)
 	except KeyboardInterrupt:
 		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
 		print
 		print "Catalyst aborting...."
 		sys.exit(2)
-	except LockInUse:
-		print "Catalyst aborting...."
+	if not success:
 		sys.exit(2)
+	sys.exit(0)
