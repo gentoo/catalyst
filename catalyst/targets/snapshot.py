@@ -42,11 +42,12 @@ class snapshot(TargetBase, GenBase):
 	def run(self):
 		if "purgeonly" in self.settings["options"]:
 			self.purge()
-			return
+			return True
 
 		if "purge" in self.settings["options"]:
 			self.purge()
 
+		success = True
 		self.setup()
 		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
 			" from "+self.settings["portdir"]+"..."
@@ -72,6 +73,7 @@ class snapshot(TargetBase, GenBase):
 			auto_extension=True
 			)
 		if not compressor.compress(infodict):
+			success = False
 			print "Snapshot compression failure"
 		else:
 			filename = '.'.join([self.settings["snapshot_path"],
@@ -81,7 +83,9 @@ class snapshot(TargetBase, GenBase):
 			self.gen_digest_file(filename)
 
 		self.cleanup()
-		print "snapshot: complete!"
+		if success:
+			print "snapshot: complete!"
+		return success
 
 	def kill_chroot_pids(self):
 		pass
