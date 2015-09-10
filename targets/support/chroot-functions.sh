@@ -167,8 +167,15 @@ setup_gcc(){
 
 setup_pkgmgr(){
 	# Set bindist USE flag if clst_BINDIST is set
-	[ "${clst_target}" != "stage1" ] && [ -e "${clst_make_conf}" ] \
-		&& [ -n "${clst_BINDIST}" ] && echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
+	if [ "${clst_target}" != "stage1" ] && [ -e "${clst_make_conf}" ] \
+		&& [ -n "${clst_BINDIST}" ]; then
+		if grep -q ^USE "${clst_make_conf}"; then
+			echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
+		else
+			echo "USE=\"bindist\"" >> "${clst_make_conf}"
+		fi
+
+	fi
 
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
@@ -234,6 +241,7 @@ cleanup_stages() {
 
 	# Remove bindist from use
 	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
+	sed -i "/USE=\"bindist\"/d" "${clst_make_conf}"
 
 	[ "${clst_target}" != "tinderbox" ] && rm -f /var/log/emerge.log /var/log/portage/elog/*
 }
