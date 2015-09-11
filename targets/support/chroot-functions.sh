@@ -167,6 +167,7 @@ setup_gcc(){
 
 setup_pkgmgr(){
 	# Set bindist USE flag if clst_BINDIST is set
+	# this is handled independantly in stage2, changes here should be mirrored there
 	if [ "${clst_target}" != "stage1" ] && [ -e "${clst_make_conf}" ] \
 		&& [ -n "${clst_BINDIST}" ]; then
 		if grep -q ^USE "${clst_make_conf}"; then
@@ -174,7 +175,6 @@ setup_pkgmgr(){
 		else
 			echo "USE=\"bindist\"" >> "${clst_make_conf}"
 		fi
-
 	fi
 
 	# We need to merge our package manager with USE="build" set in case it is
@@ -240,6 +240,7 @@ cleanup_stages() {
 	esac
 
 	# Remove bindist from use
+	# this is handled independantly in stage2, changes here should be mirrored there
 	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
 	sed -i "/USE=\"bindist\"/d" "${clst_make_conf}"
 
