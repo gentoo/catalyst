@@ -85,54 +85,6 @@ class livecd_stage2(StageBase):
 				myf.write("\nblacklist "+x)
 			myf.close()
 
-	def unpack(self):
-		_unpack=True
-		display_msg=None
-
-		clst_unpack_hash = self.resume.get("unpack")
-
-		if os.path.isdir(self.settings["source_path"]):
-			unpack_cmd="rsync -a --delete "+self.settings["source_path"]+" "+self.settings["chroot_path"]
-			display_msg="\nStarting rsync from "+self.settings["source_path"]+"\nto "+\
-				self.settings["chroot_path"]+" (This may take some time) ...\n"
-			error_msg="Rsync of "+self.settings["source_path"]+" to "+self.settings["chroot_path"]+" failed."
-			invalid_snapshot=False
-
-		if "autoresume" in self.settings["options"]:
-			if os.path.isdir(self.settings["source_path"]) and \
-				self.resume.is_enabled("unpack"):
-				print "Resume point detected, skipping unpack operation..."
-				_unpack=False
-			elif "source_path_hash" in self.settings:
-				if self.settings["source_path_hash"] != clst_unpack_hash:
-					invalid_snapshot=True
-
-		if _unpack:
-			self.mount_safety_check()
-			if invalid_snapshot:
-				print "No Valid Resume point detected, cleaning up  ..."
-				self.clear_autoresume()
-				self.clear_chroot()
-
-			ensure_dirs(self.settings["chroot_path"]+"/tmp", mode=1777)
-
-			if "pkgcache" in self.settings["options"]:
-				ensure_dirs(self.settings["pkgcache_path"], mode=0755)
-
-			if not display_msg:
-				raise CatalystError("Could not find appropriate source.\n"
-					"Please check the 'source_subpath' "
-					"setting in the spec file.",
-					print_traceback=True)
-
-			print display_msg
-			cmd(unpack_cmd,error_msg,env=self.env)
-
-			if "source_path_hash" in self.settings:
-				self.resume.enable("unpack", data=self.settings["source_path_hash"])
-			else:
-				self.resume.enable("unpack")
-
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"config_profile_link","setup_confdir","portage_overlay",\
