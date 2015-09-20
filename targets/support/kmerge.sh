@@ -253,8 +253,12 @@ then
 	fi
 
 else
-	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 	run_merge "${clst_ksource}" || exit 1
+	#ensure that there is a /usr/src/linux symlink and it points to the sources we just installed
+	echo "Adjusting /usr/src/linux to point to \
+$(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null)"
+	ln -snf $(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null) \
+		/usr/src/linux
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
 		echo "Setting extraversion to ${clst_kextraversion}"
