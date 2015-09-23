@@ -108,6 +108,14 @@ class arch_power6(arch_ppc64):
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
+class arch_power8(arch_ppc64):
+	"builder class for power8 under ppc64le"
+	def __init__(self,myspec):
+		arch_ppc64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+		self.settings["CHOST"]="powerpc64le-unknown-linux-gnu"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
@@ -122,6 +130,7 @@ def register():
 		"power4"	: arch_power4,
 		"power5"	: arch_power5,
 		"power6"	: arch_power6,
+		"power8"	: arch_power8,
 		"ppc"		: arch_ppc,
 		"ppc64"		: arch_ppc64
-	}, ("ppc","ppc64","powerpc","powerpc64"))
+	}, ("ppc","ppc64","ppc64le","powerpc","powerpc64","powerpc64le"))
