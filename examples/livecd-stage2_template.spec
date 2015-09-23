@@ -331,6 +331,11 @@ boot/kernel/gentoo/machine_type:
 # boot/kernel/gentoo/console: tty0 ttyS0
 boot/kernel/gentoo/console:
 
+# This feature will make sha512 checksums for every file in the iso (including files provided by livecd/overlay
+# These checksums can be verified at boot using the genkernel option "verify" added to the kernel line.
+# Currently this feature will be enabled if livecd/verify is defined to *any* value, leave commented to disable.
+#livecd/verify: true
+
 # This is a list of packages that will be unmerged after all the kernels have
 # been built.  There are no checks on these packages, so be careful what you
 # add here.  They can potentially break your CD.
