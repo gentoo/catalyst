@@ -269,7 +269,7 @@ case ${clst_hostarch} in
 		then
 			if [ -d "${clst_target_path}/boot" ]
 			then
-				if [ -n "$(ls \"${clst_target_path}/boot\")" ]
+				if [ -n "$(ls ${clst_target_path}/boot)" ]
 				then
 					mv "${clst_target_path}"/boot/* "${clst_target_path}/isolinux"
 					rm -r "${clst_target_path}/boot"
