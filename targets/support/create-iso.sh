@@ -100,66 +100,66 @@ run_mkisofs() {
 case ${clst_hostarch} in
 	alpha)
 		echo ">> genisoimage --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
-		genisoimage --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path} || die "Cannot make ISO image"
+		genisoimage --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
 	;;
 	arm)
 	;;
 	hppa)
 		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}/
-		pushd ${clst_target_path}/
-		palo -f boot/palo.conf -C ${1}
+		run_mkisofs -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
+		pushd "${clst_target_path}/"
+		palo -f boot/palo.conf -C "${1}"
 		popd
 	;;
 	ia64)
-		if [ ! -e ${clst_target_path}/gentoo.efimg ]
+		if [ ! -e "${clst_target_path}/gentoo.efimg" ]
 		then
-			iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
+			iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
 			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 			iaSize=$((${iaSizeB}+32)) # Add slack
 
-			dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k \
+			dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 				count=${iaSize}
-			mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
+			mkdosfs -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
 
-			mkdir ${clst_target_path}/gentoo.efimg.mountPoint
-			mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
-				${clst_target_path}/gentoo.efimg.mountPoint
+			mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
+			mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
+				"${clst_target_path}/gentoo.efimg.mountPoint"
 
 			echo '>> Populating EFI image...'
-			cp -rv ${clst_target_path}/boot/* \
-				${clst_target_path}/gentoo.efimg.mountPoint
+			cp -rv "${clst_target_path}"/boot/* \
+				"${clst_target_path}/gentoo.efimg.mountPoint"
 
-			umount ${clst_target_path}/gentoo.efimg.mountPoint
-			rmdir ${clst_target_path}/gentoo.efimg.mountPoint
+			umount "${clst_target_path}/gentoo.efimg.mountPoint"
+			rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
 		else
 			echo ">> Found populated EFI image at \
 				${clst_target_path}/gentoo.efimg"
 		fi
 		echo '>> Removing /boot...'
-		rm -rf ${clst_target_path}/boot
+		rm -rf "${clst_target_path}/boot"
 
 		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -R -l -b gentoo.efimg -c boot.cat -no-emul-boot -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}/
+		run_mkisofs -R -l -b gentoo.efimg -c boot.cat -no-emul-boot -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 	;;
 	mips)
 		case ${clst_fstype} in
 			squashfs)
 				# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
-				[ ! -d "${clst_target_path}/loopback" ] && mkdir ${clst_target_path}/loopback
-				[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir ${clst_target_path}/sgibootcd
+				[ ! -d "${clst_target_path}/loopback" ] && mkdir "${clst_target_path}/loopback"
+				[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir "${clst_target_path}/sgibootcd"
 
 				# Setup variables
-				[ -f "${clst_target_path}/livecd" ] && rm -f ${clst_target_path}/livecd
+				[ -f "${clst_target_path}/livecd" ] && rm -f "${clst_target_path}/livecd"
 				img="${clst_target_path}/loopback/image.squashfs"
 				knl="${clst_target_path}/kernels"
 				arc="${clst_target_path}/arcload"
 				cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
-				echo "" > ${cfg}
+				echo "" > "${cfg}"
 
 				# If the image file exists in $clst_target_path, move it to the loopback dir
 				[ -e "${clst_target_path}/image.squashfs" ] \
-					&& mv -f ${clst_target_path}/image.squashfs ${clst_target_path}/loopback
+					&& mv -f "${clst_target_path}/image.squashfs" "${clst_target_path}/loopback"
 
 				# An sgibootcd config is essentially a collection of commandline params
 				# stored in a text file.  We could pass these on the command line, but it's
@@ -200,64 +200,64 @@ case ${clst_hostarch} in
 		esac
 	;;
 	ppc*|powerpc*)
-		if [ -f ${clst_target_path}/ppc/bootinfo.txt ]
+		if [ -f "${clst_target_path}/ppc/bootinfo.txt" ]
 		then
 			echo "bootinfo.txt found .. updating it"
 			sed -i -e \
 			's#^<description>.*</description>$#<description>'"${clst_iso_volume_id}"'</description>#' \
-			${clst_target_path}/ppc/bootinfo.txt
+			"${clst_target_path}/ppc/bootinfo.txt"
 			sed -i -e \
 			's#^<os-name>.*</os-name>$#<os-name>'"${clst_iso_volume_id}"'</os-name>#' \
-			${clst_target_path}/ppc/bootinfo.txt
+			"${clst_target_path}/ppc/bootinfo.txt"
 		fi
 
 		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map ${clst_target_path}/boot/map.hfs -part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless ${clst_target_path}/boot -hide-hfs "zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}/
+		run_mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map "${clst_target_path}"/boot/map.hfs -part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless "${clst_target_path}"/boot -hide-hfs "zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 	;;
 	sparc*)
 		# Old silo (<=1.2.6) requires a specially built mkisofs
 		# We try to autodetect this in a simple way, said mkisofs
 		# should be in the cdtar, otherwise use the new style.
-		if [ -x ${clst_target_path}/boot/mkisofs.sparc.fu ]
+		if [ -x "${clst_target_path}/boot/mkisofs.sparc.fu" ]
 		then
-			mv ${clst_target_path}/boot/mkisofs.sparc.fu /tmp
+			mv "${clst_target_path}/boot/mkisofs.sparc.fu" /tmp
 			echo "Running mkisofs.sparc.fu to create iso image...."
 			echo "/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V \"${clst_iso_volume_id}\" ${clst_target_path}/"
-			/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V "${clst_iso_volume_id}" ${clst_target_path}/ || die "Cannot make ISO image"
+			/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o "${1}" -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V "${clst_iso_volume_id}" "${clst_target_path}"/ || die "Cannot make ISO image"
 			rm /tmp/mkisofs.sparc.fu
 		else
 			echo "Running mkisofs to create iso image...."
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -G "${clst_target_path}/boot/isofs.b" -B ... ${clst_target_path}/
+			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -G "${clst_target_path}/boot/isofs.b" -B ... "${clst_target_path}"/
 		fi
 
 	;;
 	x86|amd64)
-		if [ -e ${clst_target_path}/boot/elilo.efi ]
+		if [ -e "${clst_target_path}/boot/elilo.efi" ]
 		then
-			if [ ! -e ${clst_target_path}/gentoo.efimg ]
+			if [ ! -e "${clst_target_path}/gentoo.efimg" ]
 			then
-				iaSizeTemp=$(du -sk ${clst_target_path}/boot 2>/dev/null)
+				iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 				iaSize=$((${iaSizeB}+32)) # Add slack
 
-				dd if=/dev/zero of=${clst_target_path}/gentoo.efimg bs=1k \
+				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 					count=${iaSize}
-				mkdosfs -F 16 -n GENTOO ${clst_target_path}/gentoo.efimg
+				mkdosfs -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
 
-				mkdir ${clst_target_path}/gentoo.efimg.mountPoint
-				mount -t vfat -o loop ${clst_target_path}/gentoo.efimg \
-					${clst_target_path}/gentoo.efimg.mountPoint
+				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
+				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
+					"${clst_target_path}/gentoo.efimg.mountPoint"
 
 				echo "Populating EFI image"
-				cp -rv ${clst_target_path}/boot/* \
-					${clst_target_path}/gentoo.efimg.mountPoint
+				cp -rv "${clst_target_path}"/boot/* \
+					"${clst_target_path}/gentoo.efimg.mountPoint"
 
-				umount ${clst_target_path}/gentoo.efimg.mountPoint
-				rmdir ${clst_target_path}/gentoo.efimg.mountPoint
-				if [ ! -e ${clst_target_path}/boot/grub/stage2_eltorito ]
+				umount "${clst_target_path}/gentoo.efimg.mountPoint"
+				rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
+				if [ ! -e "${clst_target_path}/boot/grub/stage2_eltorito" ]
 				then
 					echo "Removing /boot"
-					rm -rf ${clst_target_path}/boot
+					rm -rf "${clst_target_path}/boot"
 				fi
 			else
 				echo "Found populated EFI image at \
@@ -265,37 +265,37 @@ case ${clst_hostarch} in
 			fi
 		fi
 
-		if [ -e ${clst_target_path}/isolinux/isolinux.bin ]
+		if [ -e "${clst_target_path}/isolinux/isolinux.bin" ]
 		then
-			if [ -d ${clst_target_path}/boot ]
+			if [ -d "${clst_target_path}/boot" ]
 			then
-				if [ -n "$(ls ${clst_target_path}/boot)" ]
+				if [ -n "$(ls \"${clst_target_path}/boot\")" ]
 				then
-					mv ${clst_target_path}/boot/* ${clst_target_path}/isolinux
-					rm -r ${clst_target_path}/boot
+					mv "${clst_target_path}"/boot/* "${clst_target_path}/isolinux"
+					rm -r "${clst_target_path}/boot"
 					echo "Creating ISO using ISOLINUX bootloader"
-					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}/
-					isohybrid ${1}
-				elif [ -e ${clst_target_path}/gentoo.efimg ]
+					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
+					isohybrid "${1}"
+				elif [ -e "${clst_target_path}/gentoo.efimg" ]
 				then
 					echo "Creating ISO using both ISOLINUX and EFI bootloader"
-					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -b gentoo.efimg -c boot.cat -no-emul-boot -z ${clst_target_path}/
+					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -b gentoo.efimg -c boot.cat -no-emul-boot -z "${clst_target_path}"/
 				fi
 			else
 				echo "Creating ISO using ISOLINUX bootloader"
-				run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}/
-				isohybrid ${1}
+				run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
+				isohybrid "${1}"
 			fi
-		elif [ -e ${clst_target_path}/boot/grub/stage2_eltorito ]
+		elif [ -e "${clst_target_path}/boot/grub/stage2_eltorito" ]
 		then
 			echo "Creating ISO using GRUB bootloader"
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table ${clst_target_path}/
-		elif [ -e ${clst_target_path}/gentoo.efimg ]
+			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
+		elif [ -e "${clst_target_path}/gentoo.efimg" ]
 		then
 			echo 'Creating ISO using EFI bootloader'
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} -b gentoo.efimg -c boot.cat -no-emul-boot ${clst_target_path}/
+			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b gentoo.efimg -c boot.cat -no-emul-boot "${clst_target_path}"/
 		else
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o ${1} ${clst_target_path}/
+			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 		fi
 	;;
 esac
