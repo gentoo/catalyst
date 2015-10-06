@@ -5,7 +5,6 @@ LiveCD stage1 target
 
 import os
 import types
-import string
 
 
 from catalyst.support import (normpath,
@@ -70,6 +69,6 @@ class livecd_stage1(StageBase):
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
 			if type(self.settings["pkgcache_path"]) != types.StringType:
-				self.settings["pkgcache_path"]=normpath(string.join(self.settings["pkgcache_path"]))
+				self.settings["pkgcache_path"] = normpath(' '.join(self.settings["pkgcache_path"]))
 		else:
 			StageBase.set_pkgcache_path(self)

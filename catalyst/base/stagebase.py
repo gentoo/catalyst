@@ -1,6 +1,5 @@
 
 import os
-import string
 import imp
 import types
 import shutil
@@ -312,7 +311,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "install_mask" in self.settings:
 			if type(self.settings["install_mask"])!=types.StringType:
 				self.settings["install_mask"]=\
-					string.join(self.settings["install_mask"])
+					' '.join(self.settings["install_mask"])
 
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]=self.settings["target"]
@@ -596,7 +595,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["portage_overlay"]=\
 					self.settings["portage_overlay"].split()
 			print "portage_overlay directories are set to: \""+\
-				string.join(self.settings["portage_overlay"])+"\""
+				' '.join(self.settings["portage_overlay"])+"\""
 
 	def set_overlay(self):
 		if self.settings["spec_prefix"]+"/overlay" in self.settings:
@@ -1134,7 +1133,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if myusevars:
 				myf.write("# These are the USE and USE_EXPAND flags that were used for\n# building in addition to what is provided by the profile.\n")
 				myusevars = sorted(set(myusevars))
-				myf.write('USE="'+string.join(myusevars)+'"\n')
+				myf.write('USE="' + ' '.join(myusevars) + '"\n')
 				if '-*' in myusevars:
 					print "\nWarning!!!  "
 					print "\tThe use of -* in "+self.settings["spec_prefix"]+\
@@ -1148,7 +1147,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if myuseexpandvars:
 				for hostuseexpand in myuseexpandvars:
-					myf.write(hostuseexpand+'="'+string.join(myuseexpandvars[hostuseexpand])+'"\n')
+					myf.write(hostuseexpand + '="' + ' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
 
 			myf.write('PORTDIR="%s"\n' % self.settings['portdir'])
 			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
@@ -1354,16 +1353,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.env['clst_' + opt.upper()] = "true"
 				continue
 			""" Sanitize var names by doing "s|/-.|_|g" """
-			varname="clst_"+string.replace(x,"/","_")
-			varname=string.replace(varname,"-","_")
-			varname=string.replace(varname,".","_")
+			varname = "clst_" + x.replace("/", "_")
+			varname = varname.replace("-", "_")
+			varname = varname.replace(".", "_")
 			if type(self.settings[x])==types.StringType:
 				""" Prefix to prevent namespace clashes """
 				#os.environ[varname]=self.settings[x]
 				self.env[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
-				#os.environ[varname]=string.join(self.settings[x])
-				self.env[varname]=string.join(self.settings[x])
+				#os.environ[varname] = ' '.join(self.settings[x])
+				self.env[varname] = ' '.join(self.settings[x])
 			elif type(self.settings[x])==types.BooleanType:
 				if self.settings[x]:
 					self.env[varname] = "true"
@@ -1377,15 +1376,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if x in ["compress_definitions",
 					"decompress_definitions"]:
 					continue
-				self.env[varname] = string.join(self.settings[x].keys())
+				self.env[varname] = ' '.join(self.settings[x].keys())
 				for y in self.settings[x].keys():
-					varname2 = "clst_"+string.replace(y,"/","_")
-					varname2 = string.replace(varname2,"-","_")
-					varname2 = string.replace(varname2,".","_")
+					varname2 = "clst_" + y.replace("/", "_")
+					varname2 = varname2.replace("-", "_")
+					varname2 = varname2.replace(".", "_")
 					if type(self.settings[x][y]) == types.StringType:
 						self.env[varname2] = self.settings[x][y]
 					elif type(self.settings[x][y]) == types.ListType:
-						self.env[varname2] = string.join(self.settings[x][y])
+						self.env[varname2] = ' '.join(self.settings[x][y])
 					elif type(self.settings[x][y]) == types.BooleanType:
 						if self.settings[x][y]:
 							self.env[varname] = "true"
@@ -1464,7 +1463,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					things like "<" to remain intact
 					"""
 					myunmerge[x]="'"+myunmerge[x]+"'"
-				myunmerge=string.join(myunmerge)
+				myunmerge = ' '.join(myunmerge)
 
 				""" Before cleaning, unmerge stuff """
 				try:
@@ -1588,7 +1587,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"/kernelopts"]
 
 			if type(myopts) != types.StringType:
-				myopts = string.join(myopts)
+				myopts = ' '.join(myopts)
 				self.env[kname+"_kernelopts"]=myopts
 
 			else:

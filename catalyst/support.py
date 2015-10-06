@@ -1,7 +1,7 @@
 
 import glob
 import sys
-import string
+import string  # pylint: disable=deprecated-module
 import os
 import types
 import re
@@ -52,7 +52,7 @@ def read_from_clst(file):
 		return -1
 		#raise CatalystError("Could not open file "+file)
 	for line in myf.readlines():
-		#line = string.replace(line, "\n", "") # drop newline
+		#line = line.replace("\n", "") # drop newline
 		myline = myline + line
 	myf.close()
 	return myline
@@ -67,7 +67,7 @@ def list_bashify(mylist):
 		# surround args with quotes for passing to bash,
 		# allows things like "<" to remain intact
 		mypack[x]="'"+mypack[x]+"'"
-	mypack=string.join(mypack)
+	mypack = ' '.join(mypack)
 	return mypack
 
 
@@ -80,7 +80,7 @@ def list_to_string(mylist):
 		# surround args with quotes for passing to bash,
 		# allows things like "<" to remain intact
 		mypack[x]=mypack[x]
-	mypack=string.join(mypack)
+	mypack = ' '.join(mypack)
 	return mypack
 
 
