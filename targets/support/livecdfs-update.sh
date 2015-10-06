@@ -87,7 +87,7 @@ ln -sf net.lo net.eth4
 mkdir -p /etc/sysconfig
 
 # Tweak the livecd fstab so that users know not to edit it
-# http://bugs.gentoo.org/show_bug.cgi?id=60887
+# https://bugs.gentoo.org/60887
 echo "####################################################" > /etc/fstab
 echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	##" >> /etc/fstab
 echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab
@@ -104,7 +104,7 @@ then
 fi
 
 # Tweak the livecd make.conf so that users know not to edit it
-# http://bugs.gentoo.org/show_bug.cgi?id=144647
+# https://bugs.gentoo.org/144647
 mv ${clst_make_conf} ${clst_make_conf}.old
 echo "####################################################" >> ${clst_make_conf}
 echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> ${clst_make_conf}

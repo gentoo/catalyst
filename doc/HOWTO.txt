@@ -33,13 +33,13 @@ Stage3 tarball
 
 Get a stage3 tarball (containing the build tools you'll need to
 construct your stage1) from your local
-http://www.gentoo.org/main/en/mirrors.xml[Gentoo mirror].
+https://www.gentoo.org/downloads/mirrors/[Gentoo mirror].
 
     $GENTOO_MIRROR/releases/$ARCH/current-stage3/
 
 For example,
 
-    http://distfiles.gentoo.org/releases/amd64/current-stage3/stage3-amd64-20121213.tar.bz2
+    http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20121213.tar.bz2
 
 Grab the tarball and put it where catalyst will find it:
 
@@ -164,7 +164,7 @@ Once we have a stage2, Catalyst builds all of the base system packages
 for stage3, rebuilding any that were already built in stage2 (`emerge
 -e @system`).  The `@system` set of packages is defined by `packages`
 files in your cascading profile.  See
-http://dev.gentoo.org/~ulm/pms/5/pms.html#x1-520005.2.6[the Package
+https://dev.gentoo.org/~ulm/pms/5/pms.html#x1-520005.2.6[the Package
 Manager Specification] for details.
 
 For more details on the differences between the stages, look at the
@@ -225,8 +225,7 @@ and `dd`:
     # dd if=filename.iso of=/dev/sdX
 
 replacing `X` with the appropriate drive letter for your USB disk.
-See https://bugs.gentoo.org/show_bug.cgi?id=251719[bug 251719] for
-details.
+See https://bugs.gentoo.org/251719[bug 251719] for details.
 
 Running catalyst from a Git checkout
 ------------------------------------

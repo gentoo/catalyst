@@ -1,7 +1,7 @@
 # generic tinderbox specfile
 
 # The subarch can be any of the supported catalyst subarches (like athlon-xp).
-# Refer to "man catalyst" or <http://www.gentoo.org/proj/en/releng/catalyst/>
+# Refer to "man catalyst" or <https://wiki.gentoo.org/wiki/Catalyst>
 # for supported subarches
 # example:
 # subarch: athlon-xp

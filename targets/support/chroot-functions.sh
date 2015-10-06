@@ -92,7 +92,7 @@ setup_myfeatures(){
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
 		# This sets up automatic cross-distcc-fu according to
-		# http://www.gentoo.org/doc/en/cross-compiling-distcc.xml
+		# https://wiki.gentoo.org/wiki/Distcc/Cross-Compiling
 		CHOST=$(portageq envvar CHOST)
 		LIBDIR=$(get_libdir)
 		cd /usr/${LIBDIR}/distcc/bin
@@ -107,7 +107,7 @@ setup_myfeatures(){
 		clst_root_path=/ run_merge --oneshot --noreplace sys-devel/icecream || exit 1
 
 		# This sets up automatic cross-icecc-fu according to
-		# http://gentoo-wiki.com/HOWTO_Setup_An_ICECREAM_Compile_Cluster#Icecream_and_cross-compiling
+		# http://www.gentoo-wiki.info/HOWTO_Setup_An_ICECREAM_Compile_Cluster
 		CHOST=$(portageq envvar CHOST)
 		LIBDIR=$(get_libdir)
 		cd /usr/${LIBDIR}/icecc/bin

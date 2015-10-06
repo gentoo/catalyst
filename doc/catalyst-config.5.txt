@@ -225,7 +225,7 @@ An example configuration file can be found at
 BUGS
 ----
 An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
-Linux bug-tracking system at `http://bugs.gentoo.org`.
+Linux bug-tracking system at `https://bugs.gentoo.org`.
 
 
 SEE ALSO

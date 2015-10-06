@@ -23,7 +23,7 @@ Platform (GRP) sets. *catalyst* is also capable of providing a simple
 tinderbox environment for ebuild/package testing.
 
 For more information, please visit the *catalyst* project page
-on the web at 'http://www.gentoo.org/proj/en/releng/catalyst'.
+on the web at 'https://wiki.gentoo.org/wiki/Catalyst'.
 
 
 OPTIONS
@@ -111,7 +111,7 @@ include::subarches.generated.txt[tabsize=4]
 BUGS
 ----
 An up-to-date list of Catalyst bugs can always be found listed on the Gentoo
-Linux bug-tracking system at 'http://bugs.gentoo.org'.
+Linux bug-tracking system at 'https://bugs.gentoo.org'.
 
 
 NOTES
@@ -140,4 +140,4 @@ SEE ALSO
 
 Also, a more in-depth examination of Catalyst options and procedures can be found
 linked from the *catalyst* project page, which is located at
-'http://www.gentoo.org/proj/en/releng/catalyst'.
+'https://wiki.gentoo.org/wiki/Catalyst'.

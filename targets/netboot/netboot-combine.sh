@@ -55,7 +55,7 @@ do
 			# please use catalyst 1.1.5 or older
 
 			#TEST TEST TEST TEST
-			#http://lists.debian.org/debian-alpha/2004/07/msg00094.html
+			#https://lists.debian.org/debian-alpha/2004/07/msg00094.html
 			#make \
 			#		-C /usr/src/linux \
 			#		INITRD=/initrd.gz \

@@ -22,7 +22,7 @@ def _posix_path(path):
 	Distutils wants all paths to be written in the Unix convention
 	(i.e. slash-separated) [1], so that's what we'll do here.
 
-	[1]: http://docs.python.org/2/distutils/setupscript.html#writing-the-setup-script
+	[1]: https://docs.python.org/2/distutils/setupscript.html
 	"""
 	if _os.path.sep != '/':
 		return path.replace(_os.path.sep, '/')
@@ -81,7 +81,7 @@ _setup(
 	version=__version__,
 	maintainer=_maintainer_name,
 	maintainer_email=_maintainer_email,
-	url='http://www.gentoo.org/proj/en/releng/{0}/'.format(_package_name),
+	url='https://wiki.gentoo.org/wiki/Catalyst',
 	download_url='http://distfiles.gentoo.org/distfiles/{0}-{1}.tar.bz2'.format(
 		_package_name, __version__),
 	license='GNU General Public License (GPL)',
