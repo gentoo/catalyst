@@ -12,6 +12,7 @@ import os
 import sys
 
 from snakeoil import process
+from snakeoil.process import namespaces
 
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
 	CONTENTS_DEFINITIONS)
@@ -420,6 +421,14 @@ def _main(parser, opts):
 	if os.getuid() != 0:
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
 		log.critical('This script requires root privileges to operate')
+
+	# Start off by creating unique namespaces to run in.  Would be nice to
+	# use pid & user namespaces, but snakeoil's namespace module has signal
+	# transfer issues (CTRL+C doesn't propagate), and user namespaces need
+	# more work due to Gentoo build process (uses sudo/root/portage).
+	namespaces.simple_unshare(
+		mount=True, uts=True, ipc=True, pid=False, net=False, user=False,
+		hostname='catalyst')
 
 	# everything is setup, so the build is a go
 	try:
