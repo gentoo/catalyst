@@ -55,7 +55,6 @@ _data_files.extend(_files('share/catalyst/targets', 'targets'))
 class set_version(_Command):
 	'''Saves the specified release version information
 	'''
-	global __version__
 	description = "hardcode script's version using VERSION from environment"
 	user_options = []  # [(long_name, short_name, desc),]
 
@@ -66,6 +65,8 @@ class set_version(_Command):
 		pass
 
 	def run(self):
+		# pylint: disable=global-statement
+		global __version__
 		try:
 			version = _os.environ['VERSION']
 		except KeyError:

@@ -294,8 +294,6 @@ def ismount(path):
 
 def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 	"helper function to help targets parse additional arguments"
-	global valid_config_file_values
-
 	messages = []
 	for x in addlargs.keys():
 		if x not in validspec and x not in valid_config_file_values and x not in requiredspec:

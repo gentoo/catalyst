@@ -18,6 +18,7 @@ _ver = None
 
 def get_git_version(version=__version__):
 	"""Return: a string describing our version."""
+	# pylint: disable=global-statement
 	global _ver
 	cwd = os.path.dirname(os.path.abspath(__file__))
 	version_info = get_ver(cwd)
@@ -39,6 +40,7 @@ def get_version(reset=False):
 	'''Returns a saved release version string or the
 	generated git release version.
 	'''
+	# pylint: disable=global-statement
 	global __version__, _ver
 	if _ver and not reset:
 		return _ver
