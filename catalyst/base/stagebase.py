@@ -24,9 +24,9 @@ from catalyst.fileops import ensure_dirs, pjoin
 from catalyst.base.resume import AutoResume
 
 if sys.version_info[0] >= 3:
-    py_input = input
+	py_input = input
 else:
-    py_input = raw_input
+	py_input = raw_input
 
 
 class StageBase(TargetBase, ClearBase, GenBase):
