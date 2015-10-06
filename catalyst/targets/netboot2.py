@@ -8,8 +8,7 @@ import types
 import shutil
 from stat import ST_UID, ST_GID, ST_MODE
 
-from catalyst.support import (CatalystError, normpath,
-	touch, cmd, list_bashify)
+from catalyst.support import (CatalystError, normpath, cmd, list_bashify)
 from catalyst.fileops import ensure_dirs
 
 from catalyst.base.stagebase import StageBase

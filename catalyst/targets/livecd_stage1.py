@@ -7,8 +7,7 @@ import os
 import types
 
 
-from catalyst.support import (normpath,
-	touch, cmd)
+from catalyst.support import (normpath, cmd)
 from catalyst.fileops import ensure_dirs
 
 from catalyst.base.stagebase import StageBase

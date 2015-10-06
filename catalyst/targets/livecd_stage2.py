@@ -5,8 +5,7 @@ LiveCD stage2 target, builds upon previous LiveCD stage1 tarball
 
 import os
 
-from catalyst.support import (normpath, file_locate, CatalystError, cmd,
-	read_from_clst, touch)
+from catalyst.support import (normpath, file_locate, CatalystError, cmd)
 from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
 

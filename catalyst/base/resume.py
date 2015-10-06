@@ -12,8 +12,6 @@ set, unset, is_set, is_unset, enabled, clear_all
 '''
 
 import os
-import shutil
-from stat import ST_UID, ST_GID, ST_MODE
 import sys
 import traceback
 
