@@ -354,7 +354,7 @@ class LockDir:
 				return True
 		return False
 
-	def hardlink_active(lock):
+	def hardlink_active(self, lock):
 		if not os.path.exists(lock):
 			return False
 
