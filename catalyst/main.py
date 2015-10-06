@@ -9,7 +9,6 @@
 import argparse
 import os
 import sys
-import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
