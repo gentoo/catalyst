@@ -5,7 +5,7 @@ stage2 target, builds upon previous stage1 tarball
 
 import os
 
-from catalyst.support import normpath, list_to_string
+from catalyst.support import normpath
 from catalyst.base.stagebase import StageBase
 
 
@@ -41,19 +41,19 @@ class stage2(StageBase):
 
 	def override_chost(self):
 		if "chost" in self.settings:
-			self.settings["CHOST"]=list_to_string(self.settings["chost"])
+			self.settings["CHOST"] = self.settings["chost"]
 
 	def override_cflags(self):
 		if "cflags" in self.settings:
-			self.settings["CFLAGS"]=list_to_string(self.settings["cflags"])
+			self.settings["CFLAGS"] = self.settings["cflags"]
 
 	def override_cxxflags(self):
 		if "cxxflags" in self.settings:
-			self.settings["CXXFLAGS"]=list_to_string(self.settings["cxxflags"])
+			self.settings["CXXFLAGS"] = self.settings["cxxflags"]
 
 	def override_ldflags(self):
 		if "ldflags" in self.settings:
-			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
+			self.settings["LDFLAGS"] = self.settings["ldflags"]
 
 	def set_portage_overlay(self):
 		StageBase.set_portage_overlay(self)
