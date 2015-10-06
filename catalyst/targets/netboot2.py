@@ -46,7 +46,6 @@ class netboot2(StageBase):
 			raise CatalystError("configuration error in netboot2/packages.")
 
 		StageBase.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars()
 		self.settings["merge_path"]=normpath("/tmp/image/")
 
 	def set_target_path(self):

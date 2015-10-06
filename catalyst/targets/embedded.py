@@ -28,7 +28,6 @@ class embedded(StageBase):
 			self.valid_values.append("embedded/fs-ops")
 
 		StageBase.__init__(self,spec,addlargs)
-		self.set_build_kernel_vars(addlargs)
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["dir_setup","unpack","unpack_snapshot",\
