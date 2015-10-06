@@ -30,7 +30,7 @@ def handle_line(line, subarch_title_to_subarch_id, subarch_id_to_pattern_arch_ge
 		# Apply alias grouping
 		arch = _pattern_arch_genericliases.get(arch, arch)
 
-		assert(subarch not in subarch_id_to_pattern_arch_genericrch_id)
+		assert subarch not in subarch_id_to_pattern_arch_genericrch_id
 		subarch_id_to_pattern_arch_genericrch_id[subarch] = arch
 
 		return
@@ -40,7 +40,7 @@ def handle_line(line, subarch_title_to_subarch_id, subarch_id_to_pattern_arch_ge
 		child_subarch = x.group(1)
 		parent_subarch = x.group(2)
 
-		assert(child_subarch not in subarch_id_to_pattern_arch_genericrch_id)
+		assert child_subarch not in subarch_id_to_pattern_arch_genericrch_id
 		subarch_id_to_pattern_arch_genericrch_id[child_subarch] = subarch_id_to_pattern_arch_genericrch_id[parent_subarch]
 
 		return
@@ -49,7 +49,7 @@ def handle_line(line, subarch_title_to_subarch_id, subarch_id_to_pattern_arch_ge
 		subarch_title = x.group(1)
 		subarch_id = x.group(2)
 
-		assert(subarch_title not in subarch_title_to_subarch_id)
+		assert subarch_title not in subarch_title_to_subarch_id
 		subarch_title_to_subarch_id[subarch_title] = subarch_id
 
 

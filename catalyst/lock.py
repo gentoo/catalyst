@@ -179,7 +179,7 @@ class LockDir(object):
 		if not os.path.exists(self.lockfile):
 			print "lockfile does not exist '%s'" % self.lockfile
 			#print "fcntl_unlock() , self.myfd:", self.myfd, type(self.myfd)
-			if (self.myfd != None):
+			if self.myfd != None:
 				#print "fcntl_unlock() trying to close it "
 				try:
 					os.close(self.myfd)
@@ -236,7 +236,7 @@ class LockDir(object):
 					#if type(lockfilename) == types.StringType:
 					#        os.close(myfd)
 		#print "fcntl_unlock() trying a last ditch close", self.myfd
-		if (self.myfd != None):
+		if self.myfd != None:
 			os.close(self.myfd)
 			self.myfd=None
 			self.locked=False
@@ -256,7 +256,7 @@ class LockDir(object):
 		start_time = time.time()
 		reported_waiting = False
 
-		while(time.time() < (start_time + max_wait)):
+		while time.time() < (start_time + max_wait):
 			# We only need it to exist.
 			self.myfd = os.open(self.myhardlock, os.O_CREAT|os.O_RDWR,0660)
 			os.close(self.myfd)
