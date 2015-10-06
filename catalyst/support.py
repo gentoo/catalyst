@@ -120,11 +120,14 @@ def find_binary(myc):
 	return None
 
 
-def cmd(mycmd, myexc="", env={}, debug=False, fail_func=None):
+def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
+	if env is None:
+		env = {}
 	#print "***** cmd()"
 	sys.stdout.flush()
 	args=[BASH_BINARY]
 	if "BASH_ENV" not in env:
+		env = env.copy()
 		env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
 	if debug:
 		args.append("-x")
