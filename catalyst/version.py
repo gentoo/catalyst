@@ -31,7 +31,7 @@ def get_git_version(version=__version__):
 		s = ('vcs version %s, date %s' %
 			 (version_info['rev'], version_info['date']))
 
-	_ver = 'Catalyst %s\n%s' % (__version__, s)
+	_ver = 'Catalyst %s\n%s' % (version, s)
 
 	return _ver
 
