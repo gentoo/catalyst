@@ -853,9 +853,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				and os.path.exists(target_portdir) \
 				and self.resume.is_enabled("unpack_portage") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
-					print \
-						"Valid Resume point detected, skipping unpack of portage tree..."
-					unpack=False
+				print \
+					"Valid Resume point detected, skipping unpack of portage tree..."
+				unpack = False
 
 		if unpack:
 			if "snapcache" in self.settings["options"]:

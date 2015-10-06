@@ -56,9 +56,9 @@ class stage2(StageBase):
 			self.settings["LDFLAGS"]=list_to_string(self.settings["ldflags"])
 
 	def set_portage_overlay(self):
-			StageBase.set_portage_overlay(self)
-			if "portage_overlay" in self.settings:
-				print "\nWARNING !!!!!"
-				print "\tUsing an portage overlay for earlier stages could cause build issues."
-				print "\tIf you break it, you buy it. Don't complain to us about it."
-				print "\tDont say we did not warn you\n"
+		StageBase.set_portage_overlay(self)
+		if "portage_overlay" in self.settings:
+			print "\nWARNING !!!!!"
+			print "\tUsing an portage overlay for earlier stages could cause build issues."
+			print "\tIf you break it, you buy it. Don't complain to us about it."
+			print "\tDont say we did not warn you\n"

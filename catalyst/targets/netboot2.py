@@ -54,7 +54,7 @@ class netboot2(StageBase):
 			self.settings["target_subpath"])
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("setup_target_path"):
-				print "Resume point detected, skipping target path setup operation..."
+			print "Resume point detected, skipping target path setup operation..."
 		else:
 			# first clean up any existing target stuff
 			if os.path.isfile(self.settings["target_path"]):
@@ -70,7 +70,7 @@ class netboot2(StageBase):
 		# check for autoresume point
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("copy_files_to_image"):
-				print "Resume point detected, skipping target path setup operation..."
+			print "Resume point detected, skipping target path setup operation..."
 		else:
 			if "netboot2/packages" in self.settings:
 				if type(self.settings["netboot2/packages"]) == types.StringType:
