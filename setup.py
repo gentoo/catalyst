@@ -34,7 +34,7 @@ def _files(prefix, root):
 
 	Yielding `(target_dir, (file_source_paths, ...))` tuples.
 	"""
-	for dirpath, dirnames, filenames in _os.walk(root):
+	for dirpath, _dirnames, filenames in _os.walk(root):
 		reldir = _os.path.relpath(dirpath, root)
 		install_directory = _posix_path(
 			_os.path.join(prefix, reldir))

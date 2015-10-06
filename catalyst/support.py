@@ -88,7 +88,7 @@ class CatalystError(Exception):
 	def __init__(self, message, print_traceback=False):
 		if message:
 			if print_traceback:
-				(type,value)=sys.exc_info()[:2]
+				(_type, value) = sys.exc_info()[:2]
 				if value!=None:
 					print
 					print "Traceback values found.  listing..."

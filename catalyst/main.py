@@ -182,7 +182,7 @@ def main():
 
 	# parse out the command line arguments
 	try:
-		opts,args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:", ["purge", "purgeonly", "purgetmponly", "help", "version", "debug",\
+		opts, _args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:", ["purge", "purgeonly", "purgetmponly", "help", "version", "debug",
 			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
 
 	except getopt.GetoptError:

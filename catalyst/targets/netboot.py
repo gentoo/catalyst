@@ -31,11 +31,12 @@ class netboot(StageBase):
 		self.required_values=[]
 
 		try:
+			# XXX: This code does nothing because the for loop below is disabled.
 			if "netboot/packages" in addlargs:
 				if type(addlargs["netboot/packages"]) == types.StringType:
-					loopy=[addlargs["netboot/packages"]]
+					_loopy = [addlargs["netboot/packages"]]
 				else:
-					loopy=addlargs["netboot/packages"]
+					_loopy = addlargs["netboot/packages"]
 
 		#	for x in loopy:
 		#		self.required_values.append("netboot/packages/"+x+"/files")
