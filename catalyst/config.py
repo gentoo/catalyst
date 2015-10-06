@@ -42,7 +42,7 @@ class ParserBase:
 		values = {}
 		cur_array = []
 
-		trailing_comment=re.compile('\s*#.*$')
+		trailing_comment=re.compile(r'\s*#.*$')
 		#white_space=re.compile('\s+')
 
 		for x, myline in enumerate(self.lines):
