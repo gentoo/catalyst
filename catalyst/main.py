@@ -168,13 +168,6 @@ def build_target(addlargs):
 
 
 def main():
-
-	if os.getuid() != 0:
-		version()
-		# catalyst cannot be run as a normal user due to chroots, mounts, etc
-		print "!!! catalyst: This script requires root privileges to operate"
-		sys.exit(2)
-
 	# we need some options in order to work correctly
 	if len(sys.argv) < 2:
 		usage()
@@ -341,6 +334,11 @@ def main():
 
 	if "target" not in addlargs:
 		raise CatalystError("Required value \"target\" not specified.")
+
+	if os.getuid() != 0:
+		# catalyst cannot be run as a normal user due to chroots, mounts, etc
+		print "!!! catalyst: This script requires root privileges to operate"
+		sys.exit(2)
 
 	# everything is setup, so the build is a go
 	try:
