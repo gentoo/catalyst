@@ -259,23 +259,46 @@ def main():
 
 	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:
-		for i in conf_values["digests"].split():
-			if i not in HASH_DEFINITIONS:
+		digests = set(conf_values['digests'].split())
+		valid_digests = set(HASH_DEFINITIONS.keys())
+
+		# Use the magic keyword "auto" to use all algos that are available.
+		skip_missing = False
+		if 'auto' in digests:
+			skip_missing = True
+			digests.remove('auto')
+			if not digests:
+				digests = set(valid_digests)
+
+		# First validate all the requested digests are valid keys.
+		if digests - valid_digests:
+			print
+			print "These are not a valid digest entries:"
+			print ', '.join(digests - valid_digests)
+			print "Valid digest entries:"
+			print ', '.join(sorted(valid_digests))
+			print
+			print "Catalyst aborting...."
+			sys.exit(2)
+
+		# Then check for any programs that the hash func requires.
+		for digest in digests:
+			if find_binary(hash_map.hash_map[digest].cmd) == None:
+				# In auto mode, just ignore missing support.
+				if skip_missing:
+					digests.remove(digest)
+					continue
 				print
-				print i+" is not a valid digest entry"
-				print "Valid digest entries:"
-				print HASH_DEFINITIONS.keys()
-				print
-				print "Catalyst aborting...."
-				sys.exit(2)
-			if find_binary(hash_map.hash_map[i].cmd) == None:
-				print
-				print "digest=" + i
-				print "\tThe " + hash_map.hash_map[i].cmd + \
+				print "digest=" + digest
+				print "\tThe " + hash_map.hash_map[digest].cmd + \
 					" binary was not found. It needs to be in your system path"
 				print
 				print "Catalyst aborting...."
 				sys.exit(2)
+
+		# Now reload the config with our updated value.
+		conf_values['digests'] = ' '.join(digests)
+
 	if "hash_function" in conf_values:
 		if conf_values["hash_function"] not in HASH_DEFINITIONS:
 			print

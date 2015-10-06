@@ -24,7 +24,7 @@ and empty lines are interpreted as comments.  For example:
 
 ---------------------------------
 # /etc/catalyst/catalyst.conf
-digests="md5 sha1 sha512 whirlpool"
+digests="auto"
 contents="auto"
 distdir="/usr/portage/distfiles"
 envscript="/etc/catalyst/catalystrc"
