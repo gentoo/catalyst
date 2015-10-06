@@ -1,5 +1,5 @@
 
-class generic:
+class generic(object):
 	def __init__(self,myspec):
 		self.settings=myspec
 

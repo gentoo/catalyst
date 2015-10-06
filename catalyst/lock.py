@@ -24,7 +24,7 @@ class LockInUse(Exception):
 			print
 
 
-class LockDir:
+class LockDir(object):
 	locking_method=fcntl.flock
 	lock_dirs_in_use=[]
 	die_on_failed_lock=True

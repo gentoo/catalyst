@@ -2,7 +2,7 @@
 import re
 from catalyst.support import CatalystError
 
-class ParserBase:
+class ParserBase(object):
 
 	filename = ""
 	lines = None
