@@ -10,12 +10,12 @@ import portage
 # last case is for portage-2.1_pre*
 def scan_profile(file):
 	if "grab_stacked" in dir(portage):
-		return portage.grab_stacked(file, portage.settings.profiles, portage.grabfile, incremental_lines=1);
+		return portage.grab_stacked(file, portage.settings.profiles, portage.grabfile, incremental_lines=1)
 	else:
 		if "grab_multiple" in dir(portage):
-			return portage.stack_lists( portage.grab_multiple(file, portage.settings.profiles, portage.grabfile), incremental=1);
+			return portage.stack_lists( portage.grab_multiple(file, portage.settings.profiles, portage.grabfile), incremental=1)
 		else:
-			return portage.stack_lists( [portage.grabfile_package(os.path.join(x, file)) for x in portage.settings.profiles], incremental=1);
+			return portage.stack_lists( [portage.grabfile_package(os.path.join(x, file)) for x in portage.settings.profiles], incremental=1)
 
 # loaded the stacked packages / packages.build files
 pkgs = scan_profile("packages")
