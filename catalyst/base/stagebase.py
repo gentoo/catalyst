@@ -1695,7 +1695,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.unbind()
 				raise CatalystError("build aborting due to livecd_update error.")
 
-	def _debug_pause_(self):
+	@staticmethod
+	def _debug_pause_():
 		py_input("press any key to continue: ")
 
 # vim: ts=4 sw=4 sta et sts=4 ai

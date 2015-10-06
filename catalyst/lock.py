@@ -320,7 +320,8 @@ class LockDir(object):
 			del self.hardlock_paths[self.lockdir]
 			print self.hardlock_paths
 
-	def hardlock_name(self, path):
+	@staticmethod
+	def hardlock_name(path):
 		mypath=path+"/.hardlock-"+os.uname()[1]+"-"+str(os.getpid())
 		newpath = os.path.normpath(mypath)
 		if len(newpath) > 1:
@@ -328,7 +329,8 @@ class LockDir(object):
 				newpath = "/"+newpath.lstrip("/")
 		return newpath
 
-	def hardlink_is_mine(self,link,lock):
+	@staticmethod
+	def hardlink_is_mine(link, lock):
 		import stat
 		try:
 			myhls = os.stat(link)
@@ -347,7 +349,8 @@ class LockDir(object):
 				return True
 		return False
 
-	def hardlink_active(self, lock):
+	@staticmethod
+	def hardlink_active(lock):
 		if not os.path.exists(lock):
 			return False
 

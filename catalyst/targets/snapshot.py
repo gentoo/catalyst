@@ -90,7 +90,8 @@ class snapshot(TargetBase, GenBase):
 	def kill_chroot_pids(self):
 		pass
 
-	def cleanup(self):
+	@staticmethod
+	def cleanup():
 		print "Cleaning up..."
 
 	def purge(self):
