@@ -3,7 +3,7 @@ import os
 from collections import namedtuple
 from subprocess import Popen, PIPE
 
-from support import CatalystError
+from catalyst.support import CatalystError
 
 
 # Use HashMap.fields for the value legend

@@ -2,7 +2,7 @@
 from collections import namedtuple
 from subprocess import Popen, PIPE
 
-from support import CatalystError, warn
+from catalyst.support import CatalystError, warn
 
 
 # use ContentsMap.fields for the value legend
