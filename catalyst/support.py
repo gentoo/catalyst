@@ -250,14 +250,6 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 		raise CatalystError('\n\tAlso: '.join(messages))
 
 
-def touch(myfile):
-	try:
-		myf=open(myfile,"w")
-		myf.close()
-	except IOError:
-		raise CatalystError("Could not touch "+myfile+".", print_traceback=True)
-
-
 def countdown(secs=5, doing="Starting"):
 	if secs:
 		print ">>> Waiting",secs,"seconds before starting..."

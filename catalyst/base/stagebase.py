@@ -9,12 +9,14 @@ from stat import ST_UID, ST_GID, ST_MODE
 # for convienience
 pjoin = os.path.join
 
+from snakeoil import fileutils
+
 from DeComp.compress import CompressMap
 
 from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
 	PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, msg, file_locate, normpath,
-	touch, cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount,
+	cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount,
 	file_check)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
@@ -1513,7 +1515,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						cmd(self.settings["controller_file"]+\
 							" build_packages "+mypack,\
 							"Error in attempt to build packages",env=self.env)
-						touch(build_packages_resume)
+						fileutils.touch(build_packages_resume)
 						self.resume.enable("build_packages")
 					except CatalystError:
 						self.unbind()

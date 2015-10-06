@@ -15,8 +15,9 @@ import os
 import sys
 import traceback
 
+from snakeoil import fileutils
+
 from catalyst.fileops import ensure_dirs, pjoin, listdir_files, clear_dir
-from catalyst.support import touch
 
 
 class AutoResumeError(Exception):
@@ -69,7 +70,7 @@ class AutoResume(object):
 				myf.write(data)
 		else:
 			try:
-				touch(fname)
+				fileutils.touch(fname)
 				self._points[point] = fname
 			except Exception as e:
 				print AutoResumeError(str(e))
