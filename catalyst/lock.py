@@ -57,15 +57,9 @@ class LockDir(object):
 		self.hardlock_paths={}
 
 	def delete_lock_from_path_list(self):
-		i=0
 		try:
-			if LockDir.lock_dirs_in_use:
-				for x in LockDir.lock_dirs_in_use:
-					if LockDir.lock_dirs_in_use[i] == self.lockdir:
-						del LockDir.lock_dirs_in_use[i]
-						break
-						i=i+1
-		except AttributeError:
+			LockDir.lock_dirs_in_use.remove(self.lockdir)
+		except ValueError:
 			pass
 
 	def islocked(self):
