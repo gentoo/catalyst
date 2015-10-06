@@ -10,6 +10,8 @@ import argparse
 import os
 import sys
 
+from snakeoil import process
+
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
 
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
@@ -20,7 +22,7 @@ import catalyst.config
 import catalyst.util
 from catalyst.defaults import confdefaults, option_messages
 from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
-from catalyst.support import CatalystError, find_binary
+from catalyst.support import CatalystError
 from catalyst.version import get_version
 
 
@@ -283,7 +285,9 @@ def main():
 
 		# Then check for any programs that the hash func requires.
 		for digest in digests:
-			if find_binary(hash_map.hash_map[digest].cmd) == None:
+			try:
+				process.find_binary(hash_map.hash_map[digest].cmd)
+			except process.CommandNotFound:
 				# In auto mode, just ignore missing support.
 				if skip_missing:
 					digests.remove(digest)
@@ -309,7 +313,9 @@ def main():
 			print
 			print "Catalyst aborting...."
 			sys.exit(2)
-		if find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd) == None:
+		try:
+			process.find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd)
+		except process.CommandNotFound:
 			print
 			print "hash_function="+conf_values["hash_function"]
 			print "\tThe "+hash_map.hash_map[conf_values["hash_function"]].cmd + \
