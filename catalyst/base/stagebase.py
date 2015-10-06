@@ -1426,7 +1426,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "--- Running action sequence: "+x
 			sys.stdout.flush()
 			try:
-				apply(getattr(self,x))
+				getattr(self, x)()
 			except LockInUse:
 				print "Error, unable to aquire the lock..."
 				print " Catalyst aborting...."
