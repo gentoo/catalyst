@@ -1,7 +1,6 @@
 
 import glob
 import sys
-import string  # pylint: disable=deprecated-module
 import os
 import types
 import re
@@ -11,34 +10,7 @@ from subprocess import Popen
 
 from catalyst.defaults import verbosity, valid_config_file_values
 
-selinux_capable = False
-#userpriv_capable = (os.getuid() == 0)
-#fakeroot_capable = False
-
 BASH_BINARY             = "/bin/bash"
-
-# set it to 0 for the soft limit, 1 for the hard limit
-DESIRED_RLIMIT = 0
-try:
-	import resource
-	max_fd_limit=resource.getrlimit(resource.RLIMIT_NOFILE)[DESIRED_RLIMIT]
-except Exception:
-	# hokay, no resource module.
-	max_fd_limit=256
-
-# pids this process knows of.
-spawned_pids = []
-
-
-# a function to turn a string of non-printable characters
-# into a string of hex characters
-def hexify(s):
-	hexStr = string.hexdigits
-	r = ''
-	for ch in s:
-		i = ord(ch)
-		r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
-	return r
 
 
 def read_from_clst(path):
