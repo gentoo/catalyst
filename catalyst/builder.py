@@ -4,6 +4,13 @@ class generic(object):
 		self.settings=myspec
 		self.settings.setdefault('CHROOT', 'chroot')
 
+	def setarch(self, arch):
+		"""Set the chroot wrapper to run through `setarch |arch|`
+
+		Useful for building x86-on-amd64 and such.
+		"""
+		self.settings['CHROOT'] = 'setarch %s %s' % (arch, self.settings['CHROOT'])
+
 	def mount_safety_check(self):
 		"""
 		Make sure that no bind mounts exist in chrootdir (to use before
