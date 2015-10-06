@@ -1,6 +1,6 @@
 import os
 
-from catalyst.support import *
+from catalyst.support import addl_arg_parse
 
 class TargetBase(object):
 	"""
