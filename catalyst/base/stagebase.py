@@ -73,6 +73,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		previously. -agaffney
 		"""
 
+		self.makeconf = {}
 		self.archmap = {}
 		self.subarchmap = {}
 		machinemap = {}
@@ -156,6 +157,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_source_subpath()
 
 		""" Set paths """
+		self.snapshot_lock_object = None
 		self.set_snapshot_path()
 		self.set_root_path()
 		self.set_source_path()

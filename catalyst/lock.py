@@ -54,6 +54,7 @@ class LockDir(object):
 		else:
 			LockDir.lock_dirs_in_use.append(lockdir)
 
+		self.myhardlock = None
 		self.hardlock_paths={}
 
 	def delete_lock_from_path_list(self):
