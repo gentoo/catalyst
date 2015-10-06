@@ -53,7 +53,8 @@ class ParserBase(object):
 			myline = trailing_comment.sub("", myline)
 
 			# Skip any blank lines
-			if not myline: continue
+			if not myline:
+				continue
 
 			if self.key_value_separator in myline:
 				# Split on the first occurence of the separator creating two strings in the array mobjs

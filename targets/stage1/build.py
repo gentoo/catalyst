@@ -33,6 +33,8 @@ for idx in range(0, len(pkgs)):
 		buildpkgs[bidx] = pkgs[idx]
 		if buildpkgs[bidx][0:1] == "*":
 			buildpkgs[bidx] = buildpkgs[bidx][1:]
-	except: pass
+	except:
+		pass
 
-for b in buildpkgs: sys.stdout.write(b+" ")
+for b in buildpkgs:
+	sys.stdout.write(b + " ")
