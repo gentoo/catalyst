@@ -56,7 +56,7 @@ class snapshot(TargetBase, GenBase):
 		ensure_dirs(mytmp)
 
 		target_snapshot = self.settings["portdir"] + "/ " + mytmp + "/%s/" % self.settings["repo_name"]
-		cmd("rsync -a --delete --exclude /packages/ --exclude /distfiles/ " +
+		cmd("rsync -a --no-o --no-g --delete --exclude /packages/ --exclude /distfiles/ " +
 			"--exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* " +
 			target_snapshot,
 			"Snapshot failure", env=self.env)
