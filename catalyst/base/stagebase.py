@@ -1015,7 +1015,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					target is fully initialized
 					"""
 					self.snapshot_lock_object.unlock()
-				except:
+				except Exception:
 					pass
 		if ouch:
 			"""

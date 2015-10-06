@@ -130,8 +130,6 @@ class LockDir(object):
 				try:
 					if os.stat(self.lockfile).st_gid != self.gid:
 						os.chown(self.lockfile,os.getuid(),self.gid)
-				except SystemExit, e:
-					raise
 				except OSError, e:
 					if e[0] == 2: #XXX: No such file or directory
 						return self.fcntl_locking(locktype)
@@ -185,7 +183,7 @@ class LockDir(object):
 				try:
 					os.close(self.myfd)
 					self.myfd=None
-				except:
+				except Exception:
 					pass
 				return False
 
@@ -194,8 +192,6 @@ class LockDir(object):
 					self.myfd = os.open(self.lockfile, os.O_WRONLY,0660)
 					unlinkfile = 1
 					self.locking_method(self.myfd,fcntl.LOCK_UN)
-			except SystemExit, e:
-				raise e
 			except Exception, e:
 				#if self.myfd is not None:
 					#print "fcntl_unlock() trying to close", self.myfd
@@ -213,7 +209,7 @@ class LockDir(object):
 						InUse=False
 						try:
 							self.locking_method(self.myfd,fcntl.LOCK_EX|fcntl.LOCK_NB)
-						except:
+						except Exception:
 							print "Read lock may be in effect. skipping lockfile delete..."
 							InUse=True
 							# We won the lock, so there isn't competition for it.
@@ -227,8 +223,6 @@ class LockDir(object):
 						self.myfd=None
 #						if "DEBUG" in self.settings:
 #							print "Unlinked lockfile..."
-				except SystemExit, e:
-					raise e
 				except Exception, e:
 					# We really don't care... Someone else has the lock.
 					# So it is their problem now.
@@ -273,8 +267,6 @@ class LockDir(object):
 					print_traceback=True)
 			try:
 				os.link(self.myhardlock, self.lockfile)
-			except SystemExit:
-				raise
 			except Exception:
 #				if "DEBUG" in self.settings:
 #					print "lockfile(): Hardlink: Link failed."
@@ -305,9 +297,7 @@ class LockDir(object):
 				os.unlink(self.myhardlock)
 			if os.path.exists(self.lockfile):
 				os.unlink(self.lockfile)
-		except SystemExit:
-			raise
-		except:
+		except Exception:
 			writemsg("Something strange happened to our hardlink locks.\n")
 
 	def add_hardlock_file_to_cleanup(self):
@@ -335,9 +325,7 @@ class LockDir(object):
 		try:
 			myhls = os.stat(link)
 			mylfs = os.stat(lock)
-		except SystemExit:
-			raise
-		except:
+		except Exception:
 			myhls = None
 			mylfs = None
 
@@ -406,8 +394,6 @@ class LockDir(object):
 								# We're sweeping through, unlinking everyone's locks.
 								os.unlink(filename)
 								results.append("Unlinked: " + filename)
-							except SystemExit:
-								raise
 							except Exception:
 								pass
 					try:
@@ -415,16 +401,12 @@ class LockDir(object):
 						results.append("Unlinked: " + x)
 						os.unlink(mylockname)
 						results.append("Unlinked: " + mylockname)
-					except SystemExit:
-						raise
 					except Exception:
 						pass
 				else:
 					try:
 						os.unlink(mylockname)
 						results.append("Unlinked: " + mylockname)
-					except SystemExit:
-						raise
 					except Exception:
 						pass
 		return results

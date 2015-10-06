@@ -95,7 +95,7 @@ def parse_config(myconfig):
 		myconfig = catalyst.config.ConfigParser(config_file)
 		myconf.update(myconfig.get_values())
 
-	except:
+	except Exception:
 		print "!!! catalyst: Unable to parse configuration file, "+myconfig
 		sys.exit(1)
 

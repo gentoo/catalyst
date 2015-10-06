@@ -22,9 +22,7 @@ DESIRED_RLIMIT = 0
 try:
 	import resource
 	max_fd_limit=resource.getrlimit(resource.RLIMIT_NOFILE)[DESIRED_RLIMIT]
-except SystemExit, e:
-	raise
-except:
+except Exception:
 	# hokay, no resource module.
 	max_fd_limit=256
 
@@ -48,7 +46,7 @@ def read_from_clst(path):
 	myline = ''
 	try:
 		myf = open(path, "r")
-	except:
+	except Exception:
 		return -1
 		#raise CatalystError("Could not open file " + path)
 	for line in myf.readlines():
@@ -136,10 +134,7 @@ def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
 
 	if debug:
 		print "***** cmd(); args =", args
-	try:
-		proc = Popen(args, env=env)
-	except:
-		raise
+	proc = Popen(args, env=env)
 	if proc.wait() != 0:
 		if fail_func:
 			print "CMD(), NON-Zero command return.  Running fail_func()"
@@ -243,7 +238,7 @@ def read_makeconf(mymakeconffile):
 				try:
 					import portage.util
 					return portage.util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
-				except:
+				except Exception:
 					try:
 						import portage_util
 						return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
@@ -252,7 +247,7 @@ def read_makeconf(mymakeconffile):
 						mylines=myf.readlines()
 						myf.close()
 						return parse_makeconf(mylines)
-		except:
+		except Exception:
 			raise CatalystError("Could not parse make.conf file " +
 				mymakeconffile, print_traceback=True)
 	else:
