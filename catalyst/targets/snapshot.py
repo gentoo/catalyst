@@ -98,12 +98,10 @@ class snapshot(TargetBase, GenBase):
 		myemp=self.settings["tmp_path"]
 		if os.path.isdir(myemp):
 			print "Emptying directory",myemp
-			"""
-			stat the dir, delete the dir, recreate the dir and set
-			the proper perms and ownership
-			"""
+			# stat the dir, delete the dir, recreate the dir and set
+			# the proper perms and ownership
 			mystat=os.stat(myemp)
-			""" There's no easy way to change flags recursively in python """
+			# There's no easy way to change flags recursively in python
 			if os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg "+myemp)
 			shutil.rmtree(myemp)

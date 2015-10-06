@@ -67,14 +67,12 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
 		return False
 	if os.path.isdir(target):
 		print "Emptying directory" , target
-		"""
-		stat the dir, delete the dir, recreate the dir and set
-		the proper perms and ownership
-		"""
+		# stat the dir, delete the dir, recreate the dir and set
+		# the proper perms and ownership
 		try:
 			#print "fileops.clear_dir(), os.stat()"
 			mystat=os.stat(target)
-			""" There's no easy way to change flags recursively in python """
+			# There's no easy way to change flags recursively in python
 			if chg_flags and os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg " + target)
 			#print "fileops.clear_dir(), shutil.rmtree()"

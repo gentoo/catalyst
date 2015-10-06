@@ -49,29 +49,27 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		GenBase.__init__(self, myspec)
 		ClearBase.__init__(self, myspec)
 
-		"""
-		The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
-		work better with vapier's CBUILD stuff. I've removed the "monolithic"
-		machinemap from this file and split up its contents amongst the
-		various arch/foo.py files.
-
-		When register() is called on each module in the arch/ dir, it now
-		returns a tuple instead of acting on the subarchmap dict that is
-		passed to it. The tuple contains the values that were previously
-		added to subarchmap as well as a new list of CHOSTs that go along
-		with that arch. This allows us to build machinemap on the fly based
-		on the keys in subarchmap and the values of the 2nd list returned
-		(tmpmachinemap).
-
-		Also, after talking with vapier. I have a slightly better idea of what
-		certain variables are used for and what they should be set to. Neither
-		'buildarch' or 'hostarch' are used directly, so their value doesn't
-		really matter. They are just compared to determine if we are
-		cross-compiling. Because of this, they are just set to the name of the
-		module in arch/ that the subarch is part of to make things simpler.
-		The entire build process is still based off of 'subarch' like it was
-		previously. -agaffney
-		"""
+		# The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
+		# work better with vapier's CBUILD stuff. I've removed the "monolithic"
+		# machinemap from this file and split up its contents amongst the
+		# various arch/foo.py files.
+		#
+		# When register() is called on each module in the arch/ dir, it now
+		# returns a tuple instead of acting on the subarchmap dict that is
+		# passed to it. The tuple contains the values that were previously
+		# added to subarchmap as well as a new list of CHOSTs that go along
+		# with that arch. This allows us to build machinemap on the fly based
+		# on the keys in subarchmap and the values of the 2nd list returned
+		# (tmpmachinemap).
+		#
+		# Also, after talking with vapier. I have a slightly better idea of what
+		# certain variables are used for and what they should be set to. Neither
+		# 'buildarch' or 'hostarch' are used directly, so their value doesn't
+		# really matter. They are just compared to determine if we are
+		# cross-compiling. Because of this, they are just set to the name of the
+		# module in arch/ that the subarch is part of to make things simpler.
+		# The entire build process is still based off of 'subarch' like it was
+		# previously. -agaffney
 
 		self.makeconf = {}
 		self.archmap = {}
@@ -81,16 +79,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py") and x != "__init__.py"]:
 			try:
 				fh=open(arch_dir + x + ".py")
-				"""
-				This next line loads the plugin as a module and assigns it to
-				archmap[x]
-				"""
+				# This next line loads the plugin as a module and assigns it to
+				# archmap[x]
 				self.archmap[x]=imp.load_module(x,fh, arch_dir + x + ".py",
 					(".py", "r", imp.PY_SOURCE))
-				"""
-				This next line registers all the subarches supported in the
-				plugin
-				"""
+				# This next line registers all the subarches supported in the
+				# plugin
 				tmpsubarchmap, tmpmachinemap = self.archmap[x].register()
 				self.subarchmap.update(tmpsubarchmap)
 				for machine in tmpmachinemap:
@@ -99,11 +93,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					machinemap[subarch] = x
 				fh.close()
 			except IOError:
-				"""
-				This message should probably change a bit, since everything in
-				the dir should load just fine. If it doesn't, it's probably a
-				syntax error in the module
-				"""
+				# This message should probably change a bit, since everything in
+				# the dir should load just fine. If it doesn't, it's probably a
+				# syntax error in the module
 				msg("Can't find/load " + x + ".py plugin in " + arch_dir)
 
 		if "chost" in self.settings:
@@ -126,7 +118,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
 			self.settings["buildarch"])
 
-		""" Call arch constructor, pass our settings """
+		# Call arch constructor, pass our settings
 		try:
 			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
 		except KeyError:
@@ -138,7 +130,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			sys.exit(2)
 
 		print "Using target:",self.settings["target"]
-		""" Print a nice informational message """
+		# Print a nice informational message
 		if self.settings["buildarch"]==self.settings["hostarch"]:
 			print "Building natively for",self.settings["hostarch"]
 		elif self.settings["crosscompile"]:
@@ -148,15 +140,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print "Building on",self.settings["buildarch"],\
 				"for alternate personality type",self.settings["hostarch"]
 
-		""" This must be set first as other set_ options depend on this """
+		# This must be set first as other set_ options depend on this
 		self.set_spec_prefix()
 
-		""" Define all of our core variables """
+		# Define all of our core variables
 		self.set_target_profile()
 		self.set_target_subpath()
 		self.set_source_subpath()
 
-		""" Set paths """
+		# Set paths
 		self.snapshot_lock_object = None
 		self.set_snapshot_path()
 		self.set_root_path()
@@ -190,18 +182,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_portage_overlay()
 		self.set_root_overlay()
 
-		"""
-		This next line checks to make sure that the specified variables exist
-		on disk.
-		"""
+		# This next line checks to make sure that the specified variables exist
+		# on disk.
 		#pdb.set_trace()
 		file_locate(self.settings,["distdir"],\
 			expand=0)
-		""" If we are using portage_confdir, check that as well. """
+		# If we are using portage_confdir, check that as well.
 		if "portage_confdir" in self.settings:
 			file_locate(self.settings,["portage_confdir"],expand=0)
 
-		""" Setup our mount points """
+		# Setup our mount points.
 		# initialize our target mounts.
 		self.target_mounts = TARGET_MOUNT_DEFAULTS.copy()
 
@@ -224,10 +214,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		self.set_mounts()
 
-		"""
-		Configure any user specified options (either in catalyst.conf or on
-		the command line).
-		"""
+		# Configure any user specified options (either in catalyst.conf or on
+		# the command line).
 		if "pkgcache" in self.settings["options"]:
 			self.set_pkgcache_path()
 			print "Location of the package cache is "+\
@@ -254,7 +242,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					ccdir+")")
 			self.mounts.append("ccache")
 			self.mountmap["ccache"] = ccdir
-			""" for the chroot: """
+			# for the chroot:
 			self.env["CCACHE_DIR"] = self.target_mounts["ccache"]
 
 		if "icecream" in self.settings["options"]:
@@ -359,7 +347,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			print \
 				"Resume point detected, skipping target path setup operation..."
 		else:
-			""" First clean up any existing target stuff """
+			# First clean up any existing target stuff
 			# XXX WTF are we removing the old tarball before we start building the
 			# XXX new one? If the build fails, you don't want to be left with
 			# XXX nothing at all
@@ -655,9 +643,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def kill_chroot_pids(self):
 		print "Checking for processes running in chroot and killing them."
 
-		"""
-		Force environment variables to be exported so script can see them
-		"""
+		# Force environment variables to be exported so script can see them
 		self.setup_environment()
 
 		killcmd = normpath(self.settings["sharedir"] +
@@ -683,10 +669,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				continue
 
 			if ismount(target):
-				""" Something is still mounted "" """
+				# Something is still mounted
 				try:
 					print target + " is still mounted; performing auto-bind-umount...",
-					""" Try to umount stuff ourselves """
+					# Try to umount stuff ourselves
 					self.unbind()
 					if ismount(target):
 						raise CatalystError("Auto-unbind failed for " + target)
@@ -714,33 +700,33 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		if "seedcache" in self.settings["options"]:
 			if os.path.isdir(unpack_info["source"]):
-				""" SEEDCACHE Is a directory, use rsync """
+				# SEEDCACHE Is a directory, use rsync
 				unpack_info['mode'] = "rsync"
 			else:
-				""" SEEDCACHE is a not a directory, try untar'ing """
+				# SEEDCACHE is a not a directory, try untar'ing
 				print "Referenced SEEDCACHE does not appear to be a directory, trying to untar..."
 				unpack_info['source'] = file_check(unpack_info['source'])
 		else:
-			""" No SEEDCACHE, use tar """
+			# No SEEDCACHE, use tar
 			unpack_info['source'] = file_check(unpack_info['source'])
 		# endif "seedcache"
 
 		if "autoresume" in self.settings["options"]:
 			if os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_enabled("unpack"):
-				""" Autoresume is valid, SEEDCACHE is valid """
+				# Autoresume is valid, SEEDCACHE is valid
 				_unpack=False
 				invalid_snapshot=False
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]==clst_unpack_hash:
-				""" Autoresume is valid, tarball is valid """
+				# Autoresume is valid, tarball is valid
 				_unpack=False
 				invalid_snapshot=False
 
 			elif os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_disabled("unpack"):
-				""" Autoresume is invalid, SEEDCACHE """
+				# Autoresume is invalid, SEEDCACHE
 				_unpack=True
 				invalid_snapshot=True
 				# check and reset the unpack_info['source']
@@ -748,30 +734,30 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]!=clst_unpack_hash:
-				""" Autoresume is invalid, tarball """
+				# Autoresume is invalid, tarball
 				_unpack=True
 				invalid_snapshot=True
 				unpack_info['source'] = file_check(unpack_info['source'])
 
 		else:
-			""" No autoresume, SEEDCACHE """
+			# No autoresume, SEEDCACHE
 			if "seedcache" in self.settings["options"]:
-				""" SEEDCACHE so let's run rsync and let it clean up """
+				# SEEDCACHE so let's run rsync and let it clean up
 				if os.path.isdir(self.settings["source_path"]):
 					_unpack=True
 					invalid_snapshot=False
 				elif os.path.isfile(self.settings["source_path"]):
-					""" Tarball so unpack and remove anything already there """
+					# Tarball so unpack and remove anything already there
 					_unpack=True
 					invalid_snapshot=True
-				""" No autoresume, no SEEDCACHE """
+				# No autoresume, no SEEDCACHE
 			else:
-				""" Tarball so unpack and remove anything already there """
+				# Tarball so unpack and remove anything already there
 				if os.path.isfile(self.settings["source_path"]):
 					_unpack=True
 					invalid_snapshot=True
 				elif os.path.isdir(self.settings["source_path"]):
-					""" We should never reach this, so something is very wrong """
+					# We should never reach this, so something is very wrong
 					raise CatalystError(
 						"source path is a dir but seedcache is not enabled")
 
@@ -987,7 +973,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		mypath=self.settings["chroot_path"]
 		myrevmounts=self.mounts[:]
 		myrevmounts.reverse()
-		""" Unmount in reverse order for nested bind-mounts """
+		# Unmount in reverse order for nested bind-mounts
 		for x in myrevmounts:
 			target = normpath(mypath + self.target_mounts[x])
 			if not os.path.exists(target):
@@ -1011,20 +997,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if "snapcache" in self.settings["options"] and x == "/usr/portage":
 				try:
-					"""
-					It's possible the snapshot lock object isn't created yet.
-					This is because mount safety check calls unbind before the
-					target is fully initialized
-					"""
+					# It's possible the snapshot lock object isn't created yet.
+					# This is because mount safety check calls unbind before the
+					# target is fully initialized
 					self.snapshot_lock_object.unlock()
 				except Exception:
 					pass
 		if ouch:
-			"""
-			if any bind mounts really failed, then we need to raise
-			this to potentially prevent an upcoming bash stage cleanup script
-			from wiping our bind mounts.
-			"""
+			# if any bind mounts really failed, then we need to raise
+			# this to potentially prevent an upcoming bash stage cleanup script
+			# from wiping our bind mounts.
 			raise CatalystError(
 				"Couldn't umount one or more bind-mounts; aborting for safety.")
 
@@ -1048,7 +1030,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("cp /etc/resolv.conf " + self.settings["chroot_path"] + "/etc/",
 				"Could not copy resolv.conf into place.",env=self.env)
 
-			""" Copy over the envscript, if applicable """
+			# Copy over the envscript, if applicable
 			if "envscript" in self.settings:
 				if not os.path.exists(self.settings["envscript"]):
 					raise CatalystError(
@@ -1067,10 +1049,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings["chroot_path"]+"/tmp/envscript",\
 					"Could not copy envscript into place.",env=self.env)
 
-			"""
-			Copy over /etc/hosts from the host in case there are any
-			specialties in there
-			"""
+			# Copy over /etc/hosts from the host in case there are any
+			# specialties in there
 			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
 					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
@@ -1078,7 +1058,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts",\
 					"Could not copy /etc/hosts",env=self.env)
 
-			""" Modify and write out make.conf (for the chroot) """
+			# Modify and write out make.conf (for the chroot)
 			makepath = normpath(self.settings["chroot_path"] +
 				self.settings["make_conf"])
 			cmd("rm -f " + makepath,\
@@ -1124,7 +1104,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myf.write("# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable before changing.\n")
 				myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 
-			""" Figure out what our USE vars are for building """
+			# Figure out what our USE vars are for building
 			myusevars=[]
 			if "HOSTUSE" in self.settings:
 				myusevars.extend(self.settings["HOSTUSE"])
@@ -1155,7 +1135,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
 			myf.write('PKGDIR="%s"\n' % self.settings['packagedir'])
 
-			""" Setup the portage overlay """
+			# Setup the portage overlay
 			if "portage_overlay" in self.settings:
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
@@ -1193,13 +1173,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+\
 					x,env=self.env)
 
-		""" Put /etc/hosts back into place """
+		# Put /etc/hosts back into place
 		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
 			cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.catalyst "+\
 				self.settings["chroot_path"]+"/etc/hosts",\
 				"Could not replace /etc/hosts",env=self.env)
 
-		""" Remove our overlay """
+		# Remove our overlay
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
 			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
@@ -1207,7 +1187,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["make_conf"],\
 				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
 
-		""" Clean up old and obsoleted files in /etc """
+		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
 			cmd("find "+self.settings["stage_path"]+\
 				"/etc -maxdepth 1 -name \"*-\" | xargs rm -f",\
@@ -1235,10 +1215,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						print x,"not a directory or does not exist, skipping 'empty' operation."
 						continue
 					print "Emptying directory",x
-					"""
-					stat the dir, delete the dir, recreate the dir and set
-					the proper perms and ownership
-					"""
+					# stat the dir, delete the dir, recreate the dir and set
+					# the proper perms and ownership
 					mystat=os.stat(myemp)
 					shutil.rmtree(myemp)
 					ensure_dirs(myemp, mode=0755)
@@ -1253,10 +1231,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if self.settings["spec_prefix"]+"/rm" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
-					"""
-					We're going to shell out for all these cleaning
-					operations, so we get easy glob handling.
-					"""
+					# We're going to shell out for all these cleaning
+					# operations, so we get easy glob handling.
 					print "livecd: removing "+x
 					os.system("rm -rf "+self.settings["chroot_path"]+x)
 				try:
@@ -1294,11 +1270,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("capture"):
 			print "Resume point detected, skipping capture operation..."
 		else:
-			print """ Capture target in a tarball """
-			""" Remove filename from path """
+			print "Capture target in a tarball"
+			# Remove filename from path
 			mypath = os.path.dirname(self.settings["target_path"])
 
-			""" Now make sure path exists """
+			# Now make sure path exists
 			ensure_dirs(mypath)
 
 			pack_info = self.compressor.create_infodict(
@@ -1354,12 +1330,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				for opt in self.settings[x]:
 					self.env['clst_' + opt.upper()] = "true"
 				continue
-			""" Sanitize var names by doing "s|/-.|_|g" """
+			# Sanitize var names by doing "s|/-.|_|g"
 			varname = "clst_" + x.replace("/", "_")
 			varname = varname.replace("-", "_")
 			varname = varname.replace(".", "_")
 			if type(self.settings[x])==types.StringType:
-				""" Prefix to prevent namespace clashes """
+				# Prefix to prevent namespace clashes
 				#os.environ[varname]=self.settings[x]
 				self.env[varname]=self.settings[x]
 			elif type(self.settings[x])==types.ListType:
@@ -1400,10 +1376,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def run(self):
 		self.chroot_lock.write_lock()
 
-		""" Kill any pids in the chroot "" """
+		# Kill any pids in the chroot
 		self.kill_chroot_pids()
 
-		""" Check for mounts right away and abort if we cannot unmount them """
+		# Check for mounts right away and abort if we cannot unmount them
 		self.mount_safety_check()
 
 		if "clear-autoresume" in self.settings["options"]:
@@ -1460,14 +1436,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings[self.settings["spec_prefix"]+"/unmerge"][:]
 
 				for x in range(0,len(myunmerge)):
-					"""
-					Surround args with quotes for passing to bash, allows
-					things like "<" to remain intact
-					"""
+					# Surround args with quotes for passing to bash, allows
+					# things like "<" to remain intact
 					myunmerge[x]="'"+myunmerge[x]+"'"
 				myunmerge = ' '.join(myunmerge)
 
-				""" Before cleaning, unmerge stuff """
+				# Before cleaning, unmerge stuff
 				try:
 					cmd(self.settings["controller_file"]+\
 						" unmerge "+ myunmerge,"Unmerge script failed.",\
@@ -1508,7 +1482,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("create_iso"):
 			print "Resume point detected, skipping create_iso operation..."
 		else:
-			""" Create the ISO """
+			# Create the ISO
 			if "iso" in self.settings:
 				cmd(self.settings["controller_file"]+" iso "+\
 					self.settings["iso"],"ISO creation script failed.",\
@@ -1557,9 +1531,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					mynames=self.settings["boot/kernel"]
 					if type(mynames)==types.StringType:
 						mynames=[mynames]
-					"""
-					Execute the script that sets up the kernel build environment
-					"""
+					# Execute the script that sets up the kernel build environment
 					cmd(self.settings["controller_file"]+\
 						" pre-kmerge ","Runscript pre-kmerge failed",\
 						env=self.env)
@@ -1580,10 +1552,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			return
 		self._copy_kernel_config(kname=kname)
 
-		"""
-		If we need to pass special options to the bootloader
-		for this kernel put them into the environment
-		"""
+		# If we need to pass special options to the bootloader
+		# for this kernel put them into the environment
 		if "boot/kernel/"+kname+"/kernelopts" in self.settings:
 			myopts=self.settings["boot/kernel/"+kname+\
 				"/kernelopts"]
@@ -1605,7 +1575,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		self._copy_initramfs_overlay(kname=kname)
 
-		""" Execute the script that builds the kernel """
+		# Execute the script that builds the kernel
 		cmd("/bin/bash "+self.settings["controller_file"]+\
 			" kernel "+kname,\
 			"Runscript kernel build failed",env=self.env)
@@ -1619,10 +1589,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		self.resume.is_enabled("build_kernel_"+kname)
 
-		"""
-		Execute the script that cleans up the kernel build
-		environment
-		"""
+		# Execute the script that cleans up the kernel build environment
 		cmd("/bin/bash "+self.settings["controller_file"]+\
 			" post-kmerge ",
 			"Runscript post-kmerge failed",env=self.env)
