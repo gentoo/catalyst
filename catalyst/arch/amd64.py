@@ -5,7 +5,6 @@ class generic_amd64(builder.generic):
 	"abstract base class for all amd64 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["CHROOT"]="chroot"
 
 class arch_amd64(generic_amd64):
 	"builder class for generic amd64 (Intel and AMD)"

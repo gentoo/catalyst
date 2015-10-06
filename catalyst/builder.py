@@ -2,6 +2,7 @@
 class generic(object):
 	def __init__(self,myspec):
 		self.settings=myspec
+		self.settings.setdefault('CHROOT', 'chroot')
 
 	def mount_safety_check(self):
 		"""

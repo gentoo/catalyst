@@ -14,8 +14,6 @@ class generic_x86(builder.generic):
 					"(\"emerge setarch\" to fix.)", print_traceback=True)
 			self.settings["CHROOT"]="linux32 chroot"
 			self.settings["crosscompile"] = False
-		else:
-			self.settings["CHROOT"]="chroot"
 
 class arch_x86(generic_x86):
 	"builder class for generic x86 (386+)"

@@ -5,7 +5,6 @@ class generic_m68k(builder.generic):
 	"abstract base class for all m68k builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]=" -pipe"
 
 class arch_m68k(generic_m68k):

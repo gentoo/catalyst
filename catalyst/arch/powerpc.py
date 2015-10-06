@@ -15,14 +15,11 @@ class generic_ppc(builder.generic):
 					"(\"emerge setarch\" to fix.)", print_traceback=True)
 			self.settings["CHROOT"]="linux32 chroot"
 			self.settings["crosscompile"] = False
-		else:
-			self.settings["CHROOT"]="chroot"
 
 class generic_ppc64(builder.generic):
 	"abstract base class for all 64-bit powerpc builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["CHROOT"]="chroot"
 
 class arch_ppc(generic_ppc):
 	"builder class for generic powerpc"

@@ -7,7 +7,6 @@ class generic_alpha(builder.generic):
 	"abstract base class for all alpha builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		self.settings["CHROOT"]="chroot"
 		self.settings["CFLAGS"]="-mieee -pipe"
 
 class arch_alpha(generic_alpha):
