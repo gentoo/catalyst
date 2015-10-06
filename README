@@ -19,7 +19,7 @@ simple and reproducable manner.  Use at your own risk.
 Requirements
 =======================
 
-- Python 2.4 or greater (may still work with 2.3)
+- Python 2.7 or greater (may still work with 2.6)
 - An ebuild repository snapshot (or an ebuild tree to create one)
 - A generic stage3 tarball for your architecture
 - shash for digest support
