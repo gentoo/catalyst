@@ -6,9 +6,9 @@
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
 # $Id$
 
+import argparse
 import os
 import sys
-import getopt
 import os.path
 
 __selfpath__ = os.path.abspath(os.path.dirname(__file__))
@@ -26,35 +26,6 @@ from catalyst.version import get_version
 
 
 conf_values={}
-
-
-def usage():
-	print """Usage catalyst [options] [-C variable=value...] [ -s identifier]
- -a --clear-autoresume  clear autoresume flags
- -c --config            use specified configuration file
- -C --cli               catalyst commandline (MUST BE LAST OPTION)
- -d --debug             enable debugging
- -f --file              read specfile
- -F --fetchonly         fetch files only
- -h --help              print this help message
- -p --purge             clear tmp dirs,package cache, autoresume flags
- -P --purgeonly         clear tmp dirs,package cache, autoresume flags and exit
- -T --purgetmponly      clear tmp dirs and autoresume flags and exit
- -s --snapshot          generate a release snapshot
- -V --version           display version information
- -v --verbose           verbose output
-
-Usage examples:
-
-Using the commandline option (-C, --cli) to build a Portage snapshot:
-catalyst -C target=snapshot version_stamp=my_date
-
-Using the snapshot option (-s, --snapshot) to build a release snapshot:
-catalyst -s 20071121"
-
-Using the specfile option (-f, --file) to build a stage target:
-catalyst -f stage1-specfile.spec
-"""
 
 
 def version():
@@ -167,96 +138,104 @@ def build_target(addlargs):
 	return target.run()
 
 
+class FilePath(object):
+	"""Argparse type for getting a path to a file."""
+
+	def __init__(self, exists=True):
+		self.exists = exists
+
+	def __call__(self, string):
+		if not os.path.exists(string):
+			raise argparse.ArgumentTypeError('file does not exist: %s' % string)
+		return string
+
+	def __repr__(self):
+		return '%s(exists=%s)' % (type(self).__name__, self.exists)
+
+
+def get_parser():
+	"""Return an argument parser"""
+	epilog = """Usage examples:
+
+Using the commandline option (-C, --cli) to build a Portage snapshot:
+$ catalyst -C target=snapshot version_stamp=my_date
+
+Using the snapshot option (-s, --snapshot) to build a release snapshot:
+$ catalyst -s 20071121
+
+Using the specfile option (-f, --file) to build a stage target:
+$ catalyst -f stage1-specfile.spec"""
+
+	parser = argparse.ArgumentParser(epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter)
+	parser.add_argument('-d', '--debug',
+		default=False, action='store_true',
+		help='enable debugging')
+	parser.add_argument('-v', '--verbose',
+		default=False, action='store_true',
+		help='verbose output')
+	parser.add_argument('-c', '--config',
+		type=FilePath(),
+		help='use specified configuration file')
+	parser.add_argument('-f', '--file',
+		type=FilePath(),
+		help='read specfile')
+	parser.add_argument('-F', '--fetchonly',
+		default=False, action='store_true',
+		help='fetch files only')
+	parser.add_argument('-a', '--clear-autoresume',
+		default=False, action='store_true',
+		help='clear autoresume flags')
+	parser.add_argument('-p', '--purge',
+		default=False, action='store_true',
+		help='clear tmp dirs, package cache, autoresume flags')
+	parser.add_argument('-P', '--purgeonly',
+		default=False, action='store_true',
+		help='clear tmp dirs, package cache, autoresume flags and exit')
+	parser.add_argument('-T', '--purgetmponly',
+		default=False, action='store_true',
+		help='clear tmp dirs and autoresume flags and exit')
+	parser.add_argument('-s', '--snapshot',
+		help='generate a release snapshot')
+	parser.add_argument('-V', '--version',
+		action='version', version=get_version(),
+		help='display version information')
+	parser.add_argument('-C', '--cli',
+		default=[], nargs=argparse.REMAINDER,
+		help='catalyst commandline (MUST BE LAST OPTION)')
+	return parser
+
+
 def main():
-	# we need some options in order to work correctly
-	if len(sys.argv) < 2:
-		usage()
-		sys.exit(2)
+	parser = get_parser()
+	opts = parser.parse_args(sys.argv[1:])
 
-	# parse out the command line arguments
-	try:
-		opts, _args = getopt.getopt(sys.argv[1:], "apPThvdc:C:f:FVs:", ["purge", "purgeonly", "purgetmponly", "help", "version", "debug",
-			"clear-autoresume", "config=", "cli=", "file=", "fetch", "verbose","snapshot="])
+	# Parse the command line options.
+	myconfig = opts.config
+	myspecfile = opts.file
+	mycmdline = opts.cli[:]
 
-	except getopt.GetoptError:
-		usage()
-		sys.exit(2)
+	if opts.snapshot:
+		mycmdline.append('target=snapshot')
+		mycmdline.append('version_stamp=' + opts.snapshot)
 
-	myconfig=""
-	myspecfile=""
-	mycmdline=[]
-
-	# check preconditions
-	if len(opts) == 0:
-		print "!!! catalyst: please specify one of either -f or -C\n"
-		usage()
-		sys.exit(2)
+	conf_values['DEBUG'] = opts.debug
+	conf_values['VERBOSE'] = opts.debug or opts.verbose
 
 	options = set()
+	if opts.fetchonly:
+		options.add('fetch')
+	if opts.purge:
+		options.add('purge')
+	if opts.purgeonly:
+		options.add('purgeonly')
+	if opts.purgetmponly:
+		options.add('purgetmponly')
+	if opts.clear_autoresume:
+		options.add('clear-autoresume')
 
-	run = False
-	for o, a in opts:
-		if o in ("-h", "--help"):
-			version()
-			usage()
-			sys.exit(1)
-
-		if o in ("-V", "--version"):
-			print get_version()
-			sys.exit(1)
-
-		if o in ("-d", "--debug"):
-			conf_values["DEBUG"] = True
-			conf_values["VERBOSE"] = True
-
-		if o in ("-c", "--config"):
-			myconfig=a
-
-		if o in ("-C", "--cli"):
-			run = True
-			x=sys.argv.index(o)+1
-			while x < len(sys.argv):
-				mycmdline.append(sys.argv[x])
-				x=x+1
-
-		if o in ("-f", "--file"):
-			run = True
-			myspecfile=a
-
-		if o in ("-F", "--fetchonly"):
-			options.add("fetch")
-
-		if o in ("-v", "--verbose"):
-			conf_values["VERBOSE"]="1"
-
-		if o in ("-s", "--snapshot"):
-			if len(sys.argv) < 3:
-				print "!!! catalyst: missing snapshot identifier\n"
-				usage()
-				sys.exit(2)
-			else:
-				run = True
-				mycmdline.append("target=snapshot")
-				mycmdline.append("version_stamp="+a)
-
-		if o in ("-p", "--purge"):
-			options.add("purge")
-
-		if o in ("-P", "--purgeonly"):
-			options.add("purgeonly")
-
-		if o in ("-T", "--purgetmponly"):
-			options.add("purgetmponly")
-
-		if o in ("-a", "--clear-autoresume"):
-			options.add("clear-autoresume")
-
-	#print "MAIN: cli options =", options
-
-	if not run:
-		print "!!! catalyst: please specify one of either -f or -C\n"
-		usage()
-		sys.exit(2)
+	# Make sure we have some work before moving further.
+	if not myspecfile and not mycmdline:
+		parser.error('please specify one of either -f or -C or -s')
 
 	# made it this far so start by outputting our version info
 	version()
