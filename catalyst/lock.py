@@ -176,7 +176,6 @@ class LockDir(object):
 			#writemsg("Lockfile obtained\n")
 
 	def fcntl_unlock(self):
-		import fcntl
 		unlinkfile = 1
 		if not os.path.exists(self.lockfile):
 			print "lockfile does not exist '%s'" % self.lockfile
