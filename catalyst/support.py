@@ -34,23 +34,23 @@ spawned_pids = []
 
 # a function to turn a string of non-printable characters
 # into a string of hex characters
-def hexify(str):
+def hexify(s):
 	hexStr = string.hexdigits
 	r = ''
-	for ch in str:
+	for ch in s:
 		i = ord(ch)
 		r = r + hexStr[(i >> 4) & 0xF] + hexStr[i & 0xF]
 	return r
 
 
-def read_from_clst(file):
+def read_from_clst(path):
 	line = ''
 	myline = ''
 	try:
-		myf=open(file,"r")
+		myf = open(path, "r")
 	except:
 		return -1
-		#raise CatalystError("Could not open file "+file)
+		#raise CatalystError("Could not open file " + path)
 	for line in myf.readlines():
 		#line = line.replace("\n", "") # drop newline
 		myline = myline + line
