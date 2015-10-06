@@ -16,7 +16,7 @@ import sys
 try:
 	import signal
 
-	def exithandler(signum,frame):
+	def exithandler(_signum, _frame):
 		signal.signal(signal.SIGINT, signal.SIG_IGN)
 		signal.signal(signal.SIGTERM, signal.SIG_IGN)
 		print()

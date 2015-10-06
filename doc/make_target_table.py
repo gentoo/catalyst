@@ -16,7 +16,7 @@ import glob
 import re
 
 
-def key_netboot_before_netboot2((target_name, module)):
+def key_netboot_before_netboot2((target_name, _module)):
 	return target_name + '1'
 
 
