@@ -16,8 +16,7 @@ from DeComp.compress import CompressMap
 from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
 	PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, msg, file_locate, normpath,
-	cmd, warn, list_bashify, read_makeconf, read_from_clst, ismount,
-	file_check)
+	cmd, warn, list_bashify, read_makeconf, ismount, file_check)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
@@ -817,7 +816,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "snapcache" in self.settings["options"]:
 			snapshot_cache_hash_path = pjoin(
 				self.settings['snapshot_cache_path'], 'catalyst-hash')
-			snapshot_cache_hash = read_from_clst(snapshot_cache_hash_path)
+			snapshot_cache_hash = fileutils.readfile(snapshot_cache_hash_path, True)
 			unpack_info['mode'] = self.decompressor.determine_mode(
 				unpack_info['source'])
 

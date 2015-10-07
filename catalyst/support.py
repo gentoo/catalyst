@@ -13,21 +13,6 @@ from catalyst.defaults import verbosity, valid_config_file_values
 BASH_BINARY             = "/bin/bash"
 
 
-def read_from_clst(path):
-	line = ''
-	myline = ''
-	try:
-		myf = open(path, "r")
-	except Exception:
-		return -1
-		#raise CatalystError("Could not open file " + path)
-	for line in myf.readlines():
-		#line = line.replace("\n", "") # drop newline
-		myline = myline + line
-	myf.close()
-	return myline
-
-
 def list_bashify(mylist):
 	if type(mylist)==types.StringType:
 		mypack=[mylist]
