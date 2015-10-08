@@ -33,7 +33,7 @@ class stage2(StageBase):
 							verbose=False)
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn of seedcache in the options of catalyst.conf"
+			print "\tIf this is not desired, remove this directory or turn off seedcache in the options of catalyst.conf"
 			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"] + "\n")
 
 	# XXX: How do these override_foo() functions differ from the ones in
