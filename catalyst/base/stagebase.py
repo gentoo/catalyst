@@ -815,9 +815,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		print self.settings["chroot_path"]
 		print "unpack(), target_portdir = " + target_portdir
 		if "snapcache" in self.settings["options"]:
-			snapshot_cache_hash=\
-				read_from_clst(self.settings["snapshot_cache_path"]+\
-				"catalyst-hash")
+			snapshot_cache_hash_path = pjoin(
+				self.settings['snapshot_cache_path'], 'catalyst-hash')
+			snapshot_cache_hash = read_from_clst(snapshot_cache_hash_path)
 			unpack_info['mode'] = self.decompressor.determine_mode(
 				unpack_info['source'])
 
@@ -862,8 +862,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				print unpack_errmsg %(unpack_info)
 
 			if "snapcache" in self.settings["options"]:
-				myf=open(self.settings["snapshot_cache_path"] +
-					"/" + "catalyst-hash","w")
+				myf = open(snapshot_cache_hash_path, 'w')
 				myf.write(self.settings["snapshot_path_hash"])
 				myf.close()
 			else:
