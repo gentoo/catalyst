@@ -26,7 +26,7 @@ class GenBase(object):
 					array.sort()
 				for j in array:
 					contents = contents_map.contents(path, j,
-						verbose="VERBOSE" in self.settings)
+						verbose=self.settings["VERBOSE"])
 					if contents:
 						myf.write(contents)
 				myf.close()
@@ -49,12 +49,12 @@ class GenBase(object):
 						if "all" in array:
 							for k in list(hash_map.hash_map):
 								digest = hash_map.generate_hash(f,hash_=k,
-									verbose = "VERBOSE" in self.settings)
+									verbose=self.settings["VERBOSE"])
 								myf.write(digest)
 						else:
 							for j in array:
 								digest = hash_map.generate_hash(f,hash_=j,
-									verbose = "VERBOSE" in self.settings)
+									verbose=self.settings["VERBOSE"])
 								myf.write(digest)
 				myf.close()
 

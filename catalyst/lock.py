@@ -71,7 +71,7 @@ class LockDir(object):
 
 	def set_gid(self,gid):
 		if not self.islocked():
-#			if "DEBUG" in self.settings:
+#			if self.settings["DEBUG"]:
 #				print "setting gid to", gid
 			self.gid=gid
 
@@ -83,7 +83,7 @@ class LockDir(object):
 				if lockdir[-1] == "/":
 					lockdir=lockdir[:-1]
 				self.lockdir=normpath(lockdir)
-#				if "DEBUG" in self.settings:
+#				if self.settings["DEBUG"]:
 #					print "setting lockdir to", self.lockdir
 		else:
 			raise "the lock object needs a path to a dir"
@@ -91,13 +91,13 @@ class LockDir(object):
 	def set_lockfilename(self,lockfilename):
 		if not self.islocked():
 			self.lockfilename=lockfilename
-#			if "DEBUG" in self.settings:
+#			if self.settings["DEBUG"]:
 #				print "setting lockfilename to", self.lockfilename
 
 	def set_lockfile(self):
 		if not self.islocked():
 			self.lockfile=normpath(self.lockdir+'/'+self.lockfilename)
-#			if "DEBUG" in self.settings:
+#			if self.settings["DEBUG"]:
 #				print "setting lockfile to", self.lockfile
 
 	def read_lock(self):
@@ -222,7 +222,7 @@ class LockDir(object):
 						os.unlink(self.lockfile)
 						os.close(self.myfd)
 						self.myfd=None
-#						if "DEBUG" in self.settings:
+#						if self.settings["DEBUG"]:
 #							print "Unlinked lockfile..."
 				except Exception, e:
 					# We really don't care... Someone else has the lock.
@@ -269,7 +269,7 @@ class LockDir(object):
 			try:
 				os.link(self.myhardlock, self.lockfile)
 			except Exception:
-#				if "DEBUG" in self.settings:
+#				if self.settings["DEBUG"]:
 #					print "lockfile(): Hardlink: Link failed."
 #					print "Exception: ",e
 				pass
