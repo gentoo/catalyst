@@ -18,6 +18,7 @@ from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
 	CONTENTS_DEFINITIONS)
 from DeComp.contents import ContentsMap
 
+from catalyst import log
 import catalyst.config
 import catalyst.util
 from catalyst.defaults import confdefaults, option_messages
@@ -176,10 +177,23 @@ $ catalyst -f stage1-specfile.spec"""
 	group = parser.add_argument_group('Program output options')
 	group.add_argument('-d', '--debug',
 		default=False, action='store_true',
-		help='enable debugging')
+		help='enable debugging (and default --log-level debug)')
 	group.add_argument('-v', '--verbose',
 		default=False, action='store_true',
-		help='verbose output')
+		help='verbose output (and default --log-level info)')
+	group.add_argument('--log-level',
+		default=None,
+		choices=('critical', 'error', 'warning', 'notice', 'info', 'debug'),
+		help='set verbosity of output (default: notice)')
+	group.add_argument('--log-file',
+		type=FilePath(exists=False),
+		help='write all output to this file (instead of stdout)')
+	group.add_argument('--color',
+		default=None, action='store_true',
+		help='colorize output all the time (default: detect)')
+	group.add_argument('--nocolor',
+		dest='color', action='store_false',
+		help='never colorize output all the time (default: detect)')
 
 	group = parser.add_argument_group('Temporary file management')
 	group.add_argument('-a', '--clear-autoresume',
@@ -217,6 +231,18 @@ $ catalyst -f stage1-specfile.spec"""
 def main():
 	parser = get_parser()
 	opts = parser.parse_args(sys.argv[1:])
+
+	# Initialize the logger before anything else.
+	log_level = opts.log_level
+	if log_level is None:
+		if opts.debug:
+			log_level = 'debug'
+		elif opts.verbose:
+			log_level = 'info'
+		else:
+			log_level = 'notice'
+	log.setup_logging(log_level, output=opts.log_file, debug=opts.debug,
+		color=opts.color)
 
 	# Parse the command line options.
 	myconfig = opts.config
