@@ -21,7 +21,6 @@ from DeComp.contents import ContentsMap
 
 from catalyst import log
 import catalyst.config
-import catalyst.util
 from catalyst.defaults import confdefaults, option_messages
 from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
 from catalyst.support import CatalystError
