@@ -3,6 +3,7 @@ import os
 from collections import namedtuple
 from subprocess import Popen, PIPE
 
+from catalyst import log
 from catalyst.support import CatalystError
 
 
@@ -65,32 +66,28 @@ class HashMap(object):
 		del obj
 
 
-	def generate_hash(self, file_, hash_="crc32", verbose=False):
+	def generate_hash(self, file_, hash_="crc32"):
 		'''Prefered method of generating a hash for the passed in file_
 
 		@param file_: the file to generate the hash for
 		@param hash_: the hash algorythm to use
-		@param verbose: boolean
 		@returns the hash result
 		'''
 		try:
 			return getattr(self, self.hash_map[hash_].func)(
 				file_,
-				hash_,
-				verbose
-				)
+				hash_)
 		except:
 			raise CatalystError("Error generating hash, is appropriate " + \
 				"utility installed on your system?", traceback=True)
 
 
-	def calc_hash(self, file_, hash_, verbose=False):
+	def calc_hash(self, file_, hash_):
 		'''
 		Calculate the hash for "file_"
 
 		@param file_: the file to generate the hash for
 		@param hash_: the hash algorythm to use
-		@param verbose: boolean
 		@returns the hash result
 		'''
 		_hash = self.hash_map[hash_]
@@ -101,36 +98,33 @@ class HashMap(object):
 		mylines = source.communicate()[0]
 		mylines=mylines[0].split()
 		result=mylines[0]
-		if verbose:
-			print _hash.id + " (%s) = %s" % (file_, result)
+		log.info('%s (%s) = %s', _hash.id, file_, result)
 		return result
 
 
-	def calc_hash2(self, file_, hash_type, verbose=False):
+	def calc_hash2(self, file_, hash_type):
 		'''
 		Calculate the hash for "file_"
 
 		@param file_: the file to generate the hash for
 		@param hash_: the hash algorythm to use
-		@param verbose: boolean
 		@returns the hash result
 		'''
 		_hash = self.hash_map[hash_type]
 		args = [_hash.cmd]
 		args.extend(_hash.args)
 		args.append(file_)
-		#print("DEBUG: calc_hash2; args =", args)
+		log.debug('args = %r', args)
 		source = Popen(args, stdout=PIPE)
 		output = source.communicate()
 		lines = output[0].split('\n')
-		#print("DEBUG: calc_hash2; output =", output)
+		log.debug('output = %s', output)
 		header = lines[0]
 		h_f = lines[1].split()
 		hash_result = h_f[0]
 		short_file = os.path.split(h_f[1])[1]
 		result = header + "\n" + hash_result + "  " + short_file + "\n"
-		if verbose:
-			print header + " (%s) = %s" % (short_file, result)
+		log.info('%s (%s) = %s', header, short_file, result)
 		return result
 
 

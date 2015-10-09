@@ -435,8 +435,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings["source_path_hash"] = \
 						self.settings["hash_map"].generate_hash(
 							self.settings["source_path"],
-							hash_ = self.settings["hash_function"],
-							verbose = False)
+							hash_=self.settings["hash_function"])
 		print "Source path set to "+self.settings["source_path"]
 		if os.path.isdir(self.settings["source_path"]):
 			print "\tIf this is not desired, remove this directory or turn off"
@@ -464,8 +463,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.settings["snapshot_path_hash"] = \
 			self.settings["hash_map"].generate_hash(
 				self.settings["snapshot_path"],
-				hash_ = self.settings["hash_function"],
-				verbose = False)
+				hash_=self.settings["hash_function"])
 
 	def set_snapcache_path(self):
 		self.settings["snapshot_cache_path"]=\

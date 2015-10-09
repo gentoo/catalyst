@@ -48,13 +48,11 @@ class GenBase(object):
 					if os.path.exists(f):
 						if "all" in array:
 							for k in list(hash_map.hash_map):
-								digest = hash_map.generate_hash(f,hash_=k,
-									verbose=self.settings["VERBOSE"])
+								digest = hash_map.generate_hash(f, hash_=k)
 								myf.write(digest)
 						else:
 							for j in array:
-								digest = hash_map.generate_hash(f,hash_=j,
-									verbose=self.settings["VERBOSE"])
+								digest = hash_map.generate_hash(f, hash_=j)
 								myf.write(digest)
 				myf.close()
 
