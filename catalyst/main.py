@@ -7,6 +7,7 @@
 # $Id$
 
 import argparse
+import datetime
 import os
 import sys
 
@@ -31,36 +32,36 @@ conf_values={}
 
 
 def version():
-	print get_version()
-	print "Copyright 2003-2008 Gentoo Foundation"
-	print "Copyright 2008-2012 various authors"
-	print "Distributed under the GNU General Public License version 2.1\n"
+	log.info(get_version())
+	log.info('Copyright 2003-%s Gentoo Foundation', datetime.datetime.now().year)
+	log.info('Copyright 2008-2012 various authors')
+	log.info('Distributed under the GNU General Public License version 2.1')
 
 def parse_config(myconfig):
 	# search a couple of different areas for the main config file
 	myconf={}
 	config_file=""
+	default_config_file = '/etc/catalyst/catalyst.conf'
 
 	# first, try the one passed (presumably from the cmdline)
 	if myconfig:
 		if os.path.exists(myconfig):
-			print "Using command line specified Catalyst configuration file, "+myconfig
+			log.notice('Using command line specified Catalyst configuration file: %s',
+				myconfig)
 			config_file=myconfig
 
 		else:
-			print "!!! catalyst: Could not use specified configuration file "+\
-				myconfig
-			sys.exit(1)
+			log.critical('Specified configuration file does not exist: %s', myconfig)
 
 	# next, try the default location
-	elif os.path.exists("/etc/catalyst/catalyst.conf"):
-		print "Using default Catalyst configuration file, /etc/catalyst/catalyst.conf"
-		config_file="/etc/catalyst/catalyst.conf"
+	elif os.path.exists(default_config_file):
+		log.notice('Using default Catalyst configuration file: %s',
+			default_config_file)
+		config_file = default_config_file
 
 	# can't find a config file (we are screwed), so bail out
 	else:
-		print "!!! catalyst: Could not find a suitable configuration file"
-		sys.exit(1)
+		log.critical('Could not find a suitable configuration file')
 
 	# now, try and parse the config file "config_file"
 	try:
@@ -69,8 +70,7 @@ def parse_config(myconfig):
 		myconf.update(myconfig.get_values())
 
 	except Exception:
-		print "!!! catalyst: Unable to parse configuration file, "+myconfig
-		sys.exit(1)
+		log.critical('Could not find parse configuration file: %s', myconfig)
 
 	# now, load up the values into conf_values so that we can use them
 	for x in list(confdefaults):
@@ -90,7 +90,7 @@ def parse_config(myconfig):
 	# print out any options messages
 	for opt in conf_values['options']:
 		if opt in option_messages:
-			print option_messages[opt]
+			log.info(option_messages[opt])
 
 	for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir",
 				"local_overlay"]:
@@ -102,7 +102,7 @@ def parse_config(myconfig):
 		conf_values["contents"] = myconf["contents"].replace("-", '_')
 
 	if "envscript" in myconf:
-		print "Envscript support enabled."
+		log.info('Envscript support enabled.')
 
 	# take care of any variable substitutions that may be left
 	for x in list(conf_values):
@@ -118,11 +118,8 @@ def import_module(target):
 	try:
 		mod_name = "catalyst.targets." + target
 		module = __import__(mod_name, [],[], ["not empty"])
-	except ImportError as e:
-		print "!!! catalyst: Python module import error: %s " % target + \
-			"in catalyst/targets/ ... exiting."
-		print "ERROR was: ", e
-		sys.exit(1)
+	except ImportError:
+		log.critical('Python module import error: %s', target, exc_info=True)
 	return module
 
 
@@ -278,7 +275,7 @@ def main():
 	parse_config(myconfig)
 
 	conf_values["options"].update(options)
-	#print "MAIN: conf_values['options'] =", conf_values["options"]
+	log.debug('conf_values[options] = %s', conf_values['options'])
 
 	# initialize our contents generator
 	contents_map = ContentsMap(CONTENTS_DEFINITIONS)
@@ -308,14 +305,13 @@ def main():
 
 		# First validate all the requested digests are valid keys.
 		if digests - valid_digests:
-			print
-			print "These are not a valid digest entries:"
-			print ', '.join(digests - valid_digests)
-			print "Valid digest entries:"
-			print ', '.join(sorted(valid_digests))
-			print
-			print "Catalyst aborting...."
-			sys.exit(2)
+			log.critical(
+				'These are not valid digest entries:\n'
+				'%s\n'
+				'Valid digest entries:\n'
+				'%s',
+				', '.join(digests - valid_digests),
+				', '.join(sorted(valid_digests)))
 
 		# Then check for any programs that the hash func requires.
 		for digest in digests:
@@ -326,37 +322,28 @@ def main():
 				if skip_missing:
 					digests.remove(digest)
 					continue
-				print
-				print "digest=" + digest
-				print "\tThe " + hash_map.hash_map[digest].cmd + \
-					" binary was not found. It needs to be in your system path"
-				print
-				print "Catalyst aborting...."
-				sys.exit(2)
+				log.critical(
+					'The "%s" binary needed by digest "%s" was not found. '
+					'It needs to be in your system path.',
+					hash_map.hash_map[digest].cmd, digest)
 
 		# Now reload the config with our updated value.
 		conf_values['digests'] = ' '.join(digests)
 
 	if "hash_function" in conf_values:
 		if conf_values["hash_function"] not in HASH_DEFINITIONS:
-			print
-			print conf_values["hash_function"]+\
-				" is not a valid hash_function entry"
-			print "Valid hash_function entries:"
-			print HASH_DEFINITIONS.keys()
-			print
-			print "Catalyst aborting...."
-			sys.exit(2)
+			log.critical(
+				'%s is not a valid hash_function entry\n'
+				'Valid hash_function entries:\n'
+				'%s', HASH_DEFINITIONS.keys())
 		try:
 			process.find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd)
 		except process.CommandNotFound:
-			print
-			print "hash_function="+conf_values["hash_function"]
-			print "\tThe "+hash_map.hash_map[conf_values["hash_function"]].cmd + \
-				" binary was not found. It needs to be in your system path"
-			print
-			print "Catalyst aborting...."
-			sys.exit(2)
+			log.critical(
+				'The "%s" binary needed by hash_function "%s" was not found. '
+				'It needs to be in your system path.',
+				hash_map.hash_map[conf_values['hash_function']].cmd,
+				conf_values['hash_function'])
 
 	addlargs={}
 
@@ -370,25 +357,20 @@ def main():
 			cmdline.parse_lines(mycmdline)
 			addlargs.update(cmdline.get_values())
 		except CatalystError:
-			print "!!! catalyst: Could not parse commandline, exiting."
-			sys.exit(1)
+			log.critical('Could not parse commandline')
 
 	if "target" not in addlargs:
 		raise CatalystError("Required value \"target\" not specified.")
 
 	if os.getuid() != 0:
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
-		print "!!! catalyst: This script requires root privileges to operate"
-		sys.exit(2)
+		log.critical('This script requires root privileges to operate')
 
 	# everything is setup, so the build is a go
 	try:
 		success = build_target(addlargs)
 	except KeyboardInterrupt:
-		print "\nCatalyst build aborted due to user interrupt ( Ctrl-C )"
-		print
-		print "Catalyst aborting...."
-		sys.exit(2)
+		log.critical('Catalyst build aborted due to user interrupt (Ctrl-C)')
 	if not success:
 		sys.exit(2)
 	sys.exit(0)
