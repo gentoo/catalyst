@@ -168,41 +168,49 @@ Using the specfile option (-f, --file) to build a stage target:
 $ catalyst -f stage1-specfile.spec"""
 
 	parser = argparse.ArgumentParser(epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser.add_argument('-d', '--debug',
-		default=False, action='store_true',
-		help='enable debugging')
-	parser.add_argument('-v', '--verbose',
-		default=False, action='store_true',
-		help='verbose output')
-	parser.add_argument('-c', '--config',
-		type=FilePath(),
-		help='use specified configuration file')
-	parser.add_argument('-f', '--file',
-		type=FilePath(),
-		help='read specfile')
-	parser.add_argument('-F', '--fetchonly',
-		default=False, action='store_true',
-		help='fetch files only')
-	parser.add_argument('-a', '--clear-autoresume',
-		default=False, action='store_true',
-		help='clear autoresume flags')
-	parser.add_argument('-p', '--purge',
-		default=False, action='store_true',
-		help='clear tmp dirs, package cache, autoresume flags')
-	parser.add_argument('-P', '--purgeonly',
-		default=False, action='store_true',
-		help='clear tmp dirs, package cache, autoresume flags and exit')
-	parser.add_argument('-T', '--purgetmponly',
-		default=False, action='store_true',
-		help='clear tmp dirs and autoresume flags and exit')
-	parser.add_argument('-s', '--snapshot',
-		help='generate a release snapshot')
+
 	parser.add_argument('-V', '--version',
 		action='version', version=get_version(),
 		help='display version information')
-	parser.add_argument('-C', '--cli',
+
+	group = parser.add_argument_group('Program output options')
+	group.add_argument('-d', '--debug',
+		default=False, action='store_true',
+		help='enable debugging')
+	group.add_argument('-v', '--verbose',
+		default=False, action='store_true',
+		help='verbose output')
+
+	group = parser.add_argument_group('Temporary file management')
+	group.add_argument('-a', '--clear-autoresume',
+		default=False, action='store_true',
+		help='clear autoresume flags')
+	group.add_argument('-p', '--purge',
+		default=False, action='store_true',
+		help='clear tmp dirs, package cache, autoresume flags')
+	group.add_argument('-P', '--purgeonly',
+		default=False, action='store_true',
+		help='clear tmp dirs, package cache, autoresume flags and exit')
+	group.add_argument('-T', '--purgetmponly',
+		default=False, action='store_true',
+		help='clear tmp dirs and autoresume flags and exit')
+
+	group = parser.add_argument_group('Target/config file management')
+	group.add_argument('-F', '--fetchonly',
+		default=False, action='store_true',
+		help='fetch files only')
+	group.add_argument('-c', '--config',
+		type=FilePath(),
+		help='use specified configuration file')
+	group.add_argument('-f', '--file',
+		type=FilePath(),
+		help='read specfile')
+	group.add_argument('-s', '--snapshot',
+		help='generate a release snapshot')
+	group.add_argument('-C', '--cli',
 		default=[], nargs=argparse.REMAINDER,
 		help='catalyst commandline (MUST BE LAST OPTION)')
+
 	return parser
 
 
