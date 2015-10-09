@@ -20,6 +20,8 @@ from stat import ST_UID, ST_GID, ST_MODE
 from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs,
 	pjoin, listdir_files)
 # pylint: enable=unused-import
+
+from catalyst import log
 from catalyst.support import CatalystError
 
 
@@ -61,31 +63,31 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
 	@remove: boolean, passed through to clear_dir()
 	@return boolean
 	'''
-	#print "fileops.clear_dir()"
+	log.debug('start: %s', target)
 	if not target:
-		#print "fileops.clear_dir(), no target... returning"
+		log.debug('no target... returning')
 		return False
 	if os.path.isdir(target):
-		print "Emptying directory" , target
+		log.info('Emptying directory: %s', target)
 		# stat the dir, delete the dir, recreate the dir and set
 		# the proper perms and ownership
 		try:
-			#print "fileops.clear_dir(), os.stat()"
+			log.debug('os.stat()')
 			mystat=os.stat(target)
 			# There's no easy way to change flags recursively in python
 			if chg_flags and os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg " + target)
-			#print "fileops.clear_dir(), shutil.rmtree()"
+			log.debug('shutil.rmtree()')
 			shutil.rmtree(target)
 			if not remove:
-				#print "fileops.clear_dir(), ensure_dirs()"
+				log.debug('ensure_dirs()')
 				ensure_dirs(target, mode=mode)
 				os.chown(target, mystat[ST_UID], mystat[ST_GID])
 				os.chmod(target, mystat[ST_MODE])
-		except Exception as e:
-			print CatalystError("clear_dir(); Exeption: %s" % str(e))
+		except Exception:
+			log.error('clear_dir failed', exc_info=True)
 			return False
 	else:
-		print "fileops.clear_dir(), %s is not a directory" % (target)
-	#print "fileops.clear_dir(), DONE, returning True"
+		log.info('clear_dir failed: %s: is not a directory', target)
+	log.debug('DONE, returning True')
 	return True
