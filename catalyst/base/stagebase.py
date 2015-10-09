@@ -150,7 +150,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_source_subpath()
 
 		# Set paths
-		self.snapshot_lock_object = None
 		self.set_snapshot_path()
 		self.set_root_path()
 		self.set_source_path()
@@ -822,7 +821,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["snapshot_cache_path"]+\
 				" (This can take a long time)..."
 			cleanup_errmsg="Error removing existing snapshot cache directory."
-			self.snapshot_lock_object=self.snapcache_lock
 
 			if self.settings["snapshot_path_hash"]==snapshot_cache_hash:
 				print "Valid snapshot cache, skipping unpack of portage tree..."
@@ -846,7 +844,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		if unpack:
 			if "snapcache" in self.settings["options"]:
-				self.snapshot_lock_object.write_lock()
+				self.snapcache_lock.write_lock()
 			if os.path.exists(target_portdir):
 				print cleanup_msg
 				cleanup_cmd = "rm -rf " + target_portdir
@@ -868,7 +866,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					data=self.settings["snapshot_path_hash"])
 
 			if "snapcache" in self.settings["options"]:
-				self.snapshot_lock_object.unlock()
+				self.snapcache_lock.unlock()
 
 	def config_profile_link(self):
 		if "autoresume" in self.settings["options"] \
@@ -946,7 +944,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			src=self.mountmap[x]
 			#print "bind(); src =", src
 			if "snapcache" in self.settings["options"] and x == "portdir":
-				self.snapshot_lock_object.read_lock()
+				self.snapcache_lock.read_lock()
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
 					_cmd = "mount -t devfs none " + target
@@ -998,7 +996,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					# It's possible the snapshot lock object isn't created yet.
 					# This is because mount safety check calls unbind before the
 					# target is fully initialized
-					self.snapshot_lock_object.unlock()
+					self.snapcache_lock.unlock()
 				except Exception:
 					pass
 		if ouch:
