@@ -1,5 +1,7 @@
 
 import re
+
+from catalyst import log
 from catalyst.support import CatalystError
 
 class ParserBase(object):
@@ -98,7 +100,7 @@ class ParserBase(object):
 			for x in values.keys():
 				# Delete empty key pairs
 				if not values[x]:
-					print "\n\tWARNING: No value set for key " + x + "...deleting"
+					log.warning('No value set for key "%s"; deleting', x)
 					del values[x]
 
 		self.values = values
