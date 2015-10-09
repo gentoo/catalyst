@@ -8,6 +8,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 from DeComp.compress import CompressMap
 
+from catalyst import log
 from catalyst.support import normpath, cmd
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.genbase import GenBase
@@ -49,8 +50,8 @@ class snapshot(TargetBase, GenBase):
 
 		success = True
 		self.setup()
-		print "Creating Portage tree snapshot "+self.settings["version_stamp"]+\
-			" from "+self.settings["portdir"]+"..."
+		log.notice('Creating Portage tree snapshot %s from %s ...',
+			self.settings['version_stamp'], self.settings['portdir'])
 
 		mytmp=self.settings["tmp_path"]
 		ensure_dirs(mytmp)
@@ -61,7 +62,7 @@ class snapshot(TargetBase, GenBase):
 			target_snapshot,
 			"Snapshot failure", env=self.env)
 
-		print "Compressing Portage snapshot tarball..."
+		log.notice('Compressing Portage snapshot tarball ...')
 		compressor = CompressMap(self.settings["compress_definitions"],
 			env=self.env, default_mode=self.settings['compression_mode'])
 		infodict = compressor.create_infodict(
@@ -74,17 +75,17 @@ class snapshot(TargetBase, GenBase):
 			)
 		if not compressor.compress(infodict):
 			success = False
-			print "Snapshot compression failure"
+			log.error('Snapshot compression failure')
 		else:
 			filename = '.'.join([self.settings["snapshot_path"],
 				compressor.extension(self.settings["compression_mode"])])
-			print "COMPRESSOR success!!!! filename", filename
+			log.notice('Snapshot successfully written to %s', filename)
 			self.gen_contents_file(filename)
 			self.gen_digest_file(filename)
 
 		self.cleanup()
 		if success:
-			print "snapshot: complete!"
+			log.info('snapshot: complete!')
 		return success
 
 	def kill_chroot_pids(self):
@@ -92,12 +93,12 @@ class snapshot(TargetBase, GenBase):
 
 	@staticmethod
 	def cleanup():
-		print "Cleaning up..."
+		log.info('Cleaning up ...')
 
 	def purge(self):
 		myemp=self.settings["tmp_path"]
 		if os.path.isdir(myemp):
-			print "Emptying directory",myemp
+			log.notice('Emptying directory %s', myemp)
 			# stat the dir, delete the dir, recreate the dir and set
 			# the proper perms and ownership
 			mystat=os.stat(myemp)
