@@ -1,5 +1,6 @@
 
 
+from catalyst import log
 from catalyst.support import countdown
 from catalyst.fileops import clear_dir
 
@@ -15,38 +16,38 @@ class ClearBase(object):
 	def clear_autoresume(self):
 		""" Clean resume points since they are no longer needed """
 		if "autoresume" in self.settings["options"]:
-			print "Removing AutoResume Points: ..."
+			log.notice('Removing AutoResume Points ...')
 			self.resume.clear_all()
 
 
 	def remove_autoresume(self):
 		""" Rmove all resume points since they are no longer needed """
 		if "autoresume" in self.settings["options"]:
-			print "Removing AutoResume: ..."
+			log.notice('Removing AutoResume ...')
 			self.resume.clear_all(remove=True)
 
 
 	def clear_chroot(self):
 		self.chroot_lock.unlock()
-		print 'Clearing the chroot path ...'
+		log.notice('Clearing the chroot path ...')
 		clear_dir(self.settings["chroot_path"], 0755, True)
 
 
 	def remove_chroot(self):
 		self.chroot_lock.unlock()
-		print 'Removing the chroot path ...'
+		log.notice('Removing the chroot path ...')
 		clear_dir(self.settings["chroot_path"], 0755, True, remove=True)
 
 
 	def clear_packages(self, remove=False):
 		if "pkgcache" in self.settings["options"]:
-			print "purging the pkgcache ..."
+			log.notice('purging the pkgcache ...')
 			clear_dir(self.settings["pkgcache_path"], remove=remove)
 
 
 	def clear_kerncache(self, remove=False):
 		if "kerncache" in self.settings["options"]:
-			print "purging the kerncache ..."
+			log.notice('purging the kerncache ...')
 			clear_dir(self.settings["kerncache_path"], remove=remove)
 
 
@@ -54,15 +55,15 @@ class ClearBase(object):
 		countdown(10,"Purging Caches ...")
 		if any(k in self.settings["options"] for k in ("purge",
 				"purgeonly", "purgetmponly")):
-			print "purge(); clearing autoresume ..."
+			log.notice('purge(); clearing autoresume ...')
 			self.clear_autoresume()
 
-			print "purge(); clearing chroot ..."
+			log.notice('purge(); clearing chroot ...')
 			self.clear_chroot()
 
 			if "purgetmponly" not in self.settings["options"]:
-				print "purge(); clearing package cache ..."
+				log.notice('purge(); clearing package cache ...')
 				self.clear_packages(remove)
 
-			print "purge(); clearing kerncache ..."
+			log.notice('purge(); clearing kerncache ...')
 			self.clear_kerncache(remove)
