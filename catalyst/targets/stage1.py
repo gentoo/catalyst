@@ -5,6 +5,9 @@ stage1 target
 
 import os
 
+from snakeoil import fileutils
+
+from catalyst import log
 from catalyst.support import normpath
 from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
@@ -22,12 +25,12 @@ class stage1(StageBase):
 
 	def set_stage_path(self):
 		self.settings["stage_path"]=normpath(self.settings["chroot_path"]+self.settings["root_path"])
-		print "stage1 stage path is "+self.settings["stage_path"]
+		log.notice('stage1 stage path is %s', self.settings['stage_path'])
 
 	def set_root_path(self):
 		# sets the root path, relative to 'chroot_path', of the stage1 root
 		self.settings["root_path"]=normpath("/tmp/stage1root")
-		print "stage1 root path is "+self.settings["root_path"]
+		log.info('stage1 root path is %s', self.settings['root_path'])
 
 	def set_cleanables(self):
 		StageBase.set_cleanables(self)
@@ -55,10 +58,10 @@ class stage1(StageBase):
 	def set_portage_overlay(self):
 		StageBase.set_portage_overlay(self)
 		if "portage_overlay" in self.settings:
-			print "\nWARNING !!!!!"
-			print "\tUsing an portage overlay for earlier stages could cause build issues."
-			print "\tIf you break it, you buy it. Don't complain to us about it."
-			print "\tDont say we did not warn you\n"
+			log.warning(
+				'Using an overlay for earlier stages could cause build issues.\n'
+				"If you break it, you buy it.  Don't complain to us about it.\n"
+				"Don't say we did not warn you.")
 
 	def base_dirs(self):
 		if os.uname()[0] == "FreeBSD":
@@ -67,22 +70,13 @@ class stage1(StageBase):
 			# since proc and dev are not writeable, so...create them here
 			ensure_dirs(self.settings["stage_path"]+"/proc")
 			ensure_dirs(self.settings["stage_path"]+"/dev")
-			if not os.path.isfile(self.settings["stage_path"]+"/proc/.keep"):
-				try:
-					proc_keepfile = open(self.settings["stage_path"]+"/proc/.keep","w")
-					proc_keepfile.write('')
-					proc_keepfile.close()
-				except IOError:
-					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
-			if not os.path.isfile(self.settings["stage_path"]+"/dev/.keep"):
-				try:
-					dev_keepfile = open(self.settings["stage_path"]+"/dev/.keep","w")
-					dev_keepfile.write('')
-					dev_keepfile.close()
-				except IOError:
-					print "!!! Failed to create %s" % (self.settings["stage_path"]+"/dev/.keep")
-		else:
-			pass
+			for f in ('/proc', '/dev'):
+				f = self.settings['stage_path'] + f + '/.keep'
+				if not os.path.isfile(f):
+					try:
+						fileutils.touch(f)
+					except IOError:
+						log.error('Failed to create %s', f)
 
 	def set_mounts(self):
 		# stage_path/proc probably doesn't exist yet, so create it
