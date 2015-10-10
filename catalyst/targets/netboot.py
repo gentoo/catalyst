@@ -6,7 +6,7 @@ netboot target, version 1
 import os
 import types
 
-
+from catalyst import log
 from catalyst.support import (CatalystError, normpath,
 	cmd, list_bashify, file_locate)
 
@@ -58,7 +58,7 @@ class netboot(StageBase):
 	def set_root_path(self):
 		# ROOT= variable for emerges
 		self.settings["root_path"]=normpath("/tmp/image")
-		print "netboot root path is "+self.settings["root_path"]
+		log.info('netboot root path is %s', self.settings['root_path'])
 
 #	def build_packages(self):
 #		# build packages
@@ -123,7 +123,7 @@ class netboot(StageBase):
 			raise CatalystError("netboot build aborting due to error.",
 				print_traceback=True)
 		# end
-		print "netboot: build finished !"
+		log.notice('netboot: build finished !')
 
 	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",
