@@ -5,6 +5,7 @@ stage2 target, builds upon previous stage1 tarball
 
 import os
 
+from catalyst import log
 from catalyst.support import normpath
 from catalyst.base.stagebase import StageBase
 
@@ -30,10 +31,12 @@ class stage2(StageBase):
 						self.settings["hash_map"].generate_hash(
 							self.settings["source_path"],\
 							hash_=self.settings["hash_function"])
-		print "Source path set to "+self.settings["source_path"]
+		log.notice('Source path set to %s', self.settings['source_path'])
 		if os.path.isdir(self.settings["source_path"]):
-			print "\tIf this is not desired, remove this directory or turn off seedcache in the options of catalyst.conf"
-			print "\tthe source path will then be "+normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"] + "\n")
+			log.warning(
+				'If this is not desired, remove this directory or turn off seedcache in the\n'
+				'options of catalyst.conf.  The source path will then be:\n%s',
+				normpath(self.settings['storedir'] + '/builds/' + self.settings['source_subpath']))
 
 	# XXX: How do these override_foo() functions differ from the ones in
 	# StageBase and why aren't they in stage3_target?
@@ -57,7 +60,7 @@ class stage2(StageBase):
 	def set_portage_overlay(self):
 		StageBase.set_portage_overlay(self)
 		if "portage_overlay" in self.settings:
-			print "\nWARNING !!!!!"
-			print "\tUsing an portage overlay for earlier stages could cause build issues."
-			print "\tIf you break it, you buy it. Don't complain to us about it."
-			print "\tDont say we did not warn you\n"
+			log.warning(
+				'Using an overlay for earlier stages could cause build issues.\n'
+				"If you break it, you buy it.  Don't complain to us about it.\n"
+				"Don't say we did not warn you.")
