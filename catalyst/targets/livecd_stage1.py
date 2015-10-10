@@ -6,7 +6,7 @@ LiveCD stage1 target
 import os
 import types
 
-
+from catalyst import log
 from catalyst.support import (normpath, cmd)
 from catalyst.fileops import ensure_dirs
 
@@ -34,7 +34,7 @@ class livecd_stage1(StageBase):
 		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("setup_target_path"):
-			print "Resume point detected, skipping target path setup operation..."
+			log.notice('Resume point detected, skipping target path setup operation...')
 		else:
 			# first clean up any existing target stuff
 			if os.path.exists(self.settings["target_path"]):
