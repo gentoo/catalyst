@@ -4,10 +4,10 @@ import sys
 import os
 import types
 import re
-import traceback
 import time
 from subprocess import Popen
 
+from catalyst import log
 from catalyst.defaults import valid_config_file_values
 
 BASH_BINARY             = "/bin/bash"
@@ -29,21 +29,13 @@ def list_bashify(mylist):
 class CatalystError(Exception):
 	def __init__(self, message, print_traceback=False):
 		if message:
-			if print_traceback:
-				(_type, value) = sys.exc_info()[:2]
-				if value!=None:
-					print
-					print "Traceback values found.  listing..."
-					print traceback.print_exc(file=sys.stdout)
-			print
-			print "!!! catalyst: "+message
-			print
+			log.error('CatalystError: %s', message, exc_info=print_traceback)
 
 
 def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
 	if env is None:
 		env = {}
-	#print "***** cmd()"
+	log.debug('cmd: %r', mycmd)
 	sys.stdout.flush()
 	args=[BASH_BINARY]
 	if "BASH_ENV" not in env:
@@ -54,12 +46,11 @@ def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
 	args.append("-c")
 	args.append(mycmd)
 
-	if debug:
-		print "***** cmd(); args =", args
+	log.debug('args: %r', args)
 	proc = Popen(args, env=env)
 	if proc.wait() != 0:
 		if fail_func:
-			print "CMD(), NON-Zero command return.  Running fail_func()"
+			log.error('CMD(), NON-Zero command return.  Running fail_func().')
 			fail_func()
 		raise CatalystError("cmd() NON-zero return value from: %s" % myexc,
 			print_traceback=False)
@@ -223,15 +214,17 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 
 def countdown(secs=5, doing="Starting"):
 	if secs:
-		print ">>> Waiting",secs,"seconds before starting..."
-		print ">>> (Control-C to abort)...\n"+doing+" in: ",
+		sys.stdout.write(
+			('>>> Waiting %s seconds before starting...\n'
+			 '>>> (Control-C to abort)...\n'
+			 '%s in: ') % (secs, doing))
 		ticks=range(secs)
 		ticks.reverse()
 		for sec in ticks:
 			sys.stdout.write(str(sec+1)+" ")
 			sys.stdout.flush()
 			time.sleep(1)
-		print
+		sys.stdout.write('\n')
 
 
 def normpath(mypath):
