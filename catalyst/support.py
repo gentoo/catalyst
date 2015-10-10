@@ -8,7 +8,7 @@ import traceback
 import time
 from subprocess import Popen
 
-from catalyst.defaults import verbosity, valid_config_file_values
+from catalyst.defaults import valid_config_file_values
 
 BASH_BINARY             = "/bin/bash"
 
@@ -38,15 +38,6 @@ class CatalystError(Exception):
 			print
 			print "!!! catalyst: "+message
 			print
-
-
-def die(msg=None):
-	warn(msg)
-	sys.exit(1)
-
-
-def warn(msg):
-	print "!!! catalyst: "+msg
 
 
 def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
@@ -184,11 +175,6 @@ def read_makeconf(mymakeconffile):
 	else:
 		makeconf={}
 		return makeconf
-
-
-def msg(mymsg,verblevel=1):
-	if verbosity>=verblevel:
-		print mymsg
 
 
 def pathcompare(path1,path2):

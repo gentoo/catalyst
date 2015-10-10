@@ -22,8 +22,6 @@ valid_config_file_values.extend([ "distcc", "envscript",
 	"compression_mode", "decompressor_search_order",
 	])
 
-verbosity = 1
-
 confdefaults={
 	"archdir": "%(PythonDir)s/arch",
 	"compression_mode": 'lbzip2_x',
