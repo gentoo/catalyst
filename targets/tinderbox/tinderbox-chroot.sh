@@ -15,13 +15,6 @@ do
 	if [ -n "${clst_VERBOSE}" ]
 	then
 		run_merge --usepkg --buildpkg --newuse -vp $x
-		echo "Press any key within 15 seconds to pause the build..."
-		read -s -t 15 -n 1
-		if [ $? -eq 0 ]
-		then
-			echo "Press any key to continue..."
-			read -s -n 1
-		fi
 	fi
 
 	mkdir -p /tmp/packages/$x

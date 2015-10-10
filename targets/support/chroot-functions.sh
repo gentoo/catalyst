@@ -288,13 +288,6 @@ run_merge() {
 	then
 		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -pt $@" || exit 1
 		emerge ${clst_myemergeopts} -pt $@ || exit 3
-		echo "Press any key within 15 seconds to pause the build..."
-		read -s -t 15 -n 1
-		if [ $? -eq 0 ]
-		then
-			echo "Press any key to continue..."
-			read -s -n 1
-		fi
 	fi
 
 	echo "emerge ${clst_myemergeopts} $@" || exit 1
