@@ -12,25 +12,11 @@ set, unset, is_set, is_unset, enabled, clear_all
 '''
 
 import os
-import sys
-import traceback
 
 from snakeoil import fileutils
 
+from catalyst import log
 from catalyst.fileops import ensure_dirs, pjoin, listdir_files, clear_dir
-
-
-class AutoResumeError(Exception):
-	def __init__(self, message, print_traceback=False):
-		if message:
-			if print_traceback:
-				(_type, value) = sys.exc_info()[:2]
-				if value!=None:
-					print
-					print "Traceback values found.  listing..."
-					print traceback.print_exc(file=sys.stdout)
-			print "!!! catalyst: AutoResumeError " + message
-			print
 
 
 class AutoResume(object):
@@ -73,7 +59,7 @@ class AutoResume(object):
 				fileutils.touch(fname)
 				self._points[point] = fname
 			except Exception as e:
-				print AutoResumeError(str(e))
+				log.error('AutoResumeError: %s', e)
 				return False
 		return True
 
@@ -91,7 +77,7 @@ class AutoResume(object):
 				if data and no_lf:
 					data = data.replace('\n', '')
 			except OSError as e:
-				print AutoResumeError(str(e))
+				log.error('AutoResumeError: %s', e)
 				return None
 			return data
 		return None
@@ -109,7 +95,7 @@ class AutoResume(object):
 			os.unlink(self._points[point])
 			self._points.pop(point)
 		except Exception as e:
-			print AutoResumeError(str(e))
+			log.error('AutoResumeError: %s', e)
 			return False
 		return True
 
