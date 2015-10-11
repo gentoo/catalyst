@@ -1131,6 +1131,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "portage_overlay" in self.settings:
 				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
 
+			# Set default locale for system responses. #478382
+			myf.write(
+				'\n'
+				'# This sets the language of build output to English.\n'
+				'# Please keep this setting intact when reporting bugs.\n'
+				'LC_MESSAGES=C\n')
+
 			myf.close()
 			self.resume.enable("chroot_setup")
 
