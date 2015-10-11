@@ -893,8 +893,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if "portage_confdir" in self.settings:
 				log.info('Configuring %s...', self.settings['port_conf'])
-				cmd("rsync -a " + self.settings["portage_confdir"] + "/ " +
-					self.settings["chroot_path"] + self.settings["port_conf"],
+				dest = normpath(self.settings['chroot_path'] + '/' + self.settings['port_conf'])
+				ensure_dirs(dest)
+				# The trailing slashes on both paths are important:
+				# We want to make sure rsync copies the dirs into each
+				# other and not as subdirs.
+				cmd('rsync -a %s/ %s/' % (self.settings['portage_confdir'], dest),
 					"Error copying %s" % self.settings["port_conf"],
 					env=self.env)
 				self.resume.enable("setup_confdir")
