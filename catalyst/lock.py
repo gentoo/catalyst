@@ -3,6 +3,7 @@ import os
 
 from snakeoil import fileutils
 from snakeoil import osutils
+from catalyst.fileops import ensure_dirs
 
 
 LockInUse = osutils.LockException
@@ -14,7 +15,7 @@ class LockDir(object):
 	def __init__(self, lockdir):
 		self.gid = 250
 		self.lockfile = os.path.join(lockdir, '.catalyst_lock')
-		osutils.ensure_dirs(lockdir)
+		ensure_dirs(lockdir)
 		fileutils.touch(self.lockfile, mode=0o664)
 		os.chown(self.lockfile, -1, self.gid)
 		self.lock = osutils.FsLock(self.lockfile)
