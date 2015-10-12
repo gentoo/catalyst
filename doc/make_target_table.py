@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/python
 # Copyright (C) 2012 W. Trevor King <wking@drexel.edu>
 # Copyright (C) 2012 Sebastian Pipping <sebastian@pipping.org>
 # Copyright (C) 2013 Brian dolbec <dolsen@gentoo.org>
@@ -10,34 +10,38 @@
 
 from __future__ import print_function
 
-import sys as _sys
-
 import glob
-import re
+import locale
+import os
+import sys
 
 
-def key_netboot_before_netboot2((target_name, _module)):
-	return target_name + '1'
+def main(_argv):
+	source_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
+	# Force consistent sorting order.
+	locale.setlocale(locale.LC_COLLATE, 'C')
 
-if __name__ == '__main__':
-	extractor = re.compile('^catalyst/targets/(([^ ]+)).py$')
 	targets = list()
-	for filename in sorted(glob.glob('catalyst/targets/*.py')):
+	for filename in glob.glob(os.path.join(source_root, 'catalyst/targets/*.py')):
 		if '__init__' in filename:
 			continue
 
-		match = extractor.match(filename)
-		target_name = match.group(2).replace('_', '-')
-		module_name = 'catalyst.targets.' + match.group(1)
+		name = os.path.basename(filename)[0:-3]
+		target_name = name.replace('_', '-')
+		module_name = 'catalyst.targets.' + name
 
 		__import__(module_name)
-		module = _sys.modules[module_name]
+		module = sys.modules[module_name]
 
 		targets.append((target_name, module))
 
-	for target_name, module in sorted(targets, key=key_netboot_before_netboot2):
+	for target_name, module in sorted(targets, key=lambda x: x[0]):
 		print('`%s`;;' % target_name)
 		# Replace blank lines with `+` (asciidoc list item continuation)
 		print(module.__doc__.strip().replace('\n\n', '\n+\n'))
 		print('')
+
+
+if __name__ == '__main__':
+	main(sys.argv[1:])
