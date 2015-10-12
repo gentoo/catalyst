@@ -98,6 +98,10 @@ class CatalystFormatter(logging.Formatter):
 			return msg
 
 
+# We define |debug| in global scope so people can call log.debug(), but it
+# makes the linter complain when we have a |debug| keyword.  Since we don't
+# use that func in here, it's not a problem, so silence the warning.
+# pylint: disable=redefined-outer-name
 def setup_logging(level, output=None, debug=False, color=None):
 	"""Initialize the logging module using the |level| level"""
 	# The incoming level will be things like "info", but setLevel wants

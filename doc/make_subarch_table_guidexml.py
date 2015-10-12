@@ -6,6 +6,7 @@
 
 import os
 import re
+import sys
 import textwrap
 
 
@@ -99,11 +100,11 @@ def dump(subarch_title_to_subarch_id, subarch_id_to_pattern_arch_genericrch_id):
 	f.close()
 
 
-if __name__ == '__main__':
+def main(_argv):
 	subarch_title_to_subarch_id = dict()
 	subarch_id_to_pattern_arch_genericrch_id = dict()
 
-	for (dirpath, dirnames, filenames) in os.walk('catalyst/arch'):
+	for dirpath, _dirnames, filenames in os.walk('catalyst/arch'):
 		for _fn in filenames:
 			if not _fn.endswith('.py'):
 				continue
@@ -114,3 +115,7 @@ if __name__ == '__main__':
 			handle_file(fn, subarch_title_to_subarch_id, subarch_id_to_pattern_arch_genericrch_id)
 
 	dump(subarch_title_to_subarch_id, subarch_id_to_pattern_arch_genericrch_id)
+
+
+if __name__ == '__main__':
+	main(sys.argv[1:])

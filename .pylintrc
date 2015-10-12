@@ -32,10 +32,9 @@ load-plugins=
 # bad-continuation -- might be hard with tab indentation policy
 # invalid-name -- need to manage constants better
 # line-too-long -- figure out a length and stick to it
-# redefined-outer-name -- clean up code to not do this
 # super-init-not-called -- fix the classes __init__ structure
 # no-init -- update classes w/missing __init__ functions
-disable=missing-docstring, too-many-lines, too-many-branches, too-many-statements, too-few-public-methods, too-many-instance-attributes, too-many-public-methods, too-many-locals, too-many-arguments, locally-enabled, locally-disabled, fixme, broad-except, bad-whitespace, bad-continuation, invalid-name, line-too-long, redefined-outer-name, super-init-not-called, no-init
+disable=missing-docstring, too-many-lines, too-many-branches, too-many-statements, too-few-public-methods, too-many-instance-attributes, too-many-public-methods, too-many-locals, too-many-arguments, locally-enabled, locally-disabled, fixme, broad-except, bad-whitespace, bad-continuation, invalid-name, line-too-long, super-init-not-called, no-init
 
 
 [REPORTS]
