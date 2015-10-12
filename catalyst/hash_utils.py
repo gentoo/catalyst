@@ -79,7 +79,7 @@ class HashMap(object):
 				hash_)
 		except:
 			raise CatalystError("Error generating hash, is appropriate " + \
-				"utility installed on your system?", traceback=True)
+				"utility installed on your system?", print_traceback=True)
 
 
 	def calc_hash(self, file_, hash_):
