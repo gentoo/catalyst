@@ -39,7 +39,7 @@ del _klass
 
 
 # Set the notice level between warning and info.
-NOTICE = (logging.WARNING + logging.INFO) / 2
+NOTICE = (logging.WARNING + logging.INFO) // 2
 logging.addLevelName(NOTICE, 'NOTICE')
 
 
