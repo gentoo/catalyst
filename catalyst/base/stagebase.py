@@ -492,7 +492,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			))
 		if "autoresume" in self.settings["options"]:
 			log.info('The autoresume path is %s', self.settings['autoresume_path'])
-		self.resume = AutoResume(self.settings["autoresume_path"], mode=0755)
+		self.resume = AutoResume(self.settings["autoresume_path"], mode=0o755)
 
 	def set_controller_file(self):
 		self.settings["controller_file"]=normpath(self.settings["sharedir"]+\
@@ -773,10 +773,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			ensure_dirs(self.settings["chroot_path"]+"/tmp",mode=1777)
 
 			if "pkgcache" in self.settings["options"]:
-				ensure_dirs(self.settings["pkgcache_path"],mode=0755)
+				ensure_dirs(self.settings["pkgcache_path"],mode=0o755)
 
 			if "kerncache" in self.settings["options"]:
-				ensure_dirs(self.settings["kerncache_path"],mode=0755)
+				ensure_dirs(self.settings["kerncache_path"],mode=0o755)
 
 			log.notice('%s', display_msg % unpack_info)
 
@@ -848,7 +848,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				cleanup_cmd = "rm -rf " + target_portdir
 				log.info('unpack() cleanup_cmd = %s', cleanup_cmd)
 				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
-			ensure_dirs(target_portdir, mode=0755)
+			ensure_dirs(target_portdir, mode=0o755)
 
 			log.notice('Unpacking portage tree (this can take a long time) ...')
 			if not self.decompressor.extract(unpack_info):
@@ -932,11 +932,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			_cmd = ''
 			log.debug('bind(); x = %s', x)
 			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
-			ensure_dirs(target, mode=0755)
+			ensure_dirs(target, mode=0o755)
 
 			if not os.path.exists(self.mountmap[x]):
 				if self.mountmap[x] not in ["tmpfs", "shmfs"]:
-					ensure_dirs(self.mountmap[x], mode=0755)
+					ensure_dirs(self.mountmap[x], mode=0o755)
 
 			src=self.mountmap[x]
 			log.debug('bind(); src = %s', src)
@@ -1218,7 +1218,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					# the proper perms and ownership
 					mystat=os.stat(myemp)
 					shutil.rmtree(myemp)
-					ensure_dirs(myemp, mode=0755)
+					ensure_dirs(myemp, mode=0o755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
 			self.resume.enable("empty")

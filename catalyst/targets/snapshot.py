@@ -106,6 +106,6 @@ class snapshot(TargetBase, GenBase):
 			if os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg "+myemp)
 			shutil.rmtree(myemp)
-			ensure_dirs(myemp, mode=0755)
+			ensure_dirs(myemp, mode=0o755)
 			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 			os.chmod(myemp,mystat[ST_MODE])

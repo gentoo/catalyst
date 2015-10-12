@@ -157,7 +157,7 @@ class netboot2(StageBase):
 					# the proper perms and ownership
 					mystat=os.stat(myemp)
 					shutil.rmtree(myemp)
-					ensure_dirs(myemp, mode=0755)
+					ensure_dirs(myemp, mode=0o755)
 					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
 					os.chmod(myemp,mystat[ST_MODE])
 		self.resume.enable("empty")

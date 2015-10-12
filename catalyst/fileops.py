@@ -37,7 +37,7 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
 	:param mode: permissions to set any created directories to
 	:param minimal: boolean controlling whether or not the specified mode
 		must be enforced, or is the minimal permissions necessary.  For example,
-		if mode=0755, minimal=True, and a directory exists with mode 0707,
+		if mode=0o755, minimal=True, and a directory exists with mode 0707,
 		this will restore the missing group perms resulting in 757.
 	:param failback: function to run in the event of a failed attemp
 		to create the directory.

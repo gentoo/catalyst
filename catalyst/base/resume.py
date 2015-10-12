@@ -25,7 +25,7 @@ class AutoResume(object):
 	'''
 
 
-	def __init__(self, basedir, mode=0755):
+	def __init__(self, basedir, mode=0o755):
 		self.basedir = basedir
 		ensure_dirs(basedir, mode=mode, fatal=True)
 		self._points = {}
@@ -131,7 +131,7 @@ class AutoResume(object):
 		@remove: boolean, passed through to clear_dir()
 		@return boolean
 		'''
-		if clear_dir(self.basedir, mode=0755, chg_flags=True, remove=remove):
+		if clear_dir(self.basedir, mode=0o755, chg_flags=True, remove=remove):
 			self._points = {}
 			return True
 		return False
