@@ -1,7 +1,6 @@
 
 import os
 import imp
-import types
 import shutil
 import sys
 from stat import ST_UID, ST_GID, ST_MODE
@@ -297,7 +296,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_install_mask(self):
 		if "install_mask" in self.settings:
-			if type(self.settings["install_mask"])!=types.StringType:
+			if not isinstance(self.settings['install_mask'], str):
 				self.settings["install_mask"]=\
 					' '.join(self.settings["install_mask"])
 
@@ -313,14 +312,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["version_stamp"] +'/'
 
 	def set_source_subpath(self):
-		if type(self.settings["source_subpath"])!=types.StringType:
+		if not isinstance(self.settings['source_subpath'], str):
 			raise CatalystError(
 				"source_subpath should have been a string. Perhaps you have " +\
 				"something wrong in your spec file?")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
-			if type(self.settings["pkgcache_path"])!=types.StringType:
+			if not isinstance(self.settings['pkgcache_path'], str):
 				self.settings["pkgcache_path"]=\
 					normpath(self.settings["pkgcache_path"])
 		else:
@@ -330,7 +329,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_kerncache_path(self):
 		if "kerncache_path" in self.settings:
-			if type(self.settings["kerncache_path"])!=types.StringType:
+			if not isinstance(self.settings['kerncache_path'], str):
 				self.settings["kerncache_path"]=\
 					normpath(self.settings["kerncache_path"])
 		else:
@@ -536,7 +535,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			del self.settings[self.settings["spec_prefix"]+"/use"]
 		if "use" not in self.settings:
 			self.settings["use"]=""
-		if type(self.settings["use"])==types.StringType:
+		if isinstance(self.settings['use'], str):
 			self.settings["use"]=self.settings["use"].split()
 
 		# Force bindist when options ask for it
@@ -554,30 +553,27 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_rm(self):
 		if self.settings["spec_prefix"]+"/rm" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/rm"])==types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/rm'], str):
 				self.settings[self.settings["spec_prefix"]+"/rm"]=\
 					self.settings[self.settings["spec_prefix"]+"/rm"].split()
 
 	def set_linuxrc(self):
 		if self.settings["spec_prefix"]+"/linuxrc" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/linuxrc"])==types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/linuxrc'], str):
 				self.settings["linuxrc"]=\
 					self.settings[self.settings["spec_prefix"]+"/linuxrc"]
 				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
 
 	def set_busybox_config(self):
 		if self.settings["spec_prefix"]+"/busybox_config" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/busybox_config"])==types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/busybox_config'], str):
 				self.settings["busybox_config"]=\
 					self.settings[self.settings["spec_prefix"]+"/busybox_config"]
 				del self.settings[self.settings["spec_prefix"]+"/busybox_config"]
 
 	def set_portage_overlay(self):
 		if "portage_overlay" in self.settings:
-			if type(self.settings["portage_overlay"])==types.StringType:
+			if isinstance(self.settings['portage_overlay'], str):
 				self.settings["portage_overlay"]=\
 					self.settings["portage_overlay"].split()
 			log.info('portage_overlay directories are set to: %s',
@@ -585,16 +581,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_overlay(self):
 		if self.settings["spec_prefix"]+"/overlay" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/overlay"])==types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/overlay'], str):
 				self.settings[self.settings["spec_prefix"]+"/overlay"]=\
 					self.settings[self.settings["spec_prefix"]+\
 					"/overlay"].split()
 
 	def set_root_overlay(self):
 		if self.settings["spec_prefix"]+"/root_overlay" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+\
-				"/root_overlay"])==types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/root_overlay'], str):
 				self.settings[self.settings["spec_prefix"]+"/root_overlay"]=\
 					self.settings[self.settings["spec_prefix"]+\
 					"/root_overlay"].split()
@@ -605,7 +599,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_valid_build_kernel_vars(self,addlargs):
 		if "boot/kernel" in addlargs:
-			if type(addlargs["boot/kernel"])==types.StringType:
+			if isinstance(addlargs['boot/kernel'], str):
 				loopy=[addlargs["boot/kernel"]]
 			else:
 				loopy=addlargs["boot/kernel"]
@@ -625,8 +619,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.valid_values.append("boot/kernel/"+x+"/packages")
 				self.valid_values.append("boot/kernel/"+x+"/kernelopts")
 				if "boot/kernel/"+x+"/packages" in addlargs:
-					if type(addlargs["boot/kernel/"+x+\
-						"/packages"])==types.StringType:
+					if isinstance(addlargs['boot/kernel/'+x+'/packages'], str):
 						addlargs["boot/kernel/"+x+"/packages"]=\
 							[addlargs["boot/kernel/"+x+"/packages"]]
 
@@ -1207,8 +1200,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping empty operation...')
 		else:
 			if self.settings["spec_prefix"]+"/empty" in self.settings:
-				if type(self.settings[self.settings["spec_prefix"]+\
-					"/empty"])==types.StringType:
+				if isinstance(self.settings[self.settings['spec_prefix']+'/empty'], str):
 					self.settings[self.settings["spec_prefix"]+"/empty"]=\
 						self.settings[self.settings["spec_prefix"]+\
 						"/empty"].split()
@@ -1338,14 +1330,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			varname = "clst_" + x.replace("/", "_")
 			varname = varname.replace("-", "_")
 			varname = varname.replace(".", "_")
-			if type(self.settings[x])==types.StringType:
+			if isinstance(self.settings[x], str):
 				# Prefix to prevent namespace clashes
 				#os.environ[varname]=self.settings[x]
 				self.env[varname]=self.settings[x]
-			elif type(self.settings[x])==types.ListType:
+			elif isinstance(self.settings[x], list):
 				#os.environ[varname] = ' '.join(self.settings[x])
 				self.env[varname] = ' '.join(self.settings[x])
-			elif type(self.settings[x])==types.BooleanType:
+			elif isinstance(self.settings[x], bool):
 				if self.settings[x]:
 					self.env[varname] = "true"
 				else:
@@ -1354,7 +1346,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# Its currently used only for USE_EXPAND flags which are dictionaries of
 			# lists in arch/amd64.py and friends.  If we wanted self.settigs[var]
 			# of any depth, we should make this function recursive.
-			elif type(self.settings[x]) == types.DictType:
+			elif isinstance(self.settings[x], dict):
 				if x in ["compress_definitions",
 					"decompress_definitions"]:
 					continue
@@ -1363,11 +1355,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					varname2 = "clst_" + y.replace("/", "_")
 					varname2 = varname2.replace("-", "_")
 					varname2 = varname2.replace(".", "_")
-					if type(self.settings[x][y]) == types.StringType:
+					if isinstance(self.settings[x][y], str):
 						self.env[varname2] = self.settings[x][y]
-					elif type(self.settings[x][y]) == types.ListType:
+					elif isinstance(self.settings[x][y], list):
 						self.env[varname2] = ' '.join(self.settings[x][y])
-					elif type(self.settings[x][y]) == types.BooleanType:
+					elif isinstance(self.settings[x][y], bool):
 						if self.settings[x][y]:
 							self.env[varname] = "true"
 						else:
@@ -1429,8 +1421,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping unmerge operation...')
 		else:
 			if self.settings["spec_prefix"]+"/unmerge" in self.settings:
-				if type(self.settings[self.settings["spec_prefix"]+\
-					"/unmerge"])==types.StringType:
+				if isinstance(self.settings[self.settings['spec_prefix']+'/unmerge'], str):
 					self.settings[self.settings["spec_prefix"]+"/unmerge"]=\
 						[self.settings[self.settings["spec_prefix"]+"/unmerge"]]
 				myunmerge=\
@@ -1529,7 +1520,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "boot/kernel" in self.settings:
 				try:
 					mynames=self.settings["boot/kernel"]
-					if type(mynames)==types.StringType:
+					if isinstance(mynames, str):
 						mynames=[mynames]
 					# Execute the script that sets up the kernel build environment
 					cmd(self.settings["controller_file"]+\
@@ -1558,7 +1549,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			myopts=self.settings["boot/kernel/"+kname+\
 				"/kernelopts"]
 
-			if type(myopts) != types.StringType:
+			if not isinstance(myopts, str):
 				myopts = ' '.join(myopts)
 				self.env[kname+"_kernelopts"]=myopts
 

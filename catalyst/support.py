@@ -2,7 +2,6 @@
 import glob
 import sys
 import os
-import types
 import re
 import time
 from subprocess import Popen
@@ -14,7 +13,7 @@ BASH_BINARY             = "/bin/bash"
 
 
 def list_bashify(mylist):
-	if type(mylist)==types.StringType:
+	if isinstance(mylist, str):
 		mypack=[mylist]
 	else:
 		mypack=mylist[:]

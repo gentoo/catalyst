@@ -4,7 +4,6 @@ Gentoo Reference Platform (GRP) target
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os
-import types
 import glob
 
 from catalyst import log
@@ -27,11 +26,11 @@ class grp(StageBase):
 			raise CatalystError("Required value \"grp\" not specified in spec.")
 
 		self.required_values.extend(["grp"])
-		if type(addlargs["grp"])==types.StringType:
+		if isinstance(addlargs['grp'], str):
 			addlargs["grp"]=[addlargs["grp"]]
 
 		if "grp/use" in addlargs:
-			if type(addlargs["grp/use"])==types.StringType:
+			if isinstance(addlargs['grp/use'], str):
 				addlargs["grp/use"]=[addlargs["grp/use"]]
 
 		for x in addlargs["grp"]:

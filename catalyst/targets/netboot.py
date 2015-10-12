@@ -4,7 +4,6 @@ netboot target, version 1
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os
-import types
 
 from catalyst import log
 from catalyst.support import (CatalystError, normpath,
@@ -33,7 +32,7 @@ class netboot(StageBase):
 		try:
 			# XXX: This code does nothing because the for loop below is disabled.
 			if "netboot/packages" in addlargs:
-				if type(addlargs["netboot/packages"]) == types.StringType:
+				if isinstance(addlargs['netboot/packages'], str):
 					_loopy = [addlargs["netboot/packages"]]
 				else:
 					_loopy = addlargs["netboot/packages"]
@@ -88,20 +87,20 @@ class netboot(StageBase):
 		# create image
 		myfiles=[]
 		if "netboot/packages" in self.settings:
-			if type(self.settings["netboot/packages"]) == types.StringType:
+			if isinstance(self.settings['netboot/packages'], str):
 				loopy=[self.settings["netboot/packages"]]
 			else:
 				loopy=self.settings["netboot/packages"]
 
 		for x in loopy:
 			if "netboot/packages/"+x+"/files" in self.settings:
-				if type(self.settings["netboot/packages/"+x+"/files"]) == types.ListType:
+				if isinstance(type(self.settings['netboot/packages/'+x+'/files']), str):
 					myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
 				else:
 					myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
 		if "netboot/extra_files" in self.settings:
-			if type(self.settings["netboot/extra_files"]) == types.ListType:
+			if isinstance(self.settings['netboot/extra_files'], list):
 				myfiles.extend(self.settings["netboot/extra_files"])
 			else:
 				myfiles.append(self.settings["netboot/extra_files"])

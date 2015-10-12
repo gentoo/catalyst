@@ -4,7 +4,6 @@ netboot target, version 2
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os
-import types
 import shutil
 from stat import ST_UID, ST_GID, ST_MODE
 
@@ -36,7 +35,7 @@ class netboot2(StageBase):
 
 		try:
 			if "netboot2/packages" in addlargs:
-				if type(addlargs["netboot2/packages"]) == types.StringType:
+				if isinstance(addlargs['netboot2/packages'], str):
 					loopy=[addlargs["netboot2/packages"]]
 				else:
 					loopy=addlargs["netboot2/packages"]
@@ -73,20 +72,20 @@ class netboot2(StageBase):
 			log.notice('Resume point detected, skipping target path setup operation...')
 		else:
 			if "netboot2/packages" in self.settings:
-				if type(self.settings["netboot2/packages"]) == types.StringType:
+				if isinstance(self.settings['netboot2/packages'], str):
 					loopy=[self.settings["netboot2/packages"]]
 				else:
 					loopy=self.settings["netboot2/packages"]
 
 			for x in loopy:
 				if "netboot2/packages/"+x+"/files" in self.settings:
-					if type(self.settings["netboot2/packages/"+x+"/files"]) == types.ListType:
+					if isinstance(self.settings['netboot2/packages/'+x+'/files'], list):
 						myfiles.extend(self.settings["netboot2/packages/"+x+"/files"])
 					else:
 						myfiles.append(self.settings["netboot2/packages/"+x+"/files"])
 
 			if "netboot2/extra_files" in self.settings:
-				if type(self.settings["netboot2/extra_files"]) == types.ListType:
+				if isinstance(self.settings['netboot2/extra_files'], list):
 					myfiles.extend(self.settings["netboot2/extra_files"])
 				else:
 					myfiles.append(self.settings["netboot2/extra_files"])
@@ -145,7 +144,7 @@ class netboot2(StageBase):
 			log.notice('Resume point detected, skipping empty operation...')
 		else:
 			if "netboot2/empty" in self.settings:
-				if type(self.settings["netboot2/empty"])==types.StringType:
+				if isinstance(self.settings['netboot2/empty'], str):
 					self.settings["netboot2/empty"]=self.settings["netboot2/empty"].split()
 				for x in self.settings["netboot2/empty"]:
 					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x

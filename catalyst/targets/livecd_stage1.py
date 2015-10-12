@@ -4,7 +4,6 @@ LiveCD stage1 target
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os
-import types
 
 from catalyst import log
 from catalyst.support import (normpath, cmd)
@@ -60,14 +59,14 @@ class livecd_stage1(StageBase):
 	def set_packages(self):
 		StageBase.set_packages(self)
 		if self.settings["spec_prefix"]+"/packages" in self.settings:
-			if type(self.settings[self.settings["spec_prefix"]+"/packages"]) == types.StringType:
+			if isinstance(self.settings[self.settings['spec_prefix']+'/packages'], str):
 				self.settings[self.settings["spec_prefix"]+"/packages"] = \
 					self.settings[self.settings["spec_prefix"]+"/packages"].split()
 		self.settings[self.settings["spec_prefix"]+"/packages"].append("app-misc/livecd-tools")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
-			if type(self.settings["pkgcache_path"]) != types.StringType:
+			if not isinstance(self.settings['pkgcache_path'], str):
 				self.settings["pkgcache_path"] = normpath(' '.join(self.settings["pkgcache_path"]))
 		else:
 			StageBase.set_pkgcache_path(self)
