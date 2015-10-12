@@ -117,7 +117,7 @@ class HashMap(object):
 		log.debug('args = %r', args)
 		source = Popen(args, stdout=PIPE)
 		output = source.communicate()
-		lines = output[0].split('\n')
+		lines = output[0].decode('ascii').split('\n')
 		log.debug('output = %s', output)
 		header = lines[0]
 		h_f = lines[1].split()
