@@ -122,7 +122,7 @@ setup_myfeatures(){
 }
 
 setup_myemergeopts(){
-	if [ -n "${clst_VERBOSE}" ]
+	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
 		clst_myemergeopts="--verbose"
 	else
@@ -284,7 +284,7 @@ run_merge() {
 	export EPAUSE_IGNORE=0
 	export CONFIG_PROTECT="-*"
 
-	if [ -n "${clst_VERBOSE}" ]
+	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
 		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -pt $@" || exit 1
 		emerge ${clst_myemergeopts} -pt $@ || exit 3

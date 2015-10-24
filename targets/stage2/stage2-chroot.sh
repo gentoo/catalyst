@@ -5,11 +5,6 @@ source /tmp/chroot-functions.sh
 # Setup the environment
 export FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
-if [ "${clst_VERBOSE}" ]
-then
-	/usr/portage/scripts/bootstrap.sh -p ${bootstrap_opts}
-fi
-
 # Set bindist USE flag if clst_BINDIST is set
 # The bindist functions have been taken from support/chroot-functions.sh
 if [ -e "${clst_make_conf}" ] && [ -n "${clst_BINDIST}" ]; then

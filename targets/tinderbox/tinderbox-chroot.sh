@@ -12,7 +12,7 @@ rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "/usr/portage/" / \
 
 for x in ${clst_tinderbox_packages}
 do
-	if [ -n "${clst_VERBOSE}" ]
+	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
 		run_merge --usepkg --buildpkg --newuse -vp $x
 	fi
