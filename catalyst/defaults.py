@@ -46,6 +46,8 @@ confdefaults={
 	"storedir": "/var/tmp/catalyst",
 	}
 
+DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'
+
 PORT_LOGDIR_CLEAN = \
 	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
 

@@ -21,7 +21,7 @@ from DeComp.contents import ContentsMap
 
 from catalyst import log
 import catalyst.config
-from catalyst.defaults import confdefaults, option_messages
+from catalyst.defaults import confdefaults, option_messages, DEFAULT_CONFIG_FILE
 from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
 from catalyst.support import CatalystError
 from catalyst.version import get_version
@@ -36,40 +36,19 @@ def version():
 	log.info('Copyright 2008-2012 various authors')
 	log.info('Distributed under the GNU General Public License version 2.1')
 
-def parse_config(myconfig):
+def parse_config(config_files):
 	# search a couple of different areas for the main config file
 	myconf={}
-	config_file=""
-	default_config_file = '/etc/catalyst/catalyst.conf'
 
-	# first, try the one passed (presumably from the cmdline)
-	if myconfig:
-		if os.path.exists(myconfig):
-			log.notice('Using command line specified Catalyst configuration file: %s',
-				myconfig)
-			config_file=myconfig
-
-		else:
-			log.critical('Specified configuration file does not exist: %s', myconfig)
-
-	# next, try the default location
-	elif os.path.exists(default_config_file):
-		log.notice('Using default Catalyst configuration file: %s',
-			default_config_file)
-		config_file = default_config_file
-
-	# can't find a config file (we are screwed), so bail out
-	else:
-		log.critical('Could not find a suitable configuration file')
-
-	# now, try and parse the config file "config_file"
-	try:
-#		execfile(config_file, myconf, myconf)
-		myconfig = catalyst.config.ConfigParser(config_file)
-		myconf.update(myconfig.get_values())
-
-	except Exception:
-		log.critical('Could not find parse configuration file: %s', myconfig)
+	# try and parse the config file "config_file"
+	for config_file in config_files:
+		log.notice('Loading configuration file: %s', config_file)
+		try:
+			config = catalyst.config.ConfigParser(config_file)
+			myconf.update(config.get_values())
+		except Exception as e:
+			log.critical('Could not find parse configuration file: %s: %s',
+				config_file, e)
 
 	# now, load up the values into conf_values so that we can use them
 	for x in list(confdefaults):
@@ -209,9 +188,9 @@ $ catalyst -f stage1-specfile.spec"""
 	group.add_argument('-F', '--fetchonly',
 		default=False, action='store_true',
 		help='fetch files only')
-	group.add_argument('-c', '--config',
-		type=FilePath(),
-		help='use specified configuration file')
+	group.add_argument('-c', '--configs',
+		type=FilePath(), action='append',
+		help='use specified configuration files')
 	group.add_argument('-f', '--file',
 		type=FilePath(),
 		help='read specfile')
@@ -241,7 +220,9 @@ def main():
 		color=opts.color)
 
 	# Parse the command line options.
-	myconfig = opts.config
+	myconfigs = opts.configs
+	if not myconfigs:
+		myconfigs = [DEFAULT_CONFIG_FILE]
 	myspecfile = opts.file
 	mycmdline = opts.cli[:]
 
@@ -271,7 +252,7 @@ def main():
 	# made it this far so start by outputting our version info
 	version()
 	# import configuration file and import our main module using those settings
-	parse_config(myconfig)
+	parse_config(myconfigs)
 
 	conf_values["options"].update(options)
 	log.debug('conf_values[options] = %s', conf_values['options'])
