@@ -908,7 +908,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					cmd("mkdir -p "+self.settings["chroot_path"]+\
 						self.settings["local_overlay"],\
 						"Could not make portage_overlay dir",env=self.env)
-					cmd("cp -R "+x+"/* "+self.settings["chroot_path"]+\
+					cmd("cp -a "+x+"/* "+self.settings["chroot_path"]+\
 						self.settings["local_overlay"],\
 						"Could not copy portage_overlay",env=self.env)
 
