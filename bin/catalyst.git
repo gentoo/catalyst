@@ -1,0 +1,52 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+"""Run catalyst from git using local modules/scripts."""
+
+from __future__ import print_function
+
+import os
+import sys
+import tempfile
+
+from snakeoil import process
+
+
+def main(argv):
+	"""The main entry point"""
+	source_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+	pympath = source_root
+	pythonpath = os.environ.get('PYTHONPATH')
+	if pythonpath is None:
+		pythonpath = pympath
+	else:
+		pythonpath = pympath + ':' + pythonpath
+	os.environ['PYTHONPATH'] = pythonpath
+
+	with tempfile.NamedTemporaryFile(prefix='catalyst.conf.') as conf:
+		# Set up a config file with paths to the local tree.
+		conf.write(
+			('sharedir=%(source_root)s\n'
+			 'shdir=%(source_root)s/targets\n'
+			 'envscript=%(source_root)s/etc/catalystrc\n'
+			 % {'source_root': source_root}).encode('utf8')
+		)
+		conf.flush()
+		argv = [
+			'--config', os.path.join(source_root, 'etc', 'catalyst.conf'),
+			'--config', conf.name,
+		] + argv
+
+		cmd = [os.path.join(source_root, 'bin', 'catalyst')]
+		pid = os.fork()
+		if pid == 0:
+			os.execvp(cmd[0], cmd + argv)
+		(_pid, status) = os.waitpid(pid, 0)
+		process.exit_as_status(status)
+
+
+if __name__ == '__main__':
+	main(sys.argv[1:])
