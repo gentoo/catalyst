@@ -97,7 +97,8 @@ class ParserBase(object):
 				values[cur_array[0]] = cur_array[1:]
 
 		if not self.empty_values:
-			for x in values.keys():
+			# Make sure the list of keys is static since we modify inside the loop.
+			for x in list(values.keys()):
 				# Delete empty key pairs
 				if not values[x]:
 					log.warning('No value set for key "%s"; deleting', x)
