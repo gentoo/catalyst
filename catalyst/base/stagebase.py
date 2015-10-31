@@ -1053,8 +1053,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("rm -f " + makepath,\
 				"Could not remove " + makepath, env=self.env)
 			myf=open(makepath, "w")
-			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
-			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
+			myf.write("# These settings were set by the catalyst build script "
+					"that automatically\n# built this stage.\n")
+			myf.write("# Please consult "
+					"/usr/share/portage/config/make.conf.example "
+					"for a more\n# detailed example.\n")
 
 			for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
 						"ASFLAGS"]:
@@ -1074,11 +1077,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 							% (flags, self.settings[flags]))
 
 			if "CBUILD" in self.settings:
-				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
+				myf.write("# This should not be changed unless you know exactly"
+					" what you are doing.  You\n# should probably be "
+					"using a different stage, instead.\n")
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
 
 			if "CHOST" in self.settings:
-				myf.write("# WARNING: Changing your CHOST is not something that should be done lightly.\n# Please consult https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable before changing.\n")
+				myf.write("# WARNING: Changing your CHOST is not something "
+					"that should be done lightly.\n# Please consult "
+					"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
+					"before changing.\n")
 				myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
 
 			# Figure out what our USE vars are for building
@@ -1090,7 +1098,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myusevars.extend(self.settings["use"])
 
 			if myusevars:
-				myf.write("# These are the USE and USE_EXPAND flags that were used for\n# building in addition to what is provided by the profile.\n")
+				myf.write("# These are the USE and USE_EXPAND flags that were "
+						"used for\n# building in addition to what is provided "
+						"by the profile.\n")
 				myusevars = sorted(set(myusevars))
 				myf.write('USE="' + ' '.join(myusevars) + '"\n')
 				if '-*' in myusevars:
