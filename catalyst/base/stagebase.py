@@ -1055,36 +1055,24 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			myf=open(makepath, "w")
 			myf.write("# These settings were set by the catalyst build script that automatically\n# built this stage.\n")
 			myf.write("# Please consult /usr/share/portage/config/make.conf.example for a more\n# detailed example.\n")
-			if "CFLAGS" in self.settings:
-				myf.write('CFLAGS="'+self.settings["CFLAGS"]+'"\n')
-			if "CXXFLAGS" in self.settings:
-				if self.settings["CXXFLAGS"]!=self.settings["CFLAGS"]:
-					myf.write('CXXFLAGS="'+self.settings["CXXFLAGS"]+'"\n')
-				else:
-					myf.write('CXXFLAGS="${CFLAGS}"\n')
-			else:
-				myf.write('CXXFLAGS="${CFLAGS}"\n')
-			if "FCFLAGS" in self.settings:
-				if self.settings["FCFLAGS"]!=self.settings["CFLAGS"]:
-					myf.write('FCFLAGS="'+self.settings["FCFLAGS"]+'"\n')
-				else:
-					myf.write('FCFLAGS="${CFLAGS}"\n')
-			else:
-				myf.write('FCFLAGS="${CFLAGS}"\n')
-			if "FFLAGS" in self.settings:
-				if self.settings["FFLAGS"]!=self.settings["CFLAGS"]:
-					myf.write('FFLAGS="'+self.settings["FFLAGS"]+'"\n')
-				else:
-					myf.write('FFLAGS="${CFLAGS}"\n')
-			else:
-				myf.write('FFLAGS="${CFLAGS}"\n')
 
-			if "LDFLAGS" in self.settings:
-				myf.write("# LDFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
-				myf.write('LDFLAGS="'+self.settings["LDFLAGS"]+'"\n')
-			if "ASFLAGS" in self.settings:
-				myf.write("# ASFLAGS is unsupported.  USE AT YOUR OWN RISK!\n")
-				myf.write('ASFLAGS="'+self.settings["ASFLAGS"]+'"\n')
+			for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
+						"ASFLAGS"]:
+				if not flags in self.settings:
+					continue
+				if flags in ["LDFLAGS", "ASFLAGS"]:
+					myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
+							% flags)
+				if (flags is not "CFLAGS" and
+					self.settings[flags] == self.settings["CFLAGS"]):
+						myf.write('%s="${CFLAGS}"\n' % flags)
+				elif isinstance(self.settings[flags], list):
+					myf.write('%s="%s"\n'
+							% (flags, ' '.join(self.settings[flags])))
+				else:
+					myf.write('%s="%s"\n'
+							% (flags, self.settings[flags]))
+
 			if "CBUILD" in self.settings:
 				myf.write("# This should not be changed unless you know exactly what you are doing.  You\n# should probably be using a different stage, instead.\n")
 				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
