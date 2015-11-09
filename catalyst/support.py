@@ -155,9 +155,8 @@ def read_makeconf(mymakeconffile):
 						import portage_util
 						return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
 					except ImportError:
-						myf=open(mymakeconffile,"r")
-						mylines=myf.readlines()
-						myf.close()
+						with open(mymakeconffile, "r") as myf:
+							mylines=myf.readlines()
 						return parse_makeconf(mylines)
 		except Exception:
 			raise CatalystError("Could not parse make.conf file " +

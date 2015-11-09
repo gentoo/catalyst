@@ -27,12 +27,11 @@ class ParserBase(object):
 
 	def parse_file(self, filename):
 		try:
-			myf = open(filename, "r")
+			with open(filename, "r") as myf:
+				self.lines = myf.readlines()
 		except:
 			raise CatalystError("Could not open file " + filename,
 				print_traceback=True)
-		self.lines = myf.readlines()
-		myf.close()
 		self.filename = filename
 		self.parse()
 

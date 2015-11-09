@@ -848,9 +848,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				log.error('%s', unpack_errmsg % unpack_info)
 
 			if "snapcache" in self.settings["options"]:
-				myf = open(snapshot_cache_hash_path, 'w')
-				myf.write(self.settings["snapshot_path_hash"])
-				myf.close()
+				with open(snapshot_cache_hash_path, 'w') as myf:
+					myf.write(self.settings["snapshot_path_hash"])
 			else:
 				log.info('Setting snapshot autoresume point')
 				self.resume.enable("unpack_portage",
