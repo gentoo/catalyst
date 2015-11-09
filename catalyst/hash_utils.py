@@ -126,6 +126,3 @@ class HashMap(object):
 		result = header + "\n" + hash_result + "  " + short_file + "\n"
 		log.info('%s (%s) = %s', header, short_file, result)
 		return result
-
-
-

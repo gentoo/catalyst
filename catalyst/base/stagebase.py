@@ -1067,7 +1067,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 							% flags)
 				if (flags is not "CFLAGS" and
 					self.settings[flags] == self.settings["CFLAGS"]):
-						myf.write('%s="${CFLAGS}"\n' % flags)
+					myf.write('%s="${CFLAGS}"\n' % flags)
 				elif isinstance(self.settings[flags], list):
 					myf.write('%s="%s"\n'
 							% (flags, ' '.join(self.settings[flags])))

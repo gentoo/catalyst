@@ -51,4 +51,3 @@ class GenBase(object):
 								for j in array:
 									digest = hash_map.generate_hash(f, hash_=j)
 									myf.write(digest)
-
