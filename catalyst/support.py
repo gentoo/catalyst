@@ -59,7 +59,7 @@ def file_check(filepath):
 	'''Check for the files existence and that only one exists
 	if others are found with various extensions
 	'''
-	if os.path.exists(filepath):
+	if os.path.isfile(filepath):
 		return filepath
 	# it didn't exist
 	# so check if there are files of that name with an extension
