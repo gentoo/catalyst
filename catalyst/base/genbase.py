@@ -1,5 +1,5 @@
 
-
+import codecs
 import os
 
 
@@ -18,17 +18,16 @@ class GenBase(object):
 		if "contents" in self.settings:
 			contents_map = self.settings["contents_map"]
 			if os.path.exists(path):
-				myf = open(contents, "w")
-				keys={}
-				for i in self.settings["contents"].split():
-					keys[i]=1
-					array = sorted(keys.keys())
-				for j in array:
-					contents = contents_map.contents(path, j,
-						verbose=self.settings["VERBOSE"])
-					if contents:
-						myf.write(contents)
-				myf.close()
+				with codecs.open(contents, "w", encoding='utf-8') as myf:
+					keys={}
+					for i in self.settings["contents"].split():
+						keys[i]=1
+						array = sorted(keys.keys())
+					for j in array:
+						contents = contents_map.contents(path, j,
+							verbose=self.settings["VERBOSE"])
+						if contents:
+							myf.write(contents)
 
 	def gen_digest_file(self, path):
 		digests = path + ".DIGESTS"
@@ -37,20 +36,19 @@ class GenBase(object):
 		if "digests" in self.settings:
 			hash_map = self.settings["hash_map"]
 			if os.path.exists(path):
-				myf=open(digests, "w")
-				keys={}
-				for i in self.settings["digests"].split():
-					keys[i]=1
-					array = sorted(keys.keys())
-				for f in [path, path + '.CONTENTS']:
-					if os.path.exists(f):
-						if "all" in array:
-							for k in list(hash_map.hash_map):
-								digest = hash_map.generate_hash(f, hash_=k)
-								myf.write(digest)
-						else:
-							for j in array:
-								digest = hash_map.generate_hash(f, hash_=j)
-								myf.write(digest)
-				myf.close()
+				with codecs.open(digests, "w", encoding='utf-8') as myf:
+					keys={}
+					for i in self.settings["digests"].split():
+						keys[i]=1
+						array = sorted(keys.keys())
+					for f in [path, path + '.CONTENTS']:
+						if os.path.exists(f):
+							if "all" in array:
+								for k in list(hash_map.hash_map):
+									digest = hash_map.generate_hash(f, hash_=k)
+									myf.write(digest)
+							else:
+								for j in array:
+									digest = hash_map.generate_hash(f, hash_=j)
+									myf.write(digest)
 
