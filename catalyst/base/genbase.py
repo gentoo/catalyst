@@ -1,5 +1,5 @@
 
-import codecs
+import io
 import os
 
 
@@ -18,7 +18,7 @@ class GenBase(object):
 		if "contents" in self.settings:
 			contents_map = self.settings["contents_map"]
 			if os.path.exists(path):
-				with codecs.open(contents, "w", encoding='utf-8') as myf:
+				with io.open(contents, "w", encoding='utf-8') as myf:
 					keys={}
 					for i in self.settings["contents"].split():
 						keys[i]=1
@@ -36,7 +36,7 @@ class GenBase(object):
 		if "digests" in self.settings:
 			hash_map = self.settings["hash_map"]
 			if os.path.exists(path):
-				with codecs.open(digests, "w", encoding='utf-8') as myf:
+				with io.open(digests, "w", encoding='utf-8') as myf:
 					keys={}
 					for i in self.settings["digests"].split():
 						keys[i]=1
