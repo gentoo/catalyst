@@ -68,7 +68,7 @@ class livecd_stage2(StageBase):
 	def run_local(self):
 		# what modules do we want to blacklist?
 		if "livecd/modblacklist" in self.settings:
-			path = normpath(self.settings["chroot_path"],
+			path = normpath(self.settings["chroot_path"] +
 							"/etc/modprobe.d/blacklist.conf")
 			try:
 				with open(path, "a") as myf:
