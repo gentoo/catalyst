@@ -1263,7 +1263,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			log.notice('Capture target in a tarball')
 			# Remove filename from path
-			mypath = os.path.dirname(self.settings["target_path"])
+			mypath = os.path.dirname(self.settings["target_path"].rstrip('/'))
 
 			# Now make sure path exists
 			ensure_dirs(mypath)
