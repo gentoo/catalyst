@@ -3,10 +3,8 @@ stage2 target, builds upon previous stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os
 
 from catalyst import log
-from catalyst.support import normpath
 from catalyst.base.stagebase import StageBase
 
 
@@ -18,25 +16,6 @@ class stage2(StageBase):
 		self.required_values=[]
 		self.valid_values=["chost"]
 		StageBase.__init__(self,spec,addlargs)
-
-	def set_source_path(self):
-		if "seedcache" in self.settings["options"] and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root")):
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"]+"/tmp/stage1root")
-		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"])
-			if os.path.isfile(self.settings["source_path"]):
-				if os.path.exists(self.settings["source_path"]):
-				# XXX: Is this even necessary if the previous check passes?
-					self.settings["source_path_hash"] = \
-						self.settings["hash_map"].generate_hash(
-							self.settings["source_path"],\
-							hash_=self.settings["hash_function"])
-		log.notice('Source path set to %s', self.settings['source_path'])
-		if os.path.isdir(self.settings["source_path"]):
-			log.warning(
-				'If this is not desired, remove this directory or turn off seedcache in the\n'
-				'options of catalyst.conf.  The source path will then be:\n%s',
-				normpath(self.settings['storedir'] + '/builds/' + self.settings['source_subpath']))
 
 	# XXX: How do these override_foo() functions differ from the ones in
 	# StageBase and why aren't they in stage3_target?

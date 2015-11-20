@@ -420,10 +420,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["source_path"] = normpath(self.settings["storedir"] +
 				"/tmp/" + self.settings["source_subpath"] + "/")
 		else:
+			log.debug('Checking source path existence and '
+				'get the final filepath. subpath: %s',
+				self.settings["source_subpath"])
 			self.settings["source_path"] = file_check(
 				normpath(self.settings["storedir"] + "/builds/" +
 					self.settings["source_subpath"])
 				)
+			log.debug('Source path returned from file_check is: %s',
+				self.settings["source_path"])
 			if os.path.isfile(self.settings["source_path"]):
 				# XXX: Is this even necessary if the previous check passes?
 				if os.path.exists(self.settings["source_path"]):
@@ -431,14 +436,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						self.settings["hash_map"].generate_hash(
 							self.settings["source_path"],
 							hash_=self.settings["hash_function"])
-		log.info('Source path set to %s', self.settings['source_path'])
-		if os.path.isdir(self.settings["source_path"]):
-			log.warning(
-				'If this is not desired, remove this directory or turn off\n'
-				'seedcache in the options of catalyst.conf the source path\n'
-				'will then be %s',
-				normpath(self.settings['storedir'] + '/builds/' +
-					self.settings['source_subpath']))
+		log.notice('Source path set to %s', self.settings['source_path'])
 
 	def set_dest_path(self):
 		if "root_path" in self.settings:
@@ -749,7 +747,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				elif os.path.isdir(self.settings["source_path"]):
 					# We should never reach this, so something is very wrong
 					raise CatalystError(
-						"source path is a dir but seedcache is not enabled")
+						"source path is a dir but seedcache is not enabled: %s"
+						% self.settings["source_path"])
 
 		if _unpack:
 			self.mount_safety_check()
