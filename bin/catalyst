@@ -34,7 +34,7 @@ except KeyboardInterrupt:
 from catalyst.main import main
 
 try:
-	main()
+	main(sys.argv[1:])
 except KeyboardInterrupt:
 	print("Aborted.")
 	sys.exit(130)

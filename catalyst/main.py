@@ -203,9 +203,9 @@ $ catalyst -f stage1-specfile.spec"""
 	return parser
 
 
-def main():
+def main(argv):
 	parser = get_parser()
-	opts = parser.parse_args(sys.argv[1:])
+	opts = parser.parse_args(argv)
 
 	# Initialize the logger before anything else.
 	log_level = opts.log_level
