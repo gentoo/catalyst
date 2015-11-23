@@ -170,6 +170,11 @@ $ catalyst -f stage1-specfile.spec"""
 		dest='color', action='store_false',
 		help='never colorize output all the time (default: detect)')
 
+	group = parser.add_argument_group('Developer options')
+	group.add_argument('--trace',
+		default=False, action='store_true',
+		help='trace program output (akin to `sh -x`)')
+
 	group = parser.add_argument_group('Temporary file management')
 	group.add_argument('-a', '--clear-autoresume',
 		default=False, action='store_true',
@@ -203,10 +208,54 @@ $ catalyst -f stage1-specfile.spec"""
 	return parser
 
 
+def trace(func, *args, **kwargs):
+	"""Run |func| through the trace module (akin to `sh -x`)"""
+	import trace
+
+	# Ignore common system modules we use.
+	ignoremods = set((
+		'argparse',
+		'genericpath', 'gettext',
+		'locale',
+		'os',
+		'posixpath',
+		're',
+		'sre_compile', 'sre_parse', 'sys',
+		'tempfile', 'threading',
+		'UserDict',
+	))
+
+	# Ignore all the system modules.
+	ignoredirs = set(sys.path)
+	# But try to strip out the catalyst paths.
+	try:
+		ignoredirs.remove(os.path.dirname(os.path.dirname(
+			os.path.realpath(__file__))))
+	except KeyError:
+		pass
+
+	tracer = trace.Trace(
+		count=False,
+		trace=True,
+		timing=True,
+		ignoremods=ignoremods,
+		ignoredirs=ignoredirs)
+	return tracer.runfunc(func, *args, **kwargs)
+
+
 def main(argv):
+	"""The main entry point for frontends to use"""
 	parser = get_parser()
 	opts = parser.parse_args(argv)
 
+	if opts.trace:
+		return trace(_main, parser, opts)
+	else:
+		return _main(parser, opts)
+
+
+def _main(parser, opts):
+	"""The "main" main function so we can trace/profile."""
 	# Initialize the logger before anything else.
 	log_level = opts.log_level
 	if log_level is None:
