@@ -174,6 +174,9 @@ $ catalyst -f stage1-specfile.spec"""
 	group.add_argument('--trace',
 		default=False, action='store_true',
 		help='trace program output (akin to `sh -x`)')
+	group.add_argument('--profile',
+		default=False, action='store_true',
+		help='profile program execution')
 
 	group = parser.add_argument_group('Temporary file management')
 	group.add_argument('-a', '--clear-autoresume',
@@ -243,6 +246,25 @@ def trace(func, *args, **kwargs):
 	return tracer.runfunc(func, *args, **kwargs)
 
 
+def profile(func, *args, **kwargs):
+	"""Run |func| through the profile module"""
+	# Should make this an option.
+	sort_keys = ('time',)
+
+	# Collect the profile.
+	import cProfile
+	profiler = cProfile.Profile(subcalls=True, builtins=True)
+	try:
+		ret = profiler.runcall(func, *args, **kwargs)
+	finally:
+		# Then process the results.
+		import pstats
+		stats = pstats.Stats(profiler, stream=sys.stderr)
+		stats.strip_dirs().sort_stats(*sort_keys).print_stats()
+
+	return ret
+
+
 def main(argv):
 	"""The main entry point for frontends to use"""
 	parser = get_parser()
@@ -250,6 +272,8 @@ def main(argv):
 
 	if opts.trace:
 		return trace(_main, parser, opts)
+	elif opts.profile:
+		return profile(_main, parser, opts)
 	else:
 		return _main(parser, opts)
 
