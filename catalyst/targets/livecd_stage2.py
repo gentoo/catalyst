@@ -36,19 +36,6 @@ class livecd_stage2(StageBase):
 
 		file_locate(self.settings, ["cdtar","controller_file"])
 
-	def set_source_path(self):
-		self.settings["source_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["source_subpath"])
-		if os.path.isfile(self.settings["source_path"]):
-			self.settings["source_path_hash"] = \
-				self.settings["hash_map"].generate_hash(
-					self.settings["source_path"])
-		else:
-			self.settings["source_path"]=normpath(self.settings["storedir"]+"/tmp/"+self.settings["source_subpath"])
-		if not os.path.exists(self.settings["source_path"]):
-			raise CatalystError("Source Path: " +
-				self.settings["source_path"] + " does not exist.",
-					print_traceback=True)
-
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]="livecd"
 
