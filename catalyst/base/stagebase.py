@@ -343,16 +343,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("setup_target_path"):
 			log.notice('Resume point detected, skipping target path setup operation...')
 		else:
-			# First clean up any existing target stuff
-			# XXX WTF are we removing the old tarball before we start building the
-			# XXX new one? If the build fails, you don't want to be left with
-			# XXX nothing at all
-#			if os.path.isfile(self.settings["target_path"]):
-#				cmd("rm -f "+self.settings["target_path"],\
-#					"Could not remove existing file: "\
-#					+self.settings["target_path"],env=self.env)
 			self.resume.enable("setup_target_path")
-
 			ensure_dirs(self.settings["storedir"] + "/builds")
 
 	def set_fsscript(self):
