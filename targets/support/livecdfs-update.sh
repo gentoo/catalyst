@@ -95,7 +95,7 @@ echo "####################################################" >> /etc/fstab
 
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" >> /etc/fstab
-echo "tmpfs	/usr/portage			tmpfs	defaults	0 0" >> /etc/fstab
+echo "tmpfs	${clst_portdir}			tmpfs	defaults	0 0" >> /etc/fstab
 # If /usr/lib/X11/xkb/compiled then make it tmpfs
 if [ -d /usr/lib/X11/xkb/compiled ]
 then
@@ -299,8 +299,8 @@ case ${clst_livecd_type} in
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp @system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage
-		cp -r /usr/portage/profiles /usr/livecd
-		cp -r /usr/portage/eclass /usr/livecd
+		cp -r ${clst_portdir}/profiles /usr/livecd
+		cp -r ${clst_portdir}/eclass /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		ln -sf /usr/livecd/gconf /etc/gconf
