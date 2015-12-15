@@ -39,20 +39,6 @@ class grp(StageBase):
 
 		StageBase.__init__(self,spec,addlargs)
 
-	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+"/builds/"+self.settings["target_subpath"])
-		if "autoresume" in self.settings["options"] \
-			and self.resume.is_enabled("setup_target_path"):
-			log.notice('Resume point detected, skipping target path setup operation...')
-		else:
-			# first clean up any existing target stuff
-			#if os.path.isdir(self.settings["target_path"]):
-				#cmd("rm -rf "+self.settings["target_path"],
-				#"Could not remove existing directory: "+self.settings["target_path"],env=self.env)
-			ensure_dirs(self.settings["target_path"])
-
-			self.resume.enable("setup_target_path")
-
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
