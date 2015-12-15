@@ -30,9 +30,4 @@ class stage4(StageBase):
 			"build_kernel","bootloader","root_overlay","fsscript",\
 			"preclean","rcupdate","unmerge","unbind","remove","empty",\
 			"clean"]
-
-#		if "TARBALL" in self.settings or \
-#			"fetch" not in self.settings['options']:
-		if "fetch" not in self.settings['options']:
-			self.settings["action_sequence"].append("capture")
-		self.settings["action_sequence"].append("clear_autoresume")
+		self.set_completion_action_sequences()

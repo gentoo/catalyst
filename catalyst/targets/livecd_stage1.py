@@ -27,7 +27,8 @@ class livecd_stage1(StageBase):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 					"config_profile_link","setup_confdir","portage_overlay",\
 					"bind","chroot_setup","setup_environment","build_packages",\
-					"unbind", "clean","clear_autoresume"]
+					"unbind", "clean"]
+		self.set_completion_action_sequences()
 
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]="livecd"

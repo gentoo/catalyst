@@ -506,6 +506,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
 				"run_local","preclean","unbind","clean"]
+		self.set_completion_action_sequences()
+
+	def set_completion_action_sequences(self):
 		if "fetch" not in self.settings["options"]:
 			self.settings["action_sequence"].append("capture")
 		if "keepwork" in self.settings["options"]:
