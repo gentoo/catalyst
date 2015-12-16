@@ -35,6 +35,10 @@ case ${clst_fstype} in
 		create_cramfs $1
 		loopret=$?
 	;;
+	cloud)
+		create_cloud_qcow2 $1
+		loopret=$?
+	;;
 esac
 
 if [ ${loopret} = "1" ]

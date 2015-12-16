@@ -177,7 +177,7 @@ an embedded or hardened system.
 Filesystem
 ~~~~~~~~~~
 
-*livecd/fstype*::
+*livecd/fstype*, *<target>/fstype*::
 The fstype is used to determine what sort of CD we should build.  This
 is used to set the type of loopback filesystem that we will use on our
 CD.  Possible values are as follows:
@@ -186,12 +186,13 @@ CD.  Possible values are as follows:
   `normal`;; This creates a loop without compression.
   `noloop`;; This copies the files to the CD directly, without using a
              loopback.
+  `cloud`;; This creates a partitioned QCOW2 image for cloud images.
 
-*livecd/fsops*::
+*livecd/fsops*, *<target>/fsops*::
 The fsops are a list of optional parameters that can be passed to the
 tool which will create the filesystem specified in *livecd/fstype*
 (example: `-root-owned`).  It is valid for the following fstypes:
-`squashfs`, `jffs`, `jffs2`, and `cramfs`.
+`squashfs`, `jffs`, `jffs2`, `cramfs`, `cloud`.
 
 *livecd/iso*::
 This is the full path and filename to the ISO image that the

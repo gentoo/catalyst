@@ -80,3 +80,60 @@ create_cramfs(){
 	mkcramfs ${clst_fsops} ${clst_destpath} $1/${loopname} \
 		|| die "Could not create a cramfs filesystem"
 }
+
+create_cloud_qcow2() {
+	export source_path="${clst_destpath}"
+	export destination_path="$1"
+	export loopname="image.loop"
+	export qcow2name="image.loop"
+
+	echo "Preparing disk..."
+	# TODO: auto-shrink
+	fallocate -l 5G ${destination_path}/${loopname} \
+		|| die "${loopname} creation failure"
+	( set -e
+	parted -s "${destination_path}/${loopname}" mklabel gpt
+	parted -s --align=none "${destination_path}/${loopname}" mkpart bios_boot 0 2M
+	parted -s --align=none "${destination_path}/${loopname}" mkpart primary 2M 100%
+	parted -s "${destination_path}/${loopname}" set 1 boot on
+	parted -s "${destination_path}/${loopname}" set 1 bios_grub on
+	) || die "Failed to partition new loopback volume"
+
+	BLOCK_DEV=$(losetup -f --show "${TEMP_DIR}/${TEMP_IMAGE}")
+	mkfs.ext4 -m 0 -F ${clst_fsops} "${BLOCK_DEV}p2" \
+		|| die "Couldn't create ext4 filesystem"
+
+	install -d ${destination_path}/loopmount
+	sync; sync; sleep 3 # Try to work around 2.6.0+ loopback bug
+	mount -t ext4 -o acl,user_xattr,delalloc "${BLOCK_DEV}p2" \
+		${destination_path}/loopmount \
+		|| die "Couldn't mount loopback ext4 filesystem"
+	sync; sync; sleep 3 # Try to work around 2.6.0+ loopback bug
+
+	echo "Copying content..."
+	cp -pPR ${source_path}/* ${destination_path}/loopmount
+	[ $? -ne 0 ] && { umount ${destination_path}/${loopname}; \
+		die "Couldn't copy files to loopback ext4 filesystem"; }
+
+	echo 'Installing grub...'
+	grub2-install "${BLOCK_DEV}" --boot-directory "${destination_path}/loopmount/boot"
+
+	umount ${destination_path}/loopmount \
+		|| die "Couldn't unmount loopback ext4 filesystem"
+	rmdir -f ${destination_path}/loopmount \
+		|| die "Couldn't remove loopmount point"
+
+	# TODO: apply zerofree to the volume
+	# TODO: force an fsck on the volumne
+
+	losetup -d "${BLOCK_DEV}" \
+		|| die "Failed to delete block device"
+
+	qemu-img convert -c -f raw -O qcow2 \
+		${destination_path}/${loopname} \
+		${destination_path}/${qcow2name} \
+		|| die "Failed to convert loop to qcow2"
+	rm -f ${destination_path}/${loopname}
+
+	# Now, $clst_target_path should contain a usable qcow2 image
+}
