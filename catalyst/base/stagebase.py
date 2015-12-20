@@ -498,13 +498,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"]
 
 	def set_default_action_sequence(self):
-		""" Default action sequence for run method """
+		""" Default action sequence for run method.
+
+		This method sets the optional purgeonly action sequence and returns.
+		Or it calls the normal set_action_sequence() for the target stage.
+		"""
 		if "purgeonly" in self.settings["options"]:
 			self.settings["action_sequence"] = ["remove_chroot"]
 			return
 		self.set_action_sequence()
 
 	def set_action_sequence(self):
+		"""Set basic stage1, 2, 3 action sequences"""
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
