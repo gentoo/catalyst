@@ -160,7 +160,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_target_path()
 
 		self.set_controller_file()
-		self.set_action_sequence()
+		self.set_default_action_sequence()
 		self.set_use()
 		self.set_cleanables()
 		self.set_iso_volume_id()
@@ -497,11 +497,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"]
 
-	def set_action_sequence(self):
+	def set_default_action_sequence(self):
 		""" Default action sequence for run method """
 		if "purgeonly" in self.settings["options"]:
 			self.settings["action_sequence"] = ["remove_chroot"]
 			return
+		self.set_action_sequence()
+
+	def set_action_sequence(self):
 		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
 				"setup_confdir","portage_overlay",\
 				"base_dirs","bind","chroot_setup","setup_environment",\
