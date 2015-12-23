@@ -1330,8 +1330,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			varname = varname.replace(".", "_")
 			if isinstance(self.settings[x], str):
 				# Prefix to prevent namespace clashes
-				#os.environ[varname]=self.settings[x]
-				self.env[varname]=self.settings[x]
+				#os.environ[varname] = self.settings[x]
+				if "path" in x:
+					self.env[varname] = self.settings[x].rstrip("/")
+				else:
+					self.env[varname] = self.settings[x]
 			elif isinstance(self.settings[x], list):
 				#os.environ[varname] = ' '.join(self.settings[x])
 				self.env[varname] = ' '.join(self.settings[x])
@@ -1631,7 +1634,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				cmd(self.settings["controller_file"]+\
-					" bootloader " + self.settings["target_path"],\
+					" bootloader " + self.settings["target_path"].rstrip('/'),\
 					"Bootloader script failed.",env=self.env)
 				self.resume.enable("bootloader")
 			except CatalystError:
