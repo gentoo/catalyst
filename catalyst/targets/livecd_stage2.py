@@ -39,6 +39,20 @@ class livecd_stage2(StageBase):
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]="livecd"
 
+	def set_target_path(self):
+		'''Set the target path for the finished stage.
+
+		This method runs the StageBase.set_target_path mehtod,
+		and additionally creates a staging directory for assembling
+		the final components needed to produce the iso image.
+		'''
+		super(livecd_stage2, self).set_target_path()
+		if os.path.isdir(self.settings["target_path"]):
+			cmd("rm -rf " + self.settings["target_path"],
+				"Could not remove existing directory: " +
+				self.settings["target_path"], env=self.env)
+		ensure_dirs(self.settings["target_path"])
+
 	def run_local(self):
 		# what modules do we want to blacklist?
 		if "livecd/modblacklist" in self.settings:
