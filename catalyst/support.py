@@ -55,7 +55,7 @@ def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
 			print_traceback=False)
 
 
-def file_check(filepath):
+def file_check(filepath, extensions=None, strict=True):
 	'''Check for the files existence and that only one exists
 	if others are found with various extensions
 	'''
@@ -68,9 +68,18 @@ def file_check(filepath):
 	files = [x for x in files if not x.endswith(".CONTENTS") and not x.endswith(".DIGESTS")]
 	if len(files) is 1:
 		return files[0]
-	elif len(files) > 1:
+	elif len(files) > 1 and strict:
 		msg = "Ambiguos Filename: %s\nPlease specify the correct extension as well" % filepath
 		raise CatalystError(msg, print_traceback=False)
+	else:
+		target_file = None
+		for ext in extensions:
+			target = filepath + "." + ext
+			if target in files:
+				target_file = target
+				break
+		if target_file:
+			return target_file
 	raise CatalystError("File Not Found: %s" % filepath)
 
 

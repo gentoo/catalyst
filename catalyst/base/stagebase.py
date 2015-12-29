@@ -143,6 +143,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		# This must be set first as other set_ options depend on this
 		self.set_spec_prefix()
 
+		# Initialize our (de)compressor's)
+		self.decompressor = CompressMap(self.settings["decompress_definitions"],
+			env=self.env,
+			search_order=self.settings["decompressor_search_order"])
+		self.accepted_extensions = self.decompressor.search_order_extensions(
+			self.settings["decompressor_search_order"])
+		log.notice("Source file specification matching setting is: %s",
+			self.settings["source_matching"])
+		log.notice("Accepted source file extensions search order: %s",
+			self.accepted_extensions)
+		# save resources, it is not always needed
+		self.compressor = None
+
 		# Define all of our core variables
 		self.set_target_profile()
 		self.set_target_subpath()
@@ -253,14 +266,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.mountmap["port_logdir"] = self.settings["port_logdir"]
 			self.env["PORT_LOGDIR"] = self.settings["port_logdir"]
 			self.env["PORT_LOGDIR_CLEAN"] = PORT_LOGDIR_CLEAN
-
-		# Initialize our (de)compressor's)
-		self.decompressor = CompressMap(self.settings["decompress_definitions"],
-			env=self.env,
-			search_order=self.settings["decompressor_search_order"])
-
-		# save resources, it is not always needed
-		self.compressor = None
 
 	def override_cbuild(self):
 		if "CBUILD" in self.makeconf:
@@ -416,7 +421,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["source_subpath"])
 			self.settings["source_path"] = file_check(
 				normpath(self.settings["storedir"] + "/builds/" +
-					self.settings["source_subpath"])
+					self.settings["source_subpath"]),
+				self.accepted_extensions,
+				self.settings["source_matching"] in ["strict"]
 				)
 			log.debug('Source path returned from file_check is: %s',
 				self.settings["source_path"])
@@ -441,9 +448,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			"/root/*", self.settings["portdir"]]
 
 	def set_snapshot_path(self):
-		self.settings["snapshot_path"]= file_check(normpath(self.settings["storedir"]+\
-			"/snapshots/" + self.settings["snapshot_name"] +
-			self.settings["snapshot"]))
+		self.settings["snapshot_path"]= file_check(
+			normpath(self.settings["storedir"]+\
+				"/snapshots/" + self.settings["snapshot_name"] +
+				self.settings["snapshot"]),
+			self.accepted_extensions,
+			self.settings["source_matching"] is "strict"
+			)
 		log.info('SNAPSHOT_PATH set to: %s', self.settings['snapshot_path'])
 		self.settings["snapshot_path_hash"] = \
 			self.settings["hash_map"].generate_hash(

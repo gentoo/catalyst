@@ -43,6 +43,7 @@ confdefaults={
 	"shdir": "/usr/share/catalyst/targets/",
 	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
 	"snapshot_name": "portage-",
+	"source_matching": "strict",
 	"storedir": "/var/tmp/catalyst",
 	}
 
