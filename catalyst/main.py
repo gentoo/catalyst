@@ -388,7 +388,7 @@ def _main(parser, opts):
 			log.critical(
 				'%s is not a valid hash_function entry\n'
 				'Valid hash_function entries:\n'
-				'%s', HASH_DEFINITIONS.keys())
+				'%s', conf_values["hash_function"], HASH_DEFINITIONS.keys())
 		try:
 			process.find_binary(hash_map.hash_map[conf_values["hash_function"]].cmd)
 		except process.CommandNotFound:
