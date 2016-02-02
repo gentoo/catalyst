@@ -59,7 +59,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
 
 	@target: string, path to be cleared or removed
 	@mode: integer, desired mode to set the directory to
-	@chg_flags: boolean used for FreeBSD hoosts
+	@chg_flags: boolean used for FreeBSD hosts
 	@remove: boolean, passed through to clear_dir()
 	@return boolean
 	'''
