@@ -18,7 +18,7 @@ fi
 
 
 ## START BUILD
-${clst_portdir}/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
+${clst_repo_basedir}/${clst_repo_name}/scripts/bootstrap.sh ${bootstrap_opts} || exit 1
 
 # Clean-up USE again
 sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"

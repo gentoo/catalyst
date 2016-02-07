@@ -7,7 +7,7 @@ setup_pkgmgr
 
 # Backup pristine system
 
-rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "${clst_portdir}/" / \
+rsync -avx --exclude "/root/" --exclude "/tmp/" --exclude "${clst_repo_basedir}/${clst_repo_name}/" / \
 	/tmp/rsync-bak/
 
 for x in ${clst_tinderbox_packages}
@@ -29,5 +29,5 @@ do
 	fi
 	echo "Syncing from original pristine tinderbox snapshot..."
 	rsync -avx --delete --exclude "/root/*" --exclude "/tmp/" --exclude \
-		"${clst_portdir}/" /tmp/rsync-bak/ /
+		"${clst_repo_basedir}/${clst_repo_name}/" /tmp/rsync-bak/ /
 done
