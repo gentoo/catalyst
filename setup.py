@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Catalyst is a release building tool used by Gentoo Linux"""
 
 from __future__ import print_function
