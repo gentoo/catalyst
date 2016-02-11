@@ -1188,9 +1188,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
 			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
-			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				self.settings["make_conf"],\
-				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
+
+			make_conf = self.settings['chroot_path'] + self.settings['make_conf']
+			try:
+				with open(make_conf) as f:
+					data = f.readlines()
+				data = ''.join(x for x in data if not x.startswith('PORTDIR_OVERLAY'))
+				with open(make_conf, 'w') as f:
+					f.write(data)
+			except OSError as e:
+				raise CatalystError('Could not update %s: %s' % (make_conf, e))
 
 		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
