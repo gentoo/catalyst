@@ -881,8 +881,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("rm -f " + self.settings["chroot_path"] +
 				self.settings["port_conf"] + "/make.profile",
 				"Error zapping profile link",env=self.env)
-			cmd("mkdir -p " + self.settings["chroot_path"] +
-				self.settings["port_conf"])
+			ensure_dirs(self.settings['chroot_path'] + self.settings['port_conf'])
 			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
 				self.settings["target_profile"] + " " +
 				self.settings["chroot_path"] +
@@ -913,9 +912,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			for x in self.settings["portage_overlay"]:
 				if os.path.exists(x):
 					log.info('Copying overlay dir %s', x)
-					cmd("mkdir -p "+self.settings["chroot_path"]+\
-						self.settings["local_overlay"],\
-						"Could not make portage_overlay dir",env=self.env)
+					ensure_dirs(self.settings['chroot_path'] + self.settings['local_overlay'])
 					cmd("cp -a "+x+"/* "+self.settings["chroot_path"]+\
 						self.settings["local_overlay"],\
 						"Could not copy portage_overlay",env=self.env)
@@ -1632,11 +1629,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				log.notice('Copying initramfs_overlay dir %s',
 					self.settings['boot/kernel/' + kname + '/initramfs_overlay'])
 
-				cmd("mkdir -p "+\
-					self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"],env=self.env)
+				ensure_dirs(
+					self.settings['chroot_path'] +
+					'/tmp/initramfs_overlay/' +
+					self.settings['boot/kernel/'+kname+'/initramfs_overlay'])
 
 				cmd("cp -R "+self.settings["boot/kernel/"+\
 					kname+"/initramfs_overlay"]+"/* "+\
