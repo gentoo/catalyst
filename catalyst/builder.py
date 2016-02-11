@@ -1,3 +1,4 @@
+import os
 
 class generic(object):
 	def __init__(self,myspec):
@@ -9,7 +10,8 @@ class generic(object):
 
 		Useful for building x86-on-amd64 and such.
 		"""
-		self.settings['CHROOT'] = 'setarch %s %s' % (arch, self.settings['CHROOT'])
+		if os.uname()[0] == 'Linux':
+			self.settings['CHROOT'] = 'setarch %s %s' % (arch, self.settings['CHROOT'])
 
 	def mount_safety_check(self):
 		"""
