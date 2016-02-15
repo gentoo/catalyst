@@ -225,7 +225,8 @@ def countdown(secs=5, doing="Starting"):
 			('>>> Waiting %s seconds before starting...\n'
 			 '>>> (Control-C to abort)...\n'
 			 '%s in: ') % (secs, doing))
-		ticks=range(secs)
+		# py3 now creates a range object, so wrap it with list()
+		ticks=list(range(secs))
 		ticks.reverse()
 		for sec in ticks:
 			sys.stdout.write(str(sec+1)+" ")
