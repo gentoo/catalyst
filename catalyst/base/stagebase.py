@@ -730,8 +730,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# Autoresume is invalid, SEEDCACHE
 				_unpack=True
 				invalid_snapshot=True
-				# check and reset the unpack_info['source']
-				unpack_info['source'] = file_check(unpack_info['source'])
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"]!=clst_unpack_hash:
