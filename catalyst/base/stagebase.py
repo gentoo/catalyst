@@ -881,8 +881,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cmd("rm -f " + self.settings["chroot_path"] +
 				self.settings["port_conf"] + "/make.profile",
 				"Error zapping profile link",env=self.env)
-			cmd("mkdir -p " + self.settings["chroot_path"] +
-				self.settings["port_conf"])
+			ensure_dirs(self.settings['chroot_path'] + self.settings['port_conf'])
 			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
 				self.settings["target_profile"] + " " +
 				self.settings["chroot_path"] +
@@ -913,9 +912,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			for x in self.settings["portage_overlay"]:
 				if os.path.exists(x):
 					log.info('Copying overlay dir %s', x)
-					cmd("mkdir -p "+self.settings["chroot_path"]+\
-						self.settings["local_overlay"],\
-						"Could not make portage_overlay dir",env=self.env)
+					ensure_dirs(self.settings['chroot_path'] + self.settings['local_overlay'])
 					cmd("cp -a "+x+"/* "+self.settings["chroot_path"]+\
 						self.settings["local_overlay"],\
 						"Could not copy portage_overlay",env=self.env)
@@ -1188,9 +1185,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
 			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
 				"Could not remove " + self.settings["local_overlay"], env=self.env)
-			cmd("sed -i '/^PORTDIR_OVERLAY/d' "+self.settings["chroot_path"]+\
-				self.settings["make_conf"],\
-				"Could not remove PORTDIR_OVERLAY from make.conf",env=self.env)
+
+			make_conf = self.settings['chroot_path'] + self.settings['make_conf']
+			try:
+				with open(make_conf) as f:
+					data = f.readlines()
+				data = ''.join(x for x in data if not x.startswith('PORTDIR_OVERLAY'))
+				with open(make_conf, 'w') as f:
+					f.write(data)
+			except OSError as e:
+				raise CatalystError('Could not update %s: %s' % (make_conf, e))
 
 		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
@@ -1625,11 +1629,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				log.notice('Copying initramfs_overlay dir %s',
 					self.settings['boot/kernel/' + kname + '/initramfs_overlay'])
 
-				cmd("mkdir -p "+\
-					self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"],env=self.env)
+				ensure_dirs(
+					self.settings['chroot_path'] +
+					'/tmp/initramfs_overlay/' +
+					self.settings['boot/kernel/'+kname+'/initramfs_overlay'])
 
 				cmd("cp -R "+self.settings["boot/kernel/"+\
 					kname+"/initramfs_overlay"]+"/* "+\
