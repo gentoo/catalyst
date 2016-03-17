@@ -1130,7 +1130,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			# Setup the portage overlay
 			if "portage_overlay" in self.settings:
-				myf.write('PORTDIR_OVERLAY="/usr/local/portage"\n')
+				myf.write('PORTDIR_OVERLAY="%s"\n' %  self.settings["local_overlay"])
 
 			# Set default locale for system responses. #478382
 			myf.write(
