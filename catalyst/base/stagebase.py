@@ -146,7 +146,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		# Initialize our (de)compressor's)
 		self.decompressor = CompressMap(self.settings["decompress_definitions"],
 			env=self.env,
-			search_order=self.settings["decompressor_search_order"])
+			search_order=self.settings["decompressor_search_order"],
+			comp_prog=self.settings["comp_prog"])
 		self.accepted_extensions = self.decompressor.search_order_extensions(
 			self.settings["decompressor_search_order"])
 		log.notice("Source file specification matching setting is: %s",
@@ -691,6 +692,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			"destination": self.settings["chroot_path"],
 			'mode': None,
 			'auto-ext': False,
+			'other_options': self.settings["compressor_options"],
 			}
 
 		display_msg = (
@@ -806,6 +808,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			'destination': self.settings["snapshot_cache_path"],
 			'mode': None,
 			'auto-ext': False,
+			'other_options': self.settings["compressor_options"],
 			}
 
 		target_portdir = normpath(self.settings["chroot_path"] +
@@ -1270,7 +1273,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		# resources if it is not needed
 		if not self.compressor:
 			self.compressor = CompressMap(self.settings["compress_definitions"],
-				env=self.env, default_mode=self.settings['compression_mode'])
+				env=self.env, default_mode=self.settings['compression_mode'],
+				logger=log)
 
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("capture"):
@@ -1288,7 +1292,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				basedir=self.settings["stage_path"],
 				filename=self.settings["target_path"].rstrip('/'),
 				mode=self.settings["compression_mode"],
-				auto_extension=True
+				auto_extension=True,
+				arch=self.settings["compressor_arch"],
+				other_options=self.settings["compressor_options"],
 				)
 			target_filename = ".".join([self.settings["target_path"].rstrip('/'),
 				self.compressor.extension(pack_info['mode'])])

@@ -12,6 +12,7 @@ class ParserBase(object):
 	key_value_separator = "="
 	multiple_values = False
 	empty_values = True
+	eval_none = False
 
 	def __getitem__(self, key):
 		return self.values[key]
@@ -103,6 +104,13 @@ class ParserBase(object):
 					log.warning('No value set for key "%s"; deleting', x)
 					del values[x]
 
+		if self.eval_none:
+			# Make sure the list of keys is static since we modify inside the loop.
+			for x in list(values.keys()):
+				# reset None values
+				if isinstance(values[x], str) and values[x].lower() in ['none']:
+					log.info('None value found for key "%s"; reseting', x)
+					values[x] = None
 		self.values = values
 
 class SpecParser(ParserBase):
@@ -110,6 +118,7 @@ class SpecParser(ParserBase):
 	key_value_separator = ':'
 	multiple_values = True
 	empty_values = False
+	eval_none = True
 
 	def __init__(self, filename=""):
 		if filename:

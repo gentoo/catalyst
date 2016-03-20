@@ -331,7 +331,8 @@ def _main(parser, opts):
 	log.debug('conf_values[options] = %s', conf_values['options'])
 
 	# initialize our contents generator
-	contents_map = ContentsMap(CONTENTS_DEFINITIONS)
+	contents_map = ContentsMap(CONTENTS_DEFINITIONS,
+		comp_prog=conf_values['comp_prog'])
 	conf_values["contents_map"] = contents_map
 
 	# initialze our hash and contents generators
@@ -401,6 +402,7 @@ def _main(parser, opts):
 	addlargs={}
 
 	if myspecfile:
+		log.notice("Processing spec file: %s", myspecfile)
 		spec = catalyst.config.SpecParser(myspecfile)
 		addlargs.update(spec.get_values())
 

@@ -1,6 +1,14 @@
 
+import os
 
 from DeComp.definitions import DECOMPRESSOR_XATTR_SEARCH_ORDER
+from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
+
+# Used for the (de)compressor definitions
+if os.uname()[0] in  ["Linux", "linux"]:
+	TAR = 'linux'
+else:
+	TAR = 'bsd'
 
 
 # these should never be touched
@@ -18,13 +26,16 @@ required_config_file_values = ["storedir", "sharedir", "distdir", "portdir"]
 valid_config_file_values = required_config_file_values[:]
 valid_config_file_values.extend([ "distcc", "envscript",
 	"options", "DEBUG", "VERBOSE",
-	"snapshot_cache", "hash_function", "digests", "contents"
-	"compression_mode", "decompressor_search_order",
+	"snapshot_cache", "hash_function", "digests", "contents", "compressor_arch",
+	"compression_mode", "compressor_options", "decompressor_search_order",
 	])
 
 confdefaults={
 	"archdir": "%(PythonDir)s/arch",
+	"comp_prog": COMPRESSOR_PROGRAM_OPTIONS[TAR],
 	"compression_mode": 'lbzip2_x',
+	"compressor_arch": None,
+	"compressor_options": XATTRS_OPTIONS[TAR],
 	"decompressor_search_order": DECOMPRESSOR_XATTR_SEARCH_ORDER,
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",

@@ -63,13 +63,24 @@ source_subpath:
 #
 compression_mode: lbzip2
 
+# Optional arch specification which applies only to the squashfs commpression modes
+# default is None
+compressor_arch":
+
+# Optional compressor options to add to the compression command
+# Defaults to a predetermined set of xattribute options
+# To disable the defaults uncomment the following line
+#compressor_options": None
+# Or to specify your own (overrides the defaults)
+# uncomment this next line and add your own options.
+#compressor_options":
+
 # The search order to use for determining the decompressor
 # to use on the source file.  i.e. check the extensions it is capable of
 # decompressing to find a match.  Use the list above for the modes available.
 #Note: rsync is a special case, do not include it below.
 #
 decompressor_search_order: lbzip2 bzip2 tar pixz xz gzip squashfs
-
 
 # These are the hosts used as distcc slaves when distcc is enabled in your
 # catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
