@@ -1565,24 +1565,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		# If we need to pass special options to the bootloader
 		# for this kernel put them into the environment
-		if "boot/kernel/"+kname+"/kernelopts" in self.settings:
-			myopts=self.settings["boot/kernel/"+kname+\
-				"/kernelopts"]
+		key = 'boot/kernel/' + kname + '/kernelopts'
+		if key in self.settings:
+			myopts = self.settings[key]
 
 			if not isinstance(myopts, str):
 				myopts = ' '.join(myopts)
 				self.env[kname+"_kernelopts"]=myopts
-
 			else:
 				self.env[kname+"_kernelopts"]=""
 
-		if "boot/kernel/"+kname+"/extraversion" not in self.settings:
-			self.settings["boot/kernel/"+kname+\
-				"/extraversion"]=""
-
-		self.env["clst_kextraversion"]=\
-			self.settings["boot/kernel/"+kname+\
-			"/extraversion"]
+		key = 'boot/kernel/' + kname + '/extraversion'
+		self.settings.setdefault(key, '')
+		self.env["clst_kextraversion"] = self.settings[key]
 
 		self._copy_initramfs_overlay(kname=kname)
 
@@ -1606,44 +1601,35 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			"Runscript post-kmerge failed",env=self.env)
 
 	def _copy_kernel_config(self, kname):
-		if "boot/kernel/"+kname+"/config" in self.settings:
-			if not os.path.exists(self.settings["boot/kernel/"+kname+"/config"]):
+		key = 'boot/kernel/' + kname + '/config'
+		if key in self.settings:
+			if not os.path.exists(self.settings[key]):
 				self.unbind()
-				raise CatalystError(
-					"Can't find kernel config: "+\
-					self.settings["boot/kernel/"+kname+\
-					"/config"])
+				raise CatalystError("Can't find kernel config: %s" %
+					self.settings[key])
 
 			try:
-				cmd("cp "+self.settings["boot/kernel/"+kname+\
-					"/config"]+" "+\
-					self.settings["chroot_path"]+"/var/tmp/"+\
-					kname+".config",\
-					"Couldn't copy kernel config: "+\
-					self.settings["boot/kernel/"+kname+\
-					"/config"],env=self.env)
+				cmd('cp ' + self.settings[key] + ' ' +
+					self.settings['chroot_path'] + '/var/tmp/' + kname + '.config',
+					"Couldn't copy kernel config: %s" % self.settings[key],
+					env=self.env)
 
 			except CatalystError:
 				self.unbind()
 
 	def _copy_initramfs_overlay(self, kname):
-		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
-			if os.path.exists(self.settings["boot/kernel/"+\
-				kname+"/initramfs_overlay"]):
-				log.notice('Copying initramfs_overlay dir %s',
-					self.settings['boot/kernel/' + kname + '/initramfs_overlay'])
+		key = 'boot/kernel/' + kname + '/initramfs_overlay'
+		if key in self.settings:
+			if os.path.exists(self.settings[key]):
+				log.notice('Copying initramfs_overlay dir %s', self.settings[key])
 
 				ensure_dirs(
 					self.settings['chroot_path'] +
-					'/tmp/initramfs_overlay/' +
-					self.settings['boot/kernel/'+kname+'/initramfs_overlay'])
+					'/tmp/initramfs_overlay/' + self.settings[key])
 
-				cmd("cp -R "+self.settings["boot/kernel/"+\
-					kname+"/initramfs_overlay"]+"/* "+\
-					self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/"+\
-					self.settings["boot/kernel/"+kname+\
-					"/initramfs_overlay"],env=self.env)
+				cmd('cp -R ' + self.settings[key] + '/* ' +
+					self.settings['chroot_path'] +
+					'/tmp/initramfs_overlay/' + self.settings[key], env=self.env)
 
 	def bootloader(self):
 		if "autoresume" in self.settings["options"] \
