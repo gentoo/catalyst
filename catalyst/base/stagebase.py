@@ -5,9 +5,6 @@ import shutil
 import sys
 from stat import ST_UID, ST_GID, ST_MODE
 
-# for convienience
-pjoin = os.path.join
-
 from snakeoil import fileutils
 
 from DeComp.compress import CompressMap

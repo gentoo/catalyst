@@ -13,8 +13,6 @@ import sys
 
 from snakeoil import process
 
-__selfpath__ = os.path.abspath(os.path.dirname(__file__))
-
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
 	CONTENTS_DEFINITIONS)
 from DeComp.contents import ContentsMap
@@ -63,7 +61,7 @@ def parse_config(config_files):
 			conf_values[x]=confdefaults[x]
 
 	# add our python base directory to use for loading target arch's
-	conf_values["PythonDir"] = __selfpath__
+	conf_values["PythonDir"] = os.path.dirname(os.path.realpath(__file__))
 
 	# print out any options messages
 	for opt in conf_values['options']:
