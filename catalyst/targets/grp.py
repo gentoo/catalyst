@@ -8,7 +8,6 @@ import glob
 
 from catalyst import log
 from catalyst.support import (CatalystError, normpath, cmd, list_bashify)
-from catalyst.fileops import ensure_dirs
 from catalyst.base.stagebase import StageBase
 
 

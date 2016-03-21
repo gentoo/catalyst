@@ -3,11 +3,7 @@ LiveCD stage1 target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os
-
-from catalyst import log
-from catalyst.support import (normpath, cmd)
-from catalyst.fileops import ensure_dirs
+from catalyst.support import normpath
 
 from catalyst.base.stagebase import StageBase
 
