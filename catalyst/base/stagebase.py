@@ -685,13 +685,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		clst_unpack_hash = self.resume.get("unpack")
 
-		unpack_info = {
-			'source': self.settings["source_path"],
-			"destination": self.settings["chroot_path"],
-			'mode': None,
-			'auto-ext': False,
-			'other_options': self.settings["compressor_options"],
-			}
+		unpack_info = self.decompressor.create_infodict(
+			source=self.settings["source_path"],
+			destination=self.settings["chroot_path"],
+			arch=self.settings["compressor_arch"],
+			other_options=self.settings["compressor_options"],
+			)
 
 		display_msg = (
 			'Starting %(mode)s from %(source)s\nto '
