@@ -220,7 +220,7 @@ then
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 
-	PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --nodeps --update --newuse" run_merge "${clst_ksource}" || exit 1
+	PKGDIR=${PKGDIR} clst_myemergeopts="--quiet --update --newuse" run_merge "${clst_ksource}" || exit 1
 
 	SOURCESDIR="/tmp/kerncache/${clst_kname}/sources"
 	if [ -L /usr/src/linux ]
