@@ -330,7 +330,9 @@ def _main(parser, opts):
 
 	# initialize our contents generator
 	contents_map = ContentsMap(CONTENTS_DEFINITIONS,
-		comp_prog=conf_values['comp_prog'])
+		comp_prog=conf_values['comp_prog'],
+		decomp_opt=conf_values['decomp_opt'],
+		list_xattrs_opt=conf_values['list_xattrs_opt'])
 	conf_values["contents_map"] = contents_map
 
 	# initialze our hash and contents generators

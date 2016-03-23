@@ -1,8 +1,9 @@
 
 import os
 
-from DeComp.definitions import DECOMPRESSOR_XATTR_SEARCH_ORDER
+from DeComp.definitions import DECOMPRESSOR_SEARCH_ORDER
 from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
+from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 # Used for the (de)compressor definitions
 if os.uname()[0] in  ["Linux", "linux"]:
@@ -36,10 +37,12 @@ confdefaults={
 	"compression_mode": 'lbzip2',
 	"compressor_arch": None,
 	"compressor_options": XATTRS_OPTIONS[TAR],
+	"decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS[TAR],
 	"decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
 	"distdir": "/usr/portage/distfiles",
 	"hash_function": "crc32",
 	"icecream": "/var/cache/icecream",
+	'list_xattrs_opt': LIST_XATTRS_OPTIONS[TAR],
 	"local_overlay": "/usr/local/portage",
 	"port_conf": "/etc/portage",
 	"make_conf": "%(port_conf)s/make.conf",

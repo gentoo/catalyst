@@ -64,7 +64,8 @@ class snapshot(TargetBase, GenBase):
 
 		log.notice('Compressing Portage snapshot tarball ...')
 		compressor = CompressMap(self.settings["compress_definitions"],
-			env=self.env, default_mode=self.settings['compression_mode'])
+			env=self.env, default_mode=self.settings['compression_mode'],
+			comp_prog=self.settings["comp_prog"])
 		infodict = compressor.create_infodict(
 			source=self.settings["repo_name"],
 			destination=self.settings["snapshot_path"],

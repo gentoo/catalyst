@@ -144,7 +144,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.decompressor = CompressMap(self.settings["decompress_definitions"],
 			env=self.env,
 			search_order=self.settings["decompressor_search_order"],
-			comp_prog=self.settings["comp_prog"])
+			comp_prog=self.settings["comp_prog"],
+			decomp_opt=self.settings["decomp_opt"])
 		self.accepted_extensions = self.decompressor.search_order_extensions(
 			self.settings["decompressor_search_order"])
 		log.notice("Source file specification matching setting is: %s",
