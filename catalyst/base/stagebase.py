@@ -1271,7 +1271,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if not self.compressor:
 			self.compressor = CompressMap(self.settings["compress_definitions"],
 				env=self.env, default_mode=self.settings['compression_mode'],
-				logger=log)
+				comp_prog=self.settings['comp_prog'])
 
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("capture"):
