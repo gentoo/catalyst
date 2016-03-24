@@ -800,13 +800,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		unpack_errmsg="Error unpacking snapshot using mode %(mode)s"
 
-		unpack_info = {
-			'source': self.settings["snapshot_path"],
-			'destination': self.settings["snapshot_cache_path"],
-			'mode': None,
-			'auto-ext': False,
-			'other_options': self.settings["compressor_options"],
-			}
+		unpack_info = self.decompressor.create_infodict(
+			source=self.settings["snapshot_path"],
+			destination=self.settings["snapshot_cache_path"],
+			arch=self.settings["compressor_arch"],
+			other_options=self.settings["compressor_options"],
+			)
 
 		target_portdir = normpath(self.settings["chroot_path"] +
 			self.settings["repo_basedir"] + "/" + self.settings["repo_name"])
