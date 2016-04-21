@@ -211,8 +211,22 @@ case ${clst_hostarch} in
 			"${clst_target_path}/ppc/bootinfo.txt"
 		fi
 
+		flags=( -r -U -chrp-boot )
 		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -r -U -chrp-boot -netatalk -hfs -probe -map "${clst_target_path}"/boot/map.hfs -part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless "${clst_target_path}"/boot -hide-hfs "zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
+		if [[ ${clst_subarch} == *le ]]
+		then
+			flags+=(
+				-v -T -l -cache-inodes
+			)
+		else
+			flags+=(
+				-netatalk -hfs -probe -map "${clst_target_path}"/boot/map.hfs
+				-part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless "${clst_target_path}"/boot -hide-hfs
+				"zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" -J ${mkisofs_zisofs_opts}
+			)
+		fi
+		run_mkisofs "${flags[@]}" \
+			-V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"
 	;;
 	sparc*)
 		# Old silo (<=1.2.6) requires a specially built mkisofs
