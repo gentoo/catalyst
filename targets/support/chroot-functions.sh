@@ -17,23 +17,25 @@ trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 #	* kernel recognizes this and generates SIGINT signal
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
 
-check_genkernel_version(){
-	if [ -x /usr/bin/genkernel ]
-	then
-		genkernel_version=$(genkernel --version)
-		genkernel_version_major=${genkernel_version%%.*}
-		genkernel_version_minor_sub=${genkernel_version#${genkernel_version_major}.}
-		genkernel_version_minor=${genkernel_version_minor_sub%%.*}
-		genkernel_version_sub=${genkernel_version##*.}
-		if [ -n "${genkernel_version}" -a "${genkernel_version_major}" -eq '3' -a "${genkernel_version_minor}" -ge '3' ]
-		then
-			echo "Genkernel version ${genkernel_version} found ... continuing"
-		else
-			echo "ERROR: Your genkernel version is too low in your seed stage.  genkernel version 3.3.0"
-			echo "or greater is required."
-			exit 1
-		fi
+check_genkernel_version() {
+	local version parts=() major minor
+
+	version=$(genkernel --version)
+	if [[ -z ${version} ]] ; then
+		echo "ERROR: Could not detect genkernel version!"
+		exit 1
+	fi
+	printf 'Genkernel version '%s' found ... ' "${version}"
+
+	IFS='.' read -a parts <<<"${version}"
+	major=${parts[0]}
+	minor=${parts[1]}
+	if [[ ${major} -gt 3 || ( ${major} -eq 3 && ${minor} -ge 3 ) ]] ; then
+		echo "OK"
 	else
+		echo "FAIL"
+		echo "ERROR: Your genkernel version is too low in your seed stage."
+		echo "       genkernel version 3.3.0 or greater is required."
 		exit 1
 	fi
 }
