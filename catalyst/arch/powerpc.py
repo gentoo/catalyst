@@ -28,6 +28,13 @@ class arch_ppc64(generic_ppc64):
 		self.settings["CFLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="powerpc64-unknown-linux-gnu"
 
+class arch_ppc64le(generic_ppc64):
+	"builder class for generic ppc64le"
+	def __init__(self,myspec):
+		generic_ppc64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["CHOST"]="powerpc64le-unknown-linux-gnu"
+
 class arch_970(arch_ppc64):
 	"builder class for 970 aka G5 under ppc64"
 	def __init__(self,myspec):
@@ -99,12 +106,32 @@ class arch_power6(arch_ppc64):
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
+class arch_power7(arch_ppc64):
+	"builder class for power7 under ppc64"
+	def __init__(self,myspec):
+		arch_ppc64.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
+class arch_power7le(arch_ppc64le):
+	"builder class for power7 under ppc64le"
+	def __init__(self,myspec):
+		arch_ppc64le.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
 class arch_power8(arch_ppc64):
-	"builder class for power8 under ppc64le"
+	"builder class for power8 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
 		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
-		self.settings["CHOST"]="powerpc64le-unknown-linux-gnu"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
+class arch_power8le(arch_ppc64le):
+	"builder class for power8 under ppc64le"
+	def __init__(self,myspec):
+		arch_ppc64le.__init__(self,myspec)
+		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 def register():
@@ -121,7 +148,11 @@ def register():
 		"power4"	: arch_power4,
 		"power5"	: arch_power5,
 		"power6"	: arch_power6,
+		"power7"	: arch_power7,
+		"power7le"	: arch_power7le,
 		"power8"	: arch_power8,
+		"power8le"	: arch_power8le,
 		"ppc"		: arch_ppc,
-		"ppc64"		: arch_ppc64
+		"ppc64"		: arch_ppc64,
+		"ppc64le"	: arch_ppc64le,
 	}, ("ppc","ppc64","ppc64le","powerpc","powerpc64","powerpc64le"))
