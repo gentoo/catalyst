@@ -54,7 +54,8 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
 	return succeeded
 
 
-def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
+def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
+		clear_nondir=True):
 	'''Universal directory clearing function
 
 	@target: string, path to be cleared or removed
@@ -67,27 +68,36 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False):
 	if not target:
 		log.debug('no target... returning')
 		return False
+
+	mystat = None
 	if os.path.isdir(target):
 		log.info('Emptying directory: %s', target)
 		# stat the dir, delete the dir, recreate the dir and set
 		# the proper perms and ownership
 		try:
 			log.debug('os.stat()')
-			mystat=os.stat(target)
+			mystat = os.stat(target)
 			# There's no easy way to change flags recursively in python
 			if chg_flags and os.uname()[0] == "FreeBSD":
 				os.system("chflags -R noschg " + target)
 			log.debug('shutil.rmtree()')
 			shutil.rmtree(target)
-			if not remove:
-				log.debug('ensure_dirs()')
-				ensure_dirs(target, mode=mode)
-				os.chown(target, mystat[ST_UID], mystat[ST_GID])
-				os.chmod(target, mystat[ST_MODE])
 		except Exception:
 			log.error('clear_dir failed', exc_info=True)
 			return False
-	else:
-		log.info('clear_dir failed: %s: is not a directory', target)
+	elif os.path.exists(target):
+		if clear_nondir:
+			os.unlink(clear_nondir)
+		else:
+			log.info('clear_dir failed: %s: is not a directory', target)
+			return False
+
+	if not remove:
+		log.debug('ensure_dirs()')
+		ensure_dirs(target, mode=mode)
+		if mystat:
+			os.chown(target, mystat[ST_UID], mystat[ST_GID])
+			os.chmod(target, mystat[ST_MODE])
+
 	log.debug('DONE, returning True')
 	return True

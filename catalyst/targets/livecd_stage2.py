@@ -3,10 +3,8 @@ LiveCD stage2 target, builds upon previous LiveCD stage1 tarball
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os
-
-from catalyst.support import (normpath, file_locate, CatalystError, cmd)
-from catalyst.fileops import ensure_dirs
+from catalyst.support import (normpath, file_locate, CatalystError)
+from catalyst.fileops import clear_dir
 from catalyst.base.stagebase import StageBase
 
 
@@ -46,11 +44,7 @@ class livecd_stage2(StageBase):
 		the final components needed to produce the iso image.
 		'''
 		super(livecd_stage2, self).set_target_path()
-		if os.path.isdir(self.settings["target_path"]):
-			cmd("rm -rf " + self.settings["target_path"],
-				"Could not remove existing directory: " +
-				self.settings["target_path"], env=self.env)
-		ensure_dirs(self.settings["target_path"])
+		clear_dir(self.settings['target_path'])
 
 	def run_local(self):
 		# what modules do we want to blacklist?

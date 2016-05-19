@@ -18,7 +18,7 @@ from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
 from catalyst.lock import LockDir, LockInUse
-from catalyst.fileops import ensure_dirs, pjoin
+from catalyst.fileops import ensure_dirs, pjoin, clear_dir
 from catalyst.base.resume import AutoResume
 
 if sys.version_info[0] >= 3:
@@ -821,13 +821,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
 				self.settings["snapshot_cache_path"]+\
 				" (this can take a long time)..."
-			cleanup_errmsg="Error removing existing snapshot cache directory."
 
 			if self.settings["snapshot_path_hash"]==snapshot_cache_hash:
 				log.info('Valid snapshot cache, skipping unpack of portage tree...')
 				unpack=False
 		else:
-			cleanup_errmsg="Error removing existing snapshot directory."
 			cleanup_msg=\
 				'Cleaning up existing portage tree (this can take a long time)...'
 			unpack_info['destination'] = normpath(
@@ -847,10 +845,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.snapcache_lock.write_lock()
 			if os.path.exists(target_portdir):
 				log.info('%s', cleanup_msg)
-				cleanup_cmd = "rm -rf " + target_portdir
-				log.info('unpack() cleanup_cmd = %s', cleanup_cmd)
-				cmd(cleanup_cmd,cleanup_errmsg,env=self.env)
-			ensure_dirs(target_portdir, mode=0o755)
+			clear_dir(target_portdir)
 
 			log.notice('Unpacking portage tree (this can take a long time) ...')
 			if not self.decompressor.extract(unpack_info):
