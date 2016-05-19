@@ -9,7 +9,7 @@ from stat import ST_UID, ST_GID, ST_MODE
 
 from catalyst import log
 from catalyst.support import (CatalystError, normpath, cmd, list_bashify)
-from catalyst.fileops import ensure_dirs
+from catalyst.fileops import ensure_dirs, clear_path
 
 from catalyst.base.stagebase import StageBase
 
@@ -56,10 +56,8 @@ class netboot2(StageBase):
 			log.notice('Resume point detected, skipping target path setup operation...')
 		else:
 			# first clean up any existing target stuff
-			if os.path.isfile(self.settings["target_path"]):
-				cmd("rm -f "+self.settings["target_path"], \
-					"Could not remove existing file: "+self.settings["target_path"],env=self.env)
-				self.resume.enable("setup_target_path")
+			clear_path(self.settings['target_path'])
+			self.resume.enable("setup_target_path")
 		ensure_dirs(self.settings["storedir"]+"/builds/")
 
 	def copy_files_to_image(self):
@@ -135,8 +133,8 @@ class netboot2(StageBase):
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
 					log.notice('netboot2: removing %s', x)
-					os.system("rm -rf " + self.settings["chroot_path"] +
-						self.settings["merge_path"] + x)
+					clear_path(self.settings['chroot_path'] +
+						self.settings['merge_path'] + x)
 
 	def empty(self):
 		if "autoresume" in self.settings["options"] \

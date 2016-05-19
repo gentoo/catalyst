@@ -18,7 +18,7 @@ from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
 from catalyst.lock import LockDir, LockInUse
-from catalyst.fileops import ensure_dirs, pjoin, clear_dir
+from catalyst.fileops import ensure_dirs, pjoin, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
 if sys.version_info[0] >= 3:
@@ -870,9 +870,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			log.info('Configuring profile link...')
-			cmd("rm -f " + self.settings["chroot_path"] +
-				self.settings["port_conf"] + "/make.profile",
-				"Error zapping profile link",env=self.env)
+			clear_path(self.settings['chroot_path'] +
+				self.settings['port_conf'] + '/make.profile')
 			ensure_dirs(self.settings['chroot_path'] + self.settings['port_conf'])
 			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
 				self.settings["target_profile"] + " " +
@@ -1050,8 +1049,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# Modify and write out make.conf (for the chroot)
 			makepath = normpath(self.settings["chroot_path"] +
 				self.settings["make_conf"])
-			cmd("rm -f " + makepath,\
-				"Could not remove " + makepath, env=self.env)
+			clear_path(makepath)
 			myf=open(makepath, "w")
 			myf.write("# These settings were set by the catalyst build script "
 					"that automatically\n# built this stage.\n")
@@ -1164,8 +1162,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			for x in self.settings["cleanables"]:
 				log.notice('Cleaning chroot: %s', x)
-				cmd("rm -rf "+self.settings["destpath"]+x,"Couldn't clean "+\
-					x,env=self.env)
+				clear_path(self.settings["destpath"] + x)
 
 		# Put /etc/hosts back into place
 		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
@@ -1175,8 +1172,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		# Remove our overlay
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
-			cmd("rm -rf " + self.settings["chroot_path"] + self.settings["local_overlay"],
-				"Could not remove " + self.settings["local_overlay"], env=self.env)
+			clear_path(self.settings["chroot_path"] + self.settings["local_overlay"])
 
 			make_conf = self.settings['chroot_path'] + self.settings['make_conf']
 			try:
@@ -1234,7 +1230,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					# We're going to shell out for all these cleaning
 					# operations, so we get easy glob handling.
 					log.notice('livecd: removing %s', x)
-					os.system("rm -rf "+self.settings["chroot_path"]+x)
+					clear_path(self.settings["chroot_path"] + x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
 						cmd(self.settings["controller_file"]+\

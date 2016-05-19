@@ -87,7 +87,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 			return False
 	elif os.path.exists(target):
 		if clear_nondir:
-			os.unlink(clear_nondir)
+			os.unlink(target)
 		else:
 			log.info('clear_dir failed: %s: is not a directory', target)
 			return False
@@ -101,3 +101,8 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 
 	log.debug('DONE, returning True')
 	return True
+
+
+def clear_path(target):
+	"""Nuke |target| regardless of it being a dir or file."""
+	clear_dir(target, remove=True)
