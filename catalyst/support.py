@@ -30,7 +30,7 @@ class CatalystError(Exception):
 			log.error('CatalystError: %s', message, exc_info=print_traceback)
 
 
-def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
+def cmd(mycmd, env=None, debug=False, fail_func=None):
 	if env is None:
 		env = {}
 	log.debug('cmd: %r', mycmd)
@@ -50,7 +50,7 @@ def cmd(mycmd, myexc="", env=None, debug=False, fail_func=None):
 		if fail_func:
 			log.error('CMD(), NON-Zero command return.  Running fail_func().')
 			fail_func()
-		raise CatalystError("cmd() NON-zero return value from: %s" % myexc,
+		raise CatalystError("cmd() NON-zero return value from: %s" % args,
 			print_traceback=False)
 
 

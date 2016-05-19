@@ -648,7 +648,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		killcmd = normpath(self.settings["sharedir"] +
 			self.settings["shdir"] + "/support/kill-chroot-pids.sh")
 		if os.path.exists(killcmd):
-			cmd(killcmd, "kill-chroot-pids script failed.",env=self.env)
+			cmd(killcmd, env=self.env)
 
 	def mount_safety_check(self):
 		"""
@@ -877,7 +877,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["target_profile"] + " " +
 				self.settings["chroot_path"] +
 				self.settings["port_conf"] + "/make.profile",
-				"Error creating profile link",env=self.env)
+				env=self.env)
 			self.resume.enable("config_profile_link")
 
 	def setup_confdir(self):
@@ -893,7 +893,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# We want to make sure rsync copies the dirs into each
 				# other and not as subdirs.
 				cmd('rsync -a %s/ %s/' % (self.settings['portage_confdir'], dest),
-					"Error copying %s" % self.settings["port_conf"],
 					env=self.env)
 				self.resume.enable("setup_confdir")
 
@@ -906,7 +905,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					ensure_dirs(self.settings['chroot_path'] + self.settings['local_overlay'])
 					cmd("cp -a "+x+"/* "+self.settings["chroot_path"]+\
 						self.settings["local_overlay"],\
-						"Could not copy portage_overlay",env=self.env)
+						env=self.env)
 
 	def root_overlay(self):
 		""" Copy over the root_overlay """
@@ -915,10 +914,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"/root_overlay"]:
 				if os.path.exists(x):
 					log.info('Copying root_overlay: %s', x)
-					cmd("rsync -a "+x+"/ "+\
-						self.settings["chroot_path"],\
-						self.settings["spec_prefix"]+"/root_overlay: "+x+\
-						" copy failed.",env=self.env)
+					cmd('rsync -a ' + x + '/ ' + self.settings['chroot_path'],
+						env=self.env)
 
 	def base_dirs(self):
 		pass
@@ -954,7 +951,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				else:
 					_cmd = "mount --bind " + src + " " + target
 			log.debug('bind(); _cmd = %s', _cmd)
-			cmd(_cmd, "Bind mounting Failed", env=self.env, fail_func=self.unbind)
+			cmd(_cmd, env=self.env, fail_func=self.unbind)
 		log.debug('bind(); finished :D')
 
 	def unbind(self):
@@ -1017,7 +1014,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Setting up chroot...')
 
 			cmd("cp /etc/resolv.conf " + self.settings["chroot_path"] + "/etc/",
-				"Could not copy resolv.conf into place.",env=self.env)
+				env=self.env)
 
 			# Copy over the envscript, if applicable
 			if "envscript" in self.settings:
@@ -1035,16 +1032,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 				cmd("cp "+self.settings["envscript"]+" "+\
 					self.settings["chroot_path"]+"/tmp/envscript",\
-					"Could not copy envscript into place.",env=self.env)
+					env=self.env)
 
 			# Copy over /etc/hosts from the host in case there are any
 			# specialties in there
 			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
 				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
 					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
-					"Could not backup /etc/hosts",env=self.env)
+					env=self.env)
 				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts",\
-					"Could not copy /etc/hosts",env=self.env)
+					env=self.env)
 
 			# Modify and write out make.conf (for the chroot)
 			makepath = normpath(self.settings["chroot_path"] +
@@ -1141,8 +1138,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if "fsscript" in self.settings:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd(self.settings["controller_file"]+\
-						" fsscript","fsscript script failed.",env=self.env)
+					cmd(self.settings['controller_file'] + ' fsscript',
+						env=self.env)
 					self.resume.enable("fsscript")
 
 	def rcupdate(self):
@@ -1152,7 +1149,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if os.path.exists(self.settings["controller_file"]):
 				cmd(self.settings["controller_file"]+" rc-update",\
-					"rc-update script failed.",env=self.env)
+					env=self.env)
 				self.resume.enable("rcupdate")
 
 	def clean(self):
@@ -1168,7 +1165,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
 			cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.catalyst "+\
 				self.settings["chroot_path"]+"/etc/hosts",\
-				"Could not replace /etc/hosts",env=self.env)
+				env=self.env)
 
 		# Remove our overlay
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
@@ -1188,11 +1185,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
 			cmd("find "+self.settings["stage_path"]+\
 				"/etc -maxdepth 1 -name \"*-\" | xargs rm -f",\
-				"Could not remove stray files in /etc",env=self.env)
+				env=self.env)
 
 		if os.path.exists(self.settings["controller_file"]):
-			cmd(self.settings["controller_file"]+" clean",\
-				"clean script failed.",env=self.env)
+			cmd(self.settings['controller_file'] + ' clean', env=self.env)
 			self.resume.enable("clean")
 
 	def empty(self):
@@ -1233,8 +1229,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					clear_path(self.settings["chroot_path"] + x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
-						cmd(self.settings["controller_file"]+\
-							" clean","Clean  failed.",env=self.env)
+						cmd(self.settings['controller_file'] + ' clean',
+							env=self.env)
 						self.resume.enable("remove")
 				except:
 					self.unbind()
@@ -1247,8 +1243,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd(self.settings["controller_file"]+\
-						" preclean","preclean script failed.",env=self.env)
+					cmd(self.settings['controller_file'] + ' preclean',
+						env=self.env)
 					self.resume.enable("preclean")
 
 			except:
@@ -1305,7 +1301,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if os.path.exists(self.settings["controller_file"]):
 					log.info('run_local() starting controller script...')
 					cmd(self.settings["controller_file"]+" run",\
-						"run script failed.",env=self.env)
+						env=self.env)
 					self.resume.enable("run_local")
 				else:
 					log.info('run_local() no controller_file found... %s',
@@ -1442,9 +1438,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 				# Before cleaning, unmerge stuff
 				try:
-					cmd(self.settings["controller_file"]+\
-						" unmerge "+ myunmerge,"Unmerge script failed.",\
-						env=self.env)
+					cmd(self.settings['controller_file'] +
+						' unmerge ' + myunmerge, env=self.env)
 					log.info('unmerge shell script')
 				except CatalystError:
 					self.unbind()
@@ -1459,7 +1454,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Setting up filesystems per filesystem type')
 			cmd(self.settings["controller_file"]+\
 				" target_image_setup "+ self.settings["target_path"],\
-				"target_image_setup script failed.",env=self.env)
+				env=self.env)
 			self.resume.enable("target_setup")
 
 	def setup_overlay(self):
@@ -1470,10 +1465,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if self.settings["spec_prefix"]+"/overlay" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
 					if os.path.exists(x):
-						cmd("rsync -a "+x+"/ "+\
-							self.settings["target_path"],\
-							self.settings["spec_prefix"]+"overlay: "+x+\
-							" copy failed.",env=self.env)
+						cmd('rsync -a ' + x + '/ ' + self.settings['target_path'],
+							env=self.env)
 				self.resume.enable("setup_overlay")
 
 	def create_iso(self):
@@ -1484,7 +1477,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# Create the ISO
 			if "iso" in self.settings:
 				cmd(self.settings["controller_file"]+" iso "+\
-					self.settings["iso"],"ISO creation script failed.",\
+					self.settings['iso'],
 					env=self.env)
 				self.gen_contents_file(self.settings["iso"])
 				self.gen_digest_file(self.settings["iso"])
@@ -1510,7 +1503,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					try:
 						cmd(self.settings["controller_file"]+\
 							" build_packages "+mypack,\
-							"Error in attempt to build packages",env=self.env)
+							env=self.env)
 						fileutils.touch(build_packages_resume)
 						self.resume.enable("build_packages")
 					except CatalystError:
@@ -1530,8 +1523,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					if isinstance(mynames, str):
 						mynames=[mynames]
 					# Execute the script that sets up the kernel build environment
-					cmd(self.settings["controller_file"]+\
-						" pre-kmerge ","Runscript pre-kmerge failed",\
+					cmd(self.settings['controller_file'] + ' pre-kmerge',
 						env=self.env)
 					for kname in mynames:
 						self._build_kernel(kname=kname)
@@ -1569,9 +1561,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self._copy_initramfs_overlay(kname=kname)
 
 		# Execute the script that builds the kernel
-		cmd("/bin/bash "+self.settings["controller_file"]+\
-			" kernel "+kname,\
-			"Runscript kernel build failed",env=self.env)
+		cmd(self.settings['controller_file'] + ' kernel ' + kname,
+			env=self.env)
 
 		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
 			if os.path.exists(self.settings["chroot_path"]+\
@@ -1583,9 +1574,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.resume.is_enabled("build_kernel_"+kname)
 
 		# Execute the script that cleans up the kernel build environment
-		cmd("/bin/bash "+self.settings["controller_file"]+\
-			" post-kmerge ",
-			"Runscript post-kmerge failed",env=self.env)
+		cmd(self.settings['controller_file'] + ' post-kmerge',
+			env=self.env)
 
 	def _copy_kernel_config(self, kname):
 		key = 'boot/kernel/' + kname + '/config'
@@ -1598,7 +1588,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			try:
 				cmd('cp ' + self.settings[key] + ' ' +
 					self.settings['chroot_path'] + '/var/tmp/' + kname + '.config',
-					"Couldn't copy kernel config: %s" % self.settings[key],
 					env=self.env)
 
 			except CatalystError:
@@ -1626,7 +1615,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			try:
 				cmd(self.settings["controller_file"]+\
 					" bootloader " + self.settings["target_path"].rstrip('/'),\
-					"Bootloader script failed.",env=self.env)
+					env=self.env)
 				self.resume.enable("bootloader")
 			except CatalystError:
 				self.unbind()
@@ -1638,8 +1627,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping build_packages operation...')
 		else:
 			try:
-				cmd(self.settings["controller_file"]+\
-					" livecd-update","livecd-update failed.",env=self.env)
+				cmd(self.settings['controller_file'] + ' livecd-update',
+					env=self.env)
 				self.resume.enable("livecd_update")
 
 			except CatalystError:

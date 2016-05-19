@@ -25,7 +25,7 @@ class tinderbox(StageBase):
 		try:
 			if os.path.exists(self.settings["controller_file"]):
 				cmd(self.settings["controller_file"]+" run "+\
-				list_bashify(self.settings["tinderbox/packages"]),"run script failed.",env=self.env)
+				list_bashify(self.settings["tinderbox/packages"]),env=self.env)
 
 		except CatalystError:
 			self.unbind()
