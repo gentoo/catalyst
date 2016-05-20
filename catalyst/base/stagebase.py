@@ -3,7 +3,6 @@ import os
 import imp
 import shutil
 import sys
-from stat import ST_UID, ST_GID, ST_MODE
 
 from snakeoil import fileutils
 
@@ -1202,13 +1201,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						log.warning('not a directory or does not exist, skipping "empty" operation: %s', x)
 						continue
 					log.info('Emptying directory %s', x)
-					# stat the dir, delete the dir, recreate the dir and set
-					# the proper perms and ownership
-					mystat=os.stat(myemp)
-					shutil.rmtree(myemp)
-					ensure_dirs(myemp, mode=0o755)
-					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-					os.chmod(myemp,mystat[ST_MODE])
+					clear_dir(myemp)
 			self.resume.enable("empty")
 
 	def remove(self):

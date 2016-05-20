@@ -4,12 +4,10 @@ netboot target, version 2
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 import os
-import shutil
-from stat import ST_UID, ST_GID, ST_MODE
 
 from catalyst import log
 from catalyst.support import (CatalystError, normpath, cmd)
-from catalyst.fileops import ensure_dirs, clear_path
+from catalyst.fileops import (ensure_dirs, clear_dir, clear_path)
 
 from catalyst.base.stagebase import StageBase
 
@@ -152,11 +150,7 @@ class netboot2(StageBase):
 					log.info('Emptying directory %s', x)
 					# stat the dir, delete the dir, recreate the dir and set
 					# the proper perms and ownership
-					mystat=os.stat(myemp)
-					shutil.rmtree(myemp)
-					ensure_dirs(myemp, mode=0o755)
-					os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-					os.chmod(myemp,mystat[ST_MODE])
+					clear_dir(myemp)
 		self.resume.enable("empty")
 
 	def set_action_sequence(self):

@@ -2,17 +2,13 @@
 Snapshot target
 """
 
-import os
-import shutil
-from stat import ST_UID, ST_GID, ST_MODE
-
 from DeComp.compress import CompressMap
 
 from catalyst import log
 from catalyst.support import normpath, cmd
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.genbase import GenBase
-from catalyst.fileops import ensure_dirs
+from catalyst.fileops import (clear_dir, ensure_dirs)
 
 
 class snapshot(TargetBase, GenBase):
@@ -102,16 +98,4 @@ class snapshot(TargetBase, GenBase):
 		log.info('Cleaning up ...')
 
 	def purge(self):
-		myemp=self.settings["tmp_path"]
-		if os.path.isdir(myemp):
-			log.notice('Emptying directory %s', myemp)
-			# stat the dir, delete the dir, recreate the dir and set
-			# the proper perms and ownership
-			mystat=os.stat(myemp)
-			# There's no easy way to change flags recursively in python
-			if os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg "+myemp)
-			shutil.rmtree(myemp)
-			ensure_dirs(myemp, mode=0o755)
-			os.chown(myemp,mystat[ST_UID],mystat[ST_GID])
-			os.chmod(myemp,mystat[ST_MODE])
+		clear_dir(self.settings['tmp_path'])
