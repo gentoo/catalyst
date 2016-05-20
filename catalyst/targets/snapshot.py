@@ -56,10 +56,16 @@ class snapshot(TargetBase, GenBase):
 		mytmp=self.settings["tmp_path"]
 		ensure_dirs(mytmp)
 
-		target_snapshot = self.settings["portdir"] + "/ " + mytmp + "/%s/" % self.settings["repo_name"]
-		cmd("rsync -a --no-o --no-g --delete --exclude /packages/ --exclude /distfiles/ " +
-			"--exclude /local/ --exclude CVS/ --exclude .svn --filter=H_**/files/digest-* " +
-			target_snapshot, env=self.env)
+		cmd(['rsync', '-a', '--no-o', '--no-g', '--delete',
+			'--exclude=/packages/',
+			'--exclude=/distfiles/',
+			'--exclude=/local/',
+			'--exclude=CVS/',
+			'--exclude=.svn',
+			'--filter=H_**/files/digest-*',
+			self.settings['portdir'] + '/',
+			mytmp + '/' + self.settings['repo_name'] + '/'],
+			env=self.env)
 
 		log.notice('Compressing Portage snapshot tarball ...')
 		compressor = CompressMap(self.settings["compress_definitions"],

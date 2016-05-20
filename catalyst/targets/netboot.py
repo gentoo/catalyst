@@ -7,7 +7,7 @@ import os
 
 from catalyst import log
 from catalyst.support import (CatalystError, normpath,
-	cmd, list_bashify, file_locate)
+	cmd, file_locate)
 
 from catalyst.base.stagebase import StageBase
 
@@ -62,22 +62,22 @@ class netboot(StageBase):
 #	def build_packages(self):
 #		# build packages
 #		if "netboot/packages" in self.settings:
-#			mypack=list_bashify(self.settings["netboot/packages"])
-#		try:
-#			cmd(self.settings["controller_file"]+" packages "+mypack,env=self.env)
-#		except CatalystError:
-#			self.unbind()
-#			raise CatalystError("netboot build aborting due to error.",
-#					print_traceback=True)
+#			try:
+#				cmd([self.settings['controller_file'], 'packages'] +
+#					self.settings['netboot/packages'], env=self.env)
+#			except CatalystError:
+#				self.unbind()
+#				raise CatalystError('netboot build aborting due to error.',
+#						print_traceback=True)
 
 	def build_busybox(self):
 		# build busybox
 		if "netboot/busybox_config" in self.settings:
-			mycmd = self.settings["netboot/busybox_config"]
+			mycmd = [self.settings['netboot/busybox_config']]
 		else:
-			mycmd = ""
+			mycmd = []
 		try:
-			cmd(self.settings["controller_file"]+" busybox "+ mycmd,env=self.env)
+			cmd([self.settings['controller_file'], 'busybox'] + mycmd, env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",
@@ -106,8 +106,8 @@ class netboot(StageBase):
 				myfiles.append(self.settings["netboot/extra_files"])
 
 		try:
-			cmd(self.settings["controller_file"]+\
-				" image " + list_bashify(myfiles),env=self.env)
+			cmd([self.settings['controller_file'], 'image'] + myfiles,
+				env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",
@@ -116,7 +116,7 @@ class netboot(StageBase):
 	def create_netboot_files(self):
 		# finish it all up
 		try:
-			cmd(self.settings["controller_file"]+" finish",env=self.env)
+			cmd([self.settings['controller_file'], 'finish'], env=self.env)
 		except CatalystError:
 			self.unbind()
 			raise CatalystError("netboot build aborting due to error.",

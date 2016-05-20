@@ -7,7 +7,7 @@ import os
 import glob
 
 from catalyst import log
-from catalyst.support import (CatalystError, normpath, cmd, list_bashify)
+from catalyst.support import (CatalystError, normpath, cmd)
 from catalyst.base.stagebase import StageBase
 
 
@@ -41,10 +41,11 @@ class grp(StageBase):
 	def run_local(self):
 		for pkgset in self.settings["grp"]:
 			# example call: "grp.sh run pkgset cd1 xmms vim sys-apps/gleep"
-			mypackages=list_bashify(self.settings["grp/"+pkgset+"/packages"])
 			try:
-				cmd(self.settings["controller_file"]+" run "+self.settings["grp/"+pkgset+"/type"]\
-					+" "+pkgset+" "+mypackages,env=self.env)
+				cmd([self.settings['controller_file'], 'run',
+					self.settings['grp/' + pkgset + '/type'],
+					pkgset] + self.settings['grp/' + pkgset + '/packages'],
+					env=self.env)
 
 			except CatalystError:
 				self.unbind()

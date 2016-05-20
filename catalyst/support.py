@@ -12,18 +12,6 @@ from catalyst.defaults import valid_config_file_values
 BASH_BINARY             = "/bin/bash"
 
 
-def list_bashify(mylist):
-	if isinstance(mylist, str):
-		mypack=[mylist]
-	else:
-		mypack=mylist[:]
-	for x in range(0,len(mypack)):
-		# surround args with quotes for passing to bash,
-		# allows things like "<" to remain intact
-		mypack[x]="'"+mypack[x]+"'"
-	return ' '.join(mypack)
-
-
 class CatalystError(Exception):
 	def __init__(self, message, print_traceback=False):
 		if message:
@@ -31,26 +19,38 @@ class CatalystError(Exception):
 
 
 def cmd(mycmd, env=None, debug=False, fail_func=None):
-	if env is None:
-		env = {}
+	"""Run the external |mycmd|.
+
+	If |mycmd| is a string, then it's assumed to be a bash snippet and will
+	be run through bash.  Otherwise, it's a standalone command line and will
+	be run directly.
+	"""
 	log.debug('cmd: %r', mycmd)
 	sys.stdout.flush()
-	args=[BASH_BINARY]
-	if "BASH_ENV" not in env:
+
+	if env is None:
+		env = {}
+	if 'BASH_ENV' not in env:
 		env = env.copy()
-		env["BASH_ENV"] = "/etc/spork/is/not/valid/profile.env"
-	if debug:
-		args.append("-x")
-	args.append("-c")
-	args.append(mycmd)
+		env['BASH_ENV'] = '/etc/spork/is/not/valid/profile.env'
+
+	args = []
+	if isinstance(mycmd, str):
+		args.append(BASH_BINARY)
+		if debug:
+			args.append('-x')
+		args.extend(['-c', mycmd])
+	else:
+		args.extend(mycmd)
 
 	log.debug('args: %r', args)
 	proc = Popen(args, env=env)
-	if proc.wait() != 0:
+	ret = proc.wait()
+	if ret:
 		if fail_func:
-			log.error('CMD(), NON-Zero command return.  Running fail_func().')
+			log.error('cmd(%r) exited %s; running fail_func().', args, ret)
 			fail_func()
-		raise CatalystError("cmd() NON-zero return value from: %s" % args,
+		raise CatalystError('cmd(%r) exited %s' % (args, ret),
 			print_traceback=False)
 
 

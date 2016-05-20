@@ -8,7 +8,7 @@ import shutil
 from stat import ST_UID, ST_GID, ST_MODE
 
 from catalyst import log
-from catalyst.support import (CatalystError, normpath, cmd, list_bashify)
+from catalyst.support import (CatalystError, normpath, cmd)
 from catalyst.fileops import ensure_dirs, clear_path
 
 from catalyst.base.stagebase import StageBase
@@ -89,8 +89,8 @@ class netboot2(StageBase):
 					myfiles.append(self.settings["netboot2/extra_files"])
 
 			try:
-				cmd(self.settings["controller_file"]+\
-					" image " + list_bashify(myfiles),env=self.env)
+				cmd([self.settings['controller_file'], 'image'] +
+					myfiles, env=self.env)
 			except CatalystError:
 				self.unbind()
 				raise CatalystError("Failed to copy files to image!",
@@ -106,8 +106,9 @@ class netboot2(StageBase):
 			if "netboot2/overlay" in self.settings:
 				for x in self.settings["netboot2/overlay"]:
 					if os.path.exists(x):
-						cmd("rsync -a "+x+"/ "+\
-							self.settings["chroot_path"] + self.settings["merge_path"], env=self.env)
+						cmd(['rsync', '-a', x + '/',
+							self.settings['chroot_path'] + self.settings['merge_path']],
+							env=self.env)
 				self.resume.enable("setup_overlay")
 
 	def move_kernels(self):
@@ -115,8 +116,7 @@ class netboot2(StageBase):
 		# no auto resume here as we always want the
 		# freshest images moved
 		try:
-			cmd(self.settings["controller_file"]+\
-				" final",env=self.env)
+			cmd([self.settings['controller_file'], 'final'], env=self.env)
 			log.notice('Netboot Build Finished!')
 		except CatalystError:
 			self.unbind()

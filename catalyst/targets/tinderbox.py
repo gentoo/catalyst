@@ -5,7 +5,7 @@ Tinderbox target
 
 import os
 
-from catalyst.support import cmd, list_bashify, CatalystError
+from catalyst.support import cmd, CatalystError
 from catalyst.base.stagebase import StageBase
 
 
@@ -24,8 +24,8 @@ class tinderbox(StageBase):
 		# example call: "grp.sh run xmms vim sys-apps/gleep"
 		try:
 			if os.path.exists(self.settings["controller_file"]):
-				cmd(self.settings["controller_file"]+" run "+\
-				list_bashify(self.settings["tinderbox/packages"]),env=self.env)
+				cmd([self.settings['controller_file'], 'run'] +
+					self.settings['tinderbox/packages'], env=self.env)
 
 		except CatalystError:
 			self.unbind()

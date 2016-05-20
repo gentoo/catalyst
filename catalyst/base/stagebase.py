@@ -13,7 +13,7 @@ from catalyst import log
 from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
 	PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
-	cmd, list_bashify, read_makeconf, ismount, file_check)
+	cmd, read_makeconf, ismount, file_check)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
@@ -648,7 +648,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		killcmd = normpath(self.settings["sharedir"] +
 			self.settings["shdir"] + "/support/kill-chroot-pids.sh")
 		if os.path.exists(killcmd):
-			cmd(killcmd, env=self.env)
+			cmd([killcmd], env=self.env)
 
 	def mount_safety_check(self):
 		"""
@@ -873,10 +873,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			clear_path(self.settings['chroot_path'] +
 				self.settings['port_conf'] + '/make.profile')
 			ensure_dirs(self.settings['chroot_path'] + self.settings['port_conf'])
-			cmd("ln -sf ../.." + self.settings["portdir"] + "/profiles/" +
-				self.settings["target_profile"] + " " +
-				self.settings["chroot_path"] +
-				self.settings["port_conf"] + "/make.profile",
+			cmd(['ln', '-sf',
+				'../..' + self.settings['portdir'] + '/profiles/' + self.settings['target_profile'],
+				self.settings['chroot_path'] + self.settings['port_conf'] + '/make.profile'],
 				env=self.env)
 			self.resume.enable("config_profile_link")
 
@@ -892,7 +891,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# The trailing slashes on both paths are important:
 				# We want to make sure rsync copies the dirs into each
 				# other and not as subdirs.
-				cmd('rsync -a %s/ %s/' % (self.settings['portage_confdir'], dest),
+				cmd(['rsync', '-a', self.settings['portage_confdir'] + '/', dest + '/'],
 					env=self.env)
 				self.resume.enable("setup_confdir")
 
@@ -914,7 +913,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"/root_overlay"]:
 				if os.path.exists(x):
 					log.info('Copying root_overlay: %s', x)
-					cmd('rsync -a ' + x + '/ ' + self.settings['chroot_path'],
+					cmd(['rsync', '-a', x + '/', self.settings['chroot_path']],
 						env=self.env)
 
 	def base_dirs(self):
@@ -922,7 +921,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def bind(self):
 		for x in self.mounts:
-			_cmd = ''
 			log.debug('bind(); x = %s', x)
 			target = normpath(self.settings["chroot_path"] + self.target_mounts[x])
 			ensure_dirs(target, mode=0o755)
@@ -935,23 +933,25 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.debug('bind(); src = %s', src)
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				self.snapcache_lock.read_lock()
+			_cmd = None
 			if os.uname()[0] == "FreeBSD":
 				if src == "/dev":
-					_cmd = "mount -t devfs none " + target
+					_cmd = ['mount', '-t', 'devfs', 'none', target]
 				else:
-					_cmd = "mount_nullfs " + src + " " + target
+					_cmd = ['mount_nullfs', src, target]
 			else:
 				if src == "tmpfs":
 					if "var_tmpfs_portage" in self.settings:
-						_cmd = "mount -t tmpfs -o size=" + \
-							self.settings["var_tmpfs_portage"] + "G " + \
-							src + " " + target
+						_cmd = ['mount', '-t', 'tmpfs',
+							'-o', 'size=' + self.settings['var_tmpfs_portage'] + 'G',
+							src, target]
 				elif src == "shmfs":
-					_cmd = "mount -t tmpfs -o noexec,nosuid,nodev shm " + target
+					_cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev', 'shm', target]
 				else:
-					_cmd = "mount --bind " + src + " " + target
-			log.debug('bind(); _cmd = %s', _cmd)
-			cmd(_cmd, env=self.env, fail_func=self.unbind)
+					_cmd = ['mount', '--bind', src, target]
+			if _cmd:
+				log.debug('bind(); _cmd = %s', _cmd)
+				cmd(_cmd, env=self.env, fail_func=self.unbind)
 		log.debug('bind(); finished :D')
 
 	def unbind(self):
@@ -1134,7 +1134,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if "fsscript" in self.settings:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd(self.settings['controller_file'] + ' fsscript',
+					cmd([self.settings['controller_file'], 'fsscript'],
 						env=self.env)
 					self.resume.enable("fsscript")
 
@@ -1144,7 +1144,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping rcupdate operation...')
 		else:
 			if os.path.exists(self.settings["controller_file"]):
-				cmd(self.settings["controller_file"]+" rc-update",\
+				cmd([self.settings['controller_file'], 'rc-update'],
 					env=self.env)
 				self.resume.enable("rcupdate")
 
@@ -1178,12 +1178,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
-			cmd("find "+self.settings["stage_path"]+\
-				"/etc -maxdepth 1 -name \"*-\" | xargs rm -f",\
+			cmd(['find', self.settings['stage_path'] + '/etc',
+				'-maxdepth', '1', '-name', '*-', '-delete'],
 				env=self.env)
 
 		if os.path.exists(self.settings["controller_file"]):
-			cmd(self.settings['controller_file'] + ' clean', env=self.env)
+			cmd([self.settings['controller_file'], 'clean'], env=self.env)
 			self.resume.enable("clean")
 
 	def empty(self):
@@ -1224,7 +1224,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					clear_path(self.settings["chroot_path"] + x)
 				try:
 					if os.path.exists(self.settings["controller_file"]):
-						cmd(self.settings['controller_file'] + ' clean',
+						cmd([self.settings['controller_file'], 'clean'],
 							env=self.env)
 						self.resume.enable("remove")
 				except:
@@ -1238,7 +1238,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			try:
 				if os.path.exists(self.settings["controller_file"]):
-					cmd(self.settings['controller_file'] + ' preclean',
+					cmd([self.settings['controller_file'], 'preclean'],
 						env=self.env)
 					self.resume.enable("preclean")
 
@@ -1295,7 +1295,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			try:
 				if os.path.exists(self.settings["controller_file"]):
 					log.info('run_local() starting controller script...')
-					cmd(self.settings["controller_file"]+" run",\
+					cmd([self.settings['controller_file'], 'run'],
 						env=self.env)
 					self.resume.enable("run_local")
 				else:
@@ -1422,19 +1422,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if isinstance(self.settings[self.settings['spec_prefix']+'/unmerge'], str):
 					self.settings[self.settings["spec_prefix"]+"/unmerge"]=\
 						[self.settings[self.settings["spec_prefix"]+"/unmerge"]]
-				myunmerge=\
-					self.settings[self.settings["spec_prefix"]+"/unmerge"][:]
-
-				for x in range(0,len(myunmerge)):
-					# Surround args with quotes for passing to bash, allows
-					# things like "<" to remain intact
-					myunmerge[x]="'"+myunmerge[x]+"'"
-				myunmerge = ' '.join(myunmerge)
 
 				# Before cleaning, unmerge stuff
 				try:
-					cmd(self.settings['controller_file'] +
-						' unmerge ' + myunmerge, env=self.env)
+					cmd([self.settings['controller_file'], 'unmerge'] +
+						self.settings[self.settings['spec_prefix'] + '/unmerge'],
+						env=self.env)
 					log.info('unmerge shell script')
 				except CatalystError:
 					self.unbind()
@@ -1447,9 +1440,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping target_setup operation...')
 		else:
 			log.notice('Setting up filesystems per filesystem type')
-			cmd(self.settings["controller_file"]+\
-				" target_image_setup "+ self.settings["target_path"],\
-				env=self.env)
+			cmd([self.settings['controller_file'], 'target_image_setup',
+				self.settings['target_path']], env=self.env)
 			self.resume.enable("target_setup")
 
 	def setup_overlay(self):
@@ -1460,7 +1452,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if self.settings["spec_prefix"]+"/overlay" in self.settings:
 				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
 					if os.path.exists(x):
-						cmd('rsync -a ' + x + '/ ' + self.settings['target_path'],
+						cmd(['rsync', '-a', x + '/', self.settings['target_path']],
 							env=self.env)
 				self.resume.enable("setup_overlay")
 
@@ -1471,8 +1463,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			# Create the ISO
 			if "iso" in self.settings:
-				cmd(self.settings["controller_file"]+" iso "+\
-					self.settings['iso'],
+				cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
 					env=self.env)
 				self.gen_contents_file(self.settings["iso"])
 				self.gen_digest_file(self.settings["iso"])
@@ -1492,12 +1483,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					and self.resume.is_enabled("build_packages"):
 					log.notice('Resume point detected, skipping build_packages operation...')
 				else:
-					mypack=\
-						list_bashify(self.settings[self.settings["spec_prefix"]\
-						+"/packages"])
 					try:
-						cmd(self.settings["controller_file"]+\
-							" build_packages "+mypack,\
+						cmd([self.settings['controller_file'], 'build_packages'] +
+							self.settings[self.settings["spec_prefix"] + '/packages'],
 							env=self.env)
 						fileutils.touch(build_packages_resume)
 						self.resume.enable("build_packages")
@@ -1518,7 +1506,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					if isinstance(mynames, str):
 						mynames=[mynames]
 					# Execute the script that sets up the kernel build environment
-					cmd(self.settings['controller_file'] + ' pre-kmerge',
+					cmd([self.settings['controller_file'], 'pre-kmerge'],
 						env=self.env)
 					for kname in mynames:
 						self._build_kernel(kname=kname)
@@ -1556,7 +1544,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self._copy_initramfs_overlay(kname=kname)
 
 		# Execute the script that builds the kernel
-		cmd(self.settings['controller_file'] + ' kernel ' + kname,
+		cmd([self.settings['controller_file'], 'kernel', kname],
 			env=self.env)
 
 		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
@@ -1566,7 +1554,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.resume.is_enabled("build_kernel_"+kname)
 
 		# Execute the script that cleans up the kernel build environment
-		cmd(self.settings['controller_file'] + ' post-kmerge',
+		cmd([self.settings['controller_file'], 'post-kmerge'],
 			env=self.env)
 
 	def _copy_kernel_config(self, kname):
@@ -1604,8 +1592,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping bootloader operation...')
 		else:
 			try:
-				cmd(self.settings["controller_file"]+\
-					" bootloader " + self.settings["target_path"].rstrip('/'),\
+				cmd([self.settings['controller_file'], 'bootloader',
+					self.settings['target_path'].rstrip('/')],
 					env=self.env)
 				self.resume.enable("bootloader")
 			except CatalystError:
@@ -1618,7 +1606,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping build_packages operation...')
 		else:
 			try:
-				cmd(self.settings['controller_file'] + ' livecd-update',
+				cmd([self.settings['controller_file'], 'livecd-update'],
 					env=self.env)
 				self.resume.enable("livecd_update")
 
