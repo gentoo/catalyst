@@ -22,7 +22,7 @@ from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs,
 # pylint: enable=unused-import
 
 from catalyst import log
-from catalyst.support import CatalystError
+from catalyst.support import (cmd, CatalystError)
 
 
 def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
@@ -79,7 +79,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 			mystat = os.stat(target)
 			# There's no easy way to change flags recursively in python
 			if chg_flags and os.uname()[0] == "FreeBSD":
-				os.system("chflags -R noschg " + target)
+				cmd(['chflags', '-R', 'noschg', target])
 			log.debug('shutil.rmtree()')
 			shutil.rmtree(target)
 		except Exception:

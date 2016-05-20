@@ -967,16 +967,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if not ismount(target):
 				continue
 
-			retval=os.system("umount " + target)
-
-			if retval!=0:
+			try:
+				cmd(['umount', target])
+			except CatalystError:
 				log.warning('First attempt to unmount failed: %s', target)
 				log.warning('Killing any pids still running in the chroot')
 
 				self.kill_chroot_pids()
 
-				retval2 = os.system("umount " + target)
-				if retval2!=0:
+				try:
+					cmd(['umount', target])
+				except CatalystError:
 					ouch=1
 					log.warning("Couldn't umount bind mount: %s", target)
 
