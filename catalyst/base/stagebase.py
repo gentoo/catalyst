@@ -1013,8 +1013,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			log.notice('Setting up chroot...')
 
-			cmd("cp /etc/resolv.conf " + self.settings["chroot_path"] + "/etc/",
-				env=self.env)
+			shutil.copy('/etc/resolv.conf', self.settings['chroot_path'] + '/etc/')
 
 			# Copy over the envscript, if applicable
 			if "envscript" in self.settings:
@@ -1030,18 +1029,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					'Catalyst Maintainers use VERY minimal envscripts, if used at all.\n'
 					'You have been warned.')
 
-				cmd("cp "+self.settings["envscript"]+" "+\
-					self.settings["chroot_path"]+"/tmp/envscript",\
-					env=self.env)
+				shutil.copy(self.settings['envscript'],
+					self.settings['chroot_path'] + '/tmp/envscript')
 
 			# Copy over /etc/hosts from the host in case there are any
 			# specialties in there
-			if os.path.exists(self.settings["chroot_path"]+"/etc/hosts"):
-				cmd("mv "+self.settings["chroot_path"]+"/etc/hosts "+\
-					self.settings["chroot_path"]+"/etc/hosts.catalyst",\
-					env=self.env)
-				cmd("cp /etc/hosts "+self.settings["chroot_path"]+"/etc/hosts",\
-					env=self.env)
+			hosts_file = self.settings['chroot_path'] + '/etc/hosts'
+			if os.path.exists(hosts_file):
+				os.rename(hosts_file, hosts_file + '.catalyst')
+				shutil.copy('/etc/hosts', hosts_file)
 
 			# Modify and write out make.conf (for the chroot)
 			makepath = normpath(self.settings["chroot_path"] +
@@ -1162,10 +1158,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				clear_path(self.settings["destpath"] + x)
 
 		# Put /etc/hosts back into place
-		if os.path.exists(self.settings["chroot_path"]+"/etc/hosts.catalyst"):
-			cmd("mv -f "+self.settings["chroot_path"]+"/etc/hosts.catalyst "+\
-				self.settings["chroot_path"]+"/etc/hosts",\
-				env=self.env)
+		hosts_file = self.settings['chroot_path'] + '/etc/hosts'
+		if os.path.exists(hosts_file + '.catalyst'):
+			os.rename(hosts_file + '.catalyst', hosts_file)
 
 		# Remove our overlay
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
@@ -1565,11 +1560,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			env=self.env)
 
 		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
-			if os.path.exists(self.settings["chroot_path"]+\
-				"/tmp/initramfs_overlay/"):
-				log.notice('Cleaning up temporary overlay dir')
-				cmd("rm -R "+self.settings["chroot_path"]+\
-					"/tmp/initramfs_overlay/",env=self.env)
+			log.notice('Cleaning up temporary overlay dir')
+			clear_dir(self.settings['chroot_path'] + '/tmp/initramfs_overlay/')
 
 		self.resume.is_enabled("build_kernel_"+kname)
 
@@ -1586,11 +1578,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings[key])
 
 			try:
-				cmd('cp ' + self.settings[key] + ' ' +
-					self.settings['chroot_path'] + '/var/tmp/' + kname + '.config',
-					env=self.env)
+				shutil.copy(self.settings[key],
+					self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
 
-			except CatalystError:
+			except IOError:
 				self.unbind()
 
 	def _copy_initramfs_overlay(self, kname):
