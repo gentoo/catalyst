@@ -188,7 +188,7 @@ def pathcompare(path1,path2):
 
 
 def ismount(path):
-	"enhanced to handle bind mounts"
+	"""Like os.path.ismount, but also support bind mounts"""
 	if os.path.ismount(path):
 		return 1
 	a=os.popen("mount")
@@ -239,6 +239,12 @@ def countdown(secs=5, doing="Starting"):
 
 
 def normpath(mypath):
+	"""Clean up a little more than os.path.normpath
+
+	Namely:
+	 - Make sure leading // is turned into /.
+	 - Leave trailing slash intact.
+	"""
 	TrailingSlash=False
 	if mypath[-1] == "/":
 		TrailingSlash=True
