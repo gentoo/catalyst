@@ -219,6 +219,10 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 
 
 def countdown(secs=5, doing="Starting"):
+	# If this is non-interactive (e.g. a cronjob), then sleeping is pointless.
+	if not os.isatty(sys.stdin.fileno()):
+		return
+
 	if secs:
 		sys.stdout.write(
 			('>>> Waiting %s seconds before starting...\n'
