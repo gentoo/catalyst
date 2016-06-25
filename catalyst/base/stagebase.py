@@ -1473,14 +1473,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			log.notice('Resume point detected, skipping build_packages operation...')
 		else:
 			if self.settings["spec_prefix"]+"/packages" in self.settings:
+				target_pkgs = self.settings["spec_prefix"] + '/packages'
 				if "autoresume" in self.settings["options"] \
 					and self.resume.is_enabled("build_packages"):
 					log.notice('Resume point detected, skipping build_packages operation...')
 				else:
+					command = [self.settings['controller_file'], 'build_packages']
+					if isinstance(self.settings[target_pkgs], str):
+						command.append(self.settings[target_pkgs])
+					else:
+						command.extend(self.settings[target_pkgs])
 					try:
-						cmd([self.settings['controller_file'], 'build_packages'] +
-							self.settings[self.settings["spec_prefix"] + '/packages'],
-							env=self.env)
+						cmd(command, env=self.env)
 						fileutils.touch(build_packages_resume)
 						self.resume.enable("build_packages")
 					except CatalystError:
