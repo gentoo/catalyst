@@ -70,7 +70,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 		return False
 
 	mystat = None
-	if os.path.isdir(target):
+	if os.path.isdir(target) and not os.path.islink(target):
 		log.info('Emptying directory: %s', target)
 		# stat the dir, delete the dir, recreate the dir and set
 		# the proper perms and ownership
@@ -87,6 +87,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 			return False
 	elif os.path.exists(target):
 		if clear_nondir:
+			log.debug("Clearing (unlinking) non-directory: %s", target)
 			os.unlink(target)
 		else:
 			log.info('clear_dir failed: %s: is not a directory', target)
