@@ -1,3 +1,4 @@
+#!/bin/bash
 
 source ${clst_shdir}/support/functions.sh
 

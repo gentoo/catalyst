@@ -1,3 +1,5 @@
+#!/bin/bash
+
 copy_to_chroot() {
 	local src_file=$1
 	local dest_dir=${clst_chroot_path}${2:-/tmp}

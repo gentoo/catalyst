@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Dont forget to update functions.sh  check_looptype
 # $1 is the target directory for the filesystem
 
