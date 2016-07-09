@@ -87,7 +87,7 @@ fi
 isoroot_checksum() {
 	echo "Creating checksums for all files included in the iso, please wait..."
 	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' -exec sha512sum {} + > "${clst_target_path}"/isoroot_checksums
-	sed -i "s#${clst_target_path}##" "${clst_target_path}"/isoroot_checksums
+	sed -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_checksums
 }
 
 run_mkisofs() {
