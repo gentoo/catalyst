@@ -120,7 +120,7 @@ case ${clst_hostarch} in
 
 			dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 				count=${iaSize}
-			mkdosfs -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
+			mkfs.vfat -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
 
 			mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
 			mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
@@ -256,7 +256,7 @@ case ${clst_hostarch} in
 
 				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 					count=${iaSize}
-				mkdosfs -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
+				mkfs.vfat -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
 
 				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
 				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
