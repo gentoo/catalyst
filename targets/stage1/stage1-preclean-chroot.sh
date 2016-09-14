@@ -1,25 +1,27 @@
 #!/bin/bash
 
 export RUN_DEFAULT_FUNCS="no"
+export ROOT=/tmp/stage1root
 
 source /tmp/chroot-functions.sh
 
 update_env_settings
 show_debug
 
-# Now, some finishing touches to initialize gcc-config....
-unset ROOT
-
+# Right now these will parse the unpacked stage3 but change things
+# inside of /tmp/stage1root due to ROOT env variable
 setup_gcc
 setup_binutils
 
 # Stage1 is not going to have anything in zoneinfo, so save our Factory timezone
-if [ -d /usr/share/zoneinfo ]
+if [ -d "${ROOT}/usr/share/zoneinfo" ]
 then
-	rm -f /etc/localtime
-	cp /usr/share/zoneinfo/Factory /etc/localtime
+	rm -f "${ROOT}/etc/localtime"
+	cp "${ROOT}/usr/share/zoneinfo/Factory" "${ROOT}/etc/localtime"
 else
-	echo UTC > /etc/TZ
+	echo UTC > "${ROOT}/etc/TZ"
 fi
 
+# unset ROOT for safety (even though cleanup_stages doesn't use it)
+unset ROOT
 cleanup_stages
