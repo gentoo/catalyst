@@ -27,10 +27,7 @@ case "$1" in
 	;;
 
 	clean)
-		# Clean out man, info and doc files
-		rm -rf /tmp/stage1root/usr/share/{man,doc,info}/*
-		# Zap all .pyc and .pyo files
-		find /tmp/stage1root/ -iname "*.py[co]" -exec rm -f {} \;
+		exit 0
 	;;
 
 	*)
