@@ -17,6 +17,18 @@ trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
 #	* kernel recognizes this and generates SIGINT signal
 trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
 
+# test if CHOST was set on the python side
+if [[ -z "${clst_CHOST}" ]] ; then
+	# No, it wasn't
+	if [[ -z "${clst_chost}" ]] ; then
+		# No override was set, so grab CHOST from the profile
+		export clst_CHOST=$(portageq envvar CHOST)
+	else
+		# Set CHOST from the spec override
+		export clst_CHOST="${clst_chost}"
+	fi
+fi
+
 check_genkernel_version() {
 	local version parts=() major minor
 
@@ -146,7 +158,7 @@ setup_myemergeopts(){
 setup_binutils(){
 	if [ -x /usr/bin/binutils-config ]
 	then
-		my_binutils=$( cd /etc/env.d/binutils; ls ${CHOST}-* | head -n 1 )
+		my_binutils=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
 		if [ -z "${my_binutils}" ]
 		then
 			my_binutils=1
@@ -158,7 +170,7 @@ setup_binutils(){
 setup_gcc(){
 	if [ -x /usr/bin/gcc-config ]
 	then
-		my_gcc=$( cd /etc/env.d/gcc; ls ${CHOST}-* | head -n 1 )
+		my_gcc=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
 		if [ -z "${my_gcc}" ]
 		then
 			my_gcc=1
