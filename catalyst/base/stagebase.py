@@ -74,6 +74,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		machinemap = {}
 		arch_dir = self.settings["archdir"] + "/"
 		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py") and x != "__init__.py"]:
+			log.debug("Begin loading arch modules...")
 			try:
 				fh=open(arch_dir + x + ".py")
 				# This next line loads the plugin as a module and assigns it to
@@ -94,6 +95,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# the dir should load just fine. If it doesn't, it's probably a
 				# syntax error in the module
 				log.warning("Can't find/load %s.py plugin in %s", x, arch_dir)
+			log.debug("Loaded arch module: %s", self.archmap[x])
 
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
