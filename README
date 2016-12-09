@@ -4,17 +4,17 @@ Licensing
 ========================
 
 Originally, Catalyst was copyrighted by the Gentoo Foundation, Inc. and was
-released under the terms of the GNU General Public License v.2.1.  Since this
+released under the terms of the GNU General Public License v.2.1. Since this
 is a fork of that project, all new code is no longer copyrighted to the Gentoo
-Foundation.  Currently, copyright is held by the individual authors for their
-contributions.  For more information, please consult COPYING.
+Foundation. Currently, copyright is held by the individual authors for their
+contributions. For more information, please consult COPYING.
 
 Disclaimer
 ========================
 
-This software is covered by no warranty or guarantee of functionality.  It is
+This software is covered by no warranty or guarantee of functionality. It is
 provided to the public for use in creating source-based distributions in a
-simple and reproducable manner.  Use at your own risk.
+simple and reproducable manner. Use at your own risk.
 
 Requirements
 =======================
@@ -65,6 +65,6 @@ Bugs
 ========================
 
 If you have questions or wish to help with development, contact the
-gentoo-catalyst@lists.gentoo.org mailing list.  Bug reports should be
+gentoo-catalyst@lists.gentoo.org mailing list. Bug reports should be
 filed at http://tinyurl.com/79slrk (https://bugs.gentoo.org) under the
 "Catalyst" component of the "Gentoo Hosted Projects" product.
