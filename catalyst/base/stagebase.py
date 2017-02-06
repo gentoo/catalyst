@@ -32,13 +32,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	the driver class for pretty much everything that Catalyst does.
 	"""
 	def __init__(self,myspec,addlargs):
-		self.required_values.extend(["version_stamp","target","subarch",\
-			"rel_type","profile","snapshot","source_subpath"])
+		self.required_values.extend(["version_stamp", "target", "subarch",
+			"rel_type", "profile", "snapshot", "source_subpath"])
 
-		self.valid_values.extend(["version_stamp","target","subarch",
-			"rel_type","profile","snapshot","source_subpath","portage_confdir",
-			"cflags","cxxflags","fcflags","fflags","ldflags","asflags","cbuild","hostuse","portage_overlay",
-			"distcc_hosts","makeopts","pkgcache_path","kerncache_path",
+		self.valid_values.extend(["version_stamp", "target", "subarch",
+			"rel_type", "profile", "snapshot", "source_subpath",
+			"portage_confdir", "portage_prefix", "portage_overlay",
+			"cflags", "cxxflags", "fcflags", "fflags", "ldflags", "asflags",
+			"cbuild", "hostuse", "catalyst_use",
+			"distcc_hosts", "makeopts", "pkgcache_path", "kerncache_path",
 			"compression_mode", "decompression_mode"])
 
 		self.set_valid_build_kernel_vars(addlargs)
@@ -73,16 +75,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.subarchmap = {}
 		machinemap = {}
 		arch_dir = self.settings["archdir"] + "/"
-		for x in [x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py") and x != "__init__.py"]:
+		for x in [
+					x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")
+					and x != "__init__.py"]:
 			log.debug("Begin loading arch modules...")
 			try:
-				fh=open(arch_dir + x + ".py")
-				# This next line loads the plugin as a module and assigns it to
-				# archmap[x]
-				self.archmap[x]=imp.load_module(x,fh, arch_dir + x + ".py",
+				fh = open(arch_dir + x + ".py")
+				# This next line loads the plugin as a module and
+				# assigns it to archmap[x]
+				self.archmap[x] = imp.load_module(x, fh, arch_dir + x + ".py",
 					(".py", "r", imp.PY_SOURCE))
-				# This next line registers all the subarches supported in the
-				# plugin
+				# This next line registers all the subarches
+				# supported in the plugin
 				tmpsubarchmap, tmpmachinemap = self.archmap[x].register()
 				self.subarchmap.update(tmpsubarchmap)
 				for machine in tmpmachinemap:
@@ -100,26 +104,26 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "chost" in self.settings:
 			hostmachine = self.settings["chost"].split("-")[0]
 			if hostmachine not in machinemap:
-				raise CatalystError("Unknown host machine type "+hostmachine)
-			self.settings["hostarch"]=machinemap[hostmachine]
+				raise CatalystError("Unknown host machine type " + hostmachine)
+			self.settings["hostarch"] = machinemap[hostmachine]
 		else:
 			hostmachine = self.settings["subarch"]
 			if hostmachine in machinemap:
 				hostmachine = machinemap[hostmachine]
-			self.settings["hostarch"]=hostmachine
+			self.settings["hostarch"] = hostmachine
 		if "cbuild" in self.settings:
 			buildmachine = self.settings["cbuild"].split("-")[0]
 		else:
 			buildmachine = os.uname()[4]
 		if buildmachine not in machinemap:
-			raise CatalystError("Unknown build machine type "+buildmachine)
-		self.settings["buildarch"]=machinemap[buildmachine]
-		self.settings["crosscompile"]=(self.settings["hostarch"]!=\
+			raise CatalystError("Unknown build machine type " + buildmachine)
+		self.settings["buildarch"] = machinemap[buildmachine]
+		self.settings["crosscompile"] = (self.settings["hostarch"] != \
 			self.settings["buildarch"])
 
 		# Call arch constructor, pass our settings
 		try:
-			self.arch=self.subarchmap[self.settings["subarch"]](self.settings)
+			self.arch = self.subarchmap[self.settings["subarch"]](self.settings)
 		except KeyError:
 			log.critical(
 				'Invalid subarch: %s\n'
@@ -129,7 +133,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		log.notice('Using target: %s', self.settings['target'])
 		# Print a nice informational message
-		if self.settings["buildarch"]==self.settings["hostarch"]:
+		if self.settings["buildarch"] == self.settings["hostarch"]:
 			log.info('Building natively for %s', self.settings['hostarch'])
 		elif self.settings["crosscompile"]:
 			log.info('Cross-compiling on %s for different machine type %s',
@@ -143,10 +147,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		# Initialize our (de)compressor's)
 		self.decompressor = CompressMap(self.settings["decompress_definitions"],
-			env=self.env,
-			search_order=self.settings["decompressor_search_order"],
-			comp_prog=self.settings["comp_prog"],
-			decomp_opt=self.settings["decomp_opt"])
+			env = self.env,
+			search_order = self.settings["decompressor_search_order"],
+			comp_prog = self.settings["comp_prog"],
+			decomp_opt = self.settings["decomp_opt"])
 		self.accepted_extensions = self.decompressor.search_order_extensions(
 			self.settings["decompressor_search_order"])
 		log.notice("Source file specification matching setting is: %s",
@@ -194,14 +198,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_portage_overlay()
 		self.set_root_overlay()
 
-		# This next line checks to make sure that the specified variables exist
-		# on disk.
+		# This next line checks to make sure that the specified variables exist on disk.
 		#pdb.set_trace()
-		file_locate(self.settings,["distdir"],\
-			expand=0)
+		file_locate(self.settings, ["distdir"], expand = 0)
 		# If we are using portage_confdir, check that as well.
 		if "portage_confdir" in self.settings:
-			file_locate(self.settings,["portage_confdir"],expand=0)
+			file_locate(self.settings, ["portage_confdir"], expand = 0)
 
 		# Setup our mount points.
 		# initialize our target mounts.
@@ -242,14 +244,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		if "ccache" in self.settings["options"]:
 			if "CCACHE_DIR" in os.environ:
-				ccdir=os.environ["CCACHE_DIR"]
+				ccdir = os.environ["CCACHE_DIR"]
 				del os.environ["CCACHE_DIR"]
 			else:
-				ccdir="/root/.ccache"
+				ccdir = "/root/.ccache"
 			if not os.path.isdir(ccdir):
 				raise CatalystError(
-					"Compiler cache support can't be enabled (can't find "+\
-					ccdir+")")
+					"Compiler cache support can't be enabled (can't find " + ccdir+")")
 			self.mounts.append("ccache")
 			self.mountmap["ccache"] = ccdir
 			# for the chroot:
@@ -258,8 +259,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "icecream" in self.settings["options"]:
 			self.mounts.append("icecream")
 			self.mountmap["icecream"] = self.settings["icecream"]
-			self.env["PATH"] = self.target_mounts["icecream"] + ":" + \
-				self.env["PATH"]
+			self.env["PATH"] = self.target_mounts["icecream"] + ":" + self.env["PATH"]
 
 		if "port_logdir" in self.settings:
 			self.mounts.append("port_logdir")
@@ -269,81 +269,81 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def override_cbuild(self):
 		if "CBUILD" in self.makeconf:
-			self.settings["CBUILD"]=self.makeconf["CBUILD"]
+			self.settings["CBUILD"] = self.makeconf["CBUILD"]
 
 	def override_chost(self):
 		if "CHOST" in self.makeconf:
-			self.settings["CHOST"]=self.makeconf["CHOST"]
+			self.settings["CHOST"] = self.makeconf["CHOST"]
 
 	def override_cflags(self):
 		if "CFLAGS" in self.makeconf:
-			self.settings["CFLAGS"]=self.makeconf["CFLAGS"]
+			self.settings["CFLAGS"] = self.makeconf["CFLAGS"]
 
 	def override_cxxflags(self):
 		if "CXXFLAGS" in self.makeconf:
-			self.settings["CXXFLAGS"]=self.makeconf["CXXFLAGS"]
+			self.settings["CXXFLAGS"] = self.makeconf["CXXFLAGS"]
 
 	def override_fcflags(self):
 		if "FCFLAGS" in self.makeconf:
-			self.settings["FCFLAGS"]=self.makeconf["FCFLAGS"]
+			self.settings["FCFLAGS"] = self.makeconf["FCFLAGS"]
 
 	def override_fflags(self):
 		if "FFLAGS" in self.makeconf:
-			self.settings["FFLAGS"]=self.makeconf["FFLAGS"]
+			self.settings["FFLAGS"] = self.makeconf["FFLAGS"]
 
 	def override_ldflags(self):
 		if "LDFLAGS" in self.makeconf:
-			self.settings["LDFLAGS"]=self.makeconf["LDFLAGS"]
+			self.settings["LDFLAGS"] = self.makeconf["LDFLAGS"]
 
 	def override_asflags(self):
 		if "ASFLAGS" in self.makeconf:
-			self.settings["ASFLAGS"]=self.makeconf["ASFLAGS"]
+			self.settings["ASFLAGS"] = self.makeconf["ASFLAGS"]
 
 	def set_install_mask(self):
 		if "install_mask" in self.settings:
 			if not isinstance(self.settings['install_mask'], str):
-				self.settings["install_mask"]=\
+				self.settings["install_mask"] = \
 					' '.join(self.settings["install_mask"])
 
 	def set_spec_prefix(self):
-		self.settings["spec_prefix"]=self.settings["target"]
+		self.settings["spec_prefix"] = self.settings["target"]
 
 	def set_target_profile(self):
-		self.settings["target_profile"]=self.settings["profile"]
+		self.settings["target_profile"] = self.settings["profile"]
 
 	def set_target_subpath(self):
-		self.settings["target_subpath"]=self.settings["rel_type"]+"/"+\
-				self.settings["target"]+"-"+self.settings["subarch"]+"-"+\
-				self.settings["version_stamp"] +'/'
+		self.settings["target_subpath"] = self.settings["rel_type"] + "/" + \
+				self.settings["target"] + "-" + self.settings["subarch"] + "-" + \
+				self.settings["version_stamp"] + '/'
 
 	def set_source_subpath(self):
 		if not isinstance(self.settings['source_subpath'], str):
 			raise CatalystError(
-				"source_subpath should have been a string. Perhaps you have " +\
+				"source_subpath should have been a string. Perhaps you have " + \
 				"something wrong in your spec file?")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
 			if not isinstance(self.settings['pkgcache_path'], str):
-				self.settings["pkgcache_path"]=\
+				self.settings["pkgcache_path"] = \
 					normpath(self.settings["pkgcache_path"])
 		else:
-			self.settings["pkgcache_path"]=\
-				normpath(self.settings["storedir"]+"/packages/"+\
-				self.settings["target_subpath"]+"/")
+			self.settings["pkgcache_path"] = \
+				normpath(self.settings["storedir"] + "/packages/" + \
+				self.settings["target_subpath"] + "/")
 
 	def set_kerncache_path(self):
 		if "kerncache_path" in self.settings:
 			if not isinstance(self.settings['kerncache_path'], str):
-				self.settings["kerncache_path"]=\
+				self.settings["kerncache_path"] = \
 					normpath(self.settings["kerncache_path"])
 		else:
-			self.settings["kerncache_path"]=normpath(self.settings["storedir"]+\
-				"/kerncache/"+self.settings["target_subpath"])
+			self.settings["kerncache_path"] = normpath(self.settings["storedir"] + \
+				"/kerncache/" + self.settings["target_subpath"])
 
 	def set_target_path(self):
-		self.settings["target_path"]=normpath(self.settings["storedir"]+\
-			"/builds/"+self.settings["target_subpath"])
+		self.settings["target_path"] = normpath(self.settings["storedir"] + \
+			"/builds/" + self.settings["target_subpath"])
 		if "autoresume" in self.settings["options"]\
 			and self.resume.is_enabled("setup_target_path"):
 			log.notice('Resume point detected, skipping target path setup operation...')
@@ -352,67 +352,67 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			ensure_dirs(self.settings["storedir"] + "/builds")
 
 	def set_fsscript(self):
-		if self.settings["spec_prefix"]+"/fsscript" in self.settings:
-			self.settings["fsscript"]=\
-				self.settings[self.settings["spec_prefix"]+"/fsscript"]
-			del self.settings[self.settings["spec_prefix"]+"/fsscript"]
+		if self.settings["spec_prefix"] + "/fsscript" in self.settings:
+			self.settings["fsscript"] = \
+				self.settings[self.settings["spec_prefix"] + "/fsscript"]
+			del self.settings[self.settings["spec_prefix"] + "/fsscript"]
 
 	def set_rcadd(self):
-		if self.settings["spec_prefix"]+"/rcadd" in self.settings:
-			self.settings["rcadd"]=\
-				self.settings[self.settings["spec_prefix"]+"/rcadd"]
-			del self.settings[self.settings["spec_prefix"]+"/rcadd"]
+		if self.settings["spec_prefix"] + "/rcadd" in self.settings:
+			self.settings["rcadd"] = \
+				self.settings[self.settings["spec_prefix"] + "/rcadd"]
+			del self.settings[self.settings["spec_prefix"] + "/rcadd"]
 
 	def set_rcdel(self):
-		if self.settings["spec_prefix"]+"/rcdel" in self.settings:
-			self.settings["rcdel"]=\
-				self.settings[self.settings["spec_prefix"]+"/rcdel"]
-			del self.settings[self.settings["spec_prefix"]+"/rcdel"]
+		if self.settings["spec_prefix"] + "/rcdel" in self.settings:
+			self.settings["rcdel"] = \
+				self.settings[self.settings["spec_prefix"] + "/rcdel"]
+			del self.settings[self.settings["spec_prefix"] + "/rcdel"]
 
 	def set_cdtar(self):
-		if self.settings["spec_prefix"]+"/cdtar" in self.settings:
-			self.settings["cdtar"]=\
-				normpath(self.settings[self.settings["spec_prefix"]+"/cdtar"])
-			del self.settings[self.settings["spec_prefix"]+"/cdtar"]
+		if self.settings["spec_prefix"] + "/cdtar" in self.settings:
+			self.settings["cdtar"] = \
+				normpath(self.settings[self.settings["spec_prefix"] + "/cdtar"])
+			del self.settings[self.settings["spec_prefix"] + "/cdtar"]
 
 	def set_iso(self):
-		if self.settings["spec_prefix"]+"/iso" in self.settings:
-			if self.settings[self.settings["spec_prefix"]+"/iso"].startswith('/'):
-				self.settings["iso"]=\
-					normpath(self.settings[self.settings["spec_prefix"]+"/iso"])
+		if self.settings["spec_prefix"] + "/iso" in self.settings:
+			if self.settings[self.settings["spec_prefix"] + "/iso"].startswith('/'):
+				self.settings["iso"] = \
+					normpath(self.settings[self.settings["spec_prefix"] + "/iso"])
 			else:
 				# This automatically prepends the build dir to the ISO output path
 				# if it doesn't start with a /
 				self.settings["iso"] = normpath(self.settings["storedir"] + \
 					"/builds/" + self.settings["rel_type"] + "/" + \
-					self.settings[self.settings["spec_prefix"]+"/iso"])
-			del self.settings[self.settings["spec_prefix"]+"/iso"]
+					self.settings[self.settings["spec_prefix"] + "/iso"])
+			del self.settings[self.settings["spec_prefix"] + "/iso"]
 
 	def set_fstype(self):
-		if self.settings["spec_prefix"]+"/fstype" in self.settings:
-			self.settings["fstype"]=\
-				self.settings[self.settings["spec_prefix"]+"/fstype"]
-			del self.settings[self.settings["spec_prefix"]+"/fstype"]
+		if self.settings["spec_prefix"] + "/fstype" in self.settings:
+			self.settings["fstype"] = \
+				self.settings[self.settings["spec_prefix"] + "/fstype"]
+			del self.settings[self.settings["spec_prefix"] + "/fstype"]
 
 		if "fstype" not in self.settings:
-			self.settings["fstype"]="normal"
+			self.settings["fstype"] = "normal"
 			for x in self.valid_values:
-				if x ==  self.settings["spec_prefix"]+"/fstype":
+				if x ==  self.settings["spec_prefix"] + "/fstype":
 					log.info('%s/fstype is being set to the default of "normal"',
 						self.settings['spec_prefix'])
 
 	def set_fsops(self):
 		if "fstype" in self.settings:
 			self.valid_values.append("fsops")
-			if self.settings["spec_prefix"]+"/fsops" in self.settings:
-				self.settings["fsops"]=\
-					self.settings[self.settings["spec_prefix"]+"/fsops"]
-				del self.settings[self.settings["spec_prefix"]+"/fsops"]
+			if self.settings["spec_prefix"] + "/fsops" in self.settings:
+				self.settings["fsops"] = \
+					self.settings[self.settings["spec_prefix"] + "/fsops"]
+				del self.settings[self.settings["spec_prefix"] + "/fsops"]
 
 	def set_source_path(self):
 		if "seedcache" in self.settings["options"]\
-			and os.path.isdir(normpath(self.settings["storedir"]+"/tmp/"+\
-				self.settings["source_subpath"]+"/")):
+			and os.path.isdir(normpath(self.settings["storedir"] + "/tmp/" +
+				self.settings["source_subpath"] + "/")):
 			self.settings["source_path"] = normpath(self.settings["storedir"] +
 				"/tmp/" + self.settings["source_subpath"] + "/")
 		else:
@@ -433,23 +433,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.settings["source_path_hash"] = \
 						self.settings["hash_map"].generate_hash(
 							self.settings["source_path"],
-							hash_=self.settings["hash_function"])
+							hash_ = self.settings["hash_function"])
 		log.notice('Source path set to %s', self.settings['source_path'])
 
 	def set_dest_path(self):
 		if "root_path" in self.settings:
-			self.settings["destpath"]=normpath(self.settings["chroot_path"]+\
+			self.settings["destpath"] = normpath(self.settings["chroot_path"] +
 				self.settings["root_path"])
 		else:
-			self.settings["destpath"]=normpath(self.settings["chroot_path"])
+			self.settings["destpath"] = normpath(self.settings["chroot_path"])
 
 	def set_cleanables(self):
-		self.settings["cleanables"]=["/etc/resolv.conf","/var/tmp/*","/tmp/*",\
+		self.settings["cleanables"] = ["/etc/resolv.conf", "/var/tmp/*", "/tmp/*",
 			"/root/*", self.settings["portdir"]]
 
 	def set_snapshot_path(self):
-		self.settings["snapshot_path"]= file_check(
-			normpath(self.settings["storedir"]+\
+		self.settings["snapshot_path"] = file_check(
+			normpath(self.settings["storedir"] +
 				"/snapshots/" + self.settings["snapshot_name"] +
 				self.settings["snapshot"]),
 			self.accepted_extensions,
@@ -459,17 +459,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.settings["snapshot_path_hash"] = \
 			self.settings["hash_map"].generate_hash(
 				self.settings["snapshot_path"],
-				hash_=self.settings["hash_function"])
+				hash_ = self.settings["hash_function"])
 
 	def set_snapcache_path(self):
-		self.settings["snapshot_cache_path"]=\
+		self.settings["snapshot_cache_path"] = \
 			normpath(pjoin(self.settings["snapshot_cache"],
 				self.settings["snapshot"]))
 		if "snapcache" in self.settings["options"]:
 			self.settings["snapshot_cache_path"] = \
 				normpath(pjoin(self.settings["snapshot_cache"],
 					self.settings["snapshot"]))
-			self.snapcache_lock=\
+			self.snapcache_lock = \
 				LockDir(self.settings["snapshot_cache_path"])
 			log.info('Setting snapshot cache to %s', self.settings['snapshot_cache_path'])
 
@@ -478,9 +478,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		NOTE: the trailing slash has been removed
 		Things *could* break if you don't use a proper join()
 		"""
-		self.settings["chroot_path"]=normpath(self.settings["storedir"]+\
-			"/tmp/"+self.settings["target_subpath"].rstrip('/'))
-		self.chroot_lock=LockDir(self.settings["chroot_path"])
+		self.settings["chroot_path"] = normpath(self.settings["storedir"] +
+			"/tmp/" + self.settings["target_subpath"].rstrip('/'))
+		self.chroot_lock = LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"] = normpath(pjoin(
@@ -494,19 +494,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.resume = AutoResume(self.settings["autoresume_path"], mode=0o755)
 
 	def set_controller_file(self):
-		self.settings["controller_file"]=normpath(self.settings["sharedir"]+\
-			"/targets/"+self.settings["target"]+"/"+self.settings["target"]+\
-			"-controller.sh")
+		self.settings["controller_file"] = normpath(self.settings["sharedir"] +
+			"/targets/" + self.settings["target"] + "/" + self.settings["target"]
+			+ "-controller.sh")
 
 	def set_iso_volume_id(self):
-		if self.settings["spec_prefix"]+"/volid" in self.settings:
-			self.settings["iso_volume_id"]=\
-				self.settings[self.settings["spec_prefix"]+"/volid"]
-			if len(self.settings["iso_volume_id"])>32:
+		if self.settings["spec_prefix"] + "/volid" in self.settings:
+			self.settings["iso_volume_id"] = \
+				self.settings[self.settings["spec_prefix"] + "/volid"]
+			if len(self.settings["iso_volume_id"]) > 32:
 				raise CatalystError(
 					"ISO volume ID must not exceed 32 characters.")
 		else:
-			self.settings["iso_volume_id"]="catalyst "+self.settings["snapshot"]
+			self.settings["iso_volume_id"] = "catalyst "+self.settings["snapshot"]
 
 	def set_default_action_sequence(self):
 		""" Default action sequence for run method.
@@ -521,10 +521,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_action_sequence(self):
 		"""Set basic stage1, 2, 3 action sequences"""
-		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"setup_confdir","portage_overlay",\
-				"base_dirs","bind","chroot_setup","setup_environment",\
-				"run_local","preclean","unbind","clean"]
+		self.settings["action_sequence"] = ["unpack", "unpack_snapshot",
+				"setup_confdir", "portage_overlay",
+				"base_dirs", "bind", "chroot_setup", "setup_environment",
+				"run_local", "preclean", "unbind", "clean"]
 		self.set_completion_action_sequences()
 
 	def set_completion_action_sequences(self):
@@ -540,21 +540,21 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		return
 
 	def set_use(self):
-		if self.settings["spec_prefix"]+"/use" in self.settings:
-			self.settings["use"]=\
-				self.settings[self.settings["spec_prefix"]+"/use"]
-			del self.settings[self.settings["spec_prefix"]+"/use"]
+		if self.settings["spec_prefix"] + "/use" in self.settings:
+			self.settings["use"] = \
+				self.settings[self.settings["spec_prefix"] + "/use"]
+			del self.settings[self.settings["spec_prefix"] + "/use"]
 		if "use" not in self.settings:
-			self.settings["use"]=""
+			self.settings["use"] = ""
 		if isinstance(self.settings['use'], str):
-			self.settings["use"]=self.settings["use"].split()
+			self.settings["use"] = self.settings["use"].split()
 
 		# Force bindist when options ask for it
 		if "BINDIST" in self.settings:
 			self.settings["use"].append("bindist")
 
 	def set_stage_path(self):
-		self.settings["stage_path"]=normpath(self.settings["chroot_path"])
+		self.settings["stage_path"] = normpath(self.settings["chroot_path"])
 
 	def set_mounts(self):
 		pass
@@ -563,82 +563,82 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		pass
 
 	def set_rm(self):
-		if self.settings["spec_prefix"]+"/rm" in self.settings:
-			if isinstance(self.settings[self.settings['spec_prefix']+'/rm'], str):
-				self.settings[self.settings["spec_prefix"]+"/rm"]=\
-					self.settings[self.settings["spec_prefix"]+"/rm"].split()
+		if self.settings["spec_prefix"] + "/rm" in self.settings:
+			if isinstance(self.settings[self.settings['spec_prefix'] + '/rm'], str):
+				self.settings[self.settings["spec_prefix"] + "/rm"] = \
+					self.settings[self.settings["spec_prefix"] + "/rm"].split()
 
 	def set_linuxrc(self):
-		if self.settings["spec_prefix"]+"/linuxrc" in self.settings:
-			if isinstance(self.settings[self.settings['spec_prefix']+'/linuxrc'], str):
-				self.settings["linuxrc"]=\
-					self.settings[self.settings["spec_prefix"]+"/linuxrc"]
-				del self.settings[self.settings["spec_prefix"]+"/linuxrc"]
+		if self.settings["spec_prefix"] + "/linuxrc" in self.settings:
+			if isinstance(self.settings[self.settings['spec_prefix'] + '/linuxrc'], str):
+				self.settings["linuxrc"] = \
+					self.settings[self.settings["spec_prefix"] + "/linuxrc"]
+				del self.settings[self.settings["spec_prefix"] + "/linuxrc"]
 
 	def set_busybox_config(self):
-		if self.settings["spec_prefix"]+"/busybox_config" in self.settings:
-			if isinstance(self.settings[self.settings['spec_prefix']+'/busybox_config'], str):
-				self.settings["busybox_config"]=\
-					self.settings[self.settings["spec_prefix"]+"/busybox_config"]
-				del self.settings[self.settings["spec_prefix"]+"/busybox_config"]
+		if self.settings["spec_prefix"] + "/busybox_config" in self.settings:
+			if isinstance(self.settings[self.settings['spec_prefix'] + '/busybox_config'], str):
+				self.settings["busybox_config"] = \
+					self.settings[self.settings["spec_prefix"] + "/busybox_config"]
+				del self.settings[self.settings["spec_prefix"] + "/busybox_config"]
 
 	def set_portage_overlay(self):
 		if "portage_overlay" in self.settings:
 			if isinstance(self.settings['portage_overlay'], str):
-				self.settings["portage_overlay"]=\
+				self.settings["portage_overlay"] = \
 					self.settings["portage_overlay"].split()
 			log.info('portage_overlay directories are set to: %s',
 				' '.join(self.settings['portage_overlay']))
 
 	def set_overlay(self):
-		if self.settings["spec_prefix"]+"/overlay" in self.settings:
-			if isinstance(self.settings[self.settings['spec_prefix']+'/overlay'], str):
-				self.settings[self.settings["spec_prefix"]+"/overlay"]=\
-					self.settings[self.settings["spec_prefix"]+\
+		if self.settings["spec_prefix"] + "/overlay" in self.settings:
+			if isinstance(self.settings[self.settings['spec_prefix'] + '/overlay'], str):
+				self.settings[self.settings["spec_prefix"] + "/overlay"] = \
+					self.settings[self.settings["spec_prefix"] + \
 					"/overlay"].split()
 
 	def set_root_overlay(self):
-		if self.settings["spec_prefix"]+"/root_overlay" in self.settings:
-			if isinstance(self.settings[self.settings['spec_prefix']+'/root_overlay'], str):
-				self.settings[self.settings["spec_prefix"]+"/root_overlay"]=\
-					self.settings[self.settings["spec_prefix"]+\
+		if self.settings["spec_prefix"] + "/root_overlay" in self.settings:
+			if isinstance(self.settings[self.settings['spec_prefix'] + '/root_overlay'], str):
+				self.settings[self.settings["spec_prefix"] + "/root_overlay"] = \
+					self.settings[self.settings["spec_prefix"] + \
 					"/root_overlay"].split()
 
 	def set_root_path(self):
 		""" ROOT= variable for emerges """
-		self.settings["root_path"]="/"
+		self.settings["root_path"] = "/"
 
 	def set_valid_build_kernel_vars(self,addlargs):
 		if "boot/kernel" in addlargs:
 			if isinstance(addlargs['boot/kernel'], str):
-				loopy=[addlargs["boot/kernel"]]
+				loopy = [addlargs["boot/kernel"]]
 			else:
-				loopy=addlargs["boot/kernel"]
+				loopy = addlargs["boot/kernel"]
 
 			for x in loopy:
-				self.valid_values.append("boot/kernel/"+x+"/aliases")
-				self.valid_values.append("boot/kernel/"+x+"/config")
-				self.valid_values.append("boot/kernel/"+x+"/console")
-				self.valid_values.append("boot/kernel/"+x+"/extraversion")
-				self.valid_values.append("boot/kernel/"+x+"/gk_action")
-				self.valid_values.append("boot/kernel/"+x+"/gk_kernargs")
-				self.valid_values.append("boot/kernel/"+x+"/initramfs_overlay")
-				self.valid_values.append("boot/kernel/"+x+"/machine_type")
-				self.valid_values.append("boot/kernel/"+x+"/sources")
-				self.valid_values.append("boot/kernel/"+x+"/softlevel")
-				self.valid_values.append("boot/kernel/"+x+"/use")
-				self.valid_values.append("boot/kernel/"+x+"/packages")
-				self.valid_values.append("boot/kernel/"+x+"/kernelopts")
-				if "boot/kernel/"+x+"/packages" in addlargs:
-					if isinstance(addlargs['boot/kernel/'+x+'/packages'], str):
-						addlargs["boot/kernel/"+x+"/packages"]=\
-							[addlargs["boot/kernel/"+x+"/packages"]]
+				self.valid_values.append("boot/kernel/" + x + "/aliases")
+				self.valid_values.append("boot/kernel/" + x + "/config")
+				self.valid_values.append("boot/kernel/" + x + "/console")
+				self.valid_values.append("boot/kernel/" + x + "/extraversion")
+				self.valid_values.append("boot/kernel/" + x + "/gk_action")
+				self.valid_values.append("boot/kernel/" + x + "/gk_kernargs")
+				self.valid_values.append("boot/kernel/" + x + "/initramfs_overlay")
+				self.valid_values.append("boot/kernel/" + x + "/machine_type")
+				self.valid_values.append("boot/kernel/" + x + "/sources")
+				self.valid_values.append("boot/kernel/" + x + "/softlevel")
+				self.valid_values.append("boot/kernel/" + x + "/use")
+				self.valid_values.append("boot/kernel/" + x + "/packages")
+				self.valid_values.append("boot/kernel/" + x + "/kernelopts")
+				if "boot/kernel/" + x + "/packages" in addlargs:
+					if isinstance(addlargs['boot/kernel/' + x + '/packages'], str):
+						addlargs["boot/kernel/" + x + "/packages"] = \
+							[addlargs["boot/kernel/" + x + "/packages"]]
 
 	def set_build_kernel_vars(self):
-		if self.settings["spec_prefix"]+"/gk_mainargs" in self.settings:
-			self.settings["gk_mainargs"]=\
-				self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
-			del self.settings[self.settings["spec_prefix"]+"/gk_mainargs"]
+		if self.settings["spec_prefix"] + "/gk_mainargs" in self.settings:
+			self.settings["gk_mainargs"] = \
+				self.settings[self.settings["spec_prefix"] + "/gk_mainargs"]
+			del self.settings[self.settings["spec_prefix"] + "/gk_mainargs"]
 
 	def kill_chroot_pids(self):
 		log.info('Checking for processes running in chroot and killing them.')
@@ -649,7 +649,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		killcmd = normpath(self.settings["sharedir"] +
 			self.settings["shdir"] + "/support/kill-chroot-pids.sh")
 		if os.path.exists(killcmd):
-			cmd([killcmd], env=self.env)
+			cmd([killcmd], env = self.env)
 
 	def mount_safety_check(self):
 		"""
@@ -682,22 +682,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					raise CatalystError("Unable to auto-unbind " + target)
 
 	def unpack(self):
-		_unpack=True
+		_unpack = True
 
 		clst_unpack_hash = self.resume.get("unpack")
 
 		unpack_info = self.decompressor.create_infodict(
-			source=self.settings["source_path"],
-			destination=self.settings["chroot_path"],
-			arch=self.settings["compressor_arch"],
-			other_options=self.settings["compressor_options"],
+			source = self.settings["source_path"],
+			destination = self.settings["chroot_path"],
+			arch = self.settings["compressor_arch"],
+			other_options = self.settings["compressor_options"],
 			)
 
 		display_msg = (
 			'Starting %(mode)s from %(source)s\nto '
 			'%(destination)s (this may take some time) ..')
 
-		error_msg="'%(mode)s' extraction of %(source)s to %(destination)s failed."
+		error_msg = "'%(mode)s' extraction of %(source)s to %(destination)s failed."
 
 		if "seedcache" in self.settings["options"]:
 			if os.path.isdir(unpack_info["source"]):
@@ -716,26 +716,26 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_enabled("unpack"):
 				# Autoresume is valid, SEEDCACHE is valid
-				_unpack=False
-				invalid_snapshot=False
+				_unpack = False
+				invalid_snapshot = False
 
 			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"]==clst_unpack_hash:
+				and self.settings["source_path_hash"] == clst_unpack_hash:
 				# Autoresume is valid, tarball is valid
-				_unpack=False
-				invalid_snapshot=False
+				_unpack = False
+				invalid_snapshot = False
 
 			elif os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_disabled("unpack"):
 				# Autoresume is invalid, SEEDCACHE
-				_unpack=True
-				invalid_snapshot=True
+				_unpack = True
+				invalid_snapshot = True
 
 			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"]!=clst_unpack_hash:
+				and self.settings["source_path_hash"] != clst_unpack_hash:
 				# Autoresume is invalid, tarball
-				_unpack=True
-				invalid_snapshot=True
+				_unpack = True
+				invalid_snapshot = True
 				unpack_info['source'] = file_check(unpack_info['source'])
 
 		else:
@@ -743,18 +743,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "seedcache" in self.settings["options"]:
 				# SEEDCACHE so let's run rsync and let it clean up
 				if os.path.isdir(self.settings["source_path"]):
-					_unpack=True
-					invalid_snapshot=False
+					_unpack = True
+					invalid_snapshot = False
 				elif os.path.isfile(self.settings["source_path"]):
 					# Tarball so unpack and remove anything already there
-					_unpack=True
-					invalid_snapshot=True
+					_unpack = True
+					invalid_snapshot = True
 				# No autoresume, no SEEDCACHE
 			else:
 				# Tarball so unpack and remove anything already there
 				if os.path.isfile(self.settings["source_path"]):
-					_unpack=True
-					invalid_snapshot=True
+					_unpack = True
+					invalid_snapshot = True
 				elif os.path.isdir(self.settings["source_path"]):
 					# We should never reach this, so something is very wrong
 					raise CatalystError(
@@ -773,13 +773,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			ensure_dirs(self.settings["chroot_path"])
 
-			ensure_dirs(self.settings["chroot_path"]+"/tmp",mode=1777)
+			ensure_dirs(self.settings["chroot_path"] + "/tmp", mode=1777)
 
 			if "pkgcache" in self.settings["options"]:
-				ensure_dirs(self.settings["pkgcache_path"],mode=0o755)
+				ensure_dirs(self.settings["pkgcache_path"], mode=0o755)
 
 			if "kerncache" in self.settings["options"]:
-				ensure_dirs(self.settings["kerncache_path"],mode=0o755)
+				ensure_dirs(self.settings["kerncache_path"], mode=0o755)
 
 			log.notice('%s', display_msg % unpack_info)
 
@@ -789,23 +789,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if "source_path_hash" in self.settings:
 				self.resume.enable("unpack",
-					data=self.settings["source_path_hash"])
+					data = self.settings["source_path_hash"])
 			else:
 				self.resume.enable("unpack")
 		else:
 			log.notice('Resume point detected, skipping unpack operation...')
 
 	def unpack_snapshot(self):
-		unpack=True
+		unpack = True
 		snapshot_hash = self.resume.get("unpack_portage")
 
-		unpack_errmsg="Error unpacking snapshot using mode %(mode)s"
+		unpack_errmsg = "Error unpacking snapshot using mode %(mode)s"
 
 		unpack_info = self.decompressor.create_infodict(
-			source=self.settings["snapshot_path"],
-			destination=self.settings["snapshot_cache_path"],
-			arch=self.settings["compressor_arch"],
-			other_options=self.settings["compressor_options"],
+			source = self.settings["snapshot_path"],
+			destination = self.settings["snapshot_cache_path"],
+			arch = self.settings["compressor_arch"],
+			other_options = self.settings["compressor_options"],
 			)
 
 		target_portdir = normpath(self.settings["chroot_path"] +
@@ -819,15 +819,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			unpack_info['mode'] = self.decompressor.determine_mode(
 				unpack_info['source'])
 
-			cleanup_msg="Cleaning up invalid snapshot cache at \n\t"+\
-				self.settings["snapshot_cache_path"]+\
+			cleanup_msg = "Cleaning up invalid snapshot cache at \n\t" + \
+				self.settings["snapshot_cache_path"] + \
 				" (this can take a long time)..."
 
-			if self.settings["snapshot_path_hash"]==snapshot_cache_hash:
+			if self.settings["snapshot_path_hash"] == snapshot_cache_hash:
 				log.info('Valid snapshot cache, skipping unpack of portage tree...')
-				unpack=False
+				unpack = False
 		else:
-			cleanup_msg=\
+			cleanup_msg = \
 				'Cleaning up existing portage tree (this can take a long time)...'
 			unpack_info['destination'] = normpath(
 				self.settings["chroot_path"] + self.settings["repo_basedir"])
@@ -858,7 +858,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			else:
 				log.info('Setting snapshot autoresume point')
 				self.resume.enable("unpack_portage",
-					data=self.settings["snapshot_path_hash"])
+					data = self.settings["snapshot_path_hash"])
 
 			if "snapcache" in self.settings["options"]:
 				self.snapcache_lock.unlock()
@@ -871,7 +871,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			# TODO: zmedico and I discussed making this a directory and pushing
 			# in a parent file, as well as other user-specified configuration.
 			log.info('Configuring profile link...')
-			clear_path(self.settings['chroot_path'] +
+			clear_path(self.settings['chroot_path'] + \
 				self.settings['port_conf'] + '/make.profile')
 			ensure_dirs(self.settings['chroot_path'] + self.settings['port_conf'])
 			cmd(['ln', '-sf',
@@ -903,15 +903,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if os.path.exists(x):
 					log.info('Copying overlay dir %s', x)
 					ensure_dirs(self.settings['chroot_path'] + self.settings['local_overlay'])
-					cmd("cp -a "+x+"/* "+self.settings["chroot_path"]+\
-						self.settings["local_overlay"],\
+					cmd("cp -a " + x + "/* " + self.settings["chroot_path"] +
+						self.settings["local_overlay"],
 						env=self.env)
 
 	def root_overlay(self):
 		""" Copy over the root_overlay """
-		if self.settings["spec_prefix"]+"/root_overlay" in self.settings:
-			for x in self.settings[self.settings["spec_prefix"]+\
-				"/root_overlay"]:
+		if self.settings["spec_prefix"] + "/root_overlay" in self.settings:
+			for x in self.settings[self.settings["spec_prefix"] +
+					"/root_overlay"]:
 				if os.path.exists(x):
 					log.info('Copying root_overlay: %s', x)
 					cmd(['rsync', '-a', x + '/', self.settings['chroot_path']],
@@ -930,7 +930,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				if self.mountmap[x] not in ["tmpfs", "shmfs"]:
 					ensure_dirs(self.mountmap[x], mode=0o755)
 
-			src=self.mountmap[x]
+			src = self.mountmap[x]
 			log.debug('bind(); src = %s', src)
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				self.snapcache_lock.read_lock()
@@ -956,9 +956,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		log.debug('bind(); finished :D')
 
 	def unbind(self):
-		ouch=0
-		mypath=self.settings["chroot_path"]
-		myrevmounts=self.mounts[:]
+		ouch = 0
+		mypath = self.settings["chroot_path"]
+		myrevmounts = self.mounts[:]
 		myrevmounts.reverse()
 		# Unmount in reverse order for nested bind-mounts
 		for x in myrevmounts:
@@ -980,7 +980,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				try:
 					cmd(['umount', target])
 				except CatalystError:
-					ouch=1
+					ouch = 1
 					log.warning("Couldn't umount bind mount: %s", target)
 
 			if "snapcache" in self.settings["options"] and x == "/usr/portage":
@@ -999,7 +999,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"Couldn't umount one or more bind-mounts; aborting for safety.")
 
 	def chroot_setup(self):
-		self.makeconf=read_makeconf(normpath(self.settings["chroot_path"]+
+		self.makeconf = read_makeconf(normpath(self.settings["chroot_path"] +
 			self.settings["make_conf"]))
 		self.override_cbuild()
 		self.override_chost()
@@ -1045,7 +1045,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			makepath = normpath(self.settings["chroot_path"] +
 				self.settings["make_conf"])
 			clear_path(makepath)
-			myf=open(makepath, "w")
+			myf = open(makepath, "w")
 			myf.write("# These settings were set by the catalyst build script "
 					"that automatically\n# built this stage.\n")
 			myf.write("# Please consult "
@@ -1073,17 +1073,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				myf.write("# This should not be changed unless you know exactly"
 					" what you are doing.  You\n# should probably be "
 					"using a different stage, instead.\n")
-				myf.write('CBUILD="'+self.settings["CBUILD"]+'"\n')
+				myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
 
 			if "CHOST" in self.settings:
 				myf.write("# WARNING: Changing your CHOST is not something "
 					"that should be done lightly.\n# Please consult "
 					"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
 					"before changing.\n")
-				myf.write('CHOST="'+self.settings["CHOST"]+'"\n')
+				myf.write('CHOST="' + self.settings["CHOST"] + '"\n')
 
 			# Figure out what our USE vars are for building
-			myusevars=[]
+			myusevars = []
 			if "HOSTUSE" in self.settings:
 				myusevars.extend(self.settings["HOSTUSE"])
 
@@ -1102,14 +1102,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						'package.use in the profile and portage_confdir.\n'
 						"You've been warned!", self.settings['spec_prefix'])
 
-			myuseexpandvars={}
+			myuseexpandvars = {}
 			if "HOSTUSEEXPAND" in self.settings:
 				for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
-					myuseexpandvars.update({hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
+					myuseexpandvars.update(
+						{hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
 
 			if myuseexpandvars:
 				for hostuseexpand in myuseexpandvars:
-					myf.write(hostuseexpand + '="' + ' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
+					myf.write(hostuseexpand + '="' +
+						' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
 
 			myf.write('PORTDIR="%s"\n' % self.settings['portdir'])
 			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
@@ -1172,7 +1174,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			try:
 				with open(make_conf) as f:
 					data = f.readlines()
-				data = ''.join(x for x in data if not x.startswith('PORTDIR_OVERLAY'))
+				data = ''.join(x for x in data
+						if not x.startswith('PORTDIR_OVERLAY'))
 				with open(make_conf, 'w') as f:
 					f.write(data)
 			except OSError as e:
@@ -1193,15 +1196,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("empty"):
 			log.notice('Resume point detected, skipping empty operation...')
 		else:
-			if self.settings["spec_prefix"]+"/empty" in self.settings:
-				if isinstance(self.settings[self.settings['spec_prefix']+'/empty'], str):
-					self.settings[self.settings["spec_prefix"]+"/empty"]=\
-						self.settings[self.settings["spec_prefix"]+\
+			if self.settings["spec_prefix"] + "/empty" in self.settings:
+				if isinstance(
+						self.settings[self.settings['spec_prefix'] + '/empty'],
+						str):
+					self.settings[self.settings["spec_prefix"] + "/empty"] = \
+						self.settings[self.settings["spec_prefix"] + \
 						"/empty"].split()
-				for x in self.settings[self.settings["spec_prefix"]+"/empty"]:
-					myemp=self.settings["destpath"]+x
+				for x in self.settings[self.settings["spec_prefix"] + "/empty"]:
+					myemp = self.settings["destpath"] + x
 					if not os.path.isdir(myemp) or os.path.islink(myemp):
-						log.warning('not a directory or does not exist, skipping "empty" operation: %s', x)
+						log.warning('not a directory or does not exist, '
+							'skipping "empty" operation: %s', x)
 						continue
 					log.info('Emptying directory %s', x)
 					clear_dir(myemp)
@@ -1212,8 +1218,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("remove"):
 			log.notice('Resume point detected, skipping remove operation...')
 		else:
-			if self.settings["spec_prefix"]+"/rm" in self.settings:
-				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
+			if self.settings["spec_prefix"] + "/rm" in self.settings:
+				for x in self.settings[self.settings["spec_prefix"] + "/rm"]:
 					# We're going to shell out for all these cleaning
 					# operations, so we get easy glob handling.
 					log.notice('livecd: removing %s', x)
@@ -1360,7 +1366,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 							self.env[varname] = "false"
 
 		if "makeopts" in self.settings:
-			self.env["MAKEOPTS"]=self.settings["makeopts"]
+			self.env["MAKEOPTS"] = self.settings["makeopts"]
 		log.debug('setup_environment(); env = %r', self.env)
 
 	def run(self):
@@ -1414,10 +1420,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("unmerge"):
 			log.notice('Resume point detected, skipping unmerge operation...')
 		else:
-			if self.settings["spec_prefix"]+"/unmerge" in self.settings:
-				if isinstance(self.settings[self.settings['spec_prefix']+'/unmerge'], str):
-					self.settings[self.settings["spec_prefix"]+"/unmerge"]=\
-						[self.settings[self.settings["spec_prefix"]+"/unmerge"]]
+			if self.settings["spec_prefix"] + "/unmerge" in self.settings:
+				if isinstance(self.settings[self.settings['spec_prefix'] + '/unmerge'], str):
+					self.settings[self.settings["spec_prefix"] + "/unmerge"] = \
+						[self.settings[self.settings["spec_prefix"] + "/unmerge"]]
 
 				# Before cleaning, unmerge stuff
 				try:
@@ -1445,8 +1451,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		and self.resume.is_enabled("setup_overlay"):
 			log.notice('Resume point detected, skipping setup_overlay operation...')
 		else:
-			if self.settings["spec_prefix"]+"/overlay" in self.settings:
-				for x in self.settings[self.settings["spec_prefix"]+"/overlay"]:
+			if self.settings["spec_prefix"] + "/overlay" in self.settings:
+				for x in self.settings[self.settings["spec_prefix"] + "/overlay"]:
 					if os.path.exists(x):
 						cmd(['rsync', '-a', x + '/', self.settings['target_path']],
 							env=self.env)
@@ -1465,7 +1471,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.gen_digest_file(self.settings["iso"])
 				self.resume.enable("create_iso")
 			else:
-				log.warning('livecd/iso was not defined.  An ISO Image will not be created.')
+				log.warning('livecd/iso was not defined.  '
+					'An ISO Image will not be created.')
 
 	def build_packages(self):
 		build_packages_resume = pjoin(self.settings["autoresume_path"],
@@ -1474,11 +1481,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			and self.resume.is_enabled("build_packages"):
 			log.notice('Resume point detected, skipping build_packages operation...')
 		else:
-			if self.settings["spec_prefix"]+"/packages" in self.settings:
+			if self.settings["spec_prefix"] + "/packages" in self.settings:
 				target_pkgs = self.settings["spec_prefix"] + '/packages'
 				if "autoresume" in self.settings["options"] \
 					and self.resume.is_enabled("build_packages"):
-					log.notice('Resume point detected, skipping build_packages operation...')
+					log.notice('Resume point detected, skipping build_packages '
+						'operation...')
 				else:
 					command = [self.settings['controller_file'], 'build_packages']
 					if isinstance(self.settings[target_pkgs], str):
@@ -1491,7 +1499,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						self.resume.enable("build_packages")
 					except CatalystError:
 						self.unbind()
-						raise CatalystError(self.settings["spec_prefix"]+\
+						raise CatalystError(
+							self.settings["spec_prefix"] +
 							"build aborting due to error.")
 
 	def build_kernel(self):
@@ -1502,14 +1511,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			if "boot/kernel" in self.settings:
 				try:
-					mynames=self.settings["boot/kernel"]
+					mynames = self.settings["boot/kernel"]
 					if isinstance(mynames, str):
-						mynames=[mynames]
+						mynames = [mynames]
 					# Execute the script that sets up the kernel build environment
 					cmd([self.settings['controller_file'], 'pre-kmerge'],
 						env=self.env)
 					for kname in mynames:
-						self._build_kernel(kname=kname)
+						self._build_kernel(kname = kname)
 					self.resume.enable("build_kernel")
 				except CatalystError:
 					self.unbind()
@@ -1520,8 +1529,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def _build_kernel(self, kname):
 		"Build a single configured kernel by name"
 		if "autoresume" in self.settings["options"] \
-			and self.resume.is_enabled("build_kernel_"+kname):
-			log.notice('Resume point detected, skipping build_kernel for %s operation...', kname)
+			and self.resume.is_enabled("build_kernel_" + kname):
+			log.notice('Resume point detected, skipping build_kernel '
+				'for %s operation...', kname)
 			return
 		self._copy_kernel_config(kname=kname)
 
@@ -1533,9 +1543,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if not isinstance(myopts, str):
 				myopts = ' '.join(myopts)
-				self.env[kname+"_kernelopts"]=myopts
+				self.env[kname + "_kernelopts"] = myopts
 			else:
-				self.env[kname+"_kernelopts"]=""
+				self.env[kname + "_kernelopts"] = ""
 
 		key = 'boot/kernel/' + kname + '/extraversion'
 		self.settings.setdefault(key, '')
@@ -1547,11 +1557,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		cmd([self.settings['controller_file'], 'kernel', kname],
 			env=self.env)
 
-		if "boot/kernel/"+kname+"/initramfs_overlay" in self.settings:
+		if "boot/kernel/" + kname + "/initramfs_overlay" in self.settings:
 			log.notice('Cleaning up temporary overlay dir')
 			clear_dir(self.settings['chroot_path'] + '/tmp/initramfs_overlay/')
 
-		self.resume.is_enabled("build_kernel_"+kname)
+		self.resume.is_enabled("build_kernel_" + kname)
 
 		# Execute the script that cleans up the kernel build environment
 		cmd([self.settings['controller_file'], 'post-kmerge'],
