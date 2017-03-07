@@ -179,6 +179,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.set_controller_file()
 		self.set_default_action_sequence()
 		self.set_use()
+		self.set_catalyst_use()
 		self.set_cleanables()
 		self.set_iso_volume_id()
 		self.set_build_kernel_vars()
@@ -549,9 +550,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if isinstance(self.settings['use'], str):
 			self.settings["use"] = self.settings["use"].split()
 
+	def set_catalyst_use(self):
+		if self.settings["spec_prefix"] + "/catalyst_use" in self.settings:
+			self.settings["catalyst_use"] = \
+				self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
+			del self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
+		if "catalyst_use" not in self.settings:
+			self.settings["catalyst_use"] = ""
+		if isinstance(self.settings['catalyst_use'], str):
+			self.settings["catalyst_use"] = self.settings["catalyst_use"].split()
+
 		# Force bindist when options ask for it
 		if "BINDIST" in self.settings:
-			self.settings["use"].append("bindist")
+			self.settings["catalyst_use"].append("bindist")
 
 	def set_stage_path(self):
 		self.settings["stage_path"] = normpath(self.settings["chroot_path"])

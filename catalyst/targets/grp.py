@@ -52,13 +52,6 @@ class grp(StageBase):
 				raise CatalystError("GRP build aborting due to error.",
 					print_traceback=True)
 
-	def set_use(self):
-		StageBase.set_use(self)
-		if "use" in self.settings:
-			self.settings["use"].append("bindist")
-		else:
-			self.settings["use"]=["bindist"]
-
 	def set_mounts(self):
 		self.mounts.append("/tmp/grp")
 		self.mountmap["/tmp/grp"]=self.settings["target_path"]

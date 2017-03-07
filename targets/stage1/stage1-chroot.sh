@@ -7,7 +7,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 
 # Setup our environment
 [ -n "${clst_BINDIST}" ] && BINDIST="bindist"
-BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE) ${BINDIST}"
+BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
 
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
@@ -22,6 +22,10 @@ fi
 
 ## Setup seed pkgmgr to ensure latest
 clst_root_path=/ setup_pkgmgr "build"
+
+# We need to ensure the base stage3 has USE="bindist"
+# if BINDIST is set to avoid issues with openssl / openssh
+[ -e ${clst_make_conf} ] && echo "USE=\"${USE} ${BINDIST}\"" >> ${clst_make_conf}
 
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
@@ -43,6 +47,9 @@ else
 	echo "Skipping seed stage update..."
 fi
 
+# Clear USE
+[ -e ${clst_make_conf} ] && sed -i -e "USE=\"s/${BINDIST}//" ${clst_make_conf}
+
 make_destpath /tmp/stage1root
 
 ## START BUILD
@@ -53,7 +60,8 @@ sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
 # Now, we install our packages
 if [ -e ${clst_make_conf} ]; then
-	echo "USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
+	echo "CATALYST_USE=\"-* build ${BINDIST} ${clst_CATALYST_USE}\"" >> ${clst_make_conf}
+	echo "USE=\"\${CATALYST_USE} ${USE} \${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
 	for useexpand in ${clst_HOSTUSEEXPAND}; do
 		x="clst_${useexpand}"
 		echo "${useexpand}=\"${!x}\"" \
@@ -62,8 +70,8 @@ if [ -e ${clst_make_conf} ]; then
 fi
 
 run_merge "--oneshot ${clst_buildpkgs}"
-sed -i "/USE=\"-* build ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"/d" \
-	${clst_make_conf}
+
+# Why are we removing these? Don't we need them for final make.conf?
 for useexpand in ${clst_HOSTUSEEXPAND}; do
 	x="clst_${useexpand}"
 	sed -i "/${useexpand}=\"${!x}\"/d" \

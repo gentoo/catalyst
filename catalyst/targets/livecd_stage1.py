@@ -29,16 +29,12 @@ class livecd_stage1(StageBase):
 	def set_spec_prefix(self):
 		self.settings["spec_prefix"]="livecd"
 
-	def set_use(self):
-		StageBase.set_use(self)
-		if "use" in self.settings:
-			self.settings["use"].append("livecd")
-			if "BINDIST" in self.settings:
-				self.settings["use"].append("bindist")
+	def set_catalyst_use(self):
+		StageBase.set_catalyst_use(self)
+		if "catalyst_use" in self.settings:
+			self.settings["catalyst_use"].append("livecd")
 		else:
-			self.settings["use"]=["livecd"]
-			if "BINDIST" in self.settings:
-				self.settings["use"].append("bindist")
+			self.settings["catalyst_use"] = ["livecd"]
 
 	def set_packages(self):
 		StageBase.set_packages(self)
