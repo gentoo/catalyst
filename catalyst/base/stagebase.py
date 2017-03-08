@@ -729,24 +729,28 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				# Autoresume is valid, SEEDCACHE is valid
 				_unpack = False
 				invalid_snapshot = False
+				log.notice('Resume point "unpack" valid...')
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"] == clst_unpack_hash:
 				# Autoresume is valid, tarball is valid
 				_unpack = False
 				invalid_snapshot = False
+				log.notice('Resume point "source_path_hash" valid...')
 
 			elif os.path.isdir(self.settings["source_path"]) \
 				and self.resume.is_disabled("unpack"):
 				# Autoresume is invalid, SEEDCACHE
 				_unpack = True
 				invalid_snapshot = True
+				log.notice('Resume point "unpack is disabled" is True, invalidating snapshot... :(')
 
 			elif os.path.isfile(self.settings["source_path"]) \
 				and self.settings["source_path_hash"] != clst_unpack_hash:
 				# Autoresume is invalid, tarball
 				_unpack = True
 				invalid_snapshot = True
+				log.notice('Resume point "source_path_hash" is invalid... :(')
 				unpack_info['source'] = file_check(unpack_info['source'])
 
 		else:
