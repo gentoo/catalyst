@@ -822,7 +822,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		target_portdir = normpath(self.settings["chroot_path"] +
 			self.settings["repo_basedir"] + "/" + self.settings["repo_name"])
 		log.info('%s', self.settings['chroot_path'])
-		log.info('unpack(), target_portdir = %s', target_portdir)
+		log.info('unpack_snapshot(), target_portdir = %s', target_portdir)
 		if "snapcache" in self.settings["options"]:
 			snapshot_cache_hash_path = pjoin(
 				self.settings['snapshot_cache_path'], 'catalyst-hash')
