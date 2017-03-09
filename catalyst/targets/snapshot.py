@@ -22,7 +22,7 @@ class snapshot(TargetBase, GenBase):
 		TargetBase.__init__(self, myspec, addlargs)
 		GenBase.__init__(self,myspec)
 		#self.settings=myspec
-		self.settings["target_subpath"]="portage"
+		self.settings["target_subpath"]="repos"
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"] = normpath(st + "/snapshots/"
 			+ self.settings["snapshot_name"]
@@ -46,8 +46,9 @@ class snapshot(TargetBase, GenBase):
 
 		success = True
 		self.setup()
-		log.notice('Creating Portage tree snapshot %s from %s ...',
-			self.settings['version_stamp'], self.settings['portdir'])
+		log.notice('Creating %s tree snapshot %s from %s ...',
+			self.settings["repo_name"], self.settings['version_stamp'],
+			self.settings['portdir'])
 
 		mytmp=self.settings["tmp_path"]
 		ensure_dirs(mytmp)
@@ -63,7 +64,7 @@ class snapshot(TargetBase, GenBase):
 			mytmp + '/' + self.settings['repo_name'] + '/'],
 			env=self.env)
 
-		log.notice('Compressing Portage snapshot tarball ...')
+		log.notice('Compressing %s snapshot tarball ...', self.settings["repo_name"])
 		compressor = CompressMap(self.settings["compress_definitions"],
 			env=self.env, default_mode=self.settings['compression_mode'],
 			comp_prog=self.settings["comp_prog"])
@@ -93,9 +94,9 @@ class snapshot(TargetBase, GenBase):
 	def kill_chroot_pids(self):
 		pass
 
-	@staticmethod
-	def cleanup():
+	def cleanup(self):
 		log.info('Cleaning up ...')
+		self.purge()
 
 	def purge(self):
 		clear_dir(self.settings['tmp_path'])
