@@ -59,6 +59,8 @@ confdefaults={
 	"snapshot_name": "portage-",
 	"source_matching": "strict",
 	"storedir": "/var/tmp/catalyst",
+	"target_distdir": "/var/portage/distfiles",
+	"target_pkgdir":"/var/portage/packages",
 	}
 
 DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'

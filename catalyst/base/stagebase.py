@@ -213,8 +213,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
 		# initialize our source mounts
 		self.mountmap = SOURCE_MOUNT_DEFAULTS.copy()
-		# update them from settings
+		# update these from settings
+		self.mountmap["portdir"] = self.settings["portdir"]
 		self.mountmap["distdir"] = self.settings["distdir"]
+		self.target_mounts["portdir"] = normpath(self.settings["repo_basedir"] +
+			"/" + self.settings["repo_name"])
+		self.target_mounts["distdir"] = self.settings["target_distdir"]
+		self.target_mounts["packagedir"] = self.settings["target_pkgdir"]
 		if "snapcache" not in self.settings["options"]:
 			self.mounts.remove("portdir")
 			self.mountmap["portdir"] = None
@@ -1051,96 +1056,106 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if os.path.exists(hosts_file):
 				os.rename(hosts_file, hosts_file + '.catalyst')
 				shutil.copy('/etc/hosts', hosts_file)
+			# write out the make.conf
+			try:
+				self.write_make_conf(setup=True)
+			except OSError as e:
+				raise CatalystError('Could not write %s: %s' % (
+					normpath(self.settings["chroot_path"] +
+						self.settings["make_conf"]), e))
+			self.resume.enable("chroot_setup")
 
-			# Modify and write out make.conf (for the chroot)
-			makepath = normpath(self.settings["chroot_path"] +
-				self.settings["make_conf"])
-			clear_path(makepath)
-			myf = open(makepath, "w")
-			myf.write("# These settings were set by the catalyst build script "
-					"that automatically\n# built this stage.\n")
-			myf.write("# Please consult "
-					"/usr/share/portage/config/make.conf.example "
-					"for a more\n# detailed example.\n")
+	def write_make_conf(self, setup=True):
+		# Modify and write out make.conf (for the chroot)
+		makepath = normpath(self.settings["chroot_path"] +
+			self.settings["make_conf"])
+		clear_path(makepath)
+		myf = open(makepath, "w")
+		myf.write("# These settings were set by the catalyst build script "
+				"that automatically\n# built this stage.\n")
+		myf.write("# Please consult "
+				"/usr/share/portage/config/make.conf.example "
+				"for a more\n# detailed example.\n")
 
-			for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
-						"ASFLAGS"]:
-				if not flags in self.settings:
-					continue
-				if flags in ["LDFLAGS", "ASFLAGS"]:
-					myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
-							% flags)
-				if (flags is not "CFLAGS" and
-					self.settings[flags] == self.settings["CFLAGS"]):
-					myf.write('%s="${CFLAGS}"\n' % flags)
-				elif isinstance(self.settings[flags], list):
-					myf.write('%s="%s"\n'
-							% (flags, ' '.join(self.settings[flags])))
-				else:
-					myf.write('%s="%s"\n'
-							% (flags, self.settings[flags]))
+		for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
+					"ASFLAGS"]:
+			if not flags in self.settings:
+				continue
+			if flags in ["LDFLAGS", "ASFLAGS"]:
+				myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
+						% flags)
+			if (flags is not "CFLAGS" and
+				self.settings[flags] == self.settings["CFLAGS"]):
+				myf.write('%s="${CFLAGS}"\n' % flags)
+			elif isinstance(self.settings[flags], list):
+				myf.write('%s="%s"\n'
+						% (flags, ' '.join(self.settings[flags])))
+			else:
+				myf.write('%s="%s"\n'
+						% (flags, self.settings[flags]))
 
-			if "CBUILD" in self.settings:
-				myf.write("# This should not be changed unless you know exactly"
-					" what you are doing.  You\n# should probably be "
-					"using a different stage, instead.\n")
-				myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
+		if "CBUILD" in self.settings:
+			myf.write("# This should not be changed unless you know exactly"
+				" what you are doing.  You\n# should probably be "
+				"using a different stage, instead.\n")
+			myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
 
-			if "CHOST" in self.settings:
-				myf.write("# WARNING: Changing your CHOST is not something "
-					"that should be done lightly.\n# Please consult "
-					"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
-					"before changing.\n")
-				myf.write('CHOST="' + self.settings["CHOST"] + '"\n')
+		if "CHOST" in self.settings:
+			myf.write("# WARNING: Changing your CHOST is not something "
+				"that should be done lightly.\n# Please consult "
+				"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
+				"before changing.\n")
+			myf.write('CHOST="' + self.settings["CHOST"] + '"\n')
 
-			# Figure out what our USE vars are for building
-			myusevars = []
-			if "HOSTUSE" in self.settings:
-				myusevars.extend(self.settings["HOSTUSE"])
+		# Figure out what our USE vars are for building
+		myusevars = []
+		if "HOSTUSE" in self.settings:
+			myusevars.extend(self.settings["HOSTUSE"])
 
-			if "use" in self.settings:
-				myusevars.extend(self.settings["use"])
+		if "use" in self.settings:
+			myusevars.extend(self.settings["use"])
 
-			if myusevars:
-				myf.write("# These are the USE and USE_EXPAND flags that were "
-						"used for\n# building in addition to what is provided "
-						"by the profile.\n")
-				myusevars = sorted(set(myusevars))
-				myf.write('USE="' + ' '.join(myusevars) + '"\n')
-				if '-*' in myusevars:
-					log.warning(
-						'The use of -* in %s/use will cause portage to ignore\n'
-						'package.use in the profile and portage_confdir.\n'
-						"You've been warned!", self.settings['spec_prefix'])
+		if myusevars:
+			myf.write("# These are the USE and USE_EXPAND flags that were "
+					"used for\n# building in addition to what is provided "
+					"by the profile.\n")
+			myusevars = sorted(set(myusevars))
+			myf.write('USE="' + ' '.join(myusevars) + '"\n')
+			if '-*' in myusevars:
+				log.warning(
+					'The use of -* in %s/use will cause portage to ignore\n'
+					'package.use in the profile and portage_confdir.\n'
+					"You've been warned!", self.settings['spec_prefix'])
 
-			myuseexpandvars = {}
-			if "HOSTUSEEXPAND" in self.settings:
-				for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
-					myuseexpandvars.update(
-						{hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
+		myuseexpandvars = {}
+		if "HOSTUSEEXPAND" in self.settings:
+			for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
+				myuseexpandvars.update(
+					{hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
 
-			if myuseexpandvars:
-				for hostuseexpand in myuseexpandvars:
-					myf.write(hostuseexpand + '="' +
-						' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
+		if myuseexpandvars:
+			for hostuseexpand in myuseexpandvars:
+				myf.write(hostuseexpand + '="' +
+					' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
+		# write out a shipable version
+		target_portdir = normpath(self.settings["repo_basedir"] + "/" +
+			self.settings["repo_name"])
 
-			myf.write('PORTDIR="%s"\n' % self.settings['portdir'])
-			myf.write('DISTDIR="%s"\n' % self.settings['distdir'])
-			myf.write('PKGDIR="%s"\n' % self.settings['packagedir'])
-
+		myf.write('PORTDIR="%s"\n' % target_portdir)
+		myf.write('DISTDIR="%s"\n' % self.settings['target_distdir'])
+		myf.write('PKGDIR="%s"\n' % self.settings['target_pkgdir'])
+		if setup:
 			# Setup the portage overlay
 			if "portage_overlay" in self.settings:
 				myf.write('PORTDIR_OVERLAY="%s"\n' %  self.settings["local_overlay"])
 
-			# Set default locale for system responses. #478382
-			myf.write(
-				'\n'
-				'# This sets the language of build output to English.\n'
-				'# Please keep this setting intact when reporting bugs.\n'
-				'LC_MESSAGES=C\n')
-
-			myf.close()
-			self.resume.enable("chroot_setup")
+		# Set default locale for system responses. #478382
+		myf.write(
+			'\n'
+			'# This sets the language of build output to English.\n'
+			'# Please keep this setting intact when reporting bugs.\n'
+			'LC_MESSAGES=C\n')
+		myf.close()
 
 	def fsscript(self):
 		if "autoresume" in self.settings["options"] \
@@ -1183,12 +1198,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			make_conf = self.settings['chroot_path'] + self.settings['make_conf']
 			try:
-				with open(make_conf) as f:
-					data = f.readlines()
-				data = ''.join(x for x in data
-						if not x.startswith('PORTDIR_OVERLAY'))
-				with open(make_conf, 'w') as f:
-					f.write(data)
+				self.write_make_conf(setup=False)
 			except OSError as e:
 				raise CatalystError('Could not update %s: %s' % (make_conf, e))
 
