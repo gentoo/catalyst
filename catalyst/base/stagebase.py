@@ -744,7 +744,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			# check seed source
 			if os.path.isfile(self.settings["source_path"]) and not invalid_chroot:
-				if self.settings["source_path_hash"] == clst_unpack_hash:
+				if self.settings["source_path_hash"].replace("\n", " ") == clst_unpack_hash:
 					# Seed tarball has not changed, chroot is valid
 					_unpack = False
 					invalid_chroot = False
