@@ -31,6 +31,15 @@ valid_config_file_values.extend([ "distcc", "envscript",
 	"compression_mode", "compressor_options", "decompressor_search_order",
 	])
 
+# set our base defaults here to keep
+# them in one location.
+BASE_GENTOO_DIR = "/var/gentoo"
+REPODIR = BASE_GENTOO_DIR + "/repos"
+DISTDIR = BASE_GENTOO_DIR + "/distfiles"
+PKGDIR = BASE_GENTOO_DIR + "/packages"
+MAINREPO = "gentoo"
+PORTDIR = REPODIR + "/" + MAINREPO
+
 confdefaults={
 	"archdir": "%(PythonDir)s/arch",
 	"comp_prog": COMPRESSOR_PROGRAM_OPTIONS[TAR],
@@ -39,28 +48,28 @@ confdefaults={
 	"compressor_options": XATTRS_OPTIONS[TAR],
 	"decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS[TAR],
 	"decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
-	"distdir": "/usr/portage/distfiles",
+	"distdir": DISTDIR[:],
 	"hash_function": "crc32",
 	"icecream": "/var/cache/icecream",
 	'list_xattrs_opt': LIST_XATTRS_OPTIONS[TAR],
-	"local_overlay": "/usr/local/portage",
+	"local_overlay": REPODIR[:] + "/local",
 	"port_conf": "/etc/portage",
 	"make_conf": "%(port_conf)s/make.conf",
 	"options": set(),
-	"packagedir": "/usr/portage/packages",
-	"portdir": "/usr/portage",
+	"packagedir": PKGDIR[:],
+	"portdir": PORTDIR[:],
 	"port_tmpdir": "/var/tmp/portage",
 	"PythonDir": "./catalyst",
-	"repo_basedir": "/usr",
-	"repo_name": "portage",
+	"repo_basedir": REPODIR[:],
+	"repo_name": MAINREPO[:],
 	"sharedir": "/usr/share/catalyst",
 	"shdir": "/usr/share/catalyst/targets/",
 	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
-	"snapshot_name": "portage-",
+	"snapshot_name": "%(repo_name)s-",
 	"source_matching": "strict",
 	"storedir": "/var/tmp/catalyst",
-	"target_distdir": "/var/portage/distfiles",
-	"target_pkgdir":"/var/portage/packages",
+	"target_distdir": DISTDIR[:],
+	"target_pkgdir": PKGDIR[:],
 	}
 
 DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'
@@ -72,11 +81,11 @@ TARGET_MOUNT_DEFAULTS = {
 	"ccache": "/var/tmp/ccache",
 	"dev": "/dev",
 	"devpts": "/dev/pts",
-	"distdir": "/usr/portage/distfiles",
+	"distdir": DISTDIR[:],
 	"icecream": "/usr/lib/icecc/bin",
 	"kerncache": "/tmp/kerncache",
-	"packagedir": "/usr/portage/packages",
-	"portdir": "/usr/portage",
+	"packagedir": PKGDIR[:],
+	"portdir": PORTDIR[:],
 	"port_tmpdir": "/var/tmp/portage",
 	"port_logdir": "/var/log/portage",
 	"proc": "/proc",
@@ -86,8 +95,8 @@ TARGET_MOUNT_DEFAULTS = {
 SOURCE_MOUNT_DEFAULTS = {
 	"dev": "/dev",
 	"devpts": "/dev/pts",
-	"distdir": "/usr/portage/distfiles",
-	"portdir": "/usr/portage",
+	"distdir": DISTDIR[:],
+	"portdir": PORTDIR[:],
 	"port_tmpdir": "tmpfs",
 	"proc": "/proc",
 	"shm": "shmfs",
