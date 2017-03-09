@@ -808,7 +808,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def unpack_snapshot(self):
 		unpack = True
-		snapshot_hash = self.resume.get("unpack_portage")
+		snapshot_hash = self.resume.get("unpack_repo")
 
 		unpack_errmsg = "Error unpacking snapshot using mode %(mode)s"
 
@@ -847,7 +847,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			if "autoresume" in self.settings["options"] \
 				and os.path.exists(target_portdir) \
-				and self.resume.is_enabled("unpack_portage") \
+				and self.resume.is_enabled("unpack_repo") \
 				and self.settings["snapshot_path_hash"] == snapshot_hash:
 				log.notice('Valid Resume point detected, skipping unpack of portage tree...')
 				unpack = False
@@ -868,7 +868,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					myf.write(self.settings["snapshot_path_hash"])
 			else:
 				log.info('Setting snapshot autoresume point')
-				self.resume.enable("unpack_portage",
+				self.resume.enable("unpack_repo",
 					data = self.settings["snapshot_path_hash"])
 
 			if "snapcache" in self.settings["options"]:
