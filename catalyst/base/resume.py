@@ -75,7 +75,7 @@ class AutoResume(object):
 				with open(self._points[point], 'r') as myf:
 					data = myf.read()
 				if data and no_lf:
-					data = data.replace('\n', '')
+					data = data.replace('\n', ' ')
 			except OSError as e:
 				log.error('AutoResumeError: %s', e)
 				return None

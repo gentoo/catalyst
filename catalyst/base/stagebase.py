@@ -416,6 +416,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["source_subpath"] + "/")):
 			self.settings["source_path"] = normpath(self.settings["storedir"] +
 				"/tmp/" + self.settings["source_subpath"] + "/")
+			log.debug("source_subpath is: %s", self.settings["source_path"])
 		else:
 			log.debug('Checking source path existence and '
 				'get the final filepath. subpath: %s',
@@ -693,10 +694,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					raise CatalystError("Unable to auto-unbind " + target)
 
 	def unpack(self):
-		_unpack = True
 
 		clst_unpack_hash = self.resume.get("unpack")
 
+		# Set up all unpack info settings
 		unpack_info = self.decompressor.create_infodict(
 			source = self.settings["source_path"],
 			destination = self.settings["chroot_path"],
@@ -721,56 +722,51 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			# No SEEDCACHE, use tar
 			unpack_info['source'] = file_check(unpack_info['source'])
-		# endif "seedcache"
+		# end of unpack_info settings
 
+		# set defaults,
+		# only change them if the resume point is proven to be good
+		_unpack = True
+		invalid_chroot = True
+		# Begin autoresume validation
 		if "autoresume" in self.settings["options"]:
-			if os.path.isdir(self.settings["source_path"]) \
-				and self.resume.is_enabled("unpack"):
-				# Autoresume is valid, SEEDCACHE is valid
-				_unpack = False
-				invalid_snapshot = False
-				log.notice('Resume point "unpack" valid...')
+			# check chroot
+			if os.path.isdir(self.settings["chroot_path"]):
+				if self.resume.is_enabled("unpack"):
+					# Autoresume is valid in the chroot
+					_unpack = False
+					invalid_chroot = False
+					log.notice('Resume: "chroot" is valid...')
+				else:
+					# self.resume.is_disabled("unpack")
+					# Autoresume is invalid in the chroot
+					log.notice('Resume: "seed source" unpack resume point is disabled')
 
-			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"] == clst_unpack_hash:
-				# Autoresume is valid, tarball is valid
-				_unpack = False
-				invalid_snapshot = False
-				log.notice('Resume point "source_path_hash" valid...')
-
-			elif os.path.isdir(self.settings["source_path"]) \
-				and self.resume.is_disabled("unpack"):
-				# Autoresume is invalid, SEEDCACHE
-				_unpack = True
-				invalid_snapshot = True
-				log.notice('Resume point "unpack is disabled" is True, invalidating snapshot... :(')
-
-			elif os.path.isfile(self.settings["source_path"]) \
-				and self.settings["source_path_hash"] != clst_unpack_hash:
-				# Autoresume is invalid, tarball
-				_unpack = True
-				invalid_snapshot = True
-				log.notice('Resume point "source_path_hash" is invalid... :(')
-				unpack_info['source'] = file_check(unpack_info['source'])
+			# check seed source
+			if os.path.isfile(self.settings["source_path"]) and not invalid_chroot:
+				if self.settings["source_path_hash"] == clst_unpack_hash:
+					# Seed tarball has not changed, chroot is valid
+					_unpack = False
+					invalid_chroot = False
+					log.notice('Resume: "seed source" hash matches chroot...')
+				else:
+					# self.settings["source_path_hash"] != clst_unpack_hash
+					# Seed tarball has changed, so invalidate the chroot
+					_unpack = True
+					invalid_chroot = True
+					log.notice('Resume: "seed source" has changed, hashes do not match, invalidating resume...')
+					log.notice('        source_path......: %s', self.settings["source_path"])
+					log.notice('        new source hash..: %s', self.settings["source_path_hash"].replace("\n", " "))
+					log.notice('        recorded hash....: %s', clst_unpack_hash)
+					unpack_info['source'] = file_check(unpack_info['source'])
 
 		else:
-			# No autoresume, SEEDCACHE
+			# No autoresume, check SEEDCACHE
 			if "seedcache" in self.settings["options"]:
-				# SEEDCACHE so let's run rsync and let it clean up
+				# if the seedcache is a dir, rsync will clean up the chroot
 				if os.path.isdir(self.settings["source_path"]):
-					_unpack = True
-					invalid_snapshot = False
-				elif os.path.isfile(self.settings["source_path"]):
-					# Tarball so unpack and remove anything already there
-					_unpack = True
-					invalid_snapshot = True
-				# No autoresume, no SEEDCACHE
-			else:
-				# Tarball so unpack and remove anything already there
-				if os.path.isfile(self.settings["source_path"]):
-					_unpack = True
-					invalid_snapshot = True
-				elif os.path.isdir(self.settings["source_path"]):
+					pass
+			elif os.path.isdir(self.settings["source_path"]):
 					# We should never reach this, so something is very wrong
 					raise CatalystError(
 						"source path is a dir but seedcache is not enabled: %s"
@@ -779,9 +775,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if _unpack:
 			self.mount_safety_check()
 
-			if invalid_snapshot:
+			if invalid_chroot:
 				if "autoresume" in self.settings["options"]:
-					log.notice('No Valid Resume point detected, cleaning up...')
+					log.notice('Resume: Target chroot is invalid, cleaning up...')
 
 				self.clear_autoresume()
 				self.clear_chroot()
@@ -808,7 +804,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			else:
 				self.resume.enable("unpack")
 		else:
-			log.notice('Resume point detected, skipping unpack operation...')
+			log.notice('Resume: Valid resume point detected, skipping seed unpack operation...')
 
 	def unpack_snapshot(self):
 		unpack = True
