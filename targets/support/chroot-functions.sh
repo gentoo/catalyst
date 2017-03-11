@@ -139,6 +139,7 @@ setup_myemergeopts(){
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
 		clst_myemergeopts="--verbose"
+		bootstrap_opts="${bootstrap_opts} -v"
 	else
 		clst_myemergeopts="--quiet"
 		bootstrap_opts="${bootstrap_opts} -q"
