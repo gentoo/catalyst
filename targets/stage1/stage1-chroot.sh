@@ -25,7 +25,7 @@ clst_root_path=/ setup_pkgmgr "build"
 
 # We need to ensure the base stage3 has USE="bindist"
 # if BINDIST is set to avoid issues with openssl / openssh
-[ -e ${clst_make_conf} ] && echo "USE=\"${USE} ${BINDIST}\"" >> ${clst_make_conf}
+[ -e ${clst_make_conf} ] && echo "USE=\"${BINDIST} ${USE}\"" >> ${clst_make_conf}
 
 # Update stage3
 if [ -n "${clst_update_seed}" ]; then
@@ -48,7 +48,7 @@ else
 fi
 
 # Clear USE
-[ -e ${clst_make_conf} ] && sed -i -e "USE=\"s/${BINDIST}//" ${clst_make_conf}
+[ -e ${clst_make_conf} ] && sed -i -e "/^USE=\"${BINDIST} ${USE}\"/d" ${clst_make_conf}
 
 make_destpath /tmp/stage1root
 
@@ -61,7 +61,8 @@ sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 # Now, we install our packages
 if [ -e ${clst_make_conf} ]; then
 	echo "CATALYST_USE=\"-* build ${BINDIST} ${clst_CATALYST_USE}\"" >> ${clst_make_conf}
-	echo "USE=\"\${CATALYST_USE} ${USE} \${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
+	echo "USE=\"\${CATALYST_USE} ${USE} ${BOOTSTRAP_USE} ${clst_HOSTUSE}\"" >> ${clst_make_conf}
+
 	for useexpand in ${clst_HOSTUSEEXPAND}; do
 		x="clst_${useexpand}"
 		echo "${useexpand}=\"${!x}\"" \
@@ -77,3 +78,7 @@ for useexpand in ${clst_HOSTUSEEXPAND}; do
 	sed -i "/${useexpand}=\"${!x}\"/d" \
 	${clst_make_conf}
 done
+
+# Clear USE
+[ -e ${clst_make_conf} ] && sed -i -e "/^CATALYST_USE/d" ${clst_make_conf}
+[ -e ${clst_make_conf} ] && sed -i -e "/^USE=\"/s/\${CATALYST_USE} ${USE} ${BOOTSTRAP_USE}//" ${clst_make_conf}
