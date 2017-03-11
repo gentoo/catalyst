@@ -16,6 +16,29 @@ delete_from_chroot(){
 	fi
 }
 
+prepare_portage() {
+
+	echo "CATALYST_USE=\"${clst_CATALYST_USE}\"" >> ${clst_chroot_path}${clst_make_conf}
+	sed -i -e "/^USE=\"/s//\${CATALYST_USE} ${USE} /" ${clst_chroot_path}${clst_make_conf}
+}
+
+clear_portage() {
+	# Clean-up USE again
+	[ -e ${clst_chroot_path}${clst_make_conf} ] && echo "Drop \$CATALYST_USE from USE on ${clst_chroot_path}${clst_make_conf}"
+	[ -e ${clst_chroot_path}${clst_make_conf} ] && sed -i -e "/^USE=\"/s/\${CATALYST_USE} //" ${clst_chroot_path}${clst_make_conf}
+	[ -e ${clst_chroot_path}${clst_make_conf} ] && echo "Remove \$CATALYST_USE on ${clst_chroot_path}${clst_make_conf}"
+	[ -e ${clst_chroot_path}${clst_make_conf} ] && sed -i -e "/^CATALYST_USE/d" ${clst_chroot_path}${clist_make_conf}
+
+	if [ -n "${clst_portage_prefix}" ]; then
+		for dir in "keywords", "mask", "unmask", "use"; do
+			[ -d ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix} ] &&
+				echo "Clear ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix}"
+			[ -d ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix} ] &&
+				rm -R "${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix}"
+		done
+	fi
+}
+
 exec_in_chroot(){
 # Takes the full path to the source file as its argument
 # copies the file to the /tmp directory of the chroot

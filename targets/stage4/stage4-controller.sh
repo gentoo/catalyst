@@ -10,6 +10,8 @@ case $1 in
 	;;
 
 	pre-kmerge)
+		prepare_portage
+
 		# Sets up the build environment before any kernels are compiled
 		exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
 	;;
@@ -41,6 +43,7 @@ case $1 in
 	;;
 
 	preclean)
+		clear_portage
 		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh ${clst_root_path}
 	;;
 
