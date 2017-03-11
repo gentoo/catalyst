@@ -24,12 +24,23 @@ and empty lines are interpreted as comments.  For example:
 
 ---------------------------------
 # /etc/catalyst/catalyst.conf
+
 digests="auto"
 contents="auto"
-distdir="/usr/portage/distfiles"
 envscript="/etc/catalyst/catalystrc"
 options="autoresume bindist kerncache pkgcache seedcache snapcache"
+
+# source repo settings
+distdir="/usr/portage/distfiles"
 portdir="/usr/portage"
+
+# target repo info
+repo_basedir="/usr"
+repo_name="portage"
+target_distdir="/usr/portage/distfiles"
+target_pkgdir="/usr/portage/packages"
+
+# other catalyst settings
 sharedir="/usr/share/catalyst"
 snapshot_cache="/var/tmp/catalyst/snapshot_cache"
 storedir="/var/tmp/catalyst"
@@ -71,10 +82,6 @@ isoinfo-f::
 Do `isoinfo -f -i FILE`.  'isoinfo-f' is the only option not chosen
 by the automatic algorithm.
 --
-
-*distdir*::
-Distfiles location.  `/usr/portage/distfiles` should work for most
-default installations.
 
 *envscript*::
 Environment script location, which allows users to set options such as
@@ -140,9 +147,44 @@ break your cache.  The cache is unlinked before any empty or rm
 processing.
 --
 
+Repository settings
+~~~~~~~~~~~~~~~~~~~
+
+*distdir*::
+Source distfiles location used in generation of the stages.  This is usually the
+hosts distfiles location.  `/usr/portage/distfiles` should work for most
+default installations, but it should be set to match your hosts configuration.
+
 *portdir*::
-Portage tree location.  `/usr/portage/` should work for most default
-installations.
+Source Gentoo tree location (primary repo). `/usr/portage/` should work for most
+default installations.
+
+*repo_basedir*::
+The target repository directory to contain the rimary repo (gentoo repo) and
+any overlays.  `/usr` is the historical location. But that is in the process of
+changing.  `/var/gentoo/repos` is an option.
+
+*repo_name*::
+The name of the main repository (ie: gentoo).  This has had a directory name
+of `portage` in the past.  But it has an internal name of `gentoo`, which is
+what its directory name should be.  This name is used in the snapshot name
+generated and also the directory name of the repository created with the
+snapshot target.  The new general rule is that the directory name and its
+internal repo_name value should be the same.
+
+*target_distdir*::
+This is the target distfiles directory location for the stage being created.
+This is important because this value will be stored in the stage's make.conf
+and will become the default location used if it is not edited by users.
+The default location is `/usr/portage/distfiles`.
+
+*target_pkgdir*::
+This is the target packages directory for storing binpkgs in the stage being
+built.  This location is stored in the make.conf of the stage being built.
+The default location for this has typically been `/usr/portage/packages`
+
+Other settings
+~~~~~~~~~~~~~~
 
 *sharedir*::
 Catalyst runtime script location.  `/usr/share/catalyst` should work for
