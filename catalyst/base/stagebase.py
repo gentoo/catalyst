@@ -548,27 +548,29 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		return
 
 	def set_use(self):
-		if self.settings["spec_prefix"] + "/use" in self.settings:
-			self.settings["use"] = \
-				self.settings[self.settings["spec_prefix"] + "/use"]
-			del self.settings[self.settings["spec_prefix"] + "/use"]
-		if "use" not in self.settings:
-			self.settings["use"] = ""
-		if isinstance(self.settings['use'], str):
-			self.settings["use"] = self.settings["use"].split()
+		use = self.settings["spec_prefix"] + "/use"
+		if use in self.settings:
+			if isinstance(self.settings[use], str):
+				self.settings["use"] = self.settings[use].split()
+			self.settings["use"] = self.settings[use]
+			del self.settings[use]
+		else:
+			self.settings["use"] = []
 
 	def set_catalyst_use(self):
-		if self.settings["spec_prefix"] + "/catalyst_use" in self.settings:
-			self.settings["catalyst_use"] = \
-				self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
-			del self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
-		if "catalyst_use" not in self.settings:
-			self.settings["catalyst_use"] = ""
-		if isinstance(self.settings['catalyst_use'], str):
-			self.settings["catalyst_use"] = self.settings["catalyst_use"].split()
+		catalyst_use = self.settings["spec_prefix"] + "/catalyst_use"
+		if catalyst_use in self.settings:
+			if isinstance(self.settings[catalyst_use], str):
+				self.settings["catalyst_use"] = self.settings[catalyst_use].split()
+			else:
+				self.settings["catalyst_use"] = self.settings[catalyst_use]
+			del self.settings[catalyst_use]
+		else:
+			self.settings["catalyst_use"] = []
 
 		# Force bindist when options ask for it
-		if "BINDIST" in self.settings:
+		if "bindist" in self.settings["options"]:
+			log.debug("Enabling bindist USE flag")
 			self.settings["catalyst_use"].append("bindist")
 
 	def set_stage_path(self):
@@ -1071,92 +1073,98 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		makepath = normpath(self.settings["chroot_path"] +
 			self.settings["make_conf"])
 		clear_path(makepath)
-		myf = open(makepath, "w")
-		myf.write("# These settings were set by the catalyst build script "
-				"that automatically\n# built this stage.\n")
-		myf.write("# Please consult "
-				"/usr/share/portage/config/make.conf.example "
-				"for a more\n# detailed example.\n")
+		with open(makepath, "w") as myf:
+			log.notice("Writing the stage make.conf to: %s" % makepath)
+			myf.write("# These settings were set by the catalyst build script "
+					"that automatically\n# built this stage.\n")
+			myf.write("# Please consult "
+					"/usr/share/portage/config/make.conf.example "
+					"for a more\n# detailed example.\n")
 
-		for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
-					"ASFLAGS"]:
-			if not flags in self.settings:
-				continue
-			if flags in ["LDFLAGS", "ASFLAGS"]:
-				myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
-						% flags)
-			if (flags is not "CFLAGS" and
-				self.settings[flags] == self.settings["CFLAGS"]):
-				myf.write('%s="${CFLAGS}"\n' % flags)
-			elif isinstance(self.settings[flags], list):
-				myf.write('%s="%s"\n'
-						% (flags, ' '.join(self.settings[flags])))
-			else:
-				myf.write('%s="%s"\n'
-						% (flags, self.settings[flags]))
+			for flags in ["CFLAGS", "CXXFLAGS", "FCFLAGS", "FFLAGS", "LDFLAGS",
+						"ASFLAGS"]:
+				if not flags in self.settings:
+					continue
+				if flags in ["LDFLAGS", "ASFLAGS"]:
+					myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
+							% flags)
+				if (flags is not "CFLAGS" and
+					self.settings[flags] == self.settings["CFLAGS"]):
+					myf.write('%s="${CFLAGS}"\n' % flags)
+				elif isinstance(self.settings[flags], list):
+					myf.write('%s="%s"\n'
+							% (flags, ' '.join(self.settings[flags])))
+				else:
+					myf.write('%s="%s"\n'
+							% (flags, self.settings[flags]))
 
-		if "CBUILD" in self.settings:
-			myf.write("# This should not be changed unless you know exactly"
-				" what you are doing.  You\n# should probably be "
-				"using a different stage, instead.\n")
-			myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
+			if "CBUILD" in self.settings:
+				myf.write("# This should not be changed unless you know exactly"
+					" what you are doing.  You\n# should probably be "
+					"using a different stage, instead.\n")
+				myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
 
-		if "CHOST" in self.settings:
-			myf.write("# WARNING: Changing your CHOST is not something "
-				"that should be done lightly.\n# Please consult "
-				"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
-				"before changing.\n")
-			myf.write('CHOST="' + self.settings["CHOST"] + '"\n')
+			if "CHOST" in self.settings:
+				myf.write("# WARNING: Changing your CHOST is not something "
+					"that should be done lightly.\n# Please consult "
+					"https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
+					"before changing.\n")
+				myf.write('CHOST="' + self.settings["CHOST"] + '"\n')
 
-		# Figure out what our USE vars are for building
-		myusevars = []
-		if "HOSTUSE" in self.settings:
-			myusevars.extend(self.settings["HOSTUSE"])
+			# Figure out what our USE vars are for building
+			myusevars = []
+			if "bindist" in self.settings["options"]:
+				myf.write("\n# NOTE: This stage was built with the bindist Use flag enabled\n")
+			if setup or "sticky-config" in self.settings["options"]:
+				myusevars.extend(self.settings["catalyst_use"])
+				log.notice("STICKY-CONFIG is enabled")
+			if "HOSTUSE" in self.settings:
+				myusevars.extend(self.settings["HOSTUSE"])
 
-		if "use" in self.settings:
-			myusevars.extend(self.settings["use"])
+			if "use" in self.settings:
+				myusevars.extend(self.settings["use"])
 
-		if myusevars:
-			myf.write("# These are the USE and USE_EXPAND flags that were "
-					"used for\n# building in addition to what is provided "
-					"by the profile.\n")
-			myusevars = sorted(set(myusevars))
-			myf.write('USE="' + ' '.join(myusevars) + '"\n')
-			if '-*' in myusevars:
-				log.warning(
-					'The use of -* in %s/use will cause portage to ignore\n'
-					'package.use in the profile and portage_confdir.\n'
-					"You've been warned!", self.settings['spec_prefix'])
+			if myusevars:
+				myf.write("# These are the USE and USE_EXPAND flags that were "
+						"used for\n# building in addition to what is provided "
+						"by the profile.\n")
+				myusevars = sorted(set(myusevars))
+				myf.write('USE="' + ' '.join(myusevars) + '"\n')
+				if '-*' in myusevars:
+					log.warning(
+						'The use of -* in %s/use will cause portage to ignore\n'
+						'package.use in the profile and portage_confdir.\n'
+						"You've been warned!", self.settings['spec_prefix'])
 
-		myuseexpandvars = {}
-		if "HOSTUSEEXPAND" in self.settings:
-			for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
-				myuseexpandvars.update(
-					{hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
+			myuseexpandvars = {}
+			if "HOSTUSEEXPAND" in self.settings:
+				for hostuseexpand in self.settings["HOSTUSEEXPAND"]:
+					myuseexpandvars.update(
+						{hostuseexpand:self.settings["HOSTUSEEXPAND"][hostuseexpand]})
 
-		if myuseexpandvars:
-			for hostuseexpand in myuseexpandvars:
-				myf.write(hostuseexpand + '="' +
-					' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
-		# write out a shipable version
-		target_portdir = normpath(self.settings["repo_basedir"] + "/" +
-			self.settings["repo_name"])
+			if myuseexpandvars:
+				for hostuseexpand in myuseexpandvars:
+					myf.write(hostuseexpand + '="' +
+						' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
+			# write out a shipable version
+			target_portdir = normpath(self.settings["repo_basedir"] + "/" +
+				self.settings["repo_name"])
 
-		myf.write('PORTDIR="%s"\n' % target_portdir)
-		myf.write('DISTDIR="%s"\n' % self.settings['target_distdir'])
-		myf.write('PKGDIR="%s"\n' % self.settings['target_pkgdir'])
-		if setup:
-			# Setup the portage overlay
-			if "portage_overlay" in self.settings:
-				myf.write('PORTDIR_OVERLAY="%s"\n' %  self.settings["local_overlay"])
+			myf.write('PORTDIR="%s"\n' % target_portdir)
+			myf.write('DISTDIR="%s"\n' % self.settings['target_distdir'])
+			myf.write('PKGDIR="%s"\n' % self.settings['target_pkgdir'])
+			if setup:
+				# Setup the portage overlay
+				if "portage_overlay" in self.settings:
+					myf.write('PORTDIR_OVERLAY="%s"\n' %  self.settings["local_overlay"])
 
-		# Set default locale for system responses. #478382
-		myf.write(
-			'\n'
-			'# This sets the language of build output to English.\n'
-			'# Please keep this setting intact when reporting bugs.\n'
-			'LC_MESSAGES=C\n')
-		myf.close()
+			# Set default locale for system responses. #478382
+			myf.write(
+				'\n'
+				'# This sets the language of build output to English.\n'
+				'# Please keep this setting intact when reporting bugs.\n'
+				'LC_MESSAGES=C\n')
+
 
 	def fsscript(self):
 		if "autoresume" in self.settings["options"] \
@@ -1197,11 +1205,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
 			clear_path(self.settings["chroot_path"] + self.settings["local_overlay"])
 
-			make_conf = self.settings['chroot_path'] + self.settings['make_conf']
-			try:
-				self.write_make_conf(setup=False)
-			except OSError as e:
-				raise CatalystError('Could not update %s: %s' % (make_conf, e))
+		# re-write the make.conf to be sure it is clean
+		self.write_make_conf(setup=False)
 
 		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):

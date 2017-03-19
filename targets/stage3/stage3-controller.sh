@@ -10,8 +10,6 @@ case $1 in
 	;;
 
 	run)
-		prepare_portage
-
 		shift
 		export clst_packages="$*"
 		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
