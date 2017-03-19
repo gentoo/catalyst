@@ -16,7 +16,6 @@ case $1 in
 	;;
 
 	preclean)
-		clear_portage
 		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh
 	;;
 

@@ -71,7 +71,7 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 
 	mystat = None
 	if os.path.isdir(target) and not os.path.islink(target):
-		log.info('Emptying directory: %s', target)
+		log.notice('Emptying directory: %s', target)
 		# stat the dir, delete the dir, recreate the dir and set
 		# the proper perms and ownership
 		try:

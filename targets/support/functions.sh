@@ -16,17 +16,6 @@ delete_from_chroot(){
 	fi
 }
 
-clear_portage() {
-	if [ -n "${clst_portage_prefix}" ]; then
-		for dir in "keywords", "mask", "unmask", "use"; do
-			[ -d ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix} ] &&
-				echo "Clear ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix}"
-			[ -d ${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix} ] &&
-				rm -R "${clst_chroot_path}/etc/portage/package.${dir}/${clst_portage_prefix}"
-		done
-	fi
-}
-
 exec_in_chroot(){
 # Takes the full path to the source file as its argument
 # copies the file to the /tmp directory of the chroot

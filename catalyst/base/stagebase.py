@@ -1201,6 +1201,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(hosts_file + '.catalyst'):
 			os.rename(hosts_file + '.catalyst', hosts_file)
 
+		# optionally clean up portage configs
+		if ("portage_prefix" in self.settings and
+			"sticky-config" not in self.settings["options"]):
+			for _dir in "keywords", "mask", "unmask", "use":
+				target = pjoin([self.settings['chroot_path'],
+					"/etc/portage/package.%s" % _dir,
+					self.settings["portage_prefix"]])
+				clear_path(target)
+
 		# Remove our overlay
 		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
 			clear_path(self.settings["chroot_path"] + self.settings["local_overlay"])
