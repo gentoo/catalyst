@@ -107,3 +107,26 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 def clear_path(target):
 	"""Nuke |target| regardless of it being a dir or file."""
 	clear_dir(target, remove=True)
+
+
+def move_path(src, dest):
+	'''Move a source target to a new destination
+
+	:param src: source path to move
+	:param dest: destination path to move it to
+	:returns: boolean
+	'''
+	log.debug('Start move_path(%s, %s)', src, dest)
+	if os.path.isdir(src) and not os.path.islink(src):
+		if os.path.exists(dest):
+			log.warning('Removing existing target destination: %s', dest)
+			if not clear_dir(dest, remove=True):
+				return False
+		log.debug('Moving source...')
+		try:
+			shutil.move(src, dest)
+		except Exception:
+			log.error('move_path failed', exc_info=True)
+			return False
+		return True
+	return False

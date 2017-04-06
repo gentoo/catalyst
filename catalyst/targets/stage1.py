@@ -9,7 +9,7 @@ from snakeoil import fileutils
 
 from catalyst import log
 from catalyst.support import normpath
-from catalyst.fileops import ensure_dirs
+from catalyst.fileops import ensure_dirs, move_path
 from catalyst.base.stagebase import StageBase
 
 
@@ -86,3 +86,40 @@ class stage1(StageBase):
 		self.mounts.append("stage1root/proc")
 		self.target_mounts["stage1root/proc"] = "/tmp/stage1root/proc"
 		self.mountmap["stage1root/proc"] = "/proc"
+
+	def set_completion_action_sequences(self):
+		'''Override function for stage1
+
+		Its purpose is to move the new stage1root out of the seed stage
+		and rename it to the stage1 chroot_path after cleaning the seed stage
+		chroot for re-use in stage2 without the need to unpack it.
+		'''
+		if "fetch" not in self.settings["options"]:
+			self.settings["action_sequence"].append("capture")
+		if "keepwork" in self.settings["options"]:
+			self.settings["action_sequence"].append("clear_autoresume")
+		elif "seedcache" in self.settings["options"]:
+			self.settings["action_sequence"].append("remove_autoresume")
+			self.settings["action_sequence"].append("clean_stage1")
+		else:
+			self.settings["action_sequence"].append("remove_autoresume")
+			self.settings["action_sequence"].append("remove_chroot")
+		return
+
+
+	def clean_stage1(self):
+		'''seedcache is enabled, so salvage the /tmp/stage1root,
+		remove the seed chroot'''
+		log.notice('Salvaging the stage1root from the chroot path ...')
+		# move the self.settings["stage_path"] outside of the self.settings["chroot_path"]
+		tmp_path = normpath(self.settings["storedir"] + "/tmp/" + "stage1root")
+		if move_path(self.settings["stage_path"], tmp_path):
+			self.remove_chroot()
+			# move it to self.settings["chroot_path"]
+			if not move_path(tmp_path, self.settings["chroot_path"]):
+				log.error('clean_stage1 failed, see previous log messages for details')
+				return False
+			log.notice('Successfully moved and cleaned the stage1root for the seedcache')
+			return True
+		log.error('clean_stage1 failed to move the stage1root to a temporary loation')
+		return False
