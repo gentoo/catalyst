@@ -42,11 +42,7 @@ case $1 in
 					echo "${clst_livecd_type}. You should switch to using"
 					echo "generic-livecd instead."
 				fi
-				cp -pPR ${clst_sharedir}/livecd/files/generic.motd.txt \
-					${clst_sharedir}/livecd/files/universal.motd.txt \
-					${clst_sharedir}/livecd/files/minimal.motd.txt \
-					${clst_sharedir}/livecd/files/livecd.motd.txt \
-					${clst_chroot_path}/etc
+				cp -pPR ${clst_sharedir}/livecd/files/*.motd.txt ${clst_chroot_path}/etc
 			;;
 			*)
 				if [ -n "${clst_livecd_motd}" ]
@@ -133,8 +129,7 @@ case $1 in
 						exit 1
 					fi
 				fi
-				cp -f ${clst_snapshot_path} $1/snapshots
-				cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
+				cp -f ${clst_snapshot_path}{,.DIGESTS} $1/snapshots
 			;;
 			gentoo-release-livedvd)
 				targets="distfiles snapshots stages"
@@ -157,8 +152,7 @@ case $1 in
 							continue
 						;;
 						snapshots)
-							cp -f ${clst_snapshot_path} $1/snapshots
-							cp -f ${clst_snapshot_path}.DIGESTS $1/snapshots
+							cp -f ${clst_snapshot_path}{,.DIGESTS} $1/snapshots
 						;;
 						stages)
 							### TODO: make this copy stages
