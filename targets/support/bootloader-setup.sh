@@ -191,15 +191,13 @@ case ${clst_hostarch} in
 			echo "prompt 1" >> ${icfg}
 			echo "display boot.msg" >> ${icfg}
 			echo "F1 kernels.msg" >> ${icfg}
-			echo "F2 F2.msg" >> ${icfg}
-			echo "F3 F3.msg" >> ${icfg}
-			echo "F4 F4.msg" >> ${icfg}
-			echo "F5 F5.msg" >> ${icfg}
-			echo "F6 F6.msg" >> ${icfg}
-			echo "F7 F7.msg" >> ${icfg}
+			for k in {2..7}
+			do
+				echo "F${k} F${k}.msg" >> ${icfg}
+			done
 
 			echo "Available kernels:" > ${kmsg}
-			for i in 2 3 4 5 6 7
+			for i in {2..7}
 			do
 				cp ${clst_sharedir}/livecd/files/x86-F$i.msg \
 					$1/isolinux/F$i.msg

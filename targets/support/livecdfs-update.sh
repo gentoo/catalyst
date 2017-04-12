@@ -68,10 +68,9 @@ fi
 
 # Setup links for ethernet devices
 cd /etc/init.d
-ln -sf net.lo net.eth1
-ln -sf net.lo net.eth2
-ln -sf net.lo net.eth3
-ln -sf net.lo net.eth4
+for i in {1..4}; do
+	ln -sf net.lo net.eth${i}
+done
 
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
