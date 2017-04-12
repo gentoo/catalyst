@@ -3,13 +3,11 @@
 source ${clst_shdir}/support/functions.sh
 source ${clst_shdir}/support/filesystem-functions.sh
 
-
 extract_kernels ${clst_target_path}/boot
 
 # Move kernel binaries to ${clst_target_path}/kernels, and
 # move everything else to ${clst_target_path}/kernels/misc
-mkdir ${clst_target_path}/kernels
-mkdir ${clst_target_path}/kernels/misc
+mkdir -p ${clst_target_path}/kernels/misc
 
 for x in ${clst_boot_kernel}; do
 	mv ${clst_target_path}/boot/${x} ${clst_target_path}/kernels
