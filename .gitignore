@@ -1,5 +1,6 @@
 *.py[co]
-dist
-build
-files
-MANIFEST
+
+/build/
+/dist/
+/files/
+/MANIFEST
