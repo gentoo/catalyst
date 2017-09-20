@@ -186,11 +186,12 @@ case $1 in
 		${clst_shdir}/support/bootloader-setup.sh $1
 		;;
 
-    unmerge)
-        shift
-        export clst_packages="$*"
-        exec_in_chroot ${clst_shdir}/support/unmerge.sh
-    ;;
+	unmerge)
+		exec_in_chroot ${clst_shdir}/support/depclean.sh
+		shift
+        	export clst_packages="$*"
+		exec_in_chroot ${clst_shdir}/support/unmerge.sh
+	;;
 
 	target_image_setup)
 		shift
