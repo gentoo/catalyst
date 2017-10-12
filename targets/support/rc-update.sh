@@ -11,12 +11,11 @@ fi
 
 if [ "${clst_spec_prefix}" == "livecd" ]
 then
-	# default programs that we always want to start
-	rc-update del iptables
-	rc-update del netmount
-	rc-update del keymaps
-	rc-update del serial
-	rc-update del consolefont
+	rc-update --all del iptables
+	rc-update --all del netmount
+	rc-update --all del keymaps
+	rc-update --all del serial
+	rc-update --all del consolefont
 	# We need to add this one, unconditionally
 	rc-update add autoconfig default
 	[[ -e /etc/init.d/splash ]] && rc-update add splash default
