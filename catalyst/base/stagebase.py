@@ -318,9 +318,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.settings["target_profile"] = self.settings["profile"]
 
 	def set_target_subpath(self):
-		self.settings["target_subpath"] = self.settings["rel_type"] + "/" + \
-				self.settings["target"] + "-" + self.settings["subarch"] + "-" + \
-				self.settings["version_stamp"] + '/'
+		common = self.settings["rel_type"] + "/" + \
+				self.settings["target"] + "-" + self.settings["subarch"]
+		self.settings["target_subpath"] = \
+				common + \
+				"-" + self.settings["version_stamp"] + \
+				"/"
+		self.settings["target_subpath_unversioned"] = \
+				common + \
+				"/"
 
 	def set_source_subpath(self):
 		if not isinstance(self.settings['source_subpath'], str):
@@ -333,19 +339,26 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if not isinstance(self.settings['pkgcache_path'], str):
 				self.settings["pkgcache_path"] = \
 					normpath(self.settings["pkgcache_path"])
-		else:
+		elif "versioned_cache" in self.settings["options"]:
 			self.settings["pkgcache_path"] = \
 				normpath(self.settings["storedir"] + "/packages/" + \
 				self.settings["target_subpath"] + "/")
+		else:
+			self.settings["pkgcache_path"] = \
+				normpath(self.settings["storedir"] + "/packages/" + \
+				self.settings["target_subpath_unversioned"] + "/")
 
 	def set_kerncache_path(self):
 		if "kerncache_path" in self.settings:
 			if not isinstance(self.settings['kerncache_path'], str):
 				self.settings["kerncache_path"] = \
 					normpath(self.settings["kerncache_path"])
-		else:
+		elif "versioned_cache" in self.settings["options"]:
 			self.settings["kerncache_path"] = normpath(self.settings["storedir"] + \
 				"/kerncache/" + self.settings["target_subpath"])
+		else:
+			self.settings["kerncache_path"] = normpath(self.settings["storedir"] + \
+				"/kerncache/" + self.settings["target_subpath_unversioned"])
 
 	def set_target_path(self):
 		self.settings["target_path"] = normpath(self.settings["storedir"] + \
