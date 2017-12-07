@@ -335,7 +335,7 @@ def _main(parser, opts):
 	parse_config(myconfigs)
 
 	conf_values["options"].update(options)
-	log.debug('conf_values[options] = %s', conf_values['options'])
+	log.notice('conf_values[options] = %s', conf_values['options'])
 
 	# initialize our contents generator
 	contents_map = ContentsMap(CONTENTS_DEFINITIONS,
