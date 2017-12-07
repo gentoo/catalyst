@@ -190,6 +190,14 @@ $ catalyst -f stage1-specfile.spec"""
 	group.add_argument('-T', '--purgetmponly',
 		default=False, action='store_true',
 		help='clear tmp dirs and autoresume flags and exit')
+	group.add_argument('--versioned-cachedir',
+		dest='versioned_cachedir', action='store_true',
+		help='use stage version on cache directory name')
+	group.add_argument('--unversioned-cachedir',
+		dest='versioned_cachedir', action='store_false',
+		help='do not use stage version on cache directory name')
+	group.set_defaults(versioned_cachedir=False)
+
 
 	group = parser.add_argument_group('Target/config file management')
 	group.add_argument('-F', '--fetchonly',
