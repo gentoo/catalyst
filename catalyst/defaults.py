@@ -62,6 +62,7 @@ confdefaults={
 	"PythonDir": "./catalyst",
 	"repo_basedir": REPODIR[:],
 	"repo_name": MAINREPO[:],
+       "sed": "sed",
 	"sharedir": "/usr/share/catalyst",
 	"shdir": "/usr/share/catalyst/targets/",
 	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",

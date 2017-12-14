@@ -353,6 +353,15 @@ def _main(parser, opts):
 	conf_values['compress_definitions'] = COMPRESS_DEFINITIONS
 	# TODO add capability to config/spec new definitions
 
+       # Several sed implementations might be installed concurrently on the
+       # system. BSD sed differs from GNU sed for instance. We look for the GNU
+       # one before falling back on the other implementations if they are
+       # there.
+       for sed in ('/usr/bin/gsed', '/bin/sed', '/usr/bin/sed'):
+           if os.path.exists(sed):
+               conf_values['sed'] = sed
+               break
+
 	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:
 		digests = set(conf_values['digests'].split())
