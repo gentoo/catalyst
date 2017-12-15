@@ -75,6 +75,14 @@ then
 	esac
 fi
 
+if [ "${#clst_iso_volume_id}" -gt 32 ]; then
+	old_clst_iso_volume_id=${clst_iso_volume_id}
+	clst_iso_volume_id="${clst_iso_volume_id:0:32}"
+	echo "ISO Volume label is too long, truncating to 32 characters" 1>&2
+	echo "old: '${old_clst_iso_volume_id}'" 1>&2
+	echo "new: '${clst_iso_volume_id}'" 1>&2
+fi
+
 if [ "${clst_fstype}" == "zisofs" ]
 then
 	mkisofs_zisofs_opts="-z"
