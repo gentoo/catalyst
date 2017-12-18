@@ -85,8 +85,8 @@ class snapshot(TargetBase, GenBase):
 			log.notice('Snapshot successfully written to %s', filename)
 			self.gen_contents_file(filename)
 			self.gen_digest_file(filename)
-
-		self.cleanup()
+		if "keepwork" not in self.settings["options"]:
+			self.cleanup()
 		if success:
 			log.info('snapshot: complete!')
 		return success
