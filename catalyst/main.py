@@ -353,6 +353,15 @@ def _main(parser, opts):
 	conf_values['compress_definitions'] = COMPRESS_DEFINITIONS
 	# TODO add capability to config/spec new definitions
 
+       # Several sed implementations might be installed concurrently on the
+       # system. BSD sed differs from GNU sed for instance. We look for the GNU
+       # one before falling back on the other implementations if they are
+       # there.
+       for sed in ('/usr/bin/gsed', '/bin/sed', '/usr/bin/sed'):
+           if os.path.exists(sed):
+               conf_values['sed'] = sed
+               break
+
 	# Start checking that digests are valid now that hash_map is initialized
 	if "digests" in conf_values:
 		digests = set(conf_values['digests'].split())
@@ -430,13 +439,18 @@ def _main(parser, opts):
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
 		log.critical('This script requires root privileges to operate')
 
+       # Namespaces aren't supported on *BSDs at the moment. So let's check
+       # whether we're on Linux.
+       if os.uname().sysname == 'Linux':
 	# Start off by creating unique namespaces to run in.  Would be nice to
 	# use pid & user namespaces, but snakeoil's namespace module has signal
 	# transfer issues (CTRL+C doesn't propagate), and user namespaces need
 	# more work due to Gentoo build process (uses sudo/root/portage).
-	namespaces.simple_unshare(
-		mount=True, uts=True, ipc=True, pid=False, net=False, user=False,
-		hostname='catalyst')
+            namespaces.simple_unshare(
+                    mount=True, uts=True,
+                    ipc=True, pid=False,
+                    net=False, user=False,
+                    hostname='catalyst')
 
 	# everything is setup, so the build is a go
 	try:
