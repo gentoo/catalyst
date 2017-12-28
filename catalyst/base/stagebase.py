@@ -1207,7 +1207,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			for x in self.settings["cleanables"]:
 				log.notice('Cleaning chroot: %s', x)
-				clear_path(self.settings["destpath"] + x)
+				clear_path(normpath(self.settings["destpath"] + x))
 
 		# Put /etc/hosts back into place
 		hosts_file = self.settings['chroot_path'] + '/etc/hosts'
@@ -1217,15 +1217,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		# optionally clean up portage configs
 		if ("portage_prefix" in self.settings and
 			"sticky-config" not in self.settings["options"]):
-			for _dir in "keywords", "mask", "unmask", "use":
-				target = pjoin([self.settings['chroot_path'],
-					"/etc/portage/package.%s" % _dir,
-					self.settings["portage_prefix"]])
+			log.debug("clean(), portage_preix = %s, no sticky-config", self.settings["portage_prefix"])
+			for _dir in "accept_keywords", "keywords", "mask", "unmask", "use":
+				target = pjoin(self.settings["destpath"],
+					"etc/portage/package.%s" % _dir,
+					self.settings["portage_prefix"])
+				log.notice("Clearing portage_prefix target: %s", target)
 				clear_path(target)
 
 		# Remove our overlay
-		if os.path.exists(self.settings["chroot_path"] + self.settings["local_overlay"]):
-			clear_path(self.settings["chroot_path"] + self.settings["local_overlay"])
+		overlay = normpath(self.settings["chroot_path"] + self.settings["local_overlay"])
+		if os.path.exists(overlay):
+			clear_path(overlay)
 
 		# re-write the make.conf to be sure it is clean
 		self.write_make_conf(setup=False)
