@@ -48,15 +48,14 @@ else
 fi
 
 # Clear USE
-[ -e ${clst_make_conf} ] && sed -i -e "/^USE=\"${BINDIST} ${USE}\"/d" ${clst_make_conf}
-
+[ -e ${clst_make_conf} ] && ${clst_sed} -i -e "/^USE=\"${BINDIST} ${USE}\"/d" ${clst_make_conf}
 make_destpath /tmp/stage1root
 
 ## START BUILD
 # First, we drop in a known-good baselayout
 [ -e ${clst_make_conf} ] && echo "USE=\"${USE} -build\"" >> ${clst_make_conf}
 run_merge "--oneshot --nodeps sys-apps/baselayout"
-sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
+${clst_sed} -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
 # Now, we install our packages
 if [ -e ${clst_make_conf} ]; then
@@ -75,10 +74,10 @@ run_merge "--oneshot ${clst_buildpkgs}"
 # Why are we removing these? Don't we need them for final make.conf?
 for useexpand in ${clst_HOSTUSEEXPAND}; do
 	x="clst_${useexpand}"
-	sed -i "/${useexpand}=\"${!x}\"/d" \
+	${clst_sed} -i "/${useexpand}=\"${!x}\"/d" \
 	${clst_make_conf}
 done
 
 # Clear USE
-[ -e ${clst_make_conf} ] && sed -i -e "/^CATALYST_USE/d" ${clst_make_conf}
-[ -e ${clst_make_conf} ] && sed -i -e "/^USE=\"/s/\${CATALYST_USE} ${USE} ${BOOTSTRAP_USE}//" ${clst_make_conf}
+[ -e ${clst_make_conf} ] && ${clst_sed} -i -e "/^CATALYST_USE/d" ${clst_make_conf}
+[ -e ${clst_make_conf} ] && ${clst_sed} -i -e "/^USE=\"/s/\${CATALYST_USE} ${USE} ${BOOTSTRAP_USE}//" ${clst_make_conf}

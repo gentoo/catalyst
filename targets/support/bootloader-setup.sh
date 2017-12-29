@@ -79,7 +79,7 @@ case ${clst_hostarch} in
 		echo "message=/boot/boot.msg" >> ${icfg}
 
 		# Here is where I fix up the boot.msg file.
-		sed -e 's/ARCH/PowerPC/' \
+		${clst_sed} -e 's/ARCH/PowerPC/' \
 			-e 's/HARDWARE/Apple and IBM hardware/' \
 			-i $kmsg
 

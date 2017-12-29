@@ -101,7 +101,7 @@ setup_myfeatures(){
 		else
 			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc || exit 1
 		fi
-		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' ${clst_make_conf}
+		${clst_sed} -i '/USE="${USE} -avahi -gtk -gnome"/d' ${clst_make_conf}
 		mkdir -p /etc/distcc
 		echo "${clst_distcc_hosts}" > /etc/distcc/hosts
 
@@ -201,7 +201,7 @@ setup_pkgmgr(){
 		echo "Adding USE=\"\${USE} $1\" to make.conf for portage build"
 		[ -e "${clst_make_conf}" ] && echo "USE=\"\${USE} $1\"" >> "${clst_make_conf}"
 		run_merge --oneshot --update --newuse sys-apps/portage
-		sed -i "/USE=\"\${USE} $1\"/d" "${clst_make_conf}"
+		${clst_sed} -i "/USE=\"\${USE} $1\"/d" "${clst_make_conf}"
 	else
 		run_merge --oneshot --update --newuse sys-apps/portage
 	fi
@@ -256,8 +256,8 @@ cleanup_stages() {
 
 	# Remove bindist from use
 	# this is handled independantly in stage2, changes here should be mirrored there
-	sed -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
-	sed -i "/USE=\"bindist\"/d" "${clst_make_conf}"
+	${clst_sed} -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
+	${clst_sed} -i "/USE=\"bindist\"/d" "${clst_make_conf}"
 
 	[ "${clst_target}" != "tinderbox" ] && rm -f /var/log/emerge.log /var/log/portage/elog/*
 }
@@ -275,7 +275,7 @@ die() {
 
 make_destpath() {
 	# ROOT is / by default, so remove any ROOT= settings from make.conf
-	sed -i '/ROOT=/d' ${clst_make_conf}
+	${clst_sed} -i '/ROOT=/d' ${clst_make_conf}
 	export ROOT=/
 	if [ "${1}" != "/" -a -n "${1}" ]
 	then
