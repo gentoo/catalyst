@@ -430,13 +430,16 @@ def _main(parser, opts):
 		# catalyst cannot be run as a normal user due to chroots, mounts, etc
 		log.critical('This script requires root privileges to operate')
 
-	# Start off by creating unique namespaces to run in.  Would be nice to
-	# use pid & user namespaces, but snakeoil's namespace module has signal
-	# transfer issues (CTRL+C doesn't propagate), and user namespaces need
-	# more work due to Gentoo build process (uses sudo/root/portage).
-	namespaces.simple_unshare(
-		mount=True, uts=True, ipc=True, pid=False, net=False, user=False,
-		hostname='catalyst')
+	# Namespaces aren't supported on *BSDs at the moment. So let's check
+	# whether we're on Linux.
+	if os.uname().sysname in  ["Linux", "linux"]:
+		# Start off by creating unique namespaces to run in.  Would be nice to
+		# use pid & user namespaces, but snakeoil's namespace module has signal
+		# transfer issues (CTRL+C doesn't propagate), and user namespaces need
+		# more work due to Gentoo build process (uses sudo/root/portage).
+		namespaces.simple_unshare(
+			mount=True, uts=True, ipc=True, pid=False, net=False, user=False,
+			hostname='catalyst')
 
 	# everything is setup, so the build is a go
 	try:
