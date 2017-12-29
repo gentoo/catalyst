@@ -967,21 +967,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				self.snapcache_lock.read_lock()
 			_cmd = None
-			if os.uname()[0] == "FreeBSD":
-				if src == "/dev":
-					_cmd = ['mount', '-t', 'devfs', 'none', target]
-				else:
-					_cmd = ['mount_nullfs', src, target]
+			if src == "tmpfs":
+				if "var_tmpfs_portage" in self.settings:
+					_cmd = ['mount', '-t', 'tmpfs',
+						'-o', 'size=' + self.settings['var_tmpfs_portage'] + 'G',
+						src, target]
 			else:
-				if src == "tmpfs":
-					if "var_tmpfs_portage" in self.settings:
-						_cmd = ['mount', '-t', 'tmpfs',
-							'-o', 'size=' + self.settings['var_tmpfs_portage'] + 'G',
-							src, target]
-				elif src == "shmfs":
-					_cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev', 'shm', target]
+				if os.uname()[0] == "FreeBSD":
+					if src == "/dev":
+						_cmd = ['mount', '-t', 'devfs', 'none', target]
+					else:
+						_cmd = ['mount_nullfs', src, target]
 				else:
-					_cmd = ['mount', '--bind', src, target]
+					if src == "shmfs":
+						_cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev', 'shm', target]
+					else:
+						_cmd = ['mount', '--bind', src, target]
 			if _cmd:
 				log.debug('bind(); _cmd = %s', _cmd)
 				cmd(_cmd, env=self.env, fail_func=self.unbind)
