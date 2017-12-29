@@ -1002,7 +1002,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				continue
 
 			try:
-				cmd(['umount', target])
+				cmd(['umount', target], env=self.env)
 			except CatalystError:
 				log.warning('First attempt to unmount failed: %s', target)
 				log.warning('Killing any pids still running in the chroot')
@@ -1010,7 +1010,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.kill_chroot_pids()
 
 				try:
-					cmd(['umount', target])
+					cmd(['umount', target], env=self.env)
 				except CatalystError:
 					ouch = 1
 					log.warning("Couldn't umount bind mount: %s", target)
