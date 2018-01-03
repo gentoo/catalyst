@@ -69,6 +69,11 @@ setup_gk_args() {
 			GK_ARGS="${GK_ARGS} --initramfs-overlay=\"${clst_merge_path}\""
 		fi
 	fi
+
+	if [[ "${clst_VERBOSE}" == "true" ]]
+	then
+		GK_ARGS="${GK_ARGS} --loglevel=2"
+	fi
 }
 
 genkernel_compile(){
@@ -92,7 +97,12 @@ genkernel_compile(){
 	esac
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
-	gk_callback_opts="-qN"
+	if [[ "${clst_VERBOSE}" == "true" ]]
+	then
+		gk_callback_opts="-vN"
+	else
+		gk_callback_opts="-qN"
+	fi
 	PKGDIR=${PKGDIR}
 	if [ -n "${clst_KERNCACHE}" ]
 	then
