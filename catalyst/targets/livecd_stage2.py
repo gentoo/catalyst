@@ -68,13 +68,33 @@ class livecd_stage2(StageBase):
 					print_traceback=True)
 
 	def set_action_sequence(self):
-		self.settings["action_sequence"]=["unpack","unpack_snapshot",\
-				"config_profile_link","setup_confdir","portage_overlay",\
-				"bind","chroot_setup","setup_environment","run_local",\
-				"build_kernel"]
+		self.settings["action_sequence"]=[
+			"unpack",
+			"unpack_snapshot",
+			"config_profile_link",
+			"setup_confdir",
+			"portage_overlay",
+			"bind",
+			"chroot_setup",
+			"setup_environment",
+			"run_local",
+			"build_kernel"
+		]
 		if "fetch" not in self.settings["options"]:
-			self.settings["action_sequence"] += ["bootloader","preclean",\
-				"livecd_update","root_overlay","fsscript","rcupdate","unmerge",\
-				"unbind","remove","empty","target_setup",\
-				"setup_overlay","create_iso"]
+			self.settings["action_sequence"] += [
+				"bootloader",
+				"preclean",
+				"livecd_update",
+				"root_overlay",
+				"fsscript",
+				"rcupdate",
+				"unmerge",
+				"unbind",
+				"remove",
+				"empty",
+				"clean",
+				"target_setup",
+				"setup_overlay",
+				"create_iso"
+			]
 		self.settings["action_sequence"].append("clear_autoresume")
