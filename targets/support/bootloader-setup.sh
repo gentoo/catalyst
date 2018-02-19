@@ -338,6 +338,38 @@ case ${clst_hostarch} in
 			echo "  localboot -1" >> $icfg
 			echo "  MENU HIDE" >> $icfg
 		fi
+		
+		# GRUB2
+		if [ -d $1/grub ]
+		then
+			if [ -e $1/isolinux/isolinux.bin ]
+			then
+				kern_subdir=/isolinux
+			else
+				cp -f $1/boot/* $1/grub
+				kern_subdir=/grub
+			fi
+			
+			iacfg=$1/grub/grub.cfg
+			echo 'set default=0' > ${iacfg}
+			echo 'set gfxpayload=keep' >> ${iacfg}
+			echo 'set timeout=10' >> ${iacfg}
+			echo 'insmod all_video' >> ${iacfg}
+			echo '' >> ${iacfg}
+			for x in ${clst_boot_kernel}
+			do
+				echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+				echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+				echo "}" >> ${iacfg}
+				echo "" >> ${iacfg}
+				echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+				echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+				echo "}" >> ${iacfg}
+				echo "" >> ${iacfg}
+			done
+		fi
 
 		if [ -e $1/boot/efi/elilo.efi ]
 		then
@@ -362,7 +394,8 @@ case ${clst_hostarch} in
 			done
 			cp ${iacfg} $1/boot/efi/boot
 		fi
-
+		
+		# GRUB legacy (0.97)
 		if [ -e $1/boot/grub/stage2_eltorito ]
 		then
 			icfg=$1/boot/grub/menu.lst
