@@ -254,54 +254,69 @@ case ${clst_hostarch} in
 
 	;;
 	x86|amd64)
-		if [ -e "${clst_target_path}/boot/elilo.efi" ]
+		# detect if an EFI bootloader is desired
+		if 	[ -d "${clst_target_path}/boot/efi" ] || \
+			[ -d "${clst_target_path}/boot/EFI" ] || \
+			[ -e "${clst_target_path}/gentoo.efimg" ]
 		then
-			if [ ! -e "${clst_target_path}/gentoo.efimg" ]
+			if [ -e "${clst_target_path}/gentoo.efimg" ]
 			then
+				echo "Found prepared EFI boot image at \
+					${clst_target_path}/gentoo.efimg"
+				# /boot must exist and be empty for later logic
+				echo "Removing /boot contents"
+				rm -rf "${clst_target_path}"/boot
+				mkdir -p "${clst_target_path}"/boot
+			else
+				echo "Preparing EFI boot image"
+				# prepare gentoo.efimg from cdtar's /boot dir 
 				iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 				iaSize=$((${iaSizeB}+32)) # Add slack
-
+				echo "Creating loopback file of size ${iaSize}kB"
 				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 					count=${iaSize}
+				echo "Formatting loopback file with FAT16 FS"
 				mkfs.vfat -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
 
 				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
+				echo "Mounting FAT16 loopback file"
 				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
 					"${clst_target_path}/gentoo.efimg.mountPoint"
 
-				echo "Populating EFI image"
+				echo "Populating EFI image file from ${clst_target_path}/boot"
 				cp -rv "${clst_target_path}"/boot/* \
 					"${clst_target_path}/gentoo.efimg.mountPoint"
 
 				umount "${clst_target_path}/gentoo.efimg.mountPoint"
 				rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
-				if [ ! -e "${clst_target_path}/boot/grub/stage2_eltorito" ]
-				then
-					echo "Removing /boot"
-					rm -rf "${clst_target_path}/boot"
-				fi
-			else
-				echo "Found populated EFI image at \
-					${clst_target_path}/gentoo.efimg"
+
+				echo "Removing /boot contents"
+				rm -rf "${clst_target_path}"/boot
+				mkdir -p "${clst_target_path}"/boot
 			fi
 		fi
 
 		if [ -e "${clst_target_path}/isolinux/isolinux.bin" ]
 		then
+			echo "** Found ISOLINUX bootloader"
 			if [ -d "${clst_target_path}/boot" ]
 			then
 				if [ -n "$(ls ${clst_target_path}/boot)" ]
+				# have stray files in /boot, assume ISOLINUX only
 				then
+					echo "** boot dir not empty, moving files to isolinux/ then removing it"
 					mv "${clst_target_path}"/boot/* "${clst_target_path}/isolinux"
 					rm -r "${clst_target_path}/boot"
 					echo "Creating ISO using ISOLINUX bootloader"
 					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
 					isohybrid "${1}"
 				elif [ -e "${clst_target_path}/gentoo.efimg" ]
+				# have BIOS isolinux, plus an EFI loader image
 				then
 					echo "Creating ISO using both ISOLINUX and EFI bootloader"
-					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -b gentoo.efimg -c boot.cat -no-emul-boot -z "${clst_target_path}"/
+					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
+					isohybrid --uefi "${1}"
 				fi
 			else
 				echo "Creating ISO using ISOLINUX bootloader"
