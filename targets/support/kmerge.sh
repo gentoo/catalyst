@@ -221,15 +221,12 @@ then
 		rm -f ${clst_port_conf}/profile/package.provided
 	fi
 
-	if [ ! -e ${clst_port_conf}/profile/package.provided ]
-	then
-		mkdir -p ${clst_port_conf}/profile
-		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
+	# Don't use package.provided if there's a pending up/downgrade
+	if [[ "$(portageq best_visible / ${clst_ksource})" == "${KERNELVERSION}" ]]; then
+		echo "No pending updates for ${clst_ksource}"
 	else
-		if ( ! grep -q "^${KERNELVERSION}\$"  ${clst_port_conf}/profile/package.provided )
-		then
-			echo "${KERNELVERSION}" >> ${clst_port_conf}/profile/package.provided
-		fi
+		echo "Pending updates for ${clst_ksource}, removing package.provided"
+		rm ${clst_port_conf}/profile/package.provided
 	fi
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
