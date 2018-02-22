@@ -1231,7 +1231,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(overlay):
 			clear_path(overlay)
 
-		if "sticky-config" not in self.settings["options"]):
+		if "sticky-config" not in self.settings["options"]:
 			# re-write the make.conf to be sure it is clean
 			self.write_make_conf(setup=False)
 
