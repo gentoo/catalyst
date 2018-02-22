@@ -1231,8 +1231,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.path.exists(overlay):
 			clear_path(overlay)
 
-		# re-write the make.conf to be sure it is clean
-		self.write_make_conf(setup=False)
+		if "sticky-config" not in self.settings["options"]):
+			# re-write the make.conf to be sure it is clean
+			self.write_make_conf(setup=False)
 
 		# Clean up old and obsoleted files in /etc
 		if os.path.exists(self.settings["stage_path"]+"/etc"):
