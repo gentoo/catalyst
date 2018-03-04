@@ -223,7 +223,7 @@ cleanup_stages() {
 		stage1|stage2|stage3|system)
 			rm -f /var/lib/portage/world
 			touch /var/lib/portage/world
-			>/etc/machine-id
+			rm -f /etc/machine-id
 			;;
 		*)
 			echo "Skipping removal of world file for ${clst_target}"
