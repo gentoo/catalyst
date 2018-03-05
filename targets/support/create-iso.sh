@@ -269,8 +269,8 @@ case ${clst_hostarch} in
 				mkdir -p "${clst_target_path}"/boot
 			else
 				echo "Preparing EFI boot image"
-				# prepare gentoo.efimg from cdtar's /boot dir
-				iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
+				# prepare gentoo.efimg from cdtar's /boot/EFI dir
+				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 				iaSize=$((${iaSizeB}+32)) # Add slack
 				echo "Creating loopback file of size ${iaSize}kB"
@@ -284,8 +284,8 @@ case ${clst_hostarch} in
 				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
 					"${clst_target_path}/gentoo.efimg.mountPoint"
 
-				echo "Populating EFI image file from ${clst_target_path}/boot"
-				cp -rv "${clst_target_path}"/boot/* \
+				echo "Populating EFI image file from ${clst_target_path}/boot/EFI"
+				cp -rv "${clst_target_path}"/boot/EFI/ \
 					"${clst_target_path}/gentoo.efimg.mountPoint"
 
 				umount "${clst_target_path}/gentoo.efimg.mountPoint"
