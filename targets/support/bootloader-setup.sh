@@ -338,7 +338,7 @@ case ${clst_hostarch} in
 			echo "  localboot -1" >> $icfg
 			echo "  MENU HIDE" >> $icfg
 		fi
-		
+
 		# GRUB2
 		if [ -d $1/grub ]
 		then
@@ -349,7 +349,7 @@ case ${clst_hostarch} in
 				cp -f $1/boot/* $1/grub
 				kern_subdir=/grub
 			fi
-			
+
 			iacfg=$1/grub/grub.cfg
 			echo 'set default=0' > ${iacfg}
 			echo 'set gfxpayload=keep' >> ${iacfg}
@@ -394,7 +394,7 @@ case ${clst_hostarch} in
 			done
 			cp ${iacfg} $1/boot/efi/boot
 		fi
-		
+
 		# GRUB legacy (0.97)
 		if [ -e $1/boot/grub/stage2_eltorito ]
 		then
