@@ -5,7 +5,20 @@ source ${clst_shdir}/support/filesystem-functions.sh
 
 # $1 is the destination root
 
-extract_cdtar $1
+# We handle boot loader a little special.  Most arches require a cdtar with bootloader files
+# but we can generate one for amd64/x86 now
+if [ -n "${clst_cdtar}" ]
+then
+	extract_cdtar $1
+elif [ "${clst_buildarch}" = "x86" ] || [ "${clst_buildarch}" = "amd64" ]
+then
+	#assume if there is no cdtar and we are on a support arch that the user just wants us to handle this
+	create_bootloader $1
+else
+	#While this seems a little crazy, it's entirely possible the bootloader is just shoved in isoroot overlay
+	echo "No cdtar and unable to auto generate boot loader files... good luck"
+fi
+
 extract_kernels $1/boot
 check_bootargs
 check_filesystem_type
@@ -340,8 +353,10 @@ case ${clst_hostarch} in
 		fi
 
 		# GRUB2
-		if [ -d $1/grub ]
+		if [ -d $1/grub ] || [ -f "$1/boot/EFI/BOOT/BOOTX64.EFI" ]
 		then
+			#the grub dir may not exist, better safe than sorry
+			[ -d "$1/grub" ] || mkdir -p "$1/grub"
 			if [ -e $1/isolinux/isolinux.bin ]
 			then
 				kern_subdir=/isolinux

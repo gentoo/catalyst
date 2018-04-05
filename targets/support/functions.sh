@@ -53,13 +53,55 @@ extract_cdtar() {
 	# $clst_target_path. We extract the "cdtar" to this directory,
 	# which will normally contains a pre-built binary
 	# boot-loader/filesystem skeleton for the ISO.
-	cdtar=${clst_cdtar}
-	if [ -z "${cdtar}" ]
-	then
-		echo "No cdtar specified. Skipping."
-	else
-		tar -I lbzip2 -xpf ${cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
+	tar -I lbzip2 -xpf ${clst_cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
+}
+
+generate_bootloader() {
+	# For amd64 and x86 we attempt to copy boot loader files from the live system and configure it right
+	# this prevents (among other issues) needing to keep a cdtar up to date.  All files are thrown into $clst_target_path
+	# Future improvement may make bootloaders optional, but for now there is only one option
+	if [ "${clst_buildarch}" = "amd64" ]; then
+		if [ -x "/usr/bin/grub2-mkstandalone" ]; then
+			grubmkstndaln="/usr/bin/grub2-mkstandalone"
+		elif [ -x "/usr/bin/grub-mkstandalone" ]; then
+			grubmkstndaln="/usr/bin/grub-mkstandalone"
+		else
+			die "Unable to find grub-mkstandalone\n"
+		fi
+		# while $1/grub is unused here, it triggers grub config building in bootloader-setup.sh
+		mkdir -p "$1/boot/EFI/BOOT" "$1/grub"
+		grub-stub="$(mktemp)"
+		echo "search --no-floppy --set=root --file /livecd" > "${grub-stub}"
+		echo "configfile /grub/grub.cfg" >> "${grub-stub}"
+		${grubmkstndaln} /boot/grub/grub.cfg="${grub-stub}" --compress=xz -O x86_64-efi -o "$1/boot/EFI/BOOT/BOOTX64.EFI" --themes= || die "${grubmkstndaln} failed"
+		rm "${grub-stub}"
 	fi
+
+	mkdir -p "$1/isolinux"
+	echo "Gentoo Linux Installation LiveCD                         http://www.gentoo.org/" > "$1/isolinux/boot.msg"
+	echo "Enter to boot; F1 for kernels  F2 for options." >> "$1/isolinux/boot.msg"
+	echo "Press any key in the next 15 seconds or we'll try to boot from disk." >> "$1/isolinux/boot.msg"
+	if [ -f /usr/share/syslinux/isolinux.bin ]; then
+		cp /usr/share/syslinux/isolinux.bin "$1/isolinux/"
+	else
+		die "Unable to find isolinux.bin, which was requested"
+	fi
+	if [ -f /boot/memtest86plus/memtest ]; then
+		cp /boot/memtest86plus/memtest "$1/isolinux/"
+	else
+		die "Unable to find memtest, which was requested."
+	fi
+	if [ -f "/usr/share/syslinux/hdt.c32" ]; then
+		cp /usr/share/syslinux/hdt.c32 "$1/isolinux/"
+		if [ -f "/usr/share/misc/pci.ids" ]; then
+			cp /usr/share/misc/pci.ids "$1/isolinux/"
+		fi
+	fi
+	for i in libcom32.c32 libutil.c32 ldlinux.c32 reboot.c32 vesamenu.c32; do
+		if [ -f "/usr/share/syslinux/${i}" ]; then
+			cp "/usr/share/syslinux/${i}" "$1/isolinux/"
+		fi
+	done
 }
 
 extract_kernels() {

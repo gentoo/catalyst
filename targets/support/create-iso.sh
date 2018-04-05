@@ -269,7 +269,7 @@ case ${clst_hostarch} in
 				mkdir -p "${clst_target_path}"/boot
 			else
 				echo "Preparing EFI boot image"
-				# prepare gentoo.efimg from cdtar's /boot/EFI dir
+				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
 				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 				iaSize=$((${iaSizeB}+32)) # Add slack

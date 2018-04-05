@@ -18,7 +18,7 @@ class livecd_stage2(StageBase):
 		self.valid_values=[]
 
 		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm",\
+		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/depclean"\
 			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
 			"livecd/readme","livecd/motd","livecd/overlay",\
 			"livecd/modblacklist","livecd/splash_theme","livecd/rcadd",\
