@@ -383,6 +383,15 @@ This is a list of any other files, not belonging to the above
 packages, that you would wish to have copied into your netboot image
 (example: `/lib/libresolv.so.2 /lib/libnss_compat.so.2`).
 
+*livecd/depclean*::
+This feature controls the depclean run after fsscript and before unmerge.
+The default is unset, and will run emerge --depclean --with-bdeps=n which results
+in the smallest possible livecd.  For some use cases it may be nice to not run depclean at all,
+or to keep build deps.  For those cases, the following two special cases are available:
+livecd/depclean: no
+livecd/depclean: keepbdeps
+This setting is only supported by the livecd target.
+
 *<target>/unmerge*::
 This is a list of packages that will be unmerged after all the kernels
 have been built (example: `autoconf automake libtool m4 bison`).

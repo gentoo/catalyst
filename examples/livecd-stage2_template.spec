@@ -336,6 +336,13 @@ boot/kernel/gentoo/console:
 # Currently this feature will be enabled if livecd/verify is defined to *any* value, leave commented to disable.
 #livecd/verify: true
 
+# This feature controls the depclean run after fsscript and before unmerge.
+# The default is unset, and will run emerge --depclean --with-bdeps=n which results
+# in the smallest possible livecd.  For some use cases it may be nice to not run depclean at all,
+# or to keep build deps.  For those cases, the following two special cases are available:
+# livecd/depclean: no
+# livecd/depclean: keepbdeps
+
 # This is a list of packages that will be unmerged after all the kernels have
 # been built.  There are no checks on these packages, so be careful what you
 # add here.  They can potentially break your CD.
