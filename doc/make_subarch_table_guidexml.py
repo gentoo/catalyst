@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Copyright (C) 2011 Sebastian Pipping <sebastian@pipping.org>
 # Copyright (C) 2013 Brian dolbec <dolsen@gentoo.org>
 # Licensed under GPL v2 or later

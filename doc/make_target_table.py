@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Copyright (C) 2012 W. Trevor King <wking@drexel.edu>
 # Copyright (C) 2012 Sebastian Pipping <sebastian@pipping.org>
 # Copyright (C) 2013 Brian dolbec <dolsen@gentoo.org>
