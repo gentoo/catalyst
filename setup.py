@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim: tabstop=4 noexpandtab shiftwidth=4
 """Catalyst is a release building tool used by Gentoo Linux"""
 
 from __future__ import print_function
