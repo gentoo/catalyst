@@ -59,6 +59,7 @@ class snapshot(TargetBase, GenBase):
 			'--exclude=/local/',
 			'--exclude=CVS/',
 			'--exclude=.svn',
+			'--exclude=.git/',
 			'--filter=H_**/files/digest-*',
 			self.settings['portdir'] + '/',
 			mytmp + '/' + self.settings['repo_name'] + '/'],
