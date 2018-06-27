@@ -12,7 +12,7 @@ then
 	extract_cdtar $1
 elif [ "${clst_buildarch}" = "x86" ] || [ "${clst_buildarch}" = "amd64" ]
 then
-	#assume if there is no cdtar and we are on a support arch that the user just wants us to handle this
+	#assume if there is no cdtar and we are on a supported arch that the user just wants us to handle this
 	create_bootloader $1
 else
 	#While this seems a little crazy, it's entirely possible the bootloader is just shoved in isoroot overlay

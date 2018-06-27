@@ -56,52 +56,76 @@ extract_cdtar() {
 	tar -I lbzip2 -xpf ${clst_cdtar} -C $1 || die "Couldn't extract cdtar ${cdtar}"
 }
 
-generate_bootloader() {
+create_bootloader() {
 	# For amd64 and x86 we attempt to copy boot loader files from the live system and configure it right
 	# this prevents (among other issues) needing to keep a cdtar up to date.  All files are thrown into $clst_target_path
 	# Future improvement may make bootloaders optional, but for now there is only one option
-	if [ "${clst_buildarch}" = "amd64" ]; then
-		if [ -x "/usr/bin/grub2-mkstandalone" ]; then
-			grubmkstndaln="/usr/bin/grub2-mkstandalone"
-		elif [ -x "/usr/bin/grub-mkstandalone" ]; then
-			grubmkstndaln="/usr/bin/grub-mkstandalone"
-		else
-			die "Unable to find grub-mkstandalone\n"
-		fi
-		# while $1/grub is unused here, it triggers grub config building in bootloader-setup.sh
-		mkdir -p "$1/boot/EFI/BOOT" "$1/grub"
-		grub-stub="$(mktemp)"
-		echo "search --no-floppy --set=root --file /livecd" > "${grub-stub}"
-		echo "configfile /grub/grub.cfg" >> "${grub-stub}"
-		${grubmkstndaln} /boot/grub/grub.cfg="${grub-stub}" --compress=xz -O x86_64-efi -o "$1/boot/EFI/BOOT/BOOTX64.EFI" --themes= || die "${grubmkstndaln} failed"
-		rm "${grub-stub}"
-	fi
+  if [ -x "/usr/bin/grub2-mkstandalone" ]; then
+    grubmkstndaln="/usr/bin/grub2-mkstandalone"
+  elif [ -x "/usr/bin/grub-mkstandalone" ]; then
+    grubmkstndaln="/usr/bin/grub-mkstandalone"
+  else
+    die "Unable to find grub-mkstandalone"
+  fi
 
-	mkdir -p "$1/isolinux"
-	echo "Gentoo Linux Installation LiveCD                         http://www.gentoo.org/" > "$1/isolinux/boot.msg"
-	echo "Enter to boot; F1 for kernels  F2 for options." >> "$1/isolinux/boot.msg"
-	echo "Press any key in the next 15 seconds or we'll try to boot from disk." >> "$1/isolinux/boot.msg"
-	if [ -f /usr/share/syslinux/isolinux.bin ]; then
-		cp /usr/share/syslinux/isolinux.bin "$1/isolinux/"
-	else
-		die "Unable to find isolinux.bin, which was requested"
-	fi
-	if [ -f /boot/memtest86plus/memtest ]; then
-		cp /boot/memtest86plus/memtest "$1/isolinux/"
-	else
-		die "Unable to find memtest, which was requested."
-	fi
-	if [ -f "/usr/share/syslinux/hdt.c32" ]; then
-		cp /usr/share/syslinux/hdt.c32 "$1/isolinux/"
-		if [ -f "/usr/share/misc/pci.ids" ]; then
-			cp /usr/share/misc/pci.ids "$1/isolinux/"
-		fi
-	fi
-	for i in libcom32.c32 libutil.c32 ldlinux.c32 reboot.c32 vesamenu.c32; do
-		if [ -f "/usr/share/syslinux/${i}" ]; then
-			cp "/usr/share/syslinux/${i}" "$1/isolinux/"
-		fi
-	done
+  pushd "${1}" || die "Failed to enter livecd dir ${1}"
+
+  # while $1/grub is unused here, it triggers grub config building in bootloader-setup.sh
+  mkdir -p boot/EFI/BOOT grub/fonts isolinux
+  #create boot.msg for isolinux
+	echo "Gentoo Linux Installation LiveCD                         http://www.gentoo.org/" > isolinux/boot.msg
+	echo "Enter to boot; F1 for kernels  F2 for options." >> isolinux/boot.msg
+	echo "Press any key in the next 15 seconds or we'll try to boot from disk." >> isolinux/boot.msg
+  #install isolinux files
+  if [ -f /usr/share/syslinux/isolinux.bin ]; then
+    cp /usr/share/syslinux/isolinux.bin isolinux/
+    #isolinux support files
+    for i in libcom32.c32 libutil.c32 ldlinux.c32 reboot.c32 vesamenu.c32; do
+      if [ -f "/usr/share/syslinux/${i}" ]; then
+        cp "/usr/share/syslinux/${i}" isolinux/
+      fi
+    done
+    #isolinux hardware detection toolkit, useful for system info and debugging
+    if [ -f "/usr/share/syslinux/hdt.c32" ]; then
+      cp /usr/share/syslinux/hdt.c32 isolinux/
+      if [ -f "/usr/share/misc/pci.ids" ]; then
+        cp /usr/share/misc/pci.ids isolinux/
+      fi
+    fi
+    #memtest goes under isolinux since it doesn't work for uefi right now
+    if [ -f /usr/share/memtest86+/memtest ]; then
+      cp /usr/share/memtest86+/memtest isolinux/memtest86
+    else
+      echo "Missing /usr/share/memtest86+/memtest, this livecd will not have memtest86+ support.  Enable USE=system-bootloader on catalyst to pull in the correct deps"
+    fi
+  else
+    echo "Missing /usr/share/syslinux/isolinux.bin, this livecd will not bios boot.  Enable USE=system-bootloader on catalyst to pull in the correct deps"
+  fi
+
+  #create grub-stub.cfg for embedding in grub-mkstandalone
+  echo "search --no-floppy --set=root --file /livecd" > grub-stub.cfg
+  echo "configfile /grub/grub.cfg" >> grub-stub.cfg
+
+  cp /usr/share/grub/unicode.pf2 grub/fonts/
+  if [ "${clst_buildarch}" = "x86" ] || [ "${clst_buildarch}" = "amd64" ]; then
+    # some 64 bit machines have 32 bit UEFI, so we take the safest path
+    mkdir -p grub/i386-efi
+    cp /usr/lib/grub/i386-efi/*.lst /usr/lib/grub/i386-efi/*.img /usr/lib/grub/i386-efi/*.mod grub/i386-efi/
+    ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O i386-efi -o ./boot/EFI/BOOT/grubia32.efi --themes= -v || die "Failed to make grubia32.efi"
+    #secure boot shim
+    cp /usr/share/shim/BOOTIA32.EFI boot/EFI/BOOT/
+    cp /usr/share/shim/mmia32.efi boot/EFI/BOOT/
+  fi
+  if [ "${clst_buildarch}" = "amd64" ]; then
+    mkdir -p grub/x86_64-efi
+    cp /usr/lib/grub/x86_64-efi/*.lst /usr/lib/grub/x86_64-efi/*.img /usr/lib/grub/x86_64-efi/*.mod grub/x86_64-efi/
+    ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O x86_64-efi -o ./boot/EFI/BOOT/grubx64.efi --themes= -v || die "Failed to make grubx64.efi"
+    #secure boot shim
+    cp /usr/share/shim/BOOTX64.EFI boot/EFI/BOOT/
+    cp /usr/share/shim/mmx64.efi boot/EFI/BOOT/
+  fi
+  rm grub-stub.cfg || echo "Failed to remove grub-stub.cfg, but this hurts nothing"
+  popd || die "Failed to leave livecd dir"
 }
 
 extract_kernels() {

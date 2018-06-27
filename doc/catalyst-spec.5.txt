@@ -206,6 +206,8 @@ Bootloader
 ~~~~~~~~~~
 
 *livecd/cdtar*::
+This is required for livecd-stage2 on all arches except amd64 and x86 which can autogenerate one
+if USE=system-bootloader is set.
 The cdtar is essentially the bootloader for the CD.  It also holds the
 main configuration for the bootloader.  On x86/amd64, it also can
 include a small memory testing application, called memtest86+

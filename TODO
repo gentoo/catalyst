@@ -61,7 +61,7 @@ Targets:
 - change user creation to be more flexible
   - stage4 and netboot support
 - build boot software for targets on-demand
-  - removes cdtar requirement
+  - removes cdtar requirement on remaining arches
   - allows one to specify multiple bootloaders
     - boot/loader: grub elilo
 	- netboot/boot/loader: pxelinux elilo
