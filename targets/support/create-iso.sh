@@ -124,7 +124,7 @@ case ${clst_hostarch} in
 		then
 			iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
 			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
-			iaSize=$((${iaSizeB}+32)) # Add slack
+			iaSize=$((${iaSizeB}+64)) # Add slack
 
 			dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 				count=${iaSize}
@@ -136,7 +136,7 @@ case ${clst_hostarch} in
 
 			echo '>> Populating EFI image...'
 			cp -rv "${clst_target_path}"/boot/* \
-				"${clst_target_path}/gentoo.efimg.mountPoint"
+				"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to populate EFI image"
 
 			umount "${clst_target_path}/gentoo.efimg.mountPoint"
 			rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
