@@ -272,7 +272,7 @@ case ${clst_hostarch} in
 				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
 				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
-				iaSize=$((${iaSizeB}+32)) # Add slack
+				iaSize=$((${iaSizeB}+64)) # add slack, tested near minimum for overhead
 				echo "Creating loopback file of size ${iaSize}kB"
 				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 					count=${iaSize}
@@ -286,7 +286,7 @@ case ${clst_hostarch} in
 
 				echo "Populating EFI image file from ${clst_target_path}/boot/EFI"
 				cp -rv "${clst_target_path}"/boot/EFI/ \
-					"${clst_target_path}/gentoo.efimg.mountPoint"
+					"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to populate EFI image file"
 
 				umount "${clst_target_path}/gentoo.efimg.mountPoint"
 				rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
