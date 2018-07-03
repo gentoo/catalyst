@@ -107,23 +107,24 @@ create_bootloader() {
   echo "configfile /grub/grub.cfg" >> grub-stub.cfg
 
   cp /usr/share/grub/unicode.pf2 grub/fonts/
-  if [ "${clst_buildarch}" = "x86" ] || [ "${clst_buildarch}" = "amd64" ]; then
-    # some 64 bit machines have 32 bit UEFI, so we take the safest path
-    mkdir -p grub/i386-efi
-    cp /usr/lib/grub/i386-efi/*.lst /usr/lib/grub/i386-efi/*.img /usr/lib/grub/i386-efi/*.mod grub/i386-efi/
-    ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O i386-efi -o ./boot/EFI/BOOT/grubia32.efi --themes= -v || die "Failed to make grubia32.efi"
-    #secure boot shim
-    cp /usr/share/shim/BOOTIA32.EFI boot/EFI/BOOT/
-    cp /usr/share/shim/mmia32.efi boot/EFI/BOOT/
-  fi
-  if [ "${clst_buildarch}" = "amd64" ]; then
-    mkdir -p grub/x86_64-efi
-    cp /usr/lib/grub/x86_64-efi/*.lst /usr/lib/grub/x86_64-efi/*.img /usr/lib/grub/x86_64-efi/*.mod grub/x86_64-efi/
-    ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O x86_64-efi -o ./boot/EFI/BOOT/grubx64.efi --themes= -v || die "Failed to make grubx64.efi"
-    #secure boot shim
-    cp /usr/share/shim/BOOTX64.EFI boot/EFI/BOOT/
-    cp /usr/share/shim/mmx64.efi boot/EFI/BOOT/
-  fi
+
+  # some 64 bit machines have 32 bit UEFI, and you might want to boot 32 bit on a 64 bit machine, so we take the safest path and include both
+  # set up 32 bit uefi
+  mkdir -p grub/i386-efi
+  cp /usr/lib/grub/i386-efi/*.lst /usr/lib/grub/i386-efi/*.img /usr/lib/grub/i386-efi/*.mod grub/i386-efi/
+  ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O i386-efi -o ./boot/EFI/BOOT/grubia32.efi --themes= -v || die "Failed to make grubia32.efi"
+  #secure boot shim
+  cp /usr/share/shim/BOOTIA32.EFI boot/EFI/BOOT/
+  cp /usr/share/shim/mmia32.efi boot/EFI/BOOT/
+
+  #set up 64 bit uefi
+  mkdir -p grub/x86_64-efi
+  cp /usr/lib/grub/x86_64-efi/*.lst /usr/lib/grub/x86_64-efi/*.img /usr/lib/grub/x86_64-efi/*.mod grub/x86_64-efi/
+  ${grubmkstndaln} /boot/grub/grub.cfg=./grub-stub.cfg --compress=xz -O x86_64-efi -o ./boot/EFI/BOOT/grubx64.efi --themes= -v || die "Failed to make grubx64.efi"
+  #secure boot shim
+  cp /usr/share/shim/BOOTX64.EFI boot/EFI/BOOT/
+  cp /usr/share/shim/mmx64.efi boot/EFI/BOOT/
+
   rm grub-stub.cfg || echo "Failed to remove grub-stub.cfg, but this hurts nothing"
   popd || die "Failed to leave livecd dir"
 }
