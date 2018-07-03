@@ -277,7 +277,7 @@ case ${clst_hostarch} in
 				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
 					count=${iaSize}
 				echo "Formatting loopback file with FAT16 FS"
-				mkfs.vfat -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
+				mkfs.vfat -F 16 -n GENTOOLIVE "${clst_target_path}/gentoo.efimg"
 
 				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
 				echo "Mounting FAT16 loopback file"
