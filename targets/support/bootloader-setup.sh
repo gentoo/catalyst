@@ -379,7 +379,7 @@ case ${clst_hostarch} in
 				echo "}" >> ${iacfg}
 				echo "" >> ${iacfg}
 				echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-				echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
 				echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 				echo "}" >> ${iacfg}
 				echo "" >> ${iacfg}
