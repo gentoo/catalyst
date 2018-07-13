@@ -71,7 +71,7 @@ create_bootloader() {
   pushd "${1}" || die "Failed to enter livecd dir ${1}"
 
   # while $1/grub is unused here, it triggers grub config building in bootloader-setup.sh
-  mkdir -p boot/EFI/BOOT grub/fonts isolinux
+  mkdir -p boot/EFI/BOOT isolinux
   #create boot.msg for isolinux
 	echo "Gentoo Linux Installation LiveCD                         http://www.gentoo.org/" > isolinux/boot.msg
 	echo "Enter to boot; F1 for kernels  F2 for options." >> isolinux/boot.msg
@@ -105,8 +105,6 @@ create_bootloader() {
   #create grub-stub.cfg for embedding in grub-mkstandalone
   echo "search --no-floppy --set=root --file /livecd" > grub-stub.cfg
   echo "configfile /grub/grub.cfg" >> grub-stub.cfg
-
-  cp /usr/share/grub/unicode.pf2 grub/fonts/
 
   # some 64 bit machines have 32 bit UEFI, and you might want to boot 32 bit on a 64 bit machine, so we take the safest path and include both
   # set up 32 bit uefi
