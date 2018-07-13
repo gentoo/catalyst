@@ -94,10 +94,10 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 			log.info('clear_dir failed: %s: is not a directory', target)
 			return False
 	else:
-		log.debug("Condidtions not met to clear: %s", target)
-		log.debug("                       isdir: %s", os.path.isdir(target))
-		log.debug("                      islink: %s", os.path.islink(target))
-		log.debug("                      exists: %s", os.path.exists(target))
+		log.debug("Conditions not met to clear: %s", target)
+		log.debug("                      isdir: %s", os.path.isdir(target))
+		log.debug("                     islink: %s", os.path.islink(target))
+		log.debug("                     exists: %s", os.path.exists(target))
 
 	if not remove:
 		log.debug('ensure_dirs()')
