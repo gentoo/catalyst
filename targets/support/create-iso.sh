@@ -269,6 +269,10 @@ case ${clst_hostarch} in
 				mkdir -p "${clst_target_path}"/boot
 			else
 				echo "Preparing EFI boot image"
+        if [ -d "${clst_target_path}/boot/efi" ] && [ ! -d "${clst_target_path}/boot/EFI" ]; then
+          echo "Moving /boot/efi to /boot/EFI"
+          mv "${clst_target_path}/boot/efi" "${clst_target_path}/boot/EFI"
+        fi
 				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
 				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
