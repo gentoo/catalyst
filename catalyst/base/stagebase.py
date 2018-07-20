@@ -253,7 +253,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				ccdir = os.environ["CCACHE_DIR"]
 				del os.environ["CCACHE_DIR"]
 			else:
-				ccdir = "/root/.ccache"
+				ccdir = "/var/tmp/ccache"
 			if not os.path.isdir(ccdir):
 				raise CatalystError(
 					"Compiler cache support can't be enabled (can't find " + ccdir+")")
