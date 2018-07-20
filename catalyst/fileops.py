@@ -10,6 +10,7 @@ ensuring directories exist,... imports snakeoils osutils
 functions for use throughout catalyst.
 '''
 
+import glob
 import os
 import shutil
 from stat import ST_UID, ST_GID, ST_MODE
@@ -109,9 +110,11 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 	return True
 
 
-def clear_path(target):
-	"""Nuke |target| regardless of it being a dir or file."""
-	clear_dir(target, remove=True)
+def clear_path(target_path):
+	"""Nuke |target_path| regardless of it being a dir, file or glob."""
+	targets = glob.glob(target_path)
+	for path in targets:
+		clear_dir(path, remove=True)
 
 
 def move_path(src, dest):
