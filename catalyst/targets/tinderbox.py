@@ -36,7 +36,6 @@ class tinderbox(StageBase):
 		self.settings['cleanables'] = [
 			'/etc/resolv.conf',
 			'/var/tmp/*',
-			'/root/*',
 			self.settings['portdir'],
 			]
 
