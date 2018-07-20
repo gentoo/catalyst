@@ -465,7 +465,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_cleanables(self):
 		self.settings["cleanables"] = ["/etc/resolv.conf", "/var/tmp/*", "/tmp/*",
-			"/root/*", self.settings["repo_basedir"] + "/" +
+			self.settings["repo_basedir"] + "/" +
 			self.settings["repo_name"]]
 
 	def set_snapshot_path(self):
