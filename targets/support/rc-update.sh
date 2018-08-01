@@ -1,14 +1,5 @@
 #!/bin/bash
 
-if portageq has_version / '>=sys-apps/baselayout-2'
-then
-	# We need to add a few here for baselayout-2
-	[[ -e /etc/init.d/device-mapper ]] && rc-update add device-mapper boot
-	[[ -e /etc/init.d/lvm ]] && rc-update add lvm boot
-	[[ -e /etc/init.d/dmcrypt ]] && rc-update add dmcrypt boot
-	[[ -e /etc/init.d/mdraid ]] && rc-update add mdraid boot
-fi
-
 if [ "${clst_spec_prefix}" == "livecd" ]
 then
 	rc-update --all del iptables
