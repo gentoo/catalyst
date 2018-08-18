@@ -81,139 +81,45 @@ case ${clst_hostarch} in
 		done
 	;;
 	ppc*|powerpc*)
-		# NO SOFTLEVEL SUPPORT YET
-		icfg=$1/boot/yaboot.conf
-		kmsg=$1/boot/boot.msg
-
-		echo "device=cd:" >> ${icfg}
-		echo "root=/dev/ram" >> ${icfg}
-		echo "fgcolor=white" >> ${icfg}
-		echo "bgcolor=black" >> ${icfg}
-		echo "message=/boot/boot.msg" >> ${icfg}
-
-		# Here is where I fix up the boot.msg file.
-		${clst_sed} -e 's/ARCH/PowerPC/' \
-			-e 's/HARDWARE/Apple and IBM hardware/' \
-			-i $kmsg
-
-		# Setup the IBM yaboot.conf
-		etc_icfg=$1/etc/yaboot.conf
-		mkdir -p $1/etc
-		IBM_YABOOT="FALSE"
-		echo "root=/dev/ram" >> ${etc_icfg}
-		echo "fgcolor=white" >> ${etc_icfg}
-		echo "bgcolor=black" >> ${etc_icfg}
-		echo "message=/boot/boot.msg" >> ${etc_icfg}
-
+	    # GRUB2 Openfirmware
+		kern_subdir=/boot
+		iacfg=$1/boot/grub/grub.cfg
+		mkdir -p $1/boot/grub
+		echo 'set default=0' > ${iacfg}
+		echo 'set gfxpayload=keep' >> ${iacfg}
+		echo 'set timeout=10' >> ${iacfg}
+		echo 'insmod all_video' >> ${iacfg}
+		echo '' >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
 			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
 			eval "clst_kernel_machine_type=\$clst_boot_kernel_${x}_machine_type"
 			eval custom_kopts=\$${x}_kernelopts
 
-			echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-			if [ "${clst_kernel_machine_type}" == "ibm" ]
+			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			echo "" >> ${iacfg}
+			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
+			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			if [ -n "${clst_kernel_console}" ]
 			then
-				IBM_YABOOT="true"
-				if [ -n "${clst_kernel_console}" ]
-				then
-					echo >> ${etc_icfg}
-					echo "image=/boot/${x}" >> ${etc_icfg}
-
-					if [ -e "$1/boot/${x}.igz" ]
-					then
-						echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
-					fi
-
-					echo "label=${x}" >> ${etc_icfg}
-					echo "read-write" >> ${icfg}
-					echo "append=\"${default_append_line}\"" >> ${etc_icfg}
-
-					for y in ${clst_kernel_console}
-					do
-						echo ${y}
-						echo >> ${etc_icfg}
-						echo "image=/boot/${x}" >> ${etc_icfg}
-
-						if [ -e "$1/boot/${x}.igz" ]
-						then
-							echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
-						fi
-
-						echo "label=${x}-${y} " >> ${etc_icfg}
-						echo "read-write" >> ${icfg}
-						echo "append=\"${default_append_line} console=${y}\"" >> ${etc_icfg}
-					done
-				else
-					echo >> ${etc_icfg}
-					echo "image=/boot/${x}" >> ${etc_icfg}
-
-					if [ -e "$1/boot/${x}.igz" ]
-					then
-						echo "initrd=/boot/${x}.igz" >> ${etc_icfg}
-					fi
-
-					echo "label=${x}" >> ${etc_icfg}
-					echo "read-write" >> ${etc_icfg}
-					echo "append=\"${default_append_line}\"" >> ${etc_icfg}
-				fi
-			else
-				# Here we wipe out the /ppc directory, if it exists.
-				rm -rf $1/ppc
-				if [ -n "${clst_kernel_console}" ]
-				then
-					echo >> ${icfg}
-					echo "image=/boot/${x}" >> ${icfg}
-
-					if [ -e "$1/boot/${x}.igz" ]
-					then
-						echo "initrd=/boot/${x}.igz" >> ${icfg}
-					fi
-
-					echo "label=${x}" >> ${icfg}
-					echo "read-write" >> ${icfg}
-					echo "append=\"${default_append_line}\"" >> ${icfg}
-
-					for y in ${clst_kernel_console}
-					do
-						echo >> ${icfg}
-						echo "image=/boot/${x}" >> ${icfg}
-
-						if [ -e "$1/boot/${x}.igz" ]
-						then
-							echo "initrd=/boot/${x}.igz" >> ${icfg}
-						fi
-
-						echo "label=${x}-${y} " >> ${icfg}
-						echo "read-write" >> ${icfg}
-						echo "append=\"${default_append_line} console=${y}\"" >> ${icfg}
-					done
-				else
-					echo >> ${icfg}
-					echo "image=/boot/${x}" >> ${icfg}
-
-					if [ -e "$1/boot/${x}.igz" ]
-					then
-						echo "initrd=/boot/${x}.igz" >> ${icfg}
-					fi
-
-					echo "label=${x}" >> ${icfg}
-					echo "read-write" >> ${icfg}
-					echo "append=\"${default_append_line}\"" >> ${icfg}
-				fi
+			echo "submenu 'Special console options (kernel: ${x})' --class gnu-linux --class os {" >> ${iacfg}
+				for y in ${clst_kernel_console}
+				do
+					echo "menuentry 'Boot LiveCD (kernel: ${x} console=${y})' --class gnu-linux --class os {"  >> ${iacfg}
+					echo "	linux ${kern_subdir}/${x} ${default_append_line} console=${y}" >> ${iacfg}
+					echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+					echo "}" >> ${iacfg}
+					echo "" >> ${iacfg}
+				done
+				echo "}" >> ${iacfg}
 			fi
+			echo "" >> ${iacfg}
 		done
-
-		if [ "${IBM_YABOOT}" == "FALSE" ]
-		then
-			rm ${etc_kmsg}
-			rmdir $1/etc
-			if [ -d $1/ppc ]
-			then
-				rm -r $1/ppc
-			fi
-		fi
-
 	;;
 	sparc*)
 		# NO SOFTLEVEL SUPPORT YET
