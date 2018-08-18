@@ -15,6 +15,10 @@ case ${clst_hostarch} in
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
 		;;
+        ppc*)
+                cdmaker="grub-mkrescue"
+                cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
+                ;;
 	*)
 		cdmaker="mkisofs"
 		cdmakerpkg="app-cdr/cdrkit or app-cdr/cdrtools"
@@ -208,33 +212,8 @@ case ${clst_hostarch} in
 		esac
 	;;
 	ppc*|powerpc*)
-		if [ -f "${clst_target_path}/ppc/bootinfo.txt" ]
-		then
-			echo "bootinfo.txt found .. updating it"
-			${clst_sed} -i -e \
-			's#^<description>.*</description>$#<description>'"${clst_iso_volume_id}"'</description>#' \
-			"${clst_target_path}/ppc/bootinfo.txt"
-			${clst_sed} -i -e \
-			's#^<os-name>.*</os-name>$#<os-name>'"${clst_iso_volume_id}"'</os-name>#' \
-			"${clst_target_path}/ppc/bootinfo.txt"
-		fi
-
-		flags=( -r -U -chrp-boot )
-		echo ">> Running mkisofs to create iso image...."
-		if [[ ${clst_subarch} == *le ]]
-		then
-			flags+=(
-				-v -T -l -cache-inodes
-			)
-		else
-			flags+=(
-				-netatalk -hfs -probe -map "${clst_target_path}"/boot/map.hfs
-				-part -no-desktop -hfs-volid "${clst_iso_volume_id}" -hfs-bless "${clst_target_path}"/boot -hide-hfs
-				"zisofs" -hide-hfs "stages" -hide-hfs "distfiles" -hide-hfs "snapshots" -J ${mkisofs_zisofs_opts}
-			)
-		fi
-		run_mkisofs "${flags[@]}" \
-			-V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"
+		echo ">> Running grub-mkrescue to create iso image...."
+		grub-mkrescue -o "${1}" "${clst_target_path}"
 	;;
 	sparc*)
 		# Old silo (<=1.2.6) requires a specially built mkisofs
