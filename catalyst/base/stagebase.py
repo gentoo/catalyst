@@ -1420,7 +1420,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 							self.env[varname] = "false"
 
 		if "makeopts" in self.settings:
-			self.env["MAKEOPTS"] = self.settings["makeopts"]
+			if isinstance(self.settings["makeopts"], str):
+				self.env["MAKEOPTS"] = self.settings["makeopts"]
+			else:
+				# ensure makeopts is a string
+				self.env["MAKEOPTS"] = ' '.join(self.settings["makeopts"])
+
 		log.debug('setup_environment(); env = %r', self.env)
 
 	def run(self):
