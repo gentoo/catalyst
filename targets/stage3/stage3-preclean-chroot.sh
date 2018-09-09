@@ -11,7 +11,10 @@ cleanup_stages
 
 if [ -n "${clst_DISTCC}" ]
 then
-	run_merge -C sys-devel/distcc || exit 1
+	portageq has_version / sys-devel/distcc
+	if [ $? == 0 ]; then
+		run_merge -C sys-devel/distcc || exit 1
+	fi
 fi
 
 if [ -n "${clst_ICECREAM}" ]
