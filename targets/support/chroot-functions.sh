@@ -3,19 +3,19 @@
 # Set the profile
 eselect profile set ${clst_target_profile}
 
-# Trap these signals and kill ourselves if recieved
-# Force ourselves to die if any of these signals are recieved
+# Trap these signals and kill ourselves if received
+# Force ourselves to die if any of these signals are received
 # most likely our controlling terminal is gone
-trap "echo SIGTERM signal recieved killing $0 with pid $$;kill -9 $$" SIGTERM
-trap "echo SIGHUP signal recieved killing $0 with pid $$;kill -9 $$" SIGHUP
-trap "echo SIGKILL signal recieved killing $0 with pid $$;kill -9 $$" SIGKILL
+trap "echo SIGTERM signal received killing $0 with pid $$;kill -9 $$" SIGTERM
+trap "echo SIGHUP signal received killing $0 with pid $$;kill -9 $$" SIGHUP
+trap "echo SIGKILL signal received killing $0 with pid $$;kill -9 $$" SIGKILL
 
 #SIGINT interrupt character (usually Ctrl-C)
 #	* example: high-level sequence of events
 #	* my process (call it "P") is running
 #	* user types ctrl-c
 #	* kernel recognizes this and generates SIGINT signal
-trap "echo SIGINT signal recieved killing $0 with pid $$;kill -9 $$" SIGINT
+trap "echo SIGINT signal received killing $0 with pid $$;kill -9 $$" SIGINT
 
 # test if CHOST was set on the python side
 if [[ -z "${clst_CHOST}" ]] ; then
