@@ -144,7 +144,7 @@ filtered_kname=${clst_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
-eval "clst_kernel_gk_kernargs=\$clst_boot_kernel_${filtered_kname}_gk_kernargs"
+eval eval clst_kernel_gk_kernargs=( \$clst_boot_kernel_${filtered_kname}_gk_kernargs )
 eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
 
 if [ -z "${clst_ksource}" ]
