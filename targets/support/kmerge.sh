@@ -9,32 +9,34 @@ PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 
 setup_gk_args() {
 	# default genkernel args
-	GK_ARGS="${clst_gk_mainargs} \
-			 ${clst_kernel_gk_kernargs} \
-			 --cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp} \
-			 --no-mountboot \
-			 --kerneldir=/usr/src/linux \
-			 --modulespackage=/tmp/kerncache/${clst_kname}-modules-${clst_version_stamp}.tar.bz2 \
-			 --minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all"
+	GK_ARGS=(
+		"${clst_gk_mainargs}"
+		"${clst_kernel_gk_kernargs[@]}"
+		--cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp}
+		--no-mountboot
+		--kerneldir=/usr/src/linux
+		--modulespackage=/tmp/kerncache/${clst_kname}-modules-${clst_version_stamp}.tar.bz2
+		--minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
+	)
 	# extra genkernel options that we have to test for
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		GK_ARGS="${GK_ARGS} --kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2"
+		GK_ARGS+=(--kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2)
 	fi
 	if [ -e /var/tmp/${clst_kname}.config ]
 	then
-		GK_ARGS="${GK_ARGS} --kernel-config=/var/tmp/${clst_kname}.config"
+		GK_ARGS+=(--kernel-config=/var/tmp/${clst_kname}.config)
 	fi
 
 	if [ -n "${clst_splash_theme}" ]
 	then
-		GK_ARGS="${GK_ARGS} --splash=${clst_splash_theme}"
+		GK_ARGS+=(--splash=${clst_splash_theme})
 		# Setup case structure for livecd_type
 		case ${clst_livecd_type} in
 			gentoo-release-minimal|gentoo-release-universal)
 				case ${clst_hostarch} in
 					amd64|x86)
-						GK_ARGS="${GK_ARGS} --splash-res=1024x768"
+						GK_ARGS+=(--splash-res=1024x768)
 					;;
 				esac
 			;;
@@ -43,36 +45,36 @@ setup_gk_args() {
 
 	if [ -d "/tmp/initramfs_overlay/${clst_initramfs_overlay}" ]
 	then
-		GK_ARGS="${GK_ARGS} --initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay}"
+		GK_ARGS+=(--initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay})
 	fi
 	if [ -n "${clst_CCACHE}" ]
 	then
-		GK_ARGS="${GK_ARGS} --kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc"
+		GK_ARGS+=(--kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc)
 	fi
 
 	if [ -n "${clst_linuxrc}" ]
 	then
-		GK_ARGS="${GK_ARGS} --linuxrc=/tmp/linuxrc"
+		GK_ARGS+=(--linuxrc=/tmp/linuxrc)
 	fi
 
 	if [ -n "${clst_busybox_config}" ]
 	then
-		GK_ARGS="${GK_ARGS} --busybox-config=/tmp/busy-config"
+		GK_ARGS+=(--busybox-config=/tmp/busy-config)
 	fi
 
 	if [ "${clst_target}" == "netboot2" ]
 	then
-		GK_ARGS="${GK_ARGS} --netboot"
+		GK_ARGS+=(--netboot)
 
 		if [ -n "${clst_merge_path}" ]
 		then
-			GK_ARGS="${GK_ARGS} --initramfs-overlay=\"${clst_merge_path}\""
+			GK_ARGS+=(--initramfs-overlay="${clst_merge_path}")
 		fi
 	fi
 
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		GK_ARGS="${GK_ARGS} --loglevel=2"
+		GK_ARGS+=(--loglevel=2)
 	fi
 }
 
@@ -82,7 +84,7 @@ genkernel_compile(){
 
 	setup_gk_args
 	#echo "The GK_ARGS are"
-	#echo ${GK_ARGS}
+	#echo ${GK_ARGS[@]}
 	export clst_kernel_merge
 	export clst_initramfs_overlay
 	# Build our list of kernel packages
@@ -115,9 +117,9 @@ genkernel_compile(){
 	if [ "${clst_kernel_merge}" != "" ]
 	then
 		genkernel --callback="emerge ${gk_callback_opts} ${clst_kernel_merge}" \
-			${GK_ARGS} || exit 1
+			"${GK_ARGS[@]}" || exit 1
 	else
-		genkernel ${GK_ARGS} || exit 1
+		genkernel "${GK_ARGS[@]}" || exit 1
 	fi
 	if [ -n "${clst_KERNCACHE}" -a -e /var/tmp/${clst_kname}.config ]
 	then
