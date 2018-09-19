@@ -19,119 +19,119 @@ class arch_ppc(generic_ppc):
 	"builder class for generic powerpc"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=powerpc -mtune=powerpc -pipe"
 
 class arch_ppc64(generic_ppc64):
 	"builder class for generic ppc64"
 	def __init__(self,myspec):
 		generic_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="powerpc64-unknown-linux-gnu"
 
 class arch_ppc64le(generic_ppc64):
 	"builder class for generic ppc64le"
 	def __init__(self,myspec):
 		generic_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="powerpc64le-unknown-linux-gnu"
 
 class arch_970(arch_ppc64):
 	"builder class for 970 aka G5 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=970 -mtune=970"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=970 -mtune=970"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_cell(arch_ppc64):
 	"builder class for cell under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=cell -mtune=cell"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=cell -mtune=cell"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 class arch_g3(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G3 -mtune=G3 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=G3 -mtune=G3 -pipe"
 
 class arch_g4(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_g5(generic_ppc):
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
 class arch_power(generic_ppc):
 	"builder class for generic power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=power -mtune=power -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=power -mtune=power -pipe"
 
 class arch_power_ppc(generic_ppc):
 	"builder class for generic powerpc/power"
 	def __init__(self,myspec):
 		generic_ppc.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -mcpu=common -mtune=common -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=common -mtune=common -pipe"
 
 class arch_power3(arch_ppc64):
 	"builder class for power3 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power3 -mtune=power3"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power3 -mtune=power3"
 		self.settings["HOSTUSE"]=["ibm"]
 
 class arch_power4(arch_ppc64):
 	"builder class for power4 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power4 -mtune=power4"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power4 -mtune=power4"
 		self.settings["HOSTUSE"]=["ibm"]
 
 class arch_power5(arch_ppc64):
 	"builder class for power5 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power5 -mtune=power5"
 		self.settings["HOSTUSE"]=["ibm"]
 
 class arch_power6(arch_ppc64):
 	"builder class for power6 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power6 -mtune=power6"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 class arch_power7(arch_ppc64):
 	"builder class for power7 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 class arch_power7le(arch_ppc64le):
 	"builder class for power7 under ppc64le"
 	def __init__(self,myspec):
 		arch_ppc64le.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 class arch_power8(arch_ppc64):
 	"builder class for power8 under ppc64"
 	def __init__(self,myspec):
 		arch_ppc64.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 class arch_power8le(arch_ppc64le):
 	"builder class for power8 under ppc64le"
 	def __init__(self,myspec):
 		arch_ppc64le.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
 def register():

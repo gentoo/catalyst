@@ -15,14 +15,14 @@ class arch_s390(generic_s390):
 	"builder class for generic s390"
 	def __init__(self,myspec):
 		generic_s390.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="s390-ibm-linux-gnu"
 
 class arch_s390x(generic_s390x):
 	"builder class for generic s390x"
 	def __init__(self,myspec):
 		generic_s390x.__init__(self,myspec)
-		self.settings["CFLAGS"]="-O2 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="s390x-ibm-linux-gnu"
 
 def register():
