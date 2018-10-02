@@ -20,7 +20,7 @@ setup_gk_args() {
 	# extra genkernel options that we have to test for
 	if [ -n "${clst_gk_mainargs}" ]
 	then
-		GK_ARGS+=("${clst_gk_mainargs}")
+		GK_ARGS+=(${clst_gk_mainargs})
 	fi
 	if [ -n "${clst_KERNCACHE}" ]
 	then
