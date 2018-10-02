@@ -10,7 +10,6 @@ PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 setup_gk_args() {
 	# default genkernel args
 	GK_ARGS=(
-		"${clst_gk_mainargs}"
 		"${clst_kernel_gk_kernargs[@]}"
 		--cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp}
 		--no-mountboot
@@ -19,6 +18,10 @@ setup_gk_args() {
 		--minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
 	)
 	# extra genkernel options that we have to test for
+	if [ -n "${clst_gk_mainargs}" ]
+	then
+		GK_ARGS+=("${clst_gk_mainargs}")
+	fi
 	if [ -n "${clst_KERNCACHE}" ]
 	then
 		GK_ARGS+=(--kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2)
