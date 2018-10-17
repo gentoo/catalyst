@@ -126,7 +126,7 @@ case ${clst_hostarch} in
 	ia64)
 		if [ ! -e "${clst_target_path}/gentoo.efimg" ]
 		then
-			iaSizeTemp=$(du -sk "${clst_target_path}/boot" 2>/dev/null)
+			iaSizeTemp=$(du -sk --apparent-size "${clst_target_path}/boot" 2>/dev/null)
 			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 			iaSize=$((${iaSizeB}+64)) # Add slack
 
