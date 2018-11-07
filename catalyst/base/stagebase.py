@@ -39,7 +39,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			"rel_type", "profile", "snapshot", "source_subpath",
 			"portage_confdir", "portage_prefix", "portage_overlay",
 			"cflags", "cxxflags", "fcflags", "fflags", "ldflags", "asflags",
-			"cbuild", "hostuse", "catalyst_use",
+			"common_flags", "cbuild", "hostuse", "catalyst_use",
 			"distcc_hosts", "makeopts", "pkgcache_path", "kerncache_path",
 			"compression_mode", "decompression_mode"])
 
@@ -304,6 +304,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def override_asflags(self):
 		if "ASFLAGS" in self.makeconf:
 			self.settings["ASFLAGS"] = self.makeconf["ASFLAGS"]
+
+	def override_common_flags(self):
+		if "COMMON_FLAGS" in self.makeconf:
+			self.settings["COMMON_FLAGS"] = self.makeconf["COMMON_FLAGS"]
 
 	def set_install_mask(self):
 		if "install_mask" in self.settings:
@@ -1042,6 +1046,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.override_fflags()
 		self.override_ldflags()
 		self.override_asflags()
+		self.override_common_flags()
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("chroot_setup"):
 			log.notice('Resume point detected, skipping chroot_setup operation...')
