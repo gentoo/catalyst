@@ -8,7 +8,7 @@ source ${clst_shdir}/support/filesystem-functions.sh
 # Check for our CD ISO creation tools
 case ${clst_hostarch} in
 	alpha)
-		cdmaker="xorrisofs"
+		cdmaker="xorriso"
 		cdmakerpkg="dev-libs/libisoburn"
 		;;
 	mips)
@@ -111,8 +111,8 @@ run_mkisofs() {
 # Here we actually create the ISO images for each architecture
 case ${clst_hostarch} in
 	alpha)
-		echo ">> xorrisofs -as genisofs --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o ${1} ${clst_target_path}"
-		xorrisofs -as genisofs --alpha-boot=boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
+		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
+		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
 	;;
 	arm)
 	;;
