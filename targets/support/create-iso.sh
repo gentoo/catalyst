@@ -274,7 +274,10 @@ case ${clst_hostarch} in
 				umount "${clst_target_path}/gentoo.efimg.mountPoint"
 				rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
 
-				echo "Removing /boot contents"
+				echo "Copying /boot/EFI to /EFI for rufus compatability"
+				cp -rv "${clst_target_path}"/boot/EFI/ "${clst_target_path}"
+
+				echo "Emptying /boot"
 				rm -rf "${clst_target_path}"/boot
 				mkdir -p "${clst_target_path}"/boot
 			fi
