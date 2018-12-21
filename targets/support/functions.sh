@@ -103,7 +103,9 @@ create_bootloader() {
   fi
 
   #create grub-stub.cfg for embedding in grub-mkstandalone
-  echo "search --no-floppy --set=root --file /livecd" > grub-stub.cfg
+  echo "insmod part_gpt" > grub-stub.cfg
+  echo "insmod part_msdos" >> grub-stub.cfg
+  echo "search --no-floppy --set=root --file /livecd" >> grub-stub.cfg
   echo "configfile /grub/grub.cfg" >> grub-stub.cfg
 
   # some 64 bit machines have 32 bit UEFI, and you might want to boot 32 bit on a 64 bit machine, so we take the safest path and include both
