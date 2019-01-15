@@ -183,7 +183,6 @@ case ${clst_hostarch} in
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
 		then
-			cp -f $1/boot/* $1/isolinux
 			# the rest of this function sets up the config file for isolinux
 			icfg=$1/isolinux/isolinux.cfg
 			kmsg=$1/isolinux/kernels.msg
@@ -220,26 +219,26 @@ case ${clst_hostarch} in
 					for y in ${clst_kernel_softlevel}
 					do
 						echo "label ${x}-${y}" >> ${icfg}
-						echo "  kernel ${x}" >> ${icfg}
-						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
+						echo "  kernel /boot/${x}" >> ${icfg}
+						echo "  append ${default_append_line} softlevel=${y} initrd=/boot/${x}.igz vga=791" >> ${icfg}
 
 						echo >> ${icfg}
 						echo "   ${x}" >> ${kmsg}
 						echo "label ${x}-${y}-nofb" >> ${icfg}
-						echo "  kernel ${x}" >> ${icfg}
-						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz" >> ${icfg}
+						echo "  kernel /boot/${x}" >> ${icfg}
+						echo "  append ${default_append_line} softlevel=${y} initrd=/boot/${x}.igz" >> ${icfg}
 						echo >> ${icfg}
 						echo "   ${x}-nofb" >> ${kmsg}
 					done
 				else
 					echo "label ${x}" >> ${icfg}
-					echo "  kernel ${x}" >> ${icfg}
-					echo "  append ${default_append_line} initrd=${x}.igz vga=791" >> ${icfg}
+					echo "  kernel /boot/${x}" >> ${icfg}
+					echo "  append ${default_append_line} initrd=/boot/${x}.igz vga=791" >> ${icfg}
 					echo >> ${icfg}
 					echo "   ${x}" >> ${kmsg}
 					echo "label ${x}-nofb" >> ${icfg}
-					echo "  kernel ${x}" >> ${icfg}
-					echo "  append ${default_append_line} initrd=${x}.igz" >> ${icfg}
+					echo "  kernel /boot/${x}" >> ${icfg}
+					echo "  append ${default_append_line} initrd=/boot/${x}.igz" >> ${icfg}
 					echo >> ${icfg}
 					echo "   ${x}-nofb" >> ${kmsg}
 				fi
@@ -263,13 +262,6 @@ case ${clst_hostarch} in
 		then
 			#the grub dir may not exist, better safe than sorry
 			[ -d "$1/grub" ] || mkdir -p "$1/grub"
-			if [ -e $1/isolinux/isolinux.bin ]
-			then
-				kern_subdir=/isolinux
-			else
-				cp -f $1/boot/* $1/grub
-				kern_subdir=/grub
-			fi
 
 			iacfg=$1/grub/grub.cfg
 			echo 'set default=0' > ${iacfg}
@@ -280,121 +272,16 @@ case ${clst_hostarch} in
 			for x in ${clst_boot_kernel}
 			do
 				echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
-				echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
-				echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+				echo "	linux /boot/${x} ${default_append_line}" >> ${iacfg}
+				echo "	initrd /boot/${x}.igz" >> ${iacfg}
 				echo "}" >> ${iacfg}
 				echo "" >> ${iacfg}
 				echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-				echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
-				echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+				echo "	linux /boot/${x} ${default_append_line} docache" >> ${iacfg}
+				echo "	initrd /boot/${x}.igz" >> ${iacfg}
 				echo "}" >> ${iacfg}
 				echo "" >> ${iacfg}
 			done
-		fi
-
-		if [ -e $1/boot/efi/elilo.efi ]
-		then
-			[ -e $1/isolinux/elilo.efi ] && rm -f $1/isolinux/elilo.efi
-			iacfg=$1/boot/elilo.conf
-			echo 'prompt' > ${iacfg}
-			echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
-			echo 'chooser=simple' >> ${iacfg}
-			echo 'timeout=50' >> ${iacfg}
-			echo >> ${iacfg}
-			for x in ${clst_boot_kernel}
-			do
-				echo "image=/efi/boot/${x}" >> ${iacfg}
-				echo "  label=${x}" >> ${iacfg}
-				echo '  append="'initrd=${x}.igz ${default_append_line}'"' >> ${iacfg}
-				echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
-				echo >> ${iacfg}
-				echo "image=/efi/boot/${x}" >> ${iacfg}
-				echo >> ${iacfg}
-				cp -f $1/boot/${x}{,.igz} $1/boot/efi/boot > /dev/null
-				cp -f $1/isolinux/${x}{,.igz} $1/boot/efi/boot > /dev/null
-			done
-			cp ${iacfg} $1/boot/efi/boot
-		fi
-
-		# GRUB legacy (0.97)
-		if [ -e $1/boot/grub/stage2_eltorito ]
-		then
-			icfg=$1/boot/grub/menu.lst
-			echo "default 0" > ${icfg}
-			echo "timeout 15" >> ${icfg}
-			echo "pager on" >> ${icfg}
-
-			# Copy our splash if we're a Gentoo release
-			case ${clst_livecd_type} in
-				gentoo-*)
-					[ -e ${clst_chroot_path}/boot/grub/splash.xpm.gz ] && \
-						cp -f ${clst_chroot_path}/boot/grub/splash.xpm.gz \
-						${1}/boot/grub
-				;;
-			esac
-
-			if [ -e ${1}/boot/grub/splash.xpm.gz ]; then
-				echo "splashimage=/boot/grub/splash.xpm.gz" >> ${icfg}
-			fi
-
-			for x in ${clst_boot_kernel}
-			do
-				eval custom_kopts=\$${x}_kernelopts
-				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-				echo >> ${icfg}
-
-				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
-
-				if [ -n "${clst_kernel_softlevel}" ]
-				then
-					for y in ${clst_kernel_softlevel}
-					do
-						echo "title ${x}-${y}" >> ${icfg}
-						echo "  append ${default_append_line} softlevel=${y} initrd=${x}.igz vga=791" >> ${icfg}
-						if [ -e $1/boot/${x}.igz ]
-						then
-							echo "initrd /boot/${x}.igz" >> ${icfg}
-						fi
-						echo >> ${icfg}
-						echo "title ${x}-${y} [ No FrameBuffer ]" >> ${icfg}
-						echo "kernel /boot/${x} softlevel=${y} ${default_append_line}" >> ${icfg}
-						if [ -e $1/boot/${x}.igz ]
-						then
-							echo "initrd /boot/${x}.igz" >> ${icfg}
-						fi
-						echo >> ${icfg}
-					done
-				else
-					echo "title ${x}" >> ${icfg}
-					echo "kernel /boot/${x} ${default_append_line} vga=791" >> ${icfg}
-					if [ -e $1/boot/${x}.igz ]
-					then
-						echo "initrd /boot/${x}.igz" >> ${icfg}
-					fi
-					echo >> ${icfg}
-					echo "title ${x} [ No FrameBuffer ]" >> ${icfg}
-					echo "kernel /boot/${x} ${default_append_line}" >> ${icfg}
-					if [ -e $1/boot/${x}.igz ]
-					then
-						echo "initrd /boot/${x}.igz" >> ${icfg}
-					fi
-				fi
-
-			done
-
-			# Setup help message
-			echo >> ${icfg}
-			echo "title help" >> ${icfg}
-			cp ${clst_sharedir}/livecd/files/README.txt \
-				$1/boot/help.msg
-			echo "cat /boot/help.msg" >> ${icfg}
-
-			if [ -f $1/boot/memtest86 ]
-			then
-				echo >> ${icfg}
-				echo "title memtest86" >> ${icfg}
-				echo "kernel /boot/memtest86" >> ${icfg}
-			fi
 		fi
 	;;
 	mips)

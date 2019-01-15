@@ -242,16 +242,12 @@ case ${clst_hostarch} in
 			then
 				echo "Found prepared EFI boot image at \
 					${clst_target_path}/gentoo.efimg"
-				# /boot must exist and be empty for later logic
-				echo "Removing /boot contents"
-				rm -rf "${clst_target_path}"/boot
-				mkdir -p "${clst_target_path}"/boot
 			else
 				echo "Preparing EFI boot image"
-        if [ -d "${clst_target_path}/boot/efi" ] && [ ! -d "${clst_target_path}/boot/EFI" ]; then
-          echo "Moving /boot/efi to /boot/EFI"
-          mv "${clst_target_path}/boot/efi" "${clst_target_path}/boot/EFI"
-        fi
+				if [ -d "${clst_target_path}/boot/efi" ] && [ ! -d "${clst_target_path}/boot/EFI" ]; then
+					echo "Moving /boot/efi to /boot/EFI"
+					mv "${clst_target_path}/boot/efi" "${clst_target_path}/boot/EFI"
+				fi
 				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
 				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
@@ -276,48 +272,29 @@ case ${clst_hostarch} in
 
 				echo "Copying /boot/EFI to /EFI for rufus compatability"
 				cp -rv "${clst_target_path}"/boot/EFI/ "${clst_target_path}"
-
-				echo "Emptying /boot"
-				rm -rf "${clst_target_path}"/boot
-				mkdir -p "${clst_target_path}"/boot
 			fi
 		fi
 
-		if [ -e "${clst_target_path}/isolinux/isolinux.bin" ]
-		then
-			echo "** Found ISOLINUX bootloader"
-			if [ -d "${clst_target_path}/boot" ]
-			then
-				if [ -n "$(ls ${clst_target_path}/boot)" ]
-				# have stray files in /boot, assume ISOLINUX only
-				then
-					echo "** boot dir not empty, moving files to isolinux/ then removing it"
-					mv "${clst_target_path}"/boot/* "${clst_target_path}/isolinux"
-					rm -r "${clst_target_path}/boot"
-					echo "Creating ISO using ISOLINUX bootloader"
-					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
-					isohybrid "${1}"
-				elif [ -e "${clst_target_path}/gentoo.efimg" ]
-				# have BIOS isolinux, plus an EFI loader image
-				then
-					echo "Creating ISO using both ISOLINUX and EFI bootloader"
-					run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
-					isohybrid --uefi "${1}"
-				fi
-			else
-				echo "Creating ISO using ISOLINUX bootloader"
-				run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
-				isohybrid "${1}"
-			fi
-		elif [ -e "${clst_target_path}/boot/grub/stage2_eltorito" ]
-		then
-			echo "Creating ISO using GRUB bootloader"
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b boot/grub/stage2_eltorito -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
-		elif [ -e "${clst_target_path}/gentoo.efimg" ]
-		then
+		if [ -e "${clst_target_path}/isolinux/isolinux.bin" ]; then
+			echo '** Found ISOLINUX bootloader'
+			if [ -e "${clst_target_path}/gentoo.efimg" ]; then
+			  # have BIOS isolinux, plus an EFI loader image
+			  echo '** Found GRUB2 EFI bootloader'
+				echo 'Creating ISO using both ISOLINUX and EFI bootloader'
+				run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
+				isohybrid --uefi "${1}"
+		  else
+			  echo 'Creating ISO using ISOLINUX bootloader'
+			  run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
+			  isohybrid "${1}"
+		  fi
+		elif [ -e "${clst_target_path}/gentoo.efimg" ]; then
+			echo '** Found GRUB2 EFI bootloader'
 			echo 'Creating ISO using EFI bootloader'
 			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b gentoo.efimg -c boot.cat -no-emul-boot "${clst_target_path}"/
 		else
+			echo '** Found no known bootloader'
+			echo 'Creating ISO with fingers crossed that you know what you are doing...'
 			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 		fi
 	;;
