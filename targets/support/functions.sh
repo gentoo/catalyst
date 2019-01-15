@@ -94,9 +94,9 @@ create_bootloader() {
     fi
     #memtest goes under isolinux since it doesn't work for uefi right now
     if [ -f /usr/share/memtest86+/memtest ]; then
-      cp /usr/share/memtest86+/memtest isolinux/memtest86
+      cp /usr/share/memtest86+/memtest.bin isolinux/memtest86
     else
-      echo "Missing /usr/share/memtest86+/memtest, this livecd will not have memtest86+ support.  Enable USE=system-bootloader on catalyst to pull in the correct deps"
+      echo "Missing /usr/share/memtest86+/memtest.bin, this livecd will not have memtest86+ support.  Enable USE=system-bootloader on catalyst to pull in the correct deps"
     fi
   else
     echo "Missing /usr/share/syslinux/isolinux.bin, this livecd will not bios boot.  Enable USE=system-bootloader on catalyst to pull in the correct deps"
