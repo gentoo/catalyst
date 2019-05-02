@@ -26,7 +26,7 @@ target: tinderbox
 rel_type:
 
 # This is the system profile to be used by catalyst to build this target.  It is
-# specified as a relative path from /usr/portage/profiles.
+# specified as a relative path from /var/db/repos/gentoo/profiles.
 # example:
 # profile: default-linux/x86/2006.1
 profile:

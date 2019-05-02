@@ -1020,7 +1020,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					ouch = 1
 					log.warning("Couldn't umount bind mount: %s", target)
 
-			if "snapcache" in self.settings["options"] and x == "/usr/portage":
+			if "snapcache" in self.settings["options"] and x == "/var/db/repos/gentoo":
 				try:
 					# It's possible the snapshot lock object isn't created yet.
 					# This is because mount safety check calls unbind before the
