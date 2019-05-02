@@ -52,7 +52,7 @@ distribution tarball's files directory.
 
 Example catalyst.conf:
 
-distdir="/usr/portage/distfiles"
+distdir="/var/cache/distfiles"
 options="pkgcache kerncache"
 sharedir="/usr/share/catalyst"
 

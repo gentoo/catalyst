@@ -16,10 +16,10 @@
 
 if [ -d /usr/livecd/profiles ]
 then
-	ln -sf /usr/livecd/profiles /usr/portage/profiles
+	ln -sf /usr/livecd/profiles /var/db/repos/gentoo/profiles
 fi
 
 if [ -d /usr/livecd/eclass ]
 then
-	ln -sf /usr/livecd/eclass /usr/portage/eclass
+	ln -sf /usr/livecd/eclass /var/db/repos/gentoo/eclass
 fi
