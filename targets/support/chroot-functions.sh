@@ -159,7 +159,7 @@ setup_myemergeopts(){
 setup_binutils(){
 	if [ -x /usr/bin/binutils-config ]
 	then
-		my_binutils=$( cd /etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
+		my_binutils=$( cd ${ROOT}/etc/env.d/binutils; ls ${clst_CHOST}-* | head -n 1 )
 		if [ -z "${my_binutils}" ]
 		then
 			my_binutils=1
@@ -171,7 +171,7 @@ setup_binutils(){
 setup_gcc(){
 	if [ -x /usr/bin/gcc-config ]
 	then
-		my_gcc=$( cd /etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
+		my_gcc=$( cd ${ROOT}/etc/env.d/gcc; ls ${clst_CHOST}-* | head -n 1 )
 		if [ -z "${my_gcc}" ]
 		then
 			my_gcc=1

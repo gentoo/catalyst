@@ -8,8 +8,6 @@ source /tmp/chroot-functions.sh
 update_env_settings
 show_debug
 
-# Right now these will parse the unpacked stage3 but change things
-# inside of /tmp/stage1root due to ROOT env variable
 setup_gcc
 setup_binutils
 
