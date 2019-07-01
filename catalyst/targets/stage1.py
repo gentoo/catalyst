@@ -38,10 +38,16 @@ class stage1(StageBase):
 		"/usr/share/zoneinfo", self.settings["port_conf"] + "/package*"])
 
 	# XXX: How do these override_foo() functions differ from the ones in StageBase and why aren't they in stage3_target?
+	# XXY: It appears the difference is that these functions are actually doing something and the ones in stagebase don't :-(
+	# XXZ: I have a wierd suspicion that it's the difference in capitolization
 
 	def override_chost(self):
 		if "chost" in self.settings:
 			self.settings["CHOST"] = self.settings["chost"]
+
+	def override_common_flags(self):
+		if "common_flags" in self.settings:
+			self.settings["COMMON_FLAGS"] = self.settings["common_flags"]
 
 	def override_cflags(self):
 		if "cflags" in self.settings:
@@ -50,6 +56,14 @@ class stage1(StageBase):
 	def override_cxxflags(self):
 		if "cxxflags" in self.settings:
 			self.settings["CXXFLAGS"] = self.settings["cxxflags"]
+
+	def override_fcflags(self):
+		if "fcflags" in self.settings:
+			self.settings["FCFLAGS"] = self.settings["fcflags"]
+
+	def override_fflags(self):
+		if "fflags" in self.settings:
+			self.settings["FFLAGS"] = self.settings["fflags"]
 
 	def override_ldflags(self):
 		if "ldflags" in self.settings:
