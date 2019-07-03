@@ -261,7 +261,7 @@ case ${clst_hostarch} in
 				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
 				echo "Mounting FAT16 loopback file"
 				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
-					"${clst_target_path}/gentoo.efimg.mountPoint"
+					"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to mount EFI image file"
 
 				echo "Populating EFI image file from ${clst_target_path}/boot/EFI"
 				cp -rv "${clst_target_path}"/boot/EFI/ \
