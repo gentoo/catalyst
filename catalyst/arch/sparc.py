@@ -15,18 +15,18 @@ class generic_sparc64(builder.generic):
 		builder.generic.__init__(self,myspec)
 
 class arch_sparc(generic_sparc):
-	"builder class for generic sparc (sun4cdm)"
+	"builder class for generic sparc (32-bit userland)"
 	def __init__(self,myspec):
 		generic_sparc.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 class arch_sparc64(generic_sparc64):
-	"builder class for generic sparc64 (sun4u)"
+	"builder class for generic sparc64 (64-bit userland)"
 	def __init__(self,myspec):
 		generic_sparc64.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -mcpu=ultrasparc -pipe"
-		self.settings["CHOST"]="sparc-unknown-linux-gnu"
+		self.settings["CHOST"]="sparc64-unknown-linux-gnu"
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
