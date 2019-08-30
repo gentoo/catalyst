@@ -18,7 +18,7 @@ class arch_sparc(generic_sparc):
 	"builder class for generic sparc (32-bit userland)"
 	def __init__(self,myspec):
 		generic_sparc.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -mcpu=ultrasparc -pipe"
 		self.settings["CHOST"]="sparc-unknown-linux-gnu"
 
 class arch_sparc64(generic_sparc64):
