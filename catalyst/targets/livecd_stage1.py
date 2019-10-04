@@ -42,7 +42,6 @@ class livecd_stage1(StageBase):
 			if isinstance(self.settings[self.settings['spec_prefix']+'/packages'], str):
 				self.settings[self.settings["spec_prefix"]+"/packages"] = \
 					self.settings[self.settings["spec_prefix"]+"/packages"].split()
-		self.settings[self.settings["spec_prefix"]+"/packages"].append("app-misc/livecd-tools")
 
 	def set_pkgcache_path(self):
 		if "pkgcache_path" in self.settings:
