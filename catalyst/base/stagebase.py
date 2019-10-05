@@ -1001,9 +1001,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		for x in myrevmounts:
 			target = normpath(mypath + self.target_mounts[x])
 			if not os.path.exists(target):
+				log.warning('%s does not exist. Skipping', target)
 				continue
 
 			if not ismount(target):
+				log.warning('%s is not a mount point. Skipping', target)
 				continue
 
 			try:
