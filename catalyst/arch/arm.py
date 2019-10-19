@@ -93,14 +93,14 @@ class arch_armv6j_hardfp(generic_arm):
 	"Builder class for armv6j hardfloat target, needs >=gcc-4.5"
 	def __init__(self,myspec):
 		generic_arm.__init__(self,myspec)
-		self.settings["CHOST"]="armv6j-hardfloat-linux-gnueabi"
+		self.settings["CHOST"]="armv6j-unknown-linux-gnueabihf"
 		self.settings["COMMON_FLAGS"]+=" -march=armv6j -mfpu=vfp -mfloat-abi=hard"
 
 class arch_armv7a_hardfp(generic_arm):
 	"Builder class for armv7a hardfloat target, needs >=gcc-4.5"
 	def __init__(self,myspec):
 		generic_arm.__init__(self,myspec)
-		self.settings["CHOST"]="armv7a-hardfloat-linux-gnueabi"
+		self.settings["CHOST"]="armv7a-unknown-linux-gnueabihf"
 		self.settings["COMMON_FLAGS"]+=" -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
 
 class arch_armv5teb(generic_armeb):
