@@ -75,10 +75,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		self.subarchmap = {}
 		machinemap = {}
 		arch_dir = self.settings["archdir"] + "/"
+		log.debug("Begin loading arch modules...")
 		for x in [
 					x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")
 					and x != "__init__.py"]:
-			log.debug("Begin loading arch modules...")
+			log.debug("\tLoading %s", x)
 			try:
 				fh = open(arch_dir + x + ".py")
 				# This next line loads the plugin as a module and
