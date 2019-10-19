@@ -91,6 +91,7 @@ TARGET_MOUNT_DEFAULTS = {
 	"port_logdir": "/var/log/portage",
 	"proc": "/proc",
 	"shm": "/dev/shm",
+	"run": "/run",
 	}
 
 SOURCE_MOUNT_DEFAULTS = {
@@ -101,6 +102,7 @@ SOURCE_MOUNT_DEFAULTS = {
 	"port_tmpdir": "tmpfs",
 	"proc": "/proc",
 	"shm": "shmfs",
+	"run": "tmpfs",
 	}
 
 # legend:  key: message

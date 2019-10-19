@@ -232,6 +232,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if os.uname()[0] == "Linux":
 			self.mounts.append("devpts")
 			self.mounts.append("shm")
+			self.mounts.append("run")
 
 		self.set_mounts()
 
@@ -977,6 +978,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					_cmd = ['mount', '-t', 'tmpfs',
 						'-o', 'size=' + self.settings['var_tmpfs_portage'] + 'G',
 						src, target]
+				else:
+					_cmd = ['mount', '-t', 'tmpfs', src, target]
 			else:
 				if os.uname()[0] == "FreeBSD":
 					if src == "/dev":
