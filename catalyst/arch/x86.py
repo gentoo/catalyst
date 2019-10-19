@@ -1,3 +1,4 @@
+import platform
 
 from catalyst import builder
 
@@ -5,7 +6,7 @@ class generic_x86(builder.generic):
 	"abstract base class for all x86 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		if self.settings["buildarch"]=="amd64":
+		if platform.machine() == 'x86_64':
 			self.setarch('linux32')
 			self.settings["crosscompile"] = False
 

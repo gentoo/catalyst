@@ -1,3 +1,4 @@
+import platform
 
 from catalyst import builder
 
@@ -6,7 +7,7 @@ class generic_ppc(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHOST"]="powerpc-unknown-linux-gnu"
-		if self.settings["buildarch"]=="ppc64":
+		if platform.machine() == 'ppc64':
 			self.setarch('linux32')
 			self.settings["crosscompile"] = False
 

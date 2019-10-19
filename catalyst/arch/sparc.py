@@ -1,3 +1,4 @@
+import platform
 
 from catalyst import builder
 
@@ -5,7 +6,7 @@ class generic_sparc(builder.generic):
 	"abstract base class for all sparc builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
-		if self.settings["buildarch"]=="sparc64":
+		if platform.machine() == 'sparc64':
 			self.setarch('linux32')
 			self.settings["crosscompile"] = False
 
