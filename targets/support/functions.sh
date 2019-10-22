@@ -149,20 +149,21 @@ extract_kernels() {
 		mkdir -p ${1}/
 		tar -I lbzip2 -xf ${kbinary} -C ${1}/
 
-		# change config name from "config-*" to "gentoo", for example
-		#mv ${1}/config-* ${1}/${x}-config
-		rm ${1}/config-*
+		# change config name from "config-*" to "gentoo-config", for example
+		mv ${1}/config-* ${1}/${x}-config
 
 		# change kernel name from "kernel" to "gentoo", for example
 		if [ -e ${1}/kernel-* ]
 		then
 			mv ${1}/kernel-* ${1}/${x}
 		fi
-
-		# change kernel name from "kernelz" to "gentoo", for example
 		if [ -e ${1}/kernelz-* ]
 		then
 			mv ${1}/kernelz-* ${1}/${x}
+		fi
+		if [ -e ${1}/vmlinuz-* ]
+		then
+			mv ${1}/vmlinuz-* ${1}/${x}
 		fi
 
 		# change initrd name from "initrd" to "gentoo.igz", for example
@@ -170,12 +171,12 @@ extract_kernels() {
 		then
 			mv ${1}/initrd-* ${1}/${x}.igz
 		fi
-
 		if [ -e ${1}/initramfs-* ]
 		then
 			mv ${1}/initramfs-* ${1}/${x}.igz
 		fi
 
+		# rename "System.map" to "System-gentoo.map", for example
 		if [ -e ${1}/System.map-* ]
 		then
 			mv ${1}/System.map-* ${1}/System-${x}.map
@@ -209,15 +210,20 @@ extract_kernel() {
 	rm ${1}/config-*
 
 	# change kernel name from "kernel" to "gentoo", for example
-	mv ${1}/kernel-* ${1}/${2}
+	if [ -e ${1}/kernel-* ]
+	then
+		mv ${1}/kernel-* ${1}/${2}
+	fi
+	if [ -e ${1}/vmlinuz-* ]
+	then
+		mv ${1}/vmlinuz-* ${1}/${2}
+	fi
 
 	# change initrd name from "initrd" to "gentoo.igz", for example
 	if [ -e ${1}/initrd-* ]
 	then
 		mv ${1}/initrd-* ${1}/${2}.igz
 	fi
-
-	# change initramfs name from "initramfs" to "gentoo.igz", for example
 	if [ -e ${1}/initramfs-* ]
 	then
 		mv ${1}/initramfs-* ${1}/${2}.igz
