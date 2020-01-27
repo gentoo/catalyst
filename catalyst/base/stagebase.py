@@ -973,13 +973,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "snapcache" in self.settings["options"] and x == "portdir":
 				self.snapcache_lock.read_lock()
 			_cmd = None
-			if src == "tmpfs":
+			if src == "maybe_tmpfs":
 				if "var_tmpfs_portage" in self.settings:
 					_cmd = ['mount', '-t', 'tmpfs',
 						'-o', 'size=' + self.settings['var_tmpfs_portage'] + 'G',
 						src, target]
-				else:
-					_cmd = ['mount', '-t', 'tmpfs', src, target]
+			elif src == "tmpfs":
+				_cmd = ['mount', '-t', 'tmpfs', src, target]
 			else:
 				if os.uname()[0] == "FreeBSD":
 					if src == "/dev":

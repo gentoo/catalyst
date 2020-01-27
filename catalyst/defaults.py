@@ -99,7 +99,7 @@ SOURCE_MOUNT_DEFAULTS = {
 	"devpts": "/dev/pts",
 	"distdir": DISTDIR[:],
 	"portdir": PORTDIR[:],
-	"port_tmpdir": "tmpfs",
+	"port_tmpdir": "maybe_tmpfs",
 	"proc": "/proc",
 	"shm": "shmfs",
 	"run": "tmpfs",
