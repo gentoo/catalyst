@@ -135,6 +135,20 @@ class arch_power8le(arch_ppc64le):
 		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
 		self.settings["HOSTUSE"]=["altivec","ibm"]
 
+class arch_power9(arch_ppc64):
+	"builder class for power9 under ppc64"
+	def __init__(self,myspec):
+		arch_ppc64.__init__(self,myspec)
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power9 -mtune=power9 -mabi=elfv2"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
+class arch_power9le(arch_ppc64le):
+	"builder class for power9 under ppc64le"
+	def __init__(self,myspec):
+		arch_ppc64le.__init__(self,myspec)
+		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power9 -mtune=power9 -mabi=elfv2"
+		self.settings["HOSTUSE"]=["altivec","ibm"]
+
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
@@ -153,6 +167,8 @@ def register():
 		"power7le"	: arch_power7le,
 		"power8"	: arch_power8,
 		"power8le"	: arch_power8le,
+		"power9"	: arch_power9,
+		"power9le"	: arch_power9le,
 		"ppc"		: arch_ppc,
 		"ppc64"		: arch_ppc64,
 		"ppc64le"	: arch_ppc64le,
