@@ -231,7 +231,7 @@ then
 		echo "No pending updates for ${clst_ksource}"
 	else
 		echo "Pending updates for ${clst_ksource}, removing package.provided"
-		rm ${clst_port_conf}/profile/package.provided
+		rm -f ${clst_port_conf}/profile/package.provided
 	fi
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
