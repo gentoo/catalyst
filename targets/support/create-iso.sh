@@ -94,12 +94,14 @@ else
 	mkisofs_zisofs_opts=""
 fi
 
-#we want to create a sha512sum for every file on the iso so we can verify it
-#from genkernel during boot.  Here we make a function to create the sha512sums
+#we want to create a checksum for every file on the iso so we can verify it
+#from genkernel during boot.  Here we make a function to create the sha512sums, and blake2sums
 isoroot_checksum() {
 	echo "Creating checksums for all files included in the iso, please wait..."
-	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' -exec sha512sum {} + > "${clst_target_path}"/isoroot_checksums
+	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec sha512sum {} + > "${clst_target_path}"/isoroot_checksums
 	${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_checksums
+	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec b2sum {} + > "${clst_target_path}"/isoroot_b2sums
+	${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_b2sums
 }
 
 run_mkisofs() {

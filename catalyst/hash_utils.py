@@ -11,6 +11,7 @@ from catalyst.support import CatalystError
 # fields = ["func", "cmd", "args", "id"]
 HASH_DEFINITIONS = {
 	"adler32"  :["calc_hash2", "shash", ["-a", "ADLER32"], "ADLER32"],
+	"blake2"   :["calc_hash", "b2sum", [ ], "BLAKE2"],
 	"crc32"    :["calc_hash2", "shash", ["-a", "CRC32"], "CRC32"],
 	"crc32b"   :["calc_hash2", "shash", ["-a", "CRC32B"], "CRC32B"],
 	"gost"     :["calc_hash2", "shash", ["-a", "GOST"], "GOST"],
@@ -94,11 +95,12 @@ class HashMap(object):
 		args = [_hash.cmd]
 		args.extend(_hash.args)
 		args.append(file_)
+		log.debug('args = %r', args)
 		source = Popen(args, stdout=PIPE)
-		mylines = source.communicate()[0]
-		mylines=mylines[0].split()
-		result=mylines[0]
-		log.info('%s (%s) = %s', _hash.id, file_, result)
+		output = source.communicate()
+		mylines = output[0].decode('ascii')
+		log.info('%s (%s) = %s', _hash.id, file_, mylines)
+		result = "# " + _hash.id + " (b2sum) HASH\n" + mylines
 		return result
 
 
