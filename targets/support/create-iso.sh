@@ -98,14 +98,26 @@ fi
 #from genkernel during boot.  Here we make a function to create the sha512sums, and blake2sums
 isoroot_checksum() {
 	echo "Creating checksums for all files included in the iso, please wait..."
-	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec sha512sum {} + > "${clst_target_path}"/isoroot_checksums
-	${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_checksums
-	find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec b2sum {} + > "${clst_target_path}"/isoroot_b2sums
-	${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_b2sums
+	if [ -z "${1}" ] || [ "${1}" = "sha512" ]; then
+		find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec sha512sum {} + > "${clst_target_path}"/isoroot_checksums
+		${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_checksums
+	fi
+	if [ -z "${1}" ] || [ "${1}" = "blake2" ]; then
+		find "${clst_target_path}" -type f ! -name 'isoroot_checksums' ! -name 'isolinux.bin' ! -name 'isoroot_b2sums' -exec b2sum {} + > "${clst_target_path}"/isoroot_b2sums
+		${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_b2sums
+	fi
 }
 
 run_mkisofs() {
-	[ -n "${clst_livecd_verify}" ] && isoroot_checksum
+	if [ -n "${clst_livecd_verify}" ]; then
+		if [ "${clst_livecd_verify}" = "sha512" ]; then
+			isoroot_checksum sha512
+		elif [ "${clst_livecd_verify}" = "blake2" ]; then
+			isoroot_checksum blake2
+		else
+			isoroot_checksum
+		fi
+	fi
 	echo "Running \"mkisofs ${@}\""
 	mkisofs "${@}" || die "Cannot make ISO image"
 }
