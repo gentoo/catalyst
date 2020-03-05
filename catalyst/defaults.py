@@ -11,6 +11,12 @@ if os.uname()[0] in  ["Linux", "linux"]:
 else:
 	TAR = 'bsd'
 
+# establish the eprefix, initially set so eprefixify can
+# set it on install
+EPREFIX = "@GENTOO_PORTAGE_EPREFIX@".lstrip(os.sep)
+# check and set it if it wasn't
+if "GENTOO_PORTAGE_EPREFIX" in EPREFIX:
+    EPREFIX = ''
 
 # these should never be touched
 required_build_targets = ["targetbase", "generic_stage_target"]
@@ -33,7 +39,7 @@ valid_config_file_values.extend([ "distcc", "envscript",
 
 # set our base defaults here to keep
 # them in one location.
-BASE_GENTOO_DIR = "/var/gentoo"
+BASE_GENTOO_DIR = os.path.join(os.sep, EPREFIX, "var/gentoo")
 REPODIR = BASE_GENTOO_DIR + "/repos"
 DISTDIR = BASE_GENTOO_DIR + "/distfiles"
 PKGDIR = BASE_GENTOO_DIR + "/packages"
@@ -50,7 +56,7 @@ confdefaults={
 	"decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
 	"distdir": DISTDIR[:],
 	"hash_function": "crc32",
-	"icecream": "/var/cache/icecream",
+	"icecream": os.path.join(os.sep, EPREFIX, "var/cache/icecream"),
 	'list_xattrs_opt': LIST_XATTRS_OPTIONS[TAR],
 	"local_overlay": REPODIR[:] + "/local",
 	"port_conf": "/etc/portage",
@@ -58,22 +64,22 @@ confdefaults={
 	"options": set(),
 	"packagedir": PKGDIR[:],
 	"portdir": PORTDIR[:],
-	"port_tmpdir": "/var/tmp/portage",
+	"port_tmpdir": os.path.join(os.sep, EPREFIX, "var/tmp/portage"),
 	"PythonDir": "./catalyst",
 	"repo_basedir": REPODIR[:],
 	"repo_name": MAINREPO[:],
 	"sed": "sed",
-	"sharedir": "/usr/share/catalyst",
-	"shdir": "/usr/share/catalyst/targets/",
-	"snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
+	"sharedir": os.path.join(os.sep, EPREFIX, "usr/share/catalyst"),
+	"shdir": os.path.join(os.sep, EPREFIX, "usr/share/catalyst/targets/"),
+	"snapshot_cache": os.path.join(os.sep, EPREFIX, "var/tmp/catalyst/snapshot_cache"),
 	"snapshot_name": "%(repo_name)s-",
 	"source_matching": "strict",
-	"storedir": "/var/tmp/catalyst",
+	"storedir": os.path.join(os.sep, EPREFIX, "var/tmp/catalyst"),
 	"target_distdir": DISTDIR[:],
 	"target_pkgdir": PKGDIR[:],
 	}
 
-DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'
+DEFAULT_CONFIG_FILE = os.path.join(os.sep, EPREFIX, 'etc/catalyst/catalyst.conf')
 
 PORT_LOGDIR_CLEAN = \
 	'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'

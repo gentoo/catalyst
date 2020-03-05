@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim: tabstop=4 noexpandtab shiftwidth=4
 """Catalyst is a release building tool used by Gentoo Linux"""
 
 from __future__ import print_function
@@ -17,6 +19,12 @@ _this_dir = _os.path.dirname(__file__)
 _package_name = 'catalyst'
 _maintainer_name, _maintainer_email = _parseaddr(__maintainer__)
 
+# establish the eprefix, initially set so eprefixify can
+# set it on install
+EPREFIX = "@GENTOO_PORTAGE_EPREFIX@".lstrip(_os.sep)
+# check and set it if it wasn't
+if "GENTOO_PORTAGE_EPREFIX" in EPREFIX:
+    EPREFIX = ''
 
 def _posix_path(path):
 	"""Convert a native path to a POSIX path
@@ -46,12 +54,18 @@ def _files(prefix, root):
 		yield (install_directory, file_source_paths)
 
 
-_data_files = [('/etc/catalyst', ['etc/catalyst.conf','etc/catalystrc']),
-	('/usr/share/man/man1', ['files/catalyst.1']),
-	('/usr/share/man/man5', ['files/catalyst-config.5', 'files/catalyst-spec.5'])
+_data_files = [
+	(_os.path.join(_os.sep, EPREFIX, 'etc/catalyst'),
+		['etc/catalyst.conf','etc/catalystrc']),
+	(_os.path.join(_os.sep, EPREFIX, 'usr/share/man/man1'),
+		['files/catalyst.1']),
+	(_os.path.join(_os.sep, EPREFIX, 'usr/share/man/man5'),
+		['files/catalyst-config.5', 'files/catalyst-spec.5'])
 	]
-_data_files.extend(_files('share/catalyst/livecd', 'livecd'))
-_data_files.extend(_files('share/catalyst/targets', 'targets'))
+_data_files.extend(_files(_os.path.join(_os.sep, EPREFIX,
+	'usr/share/catalyst/livecd'), 'livecd'))
+_data_files.extend(_files(_os.path.join(_os.sep, EPREFIX,
+	'usr/share/catalyst/targets'), 'targets'))
 
 
 class set_version(_Command):
