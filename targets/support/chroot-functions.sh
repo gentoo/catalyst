@@ -78,7 +78,8 @@ get_libdir() {
 
 setup_myfeatures(){
 	setup_myemergeopts
-	export FEATURES="-news binpkg-multi-instance clean-logs"
+	export clst_myfeatures="-news binpkg-multi-instance clean-logs"
+	export FEATURES="${clst_myfeatures}"
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
@@ -132,7 +133,7 @@ setup_myfeatures(){
 		export PATH="/usr/lib/icecc/bin:${PATH}"
 		export PREROOTPATH="/usr/lib/icecc/bin"
 	fi
-	export FEATURES="${clst_myfeatures} -news"
+	export FEATURES="${clst_myfeatures}"
 }
 
 setup_myemergeopts(){
