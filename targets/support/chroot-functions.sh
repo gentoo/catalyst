@@ -297,7 +297,7 @@ run_merge() {
 	export CLEAN_DELAY=0
 	export EBEEP_IGNORE=0
 	export EPAUSE_IGNORE=0
-	export CONFIG_PROTECT="-*"
+	[[ $CONFIG_PROTECT != "-*"* ]] && export CONFIG_PROTECT="-*"
 
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
@@ -443,6 +443,10 @@ GenericName=Gentoo Linux Handbook
 Comment=This is a link to the local copy of the Gentoo Linux Handbook.
 Icon=text-editor" > /usr/share/applications/gentoo-handbook.desktop
 }
+
+readonly locales="
+C.UTF8 UTF-8
+"
 
 # We do this everywhere, so why not put it in this script
 run_default_funcs

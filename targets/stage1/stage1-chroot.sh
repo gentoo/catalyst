@@ -57,6 +57,7 @@ make_destpath /tmp/stage1root
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 ${clst_sed} -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
+echo "$locales" > /etc/locale.gen
 for etc in /etc "${clst_root_path}"/etc; do
 	echo "LANG=C.UTF8" > ${etc}/env.d/02locale
 done
