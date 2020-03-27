@@ -78,7 +78,7 @@ get_libdir() {
 
 setup_myfeatures(){
 	setup_myemergeopts
-	export FEATURES="-news clean-logs"
+	export FEATURES="-news binpkg-multi-instance clean-logs"
 	if [ -n "${clst_CCACHE}" ]
 	then
 		export clst_myfeatures="${clst_myfeatures} ccache"
