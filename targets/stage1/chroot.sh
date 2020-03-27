@@ -57,6 +57,11 @@ make_destpath "${clst_root_path}"
 run_merge "--oneshot --nodeps sys-apps/baselayout"
 ${clst_sed} -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
+for etc in /etc "${clst_root_path}"/etc; do
+	echo "LANG=C.UTF8" > ${etc}/env.d/02locale
+done
+update_env_settings
+
 # Now, we install our packages
 if [ -e ${clst_make_conf} ]; then
 	echo "CATALYST_USE=\"-* build ${BINDIST} ${clst_CATALYST_USE}\"" >> ${clst_make_conf}
@@ -70,6 +75,13 @@ if [ -e ${clst_make_conf} ]; then
 fi
 
 run_merge "--oneshot ${clst_buildpkgs}"
+
+# TODO: Drop this when locale-gen in stable glibc supports ROOT.
+#
+# locale-gen does not support the ROOT variable, and as such glibc simply does
+# not run locale-gen when ROOT is set. Since we've set LANG, we need to run
+# locale-gen explicitly.
+locale-gen --destdir "${clst_root_path}"/ || die "locale-gen failed"
 
 # Why are we removing these? Don't we need them for final make.conf?
 for useexpand in ${clst_HOSTUSEEXPAND}; do
