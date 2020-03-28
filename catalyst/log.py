@@ -8,8 +8,6 @@ another level "notice" between warning & info, and all output goes through
 the "catalyst" logger.
 """
 
-from __future__ import print_function
-
 import logging
 import logging.handlers
 import os

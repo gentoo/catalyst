@@ -1,7 +1,5 @@
 #!/usr/bin/python -OO
 
-from __future__ import print_function
-
 import sys
 
 # This block ensures that ^C interrupts are handled quietly.

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """Catalyst is a release building tool used by Gentoo Linux"""
 
-from __future__ import print_function
-
 import codecs as _codecs
 from distutils.core import setup as _setup, Command as _Command
 from email.utils import parseaddr as _parseaddr

@@ -8,8 +8,6 @@
 # source the testpath file then run "doc/make_target_table.py"
 
 
-from __future__ import print_function
-
 import glob
 import locale
 import os
