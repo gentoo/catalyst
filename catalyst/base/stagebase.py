@@ -963,7 +963,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			ensure_dirs(target, mode=0o755)
 
 			if not os.path.exists(self.mountmap[x]):
-				if self.mountmap[x] not in ["tmpfs", "shmfs"]:
+				if self.mountmap[x] not in ("maybe_tmpfs", "tmpfs", "shmfs"):
 					ensure_dirs(self.mountmap[x], mode=0o755)
 
 			src = self.mountmap[x]
