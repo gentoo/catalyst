@@ -4,7 +4,6 @@
 # Release Engineering Team <releng@gentoo.org>
 # Andrew Gaffney <agaffney@gentoo.org>
 # Chris Gianelloni <wolf31o2@wolf31o2.org>
-# $Id$
 
 import argparse
 import datetime
