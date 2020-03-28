@@ -1,10 +1,5 @@
 #!/usr/bin/python
 
-# Maintained in full by:
-# Catalyst Team <catalyst@gentoo.org>
-# Release Engineering Team <releng@gentoo.org>
-# Copyright 2013 Brian Dolbec <dolsen@gentoo.org>
-
 '''resume.py
 
 Performs autoresume tracking file operations such as

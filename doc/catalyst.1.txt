@@ -120,7 +120,7 @@ NOTES
 stager projects, both of which were used to create pre-1.4 Gentoo releases.
 
 *catalyst* was originally conceived and coded by both Daniel Robbins and
-John Davis. It is currently maintained by Chris Gianelloni and Eric Edgar and
+John Davis. It is currently maintained by the Catalyst Project Team and
 has been mostly re-written.
 
 

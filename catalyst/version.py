@@ -1,10 +1,3 @@
-# Maintained in full by:
-# Catalyst Team <catalyst@gentoo.org>
-# Release Engineering Team <releng@gentoo.org>
-# Copyright: 2011 Brian Harring <ferringb@gmail.com>
-# License: BSD/GPL2
-# Copied & edited by: Brian Dolbec <dolsen@gentoo.org>
-
 '''Version information and/or git version information
 '''
 

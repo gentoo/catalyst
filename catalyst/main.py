@@ -1,10 +1,3 @@
-
-# Maintained in full by:
-# Catalyst Team <catalyst@gentoo.org>
-# Release Engineering Team <releng@gentoo.org>
-# Andrew Gaffney <agaffney@gentoo.org>
-# Chris Gianelloni <wolf31o2@wolf31o2.org>
-
 import argparse
 import datetime
 import os

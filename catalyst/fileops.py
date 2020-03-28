@@ -1,8 +1,3 @@
-
-# Maintained in full by:
-# Catalyst Team <catalyst@gentoo.org>
-# Release Engineering Team <releng@gentoo.org>
-
 '''fileops.py
 
 Performs file operations such as pack/unpack,
