@@ -662,7 +662,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.valid_values.append("boot/kernel/" + x + "/gk_action")
 				self.valid_values.append("boot/kernel/" + x + "/gk_kernargs")
 				self.valid_values.append("boot/kernel/" + x + "/initramfs_overlay")
-				self.valid_values.append("boot/kernel/" + x + "/machine_type")
 				self.valid_values.append("boot/kernel/" + x + "/sources")
 				self.valid_values.append("boot/kernel/" + x + "/softlevel")
 				self.valid_values.append("boot/kernel/" + x + "/use")

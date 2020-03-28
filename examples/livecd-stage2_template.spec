@@ -317,12 +317,6 @@ boot/kernel/gentoo/extraversion:
 # boot/kernel/gentoo/packages: pcmcia-cs speedtouch slmodem globespan-adsl hostap-driver hostap-utils ipw2100 ipw2200 fritzcapi fcdsl cryptsetup
 boot/kernel/gentoo/packages:
 
-# This option is only for ppc64 machines.  If used it will create the /etc/yaboot.conf
-# entry used for booting a ibm powerpc machine.
-# example:
-# boot/kernel/gentoo/machine_type: ibm
-boot/kernel/gentoo/machine_type:
-
 # This is only supported on ppc64 currently.  This entry sets up the console=
 # boot parameters required for sending the output to the appropriate console.
 # example:

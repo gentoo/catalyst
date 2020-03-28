@@ -264,12 +264,6 @@ sources to keep the modules from overwriting each other.  We do not
 use this on the official media.  `<label>` should match one of the
 labels given to *boot/kernel*.
 
-*boot/kernel/<label>/machine_type*::
-This option is only for ppc64 machines (example: `ibm`).  If used it
-will create the `/etc/yaboot.conf` entry used for booting an ibm
-powerpc machine.  `<label>` should match one of the labels given to
-*boot/kernel*.
-
 *boot/kernel/<label>/console*::
 This is only supported on ppc64 currently.  This entry sets up the
 console boot parameters required for sending the output to the

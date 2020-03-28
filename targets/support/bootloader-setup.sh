@@ -93,7 +93,6 @@ case ${clst_hostarch} in
 		for x in ${clst_boot_kernel}
 		do
 			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
-			eval "clst_kernel_machine_type=\$clst_boot_kernel_${x}_machine_type"
 			eval custom_kopts=\$${x}_kernelopts
 
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
