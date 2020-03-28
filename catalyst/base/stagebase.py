@@ -522,8 +522,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_controller_file(self):
 		self.settings["controller_file"] = normpath(self.settings["sharedir"] +
-			"/targets/" + self.settings["target"] + "/" + self.settings["target"]
-			+ "-controller.sh")
+			"/targets/" + self.settings["target"] + "/" + "controller.sh")
 
 	def set_iso_volume_id(self):
 		if self.settings["spec_prefix"] + "/volid" in self.settings:

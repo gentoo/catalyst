@@ -18,12 +18,12 @@ case "$1" in
 
 		# Enter chroot, execute our build script
 		exec_in_chroot \
-			"${clst_shdir}/${clst_target}/${clst_target}-chroot.sh" \
+			"${clst_shdir}/${clst_target}/chroot.sh" \
 			|| exit 1
 	;;
 
 	preclean)
-		exec_in_chroot "${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh" || exit 1
+		exec_in_chroot "${clst_shdir}/${clst_target}/preclean-chroot.sh" || exit 1
 	;;
 
 	clean)

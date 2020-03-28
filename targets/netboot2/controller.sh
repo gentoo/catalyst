@@ -10,7 +10,7 @@ case ${1} in
 		clst_root_path="/" \
 		clst_packages="$*" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-pkg.sh
+		${clst_shdir}/${clst_target}/pkg.sh
 	;;
 
 	pre-kmerge)
@@ -56,7 +56,7 @@ case ${1} in
 		# Copy remaining files over to the initramfs target
 		clst_files="${@}" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-copyfile.sh
+		${clst_shdir}/${clst_target}/copyfile.sh
 	;;
 
 	final)

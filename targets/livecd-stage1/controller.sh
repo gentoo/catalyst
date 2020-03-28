@@ -10,7 +10,7 @@ case $1 in
 		export clst_packages="$*"
 		mkdir -p ${clst_chroot_path}/usr/livecd ${clst_chroot_path}/tmp
 		exec_in_chroot \
-			${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
+			${clst_shdir}/${clst_target}/chroot.sh
 		echo "${clst_packages}" > ${clst_chroot_path}/tmp/packages.txt
 		;;
 

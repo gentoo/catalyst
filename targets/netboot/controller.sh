@@ -11,7 +11,7 @@ case ${1} in
 		clst_root_path="/" \
 		clst_packages="$*" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/chroot.sh
 	;;
 
 	busybox)
@@ -30,7 +30,7 @@ case ${1} in
 		clst_myemergeopts="${clst_myemergeopts} -O" \
 		clst_packages="busybox" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/chroot.sh
 	;;
 
 	pre-kmerge)
@@ -61,15 +61,15 @@ case ${1} in
 		clst_myemergeopts="${clst_myemergeopts} --nodeps" \
 		clst_packages="netboot-base" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
+		${clst_shdir}/${clst_target}/chroot.sh
 
 		clst_files="${@}" \
 		exec_in_chroot \
-		${clst_shdir}/${clst_target}/${clst_target}-image.sh
+		${clst_shdir}/${clst_target}/image.sh
 	;;
 
 	finish)
-		${clst_shdir}/${clst_target}/${clst_target}-combine.sh
+		${clst_shdir}/${clst_target}/combine.sh
 	;;
 
 	clean)

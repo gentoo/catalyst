@@ -11,7 +11,7 @@ case ${1} in
 		shift
 		export clst_packages="$*"
 		exec_in_chroot \
-			${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
+			${clst_shdir}/${clst_target}/chroot.sh
 	;;
 
 	preclean)
@@ -21,7 +21,7 @@ case ${1} in
 #		export root_fs_path="${clst_chroot_path}/tmp/mergeroot"
 #		install -d ${clst_image_path}
 
-#		${clst_shdir}/embedded/embedded-fs-runscript.sh \
+#		${clst_shdir}/embedded/fs-runscript.sh \
 #			${clst_embedded_fs_type} || exit 1
 #		imagesize=`du -sk ${clst_image_path}/root.img | cut -f1`
 #		echo "Created ${clst_embedded_fs_type} image at \
