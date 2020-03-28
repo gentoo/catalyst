@@ -1068,11 +1068,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						print_traceback=True)
 
 				log.warning(
-					'Overriding certain env variables may cause catastrophic failure.\n'
-					'If your build fails look here first as the possible problem.\n'
-					'Catalyst assumes you know what you are doing when setting these variables.\n'
-					'Catalyst Maintainers use VERY minimal envscripts, if used at all.\n'
-					'You have been warned.')
+					'env variables in catalystrc may cause catastrophic failure.\n'
+					'If your build fails look here first as the possible problem.')
 
 				shutil.copy(self.settings['envscript'],
 					self.settings['chroot_path'] + '/tmp/envscript')
