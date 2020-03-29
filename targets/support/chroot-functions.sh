@@ -182,17 +182,6 @@ setup_gcc(){
 }
 
 setup_pkgmgr(){
-	# Set bindist USE flag if clst_BINDIST is set
-	# this is handled independantly in stage2, changes here should be mirrored there
-	#if [ "${clst_target}" != "stage1" ] && [ -e "${clst_make_conf}" ] \
-	#	&& [ -n "${clst_BINDIST}" ]; then
-	#	if grep -q ^USE "${clst_make_conf}"; then
-	#		echo "USE=\"\${USE} bindist\"" >> "${clst_make_conf}"
-	#	else
-	#		echo "USE=\"bindist\"" >> "${clst_make_conf}"
-	#	fi
-	#fi
-
 	# We need to merge our package manager with USE="build" set in case it is
 	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
 	# just let emerge @system could merge it.
@@ -256,7 +245,6 @@ cleanup_stages() {
 	esac
 
 	# Remove bindist from use
-	# this is handled independantly in stage2, changes here should be mirrored there
 	${clst_sed} -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
 	${clst_sed} -i "/USE=\"bindist\"/d" "${clst_make_conf}"
 
