@@ -34,7 +34,6 @@ Catalyst is capable of:
 
 - Building installation stages
 - Building bootable LiveCDs
-- Building GRP (Gentoo Reference Platform) sets
 - Setting up a Tinderbox target for test building
 - Building netboot images
 

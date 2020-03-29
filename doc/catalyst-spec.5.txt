@@ -126,11 +126,6 @@ releases, we use a default README.txt, and this will be used on your
 CD if you do not provide one yourself.  We do not use this for the
 official releases.  This setting is supported by the livecd targets.
 
-*grp*::
-Since GRP is capable of building packages/source sets for more than
-one CD, this defines the layout for the directories under
-`$storedir/builds` (example: `src cd2`).
-
 *update_seed*::
 This is an optional setting supported by stage1 to tell catalyst if
 it should update the seed stage or not (valid values: `yes no`).
@@ -349,7 +344,7 @@ quite a few problems with these, so be careful with whatever `USE`
 flags you add here.  This is generally used for adding some
 functionality that we do not want on by default for all Gentoo users,
 but that we want on by default in our binaries.  This setting is
-supported by the `stage4`, `netboot2`, `tinderbox`, and `grp` targets.
+supported by the `stage4`, `netboot2`, and `tinderbox` targets.
 
 *<target>/packages*::
 This is the set of packages that we will merge into the stage4 tarball
@@ -394,23 +389,6 @@ have been built (example: `autoconf automake libtool m4 bison`).
 There are no checks on these packages, so be careful what you add
 here.  They can potentially break your target.  This setting is
 supported by the `stage4` and `livecd` targets.
-
-*grp/<label>/type*::
-This tells catalyst what type of GRP set this list of packages will
-create (example: `srcset`).  Valid options here are `srcset` or
-`pkgset` to either download the source, or to build packages,
-respectively.  `<label>` should match one of the labels given to
-*grp*.
-
-*grp/<label>/packages*::
-This is our list of packages that will comprise our package set
-(example: `dante tsocks sys-apps/eject minicom`).  Packages listed for
-a `srcset` label should be used for grabbing things that need a
-compiled kernel to build, or things listed in the Handbook that should
-be available before the first reboot during an install.  Pagekages
-listed for a `pkgset` label will be fetched, compiled, and installed
-in the target.  `<label>` should match one of the labels given to
-*grp*.
 
 Miscellaneous
 ~~~~~~~~~~~~~

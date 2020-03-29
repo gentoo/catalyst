@@ -18,9 +18,9 @@ DESCRIPTION
 -----------
 *catalyst* is the tool that the Gentoo Release Engineering team
 utilizes to build all Gentoo Linux releases. It is capable of building
-installation stages, bootable LiveCDs, netboot images, and Gentoo Reference
-Platform (GRP) sets. *catalyst* is also capable of providing a simple
-tinderbox environment for ebuild/package testing.
+installation stages, bootable LiveCDs, and netboot images.  *catalyst*
+is also capable of providing a simple tinderbox environment for package
+testing.
 
 For more information, please visit the *catalyst* project page
 on the web at 'https://wiki.gentoo.org/wiki/Catalyst'.
