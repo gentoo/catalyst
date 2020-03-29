@@ -260,7 +260,7 @@ cleanup_stages() {
 	${clst_sed} -i "/USE=\"\${USE} bindist\"/d" "${clst_make_conf}"
 	${clst_sed} -i "/USE=\"bindist\"/d" "${clst_make_conf}"
 
-	[ "${clst_target}" != "tinderbox" ] && rm -f /var/log/emerge.log /var/log/portage/elog/*
+	rm -f /var/log/emerge.log /var/log/portage/elog/*
 }
 
 update_env_settings(){

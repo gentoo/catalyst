@@ -344,7 +344,7 @@ quite a few problems with these, so be careful with whatever `USE`
 flags you add here.  This is generally used for adding some
 functionality that we do not want on by default for all Gentoo users,
 but that we want on by default in our binaries.  This setting is
-supported by the `stage4`, `netboot2`, and `tinderbox` targets.
+supported by the `stage4` and `netboot2` targets.
 
 *<target>/packages*::
 This is the set of packages that we will merge into the stage4 tarball
@@ -353,7 +353,7 @@ fxload irssi wpa_supplicant`).  They will be built with the `USE`
 flags configured above.  These packages must not depend on a
 configured kernel.  If the package requires a configured kernel, then
 it will be defined elsewhere.  This setting is supported by the
-`stage4`, `netboot2`, and `tinderbox` targets.
+`stage4`, and `netboot2` targets.
 
 *netboot/packages*::
 These package names are also labels used later when determining what

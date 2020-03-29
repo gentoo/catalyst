@@ -34,7 +34,6 @@ Catalyst is capable of:
 
 - Building installation stages
 - Building bootable LiveCDs
-- Setting up a Tinderbox target for test building
 - Building netboot images
 
 Configuring catalyst
