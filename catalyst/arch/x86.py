@@ -95,21 +95,21 @@ class arch_k6(generic_x86):
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx"]}
 
 class arch_k6_2(generic_x86):
-	"AMD K6-2 CPU with MMX and 3dNOW! support"
+	"AMD K6-2 CPU with MMX and 3DNow! support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=k6-2 -pipe"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow"]}
 
 class arch_athlon(generic_x86):
-	"AMD Athlon CPU with MMX, 3dNOW!, enhanced 3dNOW! and SSE prefetch support"
+	"AMD Athlon CPU with MMX, 3DNow!, Enhanced 3DNow! and SSE prefetch support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=athlon -pipe"
 		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow"]}
 
 class arch_athlon_xp(generic_x86):
-	"improved AMD Athlon CPU with MMX, 3dNOW!, enhanced 3dNOW! and full SSE support"
+	"improved AMD Athlon CPU with MMX, 3DNow!, Enhanced 3DNow! and full SSE support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=athlon-xp -pipe"
