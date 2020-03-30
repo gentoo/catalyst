@@ -227,7 +227,7 @@ cleanup_stages() {
 		cleanup_icecream
 	fi
 	case ${clst_target} in
-		stage3|system)
+		stage3)
 			run_merge --depclean --with-bdeps=y
 			;;
 		*)
@@ -235,7 +235,7 @@ cleanup_stages() {
 			;;
 	esac
 	case ${clst_target} in
-		stage1|stage2|stage3|system)
+		stage1|stage2|stage3)
 			rm -f /var/lib/portage/world
 			touch /var/lib/portage/world
 			;;
