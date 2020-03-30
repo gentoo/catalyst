@@ -1,4 +1,4 @@
-Catalyst is a release-buildcing tool for Gentoo.  If you use Gentoo
+Catalyst is a release-building tool for Gentoo.  If you use Gentoo
 and want to roll your own live CD or bootable USB stick, this is the
 way to go.  First, get a Gentoo development box and install the
 necessary tools:
@@ -54,7 +54,7 @@ where the storage dir is `$storedir/builds/$source_subpath`
 (`$storedir` from `catalyst.conf`, `$source_subpath` from your
 `*.spec` file).
 
-`.*spec` files
+`*.spec` files
 ~~~~~~~~~~~~~~
 
 `.*spec` files tell catalyst about the system you're trying to build.
