@@ -63,29 +63,28 @@ class arch_pentium3(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=pentium3 -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","sse"]}
 
 class arch_pentium4(generic_x86):
 	"Intel Pentium 4 CPU with MMX, SSE and SSE2 support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=pentium4 -pipe"
-		#lines like this appears to be trying to set the profile default, better to use the profile
-		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","sse","sse2"]}
 
 class arch_pentium_m(generic_x86):
 	"Intel Pentium M CPU with MMX, SSE and SSE2 support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=pentium-m -pipe"
-		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","sse","sse2"]}
 
 class arch_prescott(generic_x86):
 	"improved version of Intel Pentium 4 CPU with MMX, SSE, SSE2 and SSE3 support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=prescott -pipe"
-		#self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","sse","sse2"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","sse","sse2","sse3"]}
 
 class arch_k6(generic_x86):
 	"AMD K6 CPU with MMX support"
@@ -106,14 +105,14 @@ class arch_athlon(generic_x86):
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=athlon -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","3dnow","3dnowext"]}
 
 class arch_athlon_xp(generic_x86):
 	"improved AMD Athlon CPU with MMX, 3DNow!, Enhanced 3DNow! and full SSE support"
 	def __init__(self,myspec):
 		generic_x86.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=athlon-xp -pipe"
-		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","3dnow","sse"]}
+		self.settings["HOSTUSEEXPAND"]={"CPU_FLAGS_X86":["mmx","mmxext","3dnow","3dnowext","sse"]}
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
