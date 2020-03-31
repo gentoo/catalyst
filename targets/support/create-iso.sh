@@ -15,7 +15,7 @@ case ${clst_hostarch} in
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
 		;;
-        ppc*)
+        ppc*|powerpc*)
                 cdmaker="grub-mkrescue"
                 cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
                 ;;
