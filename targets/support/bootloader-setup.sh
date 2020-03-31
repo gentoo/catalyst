@@ -80,7 +80,7 @@ case ${clst_hostarch} in
 			echo "--recoverykernel=boot/${x}" >> ${icfg}
 		done
 	;;
-	ppc*|powerpc*)
+	ppc*|powerpc*|sparc*)
 	    # GRUB2 Openfirmware
 		kern_subdir=/boot
 		iacfg=$1/boot/grub/grub.cfg
@@ -119,30 +119,6 @@ case ${clst_hostarch} in
 			fi
 			echo "" >> ${iacfg}
 		done
-	;;
-	sparc*)
-		# NO SOFTLEVEL SUPPORT YET
-		scfg=$1/boot/silo.conf
-		echo "default=\"help\"" > ${scfg}
-		echo "message=\"/boot/boot.msg\"" >> ${scfg}
-
-		for x in ${clst_boot_kernel}
-		do
-			echo >> ${icfg}
-			echo "image=\"/boot/${x}\"" >> ${scfg}
-			echo -e "\tlabel=\"${x}\"" >> ${scfg}
-			echo -e "\tappend=\"initrd=/boot/${x}.igz root=/dev/ram0 init=/linuxrc ${cmdline_opts} cdroot\"" >> ${scfg}
-
-		done
-
-		echo "image=\"cat /boot/silo.conf\"" >> ${scfg}
-		echo -e "label=\"config\"" >> ${scfg}
-		echo "image=\"cat /boot/video.msg\"" >> ${scfg}
-		echo -e "label=\"video\"" >> ${scfg}
-		echo "image=\"cat /boot/help.msg\"" >> ${scfg}
-		echo -e "label=\"help\"" >> ${scfg}
-		echo "image=\"cat /boot/parameters.msg\"" >> ${scfg}
-		echo -e "label=\"parameters\"" >> ${scfg}
 	;;
 	ia64)
 		# NO SOFTLEVEL SUPPORT YET

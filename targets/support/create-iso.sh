@@ -15,7 +15,7 @@ case ${clst_hostarch} in
    		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
 		;;
-        ppc*|powerpc*)
+        ppc*|powerpc*|sparc*)
                 cdmaker="grub-mkrescue"
                 cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
                 ;;
@@ -225,26 +225,13 @@ case ${clst_hostarch} in
 			*) die "SGI LiveCD(s) only support the 'squashfs' fstype!"	;;
 		esac
 	;;
-	ppc*|powerpc*)
-		echo ">> Running grub-mkrescue to create iso image...."
-		grub-mkrescue -o "${1}" "${clst_target_path}"
-	;;
-	sparc*)
-		# Old silo (<=1.2.6) requires a specially built mkisofs
-		# We try to autodetect this in a simple way, said mkisofs
-		# should be in the cdtar, otherwise use the new style.
-		if [ -x "${clst_target_path}/boot/mkisofs.sparc.fu" ]
-		then
-			mv "${clst_target_path}/boot/mkisofs.sparc.fu" /tmp
-			echo "Running mkisofs.sparc.fu to create iso image...."
-			echo "/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o ${1} -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V \"${clst_iso_volume_id}\" ${clst_target_path}/"
-			/tmp/mkisofs.sparc.fu ${mkisofs_zisofs_opts} -o "${1}" -D -r -pad -quiet -S 'boot/cd.b' -B '/boot/second.b' -s '/boot/silo.conf' -V "${clst_iso_volume_id}" "${clst_target_path}"/ || die "Cannot make ISO image"
-			rm /tmp/mkisofs.sparc.fu
-		else
-			echo "Running mkisofs to create iso image...."
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -G "${clst_target_path}/boot/isofs.b" -B ... "${clst_target_path}"/
-		fi
+	ppc*|powerpc*|sparc*)
+		case ${clst_hostarch}
+		sparc*) extra_opts="--sparc-boot" ;;
+		esac
 
+		echo ">> Running grub-mkrescue to create iso image...."
+		grub-mkrescue ${extra_opts} -o "${1}" "${clst_target_path}"
 	;;
 	x86|amd64)
 		# detect if an EFI bootloader is desired
