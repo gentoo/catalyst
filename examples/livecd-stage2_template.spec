@@ -188,7 +188,7 @@ livecd/modblacklist:
 
 # This is for adding init scripts to runlevels.  The syntax for the init script
 # is the script name, followed by a pipe, followed by the runlevel in which you
-# want the script to run.  It looks like spind|default and is space delimited.
+# want the script to run.  It looks like acpid|default and is space delimited.
 # We do not use this on the official media, as catalyst sets up the runlevels
 # correctly for us.  Since we do not use this, it is left blank below.
 # This option will automatically create missing runlevels

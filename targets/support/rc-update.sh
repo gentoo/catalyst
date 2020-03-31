@@ -18,15 +18,8 @@ then
 
 	# Do some livecd_type specific rc-update changes
 	case ${clst_livecd_type} in
-		gentoo-gamecd)
-			rc-update add spind default
-			;;
 		gentoo-release-live*)
-			rc-update add spind default
 			rc-update add xdm default
-			;;
-		generic-livecd)
-			rc-update add spind default
 			;;
 	esac
 fi
