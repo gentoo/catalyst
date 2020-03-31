@@ -21,7 +21,7 @@ case ${clst_hostarch} in
                 ;;
 	*)
 		cdmaker="mkisofs"
-		cdmakerpkg="app-cdr/cdrkit or app-cdr/cdrtools"
+		cdmakerpkg="virtual/cdrtools"
 		;;
 esac
 
