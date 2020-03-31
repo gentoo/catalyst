@@ -16,14 +16,8 @@ rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
 
 # Setup the hostname
-if [ "${clst_livecd_type}" == "gentoo-gamecd" ]
-then
-	echo 'HOSTNAME="gamecd"' > /etc/conf.d/hostname
-	echo "127.0.0.1 gamecd.gentoo gamecd localhost" > /etc/hosts
-else
-	echo 'HOSTNAME="livecd"' > /etc/conf.d/hostname
-	echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
-fi
+echo 'HOSTNAME="livecd"' > /etc/conf.d/hostname
+echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
 
 # Since we're an official Gentoo release, we do things the official Gentoo way.
 # As such, we override livecd/users.
@@ -31,10 +25,6 @@ case ${clst_livecd_type} in
 	gentoo-release-live*)
 		user_comment="Gentoo default user"
 		clst_livecd_users="gentoo"
-	;;
-	gentoo-gamecd)
-		user_comment="Gentoo GameCD default user"
-		clst_livecd_users="gamecd"
 	;;
 esac
 
@@ -187,13 +177,9 @@ case ${clst_livecd_type} in
 		${clst_sed} -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
 			-e "s:##DISPLAY_MANAGER:${clst_livecd_xdm}:" /etc/motd
 	;;
-	gentoo-gamecd)
-		cat /etc/generic.motd.txt /etc/gamecd.motd.txt > /etc/motd
-		${clst_sed} -i 's:^##GREETING:Welcome to the Gentoo Linux ##GAME_NAME GameCD!:' /etc/motd
-	;;
 esac
 
-rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt /etc/gamecd.motd.txt
+rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt
 
 # Setup splash (if called for)
 if [ -n "${clst_livecd_splash_theme}" ]
@@ -214,34 +200,13 @@ fi
 
 # Clear out locales
 case ${clst_livecd_type} in
-	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
+	gentoo-release-minimal|gentoo-release-universal)
 		rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
 	;;
 esac
 
 # Post configuration
 case ${clst_livecd_type} in
-	gentoo-gamecd )
-		# We grab our configuration
-		if [ -e /tmp/gamecd.conf ]
-		then
-			source /tmp/gamecd.conf || exit 1
-			rm /tmp/gamecd.conf
-
-			# Here we replace out game information into several files
-			${clst_sed} -i -e "s:##GAME_NAME:${GAME_NAME}:" /etc/motd
-
-			# Here we setup our xinitrc
-			echo "exec ${GAME_EXECUTABLE}" > /etc/X11/xinit/xinitrc
-		fi
-
-		# This is my hack to reduce tmpfs usage
-		mkdir -p /usr/livecd/db/pkg/x11-base
-		mv -f /var/db/pkg/x11-base/xorg* /usr/livecd/db/pkg/x11-base
-		rm -rf /var/db
-
-		touch /etc/startx
-		;;
 	gentoo-release-live*)
 		# Setup Gnome theme
 		if [ "${clst_livecd_xsession}" == "gnome" ]

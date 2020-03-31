@@ -25,7 +25,7 @@ class livecd_stage2(StageBase):
 			"livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
 			"livecd/root_overlay","livecd/users","portage_overlay",\
 			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
-			"gamecd/conf","livecd/xdm","livecd/xsession","livecd/volid","livecd/verify"])
+			"livecd/xdm","livecd/xsession","livecd/volid","livecd/verify"])
 
 		StageBase.__init__(self,spec,addlargs)
 		if "livecd/type" not in self.settings:

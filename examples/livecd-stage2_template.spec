@@ -156,7 +156,6 @@ livecd/linuxrc:
 # gentoo-release-minimal - This creates an official minimal InstallCD.
 # gentoo-release-universal - This creates an official universal InstallCD.
 # gentoo-release-livecd - This creates an official LiveCD environment.
-# gentoo-gamecd - This creates an official Gentoo GameCD.
 # generic-livecd - This should be used for all non-official media.
 # example:
 # livecd/type: gentoo-release-minimal
@@ -223,10 +222,10 @@ livecd/overlay:
 livecd/root_overlay:
 
 # This is used by catalyst to copy the specified file to /etc/X11/xinit/xinitrc
-# and is used by the livecd/type gentoo-gamecd and generic-livecd.  While the
-# file will still be copied for any livecd/type, catalyst will only create the
-# necessary /etc/startx for those types, so X will not be automatically started.
-# This is useful also for setting up X on a CD where you do not wish X to start
+# and is used by the livecd/type and generic-livecd.  While the file will still
+# be copied for any livecd/type, catalyst will only create the necessary
+# /etc/startx for those types, so X will not be automatically started.  This is
+# useful also for setting up X on a CD where you do not wish X to start
 # automatically.  We do not use this on the release media, so it is left blank.
 # example:
 # livecd/xinitrc:
@@ -259,14 +258,6 @@ livecd/users:
 # example:
 # livecd/volid: Gentoo Linux 2006.1 X86
 livecd/volid:
-
-# This option is only used when creating a GameCD.  This specifies the file that
-# contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
-# the GameCD scripts to set some specific options for the game.  This is not
-# used on the release media, and is therefore blank.
-# example:
-# gamecd/conf:
-gamecd/conf:
 
 # This option is used to specify the number of kernels to build and also the
 # labels that will be used by the CD bootloader to refer to each kernel image.

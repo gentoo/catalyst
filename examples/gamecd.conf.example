@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# these variables are to be used for creating the menu entry and also to tell
-# the CD what to execute once X starts
-GAME_NAME="Unreal Tournament 2004 Demo"
-GAME_EXECUTABLE="/usr/games/bin/ut2004-demo"

@@ -46,7 +46,6 @@ case $1 in
 					${clst_sharedir}/livecd/files/universal.motd.txt \
 					${clst_sharedir}/livecd/files/minimal.motd.txt \
 					${clst_sharedir}/livecd/files/livecd.motd.txt \
-					${clst_sharedir}/livecd/files/gamecd.motd.txt \
 					${clst_chroot_path}/etc
 			;;
 			*)
@@ -64,18 +63,6 @@ case $1 in
 			${clst_chroot_path}/root/.bash_profile
 		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
-
-		# execute copy gamecd.conf if we're a gamecd
-		if [ "${clst_livecd_type}" = "gentoo-gamecd" ]
-		then
-			if [ -n "${clst_gamecd_conf}" ]
-			then
-				cp -f ${clst_gamecd_conf} ${clst_chroot_path}/tmp/gamecd.conf
-			else
-				echo "gamecd/conf is required for a gamecd!"
-				exit 1
-			fi
-		fi
 		;;
 
 	livecd-update)
@@ -101,8 +88,7 @@ case $1 in
 		;;
 
 	clean)
-		if [ "${clst_livecd_type}" = "gentoo-gamecd" ] \
-		|| [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
+		if [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
 		|| [ "${clst_livecd_type}" = "gentoo-release-universal" ]
 		then
 			# Clean out man, info and doc files
