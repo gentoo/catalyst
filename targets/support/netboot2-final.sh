@@ -50,7 +50,7 @@ case ${clst_hostarch} in
 		fi
 		for x in ${clst_boot_kernel}; do
 			elftoaout ${clst_target_path}/kernels/${x} -o ${clst_target_path}/${x}-a.out
-			${piggyback} ${clst_target_path}/${x}-a.out ${clst_target_path}/kernels/misc/System.map-${x} ${clst_target_path}/kernels/misc/${x}.igz
+			${piggyback} ${clst_target_path}/${x}-a.out ${clst_target_path}/kernels/misc/System-${x}.map ${clst_target_path}/kernels/misc/${x}.igz
 		done
 		;;
 	ia64)
