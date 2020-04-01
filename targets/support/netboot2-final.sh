@@ -15,6 +15,7 @@ for x in ${clst_boot_kernel}; do
 	mv ${clst_target_path}/boot/System-${x}.map ${clst_target_path}/kernels/misc
 done
 
+rm -f ${clst_target_path}/boot/gentoo-config
 rmdir ${clst_target_path}/boot
 
 # Any post-processing necessary for each architecture can be done here.  This
