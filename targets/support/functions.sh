@@ -19,20 +19,17 @@ exec_in_chroot() {
 	copy_to_chroot ${1}
 	copy_to_chroot ${clst_shdir}/support/chroot-functions.sh
 
-	chroot_path=${clst_chroot_path}
-
 	# Ensure the file has the executable bit set
-	chmod +x ${chroot_path}/tmp/${file_name}
+	chmod +x ${clst_chroot_path}/tmp/${file_name}
 
 	echo "Running ${file_name} in chroot:"
-	echo "    ${clst_CHROOT} ${chroot_path} /tmp/${file_name}"
-	${clst_CHROOT} "${chroot_path}" "/tmp/${file_name}" || exit 1
+	echo "    ${clst_CHROOT} ${clst_chroot_path} /tmp/${file_name}"
+	${clst_CHROOT} "${clst_chroot_path}" "/tmp/${file_name}" || exit 1
 
 	delete_from_chroot /tmp/${file_name}
 	delete_from_chroot /tmp/chroot-functions.sh
 }
 
-#return codes
 die() {
 	echo "$1"
 	exit 1
