@@ -27,15 +27,10 @@ case ${1} in
 		shift
 		export clst_kname="$1"
 
-		# if we have our own linuxrc, copy it in
-		if [ -n "${clst_linuxrc}" ]
-		then
-			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
-		fi
-		if [ -n "${clst_busybox_config}" ]
-		then
-			cp ${clst_busybox_config} ${clst_chroot_path}/tmp/busy-config
-		fi
+		[ -n "${clst_linuxrc}" ] && \
+			copy_to_chroot ${clst_linuxrc} /tmp/linuxrc
+		[ -n "${clst_busybox_config}" ] && \
+			copy_to_chroot ${clst_busybox_config} /tmp/busy-config
 
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 

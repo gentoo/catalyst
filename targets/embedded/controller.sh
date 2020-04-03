@@ -42,11 +42,9 @@ case ${1} in
 	kernel)
 		shift
 		export clst_kname="${1}"
-		# if we have our own linuxrc, copy it in
-		if [ -n "${clst_linuxrc}" ]
-		then
-			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
-		fi
+
+		[ -n "${clst_linuxrc}" ] && \
+			copy_to_chroot ${clst_linuxrc} /tmp/linuxrc
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 		delete_from_chroot /tmp/linuxrc
 	;;
