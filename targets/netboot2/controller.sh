@@ -39,8 +39,8 @@ case ${1} in
 
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 
-		delete_from_chroot tmp/linuxrc
-		delete_from_chroot tmp/busy-config
+		delete_from_chroot /tmp/linuxrc
+		delete_from_chroot /tmp/busy-config
 
 		extract_modules ${clst_chroot_path} ${clst_kname}
 		#16:12 <@solar> kernel_name=foo

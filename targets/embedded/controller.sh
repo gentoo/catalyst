@@ -48,7 +48,7 @@ case ${1} in
 			cp -pPR ${clst_linuxrc} ${clst_chroot_path}/tmp/linuxrc
 		fi
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh
-		delete_from_chroot tmp/linuxrc
+		delete_from_chroot /tmp/linuxrc
 	;;
 
 	target_image_setup)

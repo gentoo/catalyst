@@ -7,11 +7,8 @@ copy_to_chroot() {
 	cp -pPR "${src_file}" "${dest_dir}"/
 }
 
-delete_from_chroot(){
-	if [ -e ${clst_chroot_path}${1} ]
-	then
-		rm -f ${clst_chroot_path}${1}
-	fi
+delete_from_chroot() {
+	rm -f "${clst_chroot_path}/${1}"
 }
 
 # Takes the full path to the source file as its argument
