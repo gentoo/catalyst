@@ -226,7 +226,7 @@ case ${clst_hostarch} in
 		esac
 	;;
 	ppc*|powerpc*|sparc*)
-		case ${clst_hostarch}
+		case ${clst_hostarch} in
 		sparc*) extra_opts="--sparc-boot" ;;
 		esac
 
