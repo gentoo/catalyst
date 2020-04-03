@@ -41,7 +41,7 @@ case $1 in
 	;;
 
 	preclean)
-		exec_in_chroot ${clst_shdir}/${clst_target}/preclean-chroot.sh ${clst_root_path}
+		exec_in_chroot ${clst_shdir}/${clst_target}/preclean-chroot.sh
 	;;
 
 	rc-update)
