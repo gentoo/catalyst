@@ -1,10 +1,9 @@
 #!/bin/bash
 
 copy_to_chroot() {
-	local src_file=$1
-	local dest_dir=${clst_chroot_path}${2:-/tmp}
-	mkdir -p ${dest_dir}
-	cp -pPR "${src_file}" "${dest_dir}"/
+	local src="${1}"
+	local dst="${clst_chroot_path}/${2:-/tmp}"
+	cp -pPR "${src}" "${dst}"
 }
 
 delete_from_chroot() {
