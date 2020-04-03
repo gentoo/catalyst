@@ -4,14 +4,12 @@ copy_to_chroot() {
 	local src_file=$1
 	local dest_dir=${clst_chroot_path}${2:-/tmp}
 	mkdir -p ${dest_dir}
-	echo "copying ${src_file##*/} to ${dest_dir}"
 	cp -pPR "${src_file}" "${dest_dir}"/
 }
 
 delete_from_chroot(){
 	if [ -e ${clst_chroot_path}${1} ]
 	then
-		echo "removing ${clst_chroot_path}${1} from the chroot"
 		rm -f ${clst_chroot_path}${1}
 	fi
 }
@@ -23,14 +21,13 @@ exec_in_chroot() {
 	local file_name=$(basename ${1})
 	local destdir="/tmp"
 
-	echo "Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
 	copy_to_chroot ${clst_shdir}/support/chroot-functions.sh \
 		${destdir}
 
 	chroot_path=${clst_chroot_path}
 
-	echo "Ensure the file has the executable bit set"
+	# Ensure the file has the executable bit set
 	chmod +x ${chroot_path}/${destdir}/${file_name}
 
 	echo "Running ${file_name} in chroot:"
