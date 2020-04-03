@@ -16,20 +16,19 @@ delete_from_chroot(){
 	fi
 }
 
-exec_in_chroot(){
 # Takes the full path to the source file as its argument
 # copies the file to the /tmp directory of the chroot
 # and executes it.
+exec_in_chroot() {
 	local file_name=$(basename ${1})
-	local subdir=${2}
-	local destdir="${subdir}/tmp"
+	local destdir="/tmp"
 
 	echo "Copying ${file_name} to ${destdir}"
 	copy_to_chroot ${1} ${destdir}
 	copy_to_chroot ${clst_shdir}/support/chroot-functions.sh \
 		${destdir}
 
-	chroot_path=${clst_chroot_path}${subdir}
+	chroot_path=${clst_chroot_path}
 
 	echo "Ensure the file has the executable bit set"
 	chmod +x ${chroot_path}/${destdir}/${file_name}
