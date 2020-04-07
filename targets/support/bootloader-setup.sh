@@ -267,7 +267,7 @@ case ${clst_hostarch} in
 		# CD image, and then pass these components to the
 		# `sgibootcd` tool which outputs a final CD image
 		scratch="${1}"
-		mkdir -p mkdir ${scratch}/{kernels/misc,arcload}
+		mkdir -p ${scratch}/{kernels/misc,arcload}
 		echo "" > ${scratch}/arc.cf
 
 		# Move kernel binaries to ${scratch}/kernels, and
