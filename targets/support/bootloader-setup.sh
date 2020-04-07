@@ -80,8 +80,7 @@ case ${clst_hostarch} in
 			echo "--recoverykernel=boot/${x}" >> ${icfg}
 		done
 	;;
-	ppc*|powerpc*|sparc*)
-	    # GRUB2 Openfirmware
+	ia64|ppc*|powerpc*|sparc*)
 		kern_subdir=/boot
 		iacfg=$1/boot/grub/grub.cfg
 		mkdir -p $1/boot/grub
@@ -120,41 +119,6 @@ case ${clst_hostarch} in
 			fi
 			echo "" >> ${iacfg}
 		done
-	;;
-	ia64)
-		# NO SOFTLEVEL SUPPORT YET
-		iacfg=$1/boot/elilo.conf
-		echo 'prompt' > ${iacfg}
-		echo 'message=/efi/boot/elilo.msg' >> ${iacfg}
-		echo 'chooser=simple' >> ${iacfg}
-		echo 'timeout=50' >> ${iacfg}
-		echo 'relocatable' >> ${iacfg}
-		echo >> ${iacfg}
-		for x in ${clst_boot_kernel}
-		do
-			echo "image=/efi/boot/${x}" >> ${iacfg}
-			echo "  label=${x}" >> ${iacfg}
-			echo '  append="'initrd=${x}.igz ${default_append_line}'"' >> ${iacfg}
-			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
-			echo >> ${iacfg}
-			echo "image=/efi/boot/${x}" >> ${iacfg}
-			echo "  label=${x}-serial">> ${iacfg}
-			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS0,9600"' >> ${iacfg}
-			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
-			echo >> ${iacfg}
-			echo "image=/efi/boot/${x}" >> ${iacfg}
-			echo "  label=${x}-ilo">> ${iacfg}
-			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttyS3,9600"' >> ${iacfg}
-			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
-			echo >> ${iacfg}
-			echo "image=/efi/boot/${x}" >> ${iacfg}
-			echo "  label=${x}-sgi">> ${iacfg}
-			echo '  append="'initrd=${x}.igz ${default_append_line}' console=tty0 console=ttySG0,115200"' >> ${iacfg}
-			echo "  initrd=/efi/boot/${x}.igz" >> ${iacfg}
-			echo >> ${iacfg}
-			mv $1/boot/${x}{,.igz} $1/boot/efi/boot
-		done
-		cp ${iacfg} $1/boot/efi/boot
 	;;
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
