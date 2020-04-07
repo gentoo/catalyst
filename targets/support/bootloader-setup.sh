@@ -233,8 +233,7 @@ case ${clst_hostarch} in
 		# GRUB2
 		if [ -d $1/grub ] || [ -f "$1/boot/EFI/BOOT/BOOTX64.EFI" ]
 		then
-			#the grub dir may not exist, better safe than sorry
-			[ -d "$1/grub" ] || mkdir -p "$1/grub"
+			mkdir -p "$1/grub"
 
 			iacfg=$1/grub/grub.cfg
 			echo 'set default=0' > ${iacfg}
