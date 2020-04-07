@@ -49,7 +49,7 @@ fi
 
 # Clear USE
 [ -e ${clst_make_conf} ] && ${clst_sed} -i -e "/^USE=\"${BINDIST} ${USE}\"/d" ${clst_make_conf}
-make_destpath /tmp/stage1root
+make_destpath "${clst_root_path}"
 
 ## START BUILD
 # First, we drop in a known-good baselayout
