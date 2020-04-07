@@ -19,6 +19,10 @@ case ${clst_hostarch} in
                 cdmaker="grub-mkrescue"
                 cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
                 ;;
+	ia64)
+		cdmaker="grub-mkrescue"
+		cdmakerpkg="sys-fs/mtools, dev-libs/libisoburn, and sys-boot/grub:2"
+		;;
 	*)
 		cdmaker="mkisofs"
 		cdmakerpkg="virtual/cdrtools"
@@ -132,37 +136,6 @@ case ${clst_hostarch} in
 		palo -f boot/palo.conf -C "${1}"
 		popd
 	;;
-	ia64)
-		if [ ! -e "${clst_target_path}/gentoo.efimg" ]
-		then
-			iaSizeTemp=$(du -sk --apparent-size "${clst_target_path}/boot" 2>/dev/null)
-			iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
-			iaSize=$((${iaSizeB}+64)) # Add slack
-
-			dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
-				count=${iaSize}
-			mkfs.vfat -F 16 -n GENTOO "${clst_target_path}/gentoo.efimg"
-
-			mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
-			mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
-				"${clst_target_path}/gentoo.efimg.mountPoint"
-
-			echo '>> Populating EFI image...'
-			cp -rv "${clst_target_path}"/boot/* \
-				"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to populate EFI image"
-
-			umount "${clst_target_path}/gentoo.efimg.mountPoint"
-			rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
-		else
-			echo ">> Found populated EFI image at \
-				${clst_target_path}/gentoo.efimg"
-		fi
-		echo '>> Removing /boot...'
-		rm -rf "${clst_target_path}/boot"
-
-		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -R -l -b gentoo.efimg -c boot.cat -no-emul-boot -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
-	;;
 	mips)
 		case ${clst_fstype} in
 			squashfs)
@@ -220,7 +193,7 @@ case ${clst_hostarch} in
 			*) die "SGI LiveCD(s) only support the 'squashfs' fstype!"	;;
 		esac
 	;;
-	ppc*|powerpc*|sparc*)
+	ia64|ppc*|powerpc*|sparc*)
 		isoroot_checksum
 
 		case ${clst_hostarch} in
