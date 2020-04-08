@@ -97,6 +97,8 @@ fi
 # Generate list of checksums that genkernel can use to verify the contents of
 # the ISO
 isoroot_checksum() {
+	[ -z "${clst_livecd_verify}" ] && return
+
 	echo ">> Creating checksums for all files included in the ISO"
 
 	pushd "${clst_target_path}"
@@ -107,7 +109,7 @@ isoroot_checksum() {
 }
 
 run_mkisofs() {
-	[ -n "${clst_livecd_verify}" ] && isoroot_checksum
+	isoroot_checksum
 
 	echo "Running \"mkisofs ${@}\""
 	mkisofs "${@}" || die "Cannot make ISO image"
