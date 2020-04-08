@@ -184,7 +184,7 @@ case ${clst_hostarch} in
 		# o=	output image (burnable to CD; readable by fdisk)
 		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 	;;
-	ia64|ppc*|powerpc*|sparc*)
+	amd64|ia64|ppc*|powerpc*|sparc*|x86)
 		isoroot_checksum
 
 		case ${clst_hostarch} in
@@ -193,72 +193,6 @@ case ${clst_hostarch} in
 
 		echo ">> Running grub-mkrescue to create iso image...."
 		grub-mkrescue ${extra_opts} -o "${1}" "${clst_target_path}"
-	;;
-	x86|amd64)
-		# detect if an EFI bootloader is desired
-		if 	[ -d "${clst_target_path}/boot/efi" ] || \
-			[ -d "${clst_target_path}/boot/EFI" ] || \
-			[ -e "${clst_target_path}/gentoo.efimg" ]
-		then
-			if [ -e "${clst_target_path}/gentoo.efimg" ]
-			then
-				echo "Found prepared EFI boot image at \
-					${clst_target_path}/gentoo.efimg"
-			else
-				echo "Preparing EFI boot image"
-				if [ -d "${clst_target_path}/boot/efi" ] && [ ! -d "${clst_target_path}/boot/EFI" ]; then
-					echo "Moving /boot/efi to /boot/EFI"
-					mv "${clst_target_path}/boot/efi" "${clst_target_path}/boot/EFI"
-				fi
-				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
-				iaSizeTemp=$(du -sk --apparent-size "${clst_target_path}/boot/EFI" 2>/dev/null)
-				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
-				iaSize=$((${iaSizeB}+64)) # add slack, tested near minimum for overhead
-				echo "Creating loopback file of size ${iaSize}kB"
-				dd if=/dev/zero of="${clst_target_path}/gentoo.efimg" bs=1k \
-					count=${iaSize}
-				echo "Formatting loopback file with FAT16 FS"
-				mkfs.vfat -F 16 -n GENTOOLIVE "${clst_target_path}/gentoo.efimg"
-
-				mkdir "${clst_target_path}/gentoo.efimg.mountPoint"
-				echo "Mounting FAT16 loopback file"
-				mount -t vfat -o loop "${clst_target_path}/gentoo.efimg" \
-					"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to mount EFI image file"
-
-				echo "Populating EFI image file from ${clst_target_path}/boot/EFI"
-				cp -rv "${clst_target_path}"/boot/EFI/ \
-					"${clst_target_path}/gentoo.efimg.mountPoint" || die "Failed to populate EFI image file"
-
-				umount "${clst_target_path}/gentoo.efimg.mountPoint"
-				rmdir "${clst_target_path}/gentoo.efimg.mountPoint"
-
-				echo "Copying /boot/EFI to /EFI for rufus compatability"
-				cp -rv "${clst_target_path}"/boot/EFI/ "${clst_target_path}"
-			fi
-		fi
-
-		if [ -e "${clst_target_path}/isolinux/isolinux.bin" ]; then
-			echo '** Found ISOLINUX bootloader'
-			if [ -e "${clst_target_path}/gentoo.efimg" ]; then
-			  # have BIOS isolinux, plus an EFI loader image
-			  echo '** Found GRUB2 EFI bootloader'
-				echo 'Creating ISO using both ISOLINUX and EFI bootloader'
-				run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
-				isohybrid --uefi "${1}"
-		  else
-			  echo 'Creating ISO using ISOLINUX bootloader'
-			  run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
-			  isohybrid "${1}"
-		  fi
-		elif [ -e "${clst_target_path}/gentoo.efimg" ]; then
-			echo '** Found GRUB2 EFI bootloader'
-			echo 'Creating ISO using EFI bootloader'
-			run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b gentoo.efimg -c boot.cat -no-emul-boot "${clst_target_path}"/
-		else
-			echo '** Found no known bootloader'
-			echo 'Creating ISO with fingers crossed that you know what you are doing...'
-			run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
-		fi
 	;;
 esac
 exit  $?

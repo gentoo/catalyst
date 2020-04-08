@@ -4,15 +4,9 @@ source ${clst_shdir}/support/functions.sh
 
 # $1 is the destination root
 
-# We handle boot loader a little special.  Most arches require a cdtar with bootloader files
-# but we can generate one for amd64/x86 now
 if [ -n "${clst_cdtar}" ]
 then
 	extract_cdtar $1
-elif [ "${clst_hostarch}" = "x86" ] || [ "${clst_hostarch}" = "amd64" ]
-then
-	#assume if there is no cdtar and we are on a supported arch that the user just wants us to handle this
-	create_bootloader $1
 else
 	#While this seems a little crazy, it's entirely possible the bootloader is just shoved in isoroot overlay
 	echo "No cdtar and unable to auto generate boot loader files... good luck"
@@ -97,82 +91,7 @@ case ${clst_hostarch} in
 			echo "--recoverykernel=boot/${x}" >> ${icfg}
 		done
 	;;
-	x86|amd64)
-		if [ -e $1/isolinux/isolinux.bin ]
-		then
-			# the rest of this function sets up the config file for isolinux
-			icfg=$1/isolinux/isolinux.cfg
-			kmsg=$1/isolinux/kernels.msg
-			echo "default ${first}" > ${icfg}
-			echo "timeout 150" >> ${icfg}
-			echo "ontimeout localhost" >> ${icfg}
-			echo "prompt 1" >> ${icfg}
-			echo "display boot.msg" >> ${icfg}
-			echo "F1 kernels.msg" >> ${icfg}
-			for k in {2..7}
-			do
-				echo "F${k} F${k}.msg" >> ${icfg}
-			done
-
-			echo "Available kernels:" > ${kmsg}
-			for i in {2..7}
-			do
-				cp ${clst_sharedir}/livecd/files/x86-F$i.msg \
-					$1/isolinux/F$i.msg
-			done
-
-			for x in ${clst_boot_kernel}
-			do
-				eval custom_kopts=\$${x}_kernelopts
-				echo "APPENDING CUSTOM KERNEL ARGS: ${custom_kopts}"
-				echo >> ${icfg}
-
-				eval "clst_kernel_softlevel=\$clst_boot_kernel_${x}_softlevel"
-
-				if [ -n "${clst_kernel_softlevel}" ]
-				then
-					for y in ${clst_kernel_softlevel}
-					do
-						echo "label ${x}-${y}" >> ${icfg}
-						echo "  kernel /boot/${x}" >> ${icfg}
-						echo "  append ${default_append_line[@]} softlevel=${y} initrd=/boot/${x}.igz vga=791" >> ${icfg}
-
-						echo >> ${icfg}
-						echo "   ${x}" >> ${kmsg}
-						echo "label ${x}-${y}-nofb" >> ${icfg}
-						echo "  kernel /boot/${x}" >> ${icfg}
-						echo "  append ${default_append_line[@]} softlevel=${y} initrd=/boot/${x}.igz" >> ${icfg}
-						echo >> ${icfg}
-						echo "   ${x}-nofb" >> ${kmsg}
-					done
-				else
-					echo "label ${x}" >> ${icfg}
-					echo "  kernel /boot/${x}" >> ${icfg}
-					echo "  append ${default_append_line[@]} initrd=/boot/${x}.igz vga=791" >> ${icfg}
-					echo >> ${icfg}
-					echo "   ${x}" >> ${kmsg}
-					echo "label ${x}-nofb" >> ${icfg}
-					echo "  kernel /boot/${x}" >> ${icfg}
-					echo "  append ${default_append_line[@]} initrd=/boot/${x}.igz" >> ${icfg}
-					echo >> ${icfg}
-					echo "   ${x}-nofb" >> ${kmsg}
-				fi
-			done
-
-			if [ -f $1/isolinux/memtest86 ]
-			then
-				echo >> $icfg
-				echo "   memtest86" >> $kmsg
-				echo "label memtest86" >> $icfg
-				echo "  kernel memtest86" >> $icfg
-			fi
-			echo >> $icfg
-			echo "label localhost" >> $icfg
-			echo "  localboot -1" >> $icfg
-			echo "  MENU HIDE" >> $icfg
-		fi
-	;&
-	ia64|ppc*|powerpc*|sparc*)
+	amd64|ia64|ppc*|powerpc*|sparc*|x86)
 		kern_subdir=/boot
 		iacfg=$1/boot/grub/grub.cfg
 		mkdir -p $1/boot/grub
