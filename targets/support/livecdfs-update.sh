@@ -35,7 +35,6 @@ then
 	default_comment="Default LiveCD User"
 	[ -z "${user_comment}" ] && user_comment=${default_comment}
 
-	# Here we check to see if games exists for bug #125498
 	if [ "$(getent group games | cut -d: -f1)" != "games" ]
 	then
 		echo "Adding games group"
@@ -75,8 +74,6 @@ done
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
 
-# Tweak the livecd fstab so that users know not to edit it
-# https://bugs.gentoo.org/60887
 echo "####################################################" > /etc/fstab
 echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	##" >> /etc/fstab
 echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab
@@ -85,8 +82,6 @@ echo "####################################################" >> /etc/fstab
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" >> /etc/fstab
 
-# Tweak the livecd make.conf so that users know not to edit it
-# https://bugs.gentoo.org/144647
 mv ${clst_make_conf} ${clst_make_conf}.old
 echo "####################################################" >> ${clst_make_conf}
 echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> ${clst_make_conf}
