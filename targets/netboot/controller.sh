@@ -57,7 +57,7 @@ case ${1} in
 	final)
 		# For each arch, fetch the kernel images and put them in builds/
 		echo -e ">>> Copying completed kernels to ${clst_target_path}/ ..."
-		${clst_shdir}/support/netboot2-final.sh
+		${clst_shdir}/support/netboot-final.sh
 	;;
 
 	clean)

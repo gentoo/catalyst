@@ -12,7 +12,7 @@ from catalyst.fileops import (ensure_dirs, clear_dir, clear_path)
 from catalyst.base.stagebase import StageBase
 
 
-class netboot2(StageBase):
+class netboot(StageBase):
 	"""
 	Builder class for a netboot build, version 2
 	"""
@@ -22,26 +22,26 @@ class netboot2(StageBase):
 		]
 		self.valid_values=self.required_values[:]
 		self.valid_values.extend([
-			"netboot2/packages",
-			"netboot2/use",
-			"netboot2/extra_files",
-			"netboot2/overlay",
-			"netboot2/busybox_config",
-			"netboot2/root_overlay",
-			"netboot2/linuxrc"
+			"netboot/packages",
+			"netboot/use",
+			"netboot/extra_files",
+			"netboot/overlay",
+			"netboot/busybox_config",
+			"netboot/root_overlay",
+			"netboot/linuxrc"
 		])
 
 		try:
-			if "netboot2/packages" in addlargs:
-				if isinstance(addlargs['netboot2/packages'], str):
-					loopy=[addlargs["netboot2/packages"]]
+			if "netboot/packages" in addlargs:
+				if isinstance(addlargs['netboot/packages'], str):
+					loopy=[addlargs["netboot/packages"]]
 				else:
-					loopy=addlargs["netboot2/packages"]
+					loopy=addlargs["netboot/packages"]
 
 				for x in loopy:
-					self.valid_values.append("netboot2/packages/"+x+"/files")
+					self.valid_values.append("netboot/packages/"+x+"/files")
 		except:
-			raise CatalystError("configuration error in netboot2/packages.")
+			raise CatalystError("configuration error in netboot/packages.")
 
 		StageBase.__init__(self,spec,addlargs)
 		self.settings["merge_path"]=normpath("/tmp/image/")
@@ -67,24 +67,24 @@ class netboot2(StageBase):
 			and self.resume.is_enabled("copy_files_to_image"):
 			log.notice('Resume point detected, skipping target path setup operation...')
 		else:
-			if "netboot2/packages" in self.settings:
-				if isinstance(self.settings['netboot2/packages'], str):
-					loopy=[self.settings["netboot2/packages"]]
+			if "netboot/packages" in self.settings:
+				if isinstance(self.settings['netboot/packages'], str):
+					loopy=[self.settings["netboot/packages"]]
 				else:
-					loopy=self.settings["netboot2/packages"]
+					loopy=self.settings["netboot/packages"]
 
 			for x in loopy:
-				if "netboot2/packages/"+x+"/files" in self.settings:
-					if isinstance(self.settings['netboot2/packages/'+x+'/files'], list):
-						myfiles.extend(self.settings["netboot2/packages/"+x+"/files"])
+				if "netboot/packages/"+x+"/files" in self.settings:
+					if isinstance(self.settings['netboot/packages/'+x+'/files'], list):
+						myfiles.extend(self.settings["netboot/packages/"+x+"/files"])
 					else:
-						myfiles.append(self.settings["netboot2/packages/"+x+"/files"])
+						myfiles.append(self.settings["netboot/packages/"+x+"/files"])
 
-			if "netboot2/extra_files" in self.settings:
-				if isinstance(self.settings['netboot2/extra_files'], list):
-					myfiles.extend(self.settings["netboot2/extra_files"])
+			if "netboot/extra_files" in self.settings:
+				if isinstance(self.settings['netboot/extra_files'], list):
+					myfiles.extend(self.settings["netboot/extra_files"])
 				else:
-					myfiles.append(self.settings["netboot2/extra_files"])
+					myfiles.append(self.settings["netboot/extra_files"])
 
 			try:
 				cmd([self.settings['controller_file'], 'image'] +
@@ -101,8 +101,8 @@ class netboot2(StageBase):
 		and self.resume.is_enabled("setup_overlay"):
 			log.notice('Resume point detected, skipping setup_overlay operation...')
 		else:
-			if "netboot2/overlay" in self.settings:
-				for x in self.settings["netboot2/overlay"]:
+			if "netboot/overlay" in self.settings:
+				for x in self.settings["netboot/overlay"]:
 					if os.path.exists(x):
 						cmd(['rsync', '-a', x + '/',
 							self.settings['chroot_path'] + self.settings['merge_path']],
@@ -130,7 +130,7 @@ class netboot2(StageBase):
 				for x in self.settings[self.settings["spec_prefix"]+"/rm"]:
 					# we're going to shell out for all these cleaning operations,
 					# so we get easy glob handling
-					log.notice('netboot2: removing %s', x)
+					log.notice('netboot: removing %s', x)
 					clear_path(self.settings['chroot_path'] +
 						self.settings['merge_path'] + x)
 
@@ -139,10 +139,10 @@ class netboot2(StageBase):
 			and self.resume.is_enabled("empty"):
 			log.notice('Resume point detected, skipping empty operation...')
 		else:
-			if "netboot2/empty" in self.settings:
-				if isinstance(self.settings['netboot2/empty'], str):
-					self.settings["netboot2/empty"]=self.settings["netboot2/empty"].split()
-				for x in self.settings["netboot2/empty"]:
+			if "netboot/empty" in self.settings:
+				if isinstance(self.settings['netboot/empty'], str):
+					self.settings["netboot/empty"]=self.settings["netboot/empty"].split()
+				for x in self.settings["netboot/empty"]:
 					myemp=self.settings["chroot_path"] + self.settings["merge_path"] + x
 					if not os.path.isdir(myemp):
 						log.warning('not a directory or does not exist, skipping "empty" operation: %s', x)
