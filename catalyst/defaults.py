@@ -18,7 +18,7 @@ required_build_targets = ["targetbase", "generic_stage_target"]
 # new build types should be added here
 valid_build_targets = ["stage1_target", "stage2_target", "stage3_target",
 	"stage4_target", "livecd_stage1_target", "livecd_stage2_target",
-	"embedded_target", "snapshot_target", "netboot_target",
+	"embedded_target", "snapshot_target",
 	"netboot2_target"
 	]
 
