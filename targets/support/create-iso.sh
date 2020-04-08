@@ -98,8 +98,12 @@ fi
 # the ISO
 isoroot_checksum() {
 	echo ">> Creating checksums for all files included in the ISO"
-	find "${clst_target_path}" -type f ! -name 'isoroot_b2sums' -exec b2sum {} + > "${clst_target_path}"/isoroot_b2sums
-	${clst_sed} -i "s#${clst_target_path}/\?##" "${clst_target_path}"/isoroot_b2sums
+
+	pushd "${clst_target_path}"
+	find -type f -exec b2sum {} + > /tmp/isoroot_b2sums
+	popd
+
+	mv /tmp/isoroot_b2sums "${clst_target_path}"/
 }
 
 run_mkisofs() {
