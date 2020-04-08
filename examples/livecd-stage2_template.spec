@@ -316,11 +316,11 @@ boot/kernel/gentoo/packages:
 # boot/kernel/gentoo/console: tty0 ttyS0
 boot/kernel/gentoo/console:
 
-# This feature will make sha512, blake2, or both checksums for every file in the iso (including files provided by livecd/overlay
-# These checksums can be verified at boot using the genkernel option "verify" added to the kernel line.
-# Currently this feature will generate both checksums if livecd/verify is defined to *any* value other than "blake2" or "sha512"
+# Enables the generation of a isoroot_b2sums file containing a BLAKE2 digest of
+# each file in the ISO. When 'livecd/bootargs' contains 'verify' this feature
+# will be used to verify the contents of the ISO at boot time.
 # No checksums are generated if this is left commented.
-#livecd/verify: sha512
+#livecd/verify: blake2
 
 # This feature controls the depclean run after fsscript and before unmerge.
 # The default is unset, and will run emerge --depclean --with-bdeps=n which results
