@@ -74,31 +74,37 @@ done
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
 
-echo "####################################################" > /etc/fstab
-echo "## ATTENTION: THIS IS THE FSTAB ON THE LIVECD	##" >> /etc/fstab
-echo "## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##" >> /etc/fstab
-echo "####################################################" >> /etc/fstab
+cat <<EOF > /etc/fstab
+####################################################
+## ATTENTION: THIS IS THE FSTAB ON THE LIVECD     ##
+## PLEASE EDIT THE FSTAB at /mnt/gentoo/etc/fstab ##
+####################################################
 
 # fstab tweaks
-echo "tmpfs	/					tmpfs	defaults	0 0" >> /etc/fstab
+tmpfs	/					tmpfs	defaults	0 0
+EOF
 
 mv ${clst_make_conf} ${clst_make_conf}.old
-echo "####################################################" >> ${clst_make_conf}
-echo "## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##" >> ${clst_make_conf}
-echo "## PLEASE EDIT /mnt/gentoo${clst_make_conf} INSTEAD  ##" >> ${clst_make_conf}
-echo "####################################################" >> ${clst_make_conf}
+cat <<EOF > ${clst_make_conf}
+####################################################
+## ATTENTION: THIS IS THE MAKE.CONF ON THE LIVECD ##
+## PLEASE EDIT /mnt/gentoo${clst_make_conf} INSTEAD  ##
+####################################################
+EOF
 cat ${clst_make_conf}.old >> ${clst_make_conf}
 
 # devfs tweaks
 [ -e /etc/devfsd.conf ] && ${clst_sed} -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # Add some helpful aliases
-echo "alias cp='cp -i'" >> /etc/profile
-echo "alias mv='mv -i'" >> /etc/profile
-echo "alias rm='rm -i'" >> /etc/profile
-echo "alias ls='ls --color=auto'" >> /etc/profile
-echo "alias ll='ls -l'" >> /etc/profile
-echo "alias grep='grep --color=auto'" >> /etc/profile
+cat <<EOF > /etc/profile
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias grep='grep --color=auto'
+EOF
 
 # Make sure we have the latest pci,usb and hotplug ids.  Older versions of
 # pciutils and usbutils used /sbin, where newer versions use /usr/sbin.
