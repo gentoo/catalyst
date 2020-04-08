@@ -118,6 +118,8 @@ run_mkisofs() {
 # Here we actually create the ISO images for each architecture
 case ${clst_hostarch} in
 	alpha)
+		isoroot_checksum
+
 		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
 		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
 	;;
@@ -219,6 +221,8 @@ case ${clst_hostarch} in
 		esac
 	;;
 	ppc*|powerpc*|sparc*)
+		isoroot_checksum
+
 		case ${clst_hostarch} in
 		sparc*) extra_opts="--sparc-boot" ;;
 		esac
