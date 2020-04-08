@@ -95,7 +95,6 @@ echo "####################################################" >> /etc/fstab
 
 # fstab tweaks
 echo "tmpfs	/					tmpfs	defaults	0 0" >> /etc/fstab
-echo "tmpfs	${clst_repo_basedir}/${clst_repo_name}			tmpfs	defaults	0 0" >> /etc/fstab
 # If /usr/lib/X11/xkb/compiled then make it tmpfs
 if [ -d /usr/lib/X11/xkb/compiled ]
 then
