@@ -672,10 +672,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
 							[addlargs["boot/kernel/" + x + "/packages"]]
 
 	def set_build_kernel_vars(self):
-		if self.settings["spec_prefix"] + "/gk_mainargs" in self.settings:
-			self.settings["gk_mainargs"] = \
-				self.settings[self.settings["spec_prefix"] + "/gk_mainargs"]
-			del self.settings[self.settings["spec_prefix"] + "/gk_mainargs"]
+		prefix = self.settings["spec_prefix"]
+
+		gk_mainargs = prefix + "/gk_mainargs"
+		if gk_mainargs in self.settings:
+			self.settings["gk_mainargs"] = self.settings[gk_mainargs]
+			del self.settings[gk_mainargs]
+
+		# Ask genkernel to include b2sum if <target>/verify is set
+		verify = prefix + "/verify"
+		if verify in self.settings:
+			assert self.settings[verify] == "blake2"
+			self.settings.setdefault("gk_mainargs", "").append(" --b2sum")
 
 	def kill_chroot_pids(self):
 		log.info('Checking for processes running in chroot and killing them.')
