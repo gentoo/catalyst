@@ -152,7 +152,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_snapshot_path()
         self.set_root_path()
         self.set_source_path()
-        self.set_snapcache_path()
         self.set_chroot_path()
         self.set_autoresume_path()
         self.set_dest_path()
@@ -192,20 +191,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
         # Setup our mount points.
         self.mount = MOUNT_DEFAULTS.copy()
 
-        self.mount['portdir']['source'] = self.settings['portdir']
-        self.mount['portdir']['target'] = normpath(self.settings["repo_basedir"]
-                                                   + "/" +
-                                                   self.settings["repo_name"])
-        self.mount['distdir']['source'] = self.settings['distdir']
-        self.mount["distdir"]['target'] = self.settings["target_distdir"]
+        # Always unpack snapshot tarball
+        self.mount['portdir']['enable'] = False
 
-        if "snapcache" not in self.settings["options"]:
-            self.mount['portdir']['enable'] = False
-        else:
-            self.mount['portdir']['source'] = normpath("/".join([
-                self.settings['snapshot_cache_path'],
-                self.settings['repo_name']
-            ]))
+        self.mount['distdir']['source'] = self.settings['distdir']
+        self.mount["distdir"]['target'] = self.settings['target_distdir']
 
         # Configure any user specified options (either in catalyst.conf or on
         # the command line).
@@ -460,19 +450,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         log.info('SNAPSHOT_PATH set to: %s', self.settings['snapshot_path'])
         self.settings["snapshot_path_hash"] = \
             self.generate_hash(self.settings["snapshot_path"], "sha1")
-
-    def set_snapcache_path(self):
-        self.settings["snapshot_cache_path"] = \
-            normpath(pjoin(self.settings["snapshot_cache"],
-                           self.settings["snapshot"]))
-        if "snapcache" in self.settings["options"]:
-            self.settings["snapshot_cache_path"] = \
-                normpath(pjoin(self.settings["snapshot_cache"],
-                               self.settings["snapshot"]))
-            self.snapcache_lock = \
-                LockDir(self.settings["snapshot_cache_path"])
-            log.info('Setting snapshot cache to %s',
-                     self.settings['snapshot_cache_path'])
 
     def set_chroot_path(self):
         """
@@ -841,7 +818,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         unpack_info = self.decompressor.create_infodict(
             source=self.settings["snapshot_path"],
-            destination=self.settings["snapshot_cache_path"],
             arch=self.settings["compressor_arch"],
             other_options=self.settings["compressor_options"],
         )
@@ -850,41 +826,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                   self.settings["repo_basedir"] + "/" + self.settings["repo_name"])
         log.info('%s', self.settings['chroot_path'])
         log.info('unpack_snapshot(), target_portdir = %s', target_portdir)
-        if "snapcache" in self.settings["options"]:
-            snapshot_cache_hash_path = pjoin(
-                self.settings['snapshot_cache_path'], 'catalyst-hash')
-            snapshot_cache_hash = fileutils.readfile(
-                snapshot_cache_hash_path, True)
-            unpack_info['mode'] = self.decompressor.determine_mode(
-                unpack_info['source'])
+        cleanup_msg = \
+            'Cleaning up existing portage tree (this can take a long time)...'
+        unpack_info['destination'] = normpath(
+            self.settings["chroot_path"] + self.settings["repo_basedir"])
+        unpack_info['mode'] = self.decompressor.determine_mode(
+            unpack_info['source'])
 
-            cleanup_msg = "Cleaning up invalid snapshot cache at \n\t" + \
-                self.settings["snapshot_cache_path"] + \
-                " (this can take a long time)..."
-
-            if self.settings["snapshot_path_hash"] == snapshot_cache_hash:
-                log.info(
-                    'Valid snapshot cache, skipping unpack of portage tree...')
-                unpack = False
-        else:
-            cleanup_msg = \
-                'Cleaning up existing portage tree (this can take a long time)...'
-            unpack_info['destination'] = normpath(
-                self.settings["chroot_path"] + self.settings["repo_basedir"])
-            unpack_info['mode'] = self.decompressor.determine_mode(
-                unpack_info['source'])
-
-            if "autoresume" in self.settings["options"] \
-                    and os.path.exists(target_portdir) \
-                    and self.resume.is_enabled("unpack_repo") \
-                    and self.settings["snapshot_path_hash"] == snapshot_hash:
-                log.notice(
-                    'Valid Resume point detected, skipping unpack of portage tree...')
-                unpack = False
+        if "autoresume" in self.settings["options"] \
+                and os.path.exists(target_portdir) \
+                and self.resume.is_enabled("unpack_repo") \
+                and self.settings["snapshot_path_hash"] == snapshot_hash:
+            log.notice(
+                'Valid Resume point detected, skipping unpack of portage tree...')
+            unpack = False
 
         if unpack:
-            if "snapcache" in self.settings["options"]:
-                self.snapcache_lock.write_lock()
             if os.path.exists(target_portdir):
                 log.info('%s', cleanup_msg)
             clear_dir(target_portdir)
@@ -893,16 +850,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             if not self.decompressor.extract(unpack_info):
                 log.error('%s', unpack_errmsg % unpack_info)
 
-            if "snapcache" in self.settings["options"]:
-                with open(snapshot_cache_hash_path, 'w') as myf:
-                    myf.write(self.settings["snapshot_path_hash"])
-            else:
-                log.info('Setting snapshot autoresume point')
-                self.resume.enable("unpack_repo",
-                                   data=self.settings["snapshot_path_hash"])
-
-            if "snapcache" in self.settings["options"]:
-                self.snapcache_lock.unlock()
+            log.info('Setting snapshot autoresume point')
+            self.resume.enable("unpack_repo",
+                               data=self.settings["snapshot_path_hash"])
 
     def config_profile_link(self):
         log.info('Configuring profile link...')
@@ -967,9 +917,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             src = self.mount[x]['source']
             log.debug('bind(); src = %s', src)
-            if "snapcache" in self.settings["options"] and x == "portdir":
-                self.snapcache_lock.read_lock()
-            _cmd = None
             if src == "maybe_tmpfs":
                 if "var_tmpfs_portage" in self.settings:
                     _cmd = ['mount', '-t', 'tmpfs',
@@ -1018,14 +965,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     ouch = 1
                     log.warning("Couldn't umount bind mount: %s", target)
 
-            if "snapcache" in self.settings["options"] and x == "/var/db/repos/gentoo":
-                try:
-                    # It's possible the snapshot lock object isn't created yet.
-                    # This is because mount safety check calls unbind before the
-                    # target is fully initialized
-                    self.snapcache_lock.unlock()
-                except Exception:
-                    pass
         if ouch:
             # if any bind mounts really failed, then we need to raise
             # this to potentially prevent an upcoming bash stage cleanup script

@@ -45,7 +45,6 @@ valid_config_file_values.extend([
     "distcc",
     "envscript",
     "options",
-    "snapshot_cache",
     "VERBOSE",
 ])
 
@@ -70,7 +69,6 @@ confdefaults = {
     "repo_basedir": "/var/db/repos",
     "repo_name": "gentoo",
     "sharedir": "/usr/share/catalyst",
-    "snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
     "snapshot_name": "%(repo_name)s-",
     "shdir": "%(sharedir)s/targets",
     "source_matching": "strict",
@@ -162,5 +160,4 @@ option_messages = {
     "pkgcache": "Package cache support enabled.",
     "purge": "Purge support enabled.",
     "seedcache": "Seed cache support enabled.",
-    "snapcache": "Snapshot cache support enabled.",
 }

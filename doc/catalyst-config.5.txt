@@ -27,7 +27,7 @@ and empty lines are interpreted as comments.  For example:
 
 digests="auto"
 envscript="/etc/catalyst/catalystrc"
-options="autoresume bindist kerncache pkgcache seedcache snapcache"
+options="autoresume bindist kerncache pkgcache seedcache"
 
 # source repo settings
 portdir="/var/db/repos/gentoo"
@@ -56,7 +56,7 @@ export FOO="bar"
 
 **options*::
 Set different build-time options (example: `autoresume bindist
-kerncache pkgcache seedcache snapcache`).  Supported values:
+kerncache pkgcache seedcache`).  Supported values:
 +
 --
 autoresume::
@@ -94,12 +94,6 @@ details.
 seedcache::
 Use the build output of a previous target if it exists to speed up the
 creation of a new stage.  This avoids unpacking the seed tarball.
-
-snapcache::
-Cache the snapshot so that it can be bind-mounted into the chroot.
-WARNING: moving parts of the portage tree from within fsscript *will*
-break your cache.  The cache is unlinked before any empty or rm
-processing.
 
 versioned_cache::
 Name the cache directories (packagecache, kerncache) based on the version of a
