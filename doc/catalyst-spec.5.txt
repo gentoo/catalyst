@@ -115,10 +115,6 @@ explained below.
 
 This setting is supported by the livecd targets.
 
-*<target>/builddate*::
-Set the build date of the `<target>` (example: `20060107`).  This
-setting is supported by the `netboot2` target.
-
 *<target>/readme*::
 This is for the README.txt on the root of the CD.  For Gentoo
 releases, we use a default README.txt, and this will be used on your
@@ -223,14 +219,12 @@ the labels that will be used by the CD bootloader to refer to each
 kernel image (example: `gentoo`).
 
 *boot/kernel/<label>/sources*::
-*netboot/kernel/sources*::
 This option tells catalyst which kernel sources to merge for this
 kernel label (example: `gentoo-sources`).  This can use normal portage
 atoms to specify a specific version.  `<label>` should match one of
 the labels given to *boot/kernel*.
 
 *boot/kernel/<label>/config*::
-*netboot/kernel/config*::
 This option is the full path and filename to a kernel `.config` file
 that is used by genkernel to compile the kernel this label applies to.
 `<label>` should match one of the labels given to *boot/kernel*.
@@ -271,7 +265,6 @@ will keep it from being auto-loaded, even if it is detected by
 hotplug.  This setting is supported by the `stage4` and `livecd`
 targets.
 
-*netboot/kernel/use*::
 *boot/kernel/<label>/use*::
 This option sets the `USE` flags used to build the kernel and also any
 packages which are defined under this kernel label (example: `pcmcia
@@ -293,16 +286,13 @@ to enable keymap selection.
 Netboot
 ~~~~~~~
 
-*<target>/busybox_config*::
+*netboot/busybox_config*::
 The netboot target builds busybox for its root filesystem.  This
 option is where you specify the full path and filename to your busybox
-configuration (example: `/tmp/busybox.config`).  This setting is
-supported by the `netboot` and `netboot2` targets.
+configuration (example: `/tmp/busybox.config`).
 
-*netboot/base_tarball*::
-This is the full path and filename to the tarball to use as the base
-for the netboot image (example:
-`/usr/share/catalyst/netboot/netboot-base.tar.bz2`).
+*netboot/builddate*::
+Set the build date of the `<target>` (example: `20060107`).
 
 Runlevels
 ~~~~~~~~~
@@ -343,7 +333,7 @@ quite a few problems with these, so be careful with whatever `USE`
 flags you add here.  This is generally used for adding some
 functionality that we do not want on by default for all Gentoo users,
 but that we want on by default in our binaries.  This setting is
-supported by the `stage4` and `netboot2` targets.
+supported by the `stage4` and `netboot` targets.
 
 *<target>/packages*::
 This is the set of packages that we will merge into the stage4 tarball
@@ -352,21 +342,14 @@ fxload irssi wpa_supplicant`).  They will be built with the `USE`
 flags configured above.  These packages must not depend on a
 configured kernel.  If the package requires a configured kernel, then
 it will be defined elsewhere.  This setting is supported by the
-`stage4`, and `netboot2` targets.
+`stage4`, and `netboot` targets.
 
-*netboot/packages*::
-These package names are also labels used later when determining what
-files to copy into your netboot image (example: `raidtools
-e2fsprogs`).
-
-*<target>/packages/<label>/files*::
+*netboot/packages/<label>/files*::
 This is where you tell catalyst which files from each package to copy
 into the netboot image.  `<label>` should match one of the labels
 given to *netboot/packages*.  For example:
 
   netboot/packages/raidtools/files: /sbin/raidstart /sbin/mkraid
-
-This option is supported by the `netboot` and `netboot2` targets.
 
 *netboot/extra_files*::
 This is a list of any other files, not belonging to the above
