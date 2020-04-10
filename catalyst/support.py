@@ -218,23 +218,19 @@ def addl_arg_parse(myspec,addlargs,requiredspec,validspec):
 
 
 def countdown(secs=5, doing="Starting"):
-	# If this is non-interactive (e.g. a cronjob), then sleeping is pointless.
-	if not os.isatty(sys.stdin.fileno()):
+	# Don't sleep if this is non-interactive
+	if not os.isatty(sys.stdin.fileno()) or secs == 0:
 		return
 
-	if secs:
-		sys.stdout.write(
-			('>>> Waiting %s seconds before starting...\n'
-			 '>>> (Control-C to abort)...\n'
-			 '%s in: ') % (secs, doing))
-		# py3 now creates a range object, so wrap it with list()
-		ticks=list(range(secs))
-		ticks.reverse()
-		for sec in ticks:
-			sys.stdout.write(str(sec+1)+" ")
-			sys.stdout.flush()
-			time.sleep(1)
-		sys.stdout.write('\n')
+	sys.stdout.write(
+		('>>> Waiting %s seconds before starting...\n'
+		 '>>> (Control-C to abort)...\n'
+		 '%s in: ') % (secs, doing))
+	for sec in reversed(range(1, secs + 1)):
+		sys.stdout.write(str(sec) + " ")
+		sys.stdout.flush()
+		time.sleep(1)
+	sys.stdout.write('\n')
 
 
 def normpath(mypath):
