@@ -80,45 +80,6 @@ case ${clst_hostarch} in
 			echo "--recoverykernel=boot/${x}" >> ${icfg}
 		done
 	;;
-	ia64|ppc*|powerpc*|sparc*)
-		kern_subdir=/boot
-		iacfg=$1/boot/grub/grub.cfg
-		mkdir -p $1/boot/grub
-		echo 'set default=0' > ${iacfg}
-		echo 'set gfxpayload=keep' >> ${iacfg}
-		echo 'set timeout=10' >> ${iacfg}
-		echo 'insmod all_video' >> ${iacfg}
-		echo '' >> ${iacfg}
-		for x in ${clst_boot_kernel}
-		do
-			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
-			eval custom_kopts=\$${x}_kernelopts
-
-			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
-			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
-			echo "}" >> ${iacfg}
-			echo "" >> ${iacfg}
-			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
-			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
-			echo "}" >> ${iacfg}
-			if [ -n "${clst_kernel_console}" ]
-			then
-			echo "submenu 'Special console options (kernel: ${x})' --class gnu-linux --class os {" >> ${iacfg}
-				for y in ${clst_kernel_console}
-				do
-					echo "menuentry 'Boot LiveCD (kernel: ${x} console=${y})' --class gnu-linux --class os {"  >> ${iacfg}
-					echo "	linux ${kern_subdir}/${x} ${default_append_line} console=${y}" >> ${iacfg}
-					echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
-					echo "}" >> ${iacfg}
-					echo "" >> ${iacfg}
-				done
-				echo "}" >> ${iacfg}
-			fi
-			echo "" >> ${iacfg}
-		done
-	;;
 	x86|amd64)
 		if [ -e $1/isolinux/isolinux.bin ]
 		then
@@ -219,6 +180,45 @@ case ${clst_hostarch} in
 				echo "" >> ${iacfg}
 			done
 		fi
+	;;
+	ia64|ppc*|powerpc*|sparc*)
+		kern_subdir=/boot
+		iacfg=$1/boot/grub/grub.cfg
+		mkdir -p $1/boot/grub
+		echo 'set default=0' > ${iacfg}
+		echo 'set gfxpayload=keep' >> ${iacfg}
+		echo 'set timeout=10' >> ${iacfg}
+		echo 'insmod all_video' >> ${iacfg}
+		echo '' >> ${iacfg}
+		for x in ${clst_boot_kernel}
+		do
+			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
+			eval custom_kopts=\$${x}_kernelopts
+
+			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			echo "" >> ${iacfg}
+			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
+			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			if [ -n "${clst_kernel_console}" ]
+			then
+			echo "submenu 'Special console options (kernel: ${x})' --class gnu-linux --class os {" >> ${iacfg}
+				for y in ${clst_kernel_console}
+				do
+					echo "menuentry 'Boot LiveCD (kernel: ${x} console=${y})' --class gnu-linux --class os {"  >> ${iacfg}
+					echo "	linux ${kern_subdir}/${x} ${default_append_line} console=${y}" >> ${iacfg}
+					echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+					echo "}" >> ${iacfg}
+					echo "" >> ${iacfg}
+				done
+				echo "}" >> ${iacfg}
+			fi
+			echo "" >> ${iacfg}
+		done
 	;;
 	mips)
 		# NO SOFTLEVEL SUPPORT YET
