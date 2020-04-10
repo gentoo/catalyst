@@ -474,7 +474,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				"/snapshots/" + self.settings["snapshot_name"] +
 				self.settings["snapshot"]),
 			self.accepted_extensions,
-			self.settings["source_matching"] is "strict"
+			self.settings["source_matching"] == "strict"
 			)
 		log.info('SNAPSHOT_PATH set to: %s', self.settings['snapshot_path'])
 		self.settings["snapshot_path_hash"] = \
@@ -557,7 +557,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		else:
 			self.settings["action_sequence"].append("remove_autoresume")
 			self.settings["action_sequence"].append("remove_chroot")
-		return
 
 	def set_use(self):
 		use = self.settings["spec_prefix"] + "/use"
@@ -716,8 +715,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					self.unbind()
 					if ismount(target):
 						raise CatalystError("Auto-unbind failed for " + target)
-					else:
-						log.notice('Auto-unbind successful...')
+					log.notice('Auto-unbind successful...')
 				except CatalystError:
 					raise CatalystError("Unable to auto-unbind " + target)
 
@@ -1105,7 +1103,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 						continue
 					myf.write("# %s is unsupported.  USE AT YOUR OWN RISK!\n"
 							% flags)
-				if flags not in self.settings or (flags is not "COMMON_FLAGS" and
+				if flags not in self.settings or (flags != "COMMON_FLAGS" and
 						self.settings[flags] == self.settings["COMMON_FLAGS"]):
 					myf.write('%s="${COMMON_FLAGS}"\n' % flags)
 				elif isinstance(self.settings[flags], list):
@@ -1442,7 +1440,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 		if "purgetmponly" in self.settings["options"]:
 			self.purge()
-			return
+			return True
 
 		if "purgeonly" in self.settings["options"]:
 			log.info('StageBase: run() purgeonly')

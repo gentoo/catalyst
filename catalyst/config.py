@@ -22,7 +22,7 @@ class ParserBase():
 
 	def dump(self):
 		dump = ""
-		for x in self.values.keys():
+		for x in self.values:
 			dump += x + " = " + repr(self.values[x]) + "\n"
 		return dump
 

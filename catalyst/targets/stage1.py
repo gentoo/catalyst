@@ -3,10 +3,6 @@ stage1 target
 """
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
-import os
-
-from snakeoil import fileutils
-
 from catalyst import log
 from catalyst.support import normpath
 from catalyst.fileops import ensure_dirs, move_path
@@ -106,7 +102,6 @@ class stage1(StageBase):
 		else:
 			self.settings["action_sequence"].append("remove_autoresume")
 			self.settings["action_sequence"].append("remove_chroot")
-		return
 
 
 	def clean_stage1(self):

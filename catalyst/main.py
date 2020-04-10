@@ -271,10 +271,9 @@ def main(argv):
 
 	if opts.trace:
 		return trace(_main, parser, opts)
-	elif opts.profile:
+	if opts.profile:
 		return profile(_main, parser, opts)
-	else:
-		return _main(parser, opts)
+	return _main(parser, opts)
 
 
 def _main(parser, opts):

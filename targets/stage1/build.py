@@ -22,10 +22,10 @@ buildpkgs = scan_profile("packages.build")
 # we replace the buildpkg item with the one in the
 # system profile (it may have <,>,=,etc... operators
 # and version numbers)
-for idx in range(0, len(pkgs)):
+for pkg in pkgs:
 	try:
-		bidx = buildpkgs.index(portage.dep_getkey(pkgs[idx]))
-		buildpkgs[bidx] = pkgs[idx]
+		bidx = buildpkgs.index(portage.dep_getkey(pkg))
+		buildpkgs[bidx] = pkg
 		if buildpkgs[bidx][0:1] == "*":
 			buildpkgs[bidx] = buildpkgs[bidx][1:]
 	except Exception:

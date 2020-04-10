@@ -92,8 +92,7 @@ class CatalystFormatter(logging.Formatter):
 		color = self._COLORS.get(record.levelname)
 		if color:
 			return color + msg + self._NORMAL
-		else:
-			return msg
+		return msg
 
 
 # We define |debug| in global scope so people can call log.debug(), but it

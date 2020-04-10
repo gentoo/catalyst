@@ -65,20 +65,19 @@ def file_check(filepath, extensions=None, strict=True):
 	files = glob.glob("%s.*" % filepath)
 	# remove any false positive files
 	files = [x for x in files if not x.endswith(".CONTENTS") and not x.endswith(".DIGESTS")]
-	if len(files) is 1:
+	if len(files) == 1:
 		return files[0]
-	elif len(files) > 1 and strict:
+	if len(files) > 1 and strict:
 		msg = "Ambiguos Filename: %s\nPlease specify the correct extension as well" % filepath
 		raise CatalystError(msg, print_traceback=False)
-	else:
-		target_file = None
-		for ext in extensions:
-			target = filepath + "." + ext
-			if target in files:
-				target_file = target
-				break
-		if target_file:
-			return target_file
+	target_file = None
+	for ext in extensions:
+		target = filepath + "." + ext
+		if target in files:
+			target_file = target
+			break
+	if target_file:
+		return target_file
 	raise CatalystError("File Not Found: %s" % filepath)
 
 
@@ -90,7 +89,7 @@ def file_locate(settings,filelist,expand=1):
 			#filenames such as cdtar are optional, so we don't assume the variable is defined.
 			pass
 		else:
-			if len(settings[myfile])==0:
+			if not settings[myfile]:
 				raise CatalystError("File variable \"" + myfile +
 					"\" has a length of zero (not specified.)", print_traceback=True)
 			if settings[myfile][0]=="/":

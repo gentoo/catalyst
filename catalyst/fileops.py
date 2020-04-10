@@ -18,7 +18,7 @@ from snakeoil.osutils import (ensure_dirs as snakeoil_ensure_dirs,
 # pylint: enable=unused-import
 
 from catalyst import log
-from catalyst.support import (cmd, CatalystError)
+from catalyst.support import CatalystError
 
 
 def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,

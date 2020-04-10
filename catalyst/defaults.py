@@ -1,6 +1,4 @@
 
-import os
-
 from DeComp.definitions import DECOMPRESSOR_SEARCH_ORDER
 from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
 from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
