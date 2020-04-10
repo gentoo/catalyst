@@ -14,7 +14,7 @@ from catalyst import log
 from catalyst.fileops import ensure_dirs, pjoin, listdir_files, clear_dir
 
 
-class AutoResume(object):
+class AutoResume():
 	'''Class for tracking and handling all aspects of
 	the autoresume option and related files.
 	'''

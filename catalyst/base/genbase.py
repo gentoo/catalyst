@@ -3,7 +3,7 @@ import io
 import os
 
 
-class GenBase(object):
+class GenBase():
 	"""
 	This class does generation of the contents and digests files.
 	"""

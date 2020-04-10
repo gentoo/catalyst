@@ -41,7 +41,7 @@ HASH_DEFINITIONS = {
 	}
 
 
-class HashMap(object):
+class HashMap():
 	'''Class for handling
 	Catalyst's hash generation'''
 

@@ -9,7 +9,7 @@ from catalyst.fileops import ensure_dirs
 LockInUse = osutils.LockException
 
 
-class LockDir(object):
+class LockDir():
 	"""An object that creates locks inside dirs"""
 
 	def __init__(self, lockdir):

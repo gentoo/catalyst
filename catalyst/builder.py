@@ -1,6 +1,6 @@
 import os
 
-class generic(object):
+class generic():
 	def __init__(self,myspec):
 		self.settings=myspec
 		self.settings.setdefault('CHROOT', 'chroot')

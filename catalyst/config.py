@@ -4,7 +4,7 @@ import re
 from catalyst import log
 from catalyst.support import CatalystError
 
-class ParserBase(object):
+class ParserBase():
 
 	filename = ""
 	lines = None

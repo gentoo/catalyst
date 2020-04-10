@@ -4,7 +4,7 @@ from catalyst import log
 from catalyst.support import countdown
 from catalyst.fileops import clear_dir
 
-class ClearBase(object):
+class ClearBase():
 	"""
 	This class does all of clearing after task completion
 	"""

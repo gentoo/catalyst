@@ -106,7 +106,7 @@ def build_target(addlargs):
 	return target.run()
 
 
-class FilePath(object):
+class FilePath():
 	"""Argparse type for getting a path to a file."""
 
 	def __init__(self, exists=True):

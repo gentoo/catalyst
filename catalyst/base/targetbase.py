@@ -2,7 +2,7 @@ import os
 
 from catalyst.support import addl_arg_parse
 
-class TargetBase(object):
+class TargetBase():
 	"""
 	The toplevel class for all targets. This is about as generic as we get.
 	"""
