@@ -45,7 +45,6 @@ class ParserBase(object):
 		cur_array = []
 
 		trailing_comment=re.compile(r'\s*#.*$')
-		#white_space=re.compile('\s+')
 
 		for x, myline in enumerate(self.lines):
 			myline = myline.strip()
@@ -63,10 +62,6 @@ class ParserBase(object):
 				mobjs = myline.split(self.key_value_separator, 1)
 				mobjs[1] = mobjs[1].strip().strip('"')
 
-#				# Check that this key doesn't exist already in the spec
-#				if mobjs[0] in values:
-#					raise Exception("You have a duplicate key (" + mobjs[0] + ") in your spec. Please fix it")
-
 				# Start a new array using the first element of mobjs
 				cur_array = [mobjs[0]]
 				if mobjs[1]:
@@ -75,7 +70,6 @@ class ParserBase(object):
 					mobjs[1] = mobjs[1] % values
 					if self.multiple_values:
 						# split on white space creating additional array elements
-#						subarray = white_space.split(mobjs[1])
 						subarray = mobjs[1].split()
 						cur_array += subarray
 					else:
@@ -84,8 +78,6 @@ class ParserBase(object):
 			# Else add on to the last key we were working on
 			else:
 				if self.multiple_values:
-#					mobjs = white_space.split(myline)
-#					cur_array += mobjs
 					cur_array += myline.split()
 				else:
 					raise CatalystError("Syntax error: %s" % x, print_traceback=True)

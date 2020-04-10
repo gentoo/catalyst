@@ -21,7 +21,7 @@ class snapshot(TargetBase, GenBase):
 
 		TargetBase.__init__(self, myspec, addlargs)
 		GenBase.__init__(self,myspec)
-		#self.settings=myspec
+
 		self.settings["target_subpath"]="repos"
 		st=self.settings["storedir"]
 		self.settings["snapshot_path"] = normpath(st + "/snapshots/"

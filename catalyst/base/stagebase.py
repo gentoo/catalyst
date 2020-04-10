@@ -1388,7 +1388,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		for x in list(self.settings):
 			log.debug('setup_environment(); processing: %s', x)
 			if x == "options":
-				#self.env['clst_' + x] = ' '.join(self.settings[x])
 				for opt in self.settings[x]:
 					self.env['clst_' + opt.upper()] = "true"
 				continue
@@ -1398,13 +1397,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			varname = varname.replace(".", "_")
 			if isinstance(self.settings[x], str):
 				# Prefix to prevent namespace clashes
-				#os.environ[varname] = self.settings[x]
 				if "path" in x:
 					self.env[varname] = self.settings[x].rstrip("/")
 				else:
 					self.env[varname] = self.settings[x]
 			elif isinstance(self.settings[x], list):
-				#os.environ[varname] = ' '.join(self.settings[x])
 				self.env[varname] = ' '.join(self.settings[x])
 			elif isinstance(self.settings[x], bool):
 				if self.settings[x]:

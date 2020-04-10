@@ -104,12 +104,10 @@ SOURCE_MOUNT_DEFAULTS = {
 	"run": "tmpfs",
 	}
 
-# legend:  key: message
 option_messages = {
 	"autoresume": "Autoresuming support enabled.",
 	"ccache": "Compiler cache support enabled.",
 	"clear-autoresume": "Cleaning autoresume flags support enabled.",
-	#"compress": "Compression enabled.",
 	"distcc": "Distcc support enabled.",
 	"icecream": "Icecream compiler cluster support enabled.",
 	"kerncache": "Kernel cache support enabled.",
@@ -117,5 +115,4 @@ option_messages = {
 	"purge": "Purge support enabled.",
 	"seedcache": "Seed cache support enabled.",
 	"snapcache": "Snapshot cache support enabled.",
-	#"tarball": "Tarball creation enabled.",
 	}
