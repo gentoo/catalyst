@@ -3,6 +3,7 @@
 import os
 import sys
 import portage
+from portage.dep import dep_getkey
 from portage.util import grabfile_package, stack_lists
 
 # this loads files from the profiles ...
@@ -24,7 +25,7 @@ buildpkgs = scan_profile("packages.build")
 # and version numbers)
 for pkg in pkgs:
 	try:
-		bidx = buildpkgs.index(portage.dep_getkey(pkg))
+		bidx = buildpkgs.index(dep_getkey(pkg))
 		buildpkgs[bidx] = pkg
 		if buildpkgs[bidx][0:1] == "*":
 			buildpkgs[bidx] = buildpkgs[bidx][1:]
