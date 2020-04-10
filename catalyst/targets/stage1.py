@@ -78,19 +78,7 @@ class stage1(StageBase):
 				"Don't say we did not warn you.")
 
 	def base_dirs(self):
-		if os.uname()[0] == "FreeBSD":
-			# baselayout no longer creates the .keep files in proc and dev for FreeBSD as it
-			# would create them too late...we need them earlier before bind mounting filesystems
-			# since proc and dev are not writeable, so...create them here
-			ensure_dirs(self.settings["stage_path"]+"/proc")
-			ensure_dirs(self.settings["stage_path"]+"/dev")
-			for f in ('/proc', '/dev'):
-				f = self.settings['stage_path'] + f + '/.keep'
-				if not os.path.isfile(f):
-					try:
-						fileutils.touch(f)
-					except IOError:
-						log.error('Failed to create %s', f)
+		pass
 
 	def set_mounts(self):
 		# stage_path/proc probably doesn't exist yet, so create it

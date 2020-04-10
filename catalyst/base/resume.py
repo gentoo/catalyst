@@ -126,7 +126,7 @@ class AutoResume():
 		@remove: boolean, passed through to clear_dir()
 		@return boolean
 		'''
-		if clear_dir(self.basedir, mode=0o755, chg_flags=True, remove=remove):
+		if clear_dir(self.basedir, mode=0o755, remove=remove):
 			self._points = {}
 			return True
 		return False

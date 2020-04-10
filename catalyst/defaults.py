@@ -5,12 +5,6 @@ from DeComp.definitions import DECOMPRESSOR_SEARCH_ORDER
 from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
 from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
-# Used for the (de)compressor definitions
-if os.uname()[0] in  ["Linux", "linux"]:
-	TAR = 'linux'
-else:
-	TAR = 'bsd'
-
 
 # these should never be touched
 required_build_targets = ["targetbase", "generic_stage_target"]
@@ -41,16 +35,16 @@ PORTDIR = REPODIR + "/" + MAINREPO
 
 confdefaults={
 	"archdir": "%(PythonDir)s/arch",
-	"comp_prog": COMPRESSOR_PROGRAM_OPTIONS[TAR],
+	"comp_prog": COMPRESSOR_PROGRAM_OPTIONS['linux'],
 	"compression_mode": 'lbzip2',
 	"compressor_arch": None,
-	"compressor_options": XATTRS_OPTIONS[TAR],
-	"decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS[TAR],
+	"compressor_options": XATTRS_OPTIONS['linux'],
+	"decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS['linux'],
 	"decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
 	"distdir": DISTDIR[:],
 	"hash_function": "crc32",
 	"icecream": "/var/cache/icecream",
-	'list_xattrs_opt': LIST_XATTRS_OPTIONS[TAR],
+	'list_xattrs_opt': LIST_XATTRS_OPTIONS['linux'],
 	"local_overlay": REPODIR[:] + "/local",
 	"port_conf": "/etc/portage",
 	"make_conf": "%(port_conf)s/make.conf",

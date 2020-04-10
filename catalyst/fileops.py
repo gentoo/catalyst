@@ -50,13 +50,12 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
 	return succeeded
 
 
-def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
+def clear_dir(target, mode=0o755, remove=False,
 		clear_nondir=True):
 	'''Universal directory clearing function
 
 	@target: string, path to be cleared or removed
 	@mode: integer, desired mode to set the directory to
-	@chg_flags: boolean used for FreeBSD hosts
 	@remove: boolean, passed through to clear_dir()
 	@return boolean
 	'''
@@ -73,9 +72,6 @@ def clear_dir(target, mode=0o755, chg_flags=False, remove=False,
 		try:
 			log.debug('os.stat()')
 			mystat = os.stat(target)
-			# There's no easy way to change flags recursively in python
-			if chg_flags and os.uname()[0] == "FreeBSD":
-				cmd(['chflags', '-R', 'noschg', target])
 			log.debug('shutil.rmtree()')
 			shutil.rmtree(target)
 		except Exception:

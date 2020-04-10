@@ -224,10 +224,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				self.settings["snapshot_cache_path"],
 				self.settings["repo_name"],
 				]))
-		if os.uname()[0] == "Linux":
-			self.mounts.append("devpts")
-			self.mounts.append("shm")
-			self.mounts.append("run")
+		self.mounts.append("devpts")
+		self.mounts.append("shm")
+		self.mounts.append("run")
 
 		self.set_mounts()
 
@@ -983,16 +982,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			elif src == "tmpfs":
 				_cmd = ['mount', '-t', 'tmpfs', src, target]
 			else:
-				if os.uname()[0] == "FreeBSD":
-					if src == "/dev":
-						_cmd = ['mount', '-t', 'devfs', 'none', target]
-					else:
-						_cmd = ['mount_nullfs', src, target]
+				if src == "shmfs":
+					_cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev', 'shm', target]
 				else:
-					if src == "shmfs":
-						_cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev', 'shm', target]
-					else:
-						_cmd = ['mount', '--bind', src, target]
+					_cmd = ['mount', '--bind', src, target]
 			if _cmd:
 				log.debug('bind(); _cmd = %s', _cmd)
 				cmd(_cmd, env=self.env, fail_func=self.unbind)

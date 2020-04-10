@@ -10,8 +10,7 @@ class generic():
 
 		Useful for building x86-on-amd64 and such.
 		"""
-		if os.uname()[0] == 'Linux':
-			self.settings['CHROOT'] = 'setarch %s %s' % (arch, self.settings['CHROOT'])
+		self.settings['CHROOT'] = 'setarch %s %s' % (arch, self.settings['CHROOT'])
 
 	def mount_safety_check(self):
 		"""
