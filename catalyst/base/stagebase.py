@@ -683,7 +683,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		verify = prefix + "/verify"
 		if verify in self.settings:
 			assert self.settings[verify] == "blake2"
-			self.settings.setdefault("gk_mainargs", "").append(" --b2sum")
+			self.settings.setdefault("gk_mainargs", "")
+			self.settings["gk_mainargs"] += " --b2sum"
 
 	def kill_chroot_pids(self):
 		log.info('Checking for processes running in chroot and killing them.')
