@@ -20,11 +20,6 @@ from catalyst.lock import LockDir, LockInUse
 from catalyst.fileops import ensure_dirs, pjoin, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
-if sys.version_info[0] >= 3:
-	py_input = input
-else:
-	py_input = raw_input  # pylint: disable=undefined-variable
-
 
 class StageBase(TargetBase, ClearBase, GenBase):
 	"""
@@ -1697,6 +1692,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	@staticmethod
 	def _debug_pause_():
-		py_input("press any key to continue: ")
+		input("press any key to continue: ")
 
 # vim: ts=4 sw=4 sta et sts=4 ai
