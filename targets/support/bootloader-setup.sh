@@ -154,33 +154,7 @@ case ${clst_hostarch} in
 			echo "  localboot -1" >> $icfg
 			echo "  MENU HIDE" >> $icfg
 		fi
-
-		# GRUB2
-		if [ -d $1/grub ] || [ -f "$1/boot/EFI/BOOT/BOOTX64.EFI" ]
-		then
-			mkdir -p "$1/grub"
-
-			iacfg=$1/grub/grub.cfg
-			echo 'set default=0' > ${iacfg}
-			echo 'set gfxpayload=keep' >> ${iacfg}
-			echo 'set timeout=10' >> ${iacfg}
-			echo 'insmod all_video' >> ${iacfg}
-			echo '' >> ${iacfg}
-			for x in ${clst_boot_kernel}
-			do
-				echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
-				echo "	linux /boot/${x} ${default_append_line}" >> ${iacfg}
-				echo "	initrd /boot/${x}.igz" >> ${iacfg}
-				echo "}" >> ${iacfg}
-				echo "" >> ${iacfg}
-				echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-				echo "	linux /boot/${x} ${default_append_line} docache" >> ${iacfg}
-				echo "	initrd /boot/${x}.igz" >> ${iacfg}
-				echo "}" >> ${iacfg}
-				echo "" >> ${iacfg}
-			done
-		fi
-	;;
+	;&
 	ia64|ppc*|powerpc*|sparc*)
 		kern_subdir=/boot
 		iacfg=$1/boot/grub/grub.cfg
