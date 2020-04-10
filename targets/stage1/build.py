@@ -3,19 +3,14 @@
 import os
 import sys
 import portage
+from portage.util import grabfile_package, stack_lists
 
 # this loads files from the profiles ...
 # wrap it here to take care of the different
 # ways portage handles stacked profiles
 # last case is for portage-2.1_pre*
 def scan_profile(path):
-	if "grab_stacked" in dir(portage):
-		return portage.grab_stacked(path, portage.settings.profiles, portage.grabfile, incremental_lines=1)
-	else:
-		if "grab_multiple" in dir(portage):
-			return portage.stack_lists(portage.grab_multiple(path, portage.settings.profiles, portage.grabfile), incremental=1)
-		else:
-			return portage.stack_lists([portage.grabfile_package(os.path.join(x, path)) for x in portage.settings.profiles], incremental=1)
+	return stack_lists([grabfile_package(os.path.join(x, path)) for x in portage.settings.profiles], incremental=1)
 
 # loaded the stacked packages / packages.build files
 pkgs = scan_profile("packages")
