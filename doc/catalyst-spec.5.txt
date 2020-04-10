@@ -253,10 +253,10 @@ use this on the official media.  `<label>` should match one of the
 labels given to *boot/kernel*.
 
 *boot/kernel/<label>/console*::
-This is only supported on ppc64 currently.  This entry sets up the
-console boot parameters required for sending the output to the
-appropriate console (example: `tty0 ttyS0`).  `<label>` should match
-one of the labels given to *boot/kernel*.
+This is only supported on with grub currently (x86, amd64, ia64, ppc,
+sparc).  This entry sets up the console boot parameters required for
+sending the output to the appropriate console (example: `tty0 ttyS0`).
+`<label>` should match one of the labels given to *boot/kernel*.
 
 *<target>/modblacklist*::
 This is for blacklisting modules from being hotplugged that are known
