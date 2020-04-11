@@ -432,7 +432,6 @@ def register():
 	return ({
 			"cobalt"			: arch_cobalt,
 			"cobalt_n32"			: arch_cobalt_n32,
-			"mips"				: arch_mips1,
 			"mips1"				: arch_mips1,
 			"mips2"				: arch_mips2,
 			"mips32"			: arch_mips32,
@@ -463,7 +462,6 @@ def register():
 			"mips64r2_n32"			: arch_mips64r2_n32,
 			"mips64r2_n64"			: arch_mips64r2_n64,
 			"mips64r2_multilib"		: arch_mips64r2_multilib,
-			"mipsel"			: arch_mipsel1,
 			"mipsel1"			: arch_mipsel1,
 			"mipsel2"			: arch_mipsel2,
 			"mips32el"			: arch_mips32el,
