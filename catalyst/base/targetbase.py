@@ -1,8 +1,10 @@
 import os
 
+from abc import ABC, abstractmethod
+
 from catalyst.support import addl_arg_parse
 
-class TargetBase():
+class TargetBase(ABC):
 	"""
 	The toplevel class for all targets. This is about as generic as we get.
 	"""
@@ -13,3 +15,15 @@ class TargetBase():
 			'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 			'TERM': os.getenv('TERM', 'dumb'),
 			}
+
+	@property
+	@classmethod
+	@abstractmethod
+	def required_values(cls):
+		return NotImplementedError
+
+	@property
+	@classmethod
+	@abstractmethod
+	def valid_values(cls):
+		return NotImplementedError
