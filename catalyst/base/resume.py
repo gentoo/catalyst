@@ -9,9 +9,10 @@ set, unset, is_set, is_unset, enabled, clear_all
 import os
 
 from snakeoil import fileutils
+from snakeoil.osutils import pjoin, listdir_files
 
 from catalyst import log
-from catalyst.fileops import ensure_dirs, pjoin, listdir_files, clear_dir
+from catalyst.fileops import ensure_dirs, clear_dir
 
 
 class AutoResume():

@@ -5,6 +5,7 @@ import shutil
 import sys
 
 from snakeoil import fileutils
+from snakeoil.osutils import pjoin
 
 from DeComp.compress import CompressMap
 
@@ -17,7 +18,7 @@ from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
 from catalyst.lock import LockDir, LockInUse
-from catalyst.fileops import ensure_dirs, pjoin, clear_dir, clear_path
+from catalyst.fileops import ensure_dirs, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
 
