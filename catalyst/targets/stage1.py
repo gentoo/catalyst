@@ -13,10 +13,14 @@ class stage1(StageBase):
 	"""
 	Builder class for a stage1 installation tarball build.
 	"""
+	required_values = frozenset()
+	valid_values = required_values | frozenset([
+		"chost",
+		"update_seed",
+		"update_seed_command",
+	])
+
 	def __init__(self,spec,addlargs):
-		self.required_values=[]
-		self.valid_values=["chost"]
-		self.valid_values.extend(["update_seed","update_seed_command"])
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_stage_path(self):

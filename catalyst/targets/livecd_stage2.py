@@ -12,21 +12,41 @@ class livecd_stage2(StageBase):
 	"""
 	Builder class for a LiveCD stage2 build.
 	"""
+	required_values = frozenset([
+		"boot/kernel",
+	])
+	valid_values = required_values | frozenset([
+		"livecd/bootargs",
+		"livecd/cdtar",
+		"livecd/depclean",
+		"livecd/empty",
+		"livecd/fsops",
+		"livecd/fsscript",
+		"livecd/fstype",
+		"livecd/gk_mainargs",
+		"livecd/iso",
+		"livecd/linuxrc",
+		"livecd/modblacklist",
+		"livecd/motd",
+		"livecd/overlay",
+		"livecd/rcadd",
+		"livecd/rcdel",
+		"livecd/readme",
+		"livecd/rm",
+		"livecd/root_overlay",
+		"livecd/splash_theme",
+		"livecd/type",
+		"livecd/unmerge",
+		"livecd/users",
+		"livecd/verify",
+		"livecd/volid",
+		"livecd/xdm",
+		"livecd/xinitrc",
+		"livecd/xsession",
+		"portage_overlay",
+	])
+
 	def __init__(self,spec,addlargs):
-		self.required_values=["boot/kernel"]
-
-		self.valid_values=[]
-
-		self.valid_values.extend(self.required_values)
-		self.valid_values.extend(["livecd/cdtar","livecd/empty","livecd/rm","livecd/depclean",\
-			"livecd/unmerge","livecd/iso","livecd/gk_mainargs","livecd/type",\
-			"livecd/readme","livecd/motd","livecd/overlay",\
-			"livecd/modblacklist","livecd/splash_theme","livecd/rcadd",\
-			"livecd/rcdel","livecd/fsscript","livecd/xinitrc",\
-			"livecd/root_overlay","livecd/users","portage_overlay",\
-			"livecd/fstype","livecd/fsops","livecd/linuxrc","livecd/bootargs",\
-			"livecd/xdm","livecd/xsession","livecd/volid","livecd/verify"])
-
 		StageBase.__init__(self,spec,addlargs)
 		if "livecd/type" not in self.settings:
 			self.settings["livecd/type"] = "generic-livecd"

@@ -10,14 +10,26 @@ class stage4(StageBase):
 	"""
 	Builder class for stage4.
 	"""
+	required_values = frozenset([
+		"stage4/packages",
+	])
+	valid_values = required_values | frozenset([
+		"boot/kernel",
+		"portage_overlay",
+		"splash_theme",
+		"stage4/empty",
+		"stage4/fsscript",
+		"stage4/gk_mainargs",
+		"stage4/linuxrc",
+		"stage4/rcadd",
+		"stage4/rcdel",
+		"stage4/rm",
+		"stage4/root_overlay",
+		"stage4/unmerge",
+		"stage4/use",
+	])
+
 	def __init__(self,spec,addlargs):
-		self.required_values=["stage4/packages"]
-		self.valid_values=self.required_values[:]
-		self.valid_values.extend(["stage4/use", "boot/kernel",
-			"stage4/root_overlay", "stage4/fsscript",
-			"stage4/gk_mainargs", "splash_theme",
-			"portage_overlay", "stage4/rcadd", "stage4/rcdel",
-			"stage4/linuxrc", "stage4/unmerge", "stage4/rm", "stage4/empty"])
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_cleanables(self):

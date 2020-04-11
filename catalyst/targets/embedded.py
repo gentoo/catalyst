@@ -18,14 +18,24 @@ class embedded(StageBase):
 	"""
 	Builder class for embedded target
 	"""
-	def __init__(self,spec,addlargs):
-		self.required_values=[]
-		self.valid_values=[]
-		self.valid_values.extend(["embedded/empty","embedded/rm","embedded/unmerge","embedded/fs-prepare","embedded/fs-finish","embedded/mergeroot","embedded/packages","embedded/fs-type","embedded/runscript","boot/kernel","embedded/linuxrc"])
-		self.valid_values.extend(["embedded/use"])
-		if "embedded/fs-type" in addlargs:
-			self.valid_values.append("embedded/fs-ops")
+	required_values = frozenset()
+	valid_values = required_values | frozenset([
+		"boot/kernel",
+		"embedded/empty",
+		"embedded/fs-finish",
+		"embedded/fs-ops",
+		"embedded/fs-prepare",
+		"embedded/fs-type",
+		"embedded/linuxrc",
+		"embedded/mergeroot",
+		"embedded/packages",
+		"embedded/rm",
+		"embedded/runscript",
+		"embedded/unmerge",
+		"embedded/use",
+	])
 
+	def __init__(self,spec,addlargs):
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_action_sequence(self):

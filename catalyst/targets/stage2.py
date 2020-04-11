@@ -12,9 +12,12 @@ class stage2(StageBase):
 	"""
 	Builder class for a stage2 installation tarball build.
 	"""
+	required_values = frozenset()
+	valid_values = required_values | frozenset([
+		"chost",
+	])
+
 	def __init__(self,spec,addlargs):
-		self.required_values=[]
-		self.valid_values=["chost"]
 		StageBase.__init__(self,spec,addlargs)
 
 	# XXX: How do these override_foo() functions differ from the ones in

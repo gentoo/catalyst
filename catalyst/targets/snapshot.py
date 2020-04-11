@@ -15,10 +15,15 @@ class snapshot(TargetBase, GenBase):
 	"""
 	Builder class for snapshots.
 	"""
-	def __init__(self,myspec,addlargs):
-		self.required_values=["version_stamp","target"]
-		self.valid_values=["version_stamp","target", "compression_mode"]
+	required_values = frozenset([
+		"target",
+		"version_stamp",
+	])
+	valid_values = required_values | frozenset([
+		"compression_mode",
+	])
 
+	def __init__(self,myspec,addlargs):
 		TargetBase.__init__(self, myspec, addlargs)
 		GenBase.__init__(self,myspec)
 

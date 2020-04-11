@@ -11,9 +11,10 @@ class stage3(StageBase):
 	"""
 	Builder class for a stage3 installation tarball build.
 	"""
+	required_values = frozenset()
+	valid_values = frozenset()
+
 	def __init__(self,spec,addlargs):
-		self.required_values=[]
-		self.valid_values=[]
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_portage_overlay(self):

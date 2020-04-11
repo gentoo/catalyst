@@ -12,11 +12,14 @@ class livecd_stage1(StageBase):
 	"""
 	Builder class for LiveCD stage1.
 	"""
-	def __init__(self,spec,addlargs):
-		self.required_values=["livecd/packages"]
-		self.valid_values=self.required_values[:]
+	required_values = frozenset([
+		"livecd/packages",
+	])
+	valid_values = required_values | frozenset([
+		"livecd/use",
+	])
 
-		self.valid_values.extend(["livecd/use"])
+	def __init__(self,spec,addlargs):
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_action_sequence(self):

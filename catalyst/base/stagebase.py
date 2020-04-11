@@ -27,16 +27,36 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	the driver class for pretty much everything that Catalyst does.
 	"""
 	def __init__(self,myspec,addlargs):
-		self.required_values.extend(["version_stamp", "target", "subarch",
-			"rel_type", "profile", "snapshot", "source_subpath"])
-
-		self.valid_values.extend(["version_stamp", "target", "subarch",
-			"rel_type", "profile", "snapshot", "source_subpath",
-			"portage_confdir", "portage_prefix", "portage_overlay",
-			"cflags", "cxxflags", "fcflags", "fflags", "ldflags", "asflags",
-			"common_flags", "cbuild", "hostuse", "catalyst_use",
-			"distcc_hosts", "makeopts", "pkgcache_path", "kerncache_path",
-			"compression_mode", "decompression_mode"])
+		self.required_values |= frozenset([
+			"profile",
+			"rel_type",
+			"snapshot",
+			"source_subpath",
+			"subarch",
+			"target",
+			"version_stamp",
+		])
+		self.valid_values |= self.required_values | frozenset([
+			"asflags",
+			"catalyst_use",
+			"cbuild",
+			"cflags",
+			"common_flags",
+			"compression_mode",
+			"cxxflags",
+			"decompression_mode",
+			"distcc_hosts",
+			"fcflags",
+			"fflags",
+			"hostuse",
+			"kerncache_path",
+			"ldflags",
+			"makeopts",
+			"pkgcache_path",
+			"portage_confdir",
+			"portage_overlay",
+			"portage_prefix",
+		])
 
 		self.set_valid_build_kernel_vars(addlargs)
 		TargetBase.__init__(self, myspec, addlargs)
@@ -422,7 +442,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 	def set_fsops(self):
 		if "fstype" in self.settings:
-			self.valid_values.append("fsops")
+			self.valid_values |= {"fsops"}
 			if self.settings["spec_prefix"] + "/fsops" in self.settings:
 				self.settings["fsops"] = \
 					self.settings[self.settings["spec_prefix"] + "/fsops"]
@@ -647,18 +667,20 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				loopy = addlargs["boot/kernel"]
 
 			for x in loopy:
-				self.valid_values.append("boot/kernel/" + x + "/aliases")
-				self.valid_values.append("boot/kernel/" + x + "/config")
-				self.valid_values.append("boot/kernel/" + x + "/console")
-				self.valid_values.append("boot/kernel/" + x + "/extraversion")
-				self.valid_values.append("boot/kernel/" + x + "/gk_action")
-				self.valid_values.append("boot/kernel/" + x + "/gk_kernargs")
-				self.valid_values.append("boot/kernel/" + x + "/initramfs_overlay")
-				self.valid_values.append("boot/kernel/" + x + "/sources")
-				self.valid_values.append("boot/kernel/" + x + "/softlevel")
-				self.valid_values.append("boot/kernel/" + x + "/use")
-				self.valid_values.append("boot/kernel/" + x + "/packages")
-				self.valid_values.append("boot/kernel/" + x + "/kernelopts")
+				self.valid_values |= frozenset([
+					"boot/kernel/" + x + "/aliases",
+					"boot/kernel/" + x + "/config",
+					"boot/kernel/" + x + "/console",
+					"boot/kernel/" + x + "/extraversion",
+					"boot/kernel/" + x + "/gk_action",
+					"boot/kernel/" + x + "/gk_kernargs",
+					"boot/kernel/" + x + "/initramfs_overlay",
+					"boot/kernel/" + x + "/kernelopts",
+					"boot/kernel/" + x + "/packages",
+					"boot/kernel/" + x + "/softlevel",
+					"boot/kernel/" + x + "/sources",
+					"boot/kernel/" + x + "/use",
+				])
 				if "boot/kernel/" + x + "/packages" in addlargs:
 					if isinstance(addlargs['boot/kernel/' + x + '/packages'], str):
 						addlargs["boot/kernel/" + x + "/packages"] = \

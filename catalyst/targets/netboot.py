@@ -16,21 +16,20 @@ class netboot(StageBase):
 	"""
 	Builder class for a netboot build, version 2
 	"""
-	def __init__(self,spec,addlargs):
-		self.required_values=[
-			"boot/kernel"
-		]
-		self.valid_values=self.required_values[:]
-		self.valid_values.extend([
-			"netboot/packages",
-			"netboot/use",
-			"netboot/extra_files",
-			"netboot/overlay",
-			"netboot/busybox_config",
-			"netboot/root_overlay",
-			"netboot/linuxrc"
-		])
+	required_values = frozenset([
+		"boot/kernel",
+	])
+	valid_values = required_values | frozenset([
+		"netboot/busybox_config",
+		"netboot/extra_files",
+		"netboot/linuxrc",
+		"netboot/overlay",
+		"netboot/packages",
+		"netboot/root_overlay",
+		"netboot/use",
+	])
 
+	def __init__(self,spec,addlargs):
 		try:
 			if "netboot/packages" in addlargs:
 				if isinstance(addlargs['netboot/packages'], str):
@@ -39,7 +38,7 @@ class netboot(StageBase):
 					loopy=addlargs["netboot/packages"]
 
 				for x in loopy:
-					self.valid_values.append("netboot/packages/"+x+"/files")
+					self.valid_values |= {"netboot/packages/"+x+"/files"}
 		except:
 			raise CatalystError("configuration error in netboot/packages.")
 
