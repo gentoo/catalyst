@@ -33,9 +33,6 @@ class snapshot(TargetBase, GenBase):
 		x=normpath(self.settings["storedir"]+"/snapshots")
 		ensure_dirs(x)
 
-	def mount_safety_check(self):
-		pass
-
 	def run(self):
 		if "purgeonly" in self.settings["options"]:
 			self.purge()
