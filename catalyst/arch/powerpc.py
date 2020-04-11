@@ -79,20 +79,6 @@ class arch_power_ppc(generic_ppc):
 		generic_ppc.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -mcpu=common -mtune=common -pipe"
 
-class arch_power3(arch_ppc64):
-	"builder class for power3 under ppc64"
-	def __init__(self,myspec):
-		arch_ppc64.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power3 -mtune=power3"
-		self.settings["HOSTUSE"]=["ibm"]
-
-class arch_power4(arch_ppc64):
-	"builder class for power4 under ppc64"
-	def __init__(self,myspec):
-		arch_ppc64.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -pipe -mcpu=power4 -mtune=power4"
-		self.settings["HOSTUSE"]=["ibm"]
-
 class arch_power5(arch_ppc64):
 	"builder class for power5 under ppc64"
 	def __init__(self,myspec):
@@ -145,8 +131,6 @@ def register():
 		"g5"		: arch_g5,
 		"power"		: arch_power,
 		"power-ppc"	: arch_power_ppc,
-		"power3"	: arch_power3,
-		"power4"	: arch_power4,
 		"power5"	: arch_power5,
 		"power6"	: arch_power6,
 		"power7"	: arch_power7,
