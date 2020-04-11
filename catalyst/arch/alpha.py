@@ -57,7 +57,6 @@ class arch_ev6(generic_alpha):
 		generic_alpha.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]+=" -O2 -mcpu=ev6"
 		self.settings["CHOST"]="alphaev6-unknown-linux-gnu"
-		self.settings["HOSTUSE"]=["ev6"]
 
 class arch_ev67(generic_alpha):
 	"builder class for alpha ev67 (ev6 plus CIX)"
@@ -65,7 +64,6 @@ class arch_ev67(generic_alpha):
 		generic_alpha.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]+=" -O2 -mcpu=ev67"
 		self.settings["CHOST"]="alphaev67-unknown-linux-gnu"
-		self.settings["HOSTUSE"]=["ev6"]
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."

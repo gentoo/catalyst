@@ -418,14 +418,12 @@ class arch_cobalt(generic_mipsel):
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=r5000 -mabi=32 -mplt -pipe"
-		self.settings["HOSTUSE"]=["cobalt"]
 
 class arch_cobalt_n32(generic_mips64el):
 	"Builder class for cobalt [Little-endian N32]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=r5000 -mabi=n32 -mplt -pipe"
-		self.settings["HOSTUSE"]=["cobalt"]
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."
