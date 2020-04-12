@@ -107,7 +107,6 @@ _setup(
 	scripts=['bin/{0}'.format(_package_name)],
 	packages=[
 		_package_name,
-		'{0}.arch'.format(_package_name),
 		'{0}.base'.format(_package_name),
 		'{0}.targets'.format(_package_name),
 		],
