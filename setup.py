@@ -48,6 +48,7 @@ _data_files = [('/etc/catalyst', ['etc/catalyst.conf','etc/catalystrc']),
 	('/usr/share/man/man1', ['files/catalyst.1']),
 	('/usr/share/man/man5', ['files/catalyst-config.5', 'files/catalyst-spec.5'])
 	]
+_data_files.extend(_files('share/catalyst/arch', 'arch'))
 _data_files.extend(_files('share/catalyst/livecd', 'livecd'))
 _data_files.extend(_files('share/catalyst/targets', 'targets'))
 

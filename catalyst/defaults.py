@@ -32,7 +32,6 @@ MAINREPO = "gentoo"
 PORTDIR = REPODIR + "/" + MAINREPO
 
 confdefaults={
-	"archdir": "%(PythonDir)s/arch",
 	"comp_prog": COMPRESSOR_PROGRAM_OPTIONS['linux'],
 	"compression_mode": 'lbzip2',
 	"compressor_arch": None,

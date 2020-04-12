@@ -1,6 +1,7 @@
 
 import os
 import imp
+import toml
 import platform
 import shutil
 import sys
@@ -65,106 +66,62 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		GenBase.__init__(self, myspec)
 		ClearBase.__init__(self, myspec)
 
-		# The semantics of subarchmap and machinemap changed a bit in 2.0.3 to
-		# work better with vapier's CBUILD stuff. I've removed the "monolithic"
-		# machinemap from this file and split up its contents amongst the
-		# various arch/foo.py files.
-		#
-		# When register() is called on each module in the arch/ dir, it now
-		# returns a tuple instead of acting on the subarchmap dict that is
-		# passed to it. The tuple contains the values that were previously
-		# added to subarchmap as well as a new list of CHOSTs that go along
-		# with that arch. This allows us to build machinemap on the fly based
-		# on the keys in subarchmap and the values of the 2nd list returned
-		# (tmpmachinemap).
-		#
-		# Also, after talking with vapier. I have a slightly better idea of what
-		# certain variables are used for and what they should be set to. Neither
-		# 'buildarch' or 'hostarch' are used directly, so their value doesn't
-		# really matter. They are just compared to determine if we are
-		# cross-compiling. Because of this, they are just set to the name of the
-		# module in arch/ that the subarch is part of to make things simpler.
-		# The entire build process is still based off of 'subarch' like it was
-		# previously. -agaffney
-
 		self.makeconf = {}
-		self.archmap = {}
-		self.subarchmap = {}
-		machinemap = {}
-		arch_dir = self.settings["archdir"] + "/"
-		log.debug("Begin loading arch modules...")
-		for x in [
-					x[:-3] for x in os.listdir(arch_dir) if x.endswith(".py")
-					and x != "__init__.py"]:
-			log.debug("\tLoading %s", x)
-			try:
-				fh = open(arch_dir + x + ".py")
-				# This next line loads the plugin as a module and
-				# assigns it to archmap[x]
-				self.archmap[x] = imp.load_module(x, fh, arch_dir + x + ".py",
-					(".py", "r", imp.PY_SOURCE))
-				# This next line registers all the subarches
-				# supported in the plugin
-				tmpsubarchmap, tmpmachinemap = self.archmap[x].register()
-				self.subarchmap.update(tmpsubarchmap)
-				for machine in tmpmachinemap:
-					machinemap[machine] = x
-				for subarch in tmpsubarchmap:
-					machinemap[subarch] = x
-				fh.close()
-			except IOError:
-				# This message should probably change a bit, since everything in
-				# the dir should load just fine. If it doesn't, it's probably a
-				# syntax error in the module
-				log.warning("Can't find/load %s.py plugin in %s", x, arch_dir)
-			log.debug("Loaded arch module: %s", self.archmap[x])
 
 		if "chost" in self.settings:
-			hostmachine = self.settings["chost"].split("-")[0]
-			if hostmachine not in machinemap:
-				raise CatalystError("Unknown host machine type " + hostmachine)
-			self.settings["hostarch"] = machinemap[hostmachine]
+			host = self.settings["chost"].split("-")[0]
 		else:
-			hostmachine = self.settings["subarch"]
-			if hostmachine in machinemap:
-				hostmachine = machinemap[hostmachine]
-			self.settings["hostarch"] = hostmachine
+			host = self.settings["subarch"]
+		self.settings["hostarch"] = host
+
 		if "cbuild" in self.settings:
-			buildmachine = self.settings["cbuild"].split("-")[0]
+			build = self.settings["cbuild"].split("-")[0]
 		else:
-			buildmachine = platform.machine()
-		if buildmachine not in machinemap:
-			raise CatalystError("Unknown build machine type " + buildmachine)
-		self.settings["buildarch"] = machinemap[buildmachine]
+			build = platform.machine()
+		self.settings["buildarch"] = build
 
-		# Call arch constructor, pass our settings
-		try:
-			self.arch = self.subarchmap[self.settings["subarch"]](self.settings)
-		except KeyError:
-			log.critical(
-				'Invalid subarch: %s\n'
-				'Choose one of the following:\n'
-				' %s',
-				self.settings['subarch'], ' '.join(self.subarchmap))
+		arch_dir = normpath(self.settings['sharedir'] + '/arch/')
 
-		if 'setarch_arch' in self.settings and platform.machine() == self.settings["setarch_build"]:
-			self.settings["CHROOT"] = f'setarch {self.settings["setarch_arch"]} chroot'
-			self.settings["crosscompile"] = False
+		log.debug("Searching arch definitions...")
+		for x in [x for x in os.listdir(arch_dir) if x.endswith('.toml')]:
+			log.debug("\tTrying %s", x)
+			name = x[:-len('.toml')]
+
+			with open(arch_dir + x) as file:
+				arch_config = toml.load(file)
+
+				# Search for a subarchitecture in each arch in the arch_config
+				for arch in [x for x in arch_config if x.startswith(name) and host in arch_config[x]]:
+					self.settings.update(arch_config[arch][host])
+					setarch = arch_config.get('setarch', {})
+					break
+				else:
+					# Didn't find a matching subarchitecture, keep searching
+					continue
+
+			break
 		else:
-			self.settings["CHROOT"] = 'chroot'
-			self.settings["crosscompile"] = \
-				self.settings["hostarch"] != self.settings["buildarch"]
+			raise CatalystError("Unknown host machine type " + host)
+
+		if setarch.get('if_build', '') == platform.machine():
+			chroot = f'setarch {setarch["arch"]} chroot'
+		else:
+			chroot = 'chroot'
+		self.settings["CHROOT"] = chroot
+
+		self.settings["crosscompile"] = \
+			build != host and not chroot.startswith('setarch')
 
 		log.notice('Using target: %s', self.settings['target'])
 		# Print a nice informational message
-		if self.settings["buildarch"] == self.settings["hostarch"]:
-			log.info('Building natively for %s', self.settings['hostarch'])
-		elif self.settings["crosscompile"]:
+		if self.settings["crosscompile"]:
 			log.info('Cross-compiling on %s for different machine type %s',
-				self.settings['buildarch'], self.settings['hostarch'])
-		else:
+				build, host)
+		elif chroot.startswith('setarch'):
 			log.info('Building on %s for alternate personality type %s',
-				self.settings['buildarch'], self.settings['hostarch'])
+				build, host)
+		else:
+			log.info('Building natively for %s', host)
 
 		# This must be set first as other set_ options depend on this
 		self.set_spec_prefix()
