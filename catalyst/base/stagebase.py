@@ -1,6 +1,7 @@
 
 import os
 import imp
+import platform
 import shutil
 import sys
 
@@ -131,7 +132,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if "cbuild" in self.settings:
 			buildmachine = self.settings["cbuild"].split("-")[0]
 		else:
-			buildmachine = os.uname()[4]
+			buildmachine = platform.machine()
 		if buildmachine not in machinemap:
 			raise CatalystError("Unknown build machine type " + buildmachine)
 		self.settings["buildarch"] = machinemap[buildmachine]
