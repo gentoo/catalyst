@@ -136,8 +136,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		if buildmachine not in machinemap:
 			raise CatalystError("Unknown build machine type " + buildmachine)
 		self.settings["buildarch"] = machinemap[buildmachine]
-		self.settings["crosscompile"] = (self.settings["hostarch"] != \
-			self.settings["buildarch"])
 
 		# Call arch constructor, pass our settings
 		try:
@@ -148,6 +146,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				'Choose one of the following:\n'
 				' %s',
 				self.settings['subarch'], ' '.join(self.subarchmap))
+
+		if 'setarch_arch' in self.settings and platform.machine() == self.settings["setarch_build"]:
+			self.settings["CHROOT"] = f'setarch {self.settings["setarch_arch"]} chroot'
+			self.settings["crosscompile"] = False
+		else:
+			self.settings["CHROOT"] = 'chroot'
+			self.settings["crosscompile"] = \
+				self.settings["hostarch"] != self.settings["buildarch"]
 
 		log.notice('Using target: %s', self.settings['target'])
 		# Print a nice informational message
