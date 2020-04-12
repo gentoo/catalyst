@@ -10,7 +10,7 @@ source ${clst_shdir}/support/filesystem-functions.sh
 if [ -n "${clst_cdtar}" ]
 then
 	extract_cdtar $1
-elif [ "${clst_buildarch}" = "x86" ] || [ "${clst_buildarch}" = "amd64" ]
+elif [ "${clst_hostarch}" = "x86" ] || [ "${clst_hostarch}" = "amd64" ]
 then
 	#assume if there is no cdtar and we are on a supported arch that the user just wants us to handle this
 	create_bootloader $1
