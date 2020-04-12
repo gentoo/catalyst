@@ -1,0 +1,8 @@
+[hppa."hppa1.1"]
+COMMON_FLAGS = "-O2 -pipe -march=1.1"
+CHOST = "hppa1.1-unknown-linux-gnu"
+
+[hppa."hppa2.0"]
+COMMON_FLAGS = "-O2 -pipe -march=2.0"
+CHOST = "hppa2.0-unknown-linux-gnu"
+

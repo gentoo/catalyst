@@ -1,0 +1,4 @@
+[riscv.riscv]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "riscv64-unknown-linux-gnu"
+

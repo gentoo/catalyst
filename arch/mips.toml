@@ -1,0 +1,256 @@
+[mips.mips1]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips1 -mabi=32 -mplt -pipe"
+
+[mips.mips2]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+
+[mips.mips32]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+
+[mips.mips32_softfloat]
+CHOST = "mips-softfloat-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+
+[mips.mips32r2]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+
+[mips.mips32r2_softfloat]
+CHOST = "mips-softfloat-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+
+[mips.mips3]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips.mips4_r5k]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=32 -mplt -pipe"
+
+[mips.mips4_r10k]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r10k -mabi=32 -mplt -pipe"
+
+[mips.mips4_r12k]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r12k -mno-fix-r10000 -mabi=32 -mplt -pipe"
+
+[mips.mips64]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=32 -mplt -pipe"
+
+[mips.mips64r2]
+CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=32 -mplt -pipe"
+
+[mips.mipsel1]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips1 -mabi=32 -mplt -pipe"
+
+[mips.mipsel2]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+
+[mips.mips32el]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+
+[mips.mips32el_softfloat]
+CHOST = "mipsel-softfloat-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+
+[mips.mips32r2el]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+
+[mips.mips32r2el_softfloat]
+CHOST = "mipsel-softfloat-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+
+[mips.mipsel3]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips.mipsel4_r5k]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=32 -mplt -pipe"
+
+[mips.mips64el]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=32 -mplt -pipe"
+
+[mips.mips64r2el]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=32 -mplt -pipe"
+
+[mips.loongson2e]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2e -mabi=32 -mplt -pipe"
+
+[mips.loongson2f]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2f -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips.loongson3a]
+CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson3a -mabi=32 -mplt -pipe"
+
+[mips64.mips3_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips64.mips3_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=64 -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips64.mips3_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mplt -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips64.mips4_r5k_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=n32 -mplt -pipe"
+
+[mips64.mips4_r5k_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=64 -pipe"
+
+[mips64.mips4_r5k_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mplt -pipe"
+
+[mips64.mips4_r10k_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r10k -mabi=n32 -mplt -pipe"
+
+[mips64.mips4_r10k_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r10k -mabi=64 -pipe"
+
+[mips64.mips4_r10k_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r10k -mplt -pipe"
+
+[mips64.mips4_r12k_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r12k -mno-fix-r10000 -mabi=n32 -mplt -pipe"
+
+[mips64.mips4_r12k_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r12k -mno-fix-r10000 -mabi=64 -pipe"
+
+[mips64.mips4_r12k_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r12k -mno-fix-r10000 -mplt -pipe"
+
+[mips64.mips64_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=n32 -mplt -pipe"
+
+[mips64.mips64_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=64 -pipe"
+
+[mips64.mips64_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mplt -pipe"
+
+[mips64.mips64r2_n32]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=n32 -mplt -pipe"
+
+[mips64.mips64r2_n64]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=64 -pipe"
+
+[mips64.mips64r2_multilib]
+CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mplt -pipe"
+
+[mips64.mipsel3_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.mipsel3_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=64 -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.mipsel3_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.mipsel4_r5k_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=n32 -mplt -pipe"
+
+[mips64.mipsel4_r5k_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mabi=64 -pipe"
+
+[mips64.mipsel4_r5k_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=r5k -mplt -pipe"
+
+[mips64.mips64el_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=n32 -mplt -pipe"
+
+[mips64.mips64el_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=64 -pipe"
+
+[mips64.mips64el_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mplt -pipe"
+
+[mips64.mips64r2el_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=n32 -mplt -pipe"
+
+[mips64.mips64r2el_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mabi=64 -pipe"
+
+[mips64.mips64r2el_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64r2 -mplt -pipe"
+
+[mips64.loongson2e_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2e -mabi=n32 -mplt -pipe"
+
+[mips64.loongson2e_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2e -mabi=64 -pipe"
+
+[mips64.loongson2e_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2e -mplt -pipe"
+
+[mips64.loongson2f_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2f -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.loongson2f_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2f -mabi=64 -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.loongson2f_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson2f -mplt -Wa,-mfix-loongson2f-nop -pipe"
+
+[mips64.loongson3a_n32]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson3a -mabi=n32 -mplt -pipe"
+
+[mips64.loongson3a_n64]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson3a -mabi=64 -pipe"
+
+[mips64.loongson3a_multilib]
+CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=loongson3a -mplt -pipe"
+

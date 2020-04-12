@@ -1,0 +1,32 @@
+[alpha.alpha]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev4"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev4]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev4"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev45]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev45"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev5]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev5"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev56]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev56"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.pca56]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=pca56"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev6]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev6"
+CHOST = "alpha-unknown-linux-gnu"
+
+[alpha.ev67]
+COMMON_FLAGS = "-mieee -pipe -O2 -mcpu=ev67"
+CHOST = "alpha-unknown-linux-gnu"
+

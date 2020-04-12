@@ -1,0 +1,12 @@
+[setarch.sparc]
+arch = "linux32"
+if_build = "sparc64"
+
+[sparc.sparc]
+COMMON_FLAGS = "-O2 -mcpu=ultrasparc -pipe"
+CHOST = "sparc-unknown-linux-gnu"
+
+[sparc64.sparc64]
+COMMON_FLAGS = "-O2 -mcpu=ultrasparc -pipe"
+CHOST = "sparc64-unknown-linux-gnu"
+

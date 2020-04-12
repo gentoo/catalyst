@@ -1,0 +1,66 @@
+[setarch.x86]
+arch = "linux32"
+if_build = "x86_64"
+
+[x86.x86]
+COMMON_FLAGS = "-O2 -mtune=i686 -pipe"
+CHOST = "i386-pc-linux-gnu"
+
+[x86.i486]
+COMMON_FLAGS = "-O2 -march=i486 -pipe"
+CHOST = "i486-pc-linux-gnu"
+
+[x86.i586]
+COMMON_FLAGS = "-O2 -march=i586 -pipe"
+CHOST = "i586-pc-linux-gnu"
+
+[x86.i686]
+COMMON_FLAGS = "-O2 -march=i686 -pipe"
+
+[x86.pentium]
+COMMON_FLAGS = "-O2 -march=i586 -pipe"
+CHOST = "i586-pc-linux-gnu"
+
+[x86.pentium2]
+COMMON_FLAGS = "-O2 -march=pentium2 -pipe"
+CPU_FLAGS_X86 = [ "mmx",]
+
+[x86.pentium3]
+COMMON_FLAGS = "-O2 -march=pentium3 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse",]
+
+[x86.pentium-m]
+COMMON_FLAGS = "-O2 -march=pentium-m -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2",]
+
+[x86.pentium4]
+COMMON_FLAGS = "-O2 -march=pentium4 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2",]
+
+[x86.pentiumpro]
+COMMON_FLAGS = "-O2 -march=i686 -pipe"
+
+[x86.pentium-mmx]
+COMMON_FLAGS = "-O2 -march=pentium-mmx -pipe"
+CPU_FLAGS_X86 = [ "mmx",]
+
+[x86.prescott]
+COMMON_FLAGS = "-O2 -march=prescott -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2", "sse3",]
+
+[x86.k6]
+COMMON_FLAGS = "-O2 -march=k6 -pipe"
+CPU_FLAGS_X86 = [ "mmx",]
+
+[x86.k6-2]
+COMMON_FLAGS = "-O2 -march=k6-2 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "3dnow",]
+
+[x86.athlon]
+COMMON_FLAGS = "-O2 -march=athlon -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext",]
+
+[x86.athlon-xp]
+COMMON_FLAGS = "-O2 -march=athlon-xp -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse",]
+

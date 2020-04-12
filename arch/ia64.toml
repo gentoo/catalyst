@@ -1,0 +1,4 @@
+[ia64.ia64]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "ia64-unknown-linux-gnu"
+

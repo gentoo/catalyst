@@ -1,0 +1,4 @@
+[m68k.m68k]
+COMMON_FLAGS = " -pipe -O2"
+CHOST = "m68k-unknown-linux-gnu"
+

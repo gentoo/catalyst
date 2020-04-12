@@ -1,0 +1,70 @@
+[setarch.ppc]
+arch = "linux32"
+if_build = "ppc64"
+
+[ppc64.970]
+COMMON_FLAGS = "-O2 -pipe -mcpu=970 -mtune=970"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "altivec",]
+
+[ppc64.cell]
+COMMON_FLAGS = "-O2 -pipe -mcpu=cell -mtune=cell"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.power5]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power5 -mtune=power5"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "ibm",]
+
+[ppc64.power6]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power6 -mtune=power6"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.power7]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.power7le]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+CHOST = "powerpc64le-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.power8]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+CHOST = "powerpc64-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.power8le]
+COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+CHOST = "powerpc64le-unknown-linux-gnu"
+USE = [ "altivec", "ibm",]
+
+[ppc64.ppc64]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "powerpc64-unknown-linux-gnu"
+
+[ppc64.ppc64le]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "powerpc64le-unknown-linux-gnu"
+
+[ppc.g3]
+CHOST = "powerpc-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -mcpu=G3 -mtune=G3 -pipe"
+
+[ppc.g4]
+CHOST = "powerpc-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -mcpu=G4 -mtune=G4 -maltivec -mabi=altivec -pipe"
+USE = [ "altivec",]
+
+[ppc.g5]
+CHOST = "powerpc-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
+USE = [ "altivec",]
+
+[ppc.ppc]
+CHOST = "powerpc-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -mcpu=powerpc -mtune=powerpc -pipe"
+

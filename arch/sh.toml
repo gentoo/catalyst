@@ -1,0 +1,48 @@
+[sh.sh]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "sh-unknown-linux-gnu"
+
+[sh.sh2]
+COMMON_FLAGS = "-O2 -m2 -pipe"
+CHOST = "sh2-unknown-linux-gnu"
+
+[sh.sh2a]
+COMMON_FLAGS = "-O2 -m2a -pipe"
+CHOST = "sh2a-unknown-linux-gnu"
+
+[sh.sh3]
+COMMON_FLAGS = "-O2 -m3 -pipe"
+CHOST = "sh3-unknown-linux-gnu"
+
+[sh.sh4]
+COMMON_FLAGS = "-O2 -m4 -pipe"
+CHOST = "sh4-unknown-linux-gnu"
+
+[sh.sh4a]
+COMMON_FLAGS = "-O2 -m4a -pipe"
+CHOST = "sh4a-unknown-linux-gnu"
+
+[sh.sheb]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "sheb-unknown-linux-gnu"
+
+[sh.sh2eb]
+COMMON_FLAGS = "-O2 -m2 -pipe"
+CHOST = "sh2eb-unknown-linux-gnu"
+
+[sh.sh2aeb]
+COMMON_FLAGS = "-O2 -m2a -pipe"
+CHOST = "sh2aeb-unknown-linux-gnu"
+
+[sh.sh3eb]
+COMMON_FLAGS = "-O2 -m3 -pipe"
+CHOST = "sh3eb-unknown-linux-gnu"
+
+[sh.sh4eb]
+COMMON_FLAGS = "-O2 -m4 -pipe"
+CHOST = "sh4eb-unknown-linux-gnu"
+
+[sh.sh4aeb]
+COMMON_FLAGS = "-O2 -m4a -pipe"
+CHOST = "sh4aeb-unknown-linux-gnu"
+

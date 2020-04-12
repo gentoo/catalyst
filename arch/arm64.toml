@@ -1,0 +1,4 @@
+[arm64.arm64]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "aarch64-unknown-linux-gnu"
+
