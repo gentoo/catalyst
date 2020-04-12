@@ -64,18 +64,6 @@ class arch_g5(generic_ppc):
 		self.settings["COMMON_FLAGS"]="-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
 		self.settings["HOSTUSE"]=["altivec"]
 
-class arch_power(generic_ppc):
-	"builder class for generic power"
-	def __init__(self,myspec):
-		generic_ppc.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -mcpu=power -mtune=power -pipe"
-
-class arch_power_ppc(generic_ppc):
-	"builder class for generic powerpc/power"
-	def __init__(self,myspec):
-		generic_ppc.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -mcpu=common -mtune=common -pipe"
-
 class arch_power5(arch_ppc64):
 	"builder class for power5 under ppc64"
 	def __init__(self,myspec):
@@ -126,8 +114,6 @@ def register():
 		"g3"		: arch_g3,
 		"g4"		: arch_g4,
 		"g5"		: arch_g5,
-		"power"		: arch_power,
-		"power-ppc"	: arch_power_ppc,
 		"power5"	: arch_power5,
 		"power6"	: arch_power6,
 		"power7"	: arch_power7,
