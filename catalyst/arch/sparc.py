@@ -6,11 +6,13 @@ class generic_sparc(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings['setarch_build'] = 'sparc64'
 		self.settings['setarch_arch'] = 'linux32'
+		self.settings["PROFILE_ARCH"] = "sparc"
 
 class generic_sparc64(builder.generic):
 	"abstract base class for all sparc64 builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
+		self.settings["PROFILE_ARCH"] = "sparc64"
 
 class arch_sparc(generic_sparc):
 	"builder class for generic sparc (32-bit userland)"

@@ -7,6 +7,7 @@ class arch_riscv(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="riscv64-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "riscv"
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."

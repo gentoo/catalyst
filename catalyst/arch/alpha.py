@@ -9,6 +9,7 @@ class generic_alpha(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-mieee -pipe"
 		self.settings["CHOST"]="alpha-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "alpha"
 
 class arch_ev4(generic_alpha):
 	"builder class for generic alpha (ev4+)"

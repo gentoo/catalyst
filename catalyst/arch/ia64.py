@@ -7,6 +7,7 @@ class arch_ia64(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="ia64-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "ia64"
 
 def register():
 	"Inform main catalyst program of the contents of this plugin."

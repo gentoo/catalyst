@@ -6,24 +6,28 @@ class generic_mips(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHOST"]="mips-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "mips"
 
 class generic_mipsel(builder.generic):
 	"Abstract base class for all mipsel builders [Little-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHOST"]="mipsel-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "mips"
 
 class generic_mips64(builder.generic):
 	"Abstract base class for all mips64 builders [Big-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHOST"]="mips64-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "mips64"
 
 class generic_mips64el(builder.generic):
 	"Abstract base class for all mips64el builders [Little-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["CHOST"]="mips64el-unknown-linux-gnu"
+		self.settings["PROFILE_ARCH"] = "mips64"
 
 class arch_mips1(generic_mips):
 	"Builder class for MIPS I [Big-endian]"

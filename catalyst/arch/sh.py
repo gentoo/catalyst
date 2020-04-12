@@ -5,11 +5,13 @@ class generic_sh(builder.generic):
 	"Abstract base class for all sh builders [Little-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
+		self.settings["PROFILE_ARCH"] = "sh"
 
 class generic_sheb(builder.generic):
 	"Abstract base class for all sheb builders [Big-endian]"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
+		self.settings["PROFILE_ARCH"] = "sh"
 
 class arch_sh(generic_sh):
 	"Builder class for SH [Little-endian]"

@@ -7,11 +7,13 @@ class generic_ppc(builder.generic):
 		self.settings["CHOST"]="powerpc-unknown-linux-gnu"
 		self.settings['setarch_build'] = 'ppc64'
 		self.settings['setarch_arch'] = 'linux32'
+		self.settings["PROFILE_ARCH"] = "ppc"
 
 class generic_ppc64(builder.generic):
 	"abstract base class for all 64-bit powerpc builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
+		self.settings["PROFILE_ARCH"] = "ppc64"
 
 class arch_ppc(generic_ppc):
 	"builder class for generic powerpc"

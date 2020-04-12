@@ -6,6 +6,7 @@ class generic_m68k(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]=" -pipe"
+		self.settings["PROFILE_ARCH"] = "m68k"
 
 class arch_m68k(generic_m68k):
 	"builder class for generic m68k"

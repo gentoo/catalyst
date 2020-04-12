@@ -7,12 +7,14 @@ class generic_arm(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
+		self.settings["PROFILE_ARCH"] = "arm"
 
 class generic_armeb(builder.generic):
 	"Abstract base class for all arm (big endian) builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
+		self.settings["PROFILE_ARCH"] = "arm"
 
 class arch_arm(generic_arm):
 	"Builder class for arm (little endian) target"

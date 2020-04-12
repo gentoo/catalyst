@@ -6,6 +6,7 @@ class generic_hppa(builder.generic):
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
+		self.settings["PROFILE_ARCH"] = "hppa"
 
 class arch_hppa1_1(generic_hppa):
 	"Builder class for hppa 1.1 systems"

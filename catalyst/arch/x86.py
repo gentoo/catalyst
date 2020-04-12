@@ -6,6 +6,7 @@ class generic_x86(builder.generic):
 		builder.generic.__init__(self,myspec)
 		self.settings['setarch_build'] = 'x86_64'
 		self.settings['setarch_arch'] = 'linux32'
+		self.settings["PROFILE_ARCH"] = "x86"
 
 class arch_x86(generic_x86):
 	"builder class for generic x86 (386+)"
