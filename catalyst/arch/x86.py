@@ -115,7 +115,6 @@ def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
 		"x86"			: arch_x86,
-		"i386"			: arch_i386,
 		"i486"			: arch_i486,
 		"i586"			: arch_i586,
 		"i686"			: arch_i686,
@@ -129,7 +128,6 @@ def register():
 		"prescott"		: arch_prescott,
 		"k6"			: arch_k6,
 		"k6-2"			: arch_k6_2,
-		"k6-3"			: arch_k6_2,
 		"athlon"		: arch_athlon,
 		"athlon-xp"		: arch_athlon_xp,
-	}, ('i386', 'i486', 'i586', 'i686'))
+	}, ('i486', 'i586', 'i686'))
