@@ -87,29 +87,29 @@ class arch_mips3_multilib(generic_mips64):
 		generic_mips64.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mplt -mfix-r4000 -mfix-r4400 -pipe"
 
-class arch_mips4(generic_mips):
+class arch_mips4_r5k(generic_mips):
 	"Builder class for MIPS IV [Big-endian]"
 	def __init__(self,myspec):
 		generic_mips.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=32 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=32 -mplt -pipe"
 
-class arch_mips4_n32(generic_mips64):
+class arch_mips4_r5k_n32(generic_mips64):
 	"Builder class for MIPS IV [Big-endian N32]"
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=n32 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=n32 -mplt -pipe"
 
-class arch_mips4_n64(generic_mips64):
+class arch_mips4_r5k_n64(generic_mips64):
 	"Builder class for MIPS IV [Big-endian N64]"
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=64 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=64 -pipe"
 
-class arch_mips4_multilib(generic_mips64):
+class arch_mips4_r5k_multilib(generic_mips64):
 	"Builder class for MIPS IV [Big-endian multilib]"
 	def __init__(self,myspec):
 		generic_mips64.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mplt -pipe"
 
 class arch_mips4_r10k(generic_mips):
 	"Builder class for MIPS IV R10k [Big-endian]"
@@ -317,29 +317,29 @@ class arch_loongson2f_multilib(generic_mips64el):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=loongson2f -mplt -Wa,-mfix-loongson2f-nop -pipe"
 
-class arch_mipsel4(generic_mipsel):
+class arch_mipsel4_r5k(generic_mipsel):
 	"Builder class for MIPS IV [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=32 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=32 -mplt -pipe"
 
-class arch_mipsel4_n32(generic_mips64el):
+class arch_mipsel4_r5k_n32(generic_mips64el):
 	"Builder class for MIPS IV [Little-endian N32]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=n32 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=n32 -mplt -pipe"
 
-class arch_mipsel4_n64(generic_mips64el):
+class arch_mipsel4_r5k_n64(generic_mips64el):
 	"Builder class for MIPS IV [Little-endian N64]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mabi=64 -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mabi=64 -pipe"
 
-class arch_mipsel4_multilib(generic_mips64el):
+class arch_mipsel4_r5k_multilib(generic_mips64el):
 	"Builder class for MIPS IV [Little-endian multilib]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips4 -mplt -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=r5k -mplt -pipe"
 
 class arch_mips64el(generic_mipsel):
 	"Builder class for MIPS 64 [Little-endian]"
@@ -440,10 +440,10 @@ def register():
 			"mips3_n32"			: arch_mips3_n32,
 			"mips3_n64"			: arch_mips3_n64,
 			"mips3_multilib"		: arch_mips3_multilib,
-			"mips4"				: arch_mips4,
-			"mips4_n32"			: arch_mips4_n32,
-			"mips4_n64"			: arch_mips4_n64,
-			"mips4_multilib"		: arch_mips4_multilib,
+			"mips4_r5k"			: arch_mips4_r5k,
+			"mips4_r5k_n32"			: arch_mips4_r5k_n32,
+			"mips4_r5k_n64"			: arch_mips4_r5k_n64,
+			"mips4_r5k_multilib"		: arch_mips4_r5k_multilib,
 			"mips4_r10k"			: arch_mips4_r10k,
 			"mips4_r10k_n32"		: arch_mips4_r10k_n32,
 			"mips4_r10k_n64"		: arch_mips4_r10k_n64,
@@ -470,10 +470,10 @@ def register():
 			"mipsel3_n32"			: arch_mipsel3_n32,
 			"mipsel3_n64"			: arch_mipsel3_n64,
 			"mipsel3_multilib"		: arch_mipsel3_multilib,
-			"mipsel4"			: arch_mipsel4,
-			"mipsel4_n32"			: arch_mipsel4_n32,
-			"mipsel4_n64"			: arch_mipsel4_n64,
-			"mipsel4_multilib"		: arch_mipsel4_multilib,
+			"mipsel4_r5k"			: arch_mipsel4_r5k,
+			"mipsel4_r5k_n32"		: arch_mipsel4_r5k_n32,
+			"mipsel4_r5k_n64"		: arch_mipsel4_r5k_n64,
+			"mipsel4_r5k_multilib"		: arch_mipsel4_r5k_multilib,
 			"mips64el"			: arch_mips64el,
 			"mips64el_n32"			: arch_mips64el_n32,
 			"mips64el_n64"			: arch_mips64el_n64,
