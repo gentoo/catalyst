@@ -413,23 +413,9 @@ class arch_loongson3a_multilib(generic_mips64el):
 		generic_mips64el.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -march=loongson3a -mplt -pipe"
 
-class arch_cobalt(generic_mipsel):
-	"Builder class for cobalt [Little-endian]"
-	def __init__(self,myspec):
-		generic_mipsel.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=r5000 -mabi=32 -mplt -pipe"
-
-class arch_cobalt_n32(generic_mips64el):
-	"Builder class for cobalt [Little-endian N32]"
-	def __init__(self,myspec):
-		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=r5000 -mabi=n32 -mplt -pipe"
-
 def register():
 	"Inform main catalyst program of the contents of this plugin."
 	return ({
-			"cobalt"			: arch_cobalt,
-			"cobalt_n32"			: arch_cobalt_n32,
 			"mips1"				: arch_mips1,
 			"mips2"				: arch_mips2,
 			"mips32"			: arch_mips32,
