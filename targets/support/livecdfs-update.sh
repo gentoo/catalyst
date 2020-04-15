@@ -7,7 +7,7 @@ source /tmp/chroot-functions.sh
 # Allow root logins to our CD by default
 if [ -e /etc/ssh/sshd_config ]
 then
-	${clst_sed} -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
+	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
 		/etc/ssh/sshd_config
 fi
 
@@ -62,7 +62,7 @@ fi
 # Setup sudoers
 if [ -f /etc/sudoers ]
 then
-	${clst_sed} -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
+	sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 fi
 
 # Setup links for ethernet devices
@@ -94,7 +94,7 @@ EOF
 cat ${clst_make_conf}.old >> ${clst_make_conf}
 
 # devfs tweaks
-[ -e /etc/devfsd.conf ] && ${clst_sed} -i '/dev-state/ s:^:#:' /etc/devfsd.conf
+[ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # Add some helpful aliases
 cat <<EOF > /etc/profile
@@ -136,10 +136,10 @@ fi
 # Setup configured display manager
 if [ -n "${clst_livecd_xdm}" ]
 then
-	${clst_sed} -i \
+	sed -i \
 		-e "s:^#\\?DISPLAYMANAGER=.\+$:DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
 		/etc/rc.conf
-	${clst_sed} -i \
+	sed -i \
 		-e "s:^#\\?DISPLAYMANAGER=.\+$:DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
 		/etc/conf.d/xdm
 fi
@@ -158,16 +158,16 @@ case ${clst_livecd_type} in
 	gentoo-release-universal)
 		cat /etc/generic.motd.txt /etc/universal.motd.txt \
 			/etc/minimal.motd.txt > /etc/motd
-		${clst_sed} -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
 	;;
 	gentoo-release-minimal)
 		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
-		${clst_sed} -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
+		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
 	gentoo-release-live*)
 		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
-		${clst_sed} -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
+		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
 			-e "s:##DISPLAY_MANAGER:${clst_livecd_xdm}:" /etc/motd
 	;;
 esac
@@ -179,7 +179,7 @@ if [ -n "${clst_livecd_splash_theme}" ]
 then
 	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
 	then
-		${clst_sed} -i \
+		sed -i \
 			-e "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" \
 			-e "/^# SPLASH_TTYS=/ s/^#//" \
 			/etc/conf.d/splash
@@ -234,7 +234,7 @@ case ${clst_livecd_type} in
 					/etc/X11/gdm/custom.conf
 			else
 				cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
-				${clst_sed} -i \
+				sed -i \
 					-e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
 					-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
 					-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
@@ -244,7 +244,7 @@ case ${clst_livecd_type} in
 
 				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
 				then
-					${clst_sed} -i \
+					sed -i \
 						-e "s:TimedLogin=:TimedLogin=${first_user}:" \
 						/etc/X11/gdm/gdm.conf
 				fi
@@ -254,7 +254,7 @@ case ${clst_livecd_type} in
 		# This gives us our list of system packages for the installer
 		mkdir -p /usr/livecd
 		### XXX: Andrew says we don't need this anymore
-		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp @system | grep -e '^\[ebuild' | ${clst_sed} -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
+		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp @system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage
 		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd
@@ -285,10 +285,10 @@ case ${clst_livecd_type} in
 				if [ -e /usr/share/applications/installer-gtk.desktop ]
 				then
 					cp -f /usr/share/applications/installer-{gtk,dialog}.desktop /home/${username}/Desktop
-					${clst_sed} -i -e \
+					sed -i -e \
 						's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
 						/home/${username}/Desktop/installer-dialog.desktop
-					${clst_sed} -i -e 's:Exec=installer-gtk:Exec=installer:' \
+					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
 						/home/${username}/Desktop/installer-gtk.desktop
 				fi
 				chown -R ${username}:100 /home/${username}
@@ -323,12 +323,12 @@ esac
 # We want the first user to be used when auto-starting X
 if [ -e /etc/startx ]
 then
-	${clst_sed} -i "s:##STARTX:echo startx | su - '${first_user}':" /root/.bashrc
+	sed -i "s:##STARTX:echo startx | su - '${first_user}':" /root/.bashrc
 fi
 
 if [ -e /lib/rcscripts/addons/udev-start.sh ]
 then
-	${clst_sed} -i "s:\t\[\[ -x /sbin/evms_activate:\t\[\[ -x \${CDBOOT} \]\] \&\& \[\[ -x /sbin/evms_activate:" /lib/rcscripts/addons/udev-start.sh
+	sed -i "s:\t\[\[ -x /sbin/evms_activate:\t\[\[ -x \${CDBOOT} \]\] \&\& \[\[ -x /sbin/evms_activate:" /lib/rcscripts/addons/udev-start.sh
 fi
 
 env-update

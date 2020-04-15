@@ -261,7 +261,7 @@ then
 		if [ ! "${clst_kextraversion}" = "" ]
 		then
 			echo "Setting extraversion to ${clst_kextraversion}"
-			${clst_sed} -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+			sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
 			echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
 		else
 			touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
@@ -278,7 +278,7 @@ $(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
 		echo "Setting extraversion to ${clst_kextraversion}"
-		${clst_sed} -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+		sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
 	fi
 fi
 
@@ -291,12 +291,12 @@ make_destpath
 
 
 build_kernel
-${clst_sed} -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
+sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
-EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | ${clst_sed} -e "s/EXTRAVERSION =//" -e "s/ //g"`
+EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
 unset USE

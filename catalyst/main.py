@@ -404,12 +404,6 @@ def _main(parser, opts):
                 hash_map.hash_map[conf_values['hash_function']].cmd,
                 conf_values['hash_function'])
 
-    # detect GNU sed
-    for sed in ('/usr/bin/gsed', '/bin/sed', '/usr/bin/sed'):
-        if os.path.exists(sed):
-            conf_values["sed"] = sed
-            break
-
     addlargs = {}
 
     if myspecfile:
