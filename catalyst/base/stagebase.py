@@ -1,10 +1,9 @@
 
 import os
-import imp
-import toml
 import platform
 import shutil
 import sys
+import toml
 
 from snakeoil import fileutils
 from snakeoil.osutils import pjoin
