@@ -26,7 +26,6 @@ load-plugins=
 # We should clean up things so we can enable:
 # missing-docstring -- add lots of docstrings everywhere!
 # bad-whitespace -- fix spacing everywhere
-# bad-continuation -- might be hard with tab indentation policy
 # invalid-name -- need to manage constants better
 # line-too-long -- figure out a length and stick to it
 # super-init-not-called -- fix the classes __init__ structure
@@ -46,7 +45,6 @@ disable=
 	fixme,
 	broad-except,
 	bad-whitespace,
-	bad-continuation,
 	invalid-name,
 	line-too-long,
 	super-init-not-called,

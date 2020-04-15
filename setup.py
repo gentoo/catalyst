@@ -93,7 +93,7 @@ _setup(
     long_description=_codecs.open(
         _os.path.join(_this_dir, 'README'), 'r', 'utf-8').read(),
     classifiers=[
-            'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Intended Audience :: System Administrators',
         'Operating System :: POSIX',
