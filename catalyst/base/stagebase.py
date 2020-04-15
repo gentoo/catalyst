@@ -528,7 +528,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		"""Set basic stage1, 2, 3 action sequences"""
 		self.settings["action_sequence"] = ["unpack", "unpack_snapshot",
 				"setup_confdir", "portage_overlay",
-				"base_dirs", "bind", "chroot_setup", "setup_environment",
+				"bind", "chroot_setup", "setup_environment",
 				"run_local", "preclean", "unbind", "clean"]
 		self.set_completion_action_sequences()
 
@@ -939,9 +939,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 					log.info('Copying root_overlay: %s', x)
 					cmd(['rsync', '-a', x + '/', self.settings['chroot_path']],
 						env=self.env)
-
-	def base_dirs(self):
-		pass
 
 	def bind(self):
 		for x in self.mounts:

@@ -77,9 +77,6 @@ class stage1(StageBase):
 				"If you break it, you buy it.  Don't complain to us about it.\n"
 				"Don't say we did not warn you.")
 
-	def base_dirs(self):
-		pass
-
 	def set_mounts(self):
 		# stage_path/proc probably doesn't exist yet, so create it
 		ensure_dirs(self.settings["stage_path"]+"/proc")
