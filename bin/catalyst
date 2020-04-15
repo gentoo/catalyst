@@ -4,28 +4,28 @@ import sys
 
 # This block ensures that ^C interrupts are handled quietly.
 try:
-	import signal
+    import signal
 
-	def exithandler(_signum, _frame):
-		signal.signal(signal.SIGINT, signal.SIG_IGN)
-		signal.signal(signal.SIGTERM, signal.SIG_IGN)
-		print()
-		sys.exit(1)
+    def exithandler(_signum, _frame):
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+        signal.signal(signal.SIGTERM, signal.SIG_IGN)
+        print()
+        sys.exit(1)
 
-	signal.signal(signal.SIGINT, exithandler)
-	signal.signal(signal.SIGTERM, exithandler)
-	signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    signal.signal(signal.SIGINT, exithandler)
+    signal.signal(signal.SIGTERM, exithandler)
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
 except KeyboardInterrupt:
-	print()
-	sys.exit(1)
+    print()
+    sys.exit(1)
 
 
 from catalyst.main import main
 
 try:
-	main(sys.argv[1:])
+    main(sys.argv[1:])
 except KeyboardInterrupt:
-	print("Aborted.")
-	sys.exit(130)
+    print("Aborted.")
+    sys.exit(130)
 sys.exit(0)

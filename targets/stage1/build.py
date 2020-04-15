@@ -10,8 +10,11 @@ from portage.util import grabfile_package, stack_lists
 # wrap it here to take care of the different
 # ways portage handles stacked profiles
 # last case is for portage-2.1_pre*
+
+
 def scan_profile(path):
-	return stack_lists([grabfile_package(os.path.join(x, path)) for x in portage.settings.profiles], incremental=1)
+    return stack_lists([grabfile_package(os.path.join(x, path)) for x in portage.settings.profiles], incremental=1)
+
 
 # loaded the stacked packages / packages.build files
 pkgs = scan_profile("packages")
@@ -24,13 +27,13 @@ buildpkgs = scan_profile("packages.build")
 # system profile (it may have <,>,=,etc... operators
 # and version numbers)
 for pkg in pkgs:
-	try:
-		bidx = buildpkgs.index(dep_getkey(pkg))
-		buildpkgs[bidx] = pkg
-		if buildpkgs[bidx][0:1] == "*":
-			buildpkgs[bidx] = buildpkgs[bidx][1:]
-	except Exception:
-		pass
+    try:
+        bidx = buildpkgs.index(dep_getkey(pkg))
+        buildpkgs[bidx] = pkg
+        if buildpkgs[bidx][0:1] == "*":
+            buildpkgs[bidx] = buildpkgs[bidx][1:]
+    except Exception:
+        pass
 
 for b in buildpkgs:
-	sys.stdout.write(b + " ")
+    sys.stdout.write(b + " ")

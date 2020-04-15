@@ -15,31 +15,31 @@ import sys
 
 
 def main(_argv):
-	source_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    source_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-	# Force consistent sorting order.
-	locale.setlocale(locale.LC_COLLATE, 'C')
+    # Force consistent sorting order.
+    locale.setlocale(locale.LC_COLLATE, 'C')
 
-	targets = list()
-	for filename in glob.glob(os.path.join(source_root, 'catalyst/targets/*.py')):
-		if '__init__' in filename:
-			continue
+    targets = list()
+    for filename in glob.glob(os.path.join(source_root, 'catalyst/targets/*.py')):
+        if '__init__' in filename:
+            continue
 
-		name = os.path.basename(filename)[0:-3]
-		target_name = name.replace('_', '-')
-		module_name = 'catalyst.targets.' + name
+        name = os.path.basename(filename)[0:-3]
+        target_name = name.replace('_', '-')
+        module_name = 'catalyst.targets.' + name
 
-		__import__(module_name)
-		module = sys.modules[module_name]
+        __import__(module_name)
+        module = sys.modules[module_name]
 
-		targets.append((target_name, module))
+        targets.append((target_name, module))
 
-	for target_name, module in sorted(targets, key=lambda x: x[0]):
-		print('`%s`;;' % target_name)
-		# Replace blank lines with `+` (asciidoc list item continuation)
-		print(module.__doc__.strip().replace('\n\n', '\n+\n'))
-		print('')
+    for target_name, module in sorted(targets, key=lambda x: x[0]):
+        print('`%s`;;' % target_name)
+        # Replace blank lines with `+` (asciidoc list item continuation)
+        print(module.__doc__.strip().replace('\n\n', '\n+\n'))
+        print('')
 
 
 if __name__ == '__main__':
-	main(sys.argv[1:])
+    main(sys.argv[1:])

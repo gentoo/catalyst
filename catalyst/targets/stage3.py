@@ -8,22 +8,22 @@ from catalyst.base.stagebase import StageBase
 
 
 class stage3(StageBase):
-	"""
-	Builder class for a stage3 installation tarball build.
-	"""
-	required_values = frozenset()
-	valid_values = frozenset()
+    """
+    Builder class for a stage3 installation tarball build.
+    """
+    required_values = frozenset()
+    valid_values = frozenset()
 
-	def __init__(self,spec,addlargs):
-		StageBase.__init__(self,spec,addlargs)
+    def __init__(self, spec, addlargs):
+        StageBase.__init__(self, spec, addlargs)
 
-	def set_portage_overlay(self):
-		StageBase.set_portage_overlay(self)
-		if "portage_overlay" in self.settings:
-			log.warning(
-				'Using an overlay for earlier stages could cause build issues.\n'
-				"If you break it, you buy it.  Don't complain to us about it.\n"
-				"Don't say we did not warn you.")
+    def set_portage_overlay(self):
+        StageBase.set_portage_overlay(self)
+        if "portage_overlay" in self.settings:
+            log.warning(
+                'Using an overlay for earlier stages could cause build issues.\n'
+                "If you break it, you buy it.  Don't complain to us about it.\n"
+                "Don't say we did not warn you.")
 
-	def set_cleanables(self):
-		StageBase.set_cleanables(self)
+    def set_cleanables(self):
+        StageBase.set_cleanables(self)
