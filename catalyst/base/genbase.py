@@ -39,11 +39,6 @@ class GenBase():
                 with io.open(digests, "w", encoding='utf-8') as myf:
                     for f in [path, path + '.CONTENTS']:
                         if os.path.exists(f):
-                            if "all" in self.settings["digests"].split():
-                                for k in list(hash_map.hash_map):
-                                    digest = hash_map.generate_hash(f, hash_=k)
-                                    myf.write(digest)
-                            else:
-                                for j in self.settings["digests"].split():
-                                    digest = hash_map.generate_hash(f, hash_=j)
-                                    myf.write(digest)
+                            for i in self.settings["digests"].split():
+                                digest = hash_map.generate_hash(f, hash_=i)
+                                myf.write(digest)
