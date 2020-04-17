@@ -22,7 +22,7 @@ Create a snapshot of your current Portage tree (you may want to
     # catalyst --snapshot 20130131
     # ls /var/tmp/catalyst/snapshots/
     portage-20130131.tar.bz2
-    portage-20130131.tar.bz2.CONTENTS
+    portage-20130131.tar.bz2.CONTENTS.gz
     portage-20130131.tar.bz2.DIGESTS
 
 where the storage location is relative to the default
@@ -44,7 +44,7 @@ For example,
 Grab the tarball and put it where catalyst will find it:
 
     # wget http://…/stage3-amd64-20121213.tar.bz2
-    # wget http://…/stage3-amd64-20121213.tar.bz2.CONTENTS
+    # wget http://…/stage3-amd64-20121213.tar.bz2.CONTENTS.gz
     # wget http://…/stage3-amd64-20121213.tar.bz2.DIGESTS.asc
     # sha512sum -c stage3-amd64-20121213.tar.bz2.DIGESTS.asc
     # gpg --verify stage3-amd64-20121213.tar.bz2.DIGESTS.asc
@@ -89,7 +89,7 @@ which will build the target and install something like:
 
     # ls /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.*
     /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.CONTENTS
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.CONTENTS.gz
     /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.DIGESTS
 
 The name is an expansion of

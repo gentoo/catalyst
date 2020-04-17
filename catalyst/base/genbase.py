@@ -1,6 +1,7 @@
 
 import io
 import os
+import gzip
 
 
 class GenBase(object):
@@ -12,13 +13,13 @@ class GenBase(object):
 
 
 	def gen_contents_file(self, path):
-		contents = path + ".CONTENTS"
+		contents = path + ".CONTENTS.gz"
 		if os.path.exists(contents):
 			os.remove(contents)
 		if "contents" in self.settings:
 			contents_map = self.settings["contents_map"]
 			if os.path.exists(path):
-				with io.open(contents, "w", encoding='utf-8') as myf:
+				with gzip.open(contents, "w", encoding='utf-8') as myf:
 					keys={}
 					for i in self.settings["contents"].split():
 						keys[i]=1
@@ -41,7 +42,7 @@ class GenBase(object):
 					for i in self.settings["digests"].split():
 						keys[i]=1
 						array = sorted(keys.keys())
-					for f in [path, path + '.CONTENTS']:
+					for f in [path, path + '.CONTENTS.gz']:
 						if os.path.exists(f):
 							if "all" in array:
 								for k in list(hash_map.hash_map):
