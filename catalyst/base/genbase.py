@@ -22,7 +22,7 @@ class GenBase():
                     keys = {}
                     for i in self.settings["contents"].split():
                         keys[i] = 1
-                        array = sorted(keys.keys())
+                    array = sorted(keys.keys())
                     for j in array:
                         contents = contents_map.contents(path, j,
                                                          verbose=self.settings["VERBOSE"])
@@ -40,7 +40,7 @@ class GenBase():
                     keys = {}
                     for i in self.settings["digests"].split():
                         keys[i] = 1
-                        array = sorted(keys.keys())
+                    array = sorted(keys.keys())
                     for f in [path, path + '.CONTENTS']:
                         if os.path.exists(f):
                             if "all" in array:
