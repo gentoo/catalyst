@@ -37,5 +37,5 @@ class GenBase():
 
         with io.open(path + '.DIGESTS', 'w', encoding='utf-8') as file:
             for f in [path, path + '.CONTENTS']:
-                for i in self.settings['digests'].split():
+                for i in self.settings['digests']:
                     file.write(self.generate_hash(f, name=i))

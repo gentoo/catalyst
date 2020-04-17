@@ -341,8 +341,9 @@ def _main(parser, opts):
     # TODO add capability to config/spec new definitions
 
     if "digests" in conf_values:
-        digests = set(conf_values['digests'].split())
         valid_digests = hashlib.algorithms_available
+        digests = set(conf_values['digests'].split())
+        conf_values['digests'] = digests
 
         # First validate all the requested digests are valid keys.
         if digests - valid_digests:
