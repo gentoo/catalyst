@@ -347,11 +347,10 @@ def _main(parser, opts):
 
         # First validate all the requested digests are valid keys.
         if digests - valid_digests:
-            log.critical(
-                'These are not valid digest entries:\n%s\n'
-                'Valid digest entries:\n%s',
-                ', '.join(sorted(digests - valid_digests)),
-                ', '.join(sorted(valid_digests)))
+            raise CatalystError('These are not valid digest entries:\n%s\n'
+                                'Valid digest entries:\n%s' %
+                                ', '.join(sorted(digests - valid_digests)),
+                                ', '.join(sorted(valid_digests)))
 
     addlargs = {}
 
