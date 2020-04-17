@@ -5,22 +5,47 @@ from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 
 # these should never be touched
-required_build_targets = ["targetbase", "generic_stage_target"]
+required_build_targets = [
+    "generic_stage_target",
+    "targetbase",
+]
 
 # new build types should be added here
-valid_build_targets = ["stage1_target", "stage2_target", "stage3_target",
-                       "stage4_target", "livecd_stage1_target", "livecd_stage2_target",
-                       "embedded_target", "snapshot_target", "netboot_target"
-                       ]
+valid_build_targets = [
+    "embedded_target",
+    "livecd_stage1_target",
+    "livecd_stage2_target",
+    "netboot_target",
+    "snapshot_target",
+    "stage1_target",
+    "stage2_target",
+    "stage3_target",
+    "stage4_target",
+]
 
-required_config_file_values = ["storedir", "sharedir", "distdir", "portdir"]
+required_config_file_values = [
+    "distdir",
+    "portdir",
+    "sharedir",
+    "storedir",
+]
 
 valid_config_file_values = required_config_file_values[:]
-valid_config_file_values.extend(["distcc", "envscript",
-                                 "options", "DEBUG", "VERBOSE",
-                                 "snapshot_cache", "hash_function", "digests", "contents", "compressor_arch",
-                                 "compression_mode", "compressor_options", "decompressor_search_order",
-                                 ])
+valid_config_file_values.extend([
+    "compression_mode",
+    "compressor_arch",
+    "compressor_options",
+    "contents",
+    "DEBUG",
+    "decompressor_search_order",
+    "digests",
+    "distcc",
+    "envscript",
+    "hash_function",
+    "options",
+    "snapshot_cache",
+    "VERBOSE",
+])
 
 # set our base defaults here to keep
 # them in one location.
