@@ -2,6 +2,7 @@
 import hashlib
 import io
 import os
+import gzip
 
 class GenBase():
     """
@@ -28,7 +29,7 @@ class GenBase():
     def gen_contents_file(self, path):
         c = self.settings['contents_map']
 
-        with io.open(path + '.CONTENTS', 'w', encoding='utf-8') as file:
+        with gzip.open(path + '.CONTENTS.gz', 'w', encoding='utf-8') as file:
             file.write(c.contents(path, '', verbose=self.settings['VERBOSE']))
 
     def gen_digest_file(self, path):
@@ -36,6 +37,6 @@ class GenBase():
             return
 
         with io.open(path + '.DIGESTS', 'w', encoding='utf-8') as file:
-            for f in [path, path + '.CONTENTS']:
+            for f in [path, path + '.CONTENTS.gz']:
                 for i in self.settings['digests']:
                     file.write(self.generate_hash(f, name=i))

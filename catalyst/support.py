@@ -65,7 +65,7 @@ def file_check(filepath, extensions=None, strict=True):
     files = glob.glob("%s.*" % filepath)
     # remove any false positive files
     files = [x for x in files if not x.endswith(
-        ".CONTENTS") and not x.endswith(".DIGESTS")]
+        ".CONTENTS") and not x.endswith(".CONTENTS.gz") and not x.endswith(".DIGESTS")]
     if len(files) == 1:
         return files[0]
     if len(files) > 1 and strict:
