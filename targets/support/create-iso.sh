@@ -220,7 +220,7 @@ case ${clst_hostarch} in
 					mv "${clst_target_path}/boot/efi" "${clst_target_path}/boot/EFI"
 				fi
 				# prepare gentoo.efimg from clst_target_path /boot/EFI dir
-				iaSizeTemp=$(du -sk "${clst_target_path}/boot/EFI" 2>/dev/null)
+				iaSizeTemp=$(du -sk --apparent-size "${clst_target_path}/boot/EFI" 2>/dev/null)
 				iaSizeB=$(echo ${iaSizeTemp} | cut '-d ' -f1)
 				iaSize=$((${iaSizeB}+64)) # add slack, tested near minimum for overhead
 				echo "Creating loopback file of size ${iaSize}kB"
