@@ -444,7 +444,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self.settings["source_path_hash"] = \
                         self.settings["hash_map"].generate_hash(
                             self.settings["source_path"],
-                            hash_=self.settings["hash_function"])
+                            hash_="sha1")
         log.notice('Source path set to %s', self.settings['source_path'])
 
     def set_dest_path(self):
@@ -471,7 +471,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.settings["snapshot_path_hash"] = \
             self.settings["hash_map"].generate_hash(
                 self.settings["snapshot_path"],
-                hash_=self.settings["hash_function"])
+                hash_="sha1")
 
     def set_snapcache_path(self):
         self.settings["snapshot_cache_path"] = \

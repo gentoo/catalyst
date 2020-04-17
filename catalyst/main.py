@@ -384,22 +384,6 @@ def _main(parser, opts):
         # Now reload the config with our updated value.
         conf_values['digests'] = ' '.join(digests)
 
-    if "hash_function" in conf_values:
-        if conf_values["hash_function"] not in HASH_DEFINITIONS:
-            log.critical(
-                '%s is not a valid hash_function entry\n'
-                'Valid hash_function entries:\n'
-                '%s', conf_values["hash_function"], HASH_DEFINITIONS.keys())
-        try:
-            process.find_binary(
-                hash_map.hash_map[conf_values["hash_function"]].cmd)
-        except process.CommandNotFound:
-            log.critical(
-                'The "%s" binary needed by hash_function "%s" was not found. '
-                'It needs to be in your system path.',
-                hash_map.hash_map[conf_values['hash_function']].cmd,
-                conf_values['hash_function'])
-
     addlargs = {}
 
     if myspecfile:

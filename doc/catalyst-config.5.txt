@@ -66,12 +66,6 @@ variables using POSIX shell notation:
 export FOO="bar"
 ---------------------------------
 
-*hash_function*::
-Internal hash function catalyst should use for things like autoresume,
-seedcache, etc.  The default and fastest is `crc32`.  You should not
-ever need to change this unless your OS does not support it.  See the
-*SUPPORTED HASHES* section for a list of supported hashes.
-
 **options*::
 Set different build-time options (example: `autoresume bindist
 kerncache pkgcache seedcache snapcache`).  Supported values:
