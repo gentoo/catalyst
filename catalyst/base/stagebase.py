@@ -442,9 +442,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 # XXX: Is this even necessary if the previous check passes?
                 if os.path.exists(self.settings["source_path"]):
                     self.settings["source_path_hash"] = \
-                        self.settings["hash_map"].generate_hash(
-                            self.settings["source_path"],
-                            hash_="sha1")
+                        self.generate_hash(self.settings["source_path"], "sha1")
         log.notice('Source path set to %s', self.settings['source_path'])
 
     def set_dest_path(self):
@@ -469,9 +467,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         )
         log.info('SNAPSHOT_PATH set to: %s', self.settings['snapshot_path'])
         self.settings["snapshot_path_hash"] = \
-            self.settings["hash_map"].generate_hash(
-                self.settings["snapshot_path"],
-                hash_="sha1")
+            self.generate_hash(self.settings["snapshot_path"], "sha1")
 
     def set_snapcache_path(self):
         self.settings["snapshot_cache_path"] = \

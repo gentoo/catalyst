@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import hashlib
 import os
 import sys
 
@@ -13,7 +14,6 @@ from DeComp.contents import ContentsMap
 from catalyst import log
 import catalyst.config
 from catalyst.defaults import confdefaults, option_messages, DEFAULT_CONFIG_FILE
-from catalyst.hash_utils import HashMap, HASH_DEFINITIONS
 from catalyst.support import CatalystError
 from catalyst.version import get_version
 
@@ -335,54 +335,22 @@ def _main(parser, opts):
                                list_xattrs_opt=conf_values['list_xattrs_opt'])
     conf_values["contents_map"] = contents_map
 
-    # initialze our hash and contents generators
-    hash_map = HashMap(HASH_DEFINITIONS)
-    conf_values["hash_map"] = hash_map
-
     # initialize our (de)compression definitions
     conf_values['decompress_definitions'] = DECOMPRESS_DEFINITIONS
     conf_values['compress_definitions'] = COMPRESS_DEFINITIONS
     # TODO add capability to config/spec new definitions
 
-    # Start checking that digests are valid now that hash_map is initialized
     if "digests" in conf_values:
         digests = set(conf_values['digests'].split())
-        valid_digests = set(HASH_DEFINITIONS.keys())
-
-        # Use the magic keyword "auto" to use all algos that are available.
-        skip_missing = False
-        if 'auto' in digests:
-            skip_missing = True
-            digests.remove('auto')
-            if not digests:
-                digests = set(valid_digests)
+        valid_digests = hashlib.algorithms_available
 
         # First validate all the requested digests are valid keys.
         if digests - valid_digests:
             log.critical(
-                'These are not valid digest entries:\n'
-                '%s\n'
-                'Valid digest entries:\n'
-                '%s',
-                ', '.join(digests - valid_digests),
+                'These are not valid digest entries:\n%s\n'
+                'Valid digest entries:\n%s',
+                ', '.join(sorted(digests - valid_digests)),
                 ', '.join(sorted(valid_digests)))
-
-        # Then check for any programs that the hash func requires.
-        for digest in digests:
-            try:
-                process.find_binary(hash_map.hash_map[digest].cmd)
-            except process.CommandNotFound:
-                # In auto mode, just ignore missing support.
-                if skip_missing:
-                    digests.remove(digest)
-                    continue
-                log.critical(
-                    'The "%s" binary needed by digest "%s" was not found. '
-                    'It needs to be in your system path.',
-                    hash_map.hash_map[digest].cmd, digest)
-
-        # Now reload the config with our updated value.
-        conf_values['digests'] = ' '.join(digests)
 
     addlargs = {}
 

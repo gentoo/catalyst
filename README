@@ -20,7 +20,6 @@ Requirements
 - Python 3.6 or greater
 - An ebuild repository snapshot (or an ebuild tree to create one)
 - A generic stage3 tarball for your architecture
-- shash for digest support
 
 What is catalyst?
 ========================

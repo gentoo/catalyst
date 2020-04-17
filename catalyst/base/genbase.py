@@ -1,4 +1,5 @@
 
+import hashlib
 import io
 import os
 
@@ -10,6 +11,20 @@ class GenBase():
 
     def __init__(self, myspec):
         self.settings = myspec
+
+    @staticmethod
+    def generate_hash(filepath, name):
+        h = hashlib.new(name)
+
+        with open(filepath, 'rb') as f:
+            while True:
+                data = f.read(8192)
+                if not data:
+                    break
+                h.update(data)
+
+        filename = os.path.split(filepath)[1]
+        return f'# {name.upper()} HASH\n{h.hexdigest()}  {filename}\n'
 
     def gen_contents_file(self, path):
         contents = path + ".CONTENTS"
@@ -29,11 +44,10 @@ class GenBase():
         if os.path.exists(digests):
             os.remove(digests)
         if "digests" in self.settings:
-            hash_map = self.settings["hash_map"]
             if os.path.exists(path):
                 with io.open(digests, "w", encoding='utf-8') as myf:
                     for f in [path, path + '.CONTENTS']:
                         if os.path.exists(f):
                             for i in self.settings["digests"].split():
-                                digest = hash_map.generate_hash(f, hash_=i)
+                                digest = self.generate_hash(f, name=i)
                                 myf.write(digest)
