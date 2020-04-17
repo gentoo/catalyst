@@ -68,10 +68,6 @@ def parse_config(config_files):
         if key in myconf:
             conf_values[key] = myconf[key]
 
-    if "contents" in myconf:
-        # replace '-' with '_' (for compatibility with existing configs)
-        conf_values["contents"] = myconf["contents"].replace("-", '_')
-
     if "envscript" in myconf:
         log.info('Envscript support enabled.')
 

@@ -26,7 +26,6 @@ and empty lines are interpreted as comments.  For example:
 # /etc/catalyst/catalyst.conf
 
 digests="auto"
-contents="auto"
 envscript="/etc/catalyst/catalystrc"
 options="autoresume bindist kerncache pkgcache seedcache snapcache"
 
@@ -56,32 +55,6 @@ Create a `.DIGESTS` file containing the hash output from any of the
 supported options below.  Adding them all may take a long time.
 (example: `md5 sha1 sha512 whirlpool`).  See the *SUPPORTED HASHES*
 section for a list of supported hashes.
-
-*contents*::
-Create a `.CONTENTS` file listing the contents of the file.  If this
-variable is empty, no `.CONTENTS` will be generated at all.  Supported
-values:
-+
---
-auto::
-Strongly recommended
-
-tar-tv::
-Do `tar tvf FILE`
-
-tar-tvz::
-Do `tar tvzf FILE`
-
-tar-tvy::
-Do `tar tvyf FILE`
-
-isoinfo-l::
-Do `isoinfo -l -i FILE`
-
-isoinfo-f::
-Do `isoinfo -f -i FILE`.  'isoinfo-f' is the only option not chosen
-by the automatic algorithm.
---
 
 *envscript*::
 Environment script location, which allows users to set options such as

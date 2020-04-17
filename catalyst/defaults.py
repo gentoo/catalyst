@@ -35,7 +35,6 @@ valid_config_file_values.extend([
     "compression_mode",
     "compressor_arch",
     "compressor_options",
-    "contents",
     "DEBUG",
     "decompressor_search_order",
     "digests",
