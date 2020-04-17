@@ -35,7 +35,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.required_values |= frozenset([
             "profile",
             "rel_type",
-            "snapshot",
+            "snapshot_treeish",
             "source_subpath",
             "subarch",
             "target",
@@ -149,7 +149,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_source_subpath()
 
         # Set paths
-        self.set_snapshot_path()
+        self.set_snapshot()
         self.set_root_path()
         self.set_source_path()
         self.set_chroot_path()
@@ -191,9 +191,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
         # Setup our mount points.
         self.mount = MOUNT_DEFAULTS.copy()
 
-        # Always unpack snapshot tarball
-        self.mount['portdir']['enable'] = False
-
+        self.mount['portdir']['source'] = self.snapshot
+        self.mount['portdir']['target'] = self.settings['repo_basedir'] + '/' + self.settings['repo_name']
         self.mount['distdir']['source'] = self.settings['distdir']
         self.mount["distdir"]['target'] = self.settings['target_distdir']
 
@@ -435,21 +434,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.settings["destpath"] = normpath(self.settings["chroot_path"])
 
     def set_cleanables(self):
-        self.settings["cleanables"] = ["/etc/resolv.conf", "/var/tmp/*", "/tmp/*",
-                                       self.settings["repo_basedir"] + "/" +
-                                       self.settings["repo_name"]]
-
-    def set_snapshot_path(self):
-        self.settings["snapshot_path"] = file_check(
-            normpath(self.settings["storedir"] +
-                     "/snapshots/" + self.settings["snapshot_name"] +
-                     self.settings["snapshot"]),
-            self.accepted_extensions,
-            self.settings["source_matching"] == "strict"
-        )
-        log.info('SNAPSHOT_PATH set to: %s', self.settings['snapshot_path'])
-        self.settings["snapshot_path_hash"] = \
-            self.generate_hash(self.settings["snapshot_path"], "sha1")
+        self.settings['cleanables'] = [
+            "/etc/resolv.conf",
+            "/var/tmp/*",
+            "/tmp/*",
+        ]
 
     def set_chroot_path(self):
         """
@@ -485,7 +474,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     "ISO volume ID must not exceed 32 characters.")
         else:
             self.settings["iso_volume_id"] = "catalyst " + \
-                self.settings["snapshot"]
+                self.settings['snapshot_treeish']
 
     def set_default_action_sequence(self):
         """ Default action sequence for run method.
@@ -502,7 +491,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         """Set basic stage1, 2, 3 action sequences"""
         self.settings['action_sequence'] = [
             "unpack",
-            "unpack_snapshot",
             "setup_confdir",
             "portage_overlay",
             "bind",
@@ -810,50 +798,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.notice(
                 'Resume: Valid resume point detected, skipping seed unpack operation...')
 
-    def unpack_snapshot(self):
-        unpack = True
-        snapshot_hash = self.resume.get("unpack_repo")
-
-        unpack_errmsg = "Error unpacking snapshot using mode %(mode)s"
-
-        unpack_info = self.decompressor.create_infodict(
-            source=self.settings["snapshot_path"],
-            arch=self.settings["compressor_arch"],
-            other_options=self.settings["compressor_options"],
-        )
-
-        target_portdir = normpath(self.settings["chroot_path"] +
-                                  self.settings["repo_basedir"] + "/" + self.settings["repo_name"])
-        log.info('%s', self.settings['chroot_path'])
-        log.info('unpack_snapshot(), target_portdir = %s', target_portdir)
-        cleanup_msg = \
-            'Cleaning up existing portage tree (this can take a long time)...'
-        unpack_info['destination'] = normpath(
-            self.settings["chroot_path"] + self.settings["repo_basedir"])
-        unpack_info['mode'] = self.decompressor.determine_mode(
-            unpack_info['source'])
-
-        if "autoresume" in self.settings["options"] \
-                and os.path.exists(target_portdir) \
-                and self.resume.is_enabled("unpack_repo") \
-                and self.settings["snapshot_path_hash"] == snapshot_hash:
-            log.notice(
-                'Valid Resume point detected, skipping unpack of portage tree...')
-            unpack = False
-
-        if unpack:
-            if os.path.exists(target_portdir):
-                log.info('%s', cleanup_msg)
-            clear_dir(target_portdir)
-
-            log.notice('Unpacking portage tree (this can take a long time) ...')
-            if not self.decompressor.extract(unpack_info):
-                log.error('%s', unpack_errmsg % unpack_info)
-
-            log.info('Setting snapshot autoresume point')
-            self.resume.enable("unpack_repo",
-                               data=self.settings["snapshot_path_hash"])
-
     def config_profile_link(self):
         log.info('Configuring profile link...')
         make_profile = Path(self.settings['chroot_path'] + self.settings['port_conf'],
@@ -929,14 +873,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 _cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev',
                         'shm', target]
             else:
-                _cmd = ['mount', '--bind', source, target]
+                _cmd = ['mount', source, target]
 
                 source = Path(self.mount[x]['source'])
+                if source.suffix != '.sqfs':
+                    _cmd.insert(1, '--bind')
 
-                # We may need to create the source of the bind mount. E.g., in the
-                # case of an empty package cache we must create the directory that
-                # the binary packages will be stored into.
-                source.mkdir(mode=0o755, exist_ok=True)
+                    # We may need to create the source of the bind mount. E.g., in the
+                    # case of an empty package cache we must create the directory that
+                    # the binary packages will be stored into.
+                    source.mkdir(mode=0o755, exist_ok=True)
 
             Path(target).mkdir(mode=0o755, parents=True, exist_ok=True)
 

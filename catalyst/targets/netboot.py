@@ -162,7 +162,6 @@ class netboot(StageBase):
     def set_action_sequence(self):
         self.settings['action_sequence'] = [
             "unpack",
-            "unpack_snapshot",
             "config_profile_link",
             "setup_confdir",
             "portage_overlay",

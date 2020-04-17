@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import os
 import sys
+import textwrap
 
 from snakeoil.process import namespaces
 
@@ -63,7 +64,7 @@ def parse_config(config_files):
             log.info(option_messages[opt])
 
     for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir",
-                "local_overlay"]:
+                "local_overlay", "repos"]:
         if key in myconf:
             conf_values[key] = myconf[key]
 
@@ -121,16 +122,15 @@ class FilePath():
 
 def get_parser():
     """Return an argument parser"""
-    epilog = """Usage examples:
+    epilog = textwrap.dedent("""\
+        Usage examples:
 
-Using the commandline option (-C, --cli) to build a Portage snapshot:
-$ catalyst -C target=snapshot version_stamp=my_date
+        Using the snapshot option to make a snapshot of the ebuild repo:
+        $ catalyst --snapshot <git-treeish>
 
-Using the snapshot option (-s, --snapshot) to build a release snapshot:
-$ catalyst -s 20071121
-
-Using the specfile option (-f, --file) to build a stage target:
-$ catalyst -f stage1-specfile.spec"""
+        Using the specfile option (-f, --file) to build a stage target:
+        $ catalyst -f stage1-specfile.spec
+        """)
 
     parser = argparse.ArgumentParser(
         epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -200,8 +200,8 @@ $ catalyst -f stage1-specfile.spec"""
     group.add_argument('-f', '--file',
                        type=FilePath(),
                        help='read specfile')
-    group.add_argument('-s', '--snapshot',
-                       help='generate a release snapshot')
+    group.add_argument('-s', '--snapshot', type=str,
+                       help='Make an ebuild repo snapshot')
     group.add_argument('-C', '--cli',
                        default=[], nargs=argparse.REMAINDER,
                        help='catalyst commandline (MUST BE LAST OPTION)')
@@ -298,7 +298,7 @@ def _main(parser, opts):
 
     if opts.snapshot:
         mycmdline.append('target=snapshot')
-        mycmdline.append('version_stamp=' + opts.snapshot)
+        mycmdline.append('snapshot_treeish=' + opts.snapshot)
 
     conf_values['DEBUG'] = opts.debug
     conf_values['VERBOSE'] = opts.debug or opts.verbose
@@ -348,8 +348,8 @@ def _main(parser, opts):
         if digests - valid_digests:
             raise CatalystError('These are not valid digest entries:\n%s\n'
                                 'Valid digest entries:\n%s' %
-                                ', '.join(sorted(digests - valid_digests)),
-                                ', '.join(sorted(valid_digests)))
+                                (', '.join(sorted(digests - valid_digests)),
+                                 ', '.join(sorted(valid_digests))))
 
     addlargs = {}
 

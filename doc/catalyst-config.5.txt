@@ -111,17 +111,18 @@ Defaults to the host's DISTDIR.
 Source Gentoo tree location (primary repo). `/var/db/repos/gentoo/` should work for most
 default installations.
 
+*repos*::
+The directory in which git repositories exist for use by the snapshot target.
+Defaults to `${storedir}/repos`.
+
 *repo_basedir*::
 The target repository directory to contain the primary repo (gentoo repo) and
 any overlays.  The default location is `/var/db/repos`.
 
 *repo_name*::
-The name of the main repository (ie: gentoo).  This has had a directory name
-of `portage` in the past.  But it has an internal name of `gentoo`, which is
-what its directory name should be.  This name is used in the snapshot name
-generated and also the directory name of the repository created with the
-snapshot target.  The new general rule is that the directory name and its
-internal repo_name value should be the same.
+The name of the main repository (e.g. gentoo). The git repository at
+`${repos}/${repo_name}.git` will be used to produce the portdir sqfs
+snapshot.
 
 *target_distdir*::
 This is the target distfiles directory location for the stage being created.

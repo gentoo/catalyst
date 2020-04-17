@@ -62,9 +62,9 @@ allowing multiple concurrent builds.  Usually, `default` will suffice.
 *profile*::
 This is the system profile to be used by catalyst to build this target
 (example: `default/linux/x86/10.0/`).  It is specified as a relative
-path from `profiles` in your portage snapshot
+path from `profiles` in your portdir snapshot
 
-*snapshot*::
+*snapshot_treeish*::
 This specifies which snapshot to use for building this target
 (example: `2006.1`).
 

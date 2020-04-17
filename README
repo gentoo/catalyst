@@ -18,8 +18,9 @@ Requirements
 =======================
 
 - Python 3.6 or greater
-- An ebuild repository snapshot (or an ebuild tree to create one)
 - A generic stage3 tarball for your architecture
+- A squashfs ebuild repository snapshot
+  - Or an ebuild git repo with sys-fs/squashfs-tools-ng and dev-vcs/git
 
 What is catalyst?
 ========================

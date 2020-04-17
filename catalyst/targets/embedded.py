@@ -43,7 +43,6 @@ class embedded(StageBase):
         self.settings['action_sequence'] = [
             "dir_setup",
             "unpack",
-            "unpack_snapshot",
             "config_profile_link",
             "setup_confdir",
             "portage_overlay",
