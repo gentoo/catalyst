@@ -3,10 +3,9 @@ import hashlib
 import io
 import os
 
-
 class GenBase():
     """
-    This class does generation of the contents and digests files.
+    Generates CONTENTS and DIGESTS files.
     """
 
     def __init__(self, myspec):
@@ -27,27 +26,16 @@ class GenBase():
         return f'# {name.upper()} HASH\n{h.hexdigest()}  {filename}\n'
 
     def gen_contents_file(self, path):
-        contents = path + ".CONTENTS"
-        if os.path.exists(contents):
-            os.remove(contents)
+        c = self.settings['contents_map']
 
-        contents_map = self.settings["contents_map"]
-        if os.path.exists(path):
-            with io.open(contents, "w", encoding='utf-8') as myf:
-                contents = contents_map.contents(path, '',
-                                                 verbose=self.settings["VERBOSE"])
-                if contents:
-                    myf.write(contents)
+        with io.open(path + '.CONTENTS', 'w', encoding='utf-8') as file:
+            file.write(c.contents(path, '', verbose=self.settings['VERBOSE']))
 
     def gen_digest_file(self, path):
-        digests = path + ".DIGESTS"
-        if os.path.exists(digests):
-            os.remove(digests)
-        if "digests" in self.settings:
-            if os.path.exists(path):
-                with io.open(digests, "w", encoding='utf-8') as myf:
-                    for f in [path, path + '.CONTENTS']:
-                        if os.path.exists(f):
-                            for i in self.settings["digests"].split():
-                                digest = self.generate_hash(f, name=i)
-                                myf.write(digest)
+        if 'digests' not in self.settings:
+            return
+
+        with io.open(path + '.DIGESTS', 'w', encoding='utf-8') as file:
+            for f in [path, path + '.CONTENTS']:
+                for i in self.settings['digests'].split():
+                    file.write(self.generate_hash(f, name=i))
