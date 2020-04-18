@@ -8,17 +8,14 @@ from catalyst.fileops import ensure_dirs
 
 LockInUse = osutils.LockException
 
-
-class LockDir():
-    """An object that creates locks inside dirs"""
-
-    def __init__(self, lockdir):
-        self.gid = 250
-        self.lockfile = os.path.join(lockdir, '.catalyst_lock')
-        ensure_dirs(lockdir)
-        fileutils.touch(self.lockfile, mode=0o664)
-        os.chown(self.lockfile, -1, self.gid)
-        self.lock = osutils.FsLock(self.lockfile)
+class Lock:
+    """
+    A fnctl-based filesystem lock
+    """
+    def __init__(self, lockfile):
+        fileutils.touch(lockfile, mode=0o664)
+        os.chown(lockfile, uid=-1, gid=250)
+        self.lock = osutils.FsLock(lockfile)
 
     def read_lock(self):
         self.lock.acquire_read_lock()
@@ -29,3 +26,13 @@ class LockDir():
     def unlock(self):
         # Releasing a write lock is the same as a read lock.
         self.lock.release_write_lock()
+
+class LockDir(Lock):
+    """
+    A fnctl-based filesystem lock in a directory
+    """
+    def __init__(self, lockdir):
+        ensure_dirs(lockdir)
+        lockfile = os.path.join(lockdir, '.catalyst_lock')
+
+        Lock.__init__(self, lockfile)
