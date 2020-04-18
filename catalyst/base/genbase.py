@@ -29,7 +29,7 @@ class GenBase():
     def gen_contents_file(self, path):
         c = self.settings['contents_map']
 
-        with gzip.open(path + '.CONTENTS.gz', 'w', encoding='utf-8') as file:
+        with gzip.open(path + '.CONTENTS.gz', 'wt', encoding='utf-8') as file:
             file.write(c.contents(path, '', verbose=self.settings['VERBOSE']))
 
     def gen_digest_file(self, path):
