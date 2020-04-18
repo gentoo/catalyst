@@ -40,12 +40,29 @@ class embedded(StageBase):
         StageBase.__init__(self, spec, addlargs)
 
     def set_action_sequence(self):
-        self.settings["action_sequence"] = ["dir_setup", "unpack", "unpack_snapshot",
-                                            "config_profile_link", "setup_confdir",
-                                            "portage_overlay", "bind", "chroot_setup",
-                                            "setup_environment", "build_kernel", "build_packages",
-                                            "bootloader", "root_overlay", "fsscript", "unmerge",
-                                            "unbind", "remove", "empty", "clean", "capture", "clear_autoresume"]
+        self.settings['action_sequence'] = [
+            "dir_setup",
+            "unpack",
+            "unpack_snapshot",
+            "config_profile_link",
+            "setup_confdir",
+            "portage_overlay",
+            "bind",
+            "chroot_setup",
+            "setup_environment",
+            "build_kernel",
+            "build_packages",
+            "bootloader",
+            "root_overlay",
+            "fsscript",
+            "unmerge",
+            "unbind",
+            "remove",
+            "empty",
+            "clean",
+            "capture",
+            "clear_autoresume",
+        ]
 
     def set_stage_path(self):
         self.settings["stage_path"] = normpath(

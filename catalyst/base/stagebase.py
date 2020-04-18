@@ -531,10 +531,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
-        self.settings["action_sequence"] = ["unpack", "unpack_snapshot",
-                                            "setup_confdir", "portage_overlay",
-                                            "bind", "chroot_setup", "setup_environment",
-                                            "run_local", "preclean", "unbind", "clean"]
+        self.settings['action_sequence'] = [
+            "unpack",
+            "unpack_snapshot",
+            "setup_confdir",
+            "portage_overlay",
+            "bind",
+            "chroot_setup",
+            "setup_environment",
+            "run_local",
+            "preclean",
+            "unbind",
+            "clean",
+        ]
         self.set_completion_action_sequences()
 
     def set_completion_action_sequences(self):

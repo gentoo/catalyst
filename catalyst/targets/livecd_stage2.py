@@ -88,7 +88,7 @@ class livecd_stage2(StageBase):
                                     print_traceback=True)
 
     def set_action_sequence(self):
-        self.settings["action_sequence"] = [
+        self.settings['action_sequence'] = [
             "unpack",
             "unpack_snapshot",
             "config_profile_link",
@@ -101,7 +101,7 @@ class livecd_stage2(StageBase):
             "build_kernel"
         ]
         if "fetch" not in self.settings["options"]:
-            self.settings["action_sequence"] += [
+            self.settings['action_sequence'] += [
                 "bootloader",
                 "preclean",
                 "livecd_update",
@@ -115,6 +115,6 @@ class livecd_stage2(StageBase):
                 "clean",
                 "target_setup",
                 "setup_overlay",
-                "create_iso"
+                "create_iso",
             ]
         self.settings["action_sequence"].append("clear_autoresume")
