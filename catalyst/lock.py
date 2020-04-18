@@ -1,6 +1,8 @@
 
 import os
 
+from contextlib import contextmanager
+
 from snakeoil import fileutils
 from snakeoil import osutils
 from catalyst.fileops import ensure_dirs
@@ -36,3 +38,21 @@ class LockDir(Lock):
         lockfile = os.path.join(lockdir, '.catalyst_lock')
 
         Lock.__init__(self, lockfile)
+
+@contextmanager
+def read_lock(filename):
+    lock = Lock(filename)
+    lock.read_lock()
+    try:
+        yield
+    finally:
+        lock.unlock()
+
+@contextmanager
+def write_lock(filename):
+    lock = Lock(filename)
+    lock.write_lock()
+    try:
+        yield
+    finally:
+        lock.unlock()
