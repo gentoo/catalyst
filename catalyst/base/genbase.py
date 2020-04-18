@@ -19,7 +19,7 @@ class GenBase(object):
 		if "contents" in self.settings:
 			contents_map = self.settings["contents_map"]
 			if os.path.exists(path):
-				with gzip.open(contents, "w", encoding='utf-8') as myf:
+				with gzip.open(contents, "wt", encoding='utf-8') as myf:
 					keys={}
 					for i in self.settings["contents"].split():
 						keys[i]=1
