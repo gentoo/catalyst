@@ -1,4 +1,6 @@
 
+from collections import OrderedDict
+
 from DeComp.definitions import DECOMPRESSOR_SEARCH_ORDER
 from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
 from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
@@ -68,7 +70,7 @@ confdefaults = {
     "port_conf": "/etc/portage",
     "make_conf": "%(port_conf)s/make.conf",
     "options": set(),
-    "packagedir": PKGDIR[:],
+    "pkgdir": PKGDIR[:],
     "portdir": PORTDIR[:],
     "port_tmpdir": "/var/tmp/portage",
     "PythonDir": "./catalyst",
@@ -89,32 +91,73 @@ DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'
 PORT_LOGDIR_CLEAN = \
     'find "${PORT_LOGDIR}" -type f ! -name "summary.log*" -mtime +30 -delete'
 
-TARGET_MOUNT_DEFAULTS = {
-    "ccache": "/var/tmp/ccache",
-    "dev": "/dev",
-    "devpts": "/dev/pts",
-    "distdir": DISTDIR[:],
-    "icecream": "/usr/lib/icecc/bin",
-    "kerncache": "/tmp/kerncache",
-    "packagedir": PKGDIR[:],
-    "portdir": PORTDIR[:],
-    "port_tmpdir": "/var/tmp/portage",
-    "port_logdir": "/var/log/portage",
-    "proc": "/proc",
-    "shm": "/dev/shm",
-    "run": "/run",
-}
-
-SOURCE_MOUNT_DEFAULTS = {
-    "dev": "/dev",
-    "devpts": "/dev/pts",
-    "distdir": DISTDIR[:],
-    "portdir": PORTDIR[:],
-    "port_tmpdir": "maybe_tmpfs",
-    "proc": "/proc",
-    "shm": "shmfs",
-    "run": "tmpfs",
-}
+MOUNT_DEFAULTS = OrderedDict([
+    ('proc', {
+        'enable': True,
+        'source': '/proc',
+        'target': '/proc',
+    }),
+    ('dev', {
+        'enable': True,
+        'source': '/dev',
+        'target': '/dev',
+    }),
+    ('devpts', {
+        'enable': True,
+        'source': '/dev/pts',
+        'target': '/dev/pts',
+    }),
+    ('shm', {
+        'enable': True,
+        'source': 'shmfs',
+        'target': '/dev/shm',
+    }),
+    ('run', {
+        'enable': True,
+        'source': 'tmpfs',
+        'target': '/run',
+    }),
+    ('portdir', {
+        'enable': True,
+        'source': 'config',
+        'target': 'config',
+    }),
+    ('distdir', {
+        'enable': True,
+        'source': 'config',
+        'target': 'config',
+    }),
+    ('pkgdir', {
+        'enable': False,
+        'source': 'config',
+        'target': 'config',
+    }),
+    ('port_tmpdir', {
+        'enable': True,
+        'source': 'maybe_tmpfs',
+        'target': '/var/tmp/portage',
+    }),
+    ('kerncache', {
+        'enable': False,
+        'source': 'config',
+        'target': '/tmp/kerncache',
+    }),
+    ('port_logdir', {
+        'enable': False,
+        'source': 'config',
+        'target': '/var/log/portage',
+    }),
+    ('ccache', {
+        'enable': False,
+        'source': 'config',
+        'target': '/var/tmp/ccache',
+    }),
+    ('icecream', {
+        'enable': False,
+        'source': ...,
+        'target': '/usr/lib/icecc/bin',
+    }),
+])
 
 option_messages = {
     "autoresume": "Autoresuming support enabled.",

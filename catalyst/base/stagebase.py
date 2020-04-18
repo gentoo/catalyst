@@ -11,8 +11,7 @@ from snakeoil.osutils import pjoin
 from DeComp.compress import CompressMap
 
 from catalyst import log
-from catalyst.defaults import (SOURCE_MOUNT_DEFAULTS, TARGET_MOUNT_DEFAULTS,
-                               PORT_LOGDIR_CLEAN)
+from catalyst.defaults import (MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
                               cmd, read_makeconf, ismount, file_check)
 from catalyst.base.targetbase import TargetBase
@@ -188,46 +187,39 @@ class StageBase(TargetBase, ClearBase, GenBase):
             file_locate(self.settings, ["portage_confdir"], expand=0)
 
         # Setup our mount points.
-        # initialize our target mounts.
-        self.target_mounts = TARGET_MOUNT_DEFAULTS.copy()
+        self.mount = MOUNT_DEFAULTS.copy()
 
-        self.mounts = ["proc", "dev", "portdir", "distdir", "port_tmpdir"]
-        # initialize our source mounts
-        self.mountmap = SOURCE_MOUNT_DEFAULTS.copy()
-        # update these from settings
-        self.mountmap["portdir"] = self.settings["portdir"]
-        self.mountmap["distdir"] = self.settings["distdir"]
-        self.target_mounts["portdir"] = normpath(self.settings["repo_basedir"] +
-                                                 "/" + self.settings["repo_name"])
-        self.target_mounts["distdir"] = self.settings["target_distdir"]
-        self.target_mounts["packagedir"] = self.settings["target_pkgdir"]
+        self.mount['portdir']['source'] = self.settings['portdir']
+        self.mount['portdir']['target'] = normpath(self.settings["repo_basedir"]
+                                                   + "/" +
+                                                   self.settings["repo_name"])
+        self.mount['distdir']['source'] = self.settings['distdir']
+        self.mount["distdir"]['target'] = self.settings["target_distdir"]
+
         if "snapcache" not in self.settings["options"]:
-            self.mounts.remove("portdir")
-            self.mountmap["portdir"] = None
+            self.mount['portdir']['enable'] = False
         else:
-            self.mountmap["portdir"] = normpath("/".join([
-                self.settings["snapshot_cache_path"],
-                self.settings["repo_name"],
+            self.mount['portdir']['source'] = normpath("/".join([
+                self.settings['snapshot_cache_path'],
+                self.settings['repo_name']
             ]))
-        self.mounts.append("devpts")
-        self.mounts.append("shm")
-        self.mounts.append("run")
 
         # Configure any user specified options (either in catalyst.conf or on
         # the command line).
         if "pkgcache" in self.settings["options"]:
             self.set_pkgcache_path()
+            self.mount['pkgdir']['enable'] = True
+            self.mount['pkgdir']['source'] = self.settings['pkgcache_path']
+            self.mount['pkgdir']['target'] = self.settings["target_pkgdir"]
             log.info('Location of the package cache is %s',
                      self.settings['pkgcache_path'])
-            self.mounts.append("packagedir")
-            self.mountmap["packagedir"] = self.settings["pkgcache_path"]
 
         if "kerncache" in self.settings["options"]:
             self.set_kerncache_path()
+            self.mount['kerncache']['enable'] = True
+            self.mount['kerncache']['source'] = self.settings["kerncache_path"]
             log.info('Location of the kerncache is %s',
                      self.settings['kerncache_path'])
-            self.mounts.append("kerncache")
-            self.mountmap["kerncache"] = self.settings["kerncache_path"]
 
         if "ccache" in self.settings["options"]:
             if "CCACHE_DIR" in os.environ:
@@ -238,20 +230,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
             if not os.path.isdir(ccdir):
                 raise CatalystError(
                     "Compiler cache support can't be enabled (can't find " + ccdir+")")
-            self.mounts.append("ccache")
-            self.mountmap["ccache"] = ccdir
-            # for the chroot:
-            self.env["CCACHE_DIR"] = self.target_mounts["ccache"]
+            self.mount['ccache']['enable'] = True
+            self.mount['ccache']['source'] = ccdir
+            self.env["CCACHE_DIR"] = self.mount['ccache']['target']
 
         if "icecream" in self.settings["options"]:
-            self.mounts.append("icecream")
-            self.mountmap["icecream"] = self.settings["icecream"]
-            self.env["PATH"] = self.target_mounts["icecream"] + \
+            self.mount['icecream']['enable'] = True
+            self.mount['icecream']['source'] = self.settings['icecream']
+            self.env["PATH"] = self.mount['icecream']['target'] + \
                 ":" + self.env["PATH"]
 
         if "port_logdir" in self.settings:
-            self.mounts.append("port_logdir")
-            self.mountmap["port_logdir"] = self.settings["port_logdir"]
+            self.mount['port_logdir']['enable'] = True
+            self.mount['port_logdir']['source'] = self.settings['port_logdir']
             self.env["PORT_LOGDIR"] = self.settings["port_logdir"]
             self.env["PORT_LOGDIR_CLEAN"] = PORT_LOGDIR_CLEAN
 
@@ -697,10 +688,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if not os.path.exists(self.settings["chroot_path"]):
             return
 
-        log.debug('self.mounts = %s', self.mounts)
-        for x in self.mounts:
-            target = normpath(
-                self.settings["chroot_path"] + self.target_mounts[x])
+        log.debug('self.mount = %s', self.mount)
+        for x in [x for x in self.mount if self.mount[x]['enable']]:
+            target = normpath(self.settings['chroot_path'] +
+                              self.mount[x]['target'])
             log.debug('mount_safety_check() x = %s %s', x, target)
             if not os.path.exists(target):
                 continue
@@ -971,17 +962,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
                         env=self.env)
 
     def bind(self):
-        for x in self.mounts:
+        for x in [x for x in self.mount if self.mount[x]['enable']]:
             log.debug('bind(); x = %s', x)
-            target = normpath(
-                self.settings["chroot_path"] + self.target_mounts[x])
+            target = normpath(self.settings['chroot_path'] +
+                              self.mount[x]['target'])
             ensure_dirs(target, mode=0o755)
 
-            if not os.path.exists(self.mountmap[x]):
-                if self.mountmap[x] not in ("maybe_tmpfs", "tmpfs", "shmfs"):
-                    ensure_dirs(self.mountmap[x], mode=0o755)
+            if not os.path.exists(self.mount[x]['source']):
+                if self.mount[x]['source'] not in ("maybe_tmpfs", "tmpfs", "shmfs"):
+                    ensure_dirs(self.mount[x]['source'], mode=0o755)
 
-            src = self.mountmap[x]
+            src = self.mount[x]['source']
             log.debug('bind(); src = %s', src)
             if "snapcache" in self.settings["options"] and x == "portdir":
                 self.snapcache_lock.read_lock()
@@ -1008,11 +999,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
     def unbind(self):
         ouch = 0
         mypath = self.settings["chroot_path"]
-        myrevmounts = self.mounts[:]
-        myrevmounts.reverse()
-        # Unmount in reverse order for nested bind-mounts
-        for x in myrevmounts:
-            target = normpath(mypath + self.target_mounts[x])
+
+        # Unmount in reverse order
+        for x in [x for x in reversed(self.mount) if self.mount[x]['enable']]:
+            target = normpath(mypath + self.mount[x]['target'])
             if not os.path.exists(target):
                 log.notice('%s does not exist. Skipping', target)
                 continue
