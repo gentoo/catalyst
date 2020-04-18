@@ -213,8 +213,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.mounts.append("shm")
         self.mounts.append("run")
 
-        self.set_mounts()
-
         # Configure any user specified options (either in catalyst.conf or on
         # the command line).
         if "pkgcache" in self.settings["options"]:
@@ -585,9 +583,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def set_stage_path(self):
         self.settings["stage_path"] = normpath(self.settings["chroot_path"])
-
-    def set_mounts(self):
-        pass
 
     def set_packages(self):
         pass

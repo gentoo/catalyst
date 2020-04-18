@@ -5,7 +5,7 @@ stage1 target
 
 from catalyst import log
 from catalyst.support import normpath
-from catalyst.fileops import ensure_dirs, move_path
+from catalyst.fileops import move_path
 from catalyst.base.stagebase import StageBase
 
 
@@ -77,15 +77,6 @@ class stage1(StageBase):
                 'Using an overlay for earlier stages could cause build issues.\n'
                 "If you break it, you buy it.  Don't complain to us about it.\n"
                 "Don't say we did not warn you.")
-
-    def set_mounts(self):
-        # stage_path/proc probably doesn't exist yet, so create it
-        ensure_dirs(self.settings["stage_path"]+"/proc")
-
-        # alter the mount mappings to bind mount proc onto it
-        self.mounts.append("stage1root/proc")
-        self.target_mounts["stage1root/proc"] = "/tmp/stage1root/proc"
-        self.mountmap["stage1root/proc"] = "/proc"
 
     def set_completion_action_sequences(self):
         '''Override function for stage1
