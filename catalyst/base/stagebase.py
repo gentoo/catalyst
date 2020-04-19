@@ -906,35 +906,41 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def bind(self):
         for x in [x for x in self.mount if self.mount[x]['enable']]:
-            log.debug('bind(); x = %s', x)
-            target = normpath(self.settings['chroot_path'] +
-                              self.mount[x]['target'])
-            ensure_dirs(target, mode=0o755)
+            if str(self.mount[x]['source']) == 'config':
+                raise CatalystError(f'"{x}" bind mount source is not configured')
+            if str(self.mount[x]['target']) == 'config':
+                raise CatalystError(f'"{x}" bind mount target is not configured')
 
-            if not os.path.exists(self.mount[x]['source']):
-                if self.mount[x]['source'] not in ("maybe_tmpfs", "tmpfs", "shmfs"):
-                    ensure_dirs(self.mount[x]['source'], mode=0o755)
+            source = str(self.mount[x]['source'])
+            target = self.settings['chroot_path'] + str(self.mount[x]['target'])
 
-            src = self.mount[x]['source']
-            log.debug('bind(); src = %s', src)
-            if src == "maybe_tmpfs":
-                if "var_tmpfs_portage" in self.settings:
-                    _cmd = ['mount', '-t', 'tmpfs',
-                            '-o', 'size=' +
-                            self.settings['var_tmpfs_portage'] + 'G',
-                            src, target]
-            elif src == "tmpfs":
-                _cmd = ['mount', '-t', 'tmpfs', src, target]
+            log.debug('bind %s: "%s" -> "%s"', x, source, target)
+
+            if source == 'maybe_tmpfs':
+                if 'var_tmpfs_portage' not in self.settings:
+                    return
+
+                _cmd = ['mount', '-t', 'tmpfs', '-o', 'size=' +
+                        self.settings['var_tmpfs_portage'] + 'G', source,
+                        target]
+            elif source == 'tmpfs':
+                _cmd = ['mount', '-t', 'tmpfs', source, target]
+            elif source == 'shmfs':
+                _cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev',
+                        'shm', target]
             else:
-                if src == "shmfs":
-                    _cmd = ['mount', '-t', 'tmpfs', '-o',
-                            'noexec,nosuid,nodev', 'shm', target]
-                else:
-                    _cmd = ['mount', '--bind', src, target]
-            if _cmd:
-                log.debug('bind(); _cmd = %s', _cmd)
-                cmd(_cmd, env=self.env, fail_func=self.unbind)
-        log.debug('bind(); finished :D')
+                _cmd = ['mount', '--bind', source, target]
+
+                source = Path(self.mount[x]['source'])
+
+                # We may need to create the source of the bind mount. E.g., in the
+                # case of an empty package cache we must create the directory that
+                # the binary packages will be stored into.
+                source.mkdir(mode=0o755, exist_ok=True)
+
+            Path(target).mkdir(mode=0o755, parents=True, exist_ok=True)
+
+            cmd(_cmd, env=self.env, fail_func=self.unbind)
 
     def unbind(self):
         ouch = 0
