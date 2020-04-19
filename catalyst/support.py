@@ -3,6 +3,7 @@ import glob
 import sys
 import os
 import re
+import shutil
 import time
 from subprocess import Popen
 
@@ -17,6 +18,11 @@ class CatalystError(Exception):
         if message:
             log.error('CatalystError: %s', message, exc_info=print_traceback)
 
+def command(name):
+    c = shutil.which(name)
+    if not c:
+        raise CatalystError(f'"{name}" not found or is not executable')
+    return c
 
 def cmd(mycmd, env=None, debug=False, fail_func=None):
     """Run the external |mycmd|.
