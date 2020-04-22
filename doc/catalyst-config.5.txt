@@ -30,19 +30,7 @@ envscript="/etc/catalyst/catalystrc"
 options="autoresume bindist kerncache pkgcache seedcache snapcache"
 
 # source repo settings
-distdir="/var/cache/distfiles"
 portdir="/var/db/repos/gentoo"
-
-# target repo info
-repo_basedir="/var/db/repos"
-repo_name="gentoo"
-target_distdir="/var/cache/distfiles"
-target_pkgdir="/var/cache/binpkgs"
-
-# other catalyst settings
-sharedir="/usr/share/catalyst"
-snapshot_cache="/var/tmp/catalyst/snapshot_cache"
-storedir="/var/tmp/catalyst"
 ---------------------------------
 
 The possible keywords and their meanings are as follows:
@@ -150,7 +138,7 @@ The default location is `/var/cache/distfiles`.
 *target_pkgdir*::
 This is the target packages directory for storing binpkgs in the stage being
 built.  This location is stored in the make.conf of the stage being built.
-The default location for this has typically been `/var/cache/binpkgs`
+The default location is `/var/cache/binpkgs`
 
 Other settings
 ~~~~~~~~~~~~~~
