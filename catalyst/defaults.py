@@ -1,4 +1,6 @@
 
+import portage
+
 from collections import OrderedDict
 
 from DeComp.definitions import DECOMPRESSOR_SEARCH_ORDER
@@ -54,7 +56,7 @@ confdefaults = {
     "compressor_options": XATTRS_OPTIONS['linux'],
     "decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS['linux'],
     "decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
-    "distdir": "/var/cache/distfiles",
+    "distdir": portage.settings['DISTDIR'],
     "icecream": "/var/cache/icecream",
     'list_xattrs_opt': LIST_XATTRS_OPTIONS['linux'],
     "local_overlay": "/var/db/repos/local",

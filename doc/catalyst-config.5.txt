@@ -122,9 +122,8 @@ Repository settings
 ~~~~~~~~~~~~~~~~~~~
 
 *distdir*::
-Source distfiles location used in generation of the stages.  This is usually the
-hosts distfiles location.  `/var/cache/distfiles` should work for most
-default installations, but it should be set to match your hosts configuration.
+Defines the location of your local source file repository.
+Defaults to the host's DISTDIR.
 
 *portdir*::
 Source Gentoo tree location (primary repo). `/var/db/repos/gentoo/` should work for most
