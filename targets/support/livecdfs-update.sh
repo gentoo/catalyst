@@ -257,7 +257,7 @@ case ${clst_livecd_type} in
 		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp @system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
 
 		# This is my hack to reduce tmpfs usage
-		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd
+		cp -r ${clst_target_portdir}/{profiles,eclass} /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
 		ln -sf /usr/livecd/gconf /etc/gconf

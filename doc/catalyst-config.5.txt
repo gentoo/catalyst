@@ -108,10 +108,6 @@ Defaults to the host's DISTDIR.
 The directory in which git repositories exist for use by the snapshot target.
 Defaults to `${storedir}/repos`.
 
-*repo_basedir*::
-The target repository directory to contain the primary repo (gentoo repo) and
-any overlays.  The default location is `/var/db/repos`.
-
 *repo_name*::
 The name of the main repository (e.g. gentoo). The git repository at
 `${repos}/${repo_name}.git` will be used to produce the portdir sqfs
