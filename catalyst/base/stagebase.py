@@ -803,7 +803,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         make_profile = Path(self.settings['chroot_path'] + self.settings['port_conf'],
                             'make.profile')
         make_profile.unlink()
-        make_profile.symlink_to(Path('../..' + self.settings['portdir'],
+        make_profile.symlink_to(Path('../..' + self.settings['target_portdir'],
                                      'profiles',
                                      self.settings['target_profile']),
                                 target_is_directory=True)

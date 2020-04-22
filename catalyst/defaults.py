@@ -63,7 +63,6 @@ confdefaults = {
     "make_conf": "%(port_conf)s/make.conf",
     "options": set(),
     "pkgdir": "/var/cache/binpkgs",
-    "portdir": "/var/db/repos/gentoo",
     "port_tmpdir": "/var/tmp/portage",
     "PythonDir": "./catalyst",
     "repo_basedir": "/var/db/repos",
@@ -75,6 +74,7 @@ confdefaults = {
     "storedir": "/var/tmp/catalyst",
     "target_distdir": "/var/cache/distfiles",
     "target_pkgdir": "/var/cache/binpkgs",
+    "target_portdir": "/var/db/repos/gentoo",
 }
 
 DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'

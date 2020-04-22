@@ -28,9 +28,6 @@ and empty lines are interpreted as comments.  For example:
 digests="auto"
 envscript="/etc/catalyst/catalystrc"
 options="autoresume bindist kerncache pkgcache seedcache"
-
-# source repo settings
-portdir="/var/db/repos/gentoo"
 ---------------------------------
 
 The possible keywords and their meanings are as follows:
@@ -107,10 +104,6 @@ Repository settings
 Defines the location of your local source file repository.
 Defaults to the host's DISTDIR.
 
-*portdir*::
-Source Gentoo tree location (primary repo). `/var/db/repos/gentoo/` should work for most
-default installations.
-
 *repos*::
 The directory in which git repositories exist for use by the snapshot target.
 Defaults to `${storedir}/repos`.
@@ -134,6 +127,11 @@ The default location is `/var/cache/distfiles`.
 This is the target packages directory for storing binpkgs in the stage being
 built.  This location is stored in the make.conf of the stage being built.
 The default location is `/var/cache/binpkgs`
+
+*target_portdir*::
+Defines the location of main repository in the target stages.  This
+location is stored in make.conf of the stage being built.
+The default location is `/var/db/repos/gentoo`
 
 Other settings
 ~~~~~~~~~~~~~~
