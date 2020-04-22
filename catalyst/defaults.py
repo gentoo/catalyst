@@ -47,15 +47,6 @@ valid_config_file_values.extend([
     "VERBOSE",
 ])
 
-# set our base defaults here to keep
-# them in one location.
-BASE_GENTOO_DIR = "/var/gentoo"
-REPODIR = BASE_GENTOO_DIR + "/repos"
-DISTDIR = BASE_GENTOO_DIR + "/distfiles"
-PKGDIR = BASE_GENTOO_DIR + "/packages"
-MAINREPO = "gentoo"
-PORTDIR = REPODIR + "/" + MAINREPO
-
 confdefaults = {
     "comp_prog": COMPRESSOR_PROGRAM_OPTIONS['linux'],
     "compression_mode": 'lbzip2',
@@ -63,27 +54,27 @@ confdefaults = {
     "compressor_options": XATTRS_OPTIONS['linux'],
     "decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS['linux'],
     "decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
-    "distdir": DISTDIR[:],
+    "distdir": "/var/cache/distfiles",
     "icecream": "/var/cache/icecream",
     'list_xattrs_opt': LIST_XATTRS_OPTIONS['linux'],
-    "local_overlay": REPODIR[:] + "/local",
+    "local_overlay": "/var/db/repos/local",
     "port_conf": "/etc/portage",
     "make_conf": "%(port_conf)s/make.conf",
     "options": set(),
-    "pkgdir": PKGDIR[:],
-    "portdir": PORTDIR[:],
+    "pkgdir": "/var/cache/binpkgs",
+    "portdir": "/var/db/repos/gentoo",
     "port_tmpdir": "/var/tmp/portage",
     "PythonDir": "./catalyst",
-    "repo_basedir": REPODIR[:],
-    "repo_name": MAINREPO[:],
+    "repo_basedir": "/var/db/repos",
+    "repo_name": "gentoo",
     "sharedir": "/usr/share/catalyst",
     "shdir": "/usr/share/catalyst/targets/",
     "snapshot_cache": "/var/tmp/catalyst/snapshot_cache",
     "snapshot_name": "%(repo_name)s-",
     "source_matching": "strict",
     "storedir": "/var/tmp/catalyst",
-    "target_distdir": DISTDIR[:],
-    "target_pkgdir": PKGDIR[:],
+    "target_distdir": "/var/cache/distfiles",
+    "target_pkgdir": "/var/cache/binpkgs",
 }
 
 DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'
