@@ -4,7 +4,6 @@ import hashlib
 import os
 import sys
 
-from snakeoil import process
 from snakeoil.process import namespaces
 
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
