@@ -14,7 +14,7 @@ from snakeoil.osutils import pjoin
 from DeComp.compress import CompressMap
 
 from catalyst import log
-from catalyst.defaults import (MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
+from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
                               cmd, read_makeconf, ismount, file_check)
 from catalyst.base.targetbase import TargetBase
@@ -1055,9 +1055,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     myf.write(hostuseexpand + '="' +
                               ' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
 
-            myf.write('PORTDIR="%s"\n' % self.settings['target_portdir'])
-            myf.write('DISTDIR="%s"\n' % self.settings['target_distdir'])
-            myf.write('PKGDIR="%s"\n' % self.settings['target_pkgdir'])
+            # Write non-default PORTDIR/DISTDIR/PKGDIR settings to make.conf
+            for x in ['target_portdir', 'target_distdir', 'target_pkgdir']:
+                if self.settings[x] != confdefaults[x]:
+                    varname = x.split('_')[1].upper()
+                    myf.write(f'{varname}="{self.settings[x]}"\n')
+
             if setup:
                 # Setup the portage overlay
                 if "portage_overlay" in self.settings:

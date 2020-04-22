@@ -114,20 +114,19 @@ The name of the main repository (e.g. gentoo). The git repository at
 snapshot.
 
 *target_distdir*::
-This is the target distfiles directory location for the stage being created.
-This is important because this value will be stored in the stage's make.conf
-and will become the default location used if it is not edited by users.
-The default location is `/var/cache/distfiles`.
+Defines the location of the local source file repository in the
+target.  This will be written to the target's make.conf if it is not
+the default value of `/var/cache/distfiles`.
 
 *target_pkgdir*::
-This is the target packages directory for storing binpkgs in the stage being
-built.  This location is stored in the make.conf of the stage being built.
-The default location is `/var/cache/binpkgs`
+Defines the location of binary packages in the target.  This will be
+written to the target's make.conf if it is not the default value of
+`/var/cache/binpkgs`.
 
 *target_portdir*::
-Defines the location of main repository in the target stages.  This
-location is stored in make.conf of the stage being built.
-The default location is `/var/db/repos/gentoo`
+Defines the location of the main ebuild repository in the target.
+This will be written to the target's make.conf if it is not the
+default value of `/var/db/repos/gentoo`.
 
 Other settings
 ~~~~~~~~~~~~~~
