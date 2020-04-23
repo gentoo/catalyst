@@ -97,7 +97,7 @@ cat ${clst_make_conf}.old >> ${clst_make_conf}
 [ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
 
 # Add some helpful aliases
-cat <<EOF > /etc/profile
+cat <<EOF >> /etc/profile
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
