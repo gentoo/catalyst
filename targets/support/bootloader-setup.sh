@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ${clst_shdir}/support/functions.sh
-source ${clst_shdir}/support/filesystem-functions.sh
 
 # $1 is the destination root
 

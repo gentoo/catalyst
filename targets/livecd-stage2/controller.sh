@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ${clst_shdir}/support/functions.sh
-source ${clst_shdir}/support/filesystem-functions.sh
 
 case $1 in
 	pre-kmerge)
