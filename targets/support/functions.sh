@@ -216,25 +216,3 @@ extract_kernel() {
 		mv ${1}/initramfs-* ${1}/${2}.igz
 	fi
 }
-
-check_bootargs(){
-	# Add any additional options
-	if [ -n "${clst_livecd_bootargs}" ]
-	then
-		for x in ${clst_livecd_bootargs}
-		do
-			cmdline_opts="${cmdline_opts} ${x}"
-		done
-	fi
-}
-
-check_filesystem_type(){
-	case ${clst_fstype} in
-		squashfs)
-			cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"
-		;;
-		jffs2)
-			cmdline_opts="${cmdline_opts} looptype=jffs2 loop=/image.jffs2"
-		;;
-	esac
-}

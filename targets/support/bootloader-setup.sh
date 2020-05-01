@@ -19,8 +19,25 @@ else
 fi
 
 extract_kernels $1/boot
-check_bootargs
-check_filesystem_type
+
+# Add any additional options
+if [ -n "${clst_livecd_bootargs}" ]
+then
+	for x in ${clst_livecd_bootargs}
+	do
+		cmdline_opts="${cmdline_opts} ${x}"
+	done
+fi
+
+case ${clst_fstype} in
+	squashfs)
+		cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"
+	;;
+	jffs2)
+		cmdline_opts="${cmdline_opts} looptype=jffs2 loop=/image.jffs2"
+	;;
+esac
+
 
 default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
 [ -n "${clst_splash_theme}" ] && default_append_line="${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet"
