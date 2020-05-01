@@ -13,22 +13,10 @@ fs_check() {
 }
 
 case ${1} in
-	jffs)
-		fs_check /usr/sbin/mkfs.jffs jffs sys-fs/mtd
-		mkfs.jffs -d ${root_fs_path} -o ${clst_image_path}/root.img \
-			${clst_embedded_fs_ops} || die "Could not create a jffs filesystem"
-	;;
 	jffs2)
 		fs_check /usr/sbin/mkfs.jffs2 jffs2 sys-fs/mtd
 		mkfs.jffs2 --root=${root_fs_path} --output=${clst_image_path}/root.img\
 			${clst_embedded_fs_ops} || die "Could not create a jffs2 filesystem"
-	;;
-
-	cramfs)
-		fs_check /sbin/mkcramfs cramfs sys-fs/cramfs
-		mkcramfs ${clst_embedded_fs_ops} ${root_fs_path} \
-			${clst_image_path}/root.img || \
-			die "Could not create a cramfs filesystem"
 	;;
 
 	squashfs)
@@ -36,9 +24,6 @@ case ${1} in
 		gensquashfs -D ${root_fs_path} -q ${clst_embedded_fs_ops} \
 			${clst_image_path}/root.img ||
 			die "Could not create a squashfs filesystem"
-	;;
-
-	*)
 	;;
 esac
 exit $?

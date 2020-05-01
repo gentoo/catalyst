@@ -170,18 +170,11 @@ Filesystem
 *livecd/fstype*::
 The fstype is used to determine what sort of CD we should build.  This
 is used to set the type of loopback filesystem that we will use on our
-CD.  Possible values are as follows:
-  `squashfs`;; This gives the best compression, but requires a kernel patch.
-  `zisofs`;; This uses in-kernel compression and is supported on all platforms.
-  `normal`;; This creates a loop without compression.
-  `noloop`;; This copies the files to the CD directly, without using a
-             loopback.
+CD.  The only possible value is `squashfs`.
 
 *livecd/fsops*::
 The fsops are a list of optional parameters that can be passed to the
 tool which will create the filesystem specified in *livecd/fstype*
-It is valid for the following fstypes: `squashfs`, `jffs`, `jffs2`,
-and `cramfs`.
 
 *livecd/iso*::
 This is the full path and filename to the ISO image that the

@@ -91,13 +91,6 @@ if [ "${#clst_iso_volume_id}" -gt 32 ]; then
 	echo "new: '${clst_iso_volume_id}'" 1>&2
 fi
 
-if [ "${clst_fstype}" == "zisofs" ]
-then
-	mkisofs_zisofs_opts="-z"
-else
-	mkisofs_zisofs_opts=""
-fi
-
 # Generate list of checksums that genkernel can use to verify the contents of
 # the ISO
 isoroot_checksum() {
@@ -124,74 +117,73 @@ case ${clst_hostarch} in
 	alpha)
 		isoroot_checksum
 
-		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
-		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
+		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
+		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
 	;;
 	arm)
 	;;
 	hppa)
 		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -R -l -J ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
+		run_mkisofs -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 		pushd "${clst_target_path}/"
 		palo -f boot/palo.conf -C "${1}"
 		popd
 	;;
 	mips)
-		case ${clst_fstype} in
-			squashfs)
-				# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
-				[ ! -d "${clst_target_path}/loopback" ] && mkdir "${clst_target_path}/loopback"
-				[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir "${clst_target_path}/sgibootcd"
+		if [[ ${clst_fstype} != squashfs ]]; then
+			die "SGI LiveCD(s) only support the 'squashfs' fstype!"
+		fi
 
-				# Setup variables
-				[ -f "${clst_target_path}/livecd" ] && rm -f "${clst_target_path}/livecd"
-				img="${clst_target_path}/loopback/image.squashfs"
-				knl="${clst_target_path}/kernels"
-				arc="${clst_target_path}/arcload"
-				cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
-				echo "" > "${cfg}"
+		# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
+		[ ! -d "${clst_target_path}/loopback" ] && mkdir "${clst_target_path}/loopback"
+		[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir "${clst_target_path}/sgibootcd"
 
-				# If the image file exists in $clst_target_path, move it to the loopback dir
-				[ -e "${clst_target_path}/image.squashfs" ] \
-					&& mv -f "${clst_target_path}/image.squashfs" "${clst_target_path}/loopback"
+		# Setup variables
+		[ -f "${clst_target_path}/livecd" ] && rm -f "${clst_target_path}/livecd"
+		img="${clst_target_path}/loopback/image.squashfs"
+		knl="${clst_target_path}/kernels"
+		arc="${clst_target_path}/arcload"
+		cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
+		echo "" > "${cfg}"
 
-				# An sgibootcd config is essentially a collection of commandline params
-				# stored in a text file.  We could pass these on the command line, but it's
-				# far easier to generate a config file and pass it to sgibootcd versus using a
-				# ton of commandline params.
-				#
-				# f=	indicates files to go into DVH (disk volume header) in an SGI disklabel
-				#	    format: f=</path/to/file>@<DVH name>
-				# p0=	the first partition holds the LiveCD rootfs image
-				#	    format: p0=</path/to/image>
-				# p8=	the eighth partition is the DVH partition
-				# p10=	the tenth partition is the disk volume partition
-				#	    format: p8= is always "#dvh" and p10= is always "#volume"
+		# If the image file exists in $clst_target_path, move it to the loopback dir
+		[ -e "${clst_target_path}/image.squashfs" ] \
+			&& mv -f "${clst_target_path}/image.squashfs" "${clst_target_path}/loopback"
 
-				# Add the kernels to the sgibootcd config
-				for x in ${clst_boot_kernel}; do
-					echo -e "f=${knl}/${x}@${x}" >> ${cfg}
-				done
+		# An sgibootcd config is essentially a collection of commandline params
+		# stored in a text file.  We could pass these on the command line, but it's
+		# far easier to generate a config file and pass it to sgibootcd versus using a
+		# ton of commandline params.
+		#
+		# f=	indicates files to go into DVH (disk volume header) in an SGI disklabel
+		#	    format: f=</path/to/file>@<DVH name>
+		# p0=	the first partition holds the LiveCD rootfs image
+		#	    format: p0=</path/to/image>
+		# p8=	the eighth partition is the DVH partition
+		# p10=	the tenth partition is the disk volume partition
+		#	    format: p8= is always "#dvh" and p10= is always "#volume"
 
-				# Next, the bootloader binaries and config
-				echo -e "f=${arc}/sash64@sash64" >> ${cfg}
-				echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
-				echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
+		# Add the kernels to the sgibootcd config
+		for x in ${clst_boot_kernel}; do
+			echo -e "f=${knl}/${x}@${x}" >> ${cfg}
+		done
 
-				# Next, the Loopback Image
-				echo -e "p0=${img}" >> ${cfg}
+		# Next, the bootloader binaries and config
+		echo -e "f=${arc}/sash64@sash64" >> ${cfg}
+		echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
+		echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
 
-				# Finally, the required SGI Partitions (dvh, volume)
-				echo -e "p8=#dvh" >> ${cfg}
-				echo -e "p10=#volume" >> ${cfg}
+		# Next, the Loopback Image
+		echo -e "p0=${img}" >> ${cfg}
 
-				# All done; feed the config to sgibootcd and end up with an image
-				# c=	the config file
-				# o=	output image (burnable to CD; readable by fdisk)
-				/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
-			;;
-			*) die "SGI LiveCD(s) only support the 'squashfs' fstype!"	;;
-		esac
+		# Finally, the required SGI Partitions (dvh, volume)
+		echo -e "p8=#dvh" >> ${cfg}
+		echo -e "p10=#volume" >> ${cfg}
+
+		# All done; feed the config to sgibootcd and end up with an image
+		# c=	the config file
+		# o=	output image (burnable to CD; readable by fdisk)
+		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 	;;
 	ia64|ppc*|powerpc*|sparc*)
 		isoroot_checksum
@@ -252,21 +244,21 @@ case ${clst_hostarch} in
 			  # have BIOS isolinux, plus an EFI loader image
 			  echo '** Found GRUB2 EFI bootloader'
 				echo 'Creating ISO using both ISOLINUX and EFI bootloader'
-				run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
+				run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b gentoo.efimg -no-emul-boot -z "${clst_target_path}"/
 				isohybrid --uefi "${1}"
 		  else
 			  echo 'Creating ISO using ISOLINUX bootloader'
-			  run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
+			  run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table "${clst_target_path}"/
 			  isohybrid "${1}"
 		  fi
 		elif [ -e "${clst_target_path}/gentoo.efimg" ]; then
 			echo '** Found GRUB2 EFI bootloader'
 			echo 'Creating ISO using EFI bootloader'
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" -b gentoo.efimg -c boot.cat -no-emul-boot "${clst_target_path}"/
+			run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" -b gentoo.efimg -c boot.cat -no-emul-boot "${clst_target_path}"/
 		else
 			echo '** Found no known bootloader'
 			echo 'Creating ISO with fingers crossed that you know what you are doing...'
-			run_mkisofs -J -R -l ${mkisofs_zisofs_opts} -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
+			run_mkisofs -J -R -l -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 		fi
 	;;
 esac

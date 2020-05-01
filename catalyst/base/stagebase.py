@@ -386,10 +386,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
             del self.settings[self.settings["spec_prefix"] + "/fstype"]
 
         if "fstype" not in self.settings:
-            self.settings["fstype"] = "normal"
+            self.settings["fstype"] = "squashfs"
             for x in self.valid_values:
                 if x == self.settings["spec_prefix"] + "/fstype":
-                    log.info('%s/fstype is being set to the default of "normal"',
+                    log.info('%s/fstype is being set to the default of "squashfs"',
                              self.settings['spec_prefix'])
 
     def set_fsops(self):

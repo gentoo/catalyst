@@ -230,25 +230,11 @@ check_bootargs(){
 
 check_filesystem_type(){
 	case ${clst_fstype} in
-	   	normal)
-			cmdline_opts="${cmdline_opts} looptype=normal loop=/image.loop"
-		;;
-		zisofs)
-			cmdline_opts="${cmdline_opts} looptype=zisofs loop=/zisofs"
-		;;
-		noloop)
-		;;
 		squashfs)
 			cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"
 		;;
-		jffs)
-			cmdline_opts="${cmdline_opts} looptype=jffs loop=/image.jffs"
-		;;
 		jffs2)
 			cmdline_opts="${cmdline_opts} looptype=jffs2 loop=/image.jffs2"
-		;;
-		cramfs)
-			cmdline_opts="${cmdline_opts} looptype=cramfs loop=/image.cramfs"
 		;;
 	esac
 }

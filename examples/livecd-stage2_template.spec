@@ -83,18 +83,14 @@ kerncache_path:
 
 # The fstype is used to determine what sort of CD we should build.  This is
 # used to set the type of loopback filesystem that we will use on our CD.
-# Possible options are as follows:
-# squashfs - This gives the best compression, but requires a kernel patch.
-# zisofs - This uses in-kernel compression and is supported on all platforms.
-# normal - This creates a loop without compression.
-# noloop - This copies the files to the CD directly, without using a loopback.
+# Possible options are as follows: squashfs
 # example:
 # livecd/fstype: squashfs
 livecd/fstype:
 
 # The fsops are a list of optional parameters that can be passed to the tool
 # which will create the filesystem specified in livecd/fstype.  It is valid for
-# the following fstypes: squashfs, jffs, jffs2, cramfs
+# the following fstypes: squashfs
 livecd/fsops:
 
 # The cdtar is essentially the bootloader for the CD.  It also holds the main
