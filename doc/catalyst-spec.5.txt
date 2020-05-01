@@ -180,8 +180,8 @@ CD.  Possible values are as follows:
 *livecd/fsops*::
 The fsops are a list of optional parameters that can be passed to the
 tool which will create the filesystem specified in *livecd/fstype*
-(example: `-root-owned`).  It is valid for the following fstypes:
-`squashfs`, `jffs`, `jffs2`, and `cramfs`.
+It is valid for the following fstypes: `squashfs`, `jffs`, `jffs2`,
+and `cramfs`.
 
 *livecd/iso*::
 This is the full path and filename to the ISO image that the

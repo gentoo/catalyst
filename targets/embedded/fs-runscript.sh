@@ -32,9 +32,9 @@ case ${1} in
 	;;
 
 	squashfs)
-		fs_check /usr/bin/mksquashfs squashfs sys-fs/squashfs-tools
-		mksquashfs ${root_fs_path} ${clst_image_path}/root.img \
-			${clst_embedded_fs_ops} || \
+		fs_check /usr/bin/gensquashfs squashfs sys-fs/squashfs-tools-ng
+		gensquashfs -D ${root_fs_path} -q ${clst_embedded_fs_ops} \
+			${clst_image_path}/root.img ||
 			die "Could not create a squashfs filesystem"
 	;;
 
