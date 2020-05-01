@@ -30,8 +30,6 @@ case $1 in
 		delete_from_chroot /tmp/linuxrc
 
 		extract_modules ${clst_chroot_path} ${clst_kname}
-		# Do we need this one?
-#		extract_kernel ${clst_chroot_path}/boot ${clst_kname}
 	;;
 
 	build_packages)

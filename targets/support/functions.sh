@@ -184,35 +184,3 @@ extract_modules() {
 		echo "Can't find kernel modules tarball at ${kmodules}.  Skipping...."
 	fi
 }
-extract_kernel() {
-	# $1 = Destination
-	# $2 = kname
-
-	kbinary="${clst_chroot_path}/tmp/kerncache/${2}-kernel-initrd-${clst_version_stamp}.tar.bz2"
-	[ ! -e "${kbinary}" ] && die "Can't find kernel tarball at ${kbinary}"
-	mkdir -p ${1}/
-	tar -I lbzip2 -xf ${kbinary} -C ${1}/
-	# change config name from "config-*" to "gentoo", for example
-	#mv ${1}/config-* ${1}/${2}-config
-	rm ${1}/config-*
-
-	# change kernel name from "kernel" to "gentoo", for example
-	if [ -e ${1}/kernel-* ]
-	then
-		mv ${1}/kernel-* ${1}/${2}
-	fi
-	if [ -e ${1}/vmlinuz-* ]
-	then
-		mv ${1}/vmlinuz-* ${1}/${2}
-	fi
-
-	# change initrd name from "initrd" to "gentoo.igz", for example
-	if [ -e ${1}/initrd-* ]
-	then
-		mv ${1}/initrd-* ${1}/${2}.igz
-	fi
-	if [ -e ${1}/initramfs-* ]
-	then
-		mv ${1}/initramfs-* ${1}/${2}.igz
-	fi
-}
