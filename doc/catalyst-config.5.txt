@@ -108,6 +108,11 @@ Defaults to the host's DISTDIR.
 The directory in which git repositories exist for use by the snapshot target.
 Defaults to `${storedir}/repos`.
 
+*repo_basedir*::
+The target repository directory to contain the primary repo (e.g.,
+gentoo repo) and any overlays.  The default location is
+`/var/db/repos`.
+
 *repo_name*::
 The name of the main repository (e.g. gentoo). The git repository at
 `${repos}/${repo_name}.git` will be used to produce the portdir sqfs
@@ -122,11 +127,6 @@ the default value of `/var/cache/distfiles`.
 Defines the location of binary packages in the target.  This will be
 written to the target's make.conf if it is not the default value of
 `/var/cache/binpkgs`.
-
-*target_portdir*::
-Defines the location of the main ebuild repository in the target.
-This will be written to the target's make.conf if it is not the
-default value of `/var/db/repos/gentoo`.
 
 Other settings
 ~~~~~~~~~~~~~~

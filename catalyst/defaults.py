@@ -65,6 +65,7 @@ confdefaults = {
     "pkgdir": "/var/cache/binpkgs",
     "port_tmpdir": "/var/tmp/portage",
     "PythonDir": "./catalyst",
+    "repo_basedir": "/var/db/repos",
     "repo_name": "gentoo",
     "repos": "%(storedir)s/repos",
     "sharedir": "/usr/share/catalyst",
@@ -73,7 +74,6 @@ confdefaults = {
     "storedir": "/var/tmp/catalyst",
     "target_distdir": "/var/cache/distfiles",
     "target_pkgdir": "/var/cache/binpkgs",
-    "target_portdir": "/var/db/repos/gentoo",
 }
 
 DEFAULT_CONFIG_FILE = '/etc/catalyst/catalyst.conf'

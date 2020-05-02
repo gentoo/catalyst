@@ -192,7 +192,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.mount = MOUNT_DEFAULTS.copy()
 
         self.mount['portdir']['source'] = self.snapshot
-        self.mount['portdir']['target'] = self.settings['target_portdir']
+        self.mount['portdir']['target'] = self.settings['repo_basedir'] + '/' + self.settings['repo_name']
         self.mount['distdir']['source'] = self.settings['distdir']
         self.mount["distdir"]['target'] = self.settings['target_distdir']
 
@@ -803,7 +803,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
         make_profile = Path(self.settings['chroot_path'] + self.settings['port_conf'],
                             'make.profile')
         make_profile.unlink()
-        make_profile.symlink_to(Path('../..' + self.settings['target_portdir'],
+        make_profile.symlink_to(Path('../..' + self.settings['repo_basedir'],
+                                     self.settings['repo_name'],
                                      'profiles',
                                      self.settings['target_profile']),
                                 target_is_directory=True)
@@ -1056,7 +1057,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
                               ' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
 
             # Write non-default PORTDIR/DISTDIR/PKGDIR settings to make.conf
-            for x in ['target_portdir', 'target_distdir', 'target_pkgdir']:
+            if (self.settings['repo_basedir'], self.settings['repo_name']) != \
+               (confdefaults['repo_basedir'], confdefaults['repo_name']):
+                myf.write('PORTDIR="%s/%s"\n' % (self.settings['repo_basedir'],
+                                                 self.settings['repo_name']))
+
+            for x in ['target_distdir', 'target_pkgdir']:
                 if self.settings[x] != confdefaults[x]:
                     varname = x.split('_')[1].upper()
                     myf.write(f'{varname}="{self.settings[x]}"\n')
