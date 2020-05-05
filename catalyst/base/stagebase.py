@@ -111,15 +111,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             chroot = 'chroot'
         self.settings["CHROOT"] = chroot
 
-        self.settings["crosscompile"] = \
-            build != host and not chroot.startswith('setarch')
-
         log.notice('Using target: %s', self.settings['target'])
         # Print a nice informational message
-        if self.settings["crosscompile"]:
-            log.info('Cross-compiling on %s for different machine type %s',
-                     build, host)
-        elif chroot.startswith('setarch'):
+        if chroot.startswith('setarch'):
             log.info('Building on %s for alternate personality type %s',
                      build, host)
         else:
