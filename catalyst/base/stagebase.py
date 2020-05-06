@@ -857,7 +857,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             if source == 'maybe_tmpfs':
                 if 'var_tmpfs_portage' not in self.settings:
-                    return
+                    continue
 
                 _cmd = ['mount', '-t', 'tmpfs', '-o', 'size=' +
                         self.settings['var_tmpfs_portage'] + 'G', source,
