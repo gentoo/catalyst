@@ -38,8 +38,13 @@ Basic configuration
 *digests*::
 Create a `.DIGESTS` file containing the hash output from any of the
 supported options below.  Adding them all may take a long time.
-(example: `md5 sha1 sha512 whirlpool`).  See the *SUPPORTED HASHES*
-section for a list of supported hashes.
+(example: `md5 sha1 sha512 whirlpool`).  The set of supported hashes
+is dependent on the version of Python. To see the set of hashes
+supported by the version of Python in use, run
++
+---------------------------------
+$ python3 -c 'import hashlib; print(hashlib.algorithms_available)'
+---------------------------------
 
 *envscript*::
 Environment script location, which allows users to set options such as
@@ -152,14 +157,6 @@ Set the size of a `/var/tmp/portage` tmpfs in gigabytes (example:
 takes place in RAM.  This feature requires a pretty large tmpfs
 ({open,libre}office needs ~8GB to build).  WARNING: If you use too
 much RAM everything will fail horribly and it is not our fault.
-
-
-SUPPORTED HASHES
-----------------
-The list of supported hashes is dependent on the version of Python. To
-see the list of hashes supported by the version of Python in use, run
-
-    $ python3 -c 'import hashlib; print(hashlib.algorithms_available)'
 
 
 BINARY PACKAGE DEPENDENCIES
