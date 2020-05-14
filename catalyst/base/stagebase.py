@@ -974,7 +974,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         # Modify and write out make.conf (for the chroot)
         makepath = normpath(self.settings["chroot_path"] +
                             self.settings["make_conf"])
-        clear_path(makepath)
         with open(makepath, "w") as myf:
             log.notice("Writing the stage make.conf to: %s" % makepath)
             myf.write("# These settings were set by the catalyst build script "
