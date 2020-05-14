@@ -130,6 +130,14 @@ setup_emerge_opts() {
 		emerge_opts+=(--fetchonly)
 		bootstrap_opts+=(-f)
 	fi
+	if [ -n "${clst_jobs}" ]
+	then
+		emerge_opts+=(--jobs "${clst_jobs}")
+	fi
+	if [ -n "${clst_load_average}" ]
+	then
+		emerge_opts+=(--load-average "${clst_load_average}")
+	fi
 
 	if [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
 	then

@@ -59,7 +59,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "interpreter",
             "kerncache_path",
             "ldflags",
-            "makeopts",
             "pkgcache_path",
             "portage_confdir",
             "portage_overlay",
@@ -1336,12 +1335,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     continue
                 log.warning("Not making envar for '%s', is a dict", x)
 
-        if "makeopts" in self.settings:
-            if isinstance(self.settings["makeopts"], str):
-                self.env["MAKEOPTS"] = self.settings["makeopts"]
-            else:
-                # ensure makeopts is a string
-                self.env["MAKEOPTS"] = ' '.join(self.settings["makeopts"])
+        makeopts = []
+        for flag, setting in {'j': 'jobs', 'l': 'load-average'}.items():
+            if setting in self.settings:
+                makeopts.append(f'-{flag}{self.settings[setting]}')
+        self.env['MAKEOPTS'] = ' '.join(makeopts)
 
         log.debug('setup_environment(); env = %r', self.env)
 

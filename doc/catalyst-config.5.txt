@@ -48,9 +48,9 @@ $ python3 -c 'import hashlib; print(hashlib.algorithms_available)'
 
 *envscript*::
 Environment script location, which allows users to set options such as
-HTTP proxies, `MAKEOPTS`, `GENTOO_MIRRORS`, or any other environment
-variables needed for building.  The envscript file sets environment
-variables using POSIX shell notation:
+HTTP proxies, `GENTOO_MIRRORS`, or any other environment variables
+needed for building.  The envscript file sets environment variables
+using POSIX shell notation:
 +
 ---------------------------------
 export FOO="bar"
@@ -135,6 +135,15 @@ written to the target's make.conf if it is not the default value of
 
 Other settings
 ~~~~~~~~~~~~~~
+
+*jobs*::
+Integral value passed to *emerge(1)* as the parameter to --jobs and is
+used to define *MAKEOPTS* during the target build.
+
+*load-average*::
+Floating-point value passed to *emerge(1)* as the parameter to
+--load-average and is used to define *MAKEOPTS* during the target
+build.
 
 *sharedir*::
 Catalyst runtime script location.  `/usr/share/catalyst` should work for
