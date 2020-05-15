@@ -852,6 +852,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             source = str(self.mount[x]['source'])
             target = self.settings['chroot_path'] + str(self.mount[x]['target'])
+            mount = ['mount']
 
             log.debug('bind %s: "%s" -> "%s"', x, source, target)
 
@@ -859,29 +860,25 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 if 'var_tmpfs_portage' not in self.settings:
                     continue
 
-                _cmd = ['mount', '-t', 'tmpfs', '-o', 'size=' +
-                        self.settings['var_tmpfs_portage'] + 'G', source,
-                        target]
+                mount += ['-t', 'tmpfs', '-o', 'size=' +
+                          self.settings['var_tmpfs_portage'] + 'G']
             elif source == 'tmpfs':
-                _cmd = ['mount', '-t', 'tmpfs', source, target]
+                mount += ['-t', 'tmpfs']
             elif source == 'shm':
-                _cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev',
-                        source, target]
+                mount += ['-t', 'tmpfs', '-o', 'noexec,nosuid,nodev']
             else:
-                _cmd = ['mount', source, target]
-
-                source = Path(self.mount[x]['source'])
-                if source.suffix != '.sqfs':
-                    _cmd.insert(1, '--bind')
+                source_path = Path(self.mount[x]['source'])
+                if source_path.suffix != '.sqfs':
+                    mount.append('--bind')
 
                     # We may need to create the source of the bind mount. E.g., in the
                     # case of an empty package cache we must create the directory that
                     # the binary packages will be stored into.
-                    source.mkdir(mode=0o755, exist_ok=True)
+                    source_path.mkdir(mode=0o755, exist_ok=True)
 
             Path(target).mkdir(mode=0o755, parents=True, exist_ok=True)
 
-            cmd(_cmd, env=self.env, fail_func=self.unbind)
+            cmd(mount + [source, target], env=self.env, fail_func=self.unbind)
 
     def unbind(self):
         ouch = 0
