@@ -10,7 +10,7 @@ from pathlib import Path
 from catalyst import log
 from catalyst.base.targetbase import TargetBase
 from catalyst.lock import write_lock
-from catalyst.support import command
+from catalyst.support import CatalystError, command
 
 class snapshot(TargetBase):
     """
@@ -52,17 +52,27 @@ class snapshot(TargetBase):
                  repouri, self.gitdir],
             ]
 
-        for cmd in git_cmds:
-            log.notice('>>> ' + ' '.join(cmd))
-            subprocess.run(cmd,
-                           encoding='utf-8',
-                           close_fds=False)
+        try:
+            for cmd in git_cmds:
+                log.notice('>>> ' + ' '.join(cmd))
+                subprocess.run(cmd,
+                               capture_output=True,
+                               check=True,
+                               encoding='utf-8',
+                               close_fds=False)
 
-        sp = subprocess.run([self.git, '-C', self.gitdir, 'rev-parse', 'stable'],
-                            stdout=subprocess.PIPE,
-                            encoding='utf-8',
-                            close_fds=False)
-        return sp.stdout.rstrip()
+            sp = subprocess.run([self.git, '-C', self.gitdir, 'rev-parse', 'stable'],
+                                stdout=subprocess.PIPE,
+                                capture_output=True,
+                                check=True,
+                                encoding='utf-8',
+                                close_fds=False)
+            return sp.stdout.rstrip()
+
+        except subprocess.CalledProcessError as e:
+            raise CatalystError(f'{e.cmd} failed with return code'
+                                f'{e.returncode}\n'
+                                f'{e.output}\n')
 
     def run(self):
         if self.settings['snapshot_treeish'] == 'stable':
