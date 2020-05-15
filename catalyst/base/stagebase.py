@@ -864,9 +864,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                         target]
             elif source == 'tmpfs':
                 _cmd = ['mount', '-t', 'tmpfs', source, target]
-            elif source == 'shmfs':
+            elif source == 'shm':
                 _cmd = ['mount', '-t', 'tmpfs', '-o', 'noexec,nosuid,nodev',
-                        'shm', target]
+                        source, target]
             else:
                 _cmd = ['mount', source, target]
 

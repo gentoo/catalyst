@@ -99,7 +99,7 @@ MOUNT_DEFAULTS = OrderedDict([
     }),
     ('shm', {
         'enable': True,
-        'source': 'shmfs',
+        'source': 'shm',
         'target': '/dev/shm',
     }),
     ('run', {
