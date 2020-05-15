@@ -24,7 +24,7 @@ class TargetBase(ABC):
     def set_snapshot(self, treeish=None):
         # Make snapshots directory
         snapshot_dir = Path(self.settings['storedir'], 'snapshots')
-        snapshot_dir.mkdir(mode=0o755, exist_ok=True)
+        snapshot_dir.mkdir(mode=0o755, parents=True, exist_ok=True)
 
         repo_name = self.settings['repo_name']
         if treeish is None:
