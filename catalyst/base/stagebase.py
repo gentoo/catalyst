@@ -868,7 +868,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 mount += ['-t', 'tmpfs', '-o', 'noexec,nosuid,nodev']
             else:
                 source_path = Path(self.mount[x]['source'])
-                if source_path.suffix != '.sqfs':
+                if source_path.suffix == '.sqfs':
+                    mount += ['-o', 'ro']
+                else:
                     mount.append('--bind')
 
                     # We may need to create the source of the bind mount. E.g., in the
