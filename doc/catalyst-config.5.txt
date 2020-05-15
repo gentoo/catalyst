@@ -51,7 +51,7 @@ variables using POSIX shell notation:
 export FOO="bar"
 ---------------------------------
 
-**options*::
+*options*::
 Set different build-time options (example: `autoresume bindist
 kerncache pkgcache seedcache`).  Supported values:
 +
