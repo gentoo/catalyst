@@ -43,6 +43,8 @@ class snapshot(TargetBase):
         else:
             git_cmds = [
                 [self.git, 'clone', '--quiet', '--depth=1', '--bare',
+                 # Set some config options to enable git gc to clean everything
+                 # except what we just fetched. See git-gc(1).
                  '-c', 'gc.reflogExpire=0',
                  '-c', 'gc.reflogExpireUnreachable=0',
                  '-c', 'gc.rerereresolved=0',
