@@ -82,7 +82,9 @@ run_merge "--oneshot ${clst_buildpkgs}"
 # locale-gen does not support the ROOT variable, and as such glibc simply does
 # not run locale-gen when ROOT is set. Since we've set LANG, we need to run
 # locale-gen explicitly.
-locale-gen --destdir "${clst_root_path}"/ || die "locale-gen failed"
+if [ -x "$(command -v locale-gen)" ]; then
+	locale-gen --destdir "${clst_root_path}"/ || die "locale-gen failed"
+fi
 
 # Why are we removing these? Don't we need them for final make.conf?
 for useexpand in ${clst_HOSTUSEEXPAND}; do
