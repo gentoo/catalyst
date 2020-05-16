@@ -45,7 +45,6 @@ confdefaults = {
     "repos": "%(storedir)s/repos",
     "sharedir": "/usr/share/catalyst",
     "shdir": "%(sharedir)s/targets",
-    "source_matching": "strict",
     "storedir": "/var/tmp/catalyst",
     "target_distdir": "/var/cache/distfiles",
     "target_pkgdir": "/var/cache/binpkgs",

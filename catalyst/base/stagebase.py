@@ -130,8 +130,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                         decomp_opt=self.settings["decomp_opt"])
         self.accepted_extensions = self.decompressor.search_order_extensions(
             self.settings["decompressor_search_order"])
-        log.notice("Source file specification matching setting is: %s",
-                   self.settings["source_matching"])
         log.notice("Accepted source file extensions search order: %s",
                    self.accepted_extensions)
         # save resources, it is not always needed
@@ -409,7 +407,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 normpath(self.settings["storedir"] + "/builds/" +
                          self.settings["source_subpath"]),
                 self.accepted_extensions,
-                self.settings["source_matching"] in ["strict"]
             )
             log.debug('Source path returned from file_check is: %s',
                       self.settings["source_path"])
