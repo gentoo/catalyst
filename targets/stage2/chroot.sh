@@ -3,7 +3,7 @@
 source /tmp/chroot-functions.sh
 
 # Setup the environment
-export FEATURES="${features} nodoc noman noinfo -news"
+export FEATURES="${FEATURES} nodoc noman noinfo -news"
 export CONFIG_PROTECT="-* /etc/locale.gen"
 
 echo "$locales" > /etc/locale.gen

@@ -9,7 +9,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 [ -n "${clst_BINDIST}" ] && BINDIST="bindist"
 BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
 
-FEATURES="${features} nodoc noman noinfo -news"
+FEATURES="${FEATURES} nodoc noman noinfo -news"
 
 ## Sanity check profile
 if [ -z "${clst_buildpkgs}" ]

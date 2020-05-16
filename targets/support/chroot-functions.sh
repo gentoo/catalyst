@@ -78,17 +78,17 @@ get_libdir() {
 
 setup_features() {
 	setup_emerge_opts
-	export features="-news binpkg-multi-instance clean-logs parallel-install"
+	local features="-news binpkg-multi-instance clean-logs parallel-install"
 	export FEATURES="${features}"
 	if [ -n "${clst_CCACHE}" ]
 	then
-		export features="${features} ccache"
+		features="${features} ccache"
 		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
 	then
-		export features="${features} distcc"
+		features="${features} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e ${clst_make_conf} ] && \
 			echo 'USE="${USE} -avahi -gtk -gnome"' >> ${clst_make_conf}
