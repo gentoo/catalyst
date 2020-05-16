@@ -20,9 +20,6 @@ then
 	exit 1
 fi
 
-## Setup seed pkgmgr to ensure latest
-clst_root_path=/ setup_pkgmgr "build"
-
 # We need to ensure the base stage3 has USE="bindist"
 # if BINDIST is set to avoid issues with openssl / openssh
 [ -e ${clst_make_conf} ] && echo "USE=\"${BINDIST} ${USE}\"" >> ${clst_make_conf}

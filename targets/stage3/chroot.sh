@@ -2,9 +2,6 @@
 
 source /tmp/chroot-functions.sh
 
-## START BUILD
-setup_pkgmgr
-
 export CONFIG_PROTECT="-* /etc/locale.gen"
 
 echo "$locales" > /etc/locale.gen

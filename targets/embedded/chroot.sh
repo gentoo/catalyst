@@ -6,8 +6,6 @@ source /tmp/chroot-functions.sh
 export DESTROOT="${clst_root_path}"
 export clst_root_path="/"
 
-setup_pkgmgr
-
 echo "Installing dependencies into ${DESTROOT}..."
 run_merge -o "${clst_embedded_packages}"
 

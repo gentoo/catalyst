@@ -181,22 +181,6 @@ setup_gcc(){
 	fi
 }
 
-setup_pkgmgr(){
-	# We need to merge our package manager with USE="build" set in case it is
-	# portage to avoid frying our /etc/portage/make.conf file.  Otherwise, we could
-	# just let emerge @system could merge it.
-	# Use --update or portage might just waste time/cycles and reinstall the same version.
-	# Use --newuse to make sure it rebuilds with any changed use flags.
-	if [ -n "$1" ];then
-		echo "Adding USE=\"\${USE} $1\" to make.conf for portage build"
-		[ -e "${clst_make_conf}" ] && echo "USE=\"\${USE} $1\"" >> "${clst_make_conf}"
-		run_merge --oneshot --update --newuse sys-apps/portage
-		sed -i "/USE=\"\${USE} $1\"/d" "${clst_make_conf}"
-	else
-		run_merge --oneshot --update --newuse sys-apps/portage
-	fi
-}
-
 cleanup_distcc() {
 	LIBDIR=$(get_libdir)
 	rm -rf /etc/distcc/hosts
