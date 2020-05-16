@@ -152,8 +152,9 @@ setup_emerge_opts() {
 	then
 		emerge_opts+=(--fetchonly)
 		bootstrap_opts+=(-f)
-	# if we have PKGCACHE, and either update_seed is empty or 'no', make and use binpkgs
-	elif [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
+	fi
+
+	if [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
 	then
 		emerge_opts+=(--usepkg --buildpkg --binpkg-respect-use=y --newuse)
 		bootstrap_opts+=(-r)
