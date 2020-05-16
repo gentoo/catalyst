@@ -5,6 +5,8 @@ import os
 import sys
 import textwrap
 
+import toml
+
 from snakeoil.process import namespaces
 
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
@@ -17,8 +19,7 @@ from catalyst.defaults import confdefaults, option_messages, DEFAULT_CONFIG_FILE
 from catalyst.support import CatalystError
 from catalyst.version import get_version
 
-
-conf_values = {}
+conf_values = confdefaults
 
 
 def version():
@@ -30,42 +31,20 @@ def version():
 
 
 def parse_config(config_files):
-    # search a couple of different areas for the main config file
-    myconf = {}
-
-    # try and parse the config file "config_file"
     for config_file in config_files:
         log.notice('Loading configuration file: %s', config_file)
         try:
-            config = catalyst.config.ConfigParser(config_file)
-            myconf.update(config.get_values())
+            conf_values.update(toml.load(config_file))
         except Exception as e:
             log.critical('Could not find parse configuration file: %s: %s',
                          config_file, e)
-
-    # now, load up the values into conf_values so that we can use them
-    for x in list(confdefaults):
-        if x in myconf:
-            if x == 'options':
-                conf_values[x] = set(myconf[x].split())
-            elif x in ["decompressor_search_order"]:
-                conf_values[x] = myconf[x].split()
-            else:
-                conf_values[x] = myconf[x]
-        else:
-            conf_values[x] = confdefaults[x]
 
     # print out any options messages
     for opt in conf_values['options']:
         if opt in option_messages:
             log.info(option_messages[opt])
 
-    for key in ["digests", "envscript", "var_tmpfs_portage", "port_logdir",
-                "local_overlay", "repos"]:
-        if key in myconf:
-            conf_values[key] = myconf[key]
-
-    if "envscript" in myconf:
+    if "envscript" in conf_values:
         log.info('Envscript support enabled.')
 
     # take care of any variable substitutions that may be left
@@ -297,17 +276,17 @@ def _main(parser, opts):
     conf_values['DEBUG'] = opts.debug
     conf_values['VERBOSE'] = opts.debug or opts.verbose
 
-    options = set()
+    options = []
     if opts.fetchonly:
-        options.add('fetch')
+        options.append('fetch')
     if opts.purge:
-        options.add('purge')
+        options.append('purge')
     if opts.purgeonly:
-        options.add('purgeonly')
+        options.append('purgeonly')
     if opts.purgetmponly:
-        options.add('purgetmponly')
+        options.append('purgetmponly')
     if opts.clear_autoresume:
-        options.add('clear-autoresume')
+        options.append('clear-autoresume')
 
     # Make sure we have some work before moving further.
     if not myspecfile and not mycmdline:
@@ -318,7 +297,7 @@ def _main(parser, opts):
     # import configuration file and import our main module using those settings
     parse_config(myconfigs)
 
-    conf_values["options"].update(options)
+    conf_values["options"].extend(options)
     log.notice('conf_values[options] = %s', conf_values['options'])
 
     # initialize our contents generator
@@ -335,7 +314,7 @@ def _main(parser, opts):
 
     if "digests" in conf_values:
         valid_digests = hashlib.algorithms_available
-        digests = set(conf_values['digests'].split())
+        digests = set(conf_values['digests'])
         conf_values['digests'] = digests
 
         # First validate all the requested digests are valid keys.
