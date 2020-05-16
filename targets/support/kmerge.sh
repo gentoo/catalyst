@@ -212,7 +212,7 @@ then
 
 	# install dependencies of kernel sources ahead of time in case
 	# package.provided generated below causes them not to be (re)installed
-	PKGDIR=${PKGDIR} run_merge --onlydeps "${clst_ksource}" || exit 1
+	PKGDIR=${PKGDIR} run_merge --onlydeps "${clst_ksource}"
 
 	# Create the kerncache directory if it doesn't exists
 	mkdir -p /tmp/kerncache/${clst_kname}
@@ -236,7 +236,7 @@ then
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 
-	PKGDIR=${PKGDIR} run_merge "${clst_ksource}" || exit 1
+	PKGDIR=${PKGDIR} run_merge "${clst_ksource}"
 
 	SOURCESDIR="/tmp/kerncache/${clst_kname}/sources"
 	if [ -L /usr/src/linux ]
@@ -269,7 +269,7 @@ then
 	fi
 
 else
-	run_merge "${clst_ksource}" || exit 1
+	run_merge "${clst_ksource}"
 	#ensure that there is a /usr/src/linux symlink and it points to the sources we just installed
 	echo "Adjusting /usr/src/linux to point to \
 $(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null)"

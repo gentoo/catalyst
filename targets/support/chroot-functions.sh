@@ -83,7 +83,7 @@ setup_features() {
 	if [ -n "${clst_CCACHE}" ]
 	then
 		features+=(ccache)
-		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache || exit 1
+		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
@@ -98,9 +98,9 @@ setup_features() {
 		# reinstall if it isn't found.
 		if [ "$(getent passwd distcc | cut -d: -f1)" != "distcc" ]
 		then
-			clst_root_path=/ run_merge --oneshot sys-devel/distcc || exit 1
+			clst_root_path=/ run_merge --oneshot sys-devel/distcc
 		else
-			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc || exit 1
+			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc
 		fi
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' ${clst_make_conf}
 		mkdir -p /etc/distcc
@@ -119,7 +119,7 @@ setup_features() {
 
 	if [ -n "${clst_ICECREAM}" ]
 	then
-		clst_root_path=/ run_merge --oneshot --noreplace sys-devel/icecream || exit 1
+		clst_root_path=/ run_merge --oneshot --noreplace sys-devel/icecream
 
 		# This sets up automatic cross-icecc-fu according to
 		# http://www.gentoo-wiki.info/HOWTO_Setup_An_ICECREAM_Compile_Cluster
