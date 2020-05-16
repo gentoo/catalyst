@@ -22,8 +22,6 @@ fi
 
 # Clean out man, info and doc files
 rm -rf "${ROOT}"/usr/share/{man,doc,info}/*
-# Zap all .pyc and .pyo files
-find "${ROOT}"/ -iname "*.py[co]" -exec rm -f {} \;
 
 # unset ROOT for safety (even though cleanup_stages doesn't use it)
 unset ROOT
