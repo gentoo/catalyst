@@ -76,19 +76,19 @@ get_libdir() {
 	echo ${var}
 }
 
-setup_myfeatures(){
-	setup_myemergeopts
-	export clst_myfeatures="-news binpkg-multi-instance clean-logs parallel-install"
-	export FEATURES="${clst_myfeatures}"
+setup_features() {
+	setup_emerge_opts
+	export features="-news binpkg-multi-instance clean-logs parallel-install"
+	export FEATURES="${features}"
 	if [ -n "${clst_CCACHE}" ]
 	then
-		export clst_myfeatures="${clst_myfeatures} ccache"
+		export features="${features} ccache"
 		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
 	then
-		export clst_myfeatures="${clst_myfeatures} distcc"
+		export features="${features} distcc"
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e ${clst_make_conf} ] && \
 			echo 'USE="${USE} -avahi -gtk -gnome"' >> ${clst_make_conf}
@@ -133,26 +133,26 @@ setup_myfeatures(){
 		export PATH="/usr/lib/icecc/bin:${PATH}"
 		export PREROOTPATH="/usr/lib/icecc/bin"
 	fi
-	export FEATURES="${clst_myfeatures}"
+	export FEATURES="${features}"
 }
 
-setup_myemergeopts(){
+setup_emerge_opts() {
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		clst_myemergeopts="--verbose"
+		emerge_opts="--verbose"
 		bootstrap_opts="${bootstrap_opts} -v"
 	else
-		clst_myemergeopts="--quiet"
+		emerge_opts="--quiet"
 		bootstrap_opts="${bootstrap_opts} -q"
 	fi
 	if [ -n "${clst_FETCH}" ]
 	then
 		export bootstrap_opts="${bootstrap_opts} -f"
-		export clst_myemergeopts="${clst_myemergeopts} -f"
+		export emerge_opts="${emerge_opts} -f"
 	# if we have PKGCACHE, and either update_seed is empty or 'no', make and use binpkgs
 	elif [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
 	then
-		export clst_myemergeopts="${clst_myemergeopts} --usepkg --buildpkg --binpkg-respect-use=y --newuse"
+		export emerge_opts="${emerge_opts} --usepkg --buildpkg --binpkg-respect-use=y --newuse"
 		export bootstrap_opts="${bootstrap_opts} -r"
 	fi
 }
@@ -274,13 +274,13 @@ run_merge() {
 
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		echo "ROOT=${ROOT} emerge ${clst_myemergeopts} -pt $@" || exit 1
-		emerge ${clst_myemergeopts} -pt $@ || exit 3
+		echo "ROOT=${ROOT} emerge ${emerge_opts} -pt $@" || exit 1
+		emerge ${emerge_opts} -pt $@ || exit 3
 	fi
 
-	echo "emerge ${clst_myemergeopts} $@" || exit 1
+	echo "emerge ${emerge_opts} $@" || exit 1
 
-	emerge ${clst_myemergeopts} $@ || exit 1
+	emerge ${emerge_opts} $@ || exit 1
 }
 
 show_debug() {
@@ -323,7 +323,7 @@ run_default_funcs() {
 	if [ "${RUN_DEFAULT_FUNCS}" != "no" ]
 	then
 		update_env_settings
-		setup_myfeatures
+		setup_features
 		show_debug
 	fi
 }

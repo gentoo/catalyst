@@ -9,7 +9,7 @@ export clst_buildpkgs="$(/tmp/build.py)"
 [ -n "${clst_BINDIST}" ] && BINDIST="bindist"
 BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
 
-FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
+FEATURES="${features} nodoc noman noinfo -news"
 
 ## Sanity check profile
 if [ -z "${clst_buildpkgs}" ]
@@ -39,7 +39,7 @@ if [ -n "${clst_update_seed}" ]; then
 	fi
 
 	# reset emerge options for the target
-	clst_update_seed=no setup_myemergeopts
+	clst_update_seed=no setup_emerge_opts
 else
 	echo "Skipping seed stage update..."
 fi
