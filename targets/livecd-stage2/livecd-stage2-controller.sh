@@ -107,8 +107,6 @@ case $1 in
 		then
 			# Clean out man, info and doc files
 			rm -rf ${clst_chroot_path}/usr/share/{man,doc,info}/*
-			# Zap all .pyc and .pyo files
-			find ${clst_chroot_path}/usr/lib* -iname "*.py[co]" -exec rm -f {} \;
 		fi
 		rm -f ${clst_chroot_path}/tmp/packages.txt
 		;;

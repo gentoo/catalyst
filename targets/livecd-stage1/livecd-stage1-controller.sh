@@ -13,9 +13,5 @@ case $1 in
 			${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 		echo "${clst_packages}" > ${clst_chroot_path}/tmp/packages.txt
 		;;
-
-	clean)
-		find ${clst_chroot_path}/usr/lib -iname "*.pyc" -exec rm -f {} \;
-		;;
 esac
 exit $?
