@@ -174,23 +174,6 @@ esac
 
 rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/livecd.motd.txt
 
-# Setup splash (if called for)
-if [ -n "${clst_livecd_splash_theme}" ]
-then
-	if [ -d /etc/splash/${clst_livecd_splash_theme} ]
-	then
-		sed -i \
-			-e "s:# SPLASH_THEME=\"gentoo\":SPLASH_THEME=\"${clst_livecd_splash_theme}\":" \
-			-e "/^# SPLASH_TTYS=/ s/^#//" \
-			/etc/conf.d/splash
-		rm -f /etc/splash/default
-		ln -s /etc/splash/${clst_livecd_splash_theme} /etc/splash/default
-	else
-		echo "Error, cannot setup splash theme ${clst_livecd_splash_theme}"
-		exit 1
-	fi
-fi
-
 # Clear out locales
 case ${clst_livecd_type} in
 	gentoo-release-minimal|gentoo-release-universal)

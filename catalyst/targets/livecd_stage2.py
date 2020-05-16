@@ -34,7 +34,6 @@ class livecd_stage2(StageBase):
         "livecd/readme",
         "livecd/rm",
         "livecd/root_overlay",
-        "livecd/splash_theme",
         "livecd/type",
         "livecd/unmerge",
         "livecd/users",

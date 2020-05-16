@@ -16,7 +16,6 @@ class stage4(StageBase):
     valid_values = required_values | frozenset([
         "boot/kernel",
         "portage_overlay",
-        "splash_theme",
         "stage4/empty",
         "stage4/fsscript",
         "stage4/gk_mainargs",

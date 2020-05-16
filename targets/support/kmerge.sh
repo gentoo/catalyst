@@ -31,21 +31,6 @@ setup_gk_args() {
 		GK_ARGS+=(--kernel-config=/var/tmp/${clst_kname}.config)
 	fi
 
-	if [ -n "${clst_splash_theme}" ]
-	then
-		GK_ARGS+=(--splash=${clst_splash_theme})
-		# Setup case structure for livecd_type
-		case ${clst_livecd_type} in
-			gentoo-release-minimal|gentoo-release-universal)
-				case ${clst_hostarch} in
-					amd64|x86)
-						GK_ARGS+=(--splash-res=1024x768)
-					;;
-				esac
-			;;
-		esac
-	fi
-
 	if [ -d "/tmp/initramfs_overlay/${clst_initramfs_overlay}" ]
 	then
 		GK_ARGS+=(--initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay})

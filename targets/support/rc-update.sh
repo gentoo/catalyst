@@ -9,8 +9,6 @@ then
 	rc-update --all del consolefont
 	# We need to add this one, unconditionally
 	rc-update add autoconfig default
-	[[ -e /etc/init.d/splash ]] && rc-update add splash default
-	[[ -e /etc/init.d/fbcondecor ]] && rc-update add fbcondecor default
 	[[ -e /etc/init.d/sysklogd ]] && rc-update add sysklogd default
 	[[ -e /etc/init.d/metalog ]] && rc-update add metalog default
 	[[ -e /etc/init.d/syslog-ng ]] && rc-update add syslog-ng default

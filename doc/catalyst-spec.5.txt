@@ -200,12 +200,6 @@ include a small memory testing application, called memtest86+
 Kernel and boot issues
 ~~~~~~~~~~~~~~~~~~~~~~
 
-*<target>/splash_theme*::
-This is where you set the splash theme (example: `livecd-2006.1`).
-This theme must be present in `/etc/splash`, before the kernel has
-completed building.  This setting is supported by the `stage4` and
-`livecd` targets.
-
 *boot/kernel*::
 This option is used to specify the number of kernels to build and also
 the labels that will be used by the CD bootloader to refer to each

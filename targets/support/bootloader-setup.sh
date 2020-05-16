@@ -42,7 +42,6 @@ esac
 
 
 default_append_line=(root=/dev/ram0 init=/linuxrc ${cmdline_opts[@]} ${custom_kopts} cdroot)
-[ -n "${clst_splash_theme}" ] && default_append_line+=(splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet)
 
 case ${clst_hostarch} in
 	alpha)
