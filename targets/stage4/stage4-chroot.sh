@@ -2,9 +2,6 @@
 
 source /tmp/chroot-functions.sh
 
-## START BUILD
-setup_pkgmgr
-
 echo "Bringing system up to date using profile specific use flags"
 run_merge -u @system
 
