@@ -6,6 +6,7 @@ import sys
 
 from pathlib import Path
 
+import libmount
 import toml
 
 from snakeoil import fileutils
@@ -853,7 +854,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             source = str(self.mount[x]['source'])
             target = self.settings['chroot_path'] + str(self.mount[x]['target'])
-            mount = ['mount']
+            fstype = ''
+            options = ''
 
             log.debug('bind %s: "%s" -> "%s"', x, source, target)
 
@@ -861,18 +863,20 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 if 'var_tmpfs_portage' not in self.settings:
                     continue
 
-                mount += ['-t', 'tmpfs', '-o',
-                          f"size={self.settings['var_tmpfs_portage']}G"]
+                fstype = 'tmpfs'
+                options = f"size={self.settings['var_tmpfs_portage']}G"
             elif source == 'tmpfs':
-                mount += ['-t', 'tmpfs']
+                fstype = 'tmpfs'
             elif source == 'shm':
-                mount += ['-t', 'tmpfs', '-o', 'noexec,nosuid,nodev']
+                fstype = 'tmpfs'
+                options = 'noexec,nosuid,nodev'
             else:
                 source_path = Path(self.mount[x]['source'])
                 if source_path.suffix == '.sqfs':
-                    mount += ['-o', 'ro']
+                    fstype = 'squashfs'
+                    options = 'ro,loop'
                 else:
-                    mount.append('--bind')
+                    options = 'bind'
 
                     # We may need to create the source of the bind mount. E.g., in the
                     # case of an empty package cache we must create the directory that
@@ -881,38 +885,47 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             Path(target).mkdir(mode=0o755, parents=True, exist_ok=True)
 
-            cmd(mount + [source, target], env=self.env, fail_func=self.unbind)
+            try:
+                cxt = libmount.Context(source=source, target=target,
+                                       fstype=fstype, options=options)
+                cxt.mount()
+            except OSError as e:
+                self.unbind()
+                raise CatalystError(f"Couldn't mount: {source}, {e.strerror}")
 
     def unbind(self):
-        ouch = 0
-        mypath = self.settings["chroot_path"]
+        chroot_path = self.settings["chroot_path"]
+        umount_failed = False
 
         # Unmount in reverse order
-        for x in [x for x in reversed(self.mount) if self.mount[x]['enable']]:
-            target = normpath(mypath + self.mount[x]['target'])
-            if not os.path.exists(target):
-                log.notice('%s does not exist. Skipping', target)
+        for target in [Path(chroot_path + self.mount[x]['target'])
+                       for x in reversed(self.mount)
+                       if self.mount[x]['enable']]:
+            if not target.exists():
+                log.debug('%s does not exist. Skipping', target)
                 continue
 
             if not ismount(target):
-                log.notice('%s is not a mount point. Skipping', target)
+                log.debug('%s is not a mount point. Skipping', target)
                 continue
 
             try:
-                cmd(['umount', target], env=self.env)
-            except CatalystError:
+                cxt = libmount.Context(target=str(target))
+                cxt.umount()
+            except OSError:
                 log.warning('First attempt to unmount failed: %s', target)
                 log.warning('Killing any pids still running in the chroot')
 
                 self.kill_chroot_pids()
 
                 try:
-                    cmd(['umount', target], env=self.env)
-                except CatalystError:
-                    ouch = 1
-                    log.warning("Couldn't umount bind mount: %s", target)
+                    cxt.umount()
+                except OSError as e:
+                    umount_failed = True
+                    log.warning("Couldn't umount: %s, %s", target,
+                                e.strerror)
 
-        if ouch:
+        if umount_failed:
             # if any bind mounts really failed, then we need to raise
             # this to potentially prevent an upcoming bash stage cleanup script
             # from wiping our bind mounts.
