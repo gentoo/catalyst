@@ -78,17 +78,17 @@ get_libdir() {
 
 setup_features() {
 	setup_emerge_opts
-	local features="-news binpkg-multi-instance clean-logs parallel-install"
-	export FEATURES="${features}"
+	local features=(-news binpkg-multi-instance clean-logs parallel-install)
+	export FEATURES="${features[@]}"
 	if [ -n "${clst_CCACHE}" ]
 	then
-		features="${features} ccache"
+		features+=(ccache)
 		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache || exit 1
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
 	then
-		features="${features} distcc"
+		features+=(distcc)
 		export DISTCC_HOSTS="${clst_distcc_hosts}"
 		[ -e ${clst_make_conf} ] && \
 			echo 'USE="${USE} -avahi -gtk -gnome"' >> ${clst_make_conf}
@@ -133,28 +133,34 @@ setup_features() {
 		export PATH="/usr/lib/icecc/bin:${PATH}"
 		export PREROOTPATH="/usr/lib/icecc/bin"
 	fi
-	export FEATURES="${features}"
+	export FEATURES="${features[@]}"
 }
 
 setup_emerge_opts() {
+	emerge_opts=()
+	bootstrap_opts=()
+
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		emerge_opts="--verbose"
-		bootstrap_opts="${bootstrap_opts} -v"
+		emerge_opts+=(--verbose)
+		bootstrap_opts+=(-v)
 	else
-		emerge_opts="--quiet"
-		bootstrap_opts="${bootstrap_opts} -q"
+		emerge_opts+=(--quiet)
+		bootstrap_opts+=(-q)
 	fi
 	if [ -n "${clst_FETCH}" ]
 	then
-		export bootstrap_opts="${bootstrap_opts} -f"
-		export emerge_opts="${emerge_opts} -f"
+		emerge_opts+=(--fetchonly)
+		bootstrap_opts+=(-f)
 	# if we have PKGCACHE, and either update_seed is empty or 'no', make and use binpkgs
 	elif [ -n "${clst_PKGCACHE}" ] && [ -z "${clst_update_seed}" -o "${clst_update_seed}" = "no" ]
 	then
-		export emerge_opts="${emerge_opts} --usepkg --buildpkg --binpkg-respect-use=y --newuse"
-		export bootstrap_opts="${bootstrap_opts} -r"
+		emerge_opts+=(--usepkg --buildpkg --binpkg-respect-use=y --newuse)
+		bootstrap_opts+=(-r)
 	fi
+
+	export emerge_opts
+	export bootstrap_opts
 }
 
 setup_binutils(){
@@ -274,13 +280,13 @@ run_merge() {
 
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		echo "ROOT=${ROOT} emerge ${emerge_opts} -pt $@" || exit 1
-		emerge ${emerge_opts} -pt $@ || exit 3
+		echo "ROOT=${ROOT} emerge ${emerge_opts[@]} -pt $@" || exit 1
+		emerge ${emerge_opts[@]} -pt $@ || exit 3
 	fi
 
-	echo "emerge ${emerge_opts} $@" || exit 1
+	echo "emerge ${emerge_opts[@]} $@" || exit 1
 
-	emerge ${emerge_opts} $@ || exit 1
+	emerge ${emerge_opts[@]} $@ || exit 1
 }
 
 show_debug() {

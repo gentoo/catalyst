@@ -104,22 +104,22 @@ genkernel_compile(){
 	# callback is put here to avoid escaping issues
 	if [[ "${clst_VERBOSE}" == "true" ]]
 	then
-		gk_callback_opts="-vN"
+		gk_callback_opts=(-vN)
 	else
-		gk_callback_opts="-qN"
+		gk_callback_opts=(-qN)
 	fi
 	PKGDIR=${PKGDIR}
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		gk_callback_opts="${gk_callback_opts} -kb"
+		gk_callback_opts+=(-kb)
 	fi
 	if [ -n "${clst_FETCH}" ]
 	then
-		gk_callback_opts="${gk_callback_opts} -f"
+		gk_callback_opts+=(-f)
 	fi
 	if [ "${clst_kernel_merge}" != "" ]
 	then
-		genkernel --callback="emerge ${gk_callback_opts} ${clst_kernel_merge}" \
+		genkernel --callback="emerge ${gk_callback_opts[@]} ${clst_kernel_merge}" \
 			"${GK_ARGS[@]}" || exit 1
 	else
 		genkernel "${GK_ARGS[@]}" || exit 1
@@ -212,7 +212,7 @@ then
 
 	# install dependencies of kernel sources ahead of time in case
 	# package.provided generated below causes them not to be (re)installed
-	PKGDIR=${PKGDIR} emerge_opts="--quiet --usepkg --buildpkg --binpkg-respect-use=y --update --newuse --onlydeps" run_merge "${clst_ksource}" || exit 1
+	PKGDIR=${PKGDIR} emerge_opts=(--quiet --usepkg --buildpkg --binpkg-respect-use=y --update --newuse --onlydeps) run_merge "${clst_ksource}" || exit 1
 
 	# Create the kerncache directory if it doesn't exists
 	mkdir -p /tmp/kerncache/${clst_kname}
@@ -236,7 +236,7 @@ then
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 
-	PKGDIR=${PKGDIR} emerge_opts="--quiet --update --newuse" run_merge "${clst_ksource}" || exit 1
+	PKGDIR=${PKGDIR} emerge_opts=(--quiet --update --newuse) run_merge "${clst_ksource}" || exit 1
 
 	SOURCESDIR="/tmp/kerncache/${clst_kname}/sources"
 	if [ -L /usr/src/linux ]

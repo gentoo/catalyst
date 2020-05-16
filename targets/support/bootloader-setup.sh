@@ -20,27 +20,29 @@ fi
 
 extract_kernels $1/boot
 
+cmdline_opts=()
+
 # Add any additional options
 if [ -n "${clst_livecd_bootargs}" ]
 then
 	for x in ${clst_livecd_bootargs}
 	do
-		cmdline_opts="${cmdline_opts} ${x}"
+		cmdline_opts+=(${x})
 	done
 fi
 
 case ${clst_fstype} in
 	squashfs)
-		cmdline_opts="${cmdline_opts} looptype=squashfs loop=/image.squashfs"
+		cmdline_opts+=(looptype=squashfs loop=/image.squashfs)
 	;;
 	jffs2)
-		cmdline_opts="${cmdline_opts} looptype=jffs2 loop=/image.jffs2"
+		cmdline_opts+=(looptype=jffs2 loop=/image.jffs2)
 	;;
 esac
 
 
-default_append_line="root=/dev/ram0 init=/linuxrc ${cmdline_opts} ${custom_kopts} cdroot"
-[ -n "${clst_splash_theme}" ] && default_append_line="${default_append_line} splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet"
+default_append_line=(root=/dev/ram0 init=/linuxrc ${cmdline_opts[@]} ${custom_kopts} cdroot)
+[ -n "${clst_splash_theme}" ] && default_append_line+=(splash=silent,theme:${clst_livecd_splash_theme} CONSOLE=/dev/tty1 quiet)
 
 case ${clst_hostarch} in
 	alpha)
@@ -52,16 +54,16 @@ case ${clst_hostarch} in
 		do
 			echo -n "${bctr}:/boot/${x} " >> ${acfg}
 			echo -n "initrd=/boot/${x}.igz root=/dev/ram0 " >> ${acfg}
-			echo "init=/linuxrc ${cmdline_opts} cdroot" >> ${acfg}
+			echo "init=/linuxrc ${cmdline_opts[@]} cdroot" >> ${acfg}
 			((bctr=${bctr}+1))
 		done
 		# Pass 2 is for serial
-		cmdline_opts="${cmdline_opts} console=ttyS0"
+		cmdline_opts+=(console=ttyS0)
 		for x in ${clst_boot_kernel}
 		do
 			echo -n "${bctr}:/boot/${x} " >> ${acfg}
 			echo -n "initrd=/boot/${x}.igz root=/dev/ram0 " >> ${acfg}
-			echo "init=/linuxrc ${cmdline_opts} cdroot" >> ${acfg}
+			echo "init=/linuxrc ${cmdline_opts[@]} cdroot" >> ${acfg}
 			((bctr=${bctr}+1))
 		done
 	;;
@@ -81,14 +83,14 @@ case ${clst_hostarch} in
 
 		for x in ${clst_boot_kernel}
 		do
-			eval kopts=\$clst_boot_kernel_${x}_kernelopts
-			my_kopts="${my_kopts} ${kopts}"
+			eval kopt=\$clst_boot_kernel_${x}_kernelopts
+			kopts+=(${kopt})
 		done
 
 		# copy the bootloader for the final image
 		cp /usr/share/palo/iplboot $1/boot/
 
-		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line} ${my_kopts}" >> ${icfg}
+		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line[@]} ${kopts[@]}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		for x in ${clst_boot_kernel}
@@ -134,25 +136,25 @@ case ${clst_hostarch} in
 					do
 						echo "label ${x}-${y}" >> ${icfg}
 						echo "  kernel /boot/${x}" >> ${icfg}
-						echo "  append ${default_append_line} softlevel=${y} initrd=/boot/${x}.igz vga=791" >> ${icfg}
+						echo "  append ${default_append_line[@]} softlevel=${y} initrd=/boot/${x}.igz vga=791" >> ${icfg}
 
 						echo >> ${icfg}
 						echo "   ${x}" >> ${kmsg}
 						echo "label ${x}-${y}-nofb" >> ${icfg}
 						echo "  kernel /boot/${x}" >> ${icfg}
-						echo "  append ${default_append_line} softlevel=${y} initrd=/boot/${x}.igz" >> ${icfg}
+						echo "  append ${default_append_line[@]} softlevel=${y} initrd=/boot/${x}.igz" >> ${icfg}
 						echo >> ${icfg}
 						echo "   ${x}-nofb" >> ${kmsg}
 					done
 				else
 					echo "label ${x}" >> ${icfg}
 					echo "  kernel /boot/${x}" >> ${icfg}
-					echo "  append ${default_append_line} initrd=/boot/${x}.igz vga=791" >> ${icfg}
+					echo "  append ${default_append_line[@]} initrd=/boot/${x}.igz vga=791" >> ${icfg}
 					echo >> ${icfg}
 					echo "   ${x}" >> ${kmsg}
 					echo "label ${x}-nofb" >> ${icfg}
 					echo "  kernel /boot/${x}" >> ${icfg}
-					echo "  append ${default_append_line} initrd=/boot/${x}.igz" >> ${icfg}
+					echo "  append ${default_append_line[@]} initrd=/boot/${x}.igz" >> ${icfg}
 					echo >> ${icfg}
 					echo "   ${x}-nofb" >> ${kmsg}
 				fi
@@ -186,12 +188,12 @@ case ${clst_hostarch} in
 			eval custom_kopts=\$${x}_kernelopts
 
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line}" >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			echo "" >> ${iacfg}
 			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line} docache" >> ${iacfg}
+			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			if [ -n "${clst_kernel_console}" ]
@@ -200,7 +202,7 @@ case ${clst_hostarch} in
 				for y in ${clst_kernel_console}
 				do
 					echo "menuentry 'Boot LiveCD (kernel: ${x} console=${y})' --class gnu-linux --class os {"  >> ${iacfg}
-					echo "	linux ${kern_subdir}/${x} ${default_append_line} console=${y}" >> ${iacfg}
+					echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} console=${y}" >> ${iacfg}
 					echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 					echo "}" >> ${iacfg}
 					echo "" >> ${iacfg}
