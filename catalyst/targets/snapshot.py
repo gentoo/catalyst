@@ -64,7 +64,6 @@ class snapshot(TargetBase):
                                close_fds=False)
 
             sp = subprocess.run([self.git, '-C', self.gitdir, 'rev-parse', 'stable'],
-                                stdout=subprocess.PIPE,
                                 capture_output=True,
                                 check=True,
                                 encoding='utf-8',
