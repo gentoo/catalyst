@@ -291,8 +291,8 @@ def _main(parser, opts):
 
     mycmdline = list()
     if opts.snapshot:
-        mycmdline.append('target=snapshot')
-        mycmdline.append('snapshot_treeish=' + opts.snapshot)
+        mycmdline.append('target: snapshot')
+        mycmdline.append('snapshot_treeish: ' + opts.snapshot)
 
     conf_values['DEBUG'] = opts.debug
     conf_values['VERBOSE'] = opts.debug or opts.verbose
@@ -354,7 +354,7 @@ def _main(parser, opts):
 
     if mycmdline:
         try:
-            cmdline = catalyst.config.ConfigParser()
+            cmdline = catalyst.config.SpecParser()
             cmdline.parse_lines(mycmdline)
             addlargs.update(cmdline.get_values())
         except CatalystError:
