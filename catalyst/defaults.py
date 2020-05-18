@@ -8,25 +8,6 @@ from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
 from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 
-# these should never be touched
-required_build_targets = [
-    "generic_stage_target",
-    "targetbase",
-]
-
-# new build types should be added here
-valid_build_targets = [
-    "embedded_target",
-    "livecd_stage1_target",
-    "livecd_stage2_target",
-    "netboot_target",
-    "snapshot_target",
-    "stage1_target",
-    "stage2_target",
-    "stage3_target",
-    "stage4_target",
-]
-
 required_config_file_values = [
     "distdir",
     "portdir",
