@@ -55,9 +55,6 @@ def parse_config(config_files):
         else:
             conf_values[x] = confdefaults[x]
 
-    # add our python base directory to use for loading target arch's
-    conf_values["PythonDir"] = os.path.dirname(os.path.realpath(__file__))
-
     # print out any options messages
     for opt in conf_values['options']:
         if opt in option_messages:

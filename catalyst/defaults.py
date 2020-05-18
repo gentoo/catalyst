@@ -64,7 +64,6 @@ confdefaults = {
     "options": set(),
     "pkgdir": "/var/cache/binpkgs",
     "port_tmpdir": "/var/tmp/portage",
-    "PythonDir": "./catalyst",
     "repo_basedir": "/var/db/repos",
     "repo_name": "gentoo",
     "repos": "%(storedir)s/repos",
