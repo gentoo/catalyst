@@ -8,18 +8,20 @@ from DeComp.definitions import COMPRESSOR_PROGRAM_OPTIONS, XATTRS_OPTIONS
 from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 
-required_config_file_values = [
-    "distdir",
-    "portdir",
-    "sharedir",
-    "storedir",
-]
-
-valid_config_file_values = required_config_file_values[:]
-valid_config_file_values.extend([
+valid_config_file_values = frozenset([
     "digests",
+    "distdir",
     "envscript",
     "options",
+    "port_logdir",
+    "repo_basedir",
+    "repo_name",
+    "repos",
+    "sharedir",
+    "storedir",
+    "target_distdir",
+    "target_pkgdir",
+    "var_tmpfs_portage",
 ])
 
 confdefaults = {
