@@ -8,7 +8,6 @@ import time
 from subprocess import Popen
 
 from catalyst import log
-from catalyst.defaults import valid_config_file_values
 
 BASH_BINARY = "/bin/bash"
 
@@ -211,7 +210,7 @@ def addl_arg_parse(myspec, addlargs, requiredspec, validspec):
     "helper function to help targets parse additional arguments"
     messages = []
     for x in addlargs.keys():
-        if x not in validspec and x not in valid_config_file_values and x not in requiredspec:
+        if x not in validspec and x not in requiredspec:
             messages.append("Argument \""+x+"\" not recognized.")
         else:
             myspec[x] = addlargs[x]
