@@ -202,9 +202,6 @@ def get_parser():
                        help='read specfile')
     group.add_argument('-s', '--snapshot', type=str,
                        help='Make an ebuild repo snapshot')
-    group.add_argument('-C', '--cli',
-                       default=[], nargs=argparse.REMAINDER,
-                       help='catalyst commandline (MUST BE LAST OPTION)')
 
     return parser
 
@@ -294,8 +291,8 @@ def _main(parser, opts):
     if not myconfigs:
         myconfigs = [DEFAULT_CONFIG_FILE]
     myspecfile = opts.file
-    mycmdline = opts.cli[:]
 
+    mycmdline = list()
     if opts.snapshot:
         mycmdline.append('target=snapshot')
         mycmdline.append('snapshot_treeish=' + opts.snapshot)

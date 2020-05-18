@@ -31,11 +31,6 @@ OPTIONS
 This option is to be used to clear any autoresume points that have been saved
 for this target. It is used in conjunction with *-f*, *-C*, or both.
 
-*--cli*|*-C* 'KEY'='VALUE' ...::
-This option is to be used in place of a specfile. All options are passed
-to *catalyst* on the commandline. Please note that this option must
-be the last option passed to *catalyst* for everything to work correctly.
-
 *--config*|*-c* 'FILE'::
 Tell *catalyst* to use a user-defined configuration file. A sample
 configuration file is installed at '/etc/catalyst/catalyst.conf'.
@@ -75,11 +70,6 @@ Print the version information and exit
 
 EXAMPLES
 --------
-Using the commandline option (*-C*, *--cli*) to build a Portage snapshot:
----------------------------------------------------
-# catalyst -C target=snapshot version_stamp=my_date
----------------------------------------------------
-
 Using the specfile option (*-f*, *--file*) to build a stage target:
 ---------------------------------------------------
 # catalyst -f stage1-specfile.spec
