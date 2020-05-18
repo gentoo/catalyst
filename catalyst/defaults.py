@@ -20,13 +20,11 @@ valid_config_file_values.extend([
     "compression_mode",
     "compressor_arch",
     "compressor_options",
-    "DEBUG",
     "decompressor_search_order",
     "digests",
     "distcc",
     "envscript",
     "options",
-    "VERBOSE",
 ])
 
 confdefaults = {
