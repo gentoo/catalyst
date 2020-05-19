@@ -82,13 +82,6 @@ compressor_arch":
 #
 decompressor_search_order: lbzip2 bzip2 tar pixz xz gzip squashfs
 
-# These are the hosts used as distcc slaves when distcc is enabled in your
-# catalyst.conf.  It follows the same syntax as distcc-config --set-hosts and
-# is entirely optional.
-# example:
-# distcc_hosts: 127.0.0.1 192.168.0.1
-distcc_hosts:
-
 # This is an optional directory containing portage configuration files.  It
 # follows the same syntax as /etc/portage and should be consistent across all
 # targets to minimize problems.

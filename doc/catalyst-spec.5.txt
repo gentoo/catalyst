@@ -74,12 +74,6 @@ This specifies where the seed stage for this target comes from
 `$storedir/builds`.  The `rel_type` is also used as a path prefix for
 the seed.
 
-*distcc_hosts*::
-These are the hosts used as distcc slaves when distcc is enabled in
-your `catalyst.conf` (example: `127.0.0.1 192.168.0.1`).  It follows
-the same syntax as `distcc-config --set-hosts` and is entirely
-optional.
-
 *portage_confdir*::
 This is an optional directory containing portage configuration files
 (example: `/etc/portage`).  It follows the same syntax as

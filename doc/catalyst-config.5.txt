@@ -78,7 +78,7 @@ be closed invalid.
 
 distcc::
 Enable distcc support for building. You have to set distcc_hosts in
-your spec file.
+your config file.
 
 icecream::
 Enable icecream compiler cluster support for building.
@@ -135,6 +135,11 @@ written to the target's make.conf if it is not the default value of
 
 Other settings
 ~~~~~~~~~~~~~~
+
+*distcc_hosts*::
+These are the hosts used as distcc slaves when distcc is enabled in
+your `catalyst.conf` (example: `127.0.0.1 192.168.0.1`).  It follows
+the same syntax as `distcc-config --set-hosts`.
 
 *jobs*::
 Integral value passed to *emerge(1)* as the parameter to --jobs and is
