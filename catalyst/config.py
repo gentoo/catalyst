@@ -118,14 +118,3 @@ class SpecParser(ParserBase):
     def __init__(self, filename=""):
         if filename:
             self.parse_file(filename)
-
-
-class ConfigParser(ParserBase):
-
-    key_value_separator = '='
-    multiple_values = False
-    empty_values = True
-
-    def __init__(self, filename=""):
-        if filename:
-            self.parse_file(filename)
