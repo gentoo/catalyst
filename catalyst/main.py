@@ -15,7 +15,8 @@ from DeComp.contents import ContentsMap
 
 from catalyst import log
 import catalyst.config
-from catalyst.defaults import confdefaults, option_messages, DEFAULT_CONFIG_FILE
+from catalyst.defaults import (confdefaults, option_messages,
+                               DEFAULT_CONFIG_FILE, valid_config_file_values)
 from catalyst.support import CatalystError
 from catalyst.version import get_version
 
@@ -34,7 +35,12 @@ def parse_config(config_files):
     for config_file in config_files:
         log.notice('Loading configuration file: %s', config_file)
         try:
-            conf_values.update(toml.load(config_file))
+            config = toml.load(config_file)
+            for key in config:
+                if key not in valid_config_file_values:
+                    log.critical("Unknown option '%s' in config file %s",
+                                 key, config_file)
+            conf_values.update(config)
         except Exception as e:
             log.critical('Could not find parse configuration file: %s: %s',
                          config_file, e)
