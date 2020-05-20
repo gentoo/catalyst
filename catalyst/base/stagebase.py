@@ -1285,28 +1285,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self.env[varname] = "true"
                 else:
                     self.env[varname] = "false"
-            # This handles a dictionary of objects just one level deep and no deeper!
-            # Its currently used only for USE_EXPAND flags which are dictionaries of
-            # lists in arch/amd64.py and friends.  If we wanted self.settigs[var]
-            # of any depth, we should make this function recursive.
             elif isinstance(self.settings[x], dict):
-                if x in ["compress_definitions",
-                         "decompress_definitions"]:
+                if x in ['compress_definitions', 'decompress_definitions']:
                     continue
-                self.env[varname] = ' '.join(self.settings[x].keys())
-                for y in self.settings[x].keys():
-                    varname2 = "clst_" + y.replace("/", "_")
-                    varname2 = varname2.replace("-", "_")
-                    varname2 = varname2.replace(".", "_")
-                    if isinstance(self.settings[x][y], str):
-                        self.env[varname2] = self.settings[x][y]
-                    elif isinstance(self.settings[x][y], list):
-                        self.env[varname2] = ' '.join(self.settings[x][y])
-                    elif isinstance(self.settings[x][y], bool):
-                        if self.settings[x][y]:
-                            self.env[varname] = "true"
-                        else:
-                            self.env[varname] = "false"
+                log.warning("Not making envar for '%s', is a dict", x)
 
         if "makeopts" in self.settings:
             if isinstance(self.settings["makeopts"], str):
