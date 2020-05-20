@@ -117,7 +117,7 @@ setup_emerge_opts() {
 	emerge_opts=()
 	bootstrap_opts=()
 
-	if [[ "${clst_VERBOSE}" == "true" ]]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		emerge_opts+=(--verbose)
 		bootstrap_opts+=(-v)
@@ -256,7 +256,7 @@ run_merge() {
 	export EPAUSE_IGNORE=0
 	[[ $CONFIG_PROTECT != "-*"* ]] && export CONFIG_PROTECT="-*"
 
-	if [[ "${clst_VERBOSE}" == "true" ]]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		echo "ROOT=${ROOT} emerge ${emerge_opts[@]} -pt $@" || exit 1
 		emerge ${emerge_opts[@]} -pt $@ || exit 3
@@ -268,7 +268,7 @@ run_merge() {
 }
 
 show_debug() {
-	if [ "${clst_DEBUG}" = "1" ]
+	if [ -n "${clst_DEBUG}" ]
 	then
 		unset PACKAGES
 		echo "DEBUG:"

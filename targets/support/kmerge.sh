@@ -58,7 +58,7 @@ setup_gk_args() {
 		fi
 	fi
 
-	if [[ "${clst_VERBOSE}" == "true" ]]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		GK_ARGS+=(--loglevel=2)
 	fi
@@ -85,7 +85,7 @@ genkernel_compile(){
 	esac
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
-	if [[ "${clst_VERBOSE}" == "true" ]]
+	if [ -n "${clst_VERBOSE}" ]
 	then
 		gk_callback_opts=(-vN)
 	else

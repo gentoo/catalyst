@@ -1283,8 +1283,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             elif isinstance(self.settings[x], bool):
                 if self.settings[x]:
                     self.env[varname] = "true"
-                else:
-                    self.env[varname] = "false"
             elif isinstance(self.settings[x], dict):
                 if x in ['compress_definitions', 'decompress_definitions']:
                     continue
