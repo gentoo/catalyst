@@ -49,6 +49,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "common_flags",
             "compression_mode",
             "cxxflags",
+            "decompressor_search_order",
             "distcc_hosts",
             "fcflags",
             "fflags",
