@@ -2,8 +2,6 @@
 
 source /tmp/chroot-functions.sh
 
-check_genkernel_version
-
 install -d /tmp/kerncache
 PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
 
