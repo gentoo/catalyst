@@ -41,7 +41,6 @@ class embedded(StageBase):
 
     def set_action_sequence(self):
         self.settings['action_sequence'] = [
-            "dir_setup",
             "unpack",
             "config_profile_link",
             "setup_confdir",
@@ -51,7 +50,6 @@ class embedded(StageBase):
             "setup_environment",
             "build_kernel",
             "build_packages",
-            "bootloader",
             "root_overlay",
             "fsscript",
             "unmerge",
