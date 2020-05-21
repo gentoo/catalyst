@@ -838,7 +838,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                    "/root_overlay"]:
                 if os.path.exists(x):
                     log.info('Copying root_overlay: %s', x)
-                    cmd(['rsync', '-a', x + '/', self.settings['chroot_path']],
+                    cmd(['rsync', '-a', x + '/', self.settings['destpath']],
                         env=self.env)
 
     def bind(self):
