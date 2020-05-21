@@ -31,6 +31,7 @@ class embedded(StageBase):
         "embedded/mergeroot",
         "embedded/packages",
         "embedded/rm",
+        "embedded/root_overlay",
         "embedded/runscript",
         "embedded/unmerge",
         "embedded/use",
