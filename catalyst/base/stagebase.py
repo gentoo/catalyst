@@ -54,6 +54,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "fcflags",
             "fflags",
             "hostuse",
+            "install_mask",
             "kerncache_path",
             "ldflags",
             "makeopts",
