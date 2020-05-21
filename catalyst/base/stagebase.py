@@ -1168,8 +1168,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 for x in self.settings[self.settings["spec_prefix"] + "/rm"]:
                     # We're going to shell out for all these cleaning
                     # operations, so we get easy glob handling.
-                    log.notice('livecd: removing %s', x)
-                    clear_path(self.settings["chroot_path"] + x)
+                    log.notice('%s: removing %s', self.settings["spec_prefix"], x)
+                    clear_path(self.settings["destpath"] + x)
                 try:
                     if os.path.exists(self.settings["controller_file"]):
                         cmd([self.settings['controller_file'], 'clean'],
