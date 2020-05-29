@@ -9,6 +9,7 @@ from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 
 valid_config_file_values = frozenset([
+    "compression_mode",
     "digests",
     "distdir",
     "envscript",
