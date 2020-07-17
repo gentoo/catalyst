@@ -1,13 +1,39 @@
 
 from catalyst import builder
 
-class arch_riscv(builder.generic):
-	"builder class for riscv"
+class generic_riscv(builder.generic):
+	"abstract base class for all riscv builders"
 	def __init__(self,myspec):
 		builder.generic.__init__(self,myspec)
 		self.settings["COMMON_FLAGS"]="-O2 -pipe"
 		self.settings["CHOST"]="riscv64-unknown-linux-gnu"
 
+class arch_riscv(generic_riscv):
+	"builder class for generic riscv"
+	def __init__(self,myspec):
+		generic_riscv.__init__(self,myspec)
+
+class arch_rv64_multilib(generic_riscv):
+	"builder class for rv64_multilib"
+	def __init__(self,myspec):
+		generic_riscv.__init__(self,myspec)
+
+class arch_rv64_lp64d(generic_riscv):
+	"builder class for rv64_lp64d"
+	def __init__(self,myspec):
+		generic_riscv.__init__(self,myspec)
+
+class arch_rv64_lp64(generic_riscv):
+	"builder class for rv64_lp64"
+	def __init__(self,myspec):
+		generic_riscv.__init__(self,myspec)
+
+
 def register():
 	"Inform main catalyst program of the contents of this plugin."
-	return ({ "riscv":arch_riscv }, ("rv64","riscv64","riscv"))
+	return ({
+		"riscv"		: arch_riscv,
+		"rv64_multilib"	: arch_rv64_multilib,
+		"rv64_lp64d"	: arch_rv64_lp64d,
+		"rv64_lp64"	: arch_rv64_lp64
+		}, ("rv64_multilib"))
