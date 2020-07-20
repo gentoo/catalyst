@@ -55,6 +55,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "fflags",
             "hostuse",
             "install_mask",
+            "interpreter",
             "kerncache_path",
             "ldflags",
             "makeopts",
@@ -938,6 +939,24 @@ class StageBase(TargetBase, ClearBase, GenBase):
             shutil.copy('/etc/resolv.conf',
                         self.settings['chroot_path'] + '/etc/')
 
+			# Copy over the binary interpreter (qemu), if applicable; note that it's given
+			# as full path and goes to the same place in the chroot
+			if "interpreter" in self.settings:
+				if not os.path.exists(self.settings["interpreter"]):
+					raise CatalystError(
+						"Can't find interpreter " + self.settings["interpreter"],
+						print_traceback=True)
+
+				log.notice('Copying binary interpreter %s into chroot', self.settings['interpreter'])
+
+				if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter']):
+					os.rename(
+						self.settings['chroot_path'] + '/' + self.settings['interpreter'], 
+						self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst')
+
+				shutil.copy(self.settings['interpreter'],
+					self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+
             # Copy over the envscript, if applicable
             if "envscript" in self.settings:
                 if not os.path.exists(self.settings["envscript"]):
@@ -1104,6 +1123,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
         hosts_file = self.settings['chroot_path'] + '/etc/hosts'
         if os.path.exists(hosts_file + '.catalyst'):
             os.rename(hosts_file + '.catalyst', hosts_file)
+
+		# optionally clean up binary interpreter
+		if "interpreter" in self.settings:
+			if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst'):
+				os.rename(
+					self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst', 
+					self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+			else:
+				os.remove(self.settings['chroot_path'] + '/' + self.settings['interpreter'])
 
         # optionally clean up portage configs
         if ("portage_prefix" in self.settings and
