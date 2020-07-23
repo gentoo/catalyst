@@ -1138,12 +1138,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 "sticky-config" not in self.settings["options"]):
             log.debug("clean(), portage_preix = %s, no sticky-config",
                       self.settings["portage_prefix"])
-            for _dir in "accept_keywords", "keywords", "mask", "unmask", "use":
+            for _dir in "package.accept_keywords", "package.keywords", "package.mask", "package.unmask", "package.use", "package.env", "env":
                 target = pjoin(self.settings["destpath"],
-                               "etc/portage/package.%s" % _dir,
+                               "etc/portage/%s" % _dir,
                                self.settings["portage_prefix"])
                 log.notice("Clearing portage_prefix target: %s", target)
                 clear_path(target)
+
+        # Remove hacks that should *never* go into stages
+        target = pjoin(self.settings["destpath"], "etc/portage/patches")
+        if os.path.exists(target):
+            log.warning("You've been hacking. Clearing target patches: %s", target)
+            clear_path(target)
 
         # Remove our overlay
         overlay = normpath(
