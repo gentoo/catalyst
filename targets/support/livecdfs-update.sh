@@ -211,13 +211,6 @@ then
 	fi
 fi
 
-# Clear out locales
-case ${clst_livecd_type} in
-	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
-		rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
-	;;
-esac
-
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-gamecd )
