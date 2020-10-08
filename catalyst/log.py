@@ -74,7 +74,7 @@ class CatalystFormatter(logging.Formatter):
     @staticmethod
     def detect_color():
         """Figure out whether the runtime env wants color"""
-        if 'NOCOLOR' is os.environ:
+        if 'NOCOLOR' in os.environ:
             return False
         return os.isatty(sys.stdout.fileno())
 
