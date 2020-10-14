@@ -512,7 +512,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if use in self.settings:
             if isinstance(self.settings[use], str):
                 self.settings["use"] = self.settings[use].split()
-            self.settings["use"] = self.settings[use]
+            else:
+                self.settings["use"] = self.settings[use]
             del self.settings[use]
         else:
             self.settings["use"] = []
