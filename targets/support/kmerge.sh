@@ -111,10 +111,6 @@ genkernel_compile(){
 	fi
 }
 
-build_kernel() {
-	genkernel_compile
-}
-
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
 export CONFIG_PROTECT="-*"
 
@@ -268,7 +264,8 @@ fi
 make_destpath
 
 
-build_kernel
+genkernel_compile
+
 sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
