@@ -270,7 +270,6 @@ run_merge() {
 show_debug() {
 	if [ -n "${clst_DEBUG}" ]
 	then
-		unset PACKAGES
 		echo "DEBUG:"
 		echo "Profile/target info:"
 		echo "Profile inheritance:"
