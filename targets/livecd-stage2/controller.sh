@@ -8,11 +8,6 @@ case $1 in
 		exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
 		;;
 
-	post-kmerge)
-		# Cleans up the build environment after the kernels are compiled
-		exec_in_chroot ${clst_shdir}/support/post-kmerge.sh
-		;;
-
 	kernel)
 		shift
 		export kname="$1"

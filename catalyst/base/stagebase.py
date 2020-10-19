@@ -1548,10 +1548,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         self.resume.is_enabled("build_kernel_" + kname)
 
-        # Execute the script that cleans up the kernel build environment
-        cmd([self.settings['controller_file'], 'post-kmerge'],
-            env=self.env)
-
     def _copy_kernel_config(self, kname):
         key = 'boot/kernel/' + kname + '/config'
         if key in self.settings:
