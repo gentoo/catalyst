@@ -247,13 +247,6 @@ make_destpath
 genkernel_compile
 
 sed -i "/USE=\"\${USE} ${kernel_use} \"/d" ${clst_make_conf}
-# grep out the kernel version so that we can do our modules magic
-VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
-PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
-SUB=`grep ^SUBLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
-EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//" -e "s/ //g"`
-clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
-
 unset USE
 
 if [ -n "${clst_KERNCACHE}" ]
