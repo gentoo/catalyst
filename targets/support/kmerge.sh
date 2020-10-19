@@ -3,7 +3,6 @@
 source /tmp/chroot-functions.sh
 
 install -d /tmp/kerncache
-PKGDIR=/tmp/kerncache/${kname}/ebuilds
 
 setup_gk_args() {
 	# default genkernel args
@@ -85,7 +84,6 @@ genkernel_compile(){
 	else
 		gk_callback_opts=(-qN)
 	fi
-	PKGDIR=${PKGDIR}
 	if [ -n "${clst_KERNCACHE}" ]
 	then
 		gk_callback_opts+=(-kb)
@@ -126,11 +124,6 @@ then
 	ksource="virtual/linux-sources"
 fi
 
-# Don't use pkgcache here, as the kernel source may get emerged with different
-# USE variables (and thus different patches enabled/disabled.) Also, there's no
-# real benefit in using the pkgcache for kernel source ebuilds.
-
-
 # Check if we have a match in kerncach
 
 if [ -n "${clst_KERNCACHE}" ]
@@ -145,8 +138,6 @@ then
 		then
 			USE_MATCH=1
 		else
-			[ -d /tmp/kerncache/${kname}/ebuilds ] && \
-				rm -r /tmp/kerncache/${kname}/ebuilds
 			[ -e /tmp/kerncache/${kname}/usr/src/linux/.config ] && \
 				rm /tmp/kerncache/${kname}/usr/src/linux/.config
 		fi
@@ -181,7 +172,7 @@ then
 
 	# install dependencies of kernel sources ahead of time in case
 	# package.provided generated below causes them not to be (re)installed
-	PKGDIR=${PKGDIR} run_merge --onlydeps "${ksource}"
+	run_merge --onlydeps "${ksource}"
 
 	# Create the kerncache directory if it doesn't exists
 	mkdir -p /tmp/kerncache/${kname}
@@ -205,7 +196,7 @@ then
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 
-	PKGDIR=${PKGDIR} run_merge "${ksource}"
+	run_merge "${ksource}"
 
 	SOURCESDIR="/tmp/kerncache/${kname}/sources"
 	if [ -L /usr/src/linux ]
