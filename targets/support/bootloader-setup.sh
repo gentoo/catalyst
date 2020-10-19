@@ -102,7 +102,7 @@ case ${clst_hostarch} in
 		echo '' >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
-			eval "clst_kernel_console=\$clst_boot_kernel_${x}_console"
+			eval "kernel_console=\$clst_boot_kernel_${x}_console"
 			eval custom_kopts=\$${x}_kernelopts
 
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
@@ -114,10 +114,10 @@ case ${clst_hostarch} in
 			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
-			if [ -n "${clst_kernel_console}" ]
+			if [ -n "${kernel_console}" ]
 			then
 			echo "submenu 'Special console options (kernel: ${x})' --class gnu-linux --class os {" >> ${iacfg}
-				for y in ${clst_kernel_console}
+				for y in ${kernel_console}
 				do
 					echo "menuentry 'Boot LiveCD (kernel: ${x} console=${y})' --class gnu-linux --class os {"  >> ${iacfg}
 					echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} console=${y}" >> ${iacfg}

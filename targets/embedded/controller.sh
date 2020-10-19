@@ -40,7 +40,7 @@ case ${1} in
 
 	kernel)
 		shift
-		export clst_kname="${1}"
+		export kname="${1}"
 
 		[ -n "${clst_linuxrc}" ] && \
 			copy_to_chroot ${clst_linuxrc} /tmp/linuxrc

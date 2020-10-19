@@ -24,7 +24,7 @@ case ${1} in
 
 	kernel)
 		shift
-		export clst_kname="$1"
+		export kname="$1"
 
 		[ -n "${clst_linuxrc}" ] && \
 			copy_to_chroot ${clst_linuxrc} /tmp/linuxrc
@@ -36,7 +36,7 @@ case ${1} in
 		delete_from_chroot /tmp/linuxrc
 		delete_from_chroot /tmp/busy-config
 
-		extract_modules ${clst_chroot_path} ${clst_kname}
+		extract_modules ${clst_chroot_path} ${kname}
 		#16:12 <@solar> kernel_name=foo
 		#16:13 <@solar> eval clst_boot_kernel_${kernel_name}_config=bar
 		#16:13 <@solar> eval echo \$clst_boot_kernel_${kernel_name}_config

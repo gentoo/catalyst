@@ -21,7 +21,7 @@ case $1 in
 
 	kernel)
 		shift
-		export clst_kname="$1"
+		export kname="$1"
 
 		# If we have our own linuxrc, copy it in
 		[ -n "${clst_linuxrc}" ] && \
@@ -29,7 +29,7 @@ case $1 in
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh
 		delete_from_chroot /tmp/linuxrc
 
-		extract_modules ${clst_chroot_path} ${clst_kname}
+		extract_modules ${clst_chroot_path} ${kname}
 	;;
 
 	build_packages)

@@ -3,17 +3,17 @@
 source /tmp/chroot-functions.sh
 
 install -d /tmp/kerncache
-PKGDIR=/tmp/kerncache/${clst_kname}/ebuilds
+PKGDIR=/tmp/kerncache/${kname}/ebuilds
 
 setup_gk_args() {
 	# default genkernel args
 	GK_ARGS=(
-		"${clst_kernel_gk_kernargs[@]}"
-		--cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp}
+		"${kernel_gk_kernargs[@]}"
+		--cachedir=/tmp/kerncache/${kname}-genkernel_cache-${clst_version_stamp}
 		--no-mountboot
 		--kerneldir=/usr/src/linux
-		--modulespackage=/tmp/kerncache/${clst_kname}-modules-${clst_version_stamp}.tar.bz2
-		--minkernpackage=/tmp/kerncache/${clst_kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
+		--modulespackage=/tmp/kerncache/${kname}-modules-${clst_version_stamp}.tar.bz2
+		--minkernpackage=/tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
 	)
 	# extra genkernel options that we have to test for
 	if [ -n "${clst_gk_mainargs}" ]
@@ -22,16 +22,16 @@ setup_gk_args() {
 	fi
 	if [ -n "${clst_KERNCACHE}" ]
 	then
-		GK_ARGS+=(--kerncache=/tmp/kerncache/${clst_kname}-kerncache-${clst_version_stamp}.tar.bz2)
+		GK_ARGS+=(--kerncache=/tmp/kerncache/${kname}-kerncache-${clst_version_stamp}.tar.bz2)
 	fi
-	if [ -e /var/tmp/${clst_kname}.config ]
+	if [ -e /var/tmp/${kname}.config ]
 	then
-		GK_ARGS+=(--kernel-config=/var/tmp/${clst_kname}.config)
+		GK_ARGS+=(--kernel-config=/var/tmp/${kname}.config)
 	fi
 
-	if [ -d "/tmp/initramfs_overlay/${clst_initramfs_overlay}" ]
+	if [ -d "/tmp/initramfs_overlay/${initramfs_overlay}" ]
 	then
-		GK_ARGS+=(--initramfs-overlay=/tmp/initramfs_overlay/${clst_initramfs_overlay})
+		GK_ARGS+=(--initramfs-overlay=/tmp/initramfs_overlay/${initramfs_overlay})
 	fi
 	if [ -n "${clst_CCACHE}" ]
 	then
@@ -70,10 +70,10 @@ genkernel_compile(){
 	# Build our list of kernel packages
 	case ${clst_livecd_type} in
 		gentoo-release-live*)
-			if [ -n "${clst_kernel_merge}" ]
+			if [ -n "${kernel_merge}" ]
 			then
 				mkdir -p /usr/livecd
-				echo "${clst_kernel_merge}" > /usr/livecd/kernelpkgs.txt
+				echo "${kernel_merge}" > /usr/livecd/kernelpkgs.txt
 			fi
 		;;
 	esac
@@ -94,17 +94,17 @@ genkernel_compile(){
 	then
 		gk_callback_opts+=(-f)
 	fi
-	if [ "${clst_kernel_merge}" != "" ]
+	if [ "${kernel_merge}" != "" ]
 	then
-		genkernel --callback="emerge ${gk_callback_opts[@]} ${clst_kernel_merge}" \
+		genkernel --callback="emerge ${gk_callback_opts[@]} ${kernel_merge}" \
 			"${GK_ARGS[@]}" || exit 1
 	else
 		genkernel "${GK_ARGS[@]}" || exit 1
 	fi
-	if [ -n "${clst_KERNCACHE}" -a -e /var/tmp/${clst_kname}.config ]
+	if [ -n "${clst_KERNCACHE}" -a -e /var/tmp/${kname}.config ]
 	then
-		md5sum /var/tmp/${clst_kname}.config | awk '{print $1}' > \
-			/tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG
+		md5sum /var/tmp/${kname}.config | awk '{print $1}' > \
+			/tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG
 	fi
 }
 
@@ -115,15 +115,15 @@ export CONFIG_PROTECT="-*"
 rm /etc/localtime
 cp -f /usr/share/zoneinfo/UTC /etc/localtime
 
-eval "clst_initramfs_overlay=\$clst_boot_kernel_${kname}_initramfs_overlay"
-eval "clst_kernel_merge=\$clst_boot_kernel_${kname}_packages"
-eval "clst_kernel_use=\$clst_boot_kernel_${kname}_use"
-eval eval clst_kernel_gk_kernargs=( \$clst_boot_kernel_${kname}_gk_kernargs )
-eval "clst_ksource=\$clst_boot_kernel_${kname}_sources"
+eval "initramfs_overlay=\$clst_boot_kernel_${kname}_initramfs_overlay"
+eval "kernel_merge=\$clst_boot_kernel_${kname}_packages"
+eval "kernel_use=\$clst_boot_kernel_${kname}_use"
+eval eval kernel_gk_kernargs=( \$clst_boot_kernel_${kname}_gk_kernargs )
+eval "ksource=\$clst_boot_kernel_${kname}_sources"
 
-if [ -z "${clst_ksource}" ]
+if [ -z "${ksource}" ]
 then
-	clst_ksource="virtual/linux-sources"
+	ksource="virtual/linux-sources"
 fi
 
 # Don't use pkgcache here, as the kernel source may get emerged with different
@@ -137,25 +137,25 @@ if [ -n "${clst_KERNCACHE}" ]
 then
 
 	USE_MATCH=0
-	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE ]
+	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE ]
 	then
-		STR1=$(for i in `cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
-		STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
+		STR1=$(for i in `cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
+		STR2=$(for i in ${kernel_use}; do echo $i; done|sort)
 		if [ "${STR1}" = "${STR2}" ]
 		then
 			USE_MATCH=1
 		else
-			[ -d /tmp/kerncache/${clst_kname}/ebuilds ] && \
-				rm -r /tmp/kerncache/${clst_kname}/ebuilds
-			[ -e /tmp/kerncache/${clst_kname}/usr/src/linux/.config ] && \
-				rm /tmp/kerncache/${clst_kname}/usr/src/linux/.config
+			[ -d /tmp/kerncache/${kname}/ebuilds ] && \
+				rm -r /tmp/kerncache/${kname}/ebuilds
+			[ -e /tmp/kerncache/${kname}/usr/src/linux/.config ] && \
+				rm /tmp/kerncache/${kname}/usr/src/linux/.config
 		fi
 	fi
 
 	EXTRAVERSION_MATCH=0
-	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION ]
+	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION ]
 	then
-		STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION`
+		STR1=`cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION`
 		STR2=${clst_kextraversion}
 		if [ "${STR1}" = "${STR2}" ]
 		then
@@ -164,14 +164,14 @@ then
 	fi
 
 	CONFIG_MATCH=0
-	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG ]
+	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG ]
 	then
-		if [ ! -e /var/tmp/${clst_kname}.config ]
+		if [ ! -e /var/tmp/${kname}.config ]
 		then
 			CONFIG_MATCH=1
 		else
-			STR1=`cat /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.CONFIG`
-			STR2=`md5sum /var/tmp/${clst_kname}.config|awk '{print $1}'`
+			STR1=`cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG`
+			STR2=`md5sum /var/tmp/${kname}.config|awk '{print $1}'`
 			if [ "${STR1}" = "${STR2}" ]
 			then
 				CONFIG_MATCH=1
@@ -181,14 +181,14 @@ then
 
 	# install dependencies of kernel sources ahead of time in case
 	# package.provided generated below causes them not to be (re)installed
-	PKGDIR=${PKGDIR} run_merge --onlydeps "${clst_ksource}"
+	PKGDIR=${PKGDIR} run_merge --onlydeps "${ksource}"
 
 	# Create the kerncache directory if it doesn't exists
-	mkdir -p /tmp/kerncache/${clst_kname}
+	mkdir -p /tmp/kerncache/${kname}
 
-	if [ -e /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION ]
+	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION ]
 	then
-		KERNELVERSION=$(</tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION)
+		KERNELVERSION=$(</tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION)
 		mkdir -p ${clst_port_conf}/profile
 		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
 	else
@@ -196,26 +196,26 @@ then
 	fi
 
 	# Don't use package.provided if there's a pending up/downgrade
-	if [[ "$(portageq best_visible / ${clst_ksource})" == "${KERNELVERSION}" ]]; then
-		echo "No pending updates for ${clst_ksource}"
+	if [[ "$(portageq best_visible / ${ksource})" == "${KERNELVERSION}" ]]; then
+		echo "No pending updates for ${ksource}"
 	else
-		echo "Pending updates for ${clst_ksource}, removing package.provided"
+		echo "Pending updates for ${ksource}, removing package.provided"
 		rm -f ${clst_port_conf}/profile/package.provided
 	fi
 
 	[ -L /usr/src/linux ] && rm -f /usr/src/linux
 
-	PKGDIR=${PKGDIR} run_merge "${clst_ksource}"
+	PKGDIR=${PKGDIR} run_merge "${ksource}"
 
-	SOURCESDIR="/tmp/kerncache/${clst_kname}/sources"
+	SOURCESDIR="/tmp/kerncache/${kname}/sources"
 	if [ -L /usr/src/linux ]
 	then
 
 		# A kernel was merged, move it to $SOURCESDIR
 		[ -e ${SOURCESDIR} ] && rm -Rf ${SOURCESDIR}
 
-		KERNELVERSION=`portageq best_visible / "${clst_ksource}"`
-		echo "${KERNELVERSION}" > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.KERNELVERSION
+		KERNELVERSION=`portageq best_visible / "${ksource}"`
+		echo "${KERNELVERSION}" > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION
 
 		echo "Moving kernel sources to ${SOURCESDIR} ..."
 		mv `readlink -f /usr/src/linux` ${SOURCESDIR}
@@ -231,18 +231,18 @@ then
 		then
 			echo "Setting extraversion to ${clst_kextraversion}"
 			sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
-			echo ${clst_kextraversion} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+			echo ${clst_kextraversion} > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION
 		else
-			touch /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.EXTRAVERSION
+			touch /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION
 		fi
 	fi
 
 else
-	run_merge "${clst_ksource}"
+	run_merge "${ksource}"
 	#ensure that there is a /usr/src/linux symlink and it points to the sources we just installed
 	echo "Adjusting /usr/src/linux to point to \
-$(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null)"
-	ln -snf $(portageq contents / $(portageq best_visible / "${clst_ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null) \
+$(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null)"
+	ln -snf $(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null) \
 		/usr/src/linux
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
@@ -254,14 +254,14 @@ fi
 
 # Update USE flag in make.conf
 [ -e ${clst_make_conf} ] && \
-	echo "USE=\"\${USE} ${clst_kernel_use} build\"" >> ${clst_make_conf}
+	echo "USE=\"\${USE} ${kernel_use} build\"" >> ${clst_make_conf}
 
 make_destpath
 
 
 genkernel_compile
 
-sed -i "/USE=\"\${USE} ${clst_kernel_use} \"/d" ${clst_make_conf}
+sed -i "/USE=\"\${USE} ${kernel_use} \"/d" ${clst_make_conf}
 # grep out the kernel version so that we can do our modules magic
 VER=`grep ^VERSION\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
 PAT=`grep ^PATCHLEVEL\ \= /usr/src/linux/Makefile | awk '{ print $3 };'`
@@ -274,5 +274,5 @@ unset USE
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-	echo ${clst_kernel_use} > /tmp/kerncache/${clst_kname}/${clst_kname}-${clst_version_stamp}.USE
+	echo ${kernel_use} > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE
 fi
