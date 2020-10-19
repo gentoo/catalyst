@@ -67,8 +67,6 @@ setup_gk_args() {
 genkernel_compile(){
 	setup_gk_args
 
-	export clst_kernel_merge
-	export clst_initramfs_overlay
 	# Build our list of kernel packages
 	case ${clst_livecd_type} in
 		gentoo-release-live*)
