@@ -303,15 +303,6 @@ show_debug() {
 	fi
 }
 
-run_default_funcs() {
-	if [ "${RUN_DEFAULT_FUNCS}" != "no" ]
-	then
-		update_env_settings
-		setup_features
-		show_debug
-	fi
-}
-
 create_handbook_icon() {
 	# This function creates a local icon to the Gentoo Handbook
 	echo "[Desktop Entry]
@@ -330,5 +321,9 @@ readonly locales="
 C.UTF8 UTF-8
 "
 
-# We do this everywhere, so why not put it in this script
-run_default_funcs
+if [[ ${RUN_DEFAULT_FUNCS} != no ]]
+then
+	update_env_settings
+	setup_features
+	show_debug
+fi
