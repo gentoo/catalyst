@@ -122,15 +122,11 @@ export CONFIG_PROTECT="-*"
 rm /etc/localtime
 cp -f /usr/share/zoneinfo/UTC /etc/localtime
 
-filtered_kname=${clst_kname/-/_}
-filtered_kname=${filtered_kname/\//_}
-filtered_kname=${filtered_kname/\./_}
-
-eval "clst_initramfs_overlay=\$clst_boot_kernel_${filtered_kname}_initramfs_overlay"
-eval "clst_kernel_merge=\$clst_boot_kernel_${filtered_kname}_packages"
-eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
-eval eval clst_kernel_gk_kernargs=( \$clst_boot_kernel_${filtered_kname}_gk_kernargs )
-eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
+eval "clst_initramfs_overlay=\$clst_boot_kernel_${kname}_initramfs_overlay"
+eval "clst_kernel_merge=\$clst_boot_kernel_${kname}_packages"
+eval "clst_kernel_use=\$clst_boot_kernel_${kname}_use"
+eval eval clst_kernel_gk_kernargs=( \$clst_boot_kernel_${kname}_gk_kernargs )
+eval "clst_ksource=\$clst_boot_kernel_${kname}_sources"
 
 if [ -z "${clst_ksource}" ]
 then
