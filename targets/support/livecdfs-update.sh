@@ -243,6 +243,21 @@ case ${clst_livecd_type} in
 		# Clear out lastlog
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
+		create_handbook_icon() {
+			cat <<-EOF > /usr/share/applications/gentoo-handbook.desktop
+				[Desktop Entry]
+				Encoding=UTF-8
+				Version=1.0
+				Type=Link
+				URL=file:///mnt/cdrom/docs/handbook/html/index.html
+				Terminal=false
+				Name=Gentoo Linux Handbook
+				GenericName=Gentoo Linux Handbook
+				Comment=This is a link to the local copy of the Gentoo Linux Handbook.
+				Icon=text-editor
+			EOF
+		}
+
 		# Create our Handbook icon
 		[ -e /docs/handbook/index.html ] && create_handbook_icon
 		[ -n "${clst_livecd_overlay}" ] && [ -e ${clst_livecd_overlay}/docs/handbook/index.html ] && create_handbook_icon
