@@ -1307,11 +1307,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                 print_traceback=False)
 
     def setup_environment(self):
-        """
-        Modify the current environment. This is an ugly hack that should be
-        fixed. We need this to use the os.system() call since we can't
-        specify our own environ
-        """
         log.debug('setup_environment(); settings = %r', self.settings)
         for x in list(self.settings):
             log.debug('setup_environment(); processing: %s', x)
