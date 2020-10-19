@@ -126,7 +126,7 @@ rm /etc/localtime
 cp -f /usr/share/zoneinfo/UTC /etc/localtime
 
 filtered_kname=${clst_kname/-/_}
-filtered_kname=${clst_kname/\//_}
+filtered_kname=${filtered_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
