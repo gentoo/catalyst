@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RUN_DEFAULT_FUNCS="yes"
+
 source /tmp/chroot-functions.sh
 
 if [[ ${clst_hostarch} == hppa ]]; then
