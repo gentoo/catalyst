@@ -66,8 +66,7 @@ setup_gk_args() {
 
 genkernel_compile(){
 	setup_gk_args
-	#echo "The GK_ARGS are"
-	#echo ${GK_ARGS[@]}
+
 	export clst_kernel_merge
 	export clst_initramfs_overlay
 	# Build our list of kernel packages
@@ -146,7 +145,6 @@ then
 		STR2=$(for i in ${clst_kernel_use}; do echo $i; done|sort)
 		if [ "${STR1}" = "${STR2}" ]
 		then
-			#echo "USE Flags match"
 			USE_MATCH=1
 		else
 			[ -d /tmp/kerncache/${clst_kname}/ebuilds ] && \
@@ -163,7 +161,6 @@ then
 		STR2=${clst_kextraversion}
 		if [ "${STR1}" = "${STR2}" ]
 		then
-			#echo "EXTRAVERSION match"
 			EXTRAVERSION_MATCH=1
 		fi
 	fi
