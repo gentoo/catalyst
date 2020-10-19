@@ -20,5 +20,5 @@ if [[ ${clst_hostarch} == hppa ]]; then
 	[[ $num64 > 1 ]] && die "Only one 64-bit kernel can be configured"
 fi
 
-run_merge --oneshot genkernel
+run_merge --oneshot sys-kernel/genkernel
 install -d /tmp/kerncache
