@@ -118,11 +118,7 @@ eval "kernel_merge=\$clst_boot_kernel_${kname}_packages"
 eval "kernel_use=\$clst_boot_kernel_${kname}_use"
 eval eval kernel_gk_kernargs=( \$clst_boot_kernel_${kname}_gk_kernargs )
 eval "ksource=\$clst_boot_kernel_${kname}_sources"
-
-if [ -z "${ksource}" ]
-then
-	ksource="virtual/linux-sources"
-fi
+[[ -z ${ksource} ]] && ksource="sys-kernel/gentoo-sources"
 
 # Check if we have a match in kerncach
 
