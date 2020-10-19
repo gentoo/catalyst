@@ -1504,7 +1504,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     mynames = [mynames]
                 # Execute the script that sets up the kernel build environment
                 cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
-                for kname in mynames:
+                for kname in [sanitize_name(name) for name in mynames]:
                     self._build_kernel(kname=kname)
                 self.resume.enable("build_kernel")
             except CatalystError:
