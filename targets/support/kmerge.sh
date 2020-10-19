@@ -128,7 +128,6 @@ fi
 
 if [ -n "${clst_KERNCACHE}" ]
 then
-
 	USE_MATCH=0
 	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE ]
 	then
@@ -201,7 +200,6 @@ then
 	SOURCESDIR="/tmp/kerncache/${kname}/sources"
 	if [ -L /usr/src/linux ]
 	then
-
 		# A kernel was merged, move it to $SOURCESDIR
 		[ -e ${SOURCESDIR} ] && rm -Rf ${SOURCESDIR}
 
@@ -210,7 +208,6 @@ then
 
 		echo "Moving kernel sources to ${SOURCESDIR} ..."
 		mv `readlink -f /usr/src/linux` ${SOURCESDIR}
-
 	fi
 	ln -sf ${SOURCESDIR} /usr/src/linux
 
@@ -227,7 +224,6 @@ then
 			touch /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION
 		fi
 	fi
-
 else
 	run_merge "${ksource}"
 	#ensure that there is a /usr/src/linux symlink and it points to the sources we just installed
@@ -242,13 +238,11 @@ $(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev
 	fi
 fi
 
-
 # Update USE flag in make.conf
 [ -e ${clst_make_conf} ] && \
 	echo "USE=\"\${USE} ${kernel_use} build\"" >> ${clst_make_conf}
 
 make_destpath
-
 
 genkernel_compile
 
@@ -261,7 +255,6 @@ EXV=`grep ^EXTRAVERSION\ \= /usr/src/linux/Makefile | sed -e "s/EXTRAVERSION =//
 clst_fudgeuname=${VER}.${PAT}.${SUB}${EXV}
 
 unset USE
-
 
 if [ -n "${clst_KERNCACHE}" ]
 then
