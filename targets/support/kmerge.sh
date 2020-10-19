@@ -65,9 +65,6 @@ setup_gk_args() {
 }
 
 genkernel_compile(){
-	eval "clst_initramfs_overlay=\$clst_boot_kernel_${filtered_kname}_initramfs_overlay"
-	eval "clst_kernel_merge=\$clst_boot_kernel_${filtered_kname}_packages"
-
 	setup_gk_args
 	#echo "The GK_ARGS are"
 	#echo ${GK_ARGS[@]}
@@ -129,6 +126,8 @@ filtered_kname=${clst_kname/-/_}
 filtered_kname=${filtered_kname/\//_}
 filtered_kname=${filtered_kname/\./_}
 
+eval "clst_initramfs_overlay=\$clst_boot_kernel_${filtered_kname}_initramfs_overlay"
+eval "clst_kernel_merge=\$clst_boot_kernel_${filtered_kname}_packages"
 eval "clst_kernel_use=\$clst_boot_kernel_${filtered_kname}_use"
 eval eval clst_kernel_gk_kernargs=( \$clst_boot_kernel_${filtered_kname}_gk_kernargs )
 eval "clst_ksource=\$clst_boot_kernel_${filtered_kname}_sources"
