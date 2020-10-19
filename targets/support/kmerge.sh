@@ -242,8 +242,6 @@ fi
 [ -e ${clst_make_conf} ] && \
 	echo "USE=\"\${USE} ${kernel_use} build\"" >> ${clst_make_conf}
 
-make_destpath
-
 genkernel_compile
 
 sed -i "/USE=\"\${USE} ${kernel_use} \"/d" ${clst_make_conf}
