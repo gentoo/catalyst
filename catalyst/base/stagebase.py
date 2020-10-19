@@ -1530,9 +1530,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             if not isinstance(myopts, str):
                 myopts = ' '.join(myopts)
-                self.env[kname + "_kernelopts"] = myopts
-            else:
-                self.env[kname + "_kernelopts"] = ""
+            self.env[kname + "_kernelopts"] = myopts
 
         key = 'boot/kernel/' + kname + '/extraversion'
         self.settings.setdefault(key, '')
