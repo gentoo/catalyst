@@ -193,9 +193,7 @@ then
 		rm -f ${clst_port_conf}/profile/package.provided
 	fi
 
-	[ -L /usr/src/linux ] && rm -f /usr/src/linux
-
-	run_merge "${ksource}"
+	USE=symlink run_merge "${ksource}"
 
 	SOURCESDIR="/tmp/kerncache/${kname}/sources"
 	if [ -L /usr/src/linux ]
@@ -225,12 +223,8 @@ then
 		fi
 	fi
 else
-	run_merge "${ksource}"
-	#ensure that there is a /usr/src/linux symlink and it points to the sources we just installed
-	echo "Adjusting /usr/src/linux to point to \
-$(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null)"
-	ln -snf $(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev/null | grep --color=never '/usr/src/' | head -n1 2>/dev/null) \
-		/usr/src/linux
+	USE=symlink run_merge "${ksource}"
+
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
 		echo "Setting extraversion to ${clst_kextraversion}"
