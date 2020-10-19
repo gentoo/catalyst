@@ -20,12 +20,6 @@ rmdir ${clst_target_path}/boot
 # Any post-processing necessary for each architecture can be done here.  This
 # may include things like sparc's elftoaout, x86's PXE boot, etc.
 case ${clst_hostarch} in
-	alpha)
-		sleep 0
-		;;
-	arm)
-		sleep 0
-		;;
 	hppa)
 		# Only one kernel should be there
 		kname=${clst_boot_kernel[0]}
@@ -51,12 +45,6 @@ case ${clst_hostarch} in
 			elftoaout ${clst_target_path}/kernels/${x} -o ${clst_target_path}/${x}-a.out
 			${piggyback} ${clst_target_path}/${x}-a.out ${clst_target_path}/kernels/misc/System-${x}.map ${clst_target_path}/kernels/misc/${x}.igz
 		done
-		;;
-	ia64)
-		sleep 0
-		;;
-	x86|amd64)
-		sleep 0
 		;;
 esac
 exit $?
