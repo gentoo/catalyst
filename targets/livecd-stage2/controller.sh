@@ -78,7 +78,6 @@ case $1 in
 			# Clean out man, info and doc files
 			rm -rf ${clst_chroot_path}/usr/share/{man,doc,info}/*
 		fi
-		rm -f ${clst_chroot_path}/tmp/packages.txt
 		;;
 
 	bootloader)
