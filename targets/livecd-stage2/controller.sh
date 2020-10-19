@@ -23,9 +23,6 @@ case $1 in
 		delete_from_chroot /tmp/linuxrc
 
 		extract_modules ${clst_chroot_path} ${kname}
-		#16:12 <@solar> kernel_name=foo
-		#16:13 <@solar> eval clst_boot_kernel_${kernel_name}_config=bar
-		#16:13 <@solar> eval echo \$clst_boot_kernel_${kernel_name}_config
 		;;
 
 	preclean)
