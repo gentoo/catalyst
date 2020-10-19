@@ -193,7 +193,7 @@ then
 		rm -f ${clst_port_conf}/profile/package.provided
 	fi
 
-	USE=symlink run_merge "${ksource}"
+	USE=symlink run_merge --update "${ksource}"
 
 	SOURCESDIR="/tmp/kerncache/${kname}/sources"
 	if [ -L /usr/src/linux ]
@@ -223,7 +223,7 @@ then
 		fi
 	fi
 else
-	USE=symlink run_merge "${ksource}"
+	USE=symlink run_merge --update "${ksource}"
 
 	if [ ! "${clst_kextraversion}" = "" ]
 	then
