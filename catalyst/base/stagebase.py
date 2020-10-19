@@ -330,9 +330,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("setup_target_path"):
             log.notice(
                 'Resume point detected, skipping target path setup operation...')
-        else:
-            self.resume.enable("setup_target_path")
-            ensure_dirs(self.settings["storedir"] + "/builds")
+            return
+
+        self.resume.enable("setup_target_path")
+        ensure_dirs(self.settings["storedir"] + "/builds")
 
     def set_fsscript(self):
         if self.settings["spec_prefix"] + "/fsscript" in self.settings:
@@ -808,18 +809,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("setup_confdir"):
             log.notice(
                 'Resume point detected, skipping setup_confdir operation...')
-        else:
-            if "portage_confdir" in self.settings:
-                log.info('Configuring %s...', self.settings['port_conf'])
-                dest = normpath(
-                    self.settings['chroot_path'] + '/' + self.settings['port_conf'])
-                ensure_dirs(dest)
-                # The trailing slashes on both paths are important:
-                # We want to make sure rsync copies the dirs into each
-                # other and not as subdirs.
-                cmd(['rsync', '-a', self.settings['portage_confdir'] + '/', dest + '/'],
-                    env=self.env)
-                self.resume.enable("setup_confdir")
+            return
+
+        if "portage_confdir" in self.settings:
+            log.info('Configuring %s...', self.settings['port_conf'])
+            dest = normpath(
+                self.settings['chroot_path'] + '/' + self.settings['port_conf'])
+            ensure_dirs(dest)
+            # The trailing slashes on both paths are important:
+            # We want to make sure rsync copies the dirs into each
+            # other and not as subdirs.
+            cmd(['rsync', '-a', self.settings['portage_confdir'] + '/', dest + '/'],
+                env=self.env)
+            self.resume.enable("setup_confdir")
 
     def portage_overlay(self):
         """ We copy the contents of our overlays to /usr/local/portage """
@@ -934,61 +936,62 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("chroot_setup"):
             log.notice(
                 'Resume point detected, skipping chroot_setup operation...')
-        else:
-            log.notice('Setting up chroot...')
+            return
 
-            shutil.copy('/etc/resolv.conf',
-                        self.settings['chroot_path'] + '/etc/')
+        log.notice('Setting up chroot...')
 
-            # Copy over the binary interpreter (qemu), if applicable; note that it's given
-            # as full path and goes to the same place in the chroot
-            if "interpreter" in self.settings:
-                    if not os.path.exists(self.settings["interpreter"]):
-                        raise CatalystError(
-                            "Can't find interpreter " +
-                            self.settings["interpreter"],
-                            print_traceback=True)
+        shutil.copy('/etc/resolv.conf',
+                    self.settings['chroot_path'] + '/etc/')
 
-                    log.notice('Copying binary interpreter %s into chroot',
-                               self.settings['interpreter'])
+        # Copy over the binary interpreter (qemu), if applicable; note that it's given
+        # as full path and goes to the same place in the chroot
+        if "interpreter" in self.settings:
+            if not os.path.exists(self.settings["interpreter"]):
+                raise CatalystError(
+                    "Can't find interpreter " +
+                    self.settings["interpreter"],
+                    print_traceback=True)
 
-                    if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter']):
-                        os.rename(
-                            self.settings['chroot_path'] +
-                            '/' + self.settings['interpreter'],
-                            self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst')
+            log.notice('Copying binary interpreter %s into chroot',
+                       self.settings['interpreter'])
 
-                    shutil.copy(self.settings['interpreter'],
-                                self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+            if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter']):
+                os.rename(
+                    self.settings['chroot_path'] +
+                    '/' + self.settings['interpreter'],
+                    self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst')
 
-            # Copy over the envscript, if applicable
-            if "envscript" in self.settings:
-                if not os.path.exists(self.settings["envscript"]):
-                    raise CatalystError(
-                        "Can't find envscript " + self.settings["envscript"],
-                        print_traceback=True)
+            shutil.copy(self.settings['interpreter'],
+                        self.settings['chroot_path'] + '/' + self.settings['interpreter'])
 
-                log.warning(
-                    'env variables in catalystrc may cause catastrophic failure.\n'
-                    'If your build fails look here first as the possible problem.')
+        # Copy over the envscript, if applicable
+        if "envscript" in self.settings:
+            if not os.path.exists(self.settings["envscript"]):
+                raise CatalystError(
+                    "Can't find envscript " + self.settings["envscript"],
+                    print_traceback=True)
 
-                shutil.copy(self.settings['envscript'],
-                            self.settings['chroot_path'] + '/tmp/envscript')
+            log.warning(
+                'env variables in catalystrc may cause catastrophic failure.\n'
+                'If your build fails look here first as the possible problem.')
 
-            # Copy over /etc/hosts from the host in case there are any
-            # specialties in there
-            hosts_file = self.settings['chroot_path'] + '/etc/hosts'
-            if os.path.exists(hosts_file):
-                os.rename(hosts_file, hosts_file + '.catalyst')
-                shutil.copy('/etc/hosts', hosts_file)
-            # write out the make.conf
-            try:
-                self.write_make_conf(setup=True)
-            except OSError as e:
-                raise CatalystError('Could not write %s: %s' % (
-                    normpath(self.settings["chroot_path"] +
-                             self.settings["make_conf"]), e))
-            self.resume.enable("chroot_setup")
+            shutil.copy(self.settings['envscript'],
+                        self.settings['chroot_path'] + '/tmp/envscript')
+
+        # Copy over /etc/hosts from the host in case there are any
+        # specialties in there
+        hosts_file = self.settings['chroot_path'] + '/etc/hosts'
+        if os.path.exists(hosts_file):
+            os.rename(hosts_file, hosts_file + '.catalyst')
+            shutil.copy('/etc/hosts', hosts_file)
+        # write out the make.conf
+        try:
+            self.write_make_conf(setup=True)
+        except OSError as e:
+            raise CatalystError('Could not write %s: %s' % (
+                normpath(self.settings["chroot_path"] +
+                         self.settings["make_conf"]), e))
+        self.resume.enable("chroot_setup")
 
     def write_make_conf(self, setup=True):
         # Modify and write out make.conf (for the chroot)
@@ -1097,22 +1100,24 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("fsscript"):
             log.notice('Resume point detected, skipping fsscript operation...')
-        else:
-            if "fsscript" in self.settings:
-                if os.path.exists(self.settings["controller_file"]):
-                    cmd([self.settings['controller_file'], 'fsscript'],
-                        env=self.env)
-                    self.resume.enable("fsscript")
+            return
+
+        if "fsscript" in self.settings:
+            if os.path.exists(self.settings["controller_file"]):
+                cmd([self.settings['controller_file'], 'fsscript'],
+                    env=self.env)
+                self.resume.enable("fsscript")
 
     def rcupdate(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("rcupdate"):
             log.notice('Resume point detected, skipping rcupdate operation...')
-        else:
-            if os.path.exists(self.settings["controller_file"]):
-                cmd([self.settings['controller_file'], 'rc-update'],
-                    env=self.env)
-                self.resume.enable("rcupdate")
+            return
+
+        if os.path.exists(self.settings["controller_file"]):
+            cmd([self.settings['controller_file'], 'rc-update'],
+                env=self.env)
+            self.resume.enable("rcupdate")
 
     def clean(self):
         if "autoresume" in self.settings["options"] \
@@ -1181,58 +1186,61 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("empty"):
             log.notice('Resume point detected, skipping empty operation...')
-        else:
-            if self.settings["spec_prefix"] + "/empty" in self.settings:
-                if isinstance(
-                        self.settings[self.settings['spec_prefix'] + '/empty'],
-                        str):
-                    self.settings[self.settings["spec_prefix"] + "/empty"] = \
-                        self.settings[self.settings["spec_prefix"] +
-                                      "/empty"].split()
-                for x in self.settings[self.settings["spec_prefix"] + "/empty"]:
-                    myemp = self.settings["destpath"] + x
-                    if not os.path.isdir(myemp) or os.path.islink(myemp):
-                        log.warning('not a directory or does not exist, '
-                                    'skipping "empty" operation: %s', x)
-                        continue
-                    log.info('Emptying directory %s', x)
-                    clear_dir(myemp)
-            self.resume.enable("empty")
+            return
+
+        if self.settings["spec_prefix"] + "/empty" in self.settings:
+            if isinstance(
+                    self.settings[self.settings['spec_prefix'] + '/empty'],
+                    str):
+                self.settings[self.settings["spec_prefix"] + "/empty"] = \
+                    self.settings[self.settings["spec_prefix"] +
+                                  "/empty"].split()
+            for x in self.settings[self.settings["spec_prefix"] + "/empty"]:
+                myemp = self.settings["destpath"] + x
+                if not os.path.isdir(myemp) or os.path.islink(myemp):
+                    log.warning('not a directory or does not exist, '
+                                'skipping "empty" operation: %s', x)
+                    continue
+                log.info('Emptying directory %s', x)
+                clear_dir(myemp)
+        self.resume.enable("empty")
 
     def remove(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("remove"):
             log.notice('Resume point detected, skipping remove operation...')
-        else:
-            if self.settings["spec_prefix"] + "/rm" in self.settings:
-                for x in self.settings[self.settings["spec_prefix"] + "/rm"]:
-                    # We're going to shell out for all these cleaning
-                    # operations, so we get easy glob handling.
-                    log.notice('%s: removing %s', self.settings["spec_prefix"], x)
-                    clear_path(self.settings["destpath"] + x)
-                try:
-                    if os.path.exists(self.settings["controller_file"]):
-                        cmd([self.settings['controller_file'], 'clean'],
-                            env=self.env)
-                        self.resume.enable("remove")
-                except:
-                    self.unbind()
-                    raise
+            return
+
+        if self.settings["spec_prefix"] + "/rm" in self.settings:
+            for x in self.settings[self.settings["spec_prefix"] + "/rm"]:
+                # We're going to shell out for all these cleaning
+                # operations, so we get easy glob handling.
+                log.notice('%s: removing %s', self.settings["spec_prefix"], x)
+                clear_path(self.settings["destpath"] + x)
+            try:
+                if os.path.exists(self.settings["controller_file"]):
+                    cmd([self.settings['controller_file'], 'clean'],
+                        env=self.env)
+                    self.resume.enable("remove")
+            except:
+                self.unbind()
+                raise
 
     def preclean(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("preclean"):
             log.notice('Resume point detected, skipping preclean operation...')
-        else:
-            try:
-                if os.path.exists(self.settings["controller_file"]):
-                    cmd([self.settings['controller_file'], 'preclean'],
-                        env=self.env)
-                    self.resume.enable("preclean")
+            return
 
-            except:
-                self.unbind()
-                raise CatalystError("Build failed, could not execute preclean")
+        try:
+            if os.path.exists(self.settings["controller_file"]):
+                cmd([self.settings['controller_file'], 'preclean'],
+                    env=self.env)
+                self.resume.enable("preclean")
+
+        except:
+            self.unbind()
+            raise CatalystError("Build failed, could not execute preclean")
 
     def capture(self):
         # initialize it here so it doesn't use
@@ -1245,56 +1253,58 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("capture"):
             log.notice('Resume point detected, skipping capture operation...')
+            return
+
+        log.notice('Capture target in a tarball')
+        # Remove filename from path
+        mypath = os.path.dirname(self.settings["target_path"].rstrip('/'))
+
+        # Now make sure path exists
+        ensure_dirs(mypath)
+
+        pack_info = self.compressor.create_infodict(
+            source=".",
+            basedir=self.settings["stage_path"],
+            filename=self.settings["target_path"].rstrip('/'),
+            mode=self.settings["compression_mode"],
+            auto_extension=True,
+            arch=self.settings["compressor_arch"],
+            other_options=self.settings["compressor_options"],
+        )
+        target_filename = ".".join([self.settings["target_path"].rstrip('/'),
+                                    self.compressor.extension(pack_info['mode'])])
+
+        log.notice('Creating stage tarball... mode: %s',
+                   self.settings['compression_mode'])
+
+        if self.compressor.compress(pack_info):
+            self.gen_contents_file(target_filename)
+            self.gen_digest_file(target_filename)
+            self.resume.enable("capture")
         else:
-            log.notice('Capture target in a tarball')
-            # Remove filename from path
-            mypath = os.path.dirname(self.settings["target_path"].rstrip('/'))
-
-            # Now make sure path exists
-            ensure_dirs(mypath)
-
-            pack_info = self.compressor.create_infodict(
-                source=".",
-                basedir=self.settings["stage_path"],
-                filename=self.settings["target_path"].rstrip('/'),
-                mode=self.settings["compression_mode"],
-                auto_extension=True,
-                arch=self.settings["compressor_arch"],
-                other_options=self.settings["compressor_options"],
-            )
-            target_filename = ".".join([self.settings["target_path"].rstrip('/'),
-                                        self.compressor.extension(pack_info['mode'])])
-
-            log.notice('Creating stage tarball... mode: %s',
-                       self.settings['compression_mode'])
-
-            if self.compressor.compress(pack_info):
-                self.gen_contents_file(target_filename)
-                self.gen_digest_file(target_filename)
-                self.resume.enable("capture")
-            else:
-                log.warning("Couldn't create stage tarball: %s",
-                            target_filename)
+            log.warning("Couldn't create stage tarball: %s",
+                        target_filename)
 
     def run_local(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("run_local"):
             log.notice('Resume point detected, skipping run_local operation...')
-        else:
-            try:
-                if os.path.exists(self.settings["controller_file"]):
-                    log.info('run_local() starting controller script...')
-                    cmd([self.settings['controller_file'], 'run'],
-                        env=self.env)
-                    self.resume.enable("run_local")
-                else:
-                    log.info('run_local() no controller_file found... %s',
-                             self.settings['controller_file'])
+            return
 
-            except CatalystError:
-                self.unbind()
-                raise CatalystError("Stage build aborting due to error.",
-                                    print_traceback=False)
+        try:
+            if os.path.exists(self.settings["controller_file"]):
+                log.info('run_local() starting controller script...')
+                cmd([self.settings['controller_file'], 'run'],
+                    env=self.env)
+                self.resume.enable("run_local")
+            else:
+                log.info('run_local() no controller_file found... %s',
+                         self.settings['controller_file'])
+
+        except CatalystError:
+            self.unbind()
+            raise CatalystError("Stage build aborting due to error.",
+                                print_traceback=False)
 
     def setup_environment(self):
         """
@@ -1390,63 +1400,67 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("unmerge"):
             log.notice('Resume point detected, skipping unmerge operation...')
-        else:
-            if self.settings["spec_prefix"] + "/unmerge" in self.settings:
-                if isinstance(self.settings[self.settings['spec_prefix'] + '/unmerge'], str):
-                    self.settings[self.settings["spec_prefix"] + "/unmerge"] = \
-                        [self.settings[self.settings["spec_prefix"] + "/unmerge"]]
+            return
 
-                # Before cleaning, unmerge stuff
-                try:
-                    cmd([self.settings['controller_file'], 'unmerge'] +
-                        self.settings[self.settings['spec_prefix'] + '/unmerge'],
-                        env=self.env)
-                    log.info('unmerge shell script')
-                except CatalystError:
-                    self.unbind()
-                    raise
-                self.resume.enable("unmerge")
+        if self.settings["spec_prefix"] + "/unmerge" in self.settings:
+            if isinstance(self.settings[self.settings['spec_prefix'] + '/unmerge'], str):
+                self.settings[self.settings["spec_prefix"] + "/unmerge"] = \
+                    [self.settings[self.settings["spec_prefix"] + "/unmerge"]]
+
+            # Before cleaning, unmerge stuff
+            try:
+                cmd([self.settings['controller_file'], 'unmerge'] +
+                    self.settings[self.settings['spec_prefix'] + '/unmerge'],
+                    env=self.env)
+                log.info('unmerge shell script')
+            except CatalystError:
+                self.unbind()
+                raise
+            self.resume.enable("unmerge")
 
     def target_setup(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("target_setup"):
             log.notice(
                 'Resume point detected, skipping target_setup operation...')
-        else:
-            log.notice('Setting up filesystems per filesystem type')
-            cmd([self.settings['controller_file'], 'target_image_setup',
-                 self.settings['target_path']], env=self.env)
-            self.resume.enable("target_setup")
+            return
+
+        log.notice('Setting up filesystems per filesystem type')
+        cmd([self.settings['controller_file'], 'target_image_setup',
+             self.settings['target_path']], env=self.env)
+        self.resume.enable("target_setup")
 
     def setup_overlay(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("setup_overlay"):
             log.notice(
                 'Resume point detected, skipping setup_overlay operation...')
-        else:
-            if self.settings["spec_prefix"] + "/overlay" in self.settings:
-                for x in self.settings[self.settings["spec_prefix"] + "/overlay"]:
-                    if os.path.exists(x):
-                        cmd(['rsync', '-a', x + '/', self.settings['target_path']],
-                            env=self.env)
-                self.resume.enable("setup_overlay")
+            return
+
+        if self.settings["spec_prefix"] + "/overlay" in self.settings:
+            for x in self.settings[self.settings["spec_prefix"] + "/overlay"]:
+                if os.path.exists(x):
+                    cmd(['rsync', '-a', x + '/', self.settings['target_path']],
+                        env=self.env)
+            self.resume.enable("setup_overlay")
 
     def create_iso(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("create_iso"):
             log.notice(
                 'Resume point detected, skipping create_iso operation...')
+            return
+
+        # Create the ISO
+        if "iso" in self.settings:
+            cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
+                env=self.env)
+            self.gen_contents_file(self.settings["iso"])
+            self.gen_digest_file(self.settings["iso"])
+            self.resume.enable("create_iso")
         else:
-            # Create the ISO
-            if "iso" in self.settings:
-                cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
-                    env=self.env)
-                self.gen_contents_file(self.settings["iso"])
-                self.gen_digest_file(self.settings["iso"])
-                self.resume.enable("create_iso")
-            else:
-                log.warning('livecd/iso was not defined.  '
-                            'An ISO Image will not be created.')
+            log.warning('livecd/iso was not defined.  '
+                        'An ISO Image will not be created.')
 
     def build_packages(self):
         build_packages_resume = pjoin(self.settings["autoresume_path"],
@@ -1455,29 +1469,30 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("build_packages"):
             log.notice(
                 'Resume point detected, skipping build_packages operation...')
-        else:
-            if self.settings["spec_prefix"] + "/packages" in self.settings:
-                target_pkgs = self.settings["spec_prefix"] + '/packages'
-                if "autoresume" in self.settings["options"] \
-                        and self.resume.is_enabled("build_packages"):
-                    log.notice('Resume point detected, skipping build_packages '
-                               'operation...')
+            return
+
+        if self.settings["spec_prefix"] + "/packages" in self.settings:
+            target_pkgs = self.settings["spec_prefix"] + '/packages'
+            if "autoresume" in self.settings["options"] \
+                    and self.resume.is_enabled("build_packages"):
+                log.notice('Resume point detected, skipping build_packages '
+                           'operation...')
+            else:
+                command = [self.settings['controller_file'],
+                           'build_packages']
+                if isinstance(self.settings[target_pkgs], str):
+                    command.append(self.settings[target_pkgs])
                 else:
-                    command = [self.settings['controller_file'],
-                               'build_packages']
-                    if isinstance(self.settings[target_pkgs], str):
-                        command.append(self.settings[target_pkgs])
-                    else:
-                        command.extend(self.settings[target_pkgs])
-                    try:
-                        cmd(command, env=self.env)
-                        fileutils.touch(build_packages_resume)
-                        self.resume.enable("build_packages")
-                    except CatalystError:
-                        self.unbind()
-                        raise CatalystError(
-                            self.settings["spec_prefix"] +
-                            "build aborting due to error.")
+                    command.extend(self.settings[target_pkgs])
+                try:
+                    cmd(command, env=self.env)
+                    fileutils.touch(build_packages_resume)
+                    self.resume.enable("build_packages")
+                except CatalystError:
+                    self.unbind()
+                    raise CatalystError(
+                        self.settings["spec_prefix"] +
+                        "build aborting due to error.")
 
     def build_kernel(self):
         '''Build all configured kernels'''
@@ -1485,23 +1500,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("build_kernel"):
             log.notice(
                 'Resume point detected, skipping build_kernel operation...')
-        else:
-            if "boot/kernel" in self.settings:
-                try:
-                    mynames = self.settings["boot/kernel"]
-                    if isinstance(mynames, str):
-                        mynames = [mynames]
-                    # Execute the script that sets up the kernel build environment
-                    cmd([self.settings['controller_file'], 'pre-kmerge'],
-                        env=self.env)
-                    for kname in mynames:
-                        self._build_kernel(kname=kname)
-                    self.resume.enable("build_kernel")
-                except CatalystError:
-                    self.unbind()
-                    raise CatalystError(
-                        "build aborting due to kernel build error.",
-                        print_traceback=True)
+            return
+
+        if "boot/kernel" in self.settings:
+            try:
+                mynames = self.settings["boot/kernel"]
+                if isinstance(mynames, str):
+                    mynames = [mynames]
+                # Execute the script that sets up the kernel build environment
+                cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
+                for kname in mynames:
+                    self._build_kernel(kname=kname)
+                self.resume.enable("build_kernel")
+            except CatalystError:
+                self.unbind()
+                raise CatalystError(
+                    "build aborting due to kernel build error.",
+                    print_traceback=True)
 
     def _build_kernel(self, kname):
         "Build a single configured kernel by name"
@@ -1579,31 +1594,33 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 and self.resume.is_enabled("bootloader"):
             log.notice(
                 'Resume point detected, skipping bootloader operation...')
-        else:
-            try:
-                cmd([self.settings['controller_file'], 'bootloader',
-                     self.settings['target_path'].rstrip('/')],
-                    env=self.env)
-                self.resume.enable("bootloader")
-            except CatalystError:
-                self.unbind()
-                raise CatalystError("Script aborting due to error.")
+            return
+
+        try:
+            cmd([self.settings['controller_file'], 'bootloader',
+                 self.settings['target_path'].rstrip('/')],
+                env=self.env)
+            self.resume.enable("bootloader")
+        except CatalystError:
+            self.unbind()
+            raise CatalystError("Script aborting due to error.")
 
     def livecd_update(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("livecd_update"):
             log.notice(
                 'Resume point detected, skipping build_packages operation...')
-        else:
-            try:
-                cmd([self.settings['controller_file'], 'livecd-update'],
-                    env=self.env)
-                self.resume.enable("livecd_update")
+            return
 
-            except CatalystError:
-                self.unbind()
-                raise CatalystError(
-                    "build aborting due to livecd_update error.")
+        try:
+            cmd([self.settings['controller_file'], 'livecd-update'],
+                env=self.env)
+            self.resume.enable("livecd_update")
+
+        except CatalystError:
+            self.unbind()
+            raise CatalystError(
+                "build aborting due to livecd_update error.")
 
     @staticmethod
     def _debug_pause_():
