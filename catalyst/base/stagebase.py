@@ -16,7 +16,8 @@ from DeComp.compress import CompressMap
 from catalyst import log
 from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
-                              cmd, read_makeconf, ismount, file_check)
+                              cmd, read_makeconf, ismount, file_check,
+                              sanitize_name)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
@@ -1314,10 +1315,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 for opt in self.settings[x]:
                     self.env['clst_' + opt.upper()] = "true"
                 continue
-            # Sanitize var names by doing "s|/-.|_|g"
-            varname = "clst_" + x.replace("/", "_")
-            varname = varname.replace("-", "_")
-            varname = varname.replace(".", "_")
+
+            varname = 'clst_' + sanitize_name(x)
+
             if isinstance(self.settings[x], str):
                 # Prefix to prevent namespace clashes
                 if "path" in x:

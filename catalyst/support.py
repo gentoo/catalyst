@@ -256,3 +256,12 @@ def normpath(mypath):
     if TrailingSlash:
         newpath = newpath+'/'
     return newpath
+
+
+def sanitize_name(name: str) -> str:
+    """
+    Normalize name by replacing [.-/] with _, so it may be used as a
+    variable name in bash
+    """
+    table = str.maketrans(".-/", "___")
+    return name.translate(table)
