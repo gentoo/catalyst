@@ -238,13 +238,7 @@ $(portageq contents / $(portageq best_visible / "${ksource}" 2>/dev/null) 2>/dev
 	fi
 fi
 
-# Update USE flag in make.conf
-[ -e ${clst_make_conf} ] && \
-	echo "USE=\"\${USE} ${kernel_use} build\"" >> ${clst_make_conf}
-
 genkernel_compile
-
-sed -i "/USE=\"\${USE} ${kernel_use} \"/d" ${clst_make_conf}
 
 if [ -n "${clst_KERNCACHE}" ]
 then
