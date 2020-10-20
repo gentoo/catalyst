@@ -4,7 +4,7 @@ source /tmp/chroot-functions.sh
 
 install -d /tmp/kerncache
 
-setup_gk_args() {
+genkernel_compile() {
 	# default genkernel args
 	GK_ARGS=(
 		"${kernel_gk_kernargs[@]}"
@@ -61,10 +61,6 @@ setup_gk_args() {
 	then
 		GK_ARGS+=(--loglevel=2)
 	fi
-}
-
-genkernel_compile(){
-	setup_gk_args
 
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
