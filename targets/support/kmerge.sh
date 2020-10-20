@@ -88,7 +88,6 @@ genkernel_compile() {
 }
 
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
-export CONFIG_PROTECT="-*"
 
 # Set the timezone for the kernel build
 rm /etc/localtime
