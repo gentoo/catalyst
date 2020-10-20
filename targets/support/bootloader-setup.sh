@@ -4,12 +4,8 @@ source ${clst_shdir}/support/functions.sh
 
 # $1 is the destination root
 
-if [ -n "${clst_cdtar}" ]
-then
+if [[ -n ${clst_cdtar} ]]; then
 	extract_cdtar $1
-else
-	#While this seems a little crazy, it's entirely possible the bootloader is just shoved in isoroot overlay
-	echo "No cdtar and unable to auto generate boot loader files... good luck"
 fi
 
 extract_kernels $1/boot
