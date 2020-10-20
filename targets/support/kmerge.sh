@@ -66,16 +66,6 @@ setup_gk_args() {
 genkernel_compile(){
 	setup_gk_args
 
-	# Build our list of kernel packages
-	case ${clst_livecd_type} in
-		gentoo-release-live*)
-			if [ -n "${kernel_merge}" ]
-			then
-				mkdir -p /usr/livecd
-				echo "${kernel_merge}" > /usr/livecd/kernelpkgs.txt
-			fi
-		;;
-	esac
 	# Build with genkernel using the set options
 	# callback is put here to avoid escaping issues
 	if [ -n "${clst_VERBOSE}" ]

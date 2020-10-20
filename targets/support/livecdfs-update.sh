@@ -296,18 +296,7 @@ case ${clst_livecd_type} in
 			ln -sf /usr/livecd/gconf /etc/gconf
 		fi
 
-		if [ -e /usr/livecd/kernelpkgs.txt ]
-		then
-			rm -f /usr/livecd/kernelpkgs.txt
-		fi
-
 		touch /etc/startx
-		;;
-	* )
-		if [ -e /usr/livecd/kernelpkgs.txt ]
-		then
-			rm -f /usr/livecd/kernelpkgs.txt
-		fi
 		;;
 esac
 
