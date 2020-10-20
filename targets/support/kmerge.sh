@@ -15,71 +15,51 @@ genkernel_compile() {
 		--minkernpackage=/tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
 	)
 	# extra genkernel options that we have to test for
-	if [ -n "${clst_gk_mainargs}" ]
-	then
+	if [[ -n ${clst_gk_mainargs} ]]; then
 		GK_ARGS+=(${clst_gk_mainargs})
 	fi
-	if [ -n "${clst_KERNCACHE}" ]
-	then
+	if [[ -n ${clst_KERNCACHE} ]]; then
 		GK_ARGS+=(--kerncache=/tmp/kerncache/${kname}-kerncache-${clst_version_stamp}.tar.bz2)
 	fi
-	if [ -e /var/tmp/${kname}.config ]
-	then
+	if [[ -e /var/tmp/${kname}.config ]]; then
 		GK_ARGS+=(--kernel-config=/var/tmp/${kname}.config)
 	fi
-
-	if [ -d "/tmp/initramfs_overlay/${initramfs_overlay}" ]
-	then
+	if [[ -d /tmp/initramfs_overlay/${initramfs_overlay} ]]; then
 		GK_ARGS+=(--initramfs-overlay=/tmp/initramfs_overlay/${initramfs_overlay})
 	fi
-	if [ -n "${clst_CCACHE}" ]
-	then
+	if [[ -n ${clst_CCACHE} ]]; then
 		GK_ARGS+=(--kernel-cc=/usr/lib/ccache/bin/gcc --utils-cc=/usr/lib/ccache/bin/gcc)
 	fi
-
-	if [ -n "${clst_linuxrc}" ]
-	then
+	if [[ -n ${clst_linuxrc} ]]; then
 		GK_ARGS+=(--linuxrc=/tmp/linuxrc)
 	fi
-
-	if [ -n "${clst_busybox_config}" ]
-	then
+	if [[ -n ${clst_busybox_config} ]]; then
 		GK_ARGS+=(--busybox-config=/tmp/busy-config)
 	fi
-
-	if [ "${clst_target}" == "netboot" ]
-	then
+	if [[ ${clst_target} == netboot ]]; then
 		GK_ARGS+=(--netboot)
 
-		if [ -n "${clst_merge_path}" ]
-		then
+		if [[ -n ${clst_merge_path} ]]; then
 			GK_ARGS+=(--initramfs-overlay="${clst_merge_path}")
 		fi
 	fi
-
-	if [ -n "${clst_VERBOSE}" ]
-	then
+	if [[ -n ${clst_VERBOSE} ]]; then
 		GK_ARGS+=(--loglevel=2)
 	fi
 
-	# Build with genkernel using the set options
-	# callback is put here to avoid escaping issues
-	if [ -n "${clst_VERBOSE}" ]
-	then
+	if [[ -n ${clst_VERBOSE} ]]; then
 		gk_callback_opts=(-vN)
 	else
 		gk_callback_opts=(-qN)
 	fi
-	if [ -n "${clst_KERNCACHE}" ]
-	then
+	if [[ -n ${clst_KERNCACHE} ]]; then
 		gk_callback_opts+=(-kb)
 	fi
-	if [ -n "${clst_FETCH}" ]
-	then
+	if [[ -n ${clst_FETCH} ]]; then
 		gk_callback_opts+=(-f)
 	fi
-	if [ "${kernel_merge}" != "" ]
-	then
+
+	if [[ -n ${kernel_merge} ]]; then
 		genkernel --callback="emerge ${gk_callback_opts[@]} ${kernel_merge}" \
 			"${GK_ARGS[@]}" || exit 1
 	else
