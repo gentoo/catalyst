@@ -85,11 +85,6 @@ genkernel_compile() {
 	else
 		genkernel "${GK_ARGS[@]}" || exit 1
 	fi
-	if [ -n "${clst_KERNCACHE}" -a -e /var/tmp/${kname}.config ]
-	then
-		md5sum /var/tmp/${kname}.config | awk '{print $1}' > \
-			/tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG
-	fi
 }
 
 [ -n "${clst_ENVSCRIPT}" ] && source /tmp/envscript
@@ -106,117 +101,69 @@ eval eval kernel_gk_kernargs=( \$clst_boot_kernel_${kname}_gk_kernargs )
 eval "ksource=\$clst_boot_kernel_${kname}_sources"
 [[ -z ${ksource} ]] && ksource="sys-kernel/gentoo-sources"
 
-# Check if we have a match in kerncach
+kernel_version=$(portageq best_visible / "${ksource}")
 
-if [ -n "${clst_KERNCACHE}" ]
-then
-	USE_MATCH=0
-	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE ]
-	then
-		STR1=$(for i in `cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE`; do echo $i; done|sort)
-		STR2=$(for i in ${kernel_use}; do echo $i; done|sort)
-		if [ "${STR1}" = "${STR2}" ]
-		then
-			USE_MATCH=1
-		else
-			[ -e /tmp/kerncache/${kname}/usr/src/linux/.config ] && \
-				rm /tmp/kerncache/${kname}/usr/src/linux/.config
-		fi
+if [[ -n ${clst_KERNCACHE} ]]; then
+	mkdir -p "/tmp/kerncache/${kname}"
+	pushd "/tmp/kerncache/${kname}" >/dev/null
+
+	echo "${kernel_use}" > /tmp/USE
+	echo "${kernel_version}" > /tmp/VERSION
+	echo "${clst_kextraversion}" > /tmp/EXTRAVERSION
+
+	if cmp -s {/tmp/,}USE && \
+	   cmp -s {/tmp/,}VERSION && \
+	   cmp -s {/tmp/,}EXTRAVERSION && \
+	   cmp -s /var/tmp/${kname}.config CONFIG; then
+		cached_kernel_found="true"
 	fi
 
-	EXTRAVERSION_MATCH=0
-	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION ]
-	then
-		STR1=`cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION`
-		STR2=${clst_kextraversion}
-		if [ "${STR1}" = "${STR2}" ]
-		then
-			EXTRAVERSION_MATCH=1
-		fi
-	fi
+	rm -f /tmp/{USE,VERSION,EXTRAVERSION}
+	popd >/dev/null
+fi
 
-	CONFIG_MATCH=0
-	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG ]
-	then
-		if [ ! -e /var/tmp/${kname}.config ]
-		then
-			CONFIG_MATCH=1
-		else
-			STR1=`cat /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.CONFIG`
-			STR2=`md5sum /var/tmp/${kname}.config|awk '{print $1}'`
-			if [ "${STR1}" = "${STR2}" ]
-			then
-				CONFIG_MATCH=1
-			fi
-		fi
-	fi
-
-	# install dependencies of kernel sources ahead of time in case
-	# package.provided generated below causes them not to be (re)installed
-	run_merge --onlydeps "${ksource}"
-
-	# Create the kerncache directory if it doesn't exists
-	mkdir -p /tmp/kerncache/${kname}
-
-	if [ -e /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION ]
-	then
-		KERNELVERSION=$(</tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION)
-		mkdir -p ${clst_port_conf}/profile
-		echo "${KERNELVERSION}" > ${clst_port_conf}/profile/package.provided
-	else
-		rm -f ${clst_port_conf}/profile/package.provided
-	fi
-
-	# Don't use package.provided if there's a pending up/downgrade
-	if [[ "$(portageq best_visible / ${ksource})" == "${KERNELVERSION}" ]]; then
-		echo "No pending updates for ${ksource}"
-	else
-		echo "Pending updates for ${ksource}, removing package.provided"
-		rm -f ${clst_port_conf}/profile/package.provided
-	fi
-
+if [[ ! ${cached_kernel_found} ]]; then
 	USE=symlink run_merge --update "${ksource}"
+fi
 
+if [[ -n ${clst_KERNCACHE} ]]; then
 	SOURCESDIR="/tmp/kerncache/${kname}/sources"
-	if [ -L /usr/src/linux ]
-	then
-		# A kernel was merged, move it to $SOURCESDIR
-		[ -e ${SOURCESDIR} ] && rm -Rf ${SOURCESDIR}
-
-		KERNELVERSION=`portageq best_visible / "${ksource}"`
-		echo "${KERNELVERSION}" > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.KERNELVERSION
-
+	if [[ ! ${cached_kernel_found} ]]; then
 		echo "Moving kernel sources to ${SOURCESDIR} ..."
-		mv `readlink -f /usr/src/linux` ${SOURCESDIR}
-	fi
-	ln -sf ${SOURCESDIR} /usr/src/linux
 
-	# If catalyst has set to a empty string, extraversion wasn't specified so we
-	# skip this part
-	if [ "${EXTRAVERSION_MATCH}" = "0" ]
-	then
-		if [ ! "${clst_kextraversion}" = "" ]
-		then
-			echo "Setting extraversion to ${clst_kextraversion}"
-			sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
-			echo ${clst_kextraversion} > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION
-		else
-			touch /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.EXTRAVERSION
-		fi
+		rm -rf "${SOURCESDIR}"
+		mv $(readlink -f /usr/src/linux) "${SOURCESDIR}"
 	fi
-else
-	USE=symlink run_merge --update "${ksource}"
+	ln -snf "${SOURCESDIR}" /usr/src/linux
+fi
 
-	if [ ! "${clst_kextraversion}" = "" ]
-	then
-		echo "Setting extraversion to ${clst_kextraversion}"
-		sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" /usr/src/linux/Makefile
+if [[ -n ${clst_kextraversion} ]]; then
+	echo "Setting EXTRAVERSION to ${clst_kextraversion}"
+
+	if [[ -e /usr/src/linux/Makefile.bak ]]; then
+		cp /usr/src/linux/Makefile{.bak,}
+	else
+		cp /usr/src/linux/Makefile{,.bak}
 	fi
+	sed -i -e "s:EXTRAVERSION \(=.*\):EXTRAVERSION \1-${clst_kextraversion}:" \
+		/usr/src/linux/Makefile
 fi
 
 genkernel_compile
 
-if [ -n "${clst_KERNCACHE}" ]
-then
-	echo ${kernel_use} > /tmp/kerncache/${kname}/${kname}-${clst_version_stamp}.USE
+# Write out CONFIG, USE, VERSION, and EXTRAVERSION files
+if [[ -n ${clst_KERNCACHE} && ! ${cached_kernel_found} ]]; then
+	pushd "/tmp/kerncache/${kname}" >/dev/null
+
+	cp /var/tmp/${kname}.config CONFIG
+	echo "${kernel_use}" > USE
+	echo "${kernel_version}" > VERSION
+	echo "${clst_kextraversion}" > EXTRAVERSION
+
+	popd >/dev/null
+fi
+
+if [[ ! ${cached_kernel_found} ]]; then
+	run_merge -C "${ksource}"
+	rm /usr/src/linux
 fi
