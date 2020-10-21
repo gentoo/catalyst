@@ -23,22 +23,22 @@ CHOST = "powerpc64-unknown-linux-gnu"
 USE = [ "altivec", "ibm",]
 
 [ppc64.power7]
-COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7"
 CHOST = "powerpc64-unknown-linux-gnu"
 USE = [ "altivec", "ibm",]
 
 [ppc64.power7le]
-COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7 -mabi=elfv2"
+COMMON_FLAGS = "-O2 -pipe -mcpu=power7 -mtune=power7"
 CHOST = "powerpc64le-unknown-linux-gnu"
 USE = [ "altivec", "ibm",]
 
 [ppc64.power8]
-COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8"
 CHOST = "powerpc64-unknown-linux-gnu"
 USE = [ "altivec", "ibm",]
 
 [ppc64.power8le]
-COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8 -mabi=elfv2"
+COMMON_FLAGS = "-O2 -pipe -mcpu=power8 -mtune=power8"
 CHOST = "powerpc64le-unknown-linux-gnu"
 USE = [ "altivec", "ibm",]
 
