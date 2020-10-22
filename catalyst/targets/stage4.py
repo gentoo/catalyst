@@ -57,7 +57,6 @@ class stage4(StageBase):
             "preclean",
             "rcupdate",
             "unmerge",
-            "unbind",
         ])
         self.finish_sequence.extend([
             "remove",

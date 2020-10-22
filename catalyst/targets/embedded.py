@@ -56,7 +56,6 @@ class embedded(StageBase):
             "root_overlay",
             "fsscript",
             "unmerge",
-            "unbind",
         ])
         self.finish_sequence.extend([
             "remove",

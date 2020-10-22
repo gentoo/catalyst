@@ -34,7 +34,6 @@ class livecd_stage1(StageBase):
             "chroot_setup",
             "setup_environment",
             "build_packages",
-            "unbind",
         ])
         self.finish_sequence.extend([
             "clean",

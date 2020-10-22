@@ -93,7 +93,6 @@ class netboot(StageBase):
                 cmd([self.settings['controller_file'], 'image'] +
                     myfiles, env=self.env)
             except CatalystError:
-                self.unbind()
                 raise CatalystError("Failed to copy files to image!",
                                     print_traceback=True)
 
@@ -121,7 +120,6 @@ class netboot(StageBase):
             cmd([self.settings['controller_file'], 'final'], env=self.env)
             log.notice('Netboot Build Finished!')
         except CatalystError:
-            self.unbind()
             raise CatalystError("Failed to move kernel images!",
                                 print_traceback=True)
 
@@ -178,7 +176,6 @@ class netboot(StageBase):
             "move_kernels",
             "remove",
             "empty",
-            "unbind",
         ])
         self.finish_sequence.extend([
             "clean",

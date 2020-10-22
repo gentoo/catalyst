@@ -80,7 +80,6 @@ class livecd_stage2(StageBase):
                     for x in self.settings["livecd/modblacklist"]:
                         myf.write("\nblacklist "+x)
             except:
-                self.unbind()
                 raise CatalystError("Couldn't open " +
                                     self.settings["chroot_path"] +
                                     "/etc/modprobe.d/blacklist.conf.",
@@ -109,7 +108,6 @@ class livecd_stage2(StageBase):
                 "fsscript",
                 "rcupdate",
                 "unmerge",
-                "unbind",
             ])
             self.finish_sequence.extend([
                 "remove",

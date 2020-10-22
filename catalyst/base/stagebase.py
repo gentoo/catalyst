@@ -498,7 +498,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "setup_environment",
             "run_local",
             "preclean",
-            "unbind",
         ])
         self.finish_sequence.extend([
             "clean",
@@ -853,39 +852,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                        fstype=fstype, options=options)
                 cxt.mount()
             except OSError as e:
-                self.unbind()
                 raise CatalystError(f"Couldn't mount: {source}, {e.strerror}")
-
-    def unbind(self):
-        chroot_path = self.settings["chroot_path"]
-        umount_failed = False
-
-        # Unmount in reverse order
-        for target in [Path(chroot_path + self.mount[x]['target'])
-                       for x in reversed(self.mount)
-                       if self.mount[x]['enable']]:
-            if not target.exists():
-                log.debug('%s does not exist. Skipping', target)
-                continue
-
-            if not ismount(target):
-                log.debug('%s is not a mount point. Skipping', target)
-                continue
-
-            try:
-                cxt = libmount.Context(target=str(target))
-                cxt.umount()
-            except OSError as e:
-                log.warning("Couldn't umount: %s, %s", target,
-                            e.strerror)
-                umount_failed = True
-
-        if umount_failed:
-            # if any bind mounts really failed, then we need to raise
-            # this to potentially prevent an upcoming bash stage cleanup script
-            # from wiping our bind mounts.
-            raise CatalystError(
-                "Couldn't umount one or more bind-mounts; aborting for safety.")
 
     def chroot_setup(self):
         self.makeconf = read_makeconf(normpath(self.settings["chroot_path"] +
@@ -1190,7 +1157,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                         env=self.env)
                     self.resume.enable("remove")
             except:
-                self.unbind()
                 raise
 
     def preclean(self):
@@ -1206,7 +1172,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 self.resume.enable("preclean")
 
         except:
-            self.unbind()
             raise CatalystError("Build failed, could not execute preclean")
 
     def capture(self):
@@ -1269,7 +1234,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                          self.settings['controller_file'])
 
         except CatalystError:
-            self.unbind()
             raise CatalystError("Stage build aborting due to error.",
                                 print_traceback=False)
 
@@ -1374,7 +1338,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     env=self.env)
                 log.info('unmerge shell script')
             except CatalystError:
-                self.unbind()
                 raise
             self.resume.enable("unmerge")
 
@@ -1449,7 +1412,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     fileutils.touch(build_packages_resume)
                     self.resume.enable("build_packages")
                 except CatalystError:
-                    self.unbind()
                     raise CatalystError(
                         self.settings["spec_prefix"] +
                         "build aborting due to error.")
@@ -1473,7 +1435,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self._build_kernel(kname=kname)
                 self.resume.enable("build_kernel")
             except CatalystError:
-                self.unbind()
                 raise CatalystError(
                     "build aborting due to kernel build error.",
                     print_traceback=True)
@@ -1517,7 +1478,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         key = 'boot/kernel/' + kname + '/config'
         if key in self.settings:
             if not os.path.exists(self.settings[key]):
-                self.unbind()
                 raise CatalystError("Can't find kernel config: %s" %
                                     self.settings[key])
 
@@ -1526,7 +1486,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                             self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
 
             except IOError:
-                self.unbind()
+                raise
 
     def _copy_initramfs_overlay(self, kname):
         key = 'boot/kernel/' + kname + '/initramfs_overlay'
@@ -1556,7 +1516,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 env=self.env)
             self.resume.enable("bootloader")
         except CatalystError:
-            self.unbind()
             raise CatalystError("Script aborting due to error.")
 
     def livecd_update(self):
@@ -1572,7 +1531,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.resume.enable("livecd_update")
 
         except CatalystError:
-            self.unbind()
             raise CatalystError(
                 "build aborting due to livecd_update error.")
 
