@@ -638,17 +638,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
             assert self.settings[verify] == "blake2"
             self.settings.setdefault("gk_mainargs", []).append("--b2sum")
 
-    def kill_chroot_pids(self):
-        log.info('Checking for processes running in chroot and killing them.')
-
-        # Force environment variables to be exported so script can see them
-        self.setup_environment()
-
-        killcmd = normpath(self.settings["sharedir"] +
-                           self.settings["shdir"] + "/support/kill-chroot-pids.sh")
-        if os.path.exists(killcmd):
-            cmd([killcmd], env=self.env)
-
     def mount_safety_check(self):
         """
         Check and verify that none of our paths in mypath are mounted. We don't
@@ -920,18 +909,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
             try:
                 cxt = libmount.Context(target=str(target))
                 cxt.umount()
-            except OSError:
-                log.warning('First attempt to unmount failed: %s', target)
-                log.warning('Killing any pids still running in the chroot')
-
-                self.kill_chroot_pids()
-
-                try:
-                    cxt.umount()
-                except OSError as e:
-                    umount_failed = True
-                    log.warning("Couldn't umount: %s, %s", target,
-                                e.strerror)
+            except OSError as e:
+                log.warning("Couldn't umount: %s, %s", target,
+                            e.strerror)
+                umount_failed = True
 
         if umount_failed:
             # if any bind mounts really failed, then we need to raise
@@ -1381,9 +1362,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def run(self):
         self.chroot_lock.write_lock()
-
-        # Kill any pids in the chroot
-        self.kill_chroot_pids()
 
         # Check for mounts right away and abort if we cannot unmount them
         self.mount_safety_check()
