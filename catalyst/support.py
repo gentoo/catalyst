@@ -8,6 +8,8 @@ import time
 from pathlib import Path
 from subprocess import Popen
 
+import libmount
+
 from catalyst import log
 
 BASH_BINARY = "/bin/bash"
@@ -182,15 +184,13 @@ def read_makeconf(mymakeconffile):
 
 def ismount(path):
     """Like os.path.ismount, but also support bind mounts"""
-    if os.path.ismount(path):
+    path = Path(path)
+    if path.is_mount():
         return True
 
-    a = os.popen("mount")
-    mylines = a.readlines()
-    a.close()
-    for line in mylines:
-        mysplit = line.split()
-        if Path(path) == Path(mysplit[2]):
+    cxt = libmount.Context()
+    while (fs := cxt.mtab.next_fs()) is not None:
+        if path == Path(fs.target):
             return True
 
     return False

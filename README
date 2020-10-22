@@ -17,7 +17,7 @@ simple and reproducable manner. Use at your own risk.
 Requirements
 =======================
 
-- Python 3.6 or greater
+- Python 3.8 or greater
 - A generic stage3 tarball for your architecture
 - A squashfs ebuild repository snapshot
   - Or an ebuild git repo with sys-fs/squashfs-tools-ng and dev-vcs/git
