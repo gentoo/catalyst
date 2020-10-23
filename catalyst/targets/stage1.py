@@ -36,7 +36,8 @@ class stage1(StageBase):
     def set_cleanables(self):
         StageBase.set_cleanables(self)
         self.settings["cleanables"].extend([
-            "/usr/share/zoneinfo", self.settings["port_conf"] + "/package*"])
+            self.settings["port_conf"] + "/package*",
+        ])
 
     # XXX: How do these override_foo() functions differ from the ones in StageBase and why aren't they in stage3_target?
     # XXY: It appears the difference is that these functions are actually doing something and the ones in stagebase don't :-(
