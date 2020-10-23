@@ -1132,16 +1132,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if os.path.exists(hosts_file + '.catalyst'):
             os.rename(hosts_file + '.catalyst', hosts_file)
 
-            # optionally clean up binary interpreter
-            if "interpreter" in self.settings:
-                    if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst'):
-                        os.rename(
-                            self.settings['chroot_path'] + '/' +
-                            self.settings['interpreter'] + '.catalyst',
-                            self.settings['chroot_path'] + '/' + self.settings['interpreter'])
-                    else:
-                        os.remove(
-                            self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+        # optionally clean up binary interpreter
+        if "interpreter" in self.settings:
+            if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst'):
+                os.rename(
+                    self.settings['chroot_path'] + '/' +
+                    self.settings['interpreter'] + '.catalyst',
+                    self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+            else:
+                os.remove(
+                    self.settings['chroot_path'] + '/' + self.settings['interpreter'])
 
         # optionally clean up portage configs
         if ("portage_prefix" in self.settings and
