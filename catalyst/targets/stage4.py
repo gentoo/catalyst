@@ -32,7 +32,11 @@ class stage4(StageBase):
         StageBase.__init__(self, spec, addlargs)
 
     def set_cleanables(self):
-        self.settings["cleanables"] = ["/var/tmp/*", "/tmp/*"]
+        StageBase.set_cleanables(self)
+
+        # We want to allow stage4's fsscript to generate a default
+        # /etc/resolv.conf
+        self.settings["cleanables"].remove('/etc/resolv.conf')
 
     def set_action_sequence(self):
         self.settings['action_sequence'] = [
