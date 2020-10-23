@@ -191,12 +191,13 @@ case ${clst_hostarch} in
 	amd64|ia64|ppc*|powerpc*|sparc*|x86)
 		isoroot_checksum
 
+		extra_opts=("-joliet")
 		case ${clst_hostarch} in
-		sparc*) extra_opts="--sparc-boot" ;;
+		sparc*) extra_opts+=("--sparc-boot") ;;
 		esac
 
 		echo ">> Running grub-mkrescue to create iso image...."
-		grub-mkrescue ${extra_opts} -o "${1}" "${clst_target_path}"
+		grub-mkrescue "${extra_opts[*]}" -o "${1}" "${clst_target_path}"
 	;;
 esac
 exit  $?
