@@ -1611,5 +1611,3 @@ class StageBase(TargetBase, ClearBase, GenBase):
     @staticmethod
     def _debug_pause_():
         input("press any key to continue: ")
-
-# vim: ts=4 sw=4 sta et sts=4 ai
