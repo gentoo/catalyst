@@ -24,6 +24,3 @@ class stage3(StageBase):
                 'Using an overlay for earlier stages could cause build issues.\n'
                 "If you break it, you buy it.  Don't complain to us about it.\n"
                 "Don't say we did not warn you.")
-
-    def set_cleanables(self):
-        StageBase.set_cleanables(self)
