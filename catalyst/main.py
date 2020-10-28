@@ -7,14 +7,13 @@ import textwrap
 
 import toml
 
-from snakeoil.process import namespaces
-
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
                                 CONTENTS_DEFINITIONS)
 from DeComp.contents import ContentsMap
 
 from catalyst import log
 import catalyst.config
+from catalyst.context import namespace
 from catalyst.defaults import (confdefaults, option_messages,
                                DEFAULT_CONFIG_FILE, valid_config_file_values)
 from catalyst.support import CatalystError
@@ -356,15 +355,13 @@ def _main(parser, opts):
     # use pid & user namespaces, but snakeoil's namespace module has signal
     # transfer issues (CTRL+C doesn't propagate), and user namespaces need
     # more work due to Gentoo build process (uses sudo/root/portage).
-    namespaces.simple_unshare(
-        mount=True, uts=True, ipc=True, pid=False, net=False, user=False,
-        hostname='catalyst')
+    with namespace(mount=True, uts=True, ipc=True, hostname='catalyst'):
+        # everything is setup, so the build is a go
+        try:
+            success = build_target(addlargs)
+        except KeyboardInterrupt:
+            log.critical('Catalyst build aborted due to user interrupt (Ctrl-C)')
 
-    # everything is setup, so the build is a go
-    try:
-        success = build_target(addlargs)
-    except KeyboardInterrupt:
-        log.critical('Catalyst build aborted due to user interrupt (Ctrl-C)')
     if not success:
         sys.exit(2)
     sys.exit(0)
