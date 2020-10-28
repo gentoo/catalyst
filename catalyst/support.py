@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import time
+from pathlib import Path
 from subprocess import Popen
 
 from catalyst import log
@@ -179,31 +180,20 @@ def read_makeconf(mymakeconffile):
         return makeconf
 
 
-def pathcompare(path1, path2):
-    # Change double slashes to slash
-    path1 = re.sub(r"//", r"/", path1)
-    path2 = re.sub(r"//", r"/", path2)
-    # Removing ending slash
-    path1 = re.sub("/$", "", path1)
-    path2 = re.sub("/$", "", path2)
-
-    if path1 == path2:
-        return 1
-    return 0
-
-
 def ismount(path):
     """Like os.path.ismount, but also support bind mounts"""
     if os.path.ismount(path):
-        return 1
+        return True
+
     a = os.popen("mount")
     mylines = a.readlines()
     a.close()
     for line in mylines:
         mysplit = line.split()
-        if pathcompare(path, mysplit[2]):
-            return 1
-    return 0
+        if Path(path) == Path(mysplit[2]):
+            return True
+
+    return False
 
 
 def addl_arg_parse(myspec, addlargs, requiredspec, validspec):
