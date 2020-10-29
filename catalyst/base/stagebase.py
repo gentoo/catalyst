@@ -64,7 +64,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "portage_overlay",
             "portage_prefix",
         ])
-        self.action_sequence = []
+        self.prepare_sequence = []
+        self.build_sequence = []
+        self.finish_sequence = []
 
         self.set_valid_build_kernel_vars(addlargs)
         TargetBase.__init__(self, myspec, addlargs)
@@ -478,36 +480,40 @@ class StageBase(TargetBase, ClearBase, GenBase):
         Or it calls the normal set_action_sequence() for the target stage.
         """
         if "purgeonly" in self.settings["options"]:
-            self.action_sequence.append("remove_chroot")
+            self.build_sequence.append("remove_chroot")
             return
         self.set_action_sequence()
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
-        self.action_sequence.extend([
+        self.prepare_sequence.extend([
             "unpack",
             "setup_confdir",
             "portage_overlay",
+        ])
+        self.build_sequence.extend([
             "bind",
             "chroot_setup",
             "setup_environment",
             "run_local",
             "preclean",
             "unbind",
+        ])
+        self.finish_sequence.extend([
             "clean",
         ])
         self.set_completion_action_sequences()
 
     def set_completion_action_sequences(self):
         if "fetch" not in self.settings["options"]:
-            self.action_sequence.append("capture")
+            self.finish_sequence.append("capture")
         if "keepwork" in self.settings["options"]:
-            self.action_sequence.append("clear_autoresume")
+            self.finish_sequence.append("clear_autoresume")
         elif "seedcache" in self.settings["options"]:
-            self.action_sequence.append("remove_autoresume")
+            self.finish_sequence.append("remove_autoresume")
         else:
-            self.action_sequence.append("remove_autoresume")
-            self.action_sequence.append("remove_chroot")
+            self.finish_sequence.append("remove_autoresume")
+            self.finish_sequence.append("remove_chroot")
 
     def set_use(self):
         use = self.settings["spec_prefix"] + "/use"
@@ -1381,7 +1387,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.purge()
 
         failure = False
-        for x in self.action_sequence:
+        for x in self.prepare_sequence + self.build_sequence + self.finish_sequence:
             log.notice('--- Running action sequence: %s', x)
             sys.stdout.flush()
             try:

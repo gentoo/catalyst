@@ -87,15 +87,15 @@ class stage1(StageBase):
         chroot for re-use in stage2 without the need to unpack it.
         '''
         if "fetch" not in self.settings["options"]:
-            self.action_sequence.append("capture")
+            self.finish_sequence.append("capture")
         if "keepwork" in self.settings["options"]:
-            self.action_sequence.append("clear_autoresume")
+            self.finish_sequence.append("clear_autoresume")
         elif "seedcache" in self.settings["options"]:
-            self.action_sequence.append("remove_autoresume")
-            self.action_sequence.append("clean_stage1")
+            self.finish_sequence.append("remove_autoresume")
+            self.finish_sequence.append("clean_stage1")
         else:
-            self.action_sequence.append("remove_autoresume")
-            self.action_sequence.append("remove_chroot")
+            self.finish_sequence.append("remove_autoresume")
+            self.finish_sequence.append("remove_chroot")
 
     def clean_stage1(self):
         '''seedcache is enabled, so salvage the /tmp/stage1root,
