@@ -23,7 +23,7 @@ class livecd_stage1(StageBase):
         StageBase.__init__(self, spec, addlargs)
 
     def set_action_sequence(self):
-        self.action_sequence = [
+        self.action_sequence.extend([
             "unpack",
             "config_profile_link",
             "setup_confdir",
@@ -34,7 +34,7 @@ class livecd_stage1(StageBase):
             "build_packages",
             "unbind",
             "clean",
-        ]
+        ])
         self.set_completion_action_sequences()
 
     def set_spec_prefix(self):

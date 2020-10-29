@@ -478,13 +478,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
         Or it calls the normal set_action_sequence() for the target stage.
         """
         if "purgeonly" in self.settings["options"]:
-            self.action_sequence = ["remove_chroot"]
+            self.action_sequence.append("remove_chroot")
             return
         self.set_action_sequence()
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
-        self.action_sequence = [
+        self.action_sequence.extend([
             "unpack",
             "setup_confdir",
             "portage_overlay",
@@ -495,7 +495,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "preclean",
             "unbind",
             "clean",
-        ]
+        ])
         self.set_completion_action_sequences()
 
     def set_completion_action_sequences(self):
