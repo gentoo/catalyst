@@ -355,7 +355,7 @@ def _main(parser, opts):
     # use pid & user namespaces, but snakeoil's namespace module has signal
     # transfer issues (CTRL+C doesn't propagate), and user namespaces need
     # more work due to Gentoo build process (uses sudo/root/portage).
-    with namespace(mount=True, uts=True, ipc=True, hostname='catalyst'):
+    with namespace(uts=True, ipc=True, hostname='catalyst'):
         # everything is setup, so the build is a go
         try:
             success = build_target(addlargs)

@@ -15,6 +15,7 @@ from snakeoil.osutils import pjoin
 from DeComp.compress import CompressMap
 
 from catalyst import log
+from catalyst.context import namespace
 from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
                               cmd, read_makeconf, ismount, file_check,
@@ -1405,9 +1406,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if not self.run_sequence(self.prepare_sequence):
             return False
 
-        if not self.run_sequence(self.build_sequence):
-            self.unbind()
-            return False
+        with namespace(mount=True):
+            if not self.run_sequence(self.build_sequence):
+                return False
 
         if not self.run_sequence(self.finish_sequence):
             return False
