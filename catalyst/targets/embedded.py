@@ -41,7 +41,7 @@ class embedded(StageBase):
         StageBase.__init__(self, spec, addlargs)
 
     def set_action_sequence(self):
-        self.settings['action_sequence'] = [
+        self.action_sequence = [
             "unpack",
             "config_profile_link",
             "setup_confdir",

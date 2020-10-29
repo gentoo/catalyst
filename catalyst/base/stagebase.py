@@ -64,6 +64,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "portage_overlay",
             "portage_prefix",
         ])
+        self.action_sequence = []
 
         self.set_valid_build_kernel_vars(addlargs)
         TargetBase.__init__(self, myspec, addlargs)
@@ -477,13 +478,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
         Or it calls the normal set_action_sequence() for the target stage.
         """
         if "purgeonly" in self.settings["options"]:
-            self.settings["action_sequence"] = ["remove_chroot"]
+            self.action_sequence = ["remove_chroot"]
             return
         self.set_action_sequence()
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
-        self.settings['action_sequence'] = [
+        self.action_sequence = [
             "unpack",
             "setup_confdir",
             "portage_overlay",
@@ -499,14 +500,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def set_completion_action_sequences(self):
         if "fetch" not in self.settings["options"]:
-            self.settings["action_sequence"].append("capture")
+            self.action_sequence.append("capture")
         if "keepwork" in self.settings["options"]:
-            self.settings["action_sequence"].append("clear_autoresume")
+            self.action_sequence.append("clear_autoresume")
         elif "seedcache" in self.settings["options"]:
-            self.settings["action_sequence"].append("remove_autoresume")
+            self.action_sequence.append("remove_autoresume")
         else:
-            self.settings["action_sequence"].append("remove_autoresume")
-            self.settings["action_sequence"].append("remove_chroot")
+            self.action_sequence.append("remove_autoresume")
+            self.action_sequence.append("remove_chroot")
 
     def set_use(self):
         use = self.settings["spec_prefix"] + "/use"
@@ -1380,7 +1381,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.purge()
 
         failure = False
-        for x in self.settings["action_sequence"]:
+        for x in self.action_sequence:
             log.notice('--- Running action sequence: %s', x)
             sys.stdout.flush()
             try:
