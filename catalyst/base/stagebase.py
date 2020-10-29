@@ -1362,6 +1362,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         log.debug('setup_environment(); env = %r', self.env)
 
+    def run_sequence(self, sequence):
+        for func in sequence:
+            log.notice('--- Running action sequence: %s', func)
+            sys.stdout.flush()
+            try:
+                getattr(self, func)()
+            except LockInUse:
+                log.error('Unable to aquire the lock...')
+                return False
+            except Exception:
+                log.error('Exception running action sequence %s',
+                          func, exc_info=True)
+                return False
+
+        return True
+
     def run(self):
         self.chroot_lock.write_lock()
 
@@ -1386,26 +1402,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.info('StageBase: run() purge')
             self.purge()
 
-        failure = False
-        for x in self.prepare_sequence + self.build_sequence + self.finish_sequence:
-            log.notice('--- Running action sequence: %s', x)
-            sys.stdout.flush()
-            try:
-                getattr(self, x)()
-            except LockInUse:
-                log.error('Unable to aquire the lock...')
-                failure = True
-                break
-            except Exception:
-                log.error('Exception running action sequence %s',
-                          x, exc_info=True)
-                failure = True
-                break
+        if not self.run_sequence(self.prepare_sequence):
+            return False
 
-        if failure:
-            log.notice('Cleaning up... Running unbind()')
+        if not self.run_sequence(self.build_sequence):
             self.unbind()
             return False
+
+        if not self.run_sequence(self.finish_sequence):
+            return False
+
         return True
 
     def unmerge(self):
