@@ -638,39 +638,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             assert self.settings[verify] == "blake2"
             self.settings.setdefault("gk_mainargs", []).append("--b2sum")
 
-    def mount_safety_check(self):
-        """
-        Check and verify that none of our paths in mypath are mounted. We don't
-        want to clean up with things still mounted, and this allows us to check.
-        Returns 1 on ok, 0 on "something is still mounted" case.
-        """
-
-        if not os.path.exists(self.settings["chroot_path"]):
-            return
-
-        log.debug('self.mount = %s', self.mount)
-        for x in [x for x in self.mount if self.mount[x]['enable']]:
-            target = normpath(self.settings['chroot_path'] +
-                              self.mount[x]['target'])
-            log.debug('mount_safety_check() x = %s %s', x, target)
-            if not os.path.exists(target):
-                continue
-
-            if ismount(target):
-                # Something is still mounted
-                try:
-                    log.warning(
-                        '%s is still mounted; performing auto-bind-umount...', target)
-                    # Try to umount stuff ourselves
-                    self.unbind()
-                    if ismount(target):
-                        raise CatalystError("Auto-unbind failed for " + target)
-                    log.notice('Auto-unbind successful...')
-                except CatalystError:
-                    raise CatalystError("Unable to auto-unbind " + target)
-
     def unpack(self):
-
         clst_unpack_hash = self.resume.get("unpack")
 
         # Set up all unpack info settings
@@ -755,8 +723,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     % self.settings["source_path"])
 
         if _unpack:
-            self.mount_safety_check()
-
             if invalid_chroot:
                 if "autoresume" in self.settings["options"]:
                     log.notice(
@@ -1362,9 +1328,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def run(self):
         self.chroot_lock.write_lock()
-
-        # Check for mounts right away and abort if we cannot unmount them
-        self.mount_safety_check()
 
         if "clear-autoresume" in self.settings["options"]:
             self.clear_autoresume()
