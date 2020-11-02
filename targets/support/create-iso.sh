@@ -197,7 +197,7 @@ case ${clst_hostarch} in
 		esac
 
 		echo ">> Running grub-mkrescue to create iso image...."
-		grub-mkrescue "${extra_opts[*]}" -o "${1}" "${clst_target_path}"
+		grub-mkrescue "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
 	;;
 esac
 exit  $?
