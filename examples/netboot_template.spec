@@ -6,8 +6,9 @@ profile: uclibc/mips
 snapshot: 20060107
 source_subpath: default/stage3-mips-uclibc-mips3-2006.126
 
-# This option specifies the location to a portage overlay that you would like to
-# have used when building this target.
+# This option specifies the location of the ebuild repositories that you would
+# like to have used when building this target. It takes a space-separated list
+# of directory names.
 # example:
 # portage_overlay: /usr/local/portage
 portage_overlay:

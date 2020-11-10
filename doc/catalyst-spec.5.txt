@@ -81,8 +81,9 @@ This is an optional directory containing portage configuration files
 problems.
 
 *portage_overlay*::
-This option specifies the location to a portage overlay that you would
-like to use when building this target (example: `/usr/local/portage`).
+This option specifies the location of the ebuild repositories that you would
+like to have used when building this target. It takes a space-separated list
+of directory names. (example: `/usr/local/portage`).
 
 *pkgcache_path*::
 This allows the optional directory containing the output packages for

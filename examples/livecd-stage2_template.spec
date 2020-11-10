@@ -52,8 +52,9 @@ source_subpath:
 # portage_confdir: /etc/portage
 portage_confdir:
 
-# This option specifies the location to a portage overlay that you would like to
-# have used when building this target.
+# This option specifies the location of the ebuild repositories that you would
+# like to have used when building this target. It takes a space-separated list
+# of directory names.
 # example:
 # portage_overlay: /usr/local/portage
 portage_overlay:
