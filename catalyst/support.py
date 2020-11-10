@@ -10,6 +10,8 @@ from subprocess import Popen
 
 import libmount
 
+from portage.repository.config import RepoConfig
+
 from catalyst import log
 
 BASH_BINARY = "/bin/bash"
@@ -180,6 +182,22 @@ def read_makeconf(mymakeconffile):
     else:
         makeconf = {}
         return makeconf
+
+
+def get_repo_name(repo_path):
+    """ Get the name of the repo at the given repo_path.
+
+         References:
+         https://wiki.gentoo.org/wiki/Repository_format/profiles/repo_name
+         https://wiki.gentoo.org/wiki/Repository_format/metadata/layout.conf#repo-name
+    """
+
+    repo_config = RepoConfig(None, {"location": repo_path})
+
+    if repo_config.missing_repo_name:
+        raise CatalystError(f"Missing name in repository {repo_path}")
+
+    return repo_config.name
 
 
 def ismount(path):

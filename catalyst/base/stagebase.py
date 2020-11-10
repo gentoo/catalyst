@@ -1,4 +1,5 @@
 
+import configparser
 import copy
 import os
 import platform
@@ -19,8 +20,8 @@ from catalyst import log
 from catalyst.context import namespace
 from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
-                              cmd, read_makeconf, ismount, file_check,
-                              sanitize_name)
+                              cmd, read_makeconf, get_repo_name, ismount,
+                              file_check, sanitize_name)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
@@ -786,17 +787,55 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 env=self.env)
             self.resume.enable("setup_confdir")
 
+    def to_chroot(self, path):
+        """ Prepend chroot path to the given path. """
+
+        chroot = Path(self.settings['chroot_path'])
+        return chroot / path.relative_to(path.anchor)
+
+    def get_repo_conf_path(self, repo_name):
+        """ Construct repo conf path: {repos_conf}/{name}.conf """
+        return Path(self.settings['repos_conf'], repo_name + ".conf")
+
+    def get_repo_location(self, repo_name):
+        """ Construct overlay repo path: {repo_basedir}/{name} """
+        return Path(self.settings['repo_basedir'], repo_name)
+
+    def write_repo_conf(self, repo_name, config):
+        """ Write ConfigParser to {chroot}/{repos_conf}/{name}.conf """
+
+        repo_conf = self.get_repo_conf_path(repo_name)
+
+        repo_conf_chroot = self.to_chroot(repo_conf)
+        repo_conf_chroot.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+
+        log.info(f'Creating repo config {repo_conf_chroot}.')
+
+        try:
+            with open(repo_conf_chroot, 'w') as f:
+                config.write(f)
+        except OSError as e:
+            raise CatalystError(f'Could not write {repo_conf_chroot}: {e}') from e
+
     def portage_overlay(self):
-        """ We copy the contents of our overlays to /usr/local/portage """
+        """ We copy the contents of our repos to get_repo_location(repo_name) """
         if "portage_overlay" in self.settings:
             for x in self.settings["portage_overlay"]:
                 if os.path.exists(x):
-                    log.info('Copying overlay dir %s', x)
-                    ensure_dirs(
-                        self.settings['chroot_path'] + self.settings['local_overlay'])
-                    cmd("cp -a " + x + "/* " + self.settings["chroot_path"] +
-                        self.settings["local_overlay"],
-                        env=self.env)
+                    name = get_repo_name(x)
+
+                    location = self.get_repo_location(name)
+                    config = configparser.ConfigParser()
+                    config[name] = {'location': location}
+                    self.write_repo_conf(name, config)
+
+                    location_chroot = self.to_chroot(location)
+                    location_chroot.mkdir(mode=0o755, parents=True, exist_ok=True)
+
+                    log.info(f'Copying overlay dir {x} to {location_chroot}')
+                    cmd(f'cp -a {x}/* {location_chroot}', env=self.env)
+                else:
+                    log.warning(f'Skipping missing overlay {x}.')
 
     def root_overlay(self):
         """ Copy over the root_overlay """
@@ -852,8 +891,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 cxt = libmount.Context(source=source, target=target,
                                        fstype=fstype, options=options)
                 cxt.mount()
-            except OSError as e:
-                raise CatalystError(f"Couldn't mount: {source}, {e.strerror}")
+            except Exception as e:
+                raise CatalystError(f"Couldn't mount: {source}, {e}")
 
     def chroot_setup(self):
         self.makeconf = read_makeconf(normpath(self.settings["chroot_path"] +
@@ -1018,12 +1057,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     varname = x.split('_')[1].upper()
                     myf.write(f'{varname}="{self.settings[x]}"\n')
 
-            if setup:
-                # Setup the portage overlay
-                if "portage_overlay" in self.settings:
-                    myf.write('PORTDIR_OVERLAY="%s"\n' %
-                              self.settings["local_overlay"])
-
             # Set default locale for system responses. #478382
             myf.write(
                 '\n'
@@ -1097,11 +1130,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.warning("You've been hacking. Clearing target patches: %s", target)
             clear_path(target)
 
-        # Remove our overlay
-        overlay = normpath(
-            self.settings["chroot_path"] + self.settings["local_overlay"])
-        if os.path.exists(overlay):
-            clear_path(overlay)
+        # Remove our overlays
+        if "portage_overlay" in self.settings:
+            for repo_path in self.settings["portage_overlay"]:
+                repo_name = get_repo_name(repo_path)
+
+                repo_conf = self.get_repo_conf_path(repo_name)
+                chroot_repo_conf = self.to_chroot(repo_conf)
+                chroot_repo_conf.unlink()
+
+                location = self.get_repo_location(repo_name)
+                chroot_location = self.to_chroot(location)
+                clear_path(str(chroot_location))
 
         if "sticky-config" not in self.settings["options"]:
             # re-write the make.conf to be sure it is clean
