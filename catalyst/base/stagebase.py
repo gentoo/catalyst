@@ -1,4 +1,5 @@
 
+import copy
 import os
 import platform
 import shutil
@@ -187,7 +188,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             file_locate(self.settings, ["portage_confdir"], expand=0)
 
         # Setup our mount points.
-        self.mount = MOUNT_DEFAULTS.copy()
+        self.mount = copy.deepcopy(MOUNT_DEFAULTS)
 
         self.mount['portdir']['source'] = self.snapshot
         self.mount['portdir']['target'] = self.settings['repo_basedir'] + '/' + self.settings['repo_name']

@@ -1,4 +1,5 @@
 import argparse
+import copy
 import datetime
 import hashlib
 import os
@@ -19,7 +20,7 @@ from catalyst.defaults import (confdefaults, option_messages,
 from catalyst.support import CatalystError
 from catalyst.version import get_version
 
-conf_values = confdefaults
+conf_values = copy.deepcopy(confdefaults)
 
 
 def version():
