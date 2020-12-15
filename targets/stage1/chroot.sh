@@ -2,8 +2,13 @@
 
 source /tmp/chroot-functions.sh
 
-# We do this first, so we know our package list for --debug
-buildpkgs=($(/tmp/build.py))
+for module_path in /usr/lib/*/site-packages/portage/__init__.py; do
+	# Find the python interpreter
+	interpreter=$(echo $module_path | cut -d/ -f4)
+
+	buildpkgs=($($interpreter /tmp/build.py 2>/dev/null))
+	[[ $? == 0 ]] && break
+done
 
 ## Sanity check profile
 if [[ ${#buildpkgs[@]} -eq 0 ]]; then
