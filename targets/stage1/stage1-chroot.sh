@@ -5,12 +5,6 @@ source /tmp/chroot-functions.sh
 # We do this first, so we know our package list for --debug
 buildpkgs=($(/tmp/build.py))
 
-# Setup our environment
-[ -n "${clst_BINDIST}" ] && BINDIST="bindist"
-BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
-
-FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
-
 ## Sanity check profile
 if [[ ${#buildpkgs[@]} -eq 0 ]]; then
 	echo "Your profile seems to be broken."
@@ -18,6 +12,12 @@ if [[ ${#buildpkgs[@]} -eq 0 ]]; then
 	echo "Double check your ${clst_port_conf}/make.profile link and the 'packages' files."
 	exit 1
 fi
+
+# Setup our environment
+[ -n "${clst_BINDIST}" ] && BINDIST="bindist"
+BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
+
+FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 # We need to ensure the base stage3 has USE="bindist"
 # if BINDIST is set to avoid issues with openssl / openssh
