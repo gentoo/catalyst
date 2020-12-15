@@ -3,7 +3,7 @@
 source /tmp/chroot-functions.sh
 
 # We do this first, so we know our package list for --debug
-buildpkgs="$(/tmp/build.py)"
+buildpkgs=($(/tmp/build.py))
 
 # Setup our environment
 [ -n "${clst_BINDIST}" ] && BINDIST="bindist"
@@ -12,8 +12,7 @@ BOOTSTRAP_USE="$(portageq envvar BOOTSTRAP_USE)"
 FEATURES="${clst_myfeatures} nodoc noman noinfo -news"
 
 ## Sanity check profile
-if [ -z "${buildpkgs}" ]
-then
+if [[ ${#buildpkgs[@]} -eq 0 ]]; then
 	echo "Your profile seems to be broken."
 	echo "Could not build a list of build packages."
 	echo "Double check your ${clst_port_conf}/make.profile link and the 'packages' files."
@@ -72,7 +71,7 @@ if [ -e ${clst_make_conf} ]; then
 	done
 fi
 
-run_merge "--oneshot ${buildpkgs}"
+run_merge "--oneshot ${buildpkgs[@]}"
 
 # TODO: Drop this when locale-gen in stable glibc supports ROOT.
 #
