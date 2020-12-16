@@ -9,7 +9,6 @@ from portage.util import grabfile_package, stack_lists
 # this loads files from the profiles ...
 # wrap it here to take care of the different
 # ways portage handles stacked profiles
-# last case is for portage-2.1_pre*
 
 
 def scan_profile(path):
