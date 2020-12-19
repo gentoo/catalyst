@@ -78,7 +78,7 @@ if [ -e ${clst_make_conf} ]; then
 	done
 fi
 
-run_merge --oneshot "${buildpkgs[@]}"
+run_merge --implicit-system-deps=n --oneshot "${buildpkgs[@]}"
 
 # TODO: Drop this when locale-gen in stable glibc supports ROOT.
 #
