@@ -154,7 +154,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_source_path()
         self.set_chroot_path()
         self.set_autoresume_path()
-        self.set_dest_path()
         self.set_stage_path()
         self.set_target_path()
 
@@ -425,13 +424,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self.settings["source_path_hash"] = \
                         self.generate_hash(self.settings["source_path"], "sha1")
         log.notice('Source path set to %s', self.settings['source_path'])
-
-    def set_dest_path(self):
-        if "root_path" in self.settings:
-            self.settings["destpath"] = normpath(self.settings["chroot_path"] +
-                                                 self.settings["root_path"])
-        else:
-            self.settings["destpath"] = normpath(self.settings["chroot_path"])
 
     def set_cleanables(self):
         self.settings['cleanables'] = [
@@ -845,7 +837,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                    "/root_overlay"]:
                 if os.path.exists(x):
                     log.info('Copying root_overlay: %s', x)
-                    cmd(['rsync', '-a', x + '/', self.settings['destpath']],
+                    cmd(['rsync', '-a', x + '/', self.settings['stage_path']],
                         env=self.env)
 
     def bind(self):
@@ -1095,7 +1087,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         else:
             for x in self.settings["cleanables"]:
                 log.notice('Cleaning chroot: %s', x)
-                clear_path(normpath(self.settings["destpath"] + x))
+                clear_path(normpath(self.settings["stage_path"] + x))
 
         # Put /etc/hosts back into place
         hosts_file = self.settings['chroot_path'] + '/etc/hosts'
@@ -1119,14 +1111,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.debug("clean(), portage_preix = %s, no sticky-config",
                       self.settings["portage_prefix"])
             for _dir in "package.accept_keywords", "package.keywords", "package.mask", "package.unmask", "package.use", "package.env", "env":
-                target = pjoin(self.settings["destpath"],
+                target = pjoin(self.settings["stage_path"],
                                "etc/portage/%s" % _dir,
                                self.settings["portage_prefix"])
                 log.notice("Clearing portage_prefix target: %s", target)
                 clear_path(target)
 
         # Remove hacks that should *never* go into stages
-        target = pjoin(self.settings["destpath"], "etc/portage/patches")
+        target = pjoin(self.settings["stage_path"], "etc/portage/patches")
         if os.path.exists(target):
             log.warning("You've been hacking. Clearing target patches: %s", target)
             clear_path(target)
@@ -1172,7 +1164,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self.settings[self.settings["spec_prefix"] +
                                   "/empty"].split()
             for x in self.settings[self.settings["spec_prefix"] + "/empty"]:
-                myemp = self.settings["destpath"] + x
+                myemp = self.settings["stage_path"] + x
                 if not os.path.isdir(myemp) or os.path.islink(myemp):
                     log.warning('not a directory or does not exist, '
                                 'skipping "empty" operation: %s', x)
@@ -1192,7 +1184,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 # We're going to shell out for all these cleaning
                 # operations, so we get easy glob handling.
                 log.notice('%s: removing %s', self.settings["spec_prefix"], x)
-                clear_path(self.settings["destpath"] + x)
+                clear_path(self.settings["stage_path"] + x)
             try:
                 if os.path.exists(self.settings["controller_file"]):
                     cmd([self.settings['controller_file'], 'clean'],
