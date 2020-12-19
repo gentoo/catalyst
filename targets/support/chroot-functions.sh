@@ -60,7 +60,7 @@ setup_features() {
 	if [ -n "${clst_CCACHE}" ]
 	then
 		features+=(ccache)
-		clst_root_path=/ run_merge --oneshot --noreplace dev-util/ccache
+		ROOT=/ run_merge --oneshot --noreplace dev-util/ccache
 	fi
 
 	if [ -n "${clst_DISTCC}" ]
@@ -75,9 +75,9 @@ setup_features() {
 		# reinstall if it isn't found.
 		if [ "$(getent passwd distcc | cut -d: -f1)" != "distcc" ]
 		then
-			clst_root_path=/ run_merge --oneshot sys-devel/distcc
+			ROOT=/ run_merge --oneshot sys-devel/distcc
 		else
-			clst_root_path=/ run_merge --oneshot --noreplace sys-devel/distcc
+			ROOT=/ run_merge --oneshot --noreplace sys-devel/distcc
 		fi
 		sed -i '/USE="${USE} -avahi -gtk -gnome"/d' ${clst_make_conf}
 		mkdir -p /etc/distcc
@@ -96,7 +96,7 @@ setup_features() {
 
 	if [ -n "${clst_ICECREAM}" ]
 	then
-		clst_root_path=/ run_merge --oneshot --noreplace sys-devel/icecream
+		ROOT=/ run_merge --oneshot --noreplace sys-devel/icecream
 
 		# This sets up automatic cross-icecc-fu according to
 		# http://www.gentoo-wiki.info/HOWTO_Setup_An_ICECREAM_Compile_Cluster
@@ -193,7 +193,6 @@ cleanup_icecream() {
 }
 
 cleanup_stages() {
-	make_destpath
 	if [ -n "${clst_DISTCC}" ]
 	then
 		cleanup_distcc
@@ -238,26 +237,7 @@ die() {
 	exit 1
 }
 
-make_destpath() {
-	# ROOT is / by default, so remove any ROOT= settings from make.conf
-	sed -i '/ROOT=/d' ${clst_make_conf}
-	export ROOT=/
-	if [ "${1}" != "/" -a -n "${1}" ]
-	then
-		echo "ROOT=\"${1}\"" >> ${clst_make_conf}
-		export ROOT=${1}
-	fi
-	if [ ! -d ${ROOT} ]
-	then
-		install -d ${ROOT}
-	fi
-}
-
 run_merge() {
-	# Sets up the ROOT= parameter
-	# with no options ROOT=/
-	make_destpath ${clst_root_path}
-
 	export EMERGE_WARNING_DELAY=0
 	export CLEAN_DELAY=0
 	[[ $CONFIG_PROTECT != "-*"* ]] && export CONFIG_PROTECT="-*"
@@ -265,12 +245,12 @@ run_merge() {
 	if [ -n "${clst_VERBOSE}" ]
 	then
 		echo "ROOT=${ROOT} emerge ${emerge_opts[@]} -pt $@" || exit 1
-		emerge ${emerge_opts[@]} -pt $@ || exit 3
+		ROOT="$ROOT" emerge ${emerge_opts[@]} -pt $@ || exit 3
 	fi
 
 	echo "emerge ${emerge_opts[@]} $@" || exit 1
 
-	emerge ${emerge_opts[@]} $@ || exit 1
+	ROOT="$ROOT" emerge ${emerge_opts[@]} $@ || exit 1
 }
 
 show_debug() {

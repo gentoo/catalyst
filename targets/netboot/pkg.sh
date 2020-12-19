@@ -10,4 +10,4 @@ show_debug
 
 # START BUILD
 
-run_merge ${clst_packages}
+ROOT="$ROOT" run_merge ${clst_packages}

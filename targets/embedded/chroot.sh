@@ -2,14 +2,11 @@
 
 source /tmp/chroot-functions.sh
 
-# Setup the environment
-export DESTROOT="${clst_root_path}"
-export clst_root_path="/"
+echo "Installing dependencies..."
+ROOT=/ run_merge -o "${clst_embedded_packages}"
 
-echo "Installing dependencies into ${DESTROOT}..."
-run_merge -o "${clst_embedded_packages}"
+export ROOT="${clst_root_path}"
+mkdir -p "$ROOT"
 
-export clst_root_path="${DESTROOT}"
-export INSTALL_MASK="${clst_install_mask}"
-
-run_merge -1 -O "${clst_embedded_packages}"
+INSTALL_MASK="${clst_install_mask}" \
+	run_merge -1 -O "${clst_embedded_packages}"

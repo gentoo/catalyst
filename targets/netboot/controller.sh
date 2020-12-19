@@ -6,7 +6,7 @@ case ${1} in
 	build_packages)
 		echo ">>> Building packages ..."
 		shift
-		clst_root_path="/" \
+		ROOT="/" \
 		clst_packages="$*" \
 		exec_in_chroot \
 		${clst_shdir}/${clst_target}/pkg.sh

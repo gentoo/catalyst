@@ -33,9 +33,9 @@ if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
-			clst_root_path=/ run_merge --buildpkg=n "${clst_update_seed_command}"
+			ROOT=/ run_merge --buildpkg=n "${clst_update_seed_command}"
 		else
-			clst_root_path=/ run_merge --update --deep --newuse --complete-graph --rebuild-if-new-ver gcc
+			ROOT=/ run_merge --update --deep --newuse --complete-graph --rebuild-if-new-ver gcc
 		fi
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
@@ -50,7 +50,9 @@ fi
 
 # Clear USE
 [ -e ${clst_make_conf} ] && sed -i -e "/^USE=\"${BINDIST} ${USE}\"/d" ${clst_make_conf}
-make_destpath "${clst_root_path}"
+
+export ROOT="${clst_root_path}"
+mkdir -p "$ROOT"
 
 ## START BUILD
 # First, we drop in a known-good baselayout
@@ -59,7 +61,7 @@ run_merge --oneshot --nodeps sys-apps/baselayout
 sed -i "/USE=\"${USE} -build\"/d" ${clst_make_conf}
 
 echo "$locales" > /etc/locale.gen
-for etc in /etc "${clst_root_path}"/etc; do
+for etc in /etc "$ROOT"/etc; do
 	echo "LANG=C.UTF8" > ${etc}/env.d/02locale
 done
 update_env_settings
@@ -84,7 +86,7 @@ run_merge --oneshot "${buildpkgs[@]}"
 # not run locale-gen when ROOT is set. Since we've set LANG, we need to run
 # locale-gen explicitly.
 if [ -x "$(command -v locale-gen)" ]; then
-	locale-gen --destdir "${clst_root_path}"/ || die "locale-gen failed"
+	locale-gen --destdir "$ROOT"/ || die "locale-gen failed"
 fi
 
 # Why are we removing these? Don't we need them for final make.conf?

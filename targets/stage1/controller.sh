@@ -10,8 +10,8 @@ case "$1" in
 		cp "${clst_shdir}/stage1/build.py" "${clst_chroot_path}/tmp"
 
 		# Setup "ROOT in chroot" dir
-		install -d "${clst_chroot_path}/${clst_root_path}/etc"
-		install -d "${clst_chroot_path}/${clst_root_path}${clst_port_conf}"
+		install -d "${clst_stage_path}/etc"
+		install -d "${clst_stage_path}/${clst_port_conf}"
 
 		# Setup make.conf and make.profile link in "ROOT in chroot":
 		copy_to_chroot "${clst_chroot_path}${clst_make_conf}" "${clst_root_path}${clst_port_conf}"
