@@ -545,7 +545,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.settings["catalyst_use"].append("bindist")
 
     def set_stage_path(self):
-        self.settings["stage_path"] = normpath(self.settings["chroot_path"])
+        self.settings["stage_path"] = normpath(self.settings["chroot_path"] +
+                                               self.settings["root_path"])
 
     def set_packages(self):
         pass
