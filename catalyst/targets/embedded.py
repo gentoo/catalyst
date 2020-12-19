@@ -65,11 +65,6 @@ class embedded(StageBase):
             "clear_autoresume",
         ])
 
-    def set_stage_path(self):
-        self.settings["stage_path"] = normpath(
-            self.settings["chroot_path"]+"/tmp/mergeroot")
-        log.info('embedded stage path is %s', self.settings['stage_path'])
-
     def set_root_path(self):
         self.settings["root_path"] = normpath("/tmp/mergeroot")
         log.info('embedded root path is %s', self.settings['root_path'])

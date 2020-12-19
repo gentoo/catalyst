@@ -23,11 +23,6 @@ class stage1(StageBase):
     def __init__(self, spec, addlargs):
         StageBase.__init__(self, spec, addlargs)
 
-    def set_stage_path(self):
-        self.settings["stage_path"] = normpath(
-            self.settings["chroot_path"]+self.settings["root_path"])
-        log.notice('stage1 stage path is %s', self.settings['stage_path'])
-
     def set_root_path(self):
         # sets the root path, relative to 'chroot_path', of the stage1 root
         self.settings["root_path"] = normpath("/tmp/stage1root")
