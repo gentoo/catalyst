@@ -30,6 +30,23 @@ from catalyst.fileops import ensure_dirs, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
 
+def run_sequence(sequence):
+    for func in sequence:
+        log.notice('--- Running action sequence: %s', func.__name__)
+        sys.stdout.flush()
+        try:
+            func()
+        except LockInUse:
+            log.error('Unable to aquire the lock...')
+            return False
+        except Exception:
+            log.error('Exception running action sequence %s',
+                      func.__name__, exc_info=True)
+            return False
+
+    return True
+
+
 class StageBase(TargetBase, ClearBase, GenBase):
     """
     This class does all of the chroot setup, copying of files, etc. It is
@@ -475,39 +492,39 @@ class StageBase(TargetBase, ClearBase, GenBase):
         Or it calls the normal set_action_sequence() for the target stage.
         """
         if "purgeonly" in self.settings["options"]:
-            self.build_sequence.append("remove_chroot")
+            self.build_sequence.append(self.remove_chroot)
             return
         self.set_action_sequence()
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
         self.prepare_sequence.extend([
-            "unpack",
-            "setup_confdir",
-            "portage_overlay",
+            self.unpack,
+            self.setup_confdir,
+            self.portage_overlay,
         ])
         self.build_sequence.extend([
-            "bind",
-            "chroot_setup",
-            "setup_environment",
-            "run_local",
-            "preclean",
+            self.bind,
+            self.chroot_setup,
+            self.setup_environment,
+            self.run_local,
+            self.preclean,
         ])
         self.finish_sequence.extend([
-            "clean",
+            self.clean,
         ])
         self.set_completion_action_sequences()
 
     def set_completion_action_sequences(self):
         if "fetch" not in self.settings["options"]:
-            self.finish_sequence.append("capture")
+            self.finish_sequence.append(self.capture)
         if "keepwork" in self.settings["options"]:
-            self.finish_sequence.append("clear_autoresume")
+            self.finish_sequence.append(self.clear_autoresume)
         elif "seedcache" in self.settings["options"]:
-            self.finish_sequence.append("remove_autoresume")
+            self.finish_sequence.append(self.remove_autoresume)
         else:
-            self.finish_sequence.append("remove_autoresume")
-            self.finish_sequence.append("remove_chroot")
+            self.finish_sequence.append(self.remove_autoresume)
+            self.finish_sequence.append(self.remove_chroot)
 
     def set_use(self):
         use = self.settings["spec_prefix"] + "/use"
@@ -1308,22 +1325,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         log.debug('setup_environment(); env = %r', self.env)
 
-    def run_sequence(self, sequence):
-        for func in sequence:
-            log.notice('--- Running action sequence: %s', func)
-            sys.stdout.flush()
-            try:
-                getattr(self, func)()
-            except LockInUse:
-                log.error('Unable to aquire the lock...')
-                return False
-            except Exception:
-                log.error('Exception running action sequence %s',
-                          func, exc_info=True)
-                return False
-
-        return True
-
     def run(self):
         self.chroot_lock.write_lock()
 
@@ -1342,14 +1343,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.info('StageBase: run() purge')
             self.purge()
 
-        if not self.run_sequence(self.prepare_sequence):
+        if not run_sequence(self.prepare_sequence):
             return False
 
         with namespace(mount=True):
-            if not self.run_sequence(self.build_sequence):
+            if not run_sequence(self.build_sequence):
                 return False
 
-        if not self.run_sequence(self.finish_sequence):
+        if not run_sequence(self.finish_sequence):
             return False
 
         return True

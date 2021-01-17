@@ -24,19 +24,19 @@ class livecd_stage1(StageBase):
 
     def set_action_sequence(self):
         self.prepare_sequence.extend([
-            "unpack",
-            "config_profile_link",
-            "setup_confdir",
-            "portage_overlay",
+            self.unpack,
+            self.config_profile_link,
+            self.setup_confdir,
+            self.portage_overlay,
         ])
         self.build_sequence.extend([
-            "bind",
-            "chroot_setup",
-            "setup_environment",
-            "build_packages",
+            self.bind,
+            self.chroot_setup,
+            self.setup_environment,
+            self.build_packages,
         ])
         self.finish_sequence.extend([
-            "clean",
+            self.clean,
         ])
         self.set_completion_action_sequences()
 
