@@ -84,7 +84,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "portage_overlay",
             "portage_prefix",
         ])
-        self.prepare_sequence = []
+        self.prepare_sequence = [
+            self.unpack,
+            self.config_profile_link,
+            self.setup_confdir,
+            self.portage_overlay,
+        ]
         self.build_sequence = []
         self.finish_sequence = []
 
@@ -498,12 +503,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
-        self.prepare_sequence.extend([
-            self.unpack,
-            self.config_profile_link,
-            self.setup_confdir,
-            self.portage_overlay,
-        ])
         self.build_sequence.extend([
             self.bind,
             self.chroot_setup,

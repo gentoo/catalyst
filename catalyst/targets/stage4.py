@@ -39,12 +39,6 @@ class stage4(StageBase):
         self.settings["cleanables"].remove('/etc/resolv.conf')
 
     def set_action_sequence(self):
-        self.prepare_sequence.extend([
-            self.unpack,
-            self.config_profile_link,
-            self.setup_confdir,
-            self.portage_overlay,
-        ])
         self.build_sequence.extend([
             self.bind,
             self.chroot_setup,

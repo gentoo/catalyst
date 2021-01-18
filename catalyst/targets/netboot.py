@@ -158,12 +158,6 @@ class netboot(StageBase):
         self.resume.enable("empty")
 
     def set_action_sequence(self):
-        self.prepare_sequence.extend([
-            self.unpack,
-            self.config_profile_link,
-            self.setup_confdir,
-            self.portage_overlay,
-        ])
         self.build_sequence.extend([
             self.bind,
             self.chroot_setup,
