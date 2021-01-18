@@ -40,9 +40,6 @@ class stage4(StageBase):
 
     def set_action_sequence(self):
         self.build_sequence.extend([
-            self.bind,
-            self.chroot_setup,
-            self.setup_environment,
             self.build_packages,
             self.build_kernel,
             self.bootloader,

@@ -87,9 +87,6 @@ class livecd_stage2(StageBase):
 
     def set_action_sequence(self):
         self.build_sequence.extend([
-            self.bind,
-            self.chroot_setup,
-            self.setup_environment,
             self.run_local,
             self.build_kernel
         ])

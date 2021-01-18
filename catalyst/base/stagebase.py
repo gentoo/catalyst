@@ -90,7 +90,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.setup_confdir,
             self.portage_overlay,
         ]
-        self.build_sequence = []
+        self.build_sequence = [
+            self.bind,
+            self.chroot_setup,
+            self.setup_environment,
+        ]
         self.finish_sequence = []
 
         self.set_valid_build_kernel_vars(addlargs)
@@ -497,16 +501,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
         Or it calls the normal set_action_sequence() for the target stage.
         """
         if "purgeonly" in self.settings["options"]:
-            self.build_sequence.append(self.remove_chroot)
+            self.build_sequence = [self.remove_chroot]
             return
         self.set_action_sequence()
 
     def set_action_sequence(self):
         """Set basic stage1, 2, 3 action sequences"""
         self.build_sequence.extend([
-            self.bind,
-            self.chroot_setup,
-            self.setup_environment,
             self.run_local,
             self.preclean,
         ])
