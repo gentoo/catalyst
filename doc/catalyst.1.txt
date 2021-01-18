@@ -39,6 +39,9 @@ configuration file is installed at '/etc/catalyst/catalyst.conf'.
 *-d*::
 Enable debugging mode
 
+*--enter-chroot*::
+Enter the chroot before starting the build.
+
 *--fetchonly*::
 *-F*::
 This tells *catalyst* to only fetch distfiles for the given packages without

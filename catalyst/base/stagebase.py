@@ -20,7 +20,7 @@ from catalyst import log
 from catalyst.context import namespace
 from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
 from catalyst.support import (CatalystError, file_locate, normpath,
-                              cmd, read_makeconf, get_repo_name, ismount,
+                              cmd, command, read_makeconf, get_repo_name,
                               file_check, sanitize_name)
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
@@ -95,6 +95,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.chroot_setup,
             self.setup_environment,
         ]
+        if 'enter-chroot' in self.settings['options']:
+            self.build_sequence.append(self.enter_chroot)
+
         self.finish_sequence = []
 
         self.set_valid_build_kernel_vars(addlargs)
@@ -1325,6 +1328,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.env['MAKEOPTS'] = ' '.join(makeopts)
 
         log.debug('setup_environment(); env = %r', self.env)
+
+    def enter_chroot(self):
+        chroot = command('chroot')
+        bash = command('bash')
+
+        log.notice("Entering chroot")
+        try:
+            cmd([chroot, self.settings['chroot_path'], bash, '-l'],
+                env=self.env)
+        except CatalystError:
+            pass
 
     def run(self):
         self.chroot_lock.write_lock()

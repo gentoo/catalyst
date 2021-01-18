@@ -120,6 +120,8 @@ def get_parser():
     parser.add_argument('-V', '--version',
                         action='version', version=get_version(),
                         help='display version information')
+    parser.add_argument('--enter-chroot', default=False, action='store_true',
+                        help='Enter chroot before starting the build')
 
     group = parser.add_argument_group('Program output options')
     group.add_argument('-d', '--debug',
@@ -293,6 +295,8 @@ def _main(parser, opts):
         options.append('purgetmponly')
     if opts.clear_autoresume:
         options.append('clear-autoresume')
+    if opts.enter_chroot:
+        options.append('enter-chroot')
 
     # Make sure we have some work before moving further.
     if not myspecfile and not mycmdline:
