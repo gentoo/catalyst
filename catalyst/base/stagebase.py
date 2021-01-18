@@ -500,6 +500,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         """Set basic stage1, 2, 3 action sequences"""
         self.prepare_sequence.extend([
             self.unpack,
+            self.config_profile_link,
             self.setup_confdir,
             self.portage_overlay,
         ])
@@ -771,7 +772,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         log.info('Configuring profile link...')
         make_profile = Path(self.settings['chroot_path'] + self.settings['port_conf'],
                             'make.profile')
-        make_profile.unlink()
+        make_profile.unlink(missing_ok=True)
         make_profile.symlink_to(Path('../..' + self.settings['repo_basedir'],
                                      self.settings['repo_name'],
                                      'profiles',
