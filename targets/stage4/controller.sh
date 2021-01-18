@@ -2,8 +2,6 @@
 
 source ${clst_shdir}/support/functions.sh
 
-# Only put commands in this section that you want every target to execute.
-# This is a global default file and will affect every target
 case $1 in
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
