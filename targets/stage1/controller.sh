@@ -3,9 +3,6 @@
 source "${clst_shdir}/support/functions.sh"
 
 case "$1" in
-	enter)
-	;;
-
 	run)
 		cp "${clst_shdir}/stage1/build.py" "${clst_chroot_path}/tmp"
 

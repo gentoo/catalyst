@@ -3,9 +3,6 @@
 source ${clst_shdir}/support/functions.sh
 
 case ${1} in
-	enter)
-	;;
-
 	build_packages)
 		shift
 		export clst_packages="$*"
