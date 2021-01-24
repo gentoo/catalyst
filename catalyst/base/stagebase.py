@@ -823,7 +823,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         repo_conf_chroot = self.to_chroot(repo_conf)
         repo_conf_chroot.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
 
-        log.info(f'Creating repo config {repo_conf_chroot}.')
+        log.info('Creating repo config %s.', repo_conf_chroot)
 
         try:
             with open(repo_conf_chroot, 'w') as f:
@@ -846,10 +846,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     location_chroot = self.to_chroot(location)
                     location_chroot.mkdir(mode=0o755, parents=True, exist_ok=True)
 
-                    log.info(f'Copying overlay dir {x} to {location_chroot}')
+                    log.info('Copying overlay dir %s to %s', x, location_chroot)
                     cmd(f'cp -a {x}/* {location_chroot}', env=self.env)
                 else:
-                    log.warning(f'Skipping missing overlay {x}.')
+                    log.warning('Skipping missing overlay %s.', x)
 
     def root_overlay(self):
         """ Copy over the root_overlay """
