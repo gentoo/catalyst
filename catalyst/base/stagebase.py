@@ -906,7 +906,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                        fstype=fstype, options=options)
                 cxt.mount()
             except Exception as e:
-                raise CatalystError(f"Couldn't mount: {source}, {e}")
+                raise CatalystError(f"Couldn't mount: {source}, {e}") from e
 
     def chroot_setup(self):
         self.makeconf = read_makeconf(normpath(self.settings["chroot_path"] +
@@ -978,7 +978,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         except OSError as e:
             raise CatalystError('Could not write %s: %s' % (
                 normpath(self.settings["chroot_path"] +
-                         self.settings["make_conf"]), e))
+                         self.settings["make_conf"]), e)) from e
         self.resume.enable("chroot_setup")
 
     def write_make_conf(self, setup=True):
@@ -1206,13 +1206,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 # operations, so we get easy glob handling.
                 log.notice('%s: removing %s', self.settings["spec_prefix"], x)
                 clear_path(self.settings["stage_path"] + x)
-            try:
-                if os.path.exists(self.settings["controller_file"]):
-                    cmd([self.settings['controller_file'], 'clean'],
-                        env=self.env)
-                    self.resume.enable("remove")
-            except:
-                raise
+
+            if os.path.exists(self.settings["controller_file"]):
+                cmd([self.settings['controller_file'], 'clean'],
+                    env=self.env)
+                self.resume.enable("remove")
 
     def preclean(self):
         if "autoresume" in self.settings["options"] \
@@ -1278,19 +1276,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.notice('Resume point detected, skipping run_local operation...')
             return
 
-        try:
-            if os.path.exists(self.settings["controller_file"]):
-                log.info('run_local() starting controller script...')
-                cmd([self.settings['controller_file'], 'run'],
-                    env=self.env)
-                self.resume.enable("run_local")
-            else:
-                log.info('run_local() no controller_file found... %s',
-                         self.settings['controller_file'])
-
-        except CatalystError:
-            raise CatalystError("Stage build aborting due to error.",
-                                print_traceback=False)
+        if os.path.exists(self.settings["controller_file"]):
+            log.info('run_local() starting controller script...')
+            cmd([self.settings['controller_file'], 'run'],
+                env=self.env)
+            self.resume.enable("run_local")
+        else:
+            log.info('run_local() no controller_file found... %s',
+                     self.settings['controller_file'])
 
     def setup_environment(self):
         log.debug('setup_environment(); settings = %r', self.settings)
@@ -1382,13 +1375,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     [self.settings[self.settings["spec_prefix"] + "/unmerge"]]
 
             # Before cleaning, unmerge stuff
-            try:
-                cmd([self.settings['controller_file'], 'unmerge'] +
-                    self.settings[self.settings['spec_prefix'] + '/unmerge'],
-                    env=self.env)
-                log.info('unmerge shell script')
-            except CatalystError:
-                raise
+            cmd([self.settings['controller_file'], 'unmerge'] +
+                self.settings[self.settings['spec_prefix'] + '/unmerge'],
+                env=self.env)
+            log.info('unmerge shell script')
             self.resume.enable("unmerge")
 
     def target_setup(self):
@@ -1457,14 +1447,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     command.append(self.settings[target_pkgs])
                 else:
                     command.extend(self.settings[target_pkgs])
-                try:
-                    cmd(command, env=self.env)
-                    fileutils.touch(build_packages_resume)
-                    self.resume.enable("build_packages")
-                except CatalystError:
-                    raise CatalystError(
-                        self.settings["spec_prefix"] +
-                        "build aborting due to error.")
+                cmd(command, env=self.env)
+                fileutils.touch(build_packages_resume)
+                self.resume.enable("build_packages")
 
     def build_kernel(self):
         '''Build all configured kernels'''
@@ -1475,19 +1460,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
             return
 
         if "boot/kernel" in self.settings:
-            try:
-                mynames = self.settings["boot/kernel"]
-                if isinstance(mynames, str):
-                    mynames = [mynames]
-                # Execute the script that sets up the kernel build environment
-                cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
-                for kname in [sanitize_name(name) for name in mynames]:
-                    self._build_kernel(kname=kname)
-                self.resume.enable("build_kernel")
-            except CatalystError:
-                raise CatalystError(
-                    "build aborting due to kernel build error.",
-                    print_traceback=True)
+            mynames = self.settings["boot/kernel"]
+            if isinstance(mynames, str):
+                mynames = [mynames]
+            # Execute the script that sets up the kernel build environment
+            cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
+            for kname in [sanitize_name(name) for name in mynames]:
+                self._build_kernel(kname=kname)
+            self.resume.enable("build_kernel")
 
     def _build_kernel(self, kname):
         "Build a single configured kernel by name"
@@ -1531,12 +1511,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 raise CatalystError("Can't find kernel config: %s" %
                                     self.settings[key])
 
-            try:
-                shutil.copy(self.settings[key],
-                            self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
-
-            except IOError:
-                raise
+            shutil.copy(self.settings[key],
+                        self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
 
     def _copy_initramfs_overlay(self, kname):
         key = 'boot/kernel/' + kname + '/initramfs_overlay'
@@ -1560,13 +1536,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 'Resume point detected, skipping bootloader operation...')
             return
 
-        try:
-            cmd([self.settings['controller_file'], 'bootloader',
-                 self.settings['target_path'].rstrip('/')],
-                env=self.env)
-            self.resume.enable("bootloader")
-        except CatalystError:
-            raise CatalystError("Script aborting due to error.")
+        cmd([self.settings['controller_file'], 'bootloader',
+             self.settings['target_path'].rstrip('/')],
+            env=self.env)
+        self.resume.enable("bootloader")
 
     def livecd_update(self):
         if "autoresume" in self.settings["options"] \
@@ -1575,14 +1548,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 'Resume point detected, skipping build_packages operation...')
             return
 
-        try:
-            cmd([self.settings['controller_file'], 'livecd-update'],
-                env=self.env)
-            self.resume.enable("livecd_update")
-
-        except CatalystError:
-            raise CatalystError(
-                "build aborting due to livecd_update error.")
+        cmd([self.settings['controller_file'], 'livecd-update'],
+            env=self.env)
+        self.resume.enable("livecd_update")
 
     @staticmethod
     def _debug_pause_():

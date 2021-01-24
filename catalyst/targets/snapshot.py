@@ -73,7 +73,7 @@ class snapshot(TargetBase):
         except subprocess.CalledProcessError as e:
             raise CatalystError(f'{e.cmd} failed with return code'
                                 f'{e.returncode}\n'
-                                f'{e.output}\n')
+                                f'{e.output}\n') from e
 
     def run(self):
         if self.settings['snapshot_treeish'] == 'stable':

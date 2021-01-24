@@ -77,10 +77,10 @@ def build_target(addlargs):
         target = addlargs["target"].replace('-', '_')
         module = import_module(target)
         target = getattr(module, target)(conf_values, addlargs)
-    except AttributeError:
+    except AttributeError as e:
         raise CatalystError(
             "Target \"%s\" not available." % target,
-            print_traceback=True)
+            print_traceback=True) from e
     except CatalystError:
         return False
     return target.run()

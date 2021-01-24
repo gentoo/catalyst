@@ -140,9 +140,9 @@ def read_makeconf(mymakeconffile):
     if os.path.exists(mymakeconffile):
         try:
             return read_bash_dict(mymakeconffile, sourcing_command="source")
-        except Exception:
+        except Exception as e:
             raise CatalystError("Could not parse make.conf file " +
-                                mymakeconffile, print_traceback=True)
+                                mymakeconffile, print_traceback=True) from e
     else:
         makeconf = {}
         return makeconf

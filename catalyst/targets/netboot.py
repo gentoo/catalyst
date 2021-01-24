@@ -30,17 +30,14 @@ class netboot(StageBase):
     ])
 
     def __init__(self, spec, addlargs):
-        try:
-            if "netboot/packages" in addlargs:
-                if isinstance(addlargs['netboot/packages'], str):
-                    loopy = [addlargs["netboot/packages"]]
-                else:
-                    loopy = addlargs["netboot/packages"]
+        if "netboot/packages" in addlargs:
+            if isinstance(addlargs['netboot/packages'], str):
+                loopy = [addlargs["netboot/packages"]]
+            else:
+                loopy = addlargs["netboot/packages"]
 
-                for x in loopy:
-                    self.valid_values |= {"netboot/packages/"+x+"/files"}
-        except:
-            raise CatalystError("configuration error in netboot/packages.")
+            for x in loopy:
+                self.valid_values |= {"netboot/packages/"+x+"/files"}
 
         StageBase.__init__(self, spec, addlargs)
         self.settings["merge_path"] = normpath("/tmp/image/")
@@ -89,12 +86,8 @@ class netboot(StageBase):
                 else:
                     myfiles.append(self.settings["netboot/extra_files"])
 
-            try:
-                cmd([self.settings['controller_file'], 'image'] +
-                    myfiles, env=self.env)
-            except CatalystError:
-                raise CatalystError("Failed to copy files to image!",
-                                    print_traceback=True)
+            cmd([self.settings['controller_file'], 'image'] +
+                myfiles, env=self.env)
 
             self.resume.enable("copy_files_to_image")
 
@@ -116,12 +109,8 @@ class netboot(StageBase):
         # we're done, move the kernels to builds/*
         # no auto resume here as we always want the
         # freshest images moved
-        try:
-            cmd([self.settings['controller_file'], 'final'], env=self.env)
-            log.notice('Netboot Build Finished!')
-        except CatalystError:
-            raise CatalystError("Failed to move kernel images!",
-                                print_traceback=True)
+        cmd([self.settings['controller_file'], 'final'], env=self.env)
+        log.notice('Netboot Build Finished!')
 
     def remove(self):
         if "autoresume" in self.settings["options"] \

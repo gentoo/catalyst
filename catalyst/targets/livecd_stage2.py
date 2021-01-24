@@ -79,11 +79,11 @@ class livecd_stage2(StageBase):
                             "livecd/modblacklist"].split()
                     for x in self.settings["livecd/modblacklist"]:
                         myf.write("\nblacklist "+x)
-            except:
+            except Exception as e:
                 raise CatalystError("Couldn't open " +
                                     self.settings["chroot_path"] +
                                     "/etc/modprobe.d/blacklist.conf.",
-                                    print_traceback=True)
+                                    print_traceback=True) from e
 
     def set_action_sequence(self):
         self.build_sequence.extend([
