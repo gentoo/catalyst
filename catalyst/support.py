@@ -2,7 +2,6 @@
 import glob
 import sys
 import os
-import re
 import shutil
 import time
 from pathlib import Path
@@ -11,6 +10,8 @@ from subprocess import Popen
 import libmount
 
 from portage.repository.config import RepoConfig
+
+from snakeoil.bash import read_bash_dict
 
 from catalyst import log
 
@@ -135,47 +136,10 @@ defined are not preserved. In other words, "foo", "bar", "oni" ordering is prese
                                     print_traceback=True)
 
 
-def parse_makeconf(mylines):
-    mymakeconf = {}
-    pos = 0
-    pat = re.compile("([0-9a-zA-Z_]*)=(.*)")
-    while pos < len(mylines):
-        if len(mylines[pos]) <= 1:
-            # skip blanks
-            pos += 1
-            continue
-        if mylines[pos][0] in ["#", " ", "\t"]:
-            # skip indented lines, comments
-            pos += 1
-            continue
-        else:
-            myline = mylines[pos]
-            mobj = pat.match(myline)
-            pos += 1
-            if mobj.group(2):
-                clean_string = re.sub(r"\"", r"", mobj.group(2))
-                mymakeconf[mobj.group(1)] = clean_string
-    return mymakeconf
-
-
 def read_makeconf(mymakeconffile):
     if os.path.exists(mymakeconffile):
         try:
-            try:
-                import snakeoil.bash  # import snakeoil.fileutils
-                return snakeoil.bash.read_bash_dict(mymakeconffile, sourcing_command="source")
-            except ImportError:
-                try:
-                    import portage.util
-                    return portage.util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
-                except Exception:
-                    try:
-                        import portage_util
-                        return portage_util.getconfig(mymakeconffile, tolerant=1, allow_sourcing=True)
-                    except ImportError:
-                        with open(mymakeconffile, "r") as myf:
-                            mylines = myf.readlines()
-                        return parse_makeconf(mylines)
+            return read_bash_dict(mymakeconffile, sourcing_command="source")
         except Exception:
             raise CatalystError("Could not parse make.conf file " +
                                 mymakeconffile, print_traceback=True)
