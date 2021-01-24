@@ -3,7 +3,7 @@ import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from catalyst.support import addl_arg_parse, CatalystError
+from catalyst.support import addl_arg_parse
 
 
 class TargetBase(ABC):
