@@ -95,7 +95,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.chroot_setup,
             self.setup_environment,
         ]
-        if 'enter-chroot' in self.settings['options']:
+        if 'enter-chroot' in myspec['options']:
             self.build_sequence.append(self.enter_chroot)
 
         self.finish_sequence = []
