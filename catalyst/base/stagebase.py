@@ -1092,12 +1092,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     myf.write(hostuseexpand + '="' +
                               ' '.join(myuseexpandvars[hostuseexpand]) + '"\n')
 
-            # Write non-default PORTDIR/DISTDIR/PKGDIR settings to make.conf
-            if (self.settings['repo_basedir'], self.settings['repo_name']) != \
-               (confdefaults['repo_basedir'], confdefaults['repo_name']):
-                myf.write('PORTDIR="%s/%s"\n' % (self.settings['repo_basedir'],
-                                                 self.settings['repo_name']))
-
             for x in ['target_distdir', 'target_pkgdir']:
                 if self.settings[x] != confdefaults[x]:
                     varname = x.split('_')[1].upper()
