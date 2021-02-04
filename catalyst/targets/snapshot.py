@@ -27,7 +27,7 @@ class snapshot(TargetBase):
         TargetBase.__init__(self, myspec, addlargs)
 
         self.git = command('git')
-        self.ebuild_repo = Path(self.settings['repos'],
+        self.ebuild_repo = Path(self.settings['repos_storedir'],
                                 self.settings['repo_name']).with_suffix('.git')
         self.gitdir = str(self.ebuild_repo)
 

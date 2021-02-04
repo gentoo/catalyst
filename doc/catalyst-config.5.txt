@@ -109,7 +109,7 @@ Repository settings
 Defines the location of your local source file repository.
 Defaults to the host's DISTDIR.
 
-*repos*::
+*repos_storedir*::
 The directory in which git repositories exist for use by the snapshot target.
 Defaults to `${storedir}/repos`.
 
@@ -120,7 +120,7 @@ gentoo repo) and any overlays.  The default location is
 
 *repo_name*::
 The name of the main repository (e.g. gentoo). The git repository at
-`${repos}/${repo_name}.git` will be used to produce the portdir sqfs
+`${repos_storedir}/${repo_name}.git` will be used to produce the portdir sqfs
 snapshot.
 
 *target_distdir*::
