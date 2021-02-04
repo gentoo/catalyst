@@ -470,7 +470,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["destpath"] = normpath(self.settings["chroot_path"])
 
 	def set_cleanables(self):
-		self.settings["cleanables"] = ["/etc/resolv.conf", "/var/tmp/*", "/tmp/*",
+		self.settings["cleanables"] = ["/etc/machine-id", "/etc/resolv.conf", "/var/tmp/*", "/tmp/*",
 			self.settings["repo_basedir"] + "/" +
 			self.settings["repo_name"]]
 
