@@ -10,10 +10,12 @@ from subprocess import Popen
 import libmount
 
 from portage.repository.config import RepoConfig
+from tempfile import TemporaryDirectory
 
 from snakeoil.bash import read_bash_dict
 
 from catalyst import log
+from catalyst.context import namespace
 
 BASH_BINARY = "/bin/bash"
 
@@ -148,7 +150,7 @@ def read_makeconf(mymakeconffile):
         return makeconf
 
 
-def get_repo_name(repo_path):
+def get_repo_name_from_dir(repo_path):
     """ Get the name of the repo at the given repo_path.
 
          References:
@@ -162,6 +164,38 @@ def get_repo_name(repo_path):
         raise CatalystError(f"Missing name in repository {repo_path}")
 
     return repo_config.name
+
+
+def get_repo_name_from_squash(repo_squash_path):
+    """ Get the name of the repo at the given repo_squash_path.
+        To obtain the name, the squash file is mounted to a temporary directory.
+    """
+
+    repo_name = None
+
+    # Mount squash file to temp directory in separate mount namespace
+    with TemporaryDirectory() as temp, namespace(mount=True):
+        try:
+            source = str(repo_squash_path)
+            target = str(temp)
+            fstype = 'squashfs'
+            options = 'ro,loop'
+            cxt = libmount.Context(source=source, target=target,
+                                   fstype=fstype, options=options)
+            cxt.mount()
+            repo_name = get_repo_name_from_dir(target)
+
+        except Exception as e:
+            raise CatalystError(f"Couldn't mount: {source}, {e}") from e
+
+    return repo_name
+
+
+def get_repo_name(repo_path):
+    if not Path(repo_path).is_dir():
+        return get_repo_name_from_squash(repo_path)
+
+    return get_repo_name_from_dir(repo_path)
 
 
 def ismount(path):
