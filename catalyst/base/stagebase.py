@@ -219,8 +219,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
         # Setup our mount points.
         self.mount = copy.deepcopy(MOUNT_DEFAULTS)
 
-        self.mount['portdir']['source'] = self.snapshot
-        self.mount['portdir']['target'] = self.settings['repo_basedir'] + '/' + self.settings['repo_name']
+        # Create mount entry for each repository
+        for path, name, _ in self.repos:
+            name = get_repo_name(path)
+            mount_id = f'repo_{name}'
+
+            self.mount[mount_id] = {
+                'enable': True,
+                'source': path,
+                'target': self.get_repo_location(name)
+            }
+
         self.mount['distdir']['source'] = self.settings['distdir']
         self.mount["distdir"]['target'] = self.settings['target_distdir']
 
@@ -587,12 +596,40 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                   "/busybox_config"]
 
     def set_repos(self):
+
+        # Each entry in this list will be a tuple of the form
+        # (source, name, default)
+        #
+        # source: the location of the repo on the host system,
+        # either a directory or a squashfs file.
+        #
+        # name: the repository name parsed from the repo.
+        # This is just a caching mechanism to avoid parsing the name
+        # every time the source is processed.
+        #
+        # default: Default location where the repo is expected in the
+        # target system. If this matches the path where we mount the repo to
+        # (as per get_repo_location), then we can skip generating a repos.conf
+        # entry for that repo. Currently this mechanism is only used for
+        # the main repo, which has a default location hard-coded in
+        # /usr/share/portage/config/repos.conf. For the other repos,
+        # the default is set to None.
+        self.repos = []
+
+        # Create entry for snapshot
+        default_location = Path(confdefaults['repo_basedir'], confdefaults['repo_name'])
+        self.repos.append((self.snapshot, get_repo_name(self.snapshot), default_location))
+
+        # Create entry for every other repo
         if 'repos' in self.settings:
             if isinstance(self.settings['repos'], str):
                 self.settings['repos'] = \
                     self.settings['repos'].split()
-            log.info('repos directories are set to: %s',
+            log.info('repos are set to: %s',
                      ' '.join(self.settings['repos']))
+
+            get_info = lambda repo: (repo, get_repo_name(repo), None)
+            self.repos.extend(map(get_info, self.settings['repos']))
 
     def set_overlay(self):
         if self.settings["spec_prefix"] + "/overlay" in self.settings:
@@ -832,24 +869,19 @@ class StageBase(TargetBase, ClearBase, GenBase):
             raise CatalystError(f'Could not write {repo_conf_chroot}: {e}') from e
 
     def process_repos(self):
-        """ We copy the contents of our repos to get_repo_location(repo_name) """
-        if 'repos' in self.settings:
-            for x in self.settings['repos']:
-                if os.path.exists(x):
-                    name = get_repo_name(x)
+        """ Create repos.conf entry for every repo """
 
-                    location = self.get_repo_location(name)
-                    config = configparser.ConfigParser()
-                    config[name] = {'location': location}
-                    self.write_repo_conf(name, config)
+        for _, name, default in self.repos:
+            location = self.get_repo_location(name)
 
-                    location_chroot = self.to_chroot(location)
-                    location_chroot.mkdir(mode=0o755, parents=True, exist_ok=True)
+            if default == location:
+                log.debug('Skipping repos.conf entry for repo %s '
+                    'with default location %s.', name, location)
+                continue
 
-                    log.info('Copying overlay dir %s to %s', x, location_chroot)
-                    cmd(f'cp -a {x}/* {location_chroot}', env=self.env)
-                else:
-                    log.warning('Skipping missing overlay %s.', x)
+            config = configparser.ConfigParser()
+            config[name] = {'location': location}
+            self.write_repo_conf(name, config)
 
     def root_overlay(self):
         """ Copy over the root_overlay """
@@ -1144,18 +1176,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.warning("You've been hacking. Clearing target patches: %s", target)
             clear_path(target)
 
-        # Remove our overlays
-        if 'repos' in self.settings:
-            for repo_path in self.settings['repos']:
-                repo_name = get_repo_name(repo_path)
+        # Remove repo data
+        for _, name, _ in self.repos:
 
-                repo_conf = self.get_repo_conf_path(repo_name)
-                chroot_repo_conf = self.to_chroot(repo_conf)
-                chroot_repo_conf.unlink()
+            # Remove repos.conf entry
+            repo_conf = self.get_repo_conf_path(name)
+            chroot_repo_conf = self.to_chroot(repo_conf)
+            chroot_repo_conf.unlink(missing_ok=True)
 
-                location = self.get_repo_location(repo_name)
-                chroot_location = self.to_chroot(location)
-                clear_path(str(chroot_location))
+            # The repo has already been unmounted, remove the mount point
+            location = self.get_repo_location(name)
+            chroot_location = self.to_chroot(location)
+            clear_path(str(chroot_location))
 
         if "sticky-config" not in self.settings["options"]:
             # re-write the make.conf to be sure it is clean

@@ -85,11 +85,6 @@ MOUNT_DEFAULTS = OrderedDict([
         'source': 'tmpfs',
         'target': '/run',
     }),
-    ('portdir', {
-        'enable': True,
-        'source': 'config',
-        'target': 'config',
-    }),
     ('distdir', {
         'enable': True,
         'source': 'config',
