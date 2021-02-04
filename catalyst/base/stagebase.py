@@ -81,14 +81,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "ldflags",
             "pkgcache_path",
             "portage_confdir",
-            "portage_overlay",
+            "repos",
             "portage_prefix",
         ])
         self.prepare_sequence = [
             self.unpack,
             self.config_profile_link,
             self.setup_confdir,
-            self.portage_overlay,
+            self.process_repos,
         ]
         self.build_sequence = [
             self.bind,
@@ -206,7 +206,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_linuxrc()
         self.set_busybox_config()
         self.set_overlay()
-        self.set_portage_overlay()
+        self.set_repos()
         self.set_root_overlay()
 
         # This next line checks to make sure that the specified variables exist on disk.
@@ -586,13 +586,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 del self.settings[self.settings["spec_prefix"] +
                                   "/busybox_config"]
 
-    def set_portage_overlay(self):
-        if "portage_overlay" in self.settings:
-            if isinstance(self.settings['portage_overlay'], str):
-                self.settings["portage_overlay"] = \
-                    self.settings["portage_overlay"].split()
-            log.info('portage_overlay directories are set to: %s',
-                     ' '.join(self.settings['portage_overlay']))
+    def set_repos(self):
+        if 'repos' in self.settings:
+            if isinstance(self.settings['repos'], str):
+                self.settings['repos'] = \
+                    self.settings['repos'].split()
+            log.info('repos directories are set to: %s',
+                     ' '.join(self.settings['repos']))
 
     def set_overlay(self):
         if self.settings["spec_prefix"] + "/overlay" in self.settings:
@@ -831,10 +831,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
         except OSError as e:
             raise CatalystError(f'Could not write {repo_conf_chroot}: {e}') from e
 
-    def portage_overlay(self):
+    def process_repos(self):
         """ We copy the contents of our repos to get_repo_location(repo_name) """
-        if "portage_overlay" in self.settings:
-            for x in self.settings["portage_overlay"]:
+        if 'repos' in self.settings:
+            for x in self.settings['repos']:
                 if os.path.exists(x):
                     name = get_repo_name(x)
 
@@ -1145,8 +1145,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
             clear_path(target)
 
         # Remove our overlays
-        if "portage_overlay" in self.settings:
-            for repo_path in self.settings["portage_overlay"]:
+        if 'repos' in self.settings:
+            for repo_path in self.settings['repos']:
                 repo_name = get_repo_name(repo_path)
 
                 repo_conf = self.get_repo_conf_path(repo_name)

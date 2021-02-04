@@ -42,7 +42,7 @@ class livecd_stage2(StageBase):
         "livecd/xdm",
         "livecd/xinitrc",
         "livecd/xsession",
-        "portage_overlay",
+        "repos",
     ])
 
     def __init__(self, spec, addlargs):

@@ -10,8 +10,8 @@ source_subpath: default/stage3-mips-uclibc-mips3-2006.126
 # like to have used when building this target. It takes a space-separated list
 # of directory names.
 # example:
-# portage_overlay: /usr/local/portage
-portage_overlay:
+# repos: /usr/local/portage
+repos:
 
 boot/kernel: ip22r4k ip22r5k ip27r10k ip28r10k ip30r10k ip32r5k
 boot/kernel/ip22r4k/sources: =mips-sources-2.6.14.5

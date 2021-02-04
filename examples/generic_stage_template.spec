@@ -93,8 +93,8 @@ portage_confdir:
 # like to have used when building this target. It takes a space-separated list
 # of directory names.
 # example:
-# portage_overlay: /usr/local/portage
-portage_overlay:
+# repos: /usr/local/portage
+repos:
 
 # This allows the optional directory containing the output packages for
 # catalyst.  Mainly used as a way for different spec files to access the same

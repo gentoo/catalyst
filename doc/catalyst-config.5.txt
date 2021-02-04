@@ -115,7 +115,7 @@ Defaults to `${storedir}/repos`.
 
 *repo_basedir*::
 The target repository directory to contain the primary repo (e.g.,
-gentoo repo) and any overlays.  The default location is
+gentoo repo) and any other repos. The default location is
 `/var/db/repos`.
 
 *repo_name*::

@@ -17,9 +17,9 @@ class stage3(StageBase):
     def __init__(self, spec, addlargs):
         StageBase.__init__(self, spec, addlargs)
 
-    def set_portage_overlay(self):
-        StageBase.set_portage_overlay(self)
-        if "portage_overlay" in self.settings:
+    def set_repos(self):
+        StageBase.set_repos(self)
+        if "repos" in self.settings:
             log.warning(
                 'Using an overlay for earlier stages could cause build issues.\n'
                 "If you break it, you buy it.  Don't complain to us about it.\n"

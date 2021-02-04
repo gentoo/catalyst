@@ -80,7 +80,7 @@ This is an optional directory containing portage configuration files
 `/etc/portage` and should be consistent across all targets to minimize
 problems.
 
-*portage_overlay*::
+*repos*::
 This option specifies the location of the ebuild repositories that you would
 like to have used when building this target. It takes a space-separated list
 of directory names. (example: `/usr/local/portage`).
