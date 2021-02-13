@@ -99,7 +99,7 @@ def clear_dir(target, mode=0o755, remove=False,
 
 def clear_path(target_path):
     """Nuke |target_path| regardless of it being a dir, file or glob."""
-    targets = glob.glob(target_path)
+    targets = glob.iglob(target_path, recursive=True)
     for path in targets:
         clear_dir(path, remove=True)
 
