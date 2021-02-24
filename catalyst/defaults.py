@@ -11,6 +11,7 @@ from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 valid_config_file_values = frozenset([
     "compression_mode",
     "digests",
+    "digest_format",
     "distcc_hosts",
     "distdir",
     "envscript",
@@ -35,6 +36,7 @@ confdefaults = {
     "compressor_options": XATTRS_OPTIONS['linux'],
     "decomp_opt": DECOMPRESSOR_PROGRAM_OPTIONS['linux'],
     "decompressor_search_order": DECOMPRESSOR_SEARCH_ORDER,
+    "digest_format": 'linux',
     "distdir": portage.settings['DISTDIR'],
     "icecream": "/var/cache/icecream",
     'list_xattrs_opt': LIST_XATTRS_OPTIONS['linux'],
