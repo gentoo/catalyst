@@ -814,10 +814,15 @@ class StageBase(TargetBase, ClearBase, GenBase):
         make_profile = Path(self.settings['chroot_path'] + self.settings['port_conf'],
                             'make.profile')
         make_profile.unlink(missing_ok=True)
+        try:
+            repo_name, target_profile = self.settings['target_profile'].split(":", 1)
+        except ValueError:
+            repo_name = self.settings['repo_name']
+            target_profile = self.settings['target_profile']
         make_profile.symlink_to(Path('../..' + self.settings['repo_basedir'],
-                                     self.settings['repo_name'],
+                                     repo_name,
                                      'profiles',
-                                     self.settings['target_profile']),
+                                     target_profile),
                                 target_is_directory=True)
 
     def setup_confdir(self):
