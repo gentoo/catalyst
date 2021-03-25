@@ -12,8 +12,7 @@ class GenBase():
     def __init__(self, myspec):
         self.settings = myspec
 
-    @staticmethod
-    def generate_hash(filepath, name):
+    def generate_hash(self, filepath, name):
         h = hashlib.new(name)
 
         with open(filepath, 'rb') as f:
