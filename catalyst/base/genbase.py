@@ -26,9 +26,9 @@ class GenBase():
         filename = os.path.split(filepath)[1]
 
         if self.settings['digest_format'] == 'bsd':
-                return f'# {name.upper()} HASH\n{name.upper()} ({filename}) = {h.hexdigest()}\n'
+            return f'# {name.upper()} HASH\n{name.upper()} ({filename}) = {h.hexdigest()}\n'
         else:
-                return f'# {name.upper()} HASH\n{h.hexdigest()}  {filename}\n'
+            return f'# {name.upper()} HASH\n{h.hexdigest()}  {filename}\n'
 
     def gen_contents_file(self, path):
         c = self.settings['contents_map']
