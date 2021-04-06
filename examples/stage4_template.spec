@@ -129,7 +129,7 @@ stage4/motd:
 
 # This is for blacklisting modules from being hotplugged that are known to cause
 # problems.  Putting a module name here will keep it from being auto-loaded,
-# even if ti is detected by hotplug.
+# even if it is detected by hotplug.
 # example:
 # stage4/modblacklist: 8139cp
 stage4/modblacklist:
