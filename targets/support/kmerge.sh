@@ -12,7 +12,7 @@ genkernel_compile() {
 		--no-mountboot
 		--kerneldir=/usr/src/linux
 		--modulespackage=/tmp/kerncache/${kname}-modules-${clst_version_stamp}.tar.bz2
-		--minkernpackage=/tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 all
+		--minkernpackage=/tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 #let the user specify "all" or "kernel" in livecd/gk_mainargs
 	)
 	# extra genkernel options that we have to test for
 	if [[ -n ${clst_gk_mainargs} ]]; then
