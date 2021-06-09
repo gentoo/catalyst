@@ -46,8 +46,7 @@ def ensure_dirs(path, gid=-1, uid=-1, mode=0o755, minimal=True,
     return succeeded
 
 
-def clear_dir(target, mode=0o755, remove=False,
-              clear_nondir=True):
+def clear_dir(target, mode=0o755, remove=False):
     '''Universal directory clearing function
 
     @target: string, path to be cleared or removed
@@ -74,12 +73,8 @@ def clear_dir(target, mode=0o755, remove=False,
             log.error('clear_dir failed', exc_info=True)
             return False
     elif os.path.exists(target):
-        if clear_nondir:
-            log.debug("Clearing (unlinking) non-directory: %s", target)
-            os.unlink(target)
-        else:
-            log.info('clear_dir failed: %s: is not a directory', target)
-            return False
+        log.debug("Clearing (unlinking) non-directory: %s", target)
+        os.unlink(target)
     else:
         log.debug("Conditions not met to clear: %s", target)
         log.debug("                      isdir: %s", os.path.isdir(target))
