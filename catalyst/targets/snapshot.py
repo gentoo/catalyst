@@ -5,11 +5,12 @@ Snapshot target
 import subprocess
 import sys
 
+import fasteners
+
 from pathlib import Path
 
 from catalyst import log
 from catalyst.base.targetbase import TargetBase
-from catalyst.lock import write_lock
 from catalyst.support import CatalystError, command
 
 class snapshot(TargetBase):
@@ -93,8 +94,7 @@ class snapshot(TargetBase):
         log.notice('>>> ' + ' '.join([*git_cmd, '|']))
         log.notice('    ' + ' '.join(tar2sqfs_cmd))
 
-        lockfile = self.snapshot.with_suffix('.lock')
-        with write_lock(lockfile):
+        with fasteners.InterProcessLock(self.snapshot.with_suffix('.lock')):
             git = subprocess.Popen(git_cmd,
                                    stdout=subprocess.PIPE,
                                    stderr=sys.stderr,

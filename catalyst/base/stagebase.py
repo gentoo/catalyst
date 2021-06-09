@@ -8,6 +8,7 @@ import sys
 
 from pathlib import Path
 
+import fasteners
 import libmount
 import toml
 
@@ -25,7 +26,6 @@ from catalyst.support import (CatalystError, file_locate, normpath,
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
-from catalyst.lock import LockDir, LockInUse
 from catalyst.fileops import ensure_dirs, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
@@ -36,9 +36,6 @@ def run_sequence(sequence):
         sys.stdout.flush()
         try:
             func()
-        except LockInUse:
-            log.error('Unable to aquire the lock...')
-            return False
         except Exception:
             log.error('Exception running action sequence %s',
                       func.__name__, exc_info=True)
@@ -478,7 +475,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
         """
         self.settings["chroot_path"] = normpath(self.settings["storedir"] +
                                                 "/tmp/" + self.settings["target_subpath"].rstrip('/'))
-        self.chroot_lock = LockDir(self.settings["chroot_path"])
 
     def set_autoresume_path(self):
         self.settings["autoresume_path"] = normpath(pjoin(
@@ -1366,8 +1362,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
             pass
 
     def run(self):
-        self.chroot_lock.write_lock()
+        with fasteners.InterProcessLock(self.settings["chroot_path"] + '.lock'):
+            return self._run()
 
+    def _run(self):
         if "clear-autoresume" in self.settings["options"]:
             self.clear_autoresume()
 
