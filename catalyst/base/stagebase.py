@@ -4,6 +4,8 @@ import imp
 import shutil
 import sys
 
+import fasteners
+
 from snakeoil import fileutils
 
 from DeComp.compress import CompressMap
@@ -16,7 +18,6 @@ from catalyst.support import (CatalystError, file_locate, normpath,
 from catalyst.base.targetbase import TargetBase
 from catalyst.base.clearbase import ClearBase
 from catalyst.base.genbase import GenBase
-from catalyst.lock import LockDir, LockInUse
 from catalyst.fileops import ensure_dirs, pjoin, clear_dir, clear_path
 from catalyst.base.resume import AutoResume
 
@@ -496,8 +497,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			self.settings["snapshot_cache_path"] = \
 				normpath(pjoin(self.settings["snapshot_cache"],
 					self.settings["snapshot"]))
-			self.snapcache_lock = \
-				LockDir(self.settings["snapshot_cache_path"])
 			log.info('Setting snapshot cache to %s', self.settings['snapshot_cache_path'])
 
 	def set_chroot_path(self):
@@ -507,7 +506,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		"""
 		self.settings["chroot_path"] = normpath(self.settings["storedir"] +
 			"/tmp/" + self.settings["target_subpath"].rstrip('/'))
-		self.chroot_lock = LockDir(self.settings["chroot_path"])
 
 	def set_autoresume_path(self):
 		self.settings["autoresume_path"] = normpath(pjoin(
@@ -881,8 +879,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				unpack = False
 
 		if unpack:
-			if "snapcache" in self.settings["options"]:
-				self.snapcache_lock.write_lock()
 			if os.path.exists(target_portdir):
 				log.info('%s', cleanup_msg)
 			clear_dir(target_portdir)
@@ -898,9 +894,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				log.info('Setting snapshot autoresume point')
 				self.resume.enable("unpack_repo",
 					data = self.settings["snapshot_path_hash"])
-
-			if "snapcache" in self.settings["options"]:
-				self.snapcache_lock.unlock()
 
 	def config_profile_link(self):
 		if "autoresume" in self.settings["options"] \
@@ -971,8 +964,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
 			src = self.mountmap[x]
 			log.debug('bind(); src = %s', src)
-			if "snapcache" in self.settings["options"] and x == "portdir":
-				self.snapcache_lock.read_lock()
 			_cmd = None
 			if src == "maybe_tmpfs":
 				if "var_tmpfs_portage" in self.settings:
@@ -1026,15 +1017,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				except CatalystError:
 					ouch = 1
 					log.warning("Couldn't umount bind mount: %s", target)
-
-			if "snapcache" in self.settings["options"] and x == "/var/db/repos/gentoo":
-				try:
-					# It's possible the snapshot lock object isn't created yet.
-					# This is because mount safety check calls unbind before the
-					# target is fully initialized
-					self.snapcache_lock.unlock()
-				except Exception:
-					pass
 		if ouch:
 			# if any bind mounts really failed, then we need to raise
 			# this to potentially prevent an upcoming bash stage cleanup script
@@ -1484,8 +1466,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 		log.debug('setup_environment(); env = %r', self.env)
 
 	def run(self):
-		self.chroot_lock.write_lock()
+		with fasteners.InterProcessLock(self.settings["chroot_path"] + '.lock'):
+			return self._run()
 
+	def _run(self):
 		# Kill any pids in the chroot
 		self.kill_chroot_pids()
 
