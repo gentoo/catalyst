@@ -12,7 +12,7 @@ import os
 
 from snakeoil.version import get_git_version as get_ver
 
-__version__= "3.0.19"
+__version__= "3.0.20"
 _ver = None
 
 
