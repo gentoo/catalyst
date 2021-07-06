@@ -1497,10 +1497,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			sys.stdout.flush()
 			try:
 				getattr(self, x)()
-			except LockInUse:
-				log.error('Unable to aquire the lock...')
-				failure = True
-				break
 			except Exception:
 				log.error('Exception running action sequence %s', x, exc_info=True)
 				failure = True
