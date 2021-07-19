@@ -60,7 +60,8 @@ genkernel_compile() {
 	fi
 
 	if [[ -n ${kernel_merge} ]]; then
-		genkernel --callback="emerge ${gk_callback_opts[@]} ${kernel_merge}" \
+		gk_callback=${gk_callback_opts[@]}
+		genkernel --callback="emerge ${gk_callback} ${kernel_merge}" \
 			"${GK_ARGS[@]}" || exit 1
 	else
 		genkernel "${GK_ARGS[@]}" || exit 1
