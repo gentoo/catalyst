@@ -24,11 +24,11 @@ case ${clst_hostarch} in
 		#  xorriso from libisoburn
 		#  mkisofs from cdrtools
 		#  mformat from mtools
-		cdmakerpkg="sys-fs/mtools, dev-libs/libisoburn, sys-boot/grub:2, and virtual/cdrtools"
+		cdmakerpkg="sys-fs/mtools, dev-libs/libisoburn, sys-boot/grub:2, and app-cdr/cdrtools"
 		;;
 	*)
 		cdmaker="mkisofs"
-		cdmakerpkg="virtual/cdrtools"
+		cdmakerpkg="app-cdr/cdrtools"
 		;;
 esac
 
