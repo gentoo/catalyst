@@ -49,7 +49,7 @@ extract_kernels() {
 	# ${clst_target_path}/kernel is often a good choice for ${1}
 
 	# Takes the relative desination dir for the kernel as an arguement
-	# i.e boot or isolinux
+	# i.e boot
 	[ -z "$clst_boot_kernel" ] && \
 		die "Required key boot/kernel not defined, exiting"
 	# install the kernels built in kmerge.sh

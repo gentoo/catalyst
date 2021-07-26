@@ -102,7 +102,7 @@ isoroot_checksum() {
 	echo ">> Creating checksums for all files included in the ISO"
 
 	pushd "${clst_target_path}"
-	find -type f ! -name 'isolinux.bin' -exec b2sum {} + > /tmp/isoroot_b2sums
+	find -type f -exec b2sum {} + > /tmp/isoroot_b2sums
 	popd
 
 	mv /tmp/isoroot_b2sums "${clst_target_path}"/

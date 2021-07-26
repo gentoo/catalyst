@@ -216,16 +216,11 @@ the kernel, bootloader, filesystem, and other details.  See
 Live USBs
 ---------
 
-The easiest way to create a live USB is currently to install a live CD
-ISO using
-http://www.syslinux.org/wiki/index.php/Doc/isolinux#HYBRID_CD-ROM.2FHARD_DISK_MODE[isohybrid]
-and `dd`:
+The easiest way to create a live USB is to install a live CD ISO using
 
-    # isohybrid filename.iso
     # dd if=filename.iso of=/dev/sdX
 
 replacing `X` with the appropriate drive letter for your USB disk.
-See https://bugs.gentoo.org/251719[bug 251719] for details.
 
 Running catalyst from a Git checkout
 ------------------------------------
