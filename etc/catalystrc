@@ -1,2 +1,4 @@
 #!/bin/bash
-# This is an example catalystrc. As such, it doesn't actually *do* anything.
+
+# export BINPKG_COMPRESS="gzip"
+# export BINPKG_COMPRESS_FLAGS="-7"
