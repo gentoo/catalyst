@@ -70,16 +70,10 @@ case ${clst_hostarch} in
 		boot_kernel_common_name=${first/%32/}
 		boot_kernel_common_name=${boot_kernel_common_name/%64/}
 
-		for x in ${clst_boot_kernel}
-		do
-			eval kopt=\$clst_boot_kernel_${x}_kernelopts
-			kopts+=(${kopt})
-		done
-
 		# copy the bootloader for the final image
 		cp /usr/share/palo/iplboot $1/boot/
 
-		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line[@]} ${kopts[@]}" >> ${icfg}
+		echo "--commandline=0/${boot_kernel_common_name} initrd=${first}.igz ${default_append_line[@]}" >> ${icfg}
 		echo "--bootloader=boot/iplboot" >> ${icfg}
 		echo "--ramdisk=boot/${first}.igz" >> ${icfg}
 		for x in ${clst_boot_kernel}

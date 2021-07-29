@@ -662,7 +662,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     "boot/kernel/" + x + "/gk_action",
                     "boot/kernel/" + x + "/gk_kernargs",
                     "boot/kernel/" + x + "/initramfs_overlay",
-                    "boot/kernel/" + x + "/kernelopts",
                     "boot/kernel/" + x + "/packages",
                     "boot/kernel/" + x + "/softlevel",
                     "boot/kernel/" + x + "/sources",
@@ -1507,16 +1506,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                        'for %s operation...', kname)
             return
         self._copy_kernel_config(kname=kname)
-
-        # If we need to pass special options to the bootloader
-        # for this kernel put them into the environment
-        key = 'boot/kernel/' + kname + '/kernelopts'
-        if key in self.settings:
-            myopts = self.settings[key]
-
-            if not isinstance(myopts, str):
-                myopts = ' '.join(myopts)
-            self.env[kname + "_kernelopts"] = myopts
 
         key = 'boot/kernel/' + kname + '/extraversion'
         self.settings.setdefault(key, '')
