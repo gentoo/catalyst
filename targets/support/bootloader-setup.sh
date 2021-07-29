@@ -31,7 +31,7 @@ case ${clst_fstype} in
 esac
 
 
-default_append_line=(root=/dev/ram0 init=/linuxrc ${cmdline_opts[@]} ${custom_kopts} cdroot)
+default_append_line=(root=/dev/ram0 init=/linuxrc ${cmdline_opts[@]} cdroot)
 
 case ${clst_hostarch} in
 	alpha)
@@ -99,7 +99,6 @@ case ${clst_hostarch} in
 		for x in ${clst_boot_kernel}
 		do
 			eval "kernel_console=\$clst_boot_kernel_${x}_console"
-			eval custom_kopts=\$${x}_kernelopts
 
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
 			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
