@@ -2,3 +2,6 @@
 COMMON_FLAGS = "-O2 -pipe"
 CHOST = "aarch64-unknown-linux-gnu"
 
+[arm64.aarch64]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "aarch64-unknown-linux-gnu"
