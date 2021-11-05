@@ -38,9 +38,10 @@ Basic configuration
 *digests*::
 Create a `.DIGESTS` file containing the hash output from any of the
 supported options below.  Adding them all may take a long time.
-(example: `md5 sha1 sha512 whirlpool`).  The set of supported hashes
-is dependent on the version of Python. To see the set of hashes
-supported by the version of Python in use, run
+(example: `md5 sha1 sha512 whirlpool`).  Enabling ANY digest will
+generate `.sha256` file in addition `.DIGESTS` file.  The set of
+supported hashes is dependent on the version of Python. To see the
+set of hashes supported by the version of Python in use, run
 +
 ---------------------------------
 $ python3 -c 'import hashlib; print(hashlib.algorithms_available)'

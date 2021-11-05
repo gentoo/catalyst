@@ -43,3 +43,6 @@ class GenBase():
             for f in [path, path + '.CONTENTS.gz']:
                 for i in self.settings['digests']:
                     file.write(self.generate_hash(f, name=i))
+
+        with io.open(path + '.sha256', 'w', encoding='utf-8') as sha256file:
+            sha256file.write(self.generate_hash(path, name='sha256'))
