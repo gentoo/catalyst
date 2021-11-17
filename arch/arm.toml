@@ -46,6 +46,10 @@ CHOST = "armv6j-unknown-linux-gnueabihf"
 COMMON_FLAGS = "-O2 -pipe -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
 CHOST = "armv7a-unknown-linux-gnueabihf"
 
+[arm.armv7a_hardfp_musl]
+COMMON_FLAGS = "-O2 -pipe -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
+CHOST = "armv7a-unknown-linux-musleabihf"
+
 [arm.armeb]
 COMMON_FLAGS = "-O2 -pipe"
 CHOST = "armeb-unknown-linux-gnu"
