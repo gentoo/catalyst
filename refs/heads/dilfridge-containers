@@ -1,0 +1,22 @@
+certificate version 0.1
+pusher 94BFDF4484AD142F 1640390190 +0100
+pushee git+ssh://git.gentoo.org/proj/catalyst.git
+nonce 1640390190-7e986dc1efb88a501267810147917225b6e9ba9f
+
+7457cd3b1a5f3ed4a566bbf23e36c939af06967c e28156df62eb77b89822e88eba9099a5b1ce229a refs/heads/dilfridge-containers
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE6W4INB9YeKX6Qpi1TEn3nlTQogYFAmHGXi4ACgkQTEn3nlTQ
+ogZEVQ/+ItC5YHP3jq2pV+tpNiarKOo8FwqfCzCNPihdmWTfQv0NMYALgbZzjYbM
+FTnNrO2rz+IiZrTa13EXSLbNmrlsWWX5iwbZVSiHDx/mk1Ly5GDp4Vq03t4Ffd+c
+3VMVx8wsyH37TiIZZNKNNj+yoZ+pJa3a92ZNjLBaB1n8CTJhyUk64/4bDSqs+/O/
+g3JzXIbSqCXVsVSoo4wvFyMB6LYMhoaAPKHycDQflyhTUogmwDDkxF0xeadM/Wma
+SbGRUuVG0g1Sjihp/fmGS+6nDL70a1CK/EhvOwBPPfNyqiGooWa7lz15pvg3E3A/
+3NCgXsQ8O4g9Qm9s1XrwFkKEz+/IlhkW9WkvpVBhG6+HCbzrE+3XTSDKTo3pD6fG
+DdtmPzwRtvaULu/0/2C/Jb+hRSX+k46pVkfv78PJ1AQKQuvYlpO35K4gj9NHh545
+SiPvH1trCZqLOfhS/ViAwQwxHmVB1irhYw2cYpCnjtZeqdp317kokjXk+nEDzXVV
+Dg1naEJS+KNie6geO9oJUOnXxyjSRoL/matc3kidaMij92e9T4QzOHS9F9HTBFJB
+NZXhnZSraUMiWSxgrZwOnEBVwTGzGihew8OhjiS9nYOQ4bACWXr8MJRogIaVEr+7
+d9+CBuyzRv1S8rOicHuARjpxUzkujsNzUkNl0u3AHEE/5sTkkdw=
+=wXat
+-----END PGP SIGNATURE-----
