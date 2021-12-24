@@ -1,0 +1,42 @@
+#
+# we always have a section [xxx] where xxx equals the filename
+# this describes properties of all containers using this method
+#
+[chroot]
+
+# does catalyst have to provide bind mounts (e.g. /proc /dev ...)?
+setup_mounts = true
+
+# does catalyst have to provide process isolation (i.e. unshare)?
+# setup_namespaces = false
+
+
+# do we need to copy files *beyond* the stage definition specific 
+# ones into the isolated filesystem (e.g. /linuxrc)?
+# support_files =
+
+# do we need to convert the filesystem into an image file and back?
+setup_image = false
+
+# image pack and unpack commands, if setup_image = true
+#   %c : catalyst support script directory (containers/support)
+#   %D : the root directory of the file system
+#   %F : the filesystem image (i.e., qcow2)
+# image_pack = ...
+# image_unpack = ...
+
+# does catalyst have to call setarch?
+use_setarch = true
+
+# which program call starts up the process?
+#   %c : catalyst support script directory (containers/support)
+#   %D : the root directory of the file system, OR
+#   %F : the filesystem image (i.e., qcow2)
+#   %@ : the command line which is started inside the container
+command = chroot %D %@
+
+
+
+# how precisely further sections should look like is still unclear
+# * maybe subcases: [chroot.linux32]?
+# * maybe stage-specific: [chroot.stage1]?
