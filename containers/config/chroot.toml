@@ -10,12 +10,13 @@ setup_mounts = true
 # does catalyst have to provide process isolation (i.e. unshare)?
 # setup_namespaces = false
 
-
 # do we need to copy files *beyond* the stage definition specific 
 # ones into the isolated filesystem (e.g. /linuxrc)?
 # support_files =
 
 # do we need to convert the filesystem into an image file and back?
+# note that making catalyst work with an image-based container /
+# emulator will be very, very hard
 setup_image = false
 
 # image pack and unpack commands, if setup_image = true

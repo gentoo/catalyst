@@ -67,6 +67,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "cflags",
             "common_flags",
             "compression_mode",
+            "container",
             "cxxflags",
             "decompressor_search_order",
             "fcflags",
@@ -87,6 +88,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.setup_confdir,
             self.process_repos,
         ]
+
+	# CO-MARK
+	# we need to make self.bind configurable here
         self.build_sequence = [
             self.bind,
             self.chroot_setup,
@@ -139,6 +143,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         else:
             raise CatalystError("Unknown host machine type " + host)
 
+        ## CO-MARK
         if setarch.get('if_build', '') == platform.machine():
             chroot = f'setarch {setarch["arch"]} chroot'
         else:
@@ -468,6 +473,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "/tmp/*",
         ]
 
+    # CO-MARK
     def set_chroot_path(self):
         """
         NOTE: the trailing slash has been removed
@@ -895,6 +901,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                         env=self.env)
 
     def bind(self):
+        # CO-MARK
+        # we need to be able to disable this step completely (e.g. bubblewrap, qemu-system)
+        #
         for x in [x for x in self.mount if self.mount[x]['enable']]:
             if str(self.mount[x]['source']) == 'config':
                 raise CatalystError(f'"{x}" bind mount source is not configured')
@@ -1012,6 +1021,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
             raise CatalystError('Could not write %s: %s' % (
                 normpath(self.settings["chroot_path"] +
                          self.settings["make_conf"]), e)) from e
+
+        # CO-MARK
+        # here we need to copy in additional required files
+
         self.resume.enable("chroot_setup")
 
     def write_make_conf(self, setup=True):
@@ -1164,6 +1177,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                self.settings["portage_prefix"])
                 log.notice("Clearing portage_prefix target: %s", target)
                 clear_path(target)
+
+        # CO-MARK
+        # clean up here additional support files (e.g. /linuxrc)
 
         # Remove hacks that should *never* go into stages
         target = pjoin(self.settings["stage_path"], "etc/portage/patches")
@@ -1353,6 +1369,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         chroot = command('chroot')
         bash = command('bash')
 
+        # CO-MARK
         log.notice("Entering chroot")
         try:
             cmd([chroot, self.settings['chroot_path'], bash, '-l'],
