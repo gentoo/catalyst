@@ -879,6 +879,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 				unpack = False
 
 		if unpack:
+			ensure_dirs(self.settings['snapshot_cache_path'])
 			if os.path.exists(target_portdir):
 				log.info('%s', cleanup_msg)
 			clear_dir(target_portdir)
