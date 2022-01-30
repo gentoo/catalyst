@@ -10,7 +10,7 @@ from pathlib import Path
 
 import fasteners
 import libmount
-import toml
+import tomli
 
 from snakeoil import fileutils
 from snakeoil.osutils import pjoin
@@ -123,8 +123,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.debug("\tTrying %s", x)
             name = x[:-len('.toml')]
 
-            with open(arch_dir + x) as file:
-                arch_config = toml.load(file)
+            with open(arch_dir + x, 'rb') as file:
+                arch_config = tomli.load(file)
 
                 # Search for a subarchitecture in each arch in the arch_config
                 for arch in [x for x in arch_config if x.startswith(name) and host in arch_config[x]]:

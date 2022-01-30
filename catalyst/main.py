@@ -6,7 +6,7 @@ import os
 import sys
 import textwrap
 
-import toml
+import tomli
 
 from DeComp.definitions import (COMPRESS_DEFINITIONS, DECOMPRESS_DEFINITIONS,
                                 CONTENTS_DEFINITIONS)
@@ -35,7 +35,8 @@ def parse_config(config_files):
     for config_file in config_files:
         log.notice('Loading configuration file: %s', config_file)
         try:
-            config = toml.load(config_file)
+            with open(config_file, 'rb') as f:
+                config = tomli.load(f)
             for key in config:
                 if key not in valid_config_file_values:
                     log.critical("Unknown option '%s' in config file %s",

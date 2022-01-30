@@ -5,7 +5,7 @@
 import pathlib
 import sys
 import textwrap
-import toml
+import tomli
 
 
 def write_guidexml(arch_to_subarch):
@@ -40,7 +40,8 @@ def main(_argv):
     p = pathlib.Path('arch')
 
     for file in p.glob('*.toml'):
-        data = toml.load(file)
+        with file.open('rb') as f:
+            data = tomli.load(f)
 
         for arch in [x for x in data if x != 'setarch']:
             arch_to_subarch.update({arch: list(data[arch].keys())})
