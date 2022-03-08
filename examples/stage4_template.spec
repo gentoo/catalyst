@@ -171,14 +171,36 @@ stage4/root_overlay:
 # stage4/xinitrc:
 stage4/xinitrc:
 
-# This option is used to create non-root users on your CD.  It takes a space
-# separated list of user names.  These users will be added to the following
-# groups: users,wheel,audio,games,cdrom,usb
-# If this is specified in your spec file, then the first user is also the user
-# used to start X. Since this is not used on the release media, it is blank.
-# example:
+# This option is used to create groups. It takes a carriage-return separated
+# list of group names. For instance:
+# stage4/groups:
+#     admin
+#     web_group
+#     sudo_group
+stage4/groups:
+
+# This option is used to create non-root users. It takes a carriage-return
+# separated list of user names. For instance:
 # stage4/users:
+#     john.doe
+#     foo.bar
+#
+# These users are NOT added to any specific groups. You can specify one
+# or more groups to add the user(s) to using an equal sign followed by a comma
+# separated list. For instance:
+# stage4/users:
+#     john.doe=wheel,audio,cdrom
+#     foo.bar=www,audio
 stage4/users:
+
+# This option is used to copy an SSH public key into a user's .ssh directory.
+# Catalyst will copy the SSH public key in the ~/.ssh/authorized_keys file and
+# set the file permission to 0644. It takes a carriage-return separated list of
+# users with an equal sign followed by the SSH public key path. For instance:
+# stage4/ssh_public_keys:
+#     john.doe=/path/to/johns/public/key/id_rsa.pub
+#     foo.bar=/path/to/foos/public/key/id_ed25519.pub
+stage4/ssh_public_keys:
 
 # This option is used to specify the number of kernels to build and also the
 # labels that will be used by the CD bootloader to refer to each kernel image.
