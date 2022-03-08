@@ -19,13 +19,16 @@ class stage4(StageBase):
         "stage4/empty",
         "stage4/fsscript",
         "stage4/gk_mainargs",
+        "stage4/groups",
         "stage4/linuxrc",
         "stage4/rcadd",
         "stage4/rcdel",
         "stage4/rm",
         "stage4/root_overlay",
+        "stage4/ssh_public_keys",
         "stage4/unmerge",
         "stage4/use",
+        "stage4/users",
     ])
 
     def __init__(self, spec, addlargs):
@@ -51,6 +54,9 @@ class stage4(StageBase):
         ])
         self.finish_sequence.extend([
             self.remove,
+            self.groups,
+            self.users,
+            self.ssh_public_keys,
             self.empty,
             self.clean,
         ])
