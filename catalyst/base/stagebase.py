@@ -201,6 +201,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_packages()
         self.set_rm()
         self.set_linuxrc()
+        self.set_groups()
+        self.set_users()
+        self.set_ssh_public_keys()
         self.set_busybox_config()
         self.set_overlay()
         self.set_repos()
@@ -583,6 +586,39 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     self.settings[self.settings["spec_prefix"] + "/linuxrc"]
                 del self.settings[self.settings["spec_prefix"] + "/linuxrc"]
 
+    def set_groups(self):
+        groups = self.settings["spec_prefix"] + "/groups"
+        if groups in self.settings:
+            if isinstance(self.settings[groups], str):
+                self.settings["groups"] = self.settings[groups].split(",")
+            self.settings["groups"] = self.settings[groups]
+            del self.settings[groups]
+        else:
+            self.settings["groups"] = []
+        log.info('groups to create: %s' % self.settings["groups"])
+
+	def set_users(self):
+        users = self.settings["spec_prefix"] + "/users"
+        if users in self.settings:
+            if isinstance(self.settings[users], str):
+                self.settings["users"] = self.settings[users].split(",")
+            self.settings["users"] = self.settings[users]
+            del self.settings[users]
+        else:
+            self.settings["users"] = []
+        log.info('users to create: %s' % self.settings["users"])
+
+    def set_ssh_public_keys(self):
+        ssh_public_keys = self.settings["spec_prefix"] + "/ssh_public_keys"
+        if ssh_public_keys in self.settings:
+            if isinstance(self.settings[ssh_public_keys], str):
+                self.settings["ssh_public_keys"] = self.settings[ssh_public_keys].split(",")
+            self.settings["ssh_public_keys"] = self.settings[ssh_public_keys]
+            del self.settings[ssh_public_keys]
+        else:
+            self.settings["ssh_public_keys"] = []
+        log.info('ssh public keys to copy: %s' % self.settings["ssh_public_keys"])
+
     def set_busybox_config(self):
         if self.settings["spec_prefix"] + "/busybox_config" in self.settings:
             if isinstance(self.settings[self.settings['spec_prefix'] + '/busybox_config'], str):
@@ -893,6 +929,40 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     log.info('Copying root_overlay: %s', x)
                     cmd(['rsync', '-a', x + '/', self.settings['stage_path']],
                         env=self.env)
+
+    def groups(self):
+        for x in self.settings["groups"].split():
+            log.notice("Creating group: '%s'", x)
+            cmd(["groupadd", "-R", self.settings['chroot_path'], x], env=self.env)
+
+    def users(self):
+        for x in self.settings["users"]:
+            usr, grp = '', ''
+            try:
+                usr, grp = x.split("=")
+            except ValueError:
+                usr = x
+                log.debug("users: '=' separator not found on line " + x)
+                log.debug("users: missing separator means no groups found")
+            uacmd = ["useradd", "-R", self.settings['chroot_path'], "-m", x]
+            if grp != '':
+                uacmd = ["useradd", "-R", self.settings['chroot_path'], "-m", "-G", grp, usr]
+            log.notice("Creating user: '%s'", f"{usr}={grp}")
+            cmd(uacmd, env=self.env)
+
+    def ssh_public_keys(self):
+        for x in self.settings["ssh_public_keys"]:
+            usr, pub_key_src = '', ''
+            try:
+                usr, pub_key_src = x.split("=")
+            except ValueError:
+                raise CatalystError(f"ssh_public_keys: '=' separator not found on line {x}")
+            log.notice("Copying SSH public key for user: '%s'", usr)
+            pub_key_dest = self.settings['chroot_path'] + f"/home/{usr}/.ssh/authorized_keys"
+            cpcmd = ["cp", "-av", pub_key_src, pub_key_dest]
+            cmd(cpcmd, env=self.env)
+            chcmd = ["chmod", "0644", pub_key_dest]
+            cmd(chcmd, env=self.env)
 
     def bind(self):
         for x in [x for x in self.mount if self.mount[x]['enable']]:
