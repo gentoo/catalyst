@@ -23,6 +23,9 @@ class stage4(StageBase):
         "stage4/rcadd",
         "stage4/rcdel",
         "stage4/rm",
+        "stage4/groups",
+        "stage4/users",
+        "stage4/ssh_public_keys",
         "stage4/root_overlay",
         "stage4/unmerge",
         "stage4/use",
@@ -51,6 +54,9 @@ class stage4(StageBase):
         ])
         self.finish_sequence.extend([
             self.remove,
+            self.groups,
+            self.users,
+            self.ssh_public_keys,
             self.empty,
             self.clean,
         ])
