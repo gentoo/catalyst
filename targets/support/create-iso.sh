@@ -122,8 +122,8 @@ run_mkisofs() {
 			isoroot_checksum
 		fi
 	fi
-	echo "Running \"mkisofs ${@}\""
-	mkisofs "${@}" || die "Cannot make ISO image"
+	echo "Running \"mkisofs -iso-level 3 ${@}\""
+	mkisofs -iso-level 3 "${@}" || die "Cannot make ISO image"
 }
 
 # Here we actually create the ISO images for each architecture
