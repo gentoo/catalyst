@@ -194,7 +194,7 @@ case ${clst_hostarch} in
 	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86)
 		isoroot_checksum
 
-		extra_opts=("-joliet")
+		extra_opts=("-joliet" "-iso-level 3")
 		case ${clst_hostarch} in
 		sparc*) extra_opts+=("--sparc-boot") ;;
 		esac
