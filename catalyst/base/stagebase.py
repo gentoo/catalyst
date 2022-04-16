@@ -597,7 +597,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             self.settings["groups"] = []
         log.info('groups to create: %s' % self.settings["groups"])
 
-	def set_users(self):
+    def set_users(self):
         users = self.settings["spec_prefix"] + "/users"
         if users in self.settings:
             if isinstance(self.settings[users], str):
