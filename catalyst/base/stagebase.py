@@ -602,7 +602,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if users in self.settings:
             self.settings["users"] = self.settings[users]
             if isinstance(self.settings[users], str):
-                self.settings["users"] = self.settings[users].split(",")
+                self.settings["users"] = [self.settings[users]]
             del self.settings[users]
         else:
             self.settings["users"] = []
