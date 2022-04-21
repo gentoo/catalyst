@@ -931,7 +931,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                         env=self.env)
 
     def groups(self):
-        for x in self.settings["groups"].split():
+        for x in self.settings["groups"]:
             log.notice("Creating group: '%s'", x)
             cmd(["groupadd", "-R", self.settings['chroot_path'], x], env=self.env)
 
