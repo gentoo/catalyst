@@ -72,7 +72,7 @@ COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
 
 [mips.mipsel3]
 CHOST = "mipsel-unknown-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 [mips.mipsel4_r5k]
 CHOST = "mipsel-unknown-linux-gnu"
@@ -172,7 +172,7 @@ COMMON_FLAGS = "-O2 -march=mips64r2 -mplt -pipe"
 
 [mips64.mipsel3_n32]
 CHOST = "mips64el-unknown-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 [mips64.mipsel3_n64]
 CHOST = "mips64el-unknown-linux-gnu"
@@ -180,7 +180,7 @@ COMMON_FLAGS = "-O2 -march=mips3 -mabi=64 -Wa,-mfix-loongson2f-nop -pipe"
 
 [mips64.mipsel3_multilib]
 CHOST = "mips64el-unknown-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips3 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+COMMON_FLAGS = "-O2 -march=mips3 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 [mips64.mipsel4_r5k_n32]
 CHOST = "mips64el-unknown-linux-gnu"
