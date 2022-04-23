@@ -249,13 +249,13 @@ class arch_mipsel3(generic_mipsel):
 	"Builder class for MIPS III [Little-endian]"
 	def __init__(self,myspec):
 		generic_mipsel.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 class arch_mipsel3_n32(generic_mips64el):
 	"Builder class for MIPS III [Little-endian N32]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 class arch_mipsel3_n64(generic_mips64el):
 	"Builder class for MIPS III [Little-endian N64]"
@@ -267,7 +267,7 @@ class arch_mipsel3_multilib(generic_mips64el):
 	"Builder class for MIPS III [Little-endian multilib]"
 	def __init__(self,myspec):
 		generic_mips64el.__init__(self,myspec)
-		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mplt -Wa,-mfix-loongson2f-nop -pipe"
+		self.settings["COMMON_FLAGS"]="-O2 -march=mips3 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 class arch_loongson2e(generic_mipsel):
 	"Builder class for Loongson 2E [Little-endian]"
