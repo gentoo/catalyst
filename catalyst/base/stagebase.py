@@ -945,9 +945,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 log.debug("users: '=' separator not found on line " + x)
                 log.debug("users: missing separator means no groups found")
             uacmd = ["useradd", "-R", self.settings['chroot_path'], "-m", x]
+            msg_create_user = "Creating user: '%s'" % usr
             if grp != '':
                 uacmd = ["useradd", "-R", self.settings['chroot_path'], "-m", "-G", grp, usr]
-            log.notice("Creating user: '%s'", f"{usr}={grp}")
+                msg_create_user = "Creating user: '%s' in group(s): %s" % usr, grp
+            log.notice(msg_create_user)
             cmd(uacmd, env=self.env)
 
     def ssh_public_keys(self):
