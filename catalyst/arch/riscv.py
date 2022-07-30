@@ -34,6 +34,12 @@ class arch_rv64_lp64(generic_riscv):
 	def __init__(self,myspec):
 		generic_riscv.__init__(self,myspec)
 
+class arch_rv64_lp64_musl(generic_riscv):
+	"builder class for rv64_lp64_musl"
+	def __init__(self,myspec):
+		generic_riscv.__init__(self,myspec)
+		self.settings["CHOST"]="riscv64-gentoo-linux-musl"
+
 class arch_rv32_ilp32d(generic_riscv):
 	"builder class for rv32_ilp32d"
 	def __init__(self,myspec):
