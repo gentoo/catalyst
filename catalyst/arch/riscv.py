@@ -61,6 +61,7 @@ def register():
 		"rv64_lp64d"	: arch_rv64_lp64d,
 		"rv64_lp64d_musl"	: arch_rv64_lp64d_musl,
 		"rv64_lp64"	: arch_rv64_lp64,
+		"rv64_lp64_musl"	: arch_rv64_lp64_musl,
 		"rv32_ilp32d"	: arch_rv32_ilp32d,
 		"rv32_ilp32"	: arch_rv32_ilp32
 		}, ("rv64_multilib"))
