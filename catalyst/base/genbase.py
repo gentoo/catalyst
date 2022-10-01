@@ -52,3 +52,5 @@ class GenBase(object):
 								for j in array:
 									digest = hash_map.generate_hash(f, hash_=j)
 									myf.write(digest)
+				with io.open(path + '.sha256', 'w', encoding='utf-8') as sha256file:
+					sha256file.write(hash_map.generate_hash(path, hash_='sha256'))

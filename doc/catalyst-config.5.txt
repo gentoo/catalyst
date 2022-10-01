@@ -55,7 +55,8 @@ Basic configuration
 Create a `.DIGESTS` file containing the hash output from any of the
 supported options below.  Adding them all may take a long time.
 (example: `md5 sha1 sha512 whirlpool`).  See the *SUPPORTED HASHES*
-section for a list of supported hashes.
+section for a list of supported hashes. Enabling ANY digest will
+generate a `.sha256` file in addition to the `.DIGESTS` file.
 
 *contents*::
 Create a `.CONTENTS` file listing the contents of the file.  If this
