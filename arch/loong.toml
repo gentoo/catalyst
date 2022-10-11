@@ -1,0 +1,4 @@
+[loong.loong]
+COMMON_FLAGS = " -pipe -O2"
+CHOST = "loongarch64-unknown-linux-gnu"
+
