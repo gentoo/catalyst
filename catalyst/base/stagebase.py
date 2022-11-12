@@ -1036,26 +1036,24 @@ class StageBase(TargetBase, ClearBase, GenBase):
         shutil.copy('/etc/resolv.conf',
                     self.settings['chroot_path'] + '/etc/')
 
-        # Copy over the binary interpreter (qemu), if applicable; note that it's given
-        # as full path and goes to the same place in the chroot
+        # Copy over the binary interpreter(s) (qemu), if applicable; note that they are given
+        # as space-separated list of full paths and go to the same place in the chroot
         if "interpreter" in self.settings:
-            if not os.path.exists(self.settings["interpreter"]):
-                raise CatalystError(
-                    "Can't find interpreter " +
-                    self.settings["interpreter"],
-                    print_traceback=True)
+            if isinstance(self.settings["interpreter"], str):
+                myints = [self.settings["interpreter"]]
+            else:
+                myints = self.settings["interpreter"]
 
-            log.notice('Copying binary interpreter %s into chroot',
-                       self.settings['interpreter'])
+            for myi in myints:
+                if not os.path.exists(myi):
+                    raise CatalystError("Can't find interpreter " + myi, print_traceback=True)
 
-            if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter']):
-                os.rename(
-                    self.settings['chroot_path'] +
-                    '/' + self.settings['interpreter'],
-                    self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst')
+                log.notice('Copying binary interpreter %s into chroot', myi)
 
-            shutil.copy(self.settings['interpreter'],
-                        self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+                if os.path.exists(self.settings['chroot_path'] + '/' + myi):
+                    os.rename(self.settings['chroot_path'] + '/' + myi, self.settings['chroot_path'] + '/' + myi + '.catalyst')
+
+                shutil.copy(myi, self.settings['chroot_path'] + '/' + myi)
 
         # Copy over the envscript, if applicable
         if "envscript" in self.settings:
@@ -1214,16 +1212,18 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if os.path.exists(hosts_file + '.catalyst'):
             os.rename(hosts_file + '.catalyst', hosts_file)
 
-        # optionally clean up binary interpreter
+        # optionally clean up binary interpreter(s)
         if "interpreter" in self.settings:
-            if os.path.exists(self.settings['chroot_path'] + '/' + self.settings['interpreter'] + '.catalyst'):
-                os.rename(
-                    self.settings['chroot_path'] + '/' +
-                    self.settings['interpreter'] + '.catalyst',
-                    self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+            if isinstance(self.settings["interpreter"], str):
+                myints = [self.settings["interpreter"]]
             else:
-                os.remove(
-                    self.settings['chroot_path'] + '/' + self.settings['interpreter'])
+                myints = self.settings["interpreter"]
+
+            for myi in myints:
+                if os.path.exists(self.settings['chroot_path'] + '/' + myi + '.catalyst'):
+                    os.rename(self.settings['chroot_path'] + '/' + myi + '.catalyst', self.settings['chroot_path'] + '/' + myi)
+                else:
+                    os.remove(self.settings['chroot_path'] + '/' + myi)
 
         # optionally clean up portage configs
         if ("portage_prefix" in self.settings and
