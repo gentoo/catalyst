@@ -1,6 +1,9 @@
 [amd64.amd64]
 COMMON_FLAGS = "-O2 -pipe"
 
+[amd64.x86_64]
+COMMON_FLAGS = "-O2 -pipe"
+
 [amd64.k8]
 COMMON_FLAGS = "-O2 -march=k8 -pipe"
 CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse", "sse2",]
