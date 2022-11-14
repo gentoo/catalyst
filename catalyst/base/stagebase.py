@@ -1230,7 +1230,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 "sticky-config" not in self.settings["options"]):
             log.debug("clean(), portage_preix = %s, no sticky-config",
                       self.settings["portage_prefix"])
-            for _dir in "package.accept_keywords", "package.keywords", "package.mask", "package.unmask", "package.use", "package.env", "env":
+            for _dir in "package.accept_keywords", "package.keywords", "package.mask", "package.unmask", "package.use", "package.env", "env", "profile/package.use.force", "profile/package.use.mask":
                 target = pjoin(self.settings["stage_path"],
                                "etc/portage/%s" % _dir,
                                self.settings["portage_prefix"])
