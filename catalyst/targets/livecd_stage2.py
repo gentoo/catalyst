@@ -39,9 +39,6 @@ class livecd_stage2(StageBase):
         "livecd/users",
         "livecd/verify",
         "livecd/volid",
-        "livecd/xdm",
-        "livecd/xinitrc",
-        "livecd/xsession",
         "repos",
     ])
 

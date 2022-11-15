@@ -51,12 +51,6 @@ then
 		useradd -G users,wheel,audio,plugdev,games,cdrom,disk,floppy,usb \
 			-g 100 -c "${user_comment}" -m ${x}
 		chown -R ${x}:users /home/${x}
-		if [ -n "${clst_livecd_xdm}" -a -n "${clst_livecd_xsession}" ]
-		then
-			echo "[Desktop]" > /home/${x}/.dmrc
-			echo "Session=${clst_livecd_xsession}" >> /home/${x}/.dmrc
-			chown -R ${x}:users /home/${x}
-		fi
 	done
 fi
 
@@ -131,23 +125,6 @@ then
 		http://www.linux-usb.org/usb.ids
 fi
 
-# Setup configured display manager
-if [ -n "${clst_livecd_xdm}" ]
-then
-	sed -i \
-		-e "s:^#\\?DISPLAYMANAGER=.\+$:DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
-		/etc/rc.conf
-	sed -i \
-		-e "s:^#\\?DISPLAYMANAGER=.\+$:DISPLAYMANAGER=\"${clst_livecd_xdm}\":" \
-		/etc/conf.d/xdm
-fi
-
-# Setup configured default X Session
-if [ -n "${clst_livecd_xsession}" ]
-then
-	echo "XSESSION=\"${clst_livecd_xsession}\"" > /etc/env.d/90xsession
-fi
-
 # touch /etc/asound.state
 touch /etc/asound.state
 
@@ -165,8 +142,7 @@ case ${clst_livecd_type} in
 	gentoo-release-live*)
 		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
-		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' \
-			-e "s:##DISPLAY_MANAGER:${clst_livecd_xdm}:" /etc/motd
+		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
 	;;
 esac
 
@@ -175,43 +151,6 @@ rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/l
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-release-live*)
-		# Setup GDM
-		if [ "${clst_livecd_xdm}" == "gdm" ]
-		then
-			if [ ! -e /etc/X11/gdm/gdm.conf ] && [ -e /usr/share/gdm/defaults.conf ]
-			then
-				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
-				then
-					sedxtra="\nTimedLogin=${first_user}"
-				else
-					sedxtra=""
-				fi
-
-				cp -f /etc/X11/gdm/custom.conf /etc/X11/gdm/custom.conf.old
-
-				sed	-i \
-					-e "s:\(\[daemon\]\)$:\1\nTimedLoginEnable=true\nTimedLoginDelay=10${sedxtra}:" \
-					-e 's:\(\[greeter\]\)$:\1\nGraphicalTheme=gentoo-emergence:' \
-					/etc/X11/gdm/custom.conf
-			else
-				cp -f /etc/X11/gdm/gdm.conf /etc/X11/gdm/gdm.conf.old
-				sed -i \
-					-e 's:TimedLoginEnable=false:TimedLoginEnable=true:' \
-					-e 's:TimedLoginDelay=30:TimedLoginDelay=10:' \
-					-e 's:AllowRemoteRoot=true:AllowRemoteRoot=false:' \
-					-e ':^#GraphicalTheme=: s:^#::' \
-					-e 's:^GraphicalTheme=.*$:GraphicalTheme=gentoo-emergence:' \
-					/etc/X11/gdm/gdm.conf
-
-				if [ -n "${clst_livecd_users}" ] && [ -n "${first_user}" ]
-				then
-					sed -i \
-						-e "s:TimedLogin=:TimedLogin=${first_user}:" \
-						/etc/X11/gdm/gdm.conf
-				fi
-			fi
-		fi
-
 		# This is my hack to reduce tmpfs usage
 		mkdir -p /usr/livecd
 		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd

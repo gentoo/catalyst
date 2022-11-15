@@ -42,14 +42,6 @@ case $1 in
 	livecd-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot ${clst_shdir}/support/livecdfs-update.sh
-
-		# Move over the xinitrc (if applicable)
-		# This is moved here, so we can override any default xinitrc
-		if [ -n "${clst_livecd_xinitrc}" ]
-		then
-			cp -f ${clst_livecd_xinitrc} \
-				${clst_chroot_path}/etc/X11/xinit/xinitrc
-		fi
 	;;
 
 	bootloader)

@@ -389,26 +389,6 @@ This is typically used for adding the documentation, distfiles,
 snapshots, and stages to the official media.  These files will not be
 available if `docache` is enabled, as they are outside the loop.
 
-*<target>/xinitrc*::
-This is used by catalyst to copy the specified file to
-`/etc/X11/xinit/xinitrc` and is used by the *<target>/type*
-`generic-livecd`.  While the file will still be copied for any
-*<target>/type*, catalyst will only create the necessary `/etc/startx`
-for those types, so X will not be automatically started.  This is
-useful also for setting up X on a CD where you do not wish X to start
-automatically.  We do not use this on the release media.  This setting
-is supported by the `stage4` and `livecd` targets.
-
-*livecd/xdm*::
-This is used by catalyst to determine which display manager you wish
-to become the default (example: `gdm`).  This is used on the official
-Gentoo LiveCD and is valid for any `livecd/type`.
-
-*livecd/xsession*::
-This is used by catalyst to determine which X session should be
-started by default by the display manager (example: `gnome`).  This is
-used on the official Gentoo LiveCD and is valid for any livecd/type.
-
 *<target>/users*::
 This option is used to create non-root users on your target.  It takes
 a space separated list of user names.  These users will be added to

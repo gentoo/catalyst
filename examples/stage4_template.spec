@@ -161,16 +161,6 @@ stage4/rcdel:
 # stage4/root_overlay:
 stage4/root_overlay:
 
-# This is used by catalyst to copy the specified file to /etc/X11/xinit/xinitrc
-# and is used by the stage4/type generic-livecd.  While the file will still be
-# copied for any stage4/type, catalyst will only create the necessary
-# /etc/startx for those types, so X will not be automatically started.  This is
-# useful also for setting up X on a CD where you do not wish X to start
-# automatically.  We do not use this on the release media, so it is left blank.
-# example:
-# stage4/xinitrc:
-stage4/xinitrc:
-
 # This option is used to create groups. It takes a carriage-return separated
 # list of group names. For instance:
 # stage4/groups:

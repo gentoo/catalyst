@@ -202,30 +202,6 @@ livecd/overlay:
 # livecd/root_overlay:
 livecd/root_overlay:
 
-# This is used by catalyst to copy the specified file to /etc/X11/xinit/xinitrc
-# and is used by the livecd/type and generic-livecd.  While the file will still
-# be copied for any livecd/type, catalyst will only create the necessary
-# /etc/startx for those types, so X will not be automatically started.  This is
-# useful also for setting up X on a CD where you do not wish X to start
-# automatically.  We do not use this on the release media, so it is left blank.
-# example:
-# livecd/xinitrc:
-livecd/xinitrc:
-
-# This is used by catalyst to determine which display manager you wish to
-# become the default.  This is used on the official Gentoo LiveCD and is valid
-# for any livecd/type.
-# example:
-# livecd/xdm: gdm
-livecd/xdm:
-
-# This is used by catalyst to determine which X session should be started by
-# default by the display manager.  This is used on the official Gentoo LiveCD
-# and is valid for any livecd/type.
-# example:
-# livecd/xsession: gnome
-livecd/xsession:
-
 # This option is used to create non-root users on your CD.  It takes a space
 # separated list of user names.  These users will be added to the following
 # groups: users,wheel,audio,games,cdrom,usb
