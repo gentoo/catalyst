@@ -228,12 +228,8 @@ case ${clst_livecd_type} in
 			fi
 		fi
 
-		# This gives us our list of system packages for the installer
-		mkdir -p /usr/livecd
-		### XXX: Andrew says we don't need this anymore
-		USE="-* $(cat /var/db/pkg/sys-libs/glibc*/USE)" emerge -eqp @system | grep -e '^\[ebuild' | sed -e 's:^\[ebuild .\+\] ::' -e 's: .\+$::' > /usr/livecd/systempkgs.txt
-
 		# This is my hack to reduce tmpfs usage
+		mkdir -p /usr/livecd
 		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
 		mv -f /etc/gconf /usr/livecd
@@ -273,16 +269,6 @@ case ${clst_livecd_type} in
 				[ -e /usr/share/applications/gentoo-handbook.desktop ] && \
 					cp -f /usr/share/applications/gentoo-handbook.desktop \
 					/home/${username}/Desktop
-				# Copy our installer icons
-				if [ -e /usr/share/applications/installer-gtk.desktop ]
-				then
-					cp -f /usr/share/applications/installer-{gtk,dialog}.desktop /home/${username}/Desktop
-					sed -i -e \
-						's:Exec=installer-dialog:Exec=sudo installer-dialog:' \
-						/home/${username}/Desktop/installer-dialog.desktop
-					sed -i -e 's:Exec=installer-gtk:Exec=installer:' \
-						/home/${username}/Desktop/installer-gtk.desktop
-				fi
 				chown -R ${username}:100 /home/${username}
 			done
 		fi
