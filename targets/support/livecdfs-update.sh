@@ -131,9 +131,6 @@ then
 		http://www.linux-usb.org/usb.ids
 fi
 
-# Setup opengl in /etc (if configured)
-[ -x /usr/sbin/openglify ] && /usr/sbin/openglify
-
 # Setup configured display manager
 if [ -n "${clst_livecd_xdm}" ]
 then
