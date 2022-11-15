@@ -7,7 +7,8 @@ source /tmp/chroot-functions.sh
 # Allow root logins to our CD by default
 if [ -e /etc/ssh/sshd_config ]
 then
-	sed -i 's:^#PermitRootLogin\ yes:PermitRootLogin\ yes:' \
+	sed -i \
+		-e '/^#PermitRootLogin/c# Allow root login with password on livecds.\nPermitRootLogin Yes' \
 		/etc/ssh/sshd_config
 fi
 
