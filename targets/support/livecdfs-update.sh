@@ -178,19 +178,6 @@ rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/l
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-release-live*)
-		# Setup Gnome theme
-		if [ "${clst_livecd_xsession}" == "gnome" ]
-		then
-			gconftool-2 --direct \
-				--config-source xml:readwrite:/etc/gconf/gconf.xml.defaults \
-				--type string --set /desktop/gnome/interface/font_name "Sans 9"
-		fi
-
-		# Remove locking on screensaver
-		gconftool-2 --direct \
-			--config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s \
-			-t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
-
 		# Setup GDM
 		if [ "${clst_livecd_xdm}" == "gdm" ]
 		then
@@ -232,8 +219,6 @@ case ${clst_livecd_type} in
 		mkdir -p /usr/livecd
 		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd
 		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
-		mv -f /etc/gconf /usr/livecd
-		ln -sf /usr/livecd/gconf /etc/gconf
 		mv -f /var/db /usr/livecd
 		ln -sf /usr/livecd/db /var/db
 
@@ -274,15 +259,6 @@ case ${clst_livecd_type} in
 		fi
 		;;
 	generic-livecd )
-		# This is my hack to reduce tmpfs usage
-		mkdir -p /usr/livecd
-
-		if [ -d /etc/gconf ]
-		then
-			mv -f /etc/gconf /usr/livecd
-			ln -sf /usr/livecd/gconf /etc/gconf
-		fi
-
 		touch /etc/startx
 		;;
 esac

@@ -4,11 +4,6 @@
 # This is a good place to load any misc.
 # programs on startup ( 1>&2 )
 
-#if [ -d /usr/livecd/gconf ]
-#then
-#	ln -sf /usr/livecd/gconf /etc/gconf
-#fi
-
 #if [ -d /usr/livecd/db ]
 #then
 #	ln -sf /usr/livecd/db /var/db
