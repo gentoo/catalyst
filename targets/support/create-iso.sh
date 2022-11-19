@@ -11,13 +11,13 @@ case ${clst_hostarch} in
 		cdmakerpkg="dev-libs/libisoburn"
 		;;
 	mips)
-   		cdmaker="sgibootcd"
+		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
 		;;
-        ppc*|powerpc*|sparc*)
-                cdmaker="grub-mkrescue"
-                cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
-                ;;
+	ppc*|powerpc*|sparc*)
+		cdmaker="grub-mkrescue"
+		cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
+		;;
 	amd64|arm64|ia64|x86)
 		cdmaker="grub-mkrescue"
 		# grub-mkrescue requires:
