@@ -10,15 +10,15 @@ case ${clst_hostarch} in
 		cdmaker="xorriso"
 		cdmakerpkg="dev-libs/libisoburn"
 		;;
-	mips)
+	mips*)
 		cdmaker="sgibootcd"
 		cdmakerpkg="sys-boot/sgibootcd"
 		;;
-	ppc*|powerpc*|sparc*)
+	ppc*|sparc*)
 		cdmaker="grub-mkrescue"
 		cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
 		;;
-	amd64|arm64|ia64|x86|i?86)
+	aarch64*|ia64|i?86|x86_64)
 		cdmaker="grub-mkrescue"
 		# grub-mkrescue requires:
 		#  xorriso from libisoburn
@@ -49,14 +49,11 @@ then
 				amd64)
 					clst_iso_volume_id="Gentoo Linux - AMD64"
 				;;
-				arm)
+				arm*)
 					clst_iso_volume_id="Gentoo Linux - ARM"
 				;;
-				arm64)
+				aarch64*)
 					clst_iso_volume_id="Gentoo Linux - ARM64"
-				;;
-				hppa)
-					clst_iso_volume_id="Gentoo Linux - HPPA"
 				;;
 				ia64)
 					clst_iso_volume_id="Gentoo Linux - IA64"
@@ -64,13 +61,16 @@ then
 				m68k)
 					clst_iso_volume_id="Gentoo Linux - M68K"
 				;;
-				mips)
+				mips*)
 					clst_iso_volume_id="Gentoo Linux - MIPS"
 				;;
-				ppc*|powerpc*)
+				parisc)
+					clst_iso_volume_id="Gentoo Linux - HPPA"
+				;;
+				ppc*)
 					clst_iso_volume_id="Gentoo Linux - PowerPC"
 				;;
-				s390)
+				s390*)
 					clst_iso_volume_id="Gentoo Linux - S390"
 				;;
 				sh)
@@ -79,7 +79,7 @@ then
 				sparc*)
 					clst_iso_volume_id="Gentoo Linux - SPARC"
 				;;
-				x86)
+				i?86)
 					clst_iso_volume_id="Gentoo Linux - x86"
 				;;
 				*)
@@ -126,16 +126,14 @@ case ${clst_hostarch} in
 		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
 		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
 	;;
-	arm)
-	;;
-	hppa)
+	parisc)
 		echo ">> Running mkisofs to create iso image...."
 		run_mkisofs -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
 		pushd "${clst_target_path}/"
 		palo -f boot/palo.conf -C "${1}"
 		popd
 	;;
-	mips)
+	mips*)
 		if [[ ${clst_fstype} != squashfs ]]; then
 			die "SGI LiveCD(s) only support the 'squashfs' fstype!"
 		fi
@@ -191,7 +189,7 @@ case ${clst_hostarch} in
 		# o=	output image (burnable to CD; readable by fdisk)
 		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 	;;
-	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86|i?86)
+	aarch64*|ia64|ppc*|sparc*|i?86|x86_64)
 		isoroot_checksum
 
 		extra_opts=("-joliet" "-iso-level" "3")
@@ -201,6 +199,10 @@ case ${clst_hostarch} in
 
 		echo ">> Running grub-mkrescue to create iso image...."
 		grub-mkrescue "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
+	;;
+	*)
+		echo "ISO support for ${clst_hostarch} is unimplemented"
+		exit 1
 	;;
 esac
 exit  $?

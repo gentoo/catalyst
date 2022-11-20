@@ -78,10 +78,7 @@ case ${clst_hostarch} in
 			((bctr=${bctr}+1))
 		done
 	;;
-	arm)
-		# NO SOFTLEVEL SUPPORT YET
-	;;
-	hppa)
+	parisc)
 		# NO SOFTLEVEL SUPPORT YET
 		mkdir -p $1/boot
 
@@ -103,7 +100,7 @@ case ${clst_hostarch} in
 			echo "--recoverykernel=boot/${x}" >> ${icfg}
 		done
 	;;
-	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86|i?86)
+	aarch64*|ia64|ppc*|sparc*|i?86|x86_64)
 		kern_subdir=/boot
 		iacfg=$1/boot/grub/grub.cfg
 		mkdir -p $1/boot/grub
@@ -142,7 +139,7 @@ case ${clst_hostarch} in
 		done
 		memtest_grub $1 >> ${iacfg}
 	;;
-	mips)
+	mips*)
 		# NO SOFTLEVEL SUPPORT YET
 
 		# Mips is an interesting arch -- where most archs will
@@ -202,5 +199,9 @@ case ${clst_hostarch} in
 		[ -e "${1}/sash64" ] && mv ${1}/sash64 ${scratch}/arcload
 		[ -e "${1}/arc.cf" ] && mv ${1}/arc.cf ${scratch}/arcload
 		;;
+	*)
+		echo "Boot loader support for ${clst_hostarch} is unimplemented"
+		exit 1
+	;;
 esac
 exit $?

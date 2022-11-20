@@ -4,7 +4,7 @@ RUN_DEFAULT_FUNCS="yes"
 
 source /tmp/chroot-functions.sh
 
-if [[ ${clst_hostarch} == hppa ]]; then
+if [[ ${clst_hostarch} == parisc ]]; then
 	for i in ${clst_boot_kernel}; do
 		case ${i} in
 			*32)
