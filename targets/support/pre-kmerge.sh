@@ -18,8 +18,8 @@ if [[ ${clst_hostarch} == hppa ]]; then
 				;;
 		esac
 	done
-	[[ $num32 > 1 ]] && die "Only one 32-bit kernel can be configured"
-	[[ $num64 > 1 ]] && die "Only one 64-bit kernel can be configured"
+	[[ $num32 -gt 1 ]] && die "Only one 32-bit kernel can be configured"
+	[[ $num64 -gt 1 ]] && die "Only one 64-bit kernel can be configured"
 fi
 
 run_merge --oneshot sys-kernel/genkernel
