@@ -108,13 +108,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
             host = self.settings["chost"].split("-")[0]
         else:
             host = self.settings["subarch"]
-        self.settings["hostarch"] = host
 
         if "cbuild" in self.settings:
             build = self.settings["cbuild"].split("-")[0]
         else:
             build = platform.machine()
-        self.settings["buildarch"] = build
 
         arch_dir = normpath(self.settings['sharedir'] + '/arch/')
 
@@ -138,6 +136,9 @@ class StageBase(TargetBase, ClearBase, GenBase):
             break
         else:
             raise CatalystError("Unknown host machine type " + host)
+
+        self.settings["hostarch"] = arch
+        self.settings["buildarch"] = build
 
         if setarch.get('if_build', '') == platform.machine():
             chroot = f'setarch {setarch["arch"]} chroot'
