@@ -30,6 +30,28 @@ case ${clst_fstype} in
 	;;
 esac
 
+# Optional memtest setups
+memtest_grub() {
+  if [[ -e $1/memtest64.bios ]]; then
+    echo 'if [ "x$grub_platform" = xpc ]; then'
+    echo '  menuentry "Memtest86+ 64bit BIOS" {'
+    echo '    linux "/memtest64.bios"'
+    echo '  }'
+    echo 'fi'
+  fi
+  if [[ -e $1/memtest.efi64 ]]; then
+    echo 'if [ "x$grub_platform" = xefi ]; then'
+    echo '  menuentry "Memtest86+ 64bit UEFI" {'
+    echo '    chainloader "/memtest.efi64"'
+    echo '  }'
+    echo 'fi'
+  fi
+  if [[ -e $1/memtest32.bios ]]; then
+    echo 'menuentry "Memtest86+ 32bit BIOS" {'
+    echo '  linux "/memtest32.bios"'
+    echo '}'
+  fi
+}
 
 default_append_line=(root=/dev/ram0 init=/linuxrc ${cmdline_opts[@]} cdroot)
 
@@ -118,6 +140,7 @@ case ${clst_hostarch} in
 			fi
 			echo "" >> ${iacfg}
 		done
+		memtest_grub $1 >> ${iacfg}
 	;;
 	mips)
 		# NO SOFTLEVEL SUPPORT YET

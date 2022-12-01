@@ -93,6 +93,10 @@ case $1 in
 			cp -f ${clst_sharedir}/livecd/files/README.txt $1
 		fi
 
+		if [ -e ${clst_chroot_path}/boot/memtest86plus/ ]; then
+			cp -rv ${clst_chroot_path}/boot/memtest86plus/* $1
+		fi
+
 		case ${clst_livecd_type} in
 			gentoo-release-livecd)
 				mkdir -p $1/snapshots
