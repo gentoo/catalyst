@@ -7,7 +7,7 @@ mkdir -p "${1}"
 echo "Creating ${clst_fstype} filesystem"
 case ${clst_fstype} in
 	squashfs)
-		gensquashfs -D "${clst_stage_path}" -q ${clst_fsops} "${1}/image.squashfs" \
+		gensquashfs -k -D "${clst_stage_path}" -q ${clst_fsops} "${1}/image.squashfs" \
 			|| die "Failed to create squashfs filesystem"
 	;;
 	jffs2)
