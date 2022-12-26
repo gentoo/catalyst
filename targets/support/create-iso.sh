@@ -18,7 +18,7 @@ case ${clst_hostarch} in
 		cdmaker="grub-mkrescue"
 		cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
 		;;
-	amd64|arm64|ia64|x86)
+	amd64|arm64|ia64|x86|i?86)
 		cdmaker="grub-mkrescue"
 		# grub-mkrescue requires:
 		#  xorriso from libisoburn
