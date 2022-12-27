@@ -191,7 +191,7 @@ case ${clst_hostarch} in
 		# o=	output image (burnable to CD; readable by fdisk)
 		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 	;;
-	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86)
+	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86|i?86)
 		isoroot_checksum
 
 		extra_opts=("-joliet" "-iso-level" "3")
