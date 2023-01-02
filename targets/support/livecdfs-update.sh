@@ -17,7 +17,7 @@ rm -rf /etc/localtime
 cp /usr/share/zoneinfo/UTC /etc/localtime
 
 # Setup the hostname
-echo 'HOSTNAME="livecd"' > /etc/conf.d/hostname
+echo 'hostname="livecd"' > /etc/conf.d/hostname
 echo "127.0.0.1 livecd.gentoo livecd localhost" > /etc/hosts
 
 # Since we're an official Gentoo release, we do things the official Gentoo way.
