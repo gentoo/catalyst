@@ -6,6 +6,10 @@ COMMON_FLAGS = "-O2 -march=mips1 -mabi=32 -mplt -pipe"
 CHOST = "mips-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
+[mips.mips2_musl]
+CHOST = "mips-gentoo-linux-musl"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+
 [mips.mips32]
 CHOST = "mips-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
@@ -24,6 +28,10 @@ COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
 
 [mips.mips3]
 CHOST = "mips-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips.mips3_musl]
+CHOST = "mips-gentoo-linux-musl"
 COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
 
 [mips.mips4_r5k]
@@ -54,6 +62,10 @@ COMMON_FLAGS = "-O2 -march=mips1 -mabi=32 -mplt -pipe"
 CHOST = "mipsel-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
+[mips.mipsel2_musl]
+CHOST = "mipsel-gentoo-linux-musl"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+
 [mips.mips32el]
 CHOST = "mipsel-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
@@ -72,6 +84,10 @@ COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
 
 [mips.mipsel3]
 CHOST = "mipsel-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
+
+[mips.mipsel3_musl]
+CHOST = "mipsel-gentoo-linux-musl"
 COMMON_FLAGS = "-O2 -march=mips3 -mabi=32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
 
 [mips.mipsel4_r5k]
@@ -104,6 +120,10 @@ COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
 
 [mips64.mips3_n64]
 CHOST = "mips64-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=64 -mfix-r4000 -mfix-r4400 -pipe"
+
+[mips64.mips3_n64_musl]
+CHOST = "mips64-gentoo-linux-musl"
 COMMON_FLAGS = "-O2 -march=mips3 -mabi=64 -mfix-r4000 -mfix-r4400 -pipe"
 
 [mips64.mips3_multilib]
@@ -200,6 +220,10 @@ COMMON_FLAGS = "-O2 -march=mips64 -mabi=n32 -mplt -pipe"
 
 [mips64.mips64el_n64]
 CHOST = "mips64el-unknown-linux-gnu"
+COMMON_FLAGS = "-O2 -march=mips64 -mabi=64 -pipe"
+
+[mips64.mips64el_n64_musl]
+CHOST = "mips64el-gentoo-linux-musl"
 COMMON_FLAGS = "-O2 -march=mips64 -mabi=64 -pipe"
 
 [mips64.mips64el_multilib]
