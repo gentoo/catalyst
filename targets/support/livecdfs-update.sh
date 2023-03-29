@@ -147,9 +147,4 @@ case ${clst_livecd_type} in
 		;;
 esac
 
-if [ -e /lib/rcscripts/addons/udev-start.sh ]
-then
-	sed -i "s:\t\[\[ -x /sbin/evms_activate:\t\[\[ -x \${CDBOOT} \]\] \&\& \[\[ -x /sbin/evms_activate:" /lib/rcscripts/addons/udev-start.sh
-fi
-
 env-update
