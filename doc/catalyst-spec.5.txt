@@ -104,7 +104,6 @@ This option controls quite a bit of catalyst internals and sets up
 several defaults.  Each type behaves slightly differently and is
 explained below.
   `gentoo-release-minimal`;; This creates an official minimal InstallCD.
-  `gentoo-release-universal`;; This creates an official universal InstallCD.
   `gentoo-release-livecd`;; This creates an official LiveCD environment.
   `generic-livecd`;; This should be used for all non-official media.
 
