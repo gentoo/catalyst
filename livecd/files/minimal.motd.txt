@@ -7,5 +7,5 @@ to a known value.
 
 Please report any bugs you find to https://bugs.gentoo.org. Be sure to include
 detailed information about how to reproduce the bug you are reporting.
-Thank you for using Gentoo Linux!
 
+Thank you for using Gentoo Linux!

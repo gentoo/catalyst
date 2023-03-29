@@ -128,8 +128,7 @@ fi
 # Tweak the MOTD for Gentoo releases
 case ${clst_livecd_type} in
 	gentoo-release-universal)
-		cat /etc/generic.motd.txt /etc/universal.motd.txt \
-			/etc/minimal.motd.txt > /etc/motd
+		cat /etc/generic.motd.txt /etc/universal.motd.txt > /etc/motd
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Universal Installation CD!:' /etc/motd
 	;;
 	gentoo-release-minimal)
@@ -137,8 +136,7 @@ case ${clst_livecd_type} in
 		sed -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
 	gentoo-release-live*)
-		cat /etc/generic.motd.txt \
-			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
+		cat /etc/generic.motd.txt /etc/livecd.motd.txt > /etc/motd
 		sed -i -e 's:^##GREETING:Welcome to the Gentoo Linux LiveCD!:' /etc/motd
 	;;
 esac
