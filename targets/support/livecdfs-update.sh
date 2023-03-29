@@ -144,15 +144,8 @@ case ${clst_livecd_type} in
 		fi
 		;;
 	generic-livecd )
-		touch /etc/startx
 		;;
 esac
-
-# We want the first user to be used when auto-starting X
-if [ -e /etc/startx ]
-then
-	sed -i "s:##STARTX:echo startx | su - '${first_user}':" /root/.bashrc
-fi
 
 if [ -e /lib/rcscripts/addons/udev-start.sh ]
 then
