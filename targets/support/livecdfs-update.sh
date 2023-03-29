@@ -88,9 +88,6 @@ cat <<EOF > ${clst_make_conf}
 EOF
 cat ${clst_make_conf}.old >> ${clst_make_conf}
 
-# devfs tweaks
-[ -e /etc/devfsd.conf ] && sed -i '/dev-state/ s:^:#:' /etc/devfsd.conf
-
 # Add some helpful aliases
 cat <<EOF >> /etc/profile
 alias cp='cp -i'
