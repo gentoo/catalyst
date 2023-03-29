@@ -113,13 +113,6 @@ rm -f /etc/generic.motd.txt /etc/universal.motd.txt /etc/minimal.motd.txt /etc/l
 # Post configuration
 case ${clst_livecd_type} in
 	gentoo-release-live*)
-		# This is my hack to reduce tmpfs usage
-		mkdir -p /usr/livecd
-		cp -r ${clst_repo_basedir}/${clst_repo_name}/{profiles,eclass} /usr/livecd
-		rm -rf /usr/livecd/profiles/{co*,default-{1*,a*,b*,d*,h*,i*,m*,p*,s*,x*},g*,hardened-*,n*,x*}
-		mv -f /var/db /usr/livecd
-		ln -sf /usr/livecd/db /var/db
-
 		# Clear out lastlog
 		rm -f /var/log/lastlog && touch /var/log/lastlog
 
