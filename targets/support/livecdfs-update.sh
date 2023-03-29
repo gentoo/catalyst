@@ -60,12 +60,6 @@ then
 	sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 fi
 
-# Setup links for ethernet devices
-cd /etc/init.d
-for i in {1..4}; do
-	ln -sf net.lo net.eth${i}
-done
-
 # Add this for hwsetup/mkx86config
 mkdir -p /etc/sysconfig
 
