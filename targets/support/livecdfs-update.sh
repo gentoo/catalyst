@@ -101,30 +101,6 @@ alias ll='ls -l'
 alias grep='grep --color=auto'
 EOF
 
-# Make sure we have the latest pci,usb and hotplug ids.  Older versions of
-# pciutils and usbutils used /sbin, where newer versions use /usr/sbin.
-[ -x /sbin/update-pciids ] && /sbin/update-pciids
-[ -x /sbin/update-usbids ] && /sbin/update-usbids
-[ -x /usr/sbin/update-pciids ] && /usr/sbin/update-pciids
-[ -x /usr/sbin/update-usbids ] && /usr/sbin/update-usbids
-if [ -d /usr/share/hwdata ]
-then
-	# If we have uncompressed pci and usb ids files, symlink them.
-	[ -f /usr/share/misc/pci.ids ] && [ -f /usr/share/hwdata/pci.ids ] && \
-		rm -f /usr/share/hwdata/pci.ids && ln -s /usr/share/misc/pci.ids \
-		/usr/share/hwdata/pci.ids
-	[ -f /usr/share/misc/usb.ids ] && [ -f /usr/share/hwdata/usb.ids ] && \
-		rm -f /usr/share/hwdata/usb.ids && ln -s /usr/share/misc/usb.ids \
-		/usr/share/hwdata/usb.ids
-	# If we have compressed pci and usb files, we download our own copies.
-	[ -f /usr/share/misc/pci.ids.gz ] && [ -f /usr/share/hwdata/pci.ids ] && \
-		rm -f /usr/share/hwdata/pci.ids && wget -O /usr/share/hwdata/pci.ids \
-		http://pciids.sourceforge.net/v2.2/pci.ids
-	[ -f /usr/share/misc/usb.ids.gz ] && [ -f /usr/share/hwdata/usb.ids ] && \
-		rm -f /usr/share/hwdata/usb.ids && wget -O /usr/share/hwdata/usb.ids \
-		http://www.linux-usb.org/usb.ids
-fi
-
 # Tweak the MOTD for Gentoo releases
 case ${clst_livecd_type} in
 	gentoo-release-universal)
