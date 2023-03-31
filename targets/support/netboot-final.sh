@@ -31,7 +31,7 @@ case ${clst_hostarch} in
 			-s ${clst_target_path}/${kname}-hppa.lif \
 			-f /dev/null \
 			-b /usr/share/palo/iplboot \
-			-c "0/vmlinux initrd=0/ramdisk root=/dev/ram0" \
+			-c "0/vmlinux initrd=0/ramdisk" \
 			|| exit 1
 
 		;;

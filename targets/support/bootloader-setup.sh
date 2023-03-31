@@ -64,8 +64,8 @@ case ${clst_hostarch} in
 		for x in ${clst_boot_kernel}
 		do
 			echo -n "${bctr}:/boot/${x} " >> ${acfg}
-			echo -n "initrd=/boot/${x}.igz root=/dev/ram0 " >> ${acfg}
-			echo "init=/linuxrc ${cmdline_opts[@]} cdroot" >> ${acfg}
+			echo -n "initrd=/boot/${x}.igz " >> ${acfg}
+			echo "${cmdline_opts[@]} cdroot" >> ${acfg}
 			((bctr=${bctr}+1))
 		done
 		# Pass 2 is for serial
@@ -73,8 +73,8 @@ case ${clst_hostarch} in
 		for x in ${clst_boot_kernel}
 		do
 			echo -n "${bctr}:/boot/${x} " >> ${acfg}
-			echo -n "initrd=/boot/${x}.igz root=/dev/ram0 " >> ${acfg}
-			echo "init=/linuxrc ${cmdline_opts[@]} cdroot" >> ${acfg}
+			echo -n "initrd=/boot/${x}.igz " >> ${acfg}
+			echo "${cmdline_opts[@]} cdroot" >> ${acfg}
 			((bctr=${bctr}+1))
 		done
 	;;
