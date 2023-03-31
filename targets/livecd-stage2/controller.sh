@@ -63,7 +63,7 @@ case $1 in
 		;;
 
 	clean)
-		if [ "${clst_livecd_type}" = "gentoo-release-minimal" ] \
+		if [ "${clst_livecd_type}" = "gentoo-release-minimal" ]
 		then
 			# Clean out man, info and doc files
 			rm -rf ${clst_chroot_path}/usr/share/{man,doc,info}/*
