@@ -1173,7 +1173,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 '\n'
                 '# This sets the language of build output to English.\n'
                 '# Please keep this setting intact when reporting bugs.\n'
-                'LC_MESSAGES=C\n')
+                'LC_MESSAGES=C.utf8\n')
 
     def fsscript(self):
         if "autoresume" in self.settings["options"] \
