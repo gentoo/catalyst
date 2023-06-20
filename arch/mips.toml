@@ -8,7 +8,7 @@ COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
 [mips.mips2_softfloat]
 CHOST = "mips-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mips2_musl]
 CHOST = "mips-gentoo-linux-musl"
@@ -20,7 +20,7 @@ COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
 
 [mips.mips32_softfloat]
 CHOST = "mips-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mips32r2]
 CHOST = "mips-unknown-linux-gnu"
@@ -28,7 +28,7 @@ COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
 
 [mips.mips32r2_softfloat]
 CHOST = "mips-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mips3]
 CHOST = "mips-unknown-linux-gnu"
@@ -68,7 +68,7 @@ COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
 [mips.mipsel2_softfloat]
 CHOST = "mipsel-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mipsel2_musl]
 CHOST = "mipsel-gentoo-linux-musl"
@@ -80,7 +80,7 @@ COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
 
 [mips.mips32el_softfloat]
 CHOST = "mipsel-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips32 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mips32r2el]
 CHOST = "mipsel-unknown-linux-gnu"
@@ -88,7 +88,7 @@ COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
 
 [mips.mips32r2el_softfloat]
 CHOST = "mipsel-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -pipe"
+COMMON_FLAGS = "-O2 -march=mips32r2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mipsel3]
 CHOST = "mipsel-unknown-linux-gnu"
@@ -128,7 +128,7 @@ COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
 
 [mips64.mips3_n32_softfloat]
 CHOST = "mips64-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -msoft-float -pipe"
 
 [mips64.mips3_n64]
 CHOST = "mips64-unknown-linux-gnu"
@@ -208,7 +208,7 @@ COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -mfix-
 
 [mips64.mipsel3_n32_softfloat]
 CHOST = "mips64el-softfloat-linux-gnu"
-COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -pipe"
+COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -Wa,-mfix-loongson2f-nop -mfix-r5900 -msoft-float -pipe"
 
 [mips64.mipsel3_n64]
 CHOST = "mips64el-unknown-linux-gnu"
