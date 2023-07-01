@@ -25,6 +25,7 @@ valid_config_file_values = frozenset([
     "sharedir",
     "storedir",
     "target_distdir",
+    "target_logdir",
     "target_pkgdir",
     "var_tmpfs_portage",
 ])
@@ -53,6 +54,7 @@ confdefaults = {
     "shdir": "%(sharedir)s/targets",
     "storedir": "/var/tmp/catalyst",
     "target_distdir": "/var/cache/distfiles",
+    "target_logdir": "/var/log/portage",
     "target_pkgdir": "/var/cache/binpkgs",
 }
 

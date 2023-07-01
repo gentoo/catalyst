@@ -271,9 +271,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         if "port_logdir" in self.settings:
             self.mount['port_logdir']['enable'] = True
-            self.mount['port_logdir']['source'] = self.settings['port_logdir']
-            self.env["PORT_LOGDIR"] = self.settings["port_logdir"]
-            self.env["PORT_LOGDIR_CLEAN"] = PORT_LOGDIR_CLEAN
+            self.mount['port_logdir']['source'] = normpath(self.settings['port_logdir'] + "/" + self.settings["target_subpath"] + "/")
+            self.env["PORTAGE_LOGDIR"] = self.settings["target_logdir"]
 
     def override_cbuild(self):
         if "CBUILD" in self.makeconf:
@@ -1002,7 +1001,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     # We may need to create the source of the bind mount. E.g., in the
                     # case of an empty package cache we must create the directory that
                     # the binary packages will be stored into.
-                    source_path.mkdir(mode=0o755, exist_ok=True)
+                    source_path.mkdir(mode=0o755, parents=True, exist_ok=True)
 
             Path(target).mkdir(mode=0o755, parents=True, exist_ok=True)
 
