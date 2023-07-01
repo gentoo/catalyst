@@ -1114,13 +1114,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                               % (flags, self.settings[flags]))
 
             if "CBUILD" in self.settings:
-                myf.write("# This should not be changed unless you know exactly"
+                myf.write("\n# This should not be changed unless you know exactly"
                           " what you are doing.  You\n# should probably be "
                           "using a different stage, instead.\n")
                 myf.write('CBUILD="' + self.settings["CBUILD"] + '"\n')
 
             if "CHOST" in self.settings:
-                myf.write("# WARNING: Changing your CHOST is not something "
+                myf.write("\n# WARNING: Changing your CHOST is not something "
                           "that should be done lightly.\n# Please consult "
                           "https://wiki.gentoo.org/wiki/Changing_the_CHOST_variable "
                           "before changing.\n")
