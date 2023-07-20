@@ -2,3 +2,6 @@
 COMMON_FLAGS = " -pipe -O2"
 CHOST = "m68k-unknown-linux-gnu"
 
+[m68k.m68k_musl]
+COMMON_FLAGS = " -pipe -O2"
+CHOST = "m68k-gentoo-linux-musl"
