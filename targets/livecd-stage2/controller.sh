@@ -20,6 +20,11 @@ case $1 in
 		extract_modules ${clst_chroot_path} ${kname}
 		;;
 
+	pre-distkmerge)
+		# Install dracut
+		exec_in_chroot ${clst_shdir}/support/pre-distkmerge.sh
+		;;
+
 	preclean)
 		# Move over the motd (if applicable)
 		case ${clst_livecd_type} in

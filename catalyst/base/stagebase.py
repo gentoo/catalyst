@@ -694,6 +694,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     "boot/kernel/" + x + "/aliases",
                     "boot/kernel/" + x + "/config",
                     "boot/kernel/" + x + "/console",
+                    "boot/kernel/" + x + "/distkernel",
+                    "boot/kernel/" + x + "/dracut_args",
                     "boot/kernel/" + x + "/extraversion",
                     "boot/kernel/" + x + "/gk_action",
                     "boot/kernel/" + x + "/gk_kernargs",
@@ -715,6 +717,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if gk_mainargs in self.settings:
             self.settings["gk_mainargs"] = self.settings[gk_mainargs]
             del self.settings[gk_mainargs]
+
+        dracut_mainargs = prefix + "/dracut_args"
+        if dracut_mainargs in self.settings:
+            self.settings["dracut_args"] = self.settings[dracut_mainargs]
+            del self.settings[dracut_mainargs]
 
         # Ask genkernel to include b2sum if <target>/verify is set
         verify = prefix + "/verify"
@@ -1584,7 +1591,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 self.resume.enable("build_packages")
 
     def build_kernel(self):
-        '''Build all configured kernels'''
+        """Build all configured kernels"""
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("build_kernel"):
             log.notice(
@@ -1595,19 +1602,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
             mynames = self.settings["boot/kernel"]
             if isinstance(mynames, str):
                 mynames = [mynames]
-            # Execute the script that sets up the kernel build environment
-            cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
             for kname in [sanitize_name(name) for name in mynames]:
+                if "boot/kernel/" + kname + "/distkernel" in self.settings:
+                    cmd([self.settings['controller_file'], 'pre-distkmerge'], env=self.env)
+                else:
+                    # Execute the script that sets up the kernel build environment
+                    cmd([self.settings['controller_file'], 'pre-kmerge'], env=self.env)
                 self._build_kernel(kname=kname)
             self.resume.enable("build_kernel")
 
     def _build_kernel(self, kname):
-        "Build a single configured kernel by name"
+        """Build a single configured kernel by name"""
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("build_kernel_" + kname):
             log.notice('Resume point detected, skipping build_kernel '
                        'for %s operation...', kname)
             return
+
         self._copy_kernel_config(kname=kname)
 
         key = 'boot/kernel/' + kname + '/extraversion'
@@ -1617,8 +1628,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self._copy_initramfs_overlay(kname=kname)
 
         # Execute the script that builds the kernel
-        cmd([self.settings['controller_file'], 'kernel', kname],
-            env=self.env)
+        cmd([self.settings['controller_file'], 'kernel', kname], env=self.env)
 
         if "boot/kernel/" + kname + "/initramfs_overlay" in self.settings:
             log.notice('Cleaning up temporary overlay dir')

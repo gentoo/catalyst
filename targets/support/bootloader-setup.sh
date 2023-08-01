@@ -54,6 +54,7 @@ memtest_grub() {
 }
 
 default_append_line=(${cmdline_opts[@]} cdroot)
+default_dracut_append_line=(root=live:CDLABEL=ISOIMAGE rd.live.dir=/ rd.live.squashimg=image.squashfs)
 
 case ${clst_hostarch} in
 	alpha)
@@ -115,14 +116,28 @@ case ${clst_hostarch} in
 		for x in ${clst_boot_kernel}
 		do
 			eval "kernel_console=\$clst_boot_kernel_${x}_console"
+			eval "distkernel=\$clst_boot_kernel_${x}_distkernel"
 
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
+			if [ ${distkernel} = "yes" ]
+			then
+				echo "	search --no-floppy --set=root -l 'ISOIMAGE'" >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]}" >> ${iacfg}
+			else
+				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
+			fi
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			echo "" >> ${iacfg}
 			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
-			echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
+			if [ ${distkernel} = "yes" ]
+			then
+				echo "	search --no-floppy --set=root -l 'ISOIMAGE'" >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} rd.live.ram=1" >> ${iacfg}
+			else
+				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
+			fi
+
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			if [ -n "${kernel_console}" ]
