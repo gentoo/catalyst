@@ -9,6 +9,7 @@ from DeComp.definitions import DECOMPRESSOR_PROGRAM_OPTIONS, LIST_XATTRS_OPTIONS
 
 
 valid_config_file_values = frozenset([
+    "binhost",
     "compression_mode",
     "digests",
     "digest_format",
@@ -31,6 +32,7 @@ valid_config_file_values = frozenset([
 ])
 
 confdefaults = {
+    "binhost": '',
     "comp_prog": COMPRESSOR_PROGRAM_OPTIONS['linux'],
     "compression_mode": 'lbzip2',
     "compressor_arch": None,
@@ -42,6 +44,7 @@ confdefaults = {
     "icecream": "/var/cache/icecream",
     'list_xattrs_opt': LIST_XATTRS_OPTIONS['linux'],
     "port_conf": "/etc/portage",
+    "binrepos_conf": "%(port_conf)s/binrepos.conf",
     "make_conf": "%(port_conf)s/make.conf",
     "repos_conf": "%(port_conf)s/repos.conf",
     "options": set(),

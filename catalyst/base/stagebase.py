@@ -62,6 +62,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         ])
         self.valid_values |= self.required_values | frozenset([
             "asflags",
+            "binrepo_path",
             "catalyst_use",
             "cbuild",
             "cflags",
@@ -1074,6 +1075,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         if os.path.exists(hosts_file):
             os.rename(hosts_file, hosts_file + '.catalyst')
             shutil.copy('/etc/hosts', hosts_file)
+
         # write out the make.conf
         try:
             self.write_make_conf(setup=True)
@@ -1081,6 +1083,16 @@ class StageBase(TargetBase, ClearBase, GenBase):
             raise CatalystError('Could not write %s: %s' % (
                 normpath(self.settings["chroot_path"] +
                          self.settings["make_conf"]), e)) from e
+
+        # write out the binrepos.conf
+        # we do this here for later user convenience, but normally
+        # it should not affect stage builds (which only get --usepkg,
+        # but never --getbinpkg as emerge parameters).
+        try:
+            self.write_binrepos_conf()
+        except OSError as e:
+            raise CatalystError('Could not write binrepos.conf: %s' % ( e )) from e
+
         self.resume.enable("chroot_setup")
 
     def write_make_conf(self, setup=True):
@@ -1173,6 +1185,26 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 '# This sets the language of build output to English.\n'
                 '# Please keep this setting intact when reporting bugs.\n'
                 'LC_MESSAGES=C.utf8\n')
+
+    def write_binrepos_conf(self):
+        # only if catalyst.conf defines the host and the spec defines the path...
+        if self.settings["binhost"] != '' and "binrepo_path" in self.settings:
+
+            # Write out binrepos.conf (for the chroot)
+            binrpath = normpath(self.settings["chroot_path"] +
+                                self.settings["binrepos_conf"])
+
+            with open(binrpath, "w") as myb:
+                log.notice("Writing the stage binrepos.conf to: %s" % binrpath)
+                myb.write("# These settings were set by the catalyst build script "
+                        "that automatically\n# built this stage.\n")
+                myb.write("# Please consider using a local mirror.\n\n")
+                myb.write("[gentoobinhost]\n")
+                myb.write("priority = 1\n")
+                myb.write("sync-uri = " + self.settings["binhost"] + \
+                        self.settings["binrepo_path"] + "\n")
+
+        return
 
     def fsscript(self):
         if "autoresume" in self.settings["options"] \
