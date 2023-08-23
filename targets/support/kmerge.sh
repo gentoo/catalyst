@@ -152,6 +152,11 @@ if [[ -n ${clst_KERNCACHE} ]]; then
 fi
 
 if [[ ${distkernel} = "yes" ]] ; then
+  # Build external kernel modules
+  if [[ -n ${kernel_merge} ]]; then
+    run_merge ${kernel_merge}
+  fi
+
   # Kernel already built, let's run dracut to make initramfs
   distkernel_source_path=$(equery -Cq f ${ksource} | grep "/usr/src/linux-" -m1)
   distkernel_image_path=$(distkmerge_get_image_path)
@@ -201,6 +206,6 @@ if [[ -n ${clst_KERNCACHE} && ! ${cached_kernel_found} ]]; then
 fi
 
 if [[ ! ${cached_kernel_found} ]]; then
-	run_merge -C "${ksource}"
+	run_merge --deselect "${ksource}"
 	rm /usr/src/linux
 fi
