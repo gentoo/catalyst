@@ -1200,9 +1200,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
             # Write out binrepos.conf (for the chroot)
             binrpath = normpath(self.settings["chroot_path"] +
                                 self.settings["binrepos_conf"])
+            Path(binrpath).mkdir(mode=0o755, parents=True, exist_ok=True)
 
-            with open(binrpath, "w") as myb:
-                log.notice("Writing the stage binrepos.conf to: %s" % binrpath)
+            binrfile = binrpath + "/gentoobinhost.conf"
+            with open(binrfile, "w") as myb:
+                log.notice("Writing the stage binrepo config to: %s" % binrfile)
                 myb.write("# These settings were set by the catalyst build script "
                         "that automatically\n# built this stage.\n")
                 myb.write("# Please consider using a local mirror.\n\n")
@@ -1210,8 +1212,6 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 myb.write("priority = 1\n")
                 myb.write("sync-uri = " + self.settings["binhost"] + \
                         self.settings["binrepo_path"] + "\n")
-
-        return
 
     def fsscript(self):
         if "autoresume" in self.settings["options"] \
