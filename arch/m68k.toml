@@ -4,8 +4,3 @@ CHOST = "m68k-unknown-linux-gnu"
 
 [m68k.m68k_musl]
 COMMON_FLAGS = " -pipe -O2"
-CHOST = "m68k-gentoo-linux-musl"
-
-[m68k.m68k_musl_new]
-COMMON_FLAGS = " -pipe -O2"
-CHOST = "m68k-unknown-linux-musl"
