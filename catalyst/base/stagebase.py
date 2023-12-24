@@ -105,10 +105,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         self.makeconf = {}
 
-        if "chost" in self.settings:
-            host = self.settings["chost"].split("-")[0]
-        else:
-            host = self.settings["subarch"]
+        host = self.settings["subarch"]
         self.settings["hostarch"] = host
 
         if "cbuild" in self.settings:
