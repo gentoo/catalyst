@@ -207,5 +207,6 @@ fi
 
 if [[ ! ${cached_kernel_found} ]]; then
 	run_merge --deselect "${ksource}"
-	rm /usr/src/linux
+	# This was breaking multi-kernel iso builds, probably not needed
+	# rm /usr/src/linux
 fi
