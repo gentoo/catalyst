@@ -3,8 +3,6 @@ arch = "linux32"
 if_build = "x86_64"
 
 [x86.x86]
-COMMON_FLAGS = "-O2 -mtune=i686 -pipe"
-CHOST = "i386-pc-linux-gnu"
 
 [x86.i486]
 COMMON_FLAGS = "-O2 -march=i486 -pipe"
