@@ -50,3 +50,6 @@ CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext",]
 COMMON_FLAGS = "-O2 -march=athlon-xp -pipe"
 CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse",]
 
+[x86.i686-ssemath]
+COMMON_FLAGS = "-O2 -march=i686 -msse2 -mfpmath=sse -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2",]
