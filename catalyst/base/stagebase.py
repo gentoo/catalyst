@@ -1458,11 +1458,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
     def enter_chroot(self):
         chroot = command('chroot')
-        bash = command('bash')
+        # verify existence only
+        command(os.path.join(self.settings['chroot_path'], '/bin/bash'))
 
         log.notice("Entering chroot")
         try:
-            cmd([chroot, self.settings['chroot_path'], bash, '-l'],
+            cmd([chroot, self.settings['chroot_path'], '/bin/bash', '-l'],
                 env=self.env)
         except CatalystError:
             pass
