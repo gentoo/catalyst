@@ -27,24 +27,12 @@ CPU_FLAGS_X86 = [ "mmx",]
 COMMON_FLAGS = "-O2 -march=pentium3 -pipe"
 CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse",]
 
-[x86.pentium-m]
-COMMON_FLAGS = "-O2 -march=pentium-m -pipe"
-CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2",]
-
-[x86.pentium4]
-COMMON_FLAGS = "-O2 -march=pentium4 -pipe"
-CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2",]
-
 [x86.pentiumpro]
 COMMON_FLAGS = "-O2 -march=i686 -pipe"
 
 [x86.pentium-mmx]
 COMMON_FLAGS = "-O2 -march=pentium-mmx -pipe"
 CPU_FLAGS_X86 = [ "mmx",]
-
-[x86.prescott]
-COMMON_FLAGS = "-O2 -march=prescott -pipe"
-CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2", "sse3",]
 
 [x86.k6]
 COMMON_FLAGS = "-O2 -march=k6 -pipe"
