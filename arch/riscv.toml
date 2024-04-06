@@ -26,6 +26,14 @@ CHOST = "riscv64-gentoo-linux-musl"
 COMMON_FLAGS = "-O2 -pipe"
 CHOST = "riscv32-unknown-linux-gnu"
 
+[riscv.rv32_ilp32d_musl]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "riscv32-unknown-linux-musl"
+
 [riscv.rv32_ilp32]
 COMMON_FLAGS = "-O2 -pipe"
 CHOST = "riscv32-unknown-linux-gnu"
+
+[riscv.rv32_ilp32_musl]
+COMMON_FLAGS = "-O2 -pipe"
+CHOST = "riscv32-unknown-linux-musl"
