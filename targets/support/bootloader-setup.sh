@@ -54,7 +54,7 @@ memtest_grub() {
 }
 
 default_append_line=(${cmdline_opts[@]} cdroot)
-default_dracut_append_line=(root=live:CDLABEL=ISOIMAGE rd.live.dir=/ rd.live.squashimg=image.squashfs)
+default_dracut_append_line=(root=live:CDLABEL=${clst_iso_volume_id} rd.live.dir=/ rd.live.squashimg=image.squashfs)
 
 case ${clst_hostarch} in
 	alpha)
@@ -121,7 +121,7 @@ case ${clst_hostarch} in
 			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
 			if [ ${distkernel} = "yes" ]
 			then
-				echo "	search --no-floppy --set=root -l 'ISOIMAGE'" >> ${iacfg}
+				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
 				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]}" >> ${iacfg}
 			else
 				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
