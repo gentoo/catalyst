@@ -132,7 +132,7 @@ case ${clst_hostarch} in
 			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
 			if [ ${distkernel} = "yes" ]
 			then
-				echo "	search --no-floppy --set=root -l 'ISOIMAGE'" >> ${iacfg}
+				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
 				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} rd.live.ram=1" >> ${iacfg}
 			else
 				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
