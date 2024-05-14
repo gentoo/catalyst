@@ -54,7 +54,7 @@ memtest_grub() {
 }
 
 default_append_line=(${cmdline_opts[@]} cdroot)
-default_dracut_append_line=(root=live:CDLABEL=${clst_iso_volume_id} rd.live.dir=/ rd.live.squashimg=image.squashfs cdroot)
+default_dracut_append_line=(${clst_livecd_bootargs} root=live:CDLABEL=${clst_iso_volume_id} rd.live.dir=/ rd.live.squashimg=image.squashfs cdroot)
 
 case ${clst_hostarch} in
 	alpha)
