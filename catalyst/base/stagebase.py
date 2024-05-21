@@ -921,6 +921,12 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 continue
 
             config = configparser.ConfigParser()
+
+            # If default is present but does not match this repo's location,
+            # then we need to explicitly set it as the main repo.
+            if default is not None:
+                config['DEFAULT'] = {'main-repo': name}
+
             config[name] = {'location': location}
             self.write_repo_conf(name, config)
 
