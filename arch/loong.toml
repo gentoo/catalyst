@@ -1,4 +1,4 @@
 [loong.loong]
-COMMON_FLAGS = " -pipe -O2"
+COMMON_FLAGS = " -pipe -O2 -march=loongarch64 "
 CHOST = "loongarch64-unknown-linux-gnu"
 
