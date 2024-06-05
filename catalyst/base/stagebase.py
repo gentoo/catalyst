@@ -1151,7 +1151,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             myusevars = []
             if "bindist" in self.settings["options"]:
                 myf.write(
-                    "\n# NOTE: This stage was built with the bindist Use flag enabled\n")
+                    "\n# NOTE: This stage was built with the bindist USE flag enabled\n")
             if setup or "sticky-config" in self.settings["options"]:
                 myusevars.extend(self.settings["catalyst_use"])
                 log.notice("STICKY-CONFIG is enabled")
