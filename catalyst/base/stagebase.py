@@ -75,6 +75,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "hostuse",
             "install_mask",
             "interpreter",
+            "keep_repos",
             "kerncache_path",
             "ldflags",
             "pkgcache_path",
@@ -205,6 +206,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_busybox_config()
         self.set_overlay()
         self.set_repos()
+        self.set_keep_repos()
         self.set_root_overlay()
 
         # This next line checks to make sure that the specified variables exist on disk.
@@ -660,6 +662,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             get_info = lambda repo: (repo, get_repo_name(repo), None)
             self.repos.extend(map(get_info, self.settings['repos']))
+
+    def set_keep_repos(self):
+        setting = self.settings.get('keep_repos', '')
+
+        if isinstance(setting, str):
+            self.settings['keep_repos'] = set(setting.split())
+
+        log.info('keeping repo configuration for: %s',
+            ' '.join(self.settings['keep_repos']))
+
+        for keep_repo in self.settings['keep_repos']:
+            for _, name, _ in self.repos:
+                if name == keep_repo:
+                    break
+            else:
+                log.warning('keep_repos references unknown repo: %s', keep_repo)
 
     def set_overlay(self):
         if self.settings["spec_prefix"] + "/overlay" in self.settings:
@@ -1286,6 +1304,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         # Remove repo data
         for _, name, _ in self.repos:
+            if name in self.settings['keep_repos']:
+                continue
 
             # Remove repos.conf entry
             repo_conf = self.get_repo_conf_path(name)
