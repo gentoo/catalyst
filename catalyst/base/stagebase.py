@@ -70,6 +70,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "compression_mode",
             "cxxflags",
             "decompressor_search_order",
+            "env",
             "fcflags",
             "fflags",
             "hostuse",
@@ -1096,6 +1097,10 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             shutil.copy(self.settings['envscript'],
                         self.settings['chroot_path'] + '/tmp/envscript')
+
+        if "env" in self.settings:
+            with open(self.settings['chroot_path'] + '/tmp/envscript', "a+") as myf:
+                myf.write("export %s" % self.settings["env"])
 
         # Copy over /etc/hosts from the host in case there are any
         # specialties in there
