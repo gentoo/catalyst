@@ -8,5 +8,4 @@ CHOST = "s390-ibm-linux-gnu"
 
 [s390x.s390x]
 COMMON_FLAGS = "-O2 -pipe"
-CHOST = "s390x-ibm-linux-gnu"
 
