@@ -20,6 +20,11 @@ class CatalystLogger(logging.Logger):
 
     def _log(self, level, msg, args, **kwargs):
         """If given a multiline message, split it"""
+
+        # Increment stacklevel to hide this function call
+        stacklevel = kwargs.get("stacklevel", 1)
+        kwargs["stacklevel"] = stacklevel + 1
+
         # We have to interpolate it first in case they spread things out
         # over multiple lines like: Bad Thing:\n%s\nGoodbye!
         msg %= args
@@ -44,11 +49,21 @@ logging.addLevelName(NOTICE, 'NOTICE')
 # The API we expose to consumers.
 def notice(msg, *args, **kwargs):
     """Log a notice message"""
+
+    # Increment stacklevel to hide this function call
+    stacklevel = kwargs.get("stacklevel", 1)
+    kwargs["stacklevel"] = stacklevel + 1
+
     logger.log(NOTICE, msg, *args, **kwargs)
 
 
 def critical(msg, *args, **kwargs):
     """Log a critical message and then exit"""
+
+    # Increment stacklevel to hide this function call
+    stacklevel = kwargs.get("stacklevel", 1)
+    kwargs["stacklevel"] = stacklevel + 1
+
     status = kwargs.pop('status', 1)
     logger.critical(msg, *args, **kwargs)
     sys.exit(status)
@@ -110,7 +125,7 @@ def setup_logging(level, output=None, debug=False, color=None):
     # The good stuff.
     fmt = '%(asctime)s: %(levelname)-8s: '
     if debug:
-        fmt += '%(filename)s:%(funcName)s: '
+        fmt += '%(filename)s:%(funcName)s:%(lineno)d: '
     fmt += '%(message)s'
 
     # Figure out where to send the log output.
