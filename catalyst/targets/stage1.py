@@ -33,7 +33,7 @@ class stage1(StageBase):
             self.mount[mount_id] = {
                 'enable': True,
                 'source': path,
-                'target': Path(normpath("/tmp/stage1root") + "/" + str(self.get_repo_location(name)))
+                'target': normpath("/tmp/stage1root") / self.get_repo_location(name)
             }
 
     def set_root_path(self):
