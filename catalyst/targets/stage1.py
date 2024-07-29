@@ -4,10 +4,11 @@ stage1 target
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst import log
-from catalyst.support import normpath
+from catalyst.support import (normpath, get_repo_name)
 from catalyst.fileops import move_path
 from catalyst.base.stagebase import StageBase
 
+from pathlib import Path
 
 class stage1(StageBase):
     """
@@ -22,6 +23,18 @@ class stage1(StageBase):
 
     def __init__(self, spec, addlargs):
         StageBase.__init__(self, spec, addlargs)
+        # In the stage1 build we need to make sure that the ebuild repositories are
+        # accessible within $ROOT too... otherwise relative symlinks may point nowhere
+        # and, e.g., portageq may malfunction due to missing profile.
+        # Create a second bind mount entry for each repository
+        for path, name, _ in self.repos:
+            name = get_repo_name(path)
+            mount_id = f'root_repo_{name}'
+            self.mount[mount_id] = {
+                'enable': True,
+                'source': path,
+                'target': Path(normpath("/tmp/stage1root") + "/" + str(self.get_repo_location(name)))
+            }
 
     def set_root_path(self):
         # sets the root path, relative to 'chroot_path', of the stage1 root
