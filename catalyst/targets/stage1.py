@@ -31,7 +31,7 @@ class stage1(StageBase):
         #    otherwise we may end up trying to mount the same squashfs twice instead
         #    of a bind mount
         #  * take the directory inside the chroot as source, not the host directory
-	self.set_chroot_path()
+        self.set_chroot_path()
         for path, name, _ in self.repos:
             name = get_repo_name(path)
             mount_id = f'root_repo_{name}'
