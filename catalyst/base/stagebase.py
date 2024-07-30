@@ -1685,8 +1685,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 raise CatalystError("Can't find kernel config: %s" %
                                     self.settings[key])
 
-            shutil.copy(self.settings[key],
-                        self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
+            if "boot/kernel/" + kname + "/distkernel" in self.settings:
+                os.makedirs(self.settings['chroot_path'] + '/etc//kernel/config.d')
+                shutil.copy(self.settings[key],
+                            self.settings['chroot_path'] + '/etc//kernel/config.d')
+            else:
+                shutil.copy(self.settings[key],
+                            self.settings['chroot_path'] + '/var/tmp/' + kname + '.config')
 
     def _copy_initramfs_overlay(self, kname):
         key = 'boot/kernel/' + kname + '/initramfs_overlay'
