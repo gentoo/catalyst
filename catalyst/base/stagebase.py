@@ -883,6 +883,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
         make_profile.symlink_to(os.path.relpath(chroot_profile_path, chroot_port_conf),
                                 target_is_directory=True)
 
+        if self.settings['root_path'] != '/':
+            log.info('Configuring ROOT profile link...')
+
+            # stage_path is chroot_path + root_path
+            root_port_conf = Path(self.settings['stage_path'] + self.settings['port_conf'])
+            root_make_profile = root_port_conf / 'make.profile'
+            root_make_profile.unlink(missing_ok=True)
+
+            root_make_profile.symlink_to(os.path.relpath(chroot_profile_path, root_port_conf),
+                                         target_is_directory=True)
+
     def setup_confdir(self):
         if "autoresume" in self.settings["options"] \
                 and self.resume.is_enabled("setup_confdir"):
