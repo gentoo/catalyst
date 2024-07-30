@@ -32,7 +32,7 @@ class stage1(StageBase):
             mount_id = f'root_repo_{name}'
             self.mount[mount_id] = {
                 'enable': True,
-                'source': path,
+                'source': self.get_repo_location(name),
                 'target': normpath("/tmp/stage1root") / self.get_repo_location(name)
             }
 
