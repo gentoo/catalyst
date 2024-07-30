@@ -26,13 +26,17 @@ class stage1(StageBase):
         # In the stage1 build we need to make sure that the ebuild repositories are
         # accessible within $ROOT too... otherwise relative symlinks may point nowhere
         # and, e.g., portageq may malfunction due to missing profile.
-        # Create a second bind mount entry for each repository
+        # Create a second, bind mount entry for each repository. We need to
+        #  * take as source not the original source but the original target, since
+        #    otherwise we may end up trying to mount the same squashfs twice instead
+        #    of a bind mount
+        #  * take the directory inside the chroot as source, not the host directory
         for path, name, _ in self.repos:
             name = get_repo_name(path)
             mount_id = f'root_repo_{name}'
             self.mount[mount_id] = {
                 'enable': True,
-                'source': self.get_repo_location(name),
+                'source': self.settings['chroot_path'] / self.get_repo_location(name),
                 'target': normpath("/tmp/stage1root") / self.get_repo_location(name)
             }
 
