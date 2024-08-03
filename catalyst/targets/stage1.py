@@ -4,11 +4,9 @@ stage1 target
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst import log
-from catalyst.support import (normpath, get_repo_name)
+from catalyst.support import normpath
 from catalyst.fileops import move_path
 from catalyst.base.stagebase import StageBase
-
-from pathlib import Path
 
 class stage1(StageBase):
     """
