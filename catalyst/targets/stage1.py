@@ -31,14 +31,18 @@ class stage1(StageBase):
         #    otherwise we may end up trying to mount the same squashfs twice instead
         #    of a bind mount
         #  * take the directory inside the chroot as source, not the host directory
+        # In the meantime we fixed make.profile to point outside ROOT, so this may not
+        # be necessary at the moment anymore. Having it can prevent future surprises
+        # though.
         self.set_chroot_path()
         for path, name, _ in self.repos:
             name = get_repo_name(path)
             mount_id = f'root_repo_{name}'
+            repo_loc = self.get_repo_location(name)
             self.mount[mount_id] = {
                 'enable': True,
-                'source': self.settings['chroot_path'] / self.get_repo_location(name),
-                'target': normpath("/tmp/stage1root") / self.get_repo_location(name)
+                'source': self.settings['chroot_path'] / repo_loc.relative_to('/'),
+                'target': normpath("/tmp/stage1root") / repo_loc.relative_to('/')
             }
 
     def set_root_path(self):
