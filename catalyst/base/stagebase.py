@@ -888,11 +888,14 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
             # stage_path is chroot_path + root_path
             root_port_conf = Path(self.settings['stage_path'] + self.settings['port_conf'])
+            log.debug('  creating directory %s', root_port_conf)
             root_port_conf.mkdir(mode=0o755, parents=True, exist_ok=True)
 
             root_make_profile = root_port_conf / 'make.profile'
+            log.debug('  removing file %s', root_make_profile)
             root_make_profile.unlink(missing_ok=True)
 
+            log.debug('  symlinking it to %s', os.path.relpath(chroot_profile_path, root_port_conf))
             root_make_profile.symlink_to(os.path.relpath(chroot_profile_path, root_port_conf),
                                          target_is_directory=True)
 
