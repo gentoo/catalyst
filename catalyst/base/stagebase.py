@@ -223,12 +223,31 @@ class StageBase(TargetBase, ClearBase, GenBase):
         for path, name, _ in self.repos:
             name = get_repo_name(path)
             mount_id = f'repo_{name}'
+            root_mount_id = f'root_repo_{name}'
+            repo_loc = self.get_repo_location(name)
 
             self.mount[mount_id] = {
                 'enable': True,
                 'source': path,
-                'target': self.get_repo_location(name)
+                'target': repo_loc
             }
+
+            # In e.g. the stage1 build we need to make sure that the ebuild repositories are
+            # accessible within $ROOT too... otherwise relative symlinks may point nowhere
+            # and, e.g., portageq may malfunction due to missing profile.
+            # In the meantime we specifically fixed make.profile to point outside ROOT, so
+            # this may not be necessary at the moment anymore. Having it can prevent future
+            # surprises though.
+            # Create a second, bind mount entry for each repository. We need to
+            # take as source not the original source but the original target, since
+            # otherwise we may end up trying to mount the same squashfs twice instead
+            # of a bind mount
+            if self.settings['root_path'] != "/":
+                self.mount[root_mount_id] = {
+                    'enable': True,
+                    'source': self.settings['chroot_path'] / repo_loc.relative_to('/'),
+                    'target': self.settings['root_path'] / repo_loc.relative_to('/')
+                }
 
         self.mount['distdir']['source'] = self.settings['distdir']
         self.mount["distdir"]['target'] = self.settings['target_distdir']
