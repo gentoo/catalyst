@@ -26,12 +26,7 @@ case $1 in
 		;;
 
 	preclean)
-		# move over the environment
-		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
-			${clst_chroot_path}/root/.bashrc
-		cp -f ${clst_sharedir}/livecd/files/livecd-bash_profile \
-			${clst_chroot_path}/root/.bash_profile
-		cp -f ${clst_sharedir}/livecd/files/livecd-local.start \
+		cp -f ${clst_sharedir}/diskimage/files/livecd-local.start \
 			${clst_chroot_path}/etc/conf.d/local.start
 		;;
 
@@ -49,11 +44,6 @@ case $1 in
 		;;
 
 	clean)
-		if [ "${clst_diskimage_type}" = "gentoo-release-minimal" ]
-		then
-			# Clean out man, info and doc files
-			rm -rf ${clst_chroot_path}/usr/share/{man,doc,info}/*
-		fi
 		;;
 
 	bootloader)
@@ -68,14 +58,6 @@ case $1 in
 			mkdir -p $1/firmware
 			# TODO: Unpack firmware into $1/firmware and remove it from the
 			# chroot so newer livecd-tools/genkernel can find it and unpack it.
-		fi
-
-		# Move over the readme (if applicable)
-		if [ -n "${clst_diskimage_readme}" ]
-		then
-			cp -f ${clst_diskimage_readme} $1/README.txt
-		else
-			cp -f ${clst_sharedir}/livecd/files/README.txt $1
 		fi
 
 		if [ -e ${clst_chroot_path}/boot/memtest86plus/ ]; then

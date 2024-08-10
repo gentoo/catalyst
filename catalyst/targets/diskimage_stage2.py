@@ -88,10 +88,10 @@ class diskimage_stage2(StageBase):
         if "fetch" not in self.settings["options"]:
             self.build_sequence.extend([
                 self.create_diskimage,           # create image file
-                self.open_diskimage,
+                self.open_diskimage,             # loopback or nbd
                 self.make_filesystems,           # partition, make filesystems
-                self.move_into_image,
-                self.bootloader,
+                self.move_into_image,            # move files in
+                self.bootloader,                 # install bootloader (efi grub?)
                 self.preclean,
                 self.fsscript,
                 self.rcupdate,
