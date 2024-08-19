@@ -15,6 +15,10 @@ CHOST = "i586-pc-linux-gnu"
 [x86.i686]
 COMMON_FLAGS = "-O2 -march=i686 -pipe"
 
+[x86.i686-t64]
+COMMON_FLAGS = "-O2 -march=i686 -pipe -D_FILE_OFFSET_BITS=64 -D_TIME_BITS=64"
+CHOST = "i686-pc_t64-linux-gnu"
+
 [x86.pentium]
 COMMON_FLAGS = "-O2 -march=i586 -pipe"
 CHOST = "i586-pc-linux-gnu"
