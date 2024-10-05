@@ -1628,6 +1628,25 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.warning('livecd/iso was not defined.  '
                         'An ISO Image will not be created.')
 
+    def create_qcow2(self):
+        if "autoresume" in self.settings["options"] \
+                and self.resume.is_enabled("create_qcow2"):
+            log.notice(
+                'Resume point detected, skipping create_qcow2 operation...')
+            return
+
+        # Create the QCOW2 file
+        if "qcow2" in self.settings:
+            cmd([self.settings['controller_file'], 'qcow2', self.settings['qcow2']],
+                env=self.env)
+            # FIXME: implement this
+            # self.gen_contents_file(self.settings["qcow2"])
+            self.gen_digest_file(self.settings["qcow2"])
+            self.resume.enable("create_qcow2")
+        else:
+            log.warning('diskimage/qcow2 was not defined.  '
+                        'A QCOW2 file will not be created.')
+
     def build_packages(self):
         build_packages_resume = pjoin(self.settings["autoresume_path"],
                                       "build_packages")
