@@ -147,7 +147,7 @@ case $1 in
 			;;
 		esac
 
-		${clst_shdir}/support/bootloader-setup.sh $1
+		${clst_shdir}/support/iso-bootloader-setup.sh $1
 		;;
 
 	unmerge)

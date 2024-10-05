@@ -60,7 +60,7 @@ case $1 in
 			cp -rv ${clst_chroot_path}/boot/memtest86plus/* $1
 		fi
 
-		${clst_shdir}/support/bootloader-setup.sh $1
+		${clst_shdir}/support/iso-bootloader-setup.sh $1
 		;;
 
 	unmerge)
