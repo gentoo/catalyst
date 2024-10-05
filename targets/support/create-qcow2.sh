@@ -10,14 +10,13 @@ source ${clst_shdir}/support/functions.sh
 
 #
 # Configuration parameters:
-#  - clst_qcow2_size      (internal) size of the qcow2 image (GByte, default 20)
-#  - clst_qcow2_swapsize  size of the swap partition (GByte, default 0 = no partition)
-#  - clst_qcow2_efisize   size of the EFI boot partition (GByte, default 0.5)
+#  (All sizes are in forms as understood by parted and qemu-img)
+#  - clst_qcow2_size      (internal) size of the qcow2 image (default 20GiB)
+#  - clst_qcow2_efisize   size of the EFI boot partition (default 512MiB)
 #  - clst_qcow2_roottype  type of the root partition (default xfs)
 #
-export clst_qcow2_size=20
-export clst_qcow2_swapsize=0
-export clst_qcow2_efisize=0.5
+export clst_qcow2_size=20GiB
+export clst_qcow2_efisize=512MiB
 export clst_qcow2_roottype=xfs
 
 #
@@ -44,47 +43,50 @@ parted -s /dev/nbd0 mklabel gpt || die "Cannot create disklabel"
 
 # create an EFI boot partition
 parted -s /dev/nbd0 -- mkpart efi fat32 1M {clst_qcow2_efisize}GiB || die "Cannot create EFI partition"
-# mark it as such
+# mark it as EFI boot partition
+parted -s /dev/nbd0 -- type 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B || die "Cannot set EFI partition UUID"
+# note down name
+mypartefi=/dev/nbd0p1
 
-# if requested, create a swap partition
-# mark it as such
-
-# fill the rest of the image with the root partition
+# create the root partition
 parted -s /dev/nbd0 -- mkpart root ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1M || die "Cannot create root partition"
-# mark it as such
+# mark it as generic linux filesystem partition
+parted -s /dev/nbd0 -- type 2 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || die "Cannot set root partition UUID"
+# note down name
+mypartroot=/dev/nbd0p2
 
 # re-read the partition table
 partprobe /dev/nbd0 || die "Probing partition table failed"
 
 # make a vfat filesystem in p1
-mkfs.fat -F 32 /dev/nbd0p1 || die "Formatting EFI partition failed"
+mkfs.fat -F 32 ${mypartefi} || die "Formatting EFI partition failed"
 
-# make a swap signature in p2
-
-# make a xfs filesystem in p3 (or p2 if no swap)
-mkfs.xfs /dev/nbd0p2 || die "Formatting root partition failed"
+# make an xfs filesystem in p2
+mkfs.xfs ${mypartroot} || die "Formatting root partition failed"
 
 # mount things
 # we need a mount point- how do we get one?
-my_mountpoint=/tmp/bla
-mkdir -p "${my_mountpoint}" || die "Could not create mount point"
-mount /dev/nbd0p2 "${my_mountpoint}" || die "Could not mount root partition"
-mount /dev/nbd0p1 "${my_mountpoint}/boot" || die "Could not mount boot partition"
+mymountpoint=/tmp/bla
+mkdir -p "${mymountpoint}" || die "Could not create root mount point"
+mount /dev/nbd0p2 "${mymountpoint}" || die "Could not mount root partition"
+mkdir -p "${mymountpoint}"/boot || die "Could not create boot mount point"
+mount /dev/nbd0p1 "${mymountpoint}/boot" || die "Could not mount boot partition"
 
 # copy contents in
 cp -a "${clst_target_path}"/* "${my_mountpoint}/"
 
-# at this point we have a rudimentary working system
-# now we need to follow the handbook and do some basic configuration
-# (locale, timezone, ssh) - though most of it will be done by cloud-init
+# at this point we have a working system
 
-
-# now let's install an efi loader inside
-# bootctl --no-variables --graceful install
+# note: the following must already have been done by the stage2:
+# - rudimentary configuration
+# - installation of cloud-init
+# - installation of kernel
+# - installation of fallback efi loader
+# luckily efi requires no image magic, just regular files...
 
 # unmount things
-umount "${my_mountpoint}/boot" || die "Could not unmount boot partition"
-umount "${my_mountpoint}" || die "Could not unmount root partition"
+umount "${mymountpoint}/boot" || die "Could not unmount boot partition"
+umount "${mymountpoint}" || die "Could not unmount root partition"
 
 # disconnect the nbd
 qemu-nbd -d /dev/nbd0 || die "Could not disconnect nbd0"
