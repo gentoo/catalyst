@@ -89,8 +89,7 @@ class diskimage_stage2(StageBase):
             self.build_sequence.extend([
                 self.bootloader,
                 self.preclean,
-                self.diskimage_update,           # what does this do?
-                # we don't need root_overlay (or any sort of overlay)
+                self.diskimage_update,
                 self.fsscript,
                 self.rcupdate,
                 self.unmerge,
@@ -99,7 +98,6 @@ class diskimage_stage2(StageBase):
                 self.remove,
                 self.empty,
                 self.clean,
-                self.target_setup,              # what does this do?
-                self.create_qcow2,              # import all files into qcow2
+                self.create_qcow2,
             ])
         self.set_completion_action_sequences()
