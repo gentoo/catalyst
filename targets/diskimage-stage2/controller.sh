@@ -28,7 +28,7 @@ case $1 in
 	preclean)
 		;;
 
-	livecd-update)
+	diskimage-update)
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
 		exec_in_chroot ${clst_shdir}/support/livecdfs-update.sh
 		;;

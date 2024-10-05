@@ -1753,6 +1753,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
             env=self.env)
         self.resume.enable("livecd_update")
 
+    def diskimage_update(self):
+        if "autoresume" in self.settings["options"] \
+                and self.resume.is_enabled("diskimage_update"):
+            log.notice(
+                'Resume point detected, skipping build_packages operation...')
+            return
+
+        cmd([self.settings['controller_file'], 'diskimage-update'],
+            env=self.env)
+        self.resume.enable("diskimage_update")
+
     @staticmethod
     def _debug_pause_():
         input("press any key to continue: ")
