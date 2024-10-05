@@ -87,12 +87,10 @@ class diskimage_stage2(StageBase):
         ])
         if "fetch" not in self.settings["options"]:
             self.build_sequence.extend([
-                self.create_diskimage,           # create image file
-                self.open_diskimage,             # loopback or nbd
-                self.make_filesystems,           # partition, make filesystems
-                self.move_into_image,            # move files in
-                self.bootloader,                 # install bootloader (efi grub?)
+                self.bootloader,
                 self.preclean,
+                self.diskimage_update,           # what does this do?
+                # we don't need root_overlay (or any sort of overlay)
                 self.fsscript,
                 self.rcupdate,
                 self.unmerge,
@@ -101,7 +99,7 @@ class diskimage_stage2(StageBase):
                 self.remove,
                 self.empty,
                 self.clean,
-                self.target_setup,
-                self.close_diskimage,           # unmount, unmap
+                self.target_setup,              # what does this do?
+                self.create_qcow2,              # import all files into qcow2
             ])
         self.set_completion_action_sequences()
