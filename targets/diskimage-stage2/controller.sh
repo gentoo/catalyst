@@ -68,13 +68,7 @@ case $1 in
 		shift
         	export clst_packages="$*"
 		exec_in_chroot ${clst_shdir}/support/unmerge.sh
-	;;
-
-	target_image_setup)
-		shift
-		${clst_shdir}/support/target_image_setup.sh $1
 		;;
-
 	qcow2)
 		shift
 		${clst_shdir}/support/create-qcow2.sh $1
