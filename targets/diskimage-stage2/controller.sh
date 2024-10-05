@@ -26,8 +26,6 @@ case $1 in
 		;;
 
 	preclean)
-		cp -f ${clst_sharedir}/diskimage/files/livecd-local.start \
-			${clst_chroot_path}/etc/conf.d/local.start
 		;;
 
 	livecd-update)
@@ -48,8 +46,6 @@ case $1 in
 
 	bootloader)
 		shift
-		# Here is where we poke in our identifier
-		touch $1/livecd
 
 		# We create a firmware directory, if necessary
 		if [ -e ${clst_chroot_path}/lib/firmware.tar.bz2 ]

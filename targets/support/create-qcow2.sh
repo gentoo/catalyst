@@ -44,11 +44,14 @@ parted -s /dev/nbd0 mklabel gpt || die "Cannot create disklabel"
 
 # create an EFI boot partition
 parted -s /dev/nbd0 -- mkpart efi fat32 1M {clst_qcow2_efisize}GiB || die "Cannot create EFI partition"
+# mark it as such
 
 # if requested, create a swap partition
+# mark it as such
 
 # fill the rest of the image with the root partition
-parted -s /dev/nbd0 -- mkpart root ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1s || die "Cannot create root partition"
+parted -s /dev/nbd0 -- mkpart root ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1M || die "Cannot create root partition"
+# mark it as such
 
 # re-read the partition table
 partprobe /dev/nbd0 || die "Probing partition table failed"
@@ -76,8 +79,8 @@ cp -a "${clst_target_path}"/* "${my_mountpoint}/"
 # (locale, timezone, ssh) - though most of it will be done by cloud-init
 
 
-# now let's install an efi loader
-bootctl --no-variables --graceful install
+# now let's install an efi loader inside
+# bootctl --no-variables --graceful install
 
 # unmount things
 umount "${my_mountpoint}/boot" || die "Could not unmount boot partition"
