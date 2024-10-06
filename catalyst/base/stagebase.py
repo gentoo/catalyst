@@ -1637,11 +1637,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         # Create the QCOW2 file
         if "diskimage/qcow2" in self.settings:
-            cmd([self.settings['controller_file'], 'qcow2', self.settings['qcow2']],
+            cmd([self.settings['controller_file'], 'qcow2', self.settings['diskimage/qcow2']],
                 env=self.env)
             # FIXME: implement this
             # self.gen_contents_file(self.settings["qcow2"])
-            self.gen_digest_file(self.settings["qcow2"])
+            self.gen_digest_file(self.settings["diskimage/qcow2"])
             self.resume.enable("create_qcow2")
         else:
             log.warning('diskimage/qcow2 was not defined.  '
