@@ -10,7 +10,7 @@ source ${clst_shdir}/support/functions.sh
 
 #
 # Configuration parameters:
-#  (All sizes are in forms as understood by parted and qemu-img)
+# All sizes are in forms as understood by parted: use MiB, GiB, ... or M, G, ...
 #  - clst_qcow2_size      (internal) size of the qcow2 image (default 20GiB)
 #  - clst_qcow2_efisize   size of the EFI boot partition (default 512MiB)
 #  - clst_qcow2_roottype  type of the root partition (default xfs)
@@ -31,7 +31,7 @@ source ${clst_shdir}/support/functions.sh
 #
 
 # create a new qcow2 disk image file
-qemu-img create -f qcow2 "${1}.tmp.qcow2" ${clst_qcow2_size} || die "Cannot create qcow2 file"
+qemu-img create -f qcow2 "${1}.tmp.qcow2" ${clst_qcow2_size/%iB/} || die "Cannot create qcow2 file"
 
 # connect the qcow2 file to a network block device
 # TODO: find next free device
