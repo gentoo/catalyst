@@ -73,16 +73,23 @@ mount ${mypartroot} "${mymountpoint}" || die "Could not mount root partition"
 mkdir -p "${mymountpoint}"/boot || die "Could not create boot mount point"
 mount ${mypartefi} "${mymountpoint}/boot" || die "Could not mount boot partition"
 
-# copy contents in
-cp -a "${clst_target_path}"/* "${my_mountpoint}/"
+# copy contents in - do we need extra preserve steps? rsync? tar?
+cp -a "${clst_target_path}"/* "${mymountpoint}/" || die "Could not copy content into mounted image"
 
 # at this point we have a working system
+
+# create a CONTENTS.gz file
+pushd "${mymountpoint}" || die "Could not cd into mountpoint"
+find . > "${1}.CONTENTS" || die "Could not list files in mountpoint"
+popd || die "Could not cd out of mountpoint"
+gzip "${1}.CONTENTS" || die "Could not compress file list"
 
 # note: the following must already have been done by the stage2:
 # - rudimentary configuration
 # - installation of cloud-init
 # - installation of kernel
 # - installation of fallback efi loader
+# - enabling of services
 # luckily efi requires no image magic, just regular files...
 
 # unmount things
