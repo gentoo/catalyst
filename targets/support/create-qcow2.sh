@@ -15,9 +15,9 @@ source ${clst_shdir}/support/functions.sh
 #  - clst_qcow2_efisize   size of the EFI boot partition (default 512MiB)
 #  - clst_qcow2_roottype  type of the root partition (default xfs)
 #
-export clst_qcow2_size=20GiB
-export clst_qcow2_efisize=512MiB
-export clst_qcow2_roottype=xfs
+: "${clst_qcow2_size:=20GiB}"
+: "${clst_qcow2_efisize:=512MiB}"
+: "${clst_qcow2_roottype:=xfs}"
 
 #
 # We only support one set of tools, based on
@@ -31,32 +31,33 @@ export clst_qcow2_roottype=xfs
 #
 
 # create a new qcow2 disk image file
-qemu-img create -f qcow2 ${1} ${clst_qcow2_size}G || die "Cannot create qcow2 file"
+qemu-img create -f qcow2 "${1}.tmp.qcow2" ${clst_qcow2_size} || die "Cannot create qcow2 file"
 
 # connect the qcow2 file to a network block device
 # TODO: find next free device
 modprobe -q nbd
-qemu-nbd -c /dev/nbd0 -f qcow2 ${1} || die "Cannot connect qcow2 file to nbd0"
+mydevice=/dev/nbd0
+qemu-nbd -c ${mydevice} -f qcow2 "${1}.tmp.qcow2" || die "Cannot connect qcow2 file to nbd0"
 
 # create a GPT disklabel
-parted -s /dev/nbd0 mklabel gpt || die "Cannot create disklabel"
+parted -s ${mydevice} mklabel gpt || die "Cannot create disklabel"
 
 # create an EFI boot partition
-parted -s /dev/nbd0 -- mkpart efi fat32 1M {clst_qcow2_efisize}GiB || die "Cannot create EFI partition"
+parted -s ${mydevice} -- mkpart efi fat32 1M ${clst_qcow2_efisize} || die "Cannot create EFI partition"
 # mark it as EFI boot partition
-parted -s /dev/nbd0 -- type 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B || die "Cannot set EFI partition UUID"
+parted -s ${mydevice} -- type 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B || die "Cannot set EFI partition UUID"
 # note down name
-mypartefi=/dev/nbd0p1
+mypartefi=${mydevice}p1
 
 # create the root partition
-parted -s /dev/nbd0 -- mkpart root ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1M || die "Cannot create root partition"
+parted -s ${mydevice} -- mkpart root ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1M || die "Cannot create root partition"
 # mark it as generic linux filesystem partition
-parted -s /dev/nbd0 -- type 2 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || die "Cannot set root partition UUID"
+parted -s ${mydevice} -- type 2 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || die "Cannot set root partition UUID"
 # note down name
-mypartroot=/dev/nbd0p2
+mypartroot=${mydevice}p2
 
 # re-read the partition table
-partprobe /dev/nbd0 || die "Probing partition table failed"
+partprobe ${mydevice} || die "Probing partition table failed"
 
 # make a vfat filesystem in p1
 mkfs.fat -F 32 ${mypartefi} || die "Formatting EFI partition failed"
@@ -66,11 +67,11 @@ mkfs.xfs ${mypartroot} || die "Formatting root partition failed"
 
 # mount things
 # we need a mount point- how do we get one?
-mymountpoint=/tmp/bla
+mymountpoint="${1}.tmp.mnt"
 mkdir -p "${mymountpoint}" || die "Could not create root mount point"
-mount /dev/nbd0p2 "${mymountpoint}" || die "Could not mount root partition"
+mount ${mypartroot} "${mymountpoint}" || die "Could not mount root partition"
 mkdir -p "${mymountpoint}"/boot || die "Could not create boot mount point"
-mount /dev/nbd0p1 "${mymountpoint}/boot" || die "Could not mount boot partition"
+mount ${mypartefi} "${mymountpoint}/boot" || die "Could not mount boot partition"
 
 # copy contents in
 cp -a "${clst_target_path}"/* "${my_mountpoint}/"
@@ -89,6 +90,14 @@ umount "${mymountpoint}/boot" || die "Could not unmount boot partition"
 umount "${mymountpoint}" || die "Could not unmount root partition"
 
 # disconnect the nbd
-qemu-nbd -d /dev/nbd0 || die "Could not disconnect nbd0"
+qemu-nbd -d ${mydevice} || die "Could not disconnect nbd0"
+
+# rewrite with stream compression
+qemu-img convert -c -O qcow2 "${1}.tmp.qcow2" "${1}" || die "Could not compress QCOW2 file"
+
+# clean up
+rm "${1}.tmp.qcow2" || die "Could not delete uncompressed QCOW2 file"
+rmdir "${mymountpoint}/boot" || die "Could not remove boot mountpoint"
+rmdir "${mymountpoint}" || die "Could not remove root mountpoint"
 
 # Finished...
