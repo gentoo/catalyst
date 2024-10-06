@@ -17,22 +17,22 @@ class diskimage_stage2(StageBase):
     ])
     valid_values = required_values | frozenset([
         "diskimage/bootargs",
-        "diskimage/fstar",
         "diskimage/depclean",
         "diskimage/empty",
         "diskimage/fsops",
         "diskimage/fsscript",
-        "diskimage/fstype",
         "diskimage/gk_mainargs",
-        "diskimage/image",
-        "diskimage/imageformat",
         "diskimage/modblacklist",
         "diskimage/motd",
+        "diskimage/qcow2",
+        "diskimage/qcow2_size",
+        "diskimage/qcow2_efisize",
+        "diskimage/qcow2_roottype",
         "diskimage/rcadd",
         "diskimage/rcdel",
         "diskimage/readme",
         "diskimage/rm",
-        "diskimage/type",
+        "diskimage/type",		# generic, cloud-init, ssh, console
         "diskimage/unmerge",
         "diskimage/users",
         "diskimage/verify",
@@ -40,12 +40,22 @@ class diskimage_stage2(StageBase):
         "repos",
     ])
 
+# Types of bootable disk images planned for (diskimage/type):
+# cloud-init - an image that starts cloud-init for configuration and then can be
+#              used out of the box
+# console    - an image that has an empty root password and allows passwordless
+#              login on the console only
+# ssh        - an image that populates /root/.ssh/authorized_keys and starts dhcp
+#              as well as sshd; obviously not fit for public distribution
+# generic    - an image with no means of logging in... needs postprocessing
+#              no services are started
+
     def __init__(self, spec, addlargs):
         StageBase.__init__(self, spec, addlargs)
         if "diskimage/type" not in self.settings:
-            self.settings["diskimage/type"] = "generic-diskimage"
+            self.settings["diskimage/type"] = "generic"
 
-        file_locate(self.settings, ["fstar", "controller_file"])
+        file_locate(self.settings, ["controller_file"])
 
     def set_spec_prefix(self):
         self.settings["spec_prefix"] = "diskimage"
