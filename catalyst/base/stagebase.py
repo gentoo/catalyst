@@ -1636,7 +1636,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             return
 
         # Create the QCOW2 file
-        if "qcow2" in self.settings:
+        if "diskimage/qcow2" in self.settings:
             cmd([self.settings['controller_file'], 'qcow2', self.settings['qcow2']],
                 env=self.env)
             # FIXME: implement this
