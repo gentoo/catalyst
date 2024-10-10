@@ -15,7 +15,7 @@ setup_binutils
 if [ -d "${ROOT}/usr/share/zoneinfo" ]
 then
 	rm -f "${ROOT}/etc/localtime"
-	cp "${ROOT}/usr/share/zoneinfo/Factory" "${ROOT}/etc/localtime"
+	ln -s ../usr/share/zoneinfo/Factory "${ROOT}/etc/localtime"
 else
 	echo UTC > "${ROOT}/etc/TZ"
 fi
