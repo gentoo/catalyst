@@ -3,11 +3,6 @@
 source ${clst_shdir}/support/functions.sh
 
 case $1 in
-        run)
-		# We need to install grub's EFI files and do very basic configuration
-		exec_in_chroot "${clst_shdir}/support/diskimage-installation.sh" || exit 1
-		;;
-
 	pre-kmerge)
 		# Sets up the build environment before any kernels are compiled
 		exec_in_chroot ${clst_shdir}/support/pre-kmerge.sh
@@ -33,7 +28,7 @@ case $1 in
 		;;
 
 	diskimage-update)
-		# Now, finalize and tweak the livecd fs (inside of the chroot)
+		# We need to install grub's EFI files and do very basic configuration
 		exec_in_chroot ${clst_shdir}/support/diskimagefs-update.sh
 		;;
 

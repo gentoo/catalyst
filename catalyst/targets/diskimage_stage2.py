@@ -71,9 +71,6 @@ class diskimage_stage2(StageBase):
         clear_dir(self.settings['target_path'])
 
     def run_local(self):
-        # let's first start with the controller file
-        StageBase.run_local(self)
-
         # what modules do we want to blacklist?
         if "diskimage/modblacklist" in self.settings:
             path = normpath(self.settings["chroot_path"] +
