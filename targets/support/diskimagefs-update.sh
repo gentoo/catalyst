@@ -27,6 +27,13 @@ DHCP=yes
 END
 }
 
+configure_sshd() {
+	echo "Configuring sshd"
+	mkdir -vp /root/.ssh
+	chown root:root /root/.ssh
+	echo "${clst_diskimage_sshkey}" > /root/.ssh/authorized_keys
+}
+
 echo "Generating /etc/locale.gen"
 cat > /etc/locale.gen <<END
 en_US ISO-8859-1
@@ -57,6 +64,15 @@ case ${clst_diskimage_type} in
 		echo "Running systemd-firstboot"
 		systemd-firstboot --timezone=UTC || die "Failed running systemd-firstboot"
 		configure_dhcp
+		;;
+	ssh)
+		echo "Setting up ssh log-in image, using key ${xxx}"
+		echo "Running systemd-firstboot"
+		systemd-firstboot --timezone=UTC || die "Failed running systemd-firstboot"
+		configure_dhcp
+		configure_sshd
+		echo "Adding sshd service"
+		systemctl enable sshd
 		;;
 	*)
 		die "As yet unsupported image type"
