@@ -197,6 +197,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.set_fstype()
         self.set_fsops()
         self.set_iso()
+        self.set_qcow2()
         self.set_packages()
         self.set_rm()
         self.set_linuxrc()
@@ -434,6 +435,20 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                                 "/builds/" + self.settings["rel_type"] + "/" +
                                                 self.settings[self.settings["spec_prefix"] + "/iso"])
             del self.settings[self.settings["spec_prefix"] + "/iso"]
+
+    def set_qcow2(self):
+        if self.settings["spec_prefix"] + "/qcow2" in self.settings:
+            if self.settings[self.settings["spec_prefix"] + "/qcow2"].startswith('/'):
+                self.settings["qcow2"] = \
+                    normpath(
+                        self.settings[self.settings["spec_prefix"] + "/qcow2"])
+            else:
+                # This automatically prepends the build dir to the ISO output path
+                # if it doesn't start with a /
+                self.settings["qcow2"] = normpath(self.settings["storedir"] +
+                                                "/builds/" + self.settings["rel_type"] + "/" +
+                                                self.settings[self.settings["spec_prefix"] + "/qcow2"])
+            del self.settings[self.settings["spec_prefix"] + "/qcow2"]
 
     def set_fstype(self):
         if self.settings["spec_prefix"] + "/fstype" in self.settings:
@@ -1628,6 +1643,23 @@ class StageBase(TargetBase, ClearBase, GenBase):
             log.warning('livecd/iso was not defined.  '
                         'An ISO Image will not be created.')
 
+    def create_qcow2(self):
+        if "autoresume" in self.settings["options"] \
+                and self.resume.is_enabled("create_qcow2"):
+            log.notice(
+                'Resume point detected, skipping create_qcow2 operation...')
+            return
+
+        # Create the QCOW2 file
+        if "qcow2" in self.settings:
+            cmd([self.settings['controller_file'], 'qcow2', self.settings['qcow2']],
+                env=self.env)
+            self.gen_digest_file(self.settings["qcow2"])
+            self.resume.enable("create_qcow2")
+        else:
+            log.warning('diskimage/qcow2 was not defined.  '
+                        'A QCOW2 file will not be created.')
+
     def build_packages(self):
         build_packages_resume = pjoin(self.settings["autoresume_path"],
                                       "build_packages")
@@ -1752,6 +1784,17 @@ class StageBase(TargetBase, ClearBase, GenBase):
         cmd([self.settings['controller_file'], 'livecd-update'],
             env=self.env)
         self.resume.enable("livecd_update")
+
+    def diskimage_update(self):
+        if "autoresume" in self.settings["options"] \
+                and self.resume.is_enabled("diskimage_update"):
+            log.notice(
+                'Resume point detected, skipping build_packages operation...')
+            return
+
+        cmd([self.settings['controller_file'], 'diskimage-update'],
+            env=self.env)
+        self.resume.enable("diskimage_update")
 
     @staticmethod
     def _debug_pause_():
