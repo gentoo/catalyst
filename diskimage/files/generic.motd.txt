@@ -1,7 +1,0 @@
-##GREETING
-
-The root password on this system has been auto-scrambled for security.
-
-If any ethernet adapters were detected at boot, they should be auto-configured
-if DHCP is available on your network. 
-
