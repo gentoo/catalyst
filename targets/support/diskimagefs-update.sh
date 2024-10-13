@@ -74,6 +74,7 @@ case ${clst_diskimage_type} in
 		configure_sshd
 		echo "Adding sshd service"
 		systemctl enable sshd
+		;;
 	*)
 		die "As yet unsupported image type"
 		;;
