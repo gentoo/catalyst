@@ -47,14 +47,6 @@ case $1 in
 	clean)
 		;;
 
-	bootloader)
-		shift
-		# We don't have to create any directories or copy any stuff here, since
-		# the qcow2 has no internal squashfs or similar
-
-		${clst_shdir}/support/qcow2-bootloader-setup.sh $1
-		;;
-
 	unmerge)
 		[ "${clst_diskimage_depclean}" != "no" ] && exec_in_chroot ${clst_shdir}/support/depclean.sh
 		shift

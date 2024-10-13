@@ -100,7 +100,6 @@ class diskimage_stage2(StageBase):
         ])
         if "fetch" not in self.settings["options"]:
             self.build_sequence.extend([
-                self.bootloader,
                 self.preclean,
                 self.diskimage_update,
                 self.fsscript,
