@@ -33,6 +33,7 @@ class diskimage_stage2(StageBase):
         "diskimage/readme",
         "diskimage/rm",
         "diskimage/type",		# generic, cloud-init, ssh, console
+	"diskimage/sshkey",
         "diskimage/unmerge",
         "diskimage/users",
         "diskimage/verify",
