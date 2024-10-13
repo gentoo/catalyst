@@ -36,15 +36,16 @@ configure_sshd() {
 
 echo "Generating /etc/locale.gen"
 cat > /etc/locale.gen <<END
-en_US ISO-8859-1
-en_US.UTF-8 UTF-8
+# en_US ISO-8859-1
+# en_US.UTF-8 UTF-8
+C.UTF-8 UTF-8
 END
 
 echo "Running systemctl preset-all"
 systemctl preset-all || die "Running systemctl preset-all failed"
 
 echo "Setting locale"
-echo 'LANG="en_US.UTF-8"' > /etc/locale.conf || die "Failed to set locale"
+echo 'LANG="C.UTF-8"' > /etc/locale.conf || die "Failed to set locale"
 env-update || die "Failed to run env-update"
 
 echo "Setting keymap"
