@@ -67,7 +67,8 @@ case ${clst_diskimage_type} in
 		configure_dhcp
 		;;
 	ssh)
-		echo "Setting up ssh log-in image, using key ${xxx}"
+		echo "Setting up ssh log-in image, using the following key"
+		echo "  ${clst_diskimage_sshkey}"
 		echo "Running systemd-firstboot"
 		systemd-firstboot --timezone=UTC || die "Failed running systemd-firstboot"
 		configure_dhcp
