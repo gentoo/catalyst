@@ -80,8 +80,6 @@ case ${clst_diskimage_type} in
 		echo "Setting up cloud-init image"
 		echo "Running systemd-firstboot"
 		systemd-firstboot --timezone=UTC || die "Failed running systemd-firstboot"
-		echo "Adding cloud-init service"
-		systemctl enable cloud-init || die "Failed to enable cloud-init service"
 		;;
 	*)
 		die "As yet unsupported image type"
