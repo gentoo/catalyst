@@ -74,7 +74,7 @@ case ${clst_diskimage_type} in
 		configure_dhcp
 		configure_sshd
 		echo "Adding sshd service"
-		systemctl enable sshd
+		systemctl enable sshd || die "Failed enabling sshd service"
 		;;
 	cloud-init|cloudinit)
 		echo "Setting up cloud-init image"
