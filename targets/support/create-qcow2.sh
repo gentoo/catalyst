@@ -125,7 +125,8 @@ echo "Making a vfat filesystem in p1"
 mkfs.fat -v -F 32 -n gentooefi ${mypartefi} || qcow2die "Formatting EFI partition failed"
 
 echo "Making an xfs filesystem in p2"
-mkfs.xfs -L gentooroot ${mypartroot} || qcow2die "Formatting root partition failed"
+# nrext64=0 is needed for compatibility with 5.15 kernels
+mkfs.xfs -i nrext64=0 -L gentooroot ${mypartroot} || qcow2die "Formatting root partition failed"
 
 echo "Printing blkid output"
 blkid ${mydevice}* || qcow2die "blkid failed"
