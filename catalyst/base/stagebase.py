@@ -1360,7 +1360,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         # Ensure that the repo dir and all its contents are owned by portage
         if os.path.exists(self.settings['stage_path']+self.settings['repo_basedir']):
             cmd(['chown', '-R', 'portage:portage',
-                self.settings['stage_path']+self.settings['repo_basedir'])
+                self.settings['stage_path']+self.settings['repo_basedir']])
 
         if "sticky-config" not in self.settings["options"]:
             # re-write the make.conf to be sure it is clean
