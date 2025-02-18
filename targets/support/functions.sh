@@ -83,6 +83,10 @@ extract_kernels() {
 		then
 			mv ${1}/vmlinuz-* ${1}/${x}
 		fi
+		if [ -e ${1}/vmlinux-* ]
+		then
+			mv ${1}/vmlinux-* ${1}/${x}
+		fi
 
 		# change initrd name from "initrd" to "gentoo.igz", for example
 		if [ -e ${1}/initrd-* ]
