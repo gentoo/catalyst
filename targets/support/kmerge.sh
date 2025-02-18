@@ -173,7 +173,7 @@ if [[ ${distkernel} = "yes" ]] ; then
 
   # Create minkernel package to mimic genkernel's behaviour
   cd /boot
-  tar jcvf /tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 System.map* config* initramfs* vmlinuz*
+  tar jcvf /tmp/kerncache/${kname}-kernel-initrd-${clst_version_stamp}.tar.bz2 System.map* config* initramfs* vmlinuz* vmlinux*
   cd /
   tar jcvf /tmp/kerncache/${kname}-modules-${clst_version_stamp}.tar.bz2 lib/modules
 
