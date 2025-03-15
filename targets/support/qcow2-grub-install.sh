@@ -23,4 +23,8 @@ case ${clst_hostarch} in
 		echo "Installing grub with target arm64-efi"
 		grub-install --no-floppy --efi-directory=/boot --removable --skip-fs-probe --no-nvram --no-bootsector --target=arm64-efi
 		;;
+	riscv)
+		echo "Installing grub with target riscv64-efi"
+		grub-install --no-floppy --efi-directory=/boot --removable --skip-fs-probe --no-nvram --no-bootsector --target=riscv64-efi
+		;;
 esac
