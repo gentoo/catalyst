@@ -40,7 +40,8 @@ mydevice=/dev/nbd0
 # This script requires slightly more stringent cleanup in case of errors
 # from the moment on when the nbd was set up...
 qcow2die() {
-	echo "Something went wrong. Cleaning up..."
+	echo "Something went wrong: $@"
+	echo "Cleaning up..."
 
 	# here we just ignore errors
 	umount -R "${mymountpoint}/proc"
@@ -52,7 +53,7 @@ qcow2die() {
 	umount "${mydevice}p2"
 	qemu-nbd -d "${mydevice}"
 
-	die "$@"
+	die "Caught error: $@"
 }
 
 # We need a means to execute a script inside the qcow with filesystems mounted
@@ -99,7 +100,7 @@ echo "Connecting the qcow2 file to network block device ${mydevice}"
 qemu-nbd -c ${mydevice} -f qcow2 "${myqcow2}.tmp.qcow2" || die "Cannot connect qcow2 file to nbd0"
 
 echo "Creating a GPT disklabel"
-parted -s ${mydevice} mklabel gpt || qcow2die "Cannot create disklabel"
+parted -s ${mydevice} mklabel gpt 2>&1 || qcow2die "Cannot create disklabel"
 
 echo "Creating an EFI boot partition"
 parted -s ${mydevice} -- mkpart gentooefi fat32 1M ${clst_qcow2_efisize} || qcow2die "Cannot create EFI partition"
