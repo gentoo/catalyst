@@ -99,6 +99,9 @@ qemu-img create -f qcow2 "${myqcow2}.tmp.qcow2" ${clst_qcow2_size/%iB/} || die "
 echo "Connecting the qcow2 file to network block device ${mydevice}"
 qemu-nbd -c ${mydevice} -f qcow2 "${myqcow2}.tmp.qcow2" || die "Cannot connect qcow2 file to nbd0"
 
+echo "Waiting 5s to ensure device ${mydevice} is set up"
+sleep 5s
+
 echo "Creating a GPT disklabel"
 parted -s ${mydevice} mklabel gpt 2>&1 || qcow2die "Cannot create disklabel"
 
