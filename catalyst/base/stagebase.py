@@ -1639,8 +1639,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         # Create the ISO
         if "iso" in self.settings:
-            cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
-                env=self.env)
+            if self.settings["spec_prefix"] + "/iso_extra_partition" in self.settings:
+                cmd([self.settings['controller_file'], 'iso', self.settings['iso'],
+                    self.settings[self.settings["spec_prefix"] + "/iso_extra_partition"]],
+                    env=self.env)
+            else:
+                cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
+                    env=self.env)
             self.gen_contents_file(self.settings["iso"])
             self.gen_digest_file(self.settings["iso"])
             self.resume.enable("create_iso")
