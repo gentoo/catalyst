@@ -180,6 +180,17 @@ This is the full path and filename to the ISO image that the
 livecd-stage2 target will create (example:
 `/tmp/installcd-x86-minimal.iso`).
 
+*livecd/iso_extra_partition*::
+If set, specifies the size (in kilobytes) of an extra partition that
+will be added to the ISO image for persistent storage purposes.
+Currently the file system of this partition will always be XFS. Note
+that an XFS partition must be a minimum of 300MB in size. Therefore,
+if set, the minimum value for this option is 300000. Note that, due to
+the nature of the hybrid ISO image, this partition is only effective
+when the ISO image is used as (USB) disk image. This option has no
+effect (other then making the ISO image larger) when the ISO is burned
+to an optical medium.
+
 *livecd/volid*::
 This option sets the volume ID of the CD created (example: `Gentoo
 Linux 2006.1 X86`).
