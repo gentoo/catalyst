@@ -125,6 +125,9 @@ partprobe ${mydevice} || qcow2die "Probing partition table failed"
 echo "Printing the partition table"
 parted -s ${mydevice} -- print || qcow2die "Printing the partition table failed"
 
+echo "Waiting 5s to ensure the partition device nodes exist"
+sleep 5s
+
 echo "Making a vfat filesystem in p1"
 mkfs.fat -v -F 32 -n gentooefi ${mypartefi} || qcow2die "Formatting EFI partition failed"
 
