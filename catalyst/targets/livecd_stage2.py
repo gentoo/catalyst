@@ -25,6 +25,7 @@ class livecd_stage2(StageBase):
         "livecd/fstype",
         "livecd/gk_mainargs",
         "livecd/iso",
+        "livecd/iso_extra_partition",
         "livecd/linuxrc",
         "livecd/modblacklist",
         "livecd/motd",
