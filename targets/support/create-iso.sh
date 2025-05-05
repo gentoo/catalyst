@@ -199,6 +199,24 @@ case ${clst_hostarch} in
 		sparc*) extra_opts+=("--sparc-boot") ;;
 		esac
 
+		# Second argument will specify size in kilobytes
+		if [[ ${2} =~ ^[0-9]+$ ]]; then
+			extrapart=${1%.*}-extra.img
+			rm -f "${extrapart}"
+			dd if=/dev/zero of="${extrapart}" bs=1k count="${2}"
+			# TODO: allow setting different fs type
+			mkfs.xfs "${extrapart}"
+			# 1=ESP, 2=HFS+, so 3 is first available partition
+			extra_opts+=(
+				"-append_partition"
+				"3"
+				"0FC63DAF-8483-4772-8E79-3D69D8477DE4"
+				"${extrapart}"
+			)
+		elif [[ -n ${2} ]]; then
+			die "Invalid second argument, must be an integer"
+		fi
+
 		echo ">> Running grub-mkrescue to create iso image...."
 		grub-mkrescue --mbr-force-bootable -volid "${clst_iso_volume_id}" "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
 	;;
