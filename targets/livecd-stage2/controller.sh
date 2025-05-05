@@ -164,7 +164,7 @@ case $1 in
 
 	iso)
 		shift
-		${clst_shdir}/support/create-iso.sh $1
+		${clst_shdir}/support/create-iso.sh ${@}
 		;;
 esac
 exit $?
