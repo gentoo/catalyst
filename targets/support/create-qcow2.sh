@@ -78,9 +78,24 @@ exec_in_qcow2() {
         # Ensure the file has the executable bit set
         chmod +x "${mymountpoint}/tmp/${file_name}" || qcow2die
 
+	# Copy binary interpreter
+	if [[ -n "${clst_interpreter}" ]] ; then
+		echo "clst_interpreter is \"${clst_interpreter}\""
+		for myfile in ${clst_interpreter} ; do
+			cp -pv "${myfile}" "${mymountpoint}/${myfile}" || qcow2die
+		done
+	fi
+
         echo "Running ${file_name} in qcow2:"
         echo "    ${clst_CHROOT} ${mymountpoint} /tmp/${file_name}"
         ${clst_CHROOT} "${mymountpoint}" "/tmp/${file_name}" || qcow2die
+
+	# Remove binary interpreter
+	if [[ -n "${clst_interpreter}" ]] ; then
+		for myfile in ${clst_interpreter} ; do
+			rm -v "${mymountpoint}/${myfile}" || qcow2die
+		done
+	fi
 
         rm -f "${mymountpoint}/tmp/${file_name}" || qcow2die
         rm -f "${mymountpoint}/tmp/chroot-functions.sh" || qcow2die
