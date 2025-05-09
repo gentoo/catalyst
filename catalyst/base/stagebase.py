@@ -1791,8 +1791,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 'Resume point detected, skipping build_packages operation...')
             return
 
-        cmd([self.settings['controller_file'], 'livecd-update'],
-            env=self.env)
+        if self.settings["spec_prefix"] + "/iso_extra_partition" in self.settings:
+            cmd([self.settings['controller_file'], 'livecd-update', '/mnt/storage'],
+                env=self.env)
+        else:
+            cmd([self.settings['controller_file'], 'livecd-update'],
+                env=self.env)
+
         self.resume.enable("livecd_update")
 
     def diskimage_update(self):
