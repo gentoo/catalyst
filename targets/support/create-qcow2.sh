@@ -11,12 +11,15 @@ source ${clst_shdir}/support/functions.sh
 #
 # Configuration parameters:
 # All sizes are in forms as understood by parted: use MiB, GiB, ... or M, G, ...
-#  - clst_qcow2_size      (internal) size of the qcow2 image (default 20GiB)
-#  - clst_qcow2_efisize   size of the EFI boot partition (default 512MiB)
+#  - clst_qcow2_size      (internal) size of the qcow2 image in MiB (default 20GiB)
+#  - clst_qcow2_efisize   size of the EFI boot partition in MiB (default 512MiB)
 #  - clst_qcow2_roottype  type of the root partition (default xfs)
 #
-: "${clst_qcow2_size:=20GiB}"
-: "${clst_qcow2_efisize:=512MiB}"
+: "${clst_qcow2_size:=20480}"
+: "${clst_qcow2_biossize:=4}"
+: "${clst_qcow2_efisize:=512}"
+: "${clst_qcow2_enable_bios:=1}"
+: "${clst_qcow2_enable_efi:=1}"
 : "${clst_qcow2_roottype:=xfs}"
 
 #
@@ -51,6 +54,7 @@ qcow2die() {
 
 	umount "${mydevice}p1"
 	umount "${mydevice}p2"
+	umount "${mydevice}p3"
 	qemu-nbd -d "${mydevice}"
 
 	die "Caught error: $@"
@@ -59,7 +63,9 @@ qcow2die() {
 # We need a means to execute a script inside the qcow with filesystems mounted
 # Which means reproducing half of catalyst here.
 exec_in_qcow2() {
+	local file_full="${1}"
 	local file_name=$(basename ${1})
+	shift
 
 	# prepare qcow2 for chrooting
 	mount --types proc /proc "${mymountpoint}/proc"
@@ -70,8 +76,8 @@ exec_in_qcow2() {
 	mount --bind /run "${mymountpoint}/run"
 	mount --make-slave "${mymountpoint}/run"
 
-	# copy_to_chroot ${1}
-	cp -pPR "${1}" "${mymountpoint}/tmp" || qcow2die
+	# copy_to_chroot ${file_full}
+	cp -pPR "${file_full}" "${mymountpoint}/tmp" || qcow2die
         # copy_to_chroot ${clst_shdir}/support/chroot-functions.sh
         cp -pPR "${clst_shdir}/support/chroot-functions.sh" "${mymountpoint}/tmp" || qcow2die
 
@@ -87,8 +93,8 @@ exec_in_qcow2() {
 	fi
 
         echo "Running ${file_name} in qcow2:"
-        echo "    ${clst_CHROOT} ${mymountpoint} /tmp/${file_name}"
-        ${clst_CHROOT} "${mymountpoint}" "/tmp/${file_name}" || qcow2die
+        echo "    ${clst_CHROOT} ${mymountpoint} /tmp/${file_name} $@"
+        ${clst_CHROOT} "${mymountpoint}" "/tmp/${file_name}" $@ || qcow2die
 
 	# Remove binary interpreter
 	if [[ -n "${clst_interpreter}" ]] ; then
@@ -120,19 +126,53 @@ sleep 5s
 echo "Creating a GPT disklabel"
 parted -s ${mydevice} mklabel gpt 2>&1 || qcow2die "Cannot create disklabel"
 
-echo "Creating an EFI boot partition"
-parted -s ${mydevice} -- mkpart gentooefi fat32 1M ${clst_qcow2_efisize} || qcow2die "Cannot create EFI partition"
-# mark it as EFI boot partition
-parted -s ${mydevice} -- type 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B || qcow2die "Cannot set EFI partition UUID"
-# note down name
-mypartefi=${mydevice}p1
+echo "We start with partition 1 and sector 2048"
+mynextpart=1
+mynextsector=2048
 
-echo "Creating the root partition"
-parted -s ${mydevice} -- mkpart gentooroot ${clst_qcow2_roottype} ${clst_qcow2_efisize}GiB -1M || qcow2die "Cannot create root partition"
+mypartbios=""
+mypartefi=""
+
+if [[ "${clst_qcow2_enable_bios}" == "1" ]] ; then
+
+	mysectors=$(( ${clst_qcow2_biossize} * 2048 ))
+	myendsector=$(( ${mynextsector} + ${mysectors} - 1 ))
+
+	echo "Creating a bios boot partition, number ${mynextpart}, size ${clst_qcow2_biossize}, start ${mynextsector}, end ${myendsector}"
+	parted -s ${mydevice} -- mkpart gentoobios ${mynextsector}s ${myendsector}s || qcow2die "Cannot create bios boot partition"
+	# mark it as bios boot partition
+	parted -s ${mydevice} -- type ${mynextpart} 21686148-6449-6E6F-744E-656564454649 || qcow2die "Cannot set bios boot partition UUID"
+	# note down name
+	mypartbios=${mydevice}p${mynextpart}
+	# increase counters
+	mynextpart=$(( ${mynextpart} +1 ))
+	mynextsector=$(( ${mynextsector} + ${mysectors} ))
+
+fi
+
+if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
+
+	mysectors=$(( ${clst_qcow2_efisize} * 2048 ))
+	myendsector=$(( ${mynextsector} + ${mysectors} - 1 ))
+
+	echo "Creating an EFI boot partition, number ${mynextpart}, size ${clst_qcow2_efisize}, start ${mynextsector}, end ${myendsector}"
+	parted -s ${mydevice} -- mkpart gentooefi fat32 ${mynextsector}s ${myendsector}s || qcow2die "Cannot create EFI partition"
+	# mark it as EFI boot partition
+	parted -s ${mydevice} -- type ${mynextpart} C12A7328-F81F-11D2-BA4B-00A0C93EC93B || qcow2die "Cannot set EFI partition UUID"
+	# note down name
+	mypartefi=${mydevice}p${mynextpart}
+	# increase counters
+	mynextpart=$(( ${mynextpart} +1 ))
+	mynextsector=$(( ${mynextsector} + ${mysectors} ))
+
+fi
+
+echo "Creating the root partition, number ${mynextpart}, start ${mynextsector}"
+parted -s ${mydevice} -- mkpart gentooroot ${clst_qcow2_roottype} ${mynextsector}s -1s || qcow2die "Cannot create root partition"
 # mark it as generic linux filesystem partition
-parted -s ${mydevice} -- type 2 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || qcow2die "Cannot set root partition UUID"
+parted -s ${mydevice} -- type ${mynextpart} 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || qcow2die "Cannot set root partition UUID"
 # note down name
-mypartroot=${mydevice}p2
+mypartroot=${mydevice}p${mynextpart}
 
 echo "Re-reading the partition table"
 partprobe ${mydevice} || qcow2die "Probing partition table failed"
@@ -143,10 +183,12 @@ parted -s ${mydevice} -- print || qcow2die "Printing the partition table failed"
 echo "Waiting 5s to ensure the partition device nodes exist"
 sleep 5s
 
-echo "Making a vfat filesystem in p1"
-mkfs.fat -v -F 32 -n gentooefi ${mypartefi} || qcow2die "Formatting EFI partition failed"
+if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
+	echo "Making a vfat filesystem in ${mypartefi}"
+	mkfs.fat -v -F 32 -n gentooefi ${mypartefi} || qcow2die "Formatting EFI partition failed"
+fi
 
-echo "Making an xfs filesystem in p2"
+echo "Making an xfs filesystem in ${mypartroot}"
 # nrext64=0 is needed for compatibility with 5.15 kernels
 mkfs.xfs -i nrext64=0 -L gentooroot ${mypartroot} || qcow2die "Formatting root partition failed"
 
@@ -156,8 +198,10 @@ blkid ${mydevice}* || qcow2die "blkid failed"
 echo "Mounting things at ${mymountpoint}"
 mkdir -p "${mymountpoint}" || qcow2die "Could not create root mount point"
 mount ${mypartroot} "${mymountpoint}" || qcow2die "Could not mount root partition"
-mkdir -p "${mymountpoint}"/boot || qcow2die "Could not create boot mount point"
-mount ${mypartefi} "${mymountpoint}/boot" || qcow2die "Could not mount boot partition"
+if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
+	mkdir -p "${mymountpoint}"/boot || qcow2die "Could not create boot mount point"
+	mount ${mypartefi} "${mymountpoint}/boot" || qcow2die "Could not mount boot partition"
+fi
 
 # copy contents in; the source is the stage dir and not any "iso content"
 echo "Copying files into the mounted directories from ${clst_stage_path}"
@@ -171,7 +215,7 @@ rm -f "${mymountpoint}/etc/machine-id"
 touch "${mymountpoint}/etc/machine-id" || qcow2die "Could not set machine-id to empty"
 
 # now we can chroot in and install grub
-exec_in_qcow2 "${clst_shdir}/support/qcow2-grub-install.sh"
+exec_in_qcow2 "${clst_shdir}/support/qcow2-grub-install.sh" ${mydevice} ${clst_qcow2_enable_bios} ${clst_qcow2_enable_efi}
 
 echo "Generating /etc/fstab"
 cat > "${mymountpoint}/etc/fstab" <<END
@@ -182,9 +226,13 @@ cat > "${mymountpoint}/etc/fstab" <<END
 # <fs>                  <mountpoint>    <type>          <opts>          <dump/pass>
 
 LABEL=gentooroot            /               xfs              noatime,rw   0 1
-LABEL=gentooefi             /boot           vfat             defaults     1 2
-
 END
+
+if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
+cat >> "${mymountpoint}/etc/fstab" <<END
+LABEL=gentooefi             /boot           vfat             defaults     1 2
+END
+fi
 
 echo "Creating a CONTENTS file ${myqcow2}.CONTENTS"
 pushd "${mymountpoint}/" &> /dev/null || qcow2die "Could not cd into mountpoint"
@@ -195,7 +243,9 @@ echo "Compressing the CONTENTS file"
 gzip "${myqcow2}.CONTENTS"      || qcow2die "Could not compress the CONTENTS file"
 
 echo "Unmounting things"
-umount "${mymountpoint}/boot" || qcow2die "Could not unmount boot partition"
+if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
+	umount "${mymountpoint}/boot" || qcow2die "Could not unmount boot partition"
+fi
 umount "${mymountpoint}" || qcow2die "Could not unmount root partition"
 
 echo "Disconnecting ${mydevice}"
