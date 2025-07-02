@@ -168,7 +168,7 @@ if [[ "${clst_qcow2_enable_efi}" == "1" ]] ; then
 fi
 
 echo "Creating the root partition, number ${mynextpart}, start ${mynextsector}"
-parted -s ${mydevice} -- mkpart gentooroot ${clst_qcow2_roottype} ${mynextsector}s -1s || qcow2die "Cannot create root partition"
+parted -s -f ${mydevice} -- mkpart gentooroot ${clst_qcow2_roottype} ${mynextsector}s -1MiB || qcow2die "Cannot create root partition"
 # mark it as generic linux filesystem partition
 parted -s ${mydevice} -- type ${mynextpart} 0FC63DAF-8483-4772-8E79-3D69D8477DE4 || qcow2die "Cannot set root partition UUID"
 # note down name
