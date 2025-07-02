@@ -10,7 +10,7 @@ source ${clst_shdir}/support/functions.sh
 
 #
 # Configuration parameters:
-# All sizes are in forms as understood by parted: use MiB, GiB, ... or M, G, ...
+# All sizes are in MiB
 #  - clst_qcow2_size      (internal) size of the qcow2 image in MiB (default 20GiB)
 #  - clst_qcow2_efisize   size of the EFI boot partition in MiB (default 512MiB)
 #  - clst_qcow2_roottype  type of the root partition (default xfs)
@@ -114,8 +114,8 @@ exec_in_qcow2() {
 }
 
 
-echo "Creating a new qcow2 disk image file ${myqcow2}.tmp.qcow2 with size ${clst_qcow2_size/%iB/}"
-qemu-img create -f qcow2 "${myqcow2}.tmp.qcow2" ${clst_qcow2_size/%iB/} || die "Cannot create qcow2 file"
+echo "Creating a new qcow2 disk image file ${myqcow2}.tmp.qcow2 with size ${clst_qcow2_size}M"
+qemu-img create -f qcow2 "${myqcow2}.tmp.qcow2" "${clst_qcow2_size}M" || die "Cannot create qcow2 file"
 
 echo "Connecting the qcow2 file to network block device ${mydevice}"
 qemu-nbd -c ${mydevice} -f qcow2 "${myqcow2}.tmp.qcow2" || die "Cannot connect qcow2 file to nbd0"
