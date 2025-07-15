@@ -8,7 +8,6 @@ CHOST = "armv4l-unknown-linux-gnu"
 
 [arm.armv4tl]
 COMMON_FLAGS = "-O2 -pipe -march=armv4t"
-CHOST = "armv4tl-softfloat-linux-gnueabi"
 
 [arm.armv5tl]
 COMMON_FLAGS = "-O2 -pipe -march=armv5t"
@@ -16,7 +15,6 @@ CHOST = "armv5tl-softfloat-linux-gnueabi"
 
 [arm.armv5tel]
 COMMON_FLAGS = "-O2 -pipe -march=armv5te"
-CHOST = "armv5tel-softfloat-linux-gnueabi"
 
 [arm.armv5tejl]
 COMMON_FLAGS = "-O2 -pipe -march=armv5te"
@@ -24,7 +22,6 @@ CHOST = "armv5tejl-softfloat-linux-gnueabi"
 
 [arm.armv6j]
 COMMON_FLAGS = "-O2 -pipe -march=armv6j -mfpu=vfp -mfloat-abi=softfp"
-CHOST = "armv6j-softfp-linux-gnueabi"
 
 [arm.armv6z]
 COMMON_FLAGS = "-O2 -pipe -march=armv6z -mfpu=vfp -mfloat-abi=softfp"
@@ -36,11 +33,9 @@ CHOST = "armv6zk-softfp-linux-gnueabi"
 
 [arm.armv7a]
 COMMON_FLAGS = "-O2 -pipe -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=softfp"
-CHOST = "armv7a-softfp-linux-gnueabi"
 
 [arm.armv6j_hardfp]
 COMMON_FLAGS = "-O2 -pipe -march=armv6j -mfpu=vfp -mfloat-abi=hard"
-CHOST = "armv6j-unknown-linux-gnueabihf"
 
 [arm.armv6j_hardfp_musl]
 COMMON_FLAGS = "-O2 -pipe -march=armv6j -mfpu=vfp -mfloat-abi=hard"
@@ -48,7 +43,6 @@ CHOST = "armv6j-unknown-linux-musleabihf"
 
 [arm.armv7a_hardfp]
 COMMON_FLAGS = "-O2 -pipe -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
-CHOST = "armv7a-unknown-linux-gnueabihf"
 
 [arm.armv7a_hardfp_musl]
 COMMON_FLAGS = "-O2 -pipe -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
