@@ -67,7 +67,6 @@ CHOST = "mipsel-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
 [mips.mipsel2_softfloat]
-CHOST = "mipsel-softfloat-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mipsel2_musl]
