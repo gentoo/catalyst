@@ -3,11 +3,9 @@ CHOST = "mips-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips1 -mabi=32 -mplt -pipe"
 
 [mips.mips2]
-CHOST = "mips-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -pipe"
 
 [mips.mips2_softfloat]
-CHOST = "mips-softfloat-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips2 -mabi=32 -mplt -msoft-float -pipe"
 
 [mips.mips2_musl]
