@@ -1639,8 +1639,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         # Create the ISO
         if "iso" in self.settings:
-            cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
-                env=self.env)
+            if self.settings["spec_prefix"] + "/iso_extra_partition" in self.settings:
+                cmd([self.settings['controller_file'], 'iso', self.settings['iso'],
+                    self.settings[self.settings["spec_prefix"] + "/iso_extra_partition"]],
+                    env=self.env)
+            else:
+                cmd([self.settings['controller_file'], 'iso', self.settings['iso']],
+                    env=self.env)
             self.gen_contents_file(self.settings["iso"])
             self.gen_digest_file(self.settings["iso"])
             self.resume.enable("create_iso")
@@ -1786,8 +1791,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 'Resume point detected, skipping build_packages operation...')
             return
 
-        cmd([self.settings['controller_file'], 'livecd-update'],
-            env=self.env)
+        if self.settings["spec_prefix"] + "/iso_extra_partition" in self.settings:
+            cmd([self.settings['controller_file'], 'livecd-update', '/mnt/storage'],
+                env=self.env)
+        else:
+            cmd([self.settings['controller_file'], 'livecd-update'],
+                env=self.env)
+
         self.resume.enable("livecd_update")
 
     def diskimage_update(self):
