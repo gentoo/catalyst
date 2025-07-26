@@ -119,7 +119,6 @@ CHOST = "mipsel-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=loongson3a -mabi=32 -mplt -pipe"
 
 [mips64.mips3_n32]
-CHOST = "mips64-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -march=mips3 -mabi=n32 -mplt -mfix-r4000 -mfix-r4400 -pipe"
 
 [mips64.mips3_n32_softfloat]
