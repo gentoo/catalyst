@@ -40,8 +40,9 @@ case $1 in
 	;;
 
 	livecd-update)
+		shift
 		# Now, finalize and tweak the livecd fs (inside of the chroot)
-		exec_in_chroot ${clst_shdir}/support/livecdfs-update.sh
+		exec_in_chroot ${clst_shdir}/support/livecdfs-update.sh ${@}
 	;;
 
 	bootloader)
@@ -61,7 +62,7 @@ case $1 in
 
 	iso)
 		shift
-		${clst_shdir}/support/create-iso.sh $1
+		${clst_shdir}/support/create-iso.sh ${@}
 	;;
 
 	clean)
