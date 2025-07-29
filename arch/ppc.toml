@@ -83,9 +83,7 @@ COMMON_FLAGS = "-O2 -mcpu=G5 -mtune=G5 -maltivec -mabi=altivec -pipe"
 USE = [ "altivec",]
 
 [ppc.ppc]
-CHOST = "powerpc-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -mcpu=powerpc -mtune=powerpc -pipe"
 
 [ppc.powerpc]
-CHOST = "powerpc-unknown-linux-gnu"
 COMMON_FLAGS = "-O2 -mcpu=powerpc -mtune=powerpc -pipe"
