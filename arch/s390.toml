@@ -4,7 +4,6 @@ if_build = "s390x"
 
 [s390.s390]
 COMMON_FLAGS = "-O2 -pipe"
-CHOST = "s390-ibm-linux-gnu"
 
 [s390x.s390x]
 COMMON_FLAGS = "-O2 -pipe -march=z10"
