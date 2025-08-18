@@ -91,7 +91,11 @@ run_merge --implicit-system-deps=n --oneshot "${buildpkgs[@]}"
 # not run locale-gen when ROOT is set. Since we've set LANG, we need to run
 # locale-gen explicitly.
 if [ -x "$(command -v locale-gen)" ]; then
-	locale-gen --destdir "$ROOT"/ || die "locale-gen failed"
+	if ! locale-gen -V | grep -q '^locale-gen-2\.'; then
+		locale-gen --config /etc/locale.gen --prefix "$ROOT"/
+	else
+		locale-gen --destdir "$ROOT"/
+	fi || die "locale-gen failed"
 fi
 
 # Why are we removing these? Don't we need them for final make.conf?

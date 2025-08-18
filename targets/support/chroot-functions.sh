@@ -284,7 +284,7 @@ show_debug() {
 }
 
 readonly locales="
-C.UTF8 UTF-8
+C.UTF-8 UTF-8
 "
 
 if [[ ${RUN_DEFAULT_FUNCS} != no ]]
