@@ -37,10 +37,8 @@ if [ -n "${clst_update_seed}" ]; then
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
 			ROOT=/ run_merge --buildpkg=n "${clst_update_seed_command}"
-		elif grep -q '^\[changed-subslot\]' /usr/share/portage/config/sets/portage.conf; then
-			ROOT=/ run_merge --ignore-built-slot-operator-deps y @changed-subslot
 		else
-			ROOT=/ run_merge --update --deep --newuse --complete-graph --rebuild-if-new-ver gcc
+			ROOT=/ run_merge --buildpkg=n --update --deep --newuse @world
 		fi
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
