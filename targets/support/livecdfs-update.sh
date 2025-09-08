@@ -70,8 +70,17 @@ cat <<EOF > /etc/fstab
 ####################################################
 
 # fstab tweaks
-tmpfs	/					tmpfs	defaults	0 0
+tmpfs				/			tmpfs	defaults	0 0
 EOF
+
+# First argument will contain the mount point of an extra data
+# partition, if any.
+if [[ -n ${1} ]]; then
+	mkdir -p "${1}"
+	cat <<-EOF >> /etc/fstab
+	PARTLABEL=Appended3		${1}		xfs	lazytime	0 2
+	EOF
+fi
 
 mv ${clst_make_conf} ${clst_make_conf}.old
 cat <<EOF > ${clst_make_conf}
