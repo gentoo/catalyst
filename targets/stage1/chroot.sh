@@ -65,7 +65,7 @@ sed -i "/USE=\"${USE} build\"/d" ${clst_make_conf}
 
 echo "$locales" > /etc/locale.gen
 for etc in /etc "$ROOT"/etc; do
-	echo "LANG=C.UTF8" > ${etc}/env.d/02locale
+	echo "LANG=C.UTF-8" > ${etc}/env.d/02locale
 done
 update_env_settings
 

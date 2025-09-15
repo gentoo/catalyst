@@ -1267,7 +1267,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 '\n'
                 '# This sets the language of build output to English.\n'
                 '# Please keep this setting intact when reporting bugs.\n'
-                'LC_MESSAGES=C.utf8\n')
+                'LC_MESSAGES=C.UTF-8\n')
 
     def write_binrepos_conf(self):
         # only if catalyst.conf defines the host and the spec defines the path...
