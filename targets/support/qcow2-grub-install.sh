@@ -6,7 +6,7 @@ echo "Setting up grub for also serial console"
 cat >> /etc/default/grub <<THISISIT
 
 # Added by catalyst
-GRUB_TERMINAL='serial console'
+GRUB_TERMINAL='gfxterm serial console'
 GRUB_SERIAL_COMMAND='serial --speed 115200 --unit=0 --word=8 --parity=no --stop=1'
 GRUB_CMDLINE_LINUX="console=ttyS0 console=tty0"
 THISISIT
