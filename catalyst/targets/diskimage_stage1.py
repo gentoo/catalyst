@@ -56,3 +56,16 @@ class diskimage_stage1(StageBase):
                     ' '.join(self.settings["pkgcache_path"]))
         else:
             StageBase.set_pkgcache_path(self)
+
+    def write_make_conf(self, setup=True):
+        StageBase.write_make_conf(self, setup)
+
+        # Append to make.conf
+        makepath = normpath(self.settings["chroot_path"] +
+                            self.settings["make_conf"])
+        with open(makepath, "a") as myf:
+            log.notice("Appending diskimage specifics to stage make.conf %s" % makepath)
+            myf.write(
+                '\n'
+                '# We really want to use binary packages here and use them properly.\n'
+                'FEATURES="binpkg-request-signature"\n')
