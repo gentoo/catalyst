@@ -4,7 +4,6 @@ Disk image stage1 target
 # NOTE: That^^ docstring has influence catalyst-spec(5) man page generation.
 
 from catalyst.support import normpath
-from catalyst import log
 
 from catalyst.base.stagebase import StageBase
 
