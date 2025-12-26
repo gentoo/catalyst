@@ -163,6 +163,10 @@ mount ${mypartefi} "${mymountpoint}/boot" || qcow2die "Could not mount boot part
 echo "Copying files into the mounted directories from ${clst_stage_path}"
 cp -a "${clst_stage_path}"/* "${mymountpoint}/" || qcow2die "Could not copy content into mounted image"
 
+echo "Adding FEATURES=binpkg-request-signature to make.conf"
+echo '# Ensure that binary package signatures are verified' >> "${mymountpoint}/etc/portage/make.conf" || qcow2die "Could not modify make.conf"
+echo 'FEATURES="binpkg-request-signature"' >> "${mymountpoint}/etc/portage/make.conf" || qcow2die "Could not modify make.conf"
+
 echo "Setting machine-id to empty"
 # We are already running systemd-firstboot in a previous step, so we don't want to run it again.
 # The documented behaviour for an empty machine-id is that systemd generates a new one and commits
