@@ -55,12 +55,45 @@ class snapshot(TargetBase):
                  repouri, self.gitdir],
             ]
 
+
+        env = os.environ.copy()
+        pgp_keyring = self.settings["repo_openpgp_key_path"]
+        if pgp_keyring:
+            try:
+                import gemato.openpgp
+            except ImportError as e:
+                 raise CatalystError(
+                     f"gemato could not be imported but repo_openpgp_key_path was non-empty."
+                 )
+
+            pgp_path = Path(pgp_keyring)
+            if not pgp_path.exists() or not pgp_path.is_file():
+                raise CatalystError(
+                    f"OpenPGP keyring at repo_openpgp_key_path={pgp_path} does not exist. Is sec-keys/openpgp-keys-gentoo-release installed?"
+                )
+
+            git_cmds.append(self.git, '-C', self.gitdir, 'verify-commit', 'HEAD')
+
+            openpgp_env = gemato.openpgp.OpenPGPEnvironment
+            try:
+                with open(pgp_path, "rb") as f:
+                    openpgp_env.import_key(f)
+                    openpgp_env.refresh_keys()
+            except (GematoException, asyncio.TimeoutError) as e:
+                raise CatalystError(
+                    f"OpenPGP verification via gemato failed: {e}"
+                )
+                openpgp_env.close()
+
+            env["GNUPGHOME"] = openpgp_env.home
+
         try:
             for cmd in git_cmds:
                 log.notice('>>> ' + ' '.join(cmd))
                 subprocess.run(cmd,
                                capture_output=True,
                                check=True,
+                               env=env,
                                encoding='utf-8',
                                close_fds=False)
 
@@ -75,6 +108,9 @@ class snapshot(TargetBase):
             raise CatalystError(f'{e.cmd} failed with return code'
                                 f'{e.returncode}\n'
                                 f'{e.output}\n') from e
+        finally:
+            if pgp_keyring:
+                openpgp_env.close()
 
     def run(self):
         if self.settings['snapshot_treeish'] == 'stable':
