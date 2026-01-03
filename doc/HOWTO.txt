@@ -21,9 +21,9 @@ Create a snapshot of your current Portage tree (you may want to
 
     # catalyst --snapshot 20130131
     # ls /var/tmp/catalyst/snapshots/
-    portage-20130131.tar.bz2
-    portage-20130131.tar.bz2.CONTENTS.gz
-    portage-20130131.tar.bz2.DIGESTS
+    portage-20130131.tar.xz
+    portage-20130131.tar.xz.CONTENTS.gz
+    portage-20130131.tar.xz.DIGESTS
 
 where the storage location is relative to the default
 `$storedir=/var/tmp/catalyst`.
@@ -39,16 +39,18 @@ https://www.gentoo.org/downloads/mirrors/[Gentoo mirror].
 
 For example,
 
-    http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20121213.tar.bz2
+    http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20121213.tar.xz
 
 Grab the tarball and put it where catalyst will find it:
 
-    # wget http://…/stage3-amd64-20121213.tar.bz2
-    # wget http://…/stage3-amd64-20121213.tar.bz2.CONTENTS.gz
-    # wget http://…/stage3-amd64-20121213.tar.bz2.DIGESTS.asc
-    # gpg --verify stage3-amd64-20121213.tar.bz2.DIGESTS.asc stage3-amd64-20121213.tar.bz2.DIGESTS
-    # sha512sum -c stage3-amd64-20121213.tar.bz2.DIGESTS
-    # mv stage3-amd64-20121213.tar.bz2* /var/tmp/catalyst/builds/default/
+    # wget http://…/stage3-amd64-20121213.tar.xz
+    # wget http://…/stage3-amd64-20121213.tar.xz.asc
+    # wget http://…/stage3-amd64-20121213.tar.xz.CONTENTS.gz
+    # wget http://…/stage3-amd64-20121213.tar.xz.DIGESTS
+    # gpg --output stage3-amd64-20121213.tar.xz.DIGESTS.verified --verify stage3-amd64-20121213.tar.xz.DIGESTS
+    # sha512sum -c stage3-amd64-20121213.tar.xz.DIGESTS.verified
+    # gpg --verify stage3-amd64-20121213.tar.xz.asc /stage3-amd64-20121213.tar.xz
+    # mv stage3-amd64-20121213.tar.xz* /var/tmp/catalyst/builds/default/
 
 where the storage dir is `$storedir/builds/$source_subpath`
 (`$storedir` from `catalyst.conf`, `$source_subpath` from your
@@ -88,9 +90,9 @@ Now that everything's setup, run catalyst:
 which will build the target and install something like:
 
     # ls /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.*
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.CONTENTS.gz
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.bz2.DIGESTS
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz.CONTENTS.gz
+    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz.DIGESTS
 
 The name is an expansion of
 `$storedir/builds/$rel_type/$target-$subarch-$version_stamp…`.
