@@ -13,17 +13,19 @@ space is an issue.
 Assembling a starting point
 ---------------------------
 
-Portage snapshot
+Gentoo repository snapshot
 ~~~~~~~~~~~~~~~~
 
-Create a snapshot of your current Portage tree (you may want to
+This was formerly called a "Portage snapshot".
+
+Create a snapshot of your current ::gentoo tree (you may want to
 `emerge --sync` first):
 
     # catalyst --snapshot 20260103
     # ls /var/tmp/catalyst/snapshots/
-    portage-20260103.tar.xz
-    portage-20260103.tar.xz.CONTENTS.gz
-    portage-20260103.tar.xz.DIGESTS
+    gentoo-20260103.tar.xz
+    gentoo-20260103.tar.xz.CONTENTS.gz
+    gentoo-20260103.tar.xz.DIGESTS
 
 where the storage location is relative to the default
 `$storedir=/var/tmp/catalyst`.
