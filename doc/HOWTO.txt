@@ -195,7 +195,7 @@ genkernel if you want to give genkernel some hints.
 Genkernel alternatives
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If you don't want to use a genkernel, your options are fairly limited.
+If you don't want to use genkernel, your options are fairly limited.
 The currently suggested route is to create your own binary kernel
 package.
 
