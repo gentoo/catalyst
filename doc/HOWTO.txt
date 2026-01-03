@@ -19,11 +19,11 @@ Portage snapshot
 Create a snapshot of your current Portage tree (you may want to
 `emerge --sync` first):
 
-    # catalyst --snapshot 20130131
+    # catalyst --snapshot 20260103
     # ls /var/tmp/catalyst/snapshots/
-    portage-20130131.tar.xz
-    portage-20130131.tar.xz.CONTENTS.gz
-    portage-20130131.tar.xz.DIGESTS
+    portage-20260103.tar.xz
+    portage-20260103.tar.xz.CONTENTS.gz
+    portage-20260103.tar.xz.DIGESTS
 
 where the storage location is relative to the default
 `$storedir=/var/tmp/catalyst`.
@@ -39,18 +39,18 @@ https://www.gentoo.org/downloads/mirrors/[Gentoo mirror].
 
 For example,
 
-    http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20121213.tar.xz
+    https://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-openrc-20251122.tar.xz
 
 Grab the tarball and put it where catalyst will find it:
 
-    # wget http://…/stage3-amd64-20121213.tar.xz
-    # wget http://…/stage3-amd64-20121213.tar.xz.asc
-    # wget http://…/stage3-amd64-20121213.tar.xz.CONTENTS.gz
-    # wget http://…/stage3-amd64-20121213.tar.xz.DIGESTS
-    # gpg --output stage3-amd64-20121213.tar.xz.DIGESTS.verified --verify stage3-amd64-20121213.tar.xz.DIGESTS
-    # sha512sum -c stage3-amd64-20121213.tar.xz.DIGESTS.verified
-    # gpg --verify stage3-amd64-20121213.tar.xz.asc /stage3-amd64-20121213.tar.xz
-    # mv stage3-amd64-20121213.tar.xz* /var/tmp/catalyst/builds/default/
+    # wget https://…/stage3-amd64-openrc-20251122.tar.xz
+    # wget https://…/stage3-amd64-openrc-20251122.tar.xz.asc
+    # wget https://…/stage3-amd64-openrc-20251122.tar.xz.CONTENTS.gz
+    # wget https://…/stage3-amd64-openrc-20251122.tar.xz.DIGESTS
+    # gpg --output stage3-amd64-openrc-20251122.tar.xz.DIGESTS.verified --verify stage3-amd64-openrc-20251122.tar.xz.DIGESTS
+    # sha512sum -c stage3-amd64-openrc-20251122.tar.xz.DIGESTS.verified
+    # gpg --verify stage3-amd64-openrc-20251122.tar.xz.asc /stage3-amd64-openrc-20251122.tar.xz
+    # mv stage3-amd64-openrc-20251122.tar.xz* /var/tmp/catalyst/builds/default/
 
 where the storage dir is `$storedir/builds/$source_subpath`
 (`$storedir` from `catalyst.conf`, `$source_subpath` from your
@@ -64,14 +64,14 @@ There are a number of examples distributed with catalyst.  Look in
 `/usr/share/doc/catalyst-*/examples/`.  A minimal `*.spec` file for
 this example is:
 
-    # cat default-stage1-amd64-2013.1.spec
+    # cat default-stage1-amd64-openrc-2013.1.spec
     subarch: amd64
     version_stamp: 2013.1
     target: stage1
     rel_type: default
     profile: default/linux/amd64/10.0/no-multilib
-    snapshot: 20130131
-    source_subpath: default/stage3-amd64-20121213
+    snapshot: 20260103
+    source_subpath: default/stage3-amd64-openrc-20251122
 
 You may need to adjust the `subarch`, `snapshot`, and `source_subpath`
 fields of the `*.spec` to match your target host, Portage snapshot,
@@ -85,14 +85,14 @@ Building stage1
 
 Now that everything's setup, run catalyst:
 
-    # catalyst -f default-stage1-amd64-2013.1.spec
+    # catalyst -f default-stage1-amd64-openrc-2013.1.spec
 
 which will build the target and install something like:
 
-    # ls /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.*
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz.CONTENTS.gz
-    /var/tmp/catalyst/builds/default/stage1-amd64-2013.1.tar.xz.DIGESTS
+    # ls /var/tmp/catalyst/builds/default/stage1-amd64-openrc-2013.1.*
+    /var/tmp/catalyst/builds/default/stage1-amd64-openrc-2013.1.tar.xz
+    /var/tmp/catalyst/builds/default/stage1-amd64-openrc-2013.1.tar.xz.CONTENTS.gz
+    /var/tmp/catalyst/builds/default/stage1-amd64-openrc-2013.1.tar.xz.DIGESTS
 
 The name is an expansion of
 `$storedir/builds/$rel_type/$target-$subarch-$version_stamp…`.
@@ -103,9 +103,9 @@ Building stage2 and stage3
 Once you've built the stage1 from your seed stage3, you can use that
 stage1 to build a stage2 and stage3.  The `*.spec` files are similar:
 
-    $ diff -u default-stage{1,2}-amd64-2013.1.spec
-    --- default-stage1-amd64-2013.1.spec
-    +++ default-stage2-amd64-2013.1.spec
+    $ diff -u default-stage{1,2}-amd64-openrc-2013.1.spec
+    --- default-stage1-amd64-openrc-2013.1.spec
+    +++ default-stage2-amd64-openrc-2013.1.spec
     @@ -1,7 +1,7 @@
      subarch: amd64
      version_stamp: 2013.1
@@ -113,12 +113,12 @@ stage1 to build a stage2 and stage3.  The `*.spec` files are similar:
     +target: stage2
      rel_type: default
      profile: default/linux/amd64/10.0/no-multilib
-     snapshot: 20130131
-    -source_subpath: default/stage3-amd64-20121213
-    +source_subpath: default/stage1-amd64-2013.1
-    $ diff default-stage{2,3}-amd64-2013.1.spec
-    --- default-stage2-amd64-2013.1.spec
-    +++ default-stage3-amd64-2013.1.spec
+     snapshot: 20260103
+    -source_subpath: default/stage3-amd64-openrc-20251122
+    +source_subpath: default/stage1-amd64-openrc-2013.1
+    $ diff default-stage{2,3}-amd64-openrc-2013.1.spec
+    --- default-stage2-amd64-openrc-2013.1.spec
+    +++ default-stage3-amd64-openrc-2013.1.spec
     @@ -1,7 +1,7 @@
      subarch: amd64
      version_stamp: 2013.1
@@ -126,9 +126,9 @@ stage1 to build a stage2 and stage3.  The `*.spec` files are similar:
     +target: stage3
      rel_type: default
      profile: default/linux/amd64/10.0/no-multilib
-     snapshot: 20130131
-    -source_subpath: default/stage1-amd64-2013.1
-    +source_subpath: default/stage2-amd64-2013.1
+     snapshot: 20260103
+    -source_subpath: default/stage1-amd64-openrc-2013.1
+    +source_subpath: default/stage2-amd64-openrc-2013.1
 
 Gentoo stages
 -------------
