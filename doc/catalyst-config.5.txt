@@ -124,6 +124,10 @@ The name of the main repository (e.g. gentoo). The git repository at
 `${repos_storedir}/${repo_name}.git` will be used to produce the portdir sqfs
 snapshot.
 
+*repo_openpgp_key_path*::
+OpenPGP keyring for verifying commits in the git repository. Defaults to
+`/usr/share/openpgp-keys/gentoo-release.asc`.
+
 *target_distdir*::
 Defines the location of the local source file repository in the
 target.  This will be written to the target's make.conf if it is not
