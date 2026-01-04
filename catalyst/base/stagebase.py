@@ -80,6 +80,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             "ldflags",
             "pkgcache_path",
             "portage_confdir",
+            "rename_regexp",
             "repos",
             "portage_prefix",
         ])
@@ -1483,6 +1484,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                    self.settings['compression_mode'])
 
         if self.compressor.compress(pack_info):
+            if self.settings['rename_regexp']:
+                target_renameto = sed(self.settings['rename_regexp'], target_filename)
+                if target_renameto:
+                    log.notice("Renaming %s to %s", (target_filename, target_renameto))
+                    os.rename(target_filename, target_renameto)
+                    target_filename = target_renameto
+
             self.gen_contents_file(target_filename)
             self.gen_digest_file(target_filename)
             self.resume.enable("capture")
