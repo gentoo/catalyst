@@ -1542,11 +1542,31 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     continue
                 log.warning("Not making envar for '%s', is a dict", x)
 
+        # The logic of the following code comes from
+        # https://wiki.gentoo.org/index.php?title=Steve&oldid=1422936#Usage
+
         makeopts = []
         for flag, setting in {'j': 'jobs', 'l': 'load-average'}.items():
             if setting in self.settings:
                 makeopts.append(f'-{flag}{self.settings[setting]}')
         self.env['MAKEOPTS'] = ' '.join(makeopts)
+
+        ninjaopts = []
+        if "jobserver-fifo" in self.settings:
+            if "load-average" in self.setings:
+                ninjaopts.append(f'-l{self.settings["load-average]}')
+            else:
+                for flag, setting in {'j': 'jobs', 'l': 'load-average'}.items():
+                    if setting in self.settings:
+                        ninjaopts.append(f'-{flag}{self.settings[setting]}')
+        self.env['NINJAOPTS'] = ' '.join(ninjaopts)
+
+        if "jobserver-fifo" in self.settings:
+            makeflags = []
+            if "load-average" in self.setings:
+                makeflags.append(f'-l{self.settings["load-average]}')
+            makeflags.append(f'--jobserver-auth=fifo:{self.settings["jobserver-fifo"]}')
+            self.env['MAKEFLAGS'] = ' '.join(makeflags)
 
         log.debug('setup_environment(); env = %r', self.env)
 

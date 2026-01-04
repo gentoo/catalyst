@@ -17,6 +17,7 @@ valid_config_file_values = frozenset([
     "distdir",
     "envscript",
     "jobs",
+    "jobserver-fifo",
     "load-average",
     "options",
     "port_logdir",
