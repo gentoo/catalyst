@@ -20,7 +20,7 @@ from DeComp.compress import CompressMap
 from catalyst import log
 from catalyst.context import namespace
 from catalyst.defaults import (confdefaults, MOUNT_DEFAULTS, PORT_LOGDIR_CLEAN)
-from catalyst.support import (CatalystError, file_locate, normpath,
+from catalyst.support import (CatalystError, file_locate, normpath, sed,
                               cmd, command, read_makeconf, get_repo_name,
                               file_check, sanitize_name)
 from catalyst.base.targetbase import TargetBase
