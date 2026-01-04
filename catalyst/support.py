@@ -66,6 +66,25 @@ def cmd(mycmd, env=None, debug=False, fail_func=None):
         raise CatalystError('cmd(%r) exited %s' % (args, ret),
                             print_traceback=False)
 
+def sed(my_re, my_in):
+    """Apply the regular expression |my_re| on the string |my_in| using sed.
+    """
+    log.debug('sed: regex: %r', my_re)
+    log.debug('sed: input: %r', my_in)
+    sys.stdout.flush()
+
+    p = Popen(["sed", "-E", "-e", my_re.encode('utf-8')], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (my_out_b, my_err_b) = p.communicate(my_in.encode('utf-8'))
+
+    if my_err_b:
+        my_err=my_err_b.decode('utf-8');
+        raise CatalystError('sed error output %s' % (my_err), print_traceback=False)
+
+    my_out=my_out_b.decode('utf-8');
+    log.debug('sed: out  : %r', my_out)
+    sys.stdout.flush()
+
+    return my_out
 
 def file_check(filepath, extensions=None):
     '''Check for the files existence and that only one exists
