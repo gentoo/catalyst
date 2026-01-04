@@ -1484,7 +1484,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                    self.settings['compression_mode'])
 
         if self.compressor.compress(pack_info):
-            if self.settings['rename_regexp']:
+            if "rename_regexp" in self.settings:
                 target_renameto = sed(self.settings['rename_regexp'], target_filename)
                 if target_renameto:
                     log.notice("Renaming %s to %s", (target_filename, target_renameto))
