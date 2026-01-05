@@ -1487,7 +1487,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
             if "rename_regexp" in self.settings:
                 target_renameto = sed(self.settings['rename_regexp'], target_filename)
                 if target_renameto:
-                    log.notice("Renaming %s to %s", (target_filename, target_renameto))
+                    log.notice("Renaming %s to %s", target_filename, target_renameto)
                     os.rename(target_filename, target_renameto)
                     target_filename = target_renameto
 
