@@ -5,7 +5,7 @@ import os
 import shutil
 import time
 from pathlib import Path
-from subprocess import Popen
+from subprocess import Popen, PIPE
 
 import libmount
 
@@ -73,7 +73,7 @@ def sed(my_re, my_in):
     log.debug('sed: input: %r', my_in)
     sys.stdout.flush()
 
-    p = Popen(["sed", "-E", "-e", my_re.encode('utf-8')], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = Popen(["sed", "-E", "-e", my_re.encode('utf-8')], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     (my_out_b, my_err_b) = p.communicate(my_in.encode('utf-8'))
 
     if my_err_b:
