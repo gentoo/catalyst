@@ -13,6 +13,7 @@ extract_kernels $1/boot
 cmdline_opts=()
 
 # Add any additional options
+
 if [ -n "${clst_livecd_bootargs}" ]
 then
 	for x in ${clst_livecd_bootargs}
@@ -112,6 +113,11 @@ case ${clst_hostarch} in
 		echo 'set gfxpayload=keep' >> ${iacfg}
 		echo 'set timeout=10' >> ${iacfg}
 		echo 'insmod all_video' >> ${iacfg}
+		echo 'insmod png' >> ${iacfg}
+		echo 'insmod gfxterm' >> ${iacfg}
+		echo 'terminal_output gfxterm' >> ${iacfg}
+		echo 'set gfxmode=auto' >> ${iacfg}
+		echo 'set theme=/boot/grub/themes/gentoo_frosted/theme.txt' >> ${iacfg}
 		echo '' >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
