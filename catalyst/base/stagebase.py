@@ -1490,8 +1490,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     log.notice("Renaming %s to %s", target_filename, target_renameto)
                     os.rename(target_filename, target_renameto)
                     target_filename = target_renameto
+            else:
+                # we can only do this when *not* renaming, since the renaming
+                # might change the file extension and confuse the compression logic
+                self.gen_contents_file(target_filename)
 
-            self.gen_contents_file(target_filename)
             self.gen_digest_file(target_filename)
             self.resume.enable("capture")
         else:
