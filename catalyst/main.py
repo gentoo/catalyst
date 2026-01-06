@@ -311,8 +311,13 @@ def _main(parser, opts):
     conf_values["options"].extend(options)
     log.notice('conf_values[options] = %s', conf_values['options'])
 
+    CONTENTS_DEFINITIONS_CATALYST = CONTENTS_DEFINITIONS
+    CONTENTS_DEFINITIONS_CATALYST["pixz"][4].append("wsl")
+    CONTENTS_DEFINITIONS_CATALYST["xz"][4].append("wsl")
+    # TODO add capability to config/spec new definitions
+
     # initialize our contents generator
-    contents_map = ContentsMap(CONTENTS_DEFINITIONS,
+    contents_map = ContentsMap(CONTENTS_DEFINITIONS_CATALYST,
                                comp_prog=conf_values['comp_prog'],
                                decomp_opt=conf_values['decomp_opt'],
                                list_xattrs_opt=conf_values['list_xattrs_opt'])
