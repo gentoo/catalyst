@@ -1553,8 +1553,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         ninjaopts = []
         if "jobserver-fifo" in self.settings:
-            if "load-average" in self.setings:
-                ninjaopts.append(f'-l{self.settings["load-average]}')
+            if "load-average" in self.settings:
+                ninjaopts.append(f'-l{self.settings["load-average"]}')
             else:
                 for flag, setting in {'j': 'jobs', 'l': 'load-average'}.items():
                     if setting in self.settings:
@@ -1563,8 +1563,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 
         if "jobserver-fifo" in self.settings:
             makeflags = []
-            if "load-average" in self.setings:
-                makeflags.append(f'-l{self.settings["load-average]}')
+            if "load-average" in self.settings:
+                makeflags.append(f'-l{self.settings["load-average"]}')
             makeflags.append(f'--jobserver-auth=fifo:{self.settings["jobserver-fifo"]}')
             self.env['MAKEFLAGS'] = ' '.join(makeflags)
 
