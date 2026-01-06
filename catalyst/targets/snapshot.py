@@ -4,6 +4,7 @@ Snapshot target
 
 import subprocess
 import sys
+import os
 
 import fasteners
 
@@ -72,9 +73,9 @@ class snapshot(TargetBase):
                     f"OpenPGP keyring at repo_openpgp_key_path={pgp_path} does not exist. Is sec-keys/openpgp-keys-gentoo-release installed?"
                 )
 
-            git_cmds.append(self.git, '-C', self.gitdir, 'verify-commit', 'HEAD')
+            git_cmds.append([self.git, '-C', self.gitdir, 'verify-commit', 'HEAD'])
 
-            openpgp_env = gemato.openpgp.OpenPGPEnvironment
+            openpgp_env = gemato.openpgp.OpenPGPEnvironment()
             try:
                 with open(pgp_path, "rb") as f:
                     openpgp_env.import_key(f)
