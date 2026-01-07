@@ -501,6 +501,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
         self.settings['cleanables'] = [
             "/etc/machine-id",
             "/etc/resolv.conf",
+            "/etc/sandbox.d/99catalyst",
             "/var/tmp/*",
             "/tmp/*",
         ]
@@ -1178,6 +1179,20 @@ class StageBase(TargetBase, ClearBase, GenBase):
             raise CatalystError('Could not write binrepos.conf: %s' % ( e )) from e
 
         self.resume.enable("chroot_setup")
+
+        # ensure that code running in the chroot can access the jobserver
+        if "jobserver-fifo" in self.settings:
+            sandbox_fifo = normpath(self.settings["chroot_path"] + "/etc/sandbox.d/99catalyst")
+            Path(sandbox_fifo).parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+
+            log.info('Creating sandbox config %s.', sandbox_fifo)
+
+            try:
+                with open(sandbox_fifo, 'w') as f:
+                    f.write("SANDBOX_WRITE=\"%s\"" % self.settings["jobserver-fifo"])
+                    f.close
+            except OSError as e:
+                raise CatalystError(f'Could not write {sandbox_fifo}: {e}') from e
 
     def write_make_conf(self, setup=True):
         # Modify and write out make.conf (for the chroot)
