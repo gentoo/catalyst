@@ -1300,11 +1300,11 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 myb.write("# These settings were set by the catalyst build script "
                         "that automatically\n# built this stage.\n")
                 myb.write("# Please consider using a local mirror.\n\n")
-                myb.write("[gentoobinhost]\n")
+                myb.write("[gentoo]\n")
                 myb.write("priority = 1\n")
                 myb.write("sync-uri = " + self.settings["binhost"] + \
                         self.settings["binrepo_path"] + "\n")
-                myb.write("location = /var/cache/binhost/gentoobinhost\n")
+                myb.write("location = /var/cache/binhost/gentoo\n")
                 myb.write("verify-signature = true\n")
 
     def fsscript(self):
