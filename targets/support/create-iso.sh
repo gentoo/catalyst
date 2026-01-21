@@ -200,10 +200,11 @@ case ${clst_hostarch} in
 		esac
 
 		# Second argument will specify size in kilobytes
+		# for the moment we hardwire 10Gbyte
 #		if [[ ${2} =~ ^[0-9]+$ ]]; then
 			extrapart=${1%.*}-extra.img
 			rm -f "${extrapart}"
-			dd if=/dev/zero of="${extrapart}" bs=1k count=10240
+			dd if=/dev/zero of="${extrapart}" bs=1k count=10485760
 			# TODO: allow setting different fs type
 			mkfs.xfs "${extrapart}"
 			# 1=ESP, 2=HFS+, so 3 is first available partition
