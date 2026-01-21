@@ -124,7 +124,19 @@ case ${clst_hostarch} in
 			eval "kernel_console=\$clst_boot_kernel_${x}_console"
 			eval "distkernel=\$clst_boot_kernel_${x}_distkernel"
 
-			echo "menuentry 'Boot LiveCD (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
+			echo "menuentry 'Boot LiveGUI (kernel: ${x}) (persistent)' --class gnu-linux --class os {"  >> ${iacfg}
+			if [ ${distkernel} = "yes" ]
+			then
+				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} rd.live.overlay=LABEL=Appended3 rd.live.overlay.cowfs=xfs" >> ${iacfg}
+			else
+				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
+			fi
+			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			echo "" >> ${iacfg}
+
+			echo "menuentry 'Boot LiveGUI (kernel: ${x})' --class gnu-linux --class os {"  >> ${iacfg}
 			if [ ${distkernel} = "yes" ]
 			then
 				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
@@ -135,7 +147,8 @@ case ${clst_hostarch} in
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			echo "" >> ${iacfg}
-			echo "menuentry 'Boot LiveCD (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
+
+			echo "menuentry 'Boot LiveGUI (kernel: ${x}) (cached)' --class gnu-linux --class os {"  >> ${iacfg}
 			if [ ${distkernel} = "yes" ]
 			then
 				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
@@ -146,6 +159,7 @@ case ${clst_hostarch} in
 
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
+
 			if [ -n "${kernel_console}" ]
 			then
 			echo "submenu 'Special console options (kernel: ${x})' --class gnu-linux --class os {" >> ${iacfg}
