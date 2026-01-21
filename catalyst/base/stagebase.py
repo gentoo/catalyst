@@ -1289,6 +1289,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 myb.write("sync-uri = " + self.settings["binhost"] + \
                         self.settings["binrepo_path"] + "\n")
                 myb.write("location = /var/cache/binhost/gentoobinhost\n")
+                myb.write("verify-signature = true\n")
 
     def fsscript(self):
         if "autoresume" in self.settings["options"] \
