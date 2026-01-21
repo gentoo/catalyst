@@ -205,7 +205,7 @@ case ${clst_hostarch} in
 			rm -f "${extrapart}"
 			dd if=/dev/zero of="${extrapart}" bs=1k count="${2}"
 			# TODO: allow setting different fs type
-			mkfs.xfs -L G2iso_DATA "${extrapart}"
+			mkfs.xfs "${extrapart}"
 			# 1=ESP, 2=HFS+, so 3 is first available partition
 			extra_opts+=(
 				"-append_partition"
