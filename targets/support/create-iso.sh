@@ -208,6 +208,15 @@ case ${clst_hostarch} in
 			# TODO: allow setting different fs type
 			mkfs.xfs "${extrapart}"
 			# 1=ESP, 2=HFS+, so 3 is first available partition
+
+			# we need to create the directories for overlayfs since
+			# stupid dracut does not do that automatically
+			mkdir "${extrapart}.mnt" || die "failed mkdir"
+			mount -o loop "${extrapart}" "${extrapart}.mnt" || die "failed loop mount"
+			mkdir "${extrapart}.mnt"/LiveGUI-Overlay || die "mkdir 1 failed"
+			mkdir "${extrapart}.mnt"/ovlwork || die "mkdir 2 failed"
+			umount "${extrapart}.mnt" || die "umount failed"
+
 			extra_opts+=(
 				"-append_partition"
 				"3"

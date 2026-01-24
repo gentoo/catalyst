@@ -128,7 +128,7 @@ case ${clst_hostarch} in
 			if [ ${distkernel} = "yes" ]
 			then
 				echo "	search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
-				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} rd.live.overlay=LABEL=Appended3 rd.live.overlay.cowfs=xfs" >> ${iacfg}
+				echo "	linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} rd.live.overlay=PARTLABEL=Appended3:/LiveGUI-Overlay rd.live.overlay.cowfs=xfs" >> ${iacfg}
 			else
 				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]}" >> ${iacfg}
 			fi
