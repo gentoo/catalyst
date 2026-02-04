@@ -143,7 +143,17 @@ case ${clst_hostarch} in
 			else
 				echo "	linux ${kern_subdir}/${x} ${default_append_line[@]} docache" >> ${iacfg}
 			fi
-
+			echo "  initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
+			echo "}" >> ${iacfg}
+			echo "" >> ${iacfg}
+			echo "menuentry 'Boot LiveCD (kernel: ${x}) (accessibility)' --class gnu-linux --class os {"  >> ${iacfg}
+			if [ ${distkernel} = "yes" ]
+			then
+				echo "  search --no-floppy --set=root -l ${clst_iso_volume_id}" >> ${iacfg}
+				echo "  linux ${kern_subdir}/${x} ${default_dracut_append_line[@]} dospeakup" >> ${iacfg}
+			else
+				echo "  linux ${kern_subdir}/${x} ${default_append_line[@]} dospeakup" >> ${iacfg}
+			fi
 			echo "	initrd ${kern_subdir}/${x}.igz" >> ${iacfg}
 			echo "}" >> ${iacfg}
 			if [ -n "${kernel_console}" ]
