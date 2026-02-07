@@ -1294,7 +1294,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                                 self.settings["binrepos_conf"])
             Path(binrpath).mkdir(mode=0o755, parents=True, exist_ok=True)
 
-            binrfile = binrpath + "/gentoobinhost.conf"
+            binrfile = binrpath + "/gentoo.conf"
             with open(binrfile, "w") as myb:
                 log.notice("Writing the stage binrepo config to: %s" % binrfile)
                 myb.write("# These settings were set by the catalyst build script "
