@@ -18,7 +18,7 @@ case ${clst_hostarch} in
 		cdmaker="grub-mkrescue"
 		cdmakerpkg="dev-libs/libisoburn and sys-boot/grub:2"
 		;;
-	amd64|arm64|ia64|x86|i?86)
+	amd64|arm64|ia64|loong*|riscv*|x86|i?86)
 		cdmaker="grub-mkrescue"
 		# grub-mkrescue requires:
 		#  xorriso from libisoburn
@@ -61,6 +61,9 @@ then
 				ia64)
 					clst_iso_volume_id="Gentoo Linux - IA64"
 				;;
+				loong*)
+					clst_iso_volume_id="Gentoo Linux - LoongArch"
+				;;
 				m68k)
 					clst_iso_volume_id="Gentoo Linux - M68K"
 				;;
@@ -69,6 +72,9 @@ then
 				;;
 				ppc*|powerpc*)
 					clst_iso_volume_id="Gentoo Linux - PowerPC"
+				;;
+				riscv*)
+					clst_iso_volume_id="Gentoo Linux - RISC-V"
 				;;
 				s390)
 					clst_iso_volume_id="Gentoo Linux - S390"
@@ -191,7 +197,7 @@ case ${clst_hostarch} in
 		# o=	output image (burnable to CD; readable by fdisk)
 		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
 	;;
-	amd64|arm64|ia64|ppc*|powerpc*|sparc*|x86|i?86)
+	amd64|arm64|ia64|loong*|ppc*|powerpc*|riscv*|sparc*|x86|i?86)
 		isoroot_checksum
 
 		extra_opts=("-joliet" "-iso-level" "3")
