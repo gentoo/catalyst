@@ -36,9 +36,9 @@ if [ -n "${clst_update_seed}" ]; then
 	if [ "${clst_update_seed}" == "yes" ]; then
 		echo "Updating seed stage..."
 		if [ -n "${clst_update_seed_command}" ]; then
-			ROOT=/ run_merge --verbose --buildpkg=n "${clst_update_seed_command}"
+			ROOT=/ run_merge --buildpkg=n "${clst_update_seed_command}"
 		else
-			ROOT=/ run_merge --verbose --buildpkg=n --update --deep --newuse @world
+			ROOT=/ run_merge --buildpkg=n --update --deep --newuse @world
 		fi
 	elif [ "${clst_update_seed}" != "no" ]; then
 		echo "Invalid setting for update_seed: ${clst_update_seed}"
@@ -60,7 +60,7 @@ mkdir -p "$ROOT"
 ## START BUILD
 # First, we drop in a known-good baselayout
 [ -e ${clst_make_conf} ] && echo "USE=\"${USE} build\"" >> ${clst_make_conf}
-run_merge --verbose --oneshot --nodeps sys-apps/baselayout
+run_merge --oneshot --nodeps sys-apps/baselayout
 sed -i "/USE=\"${USE} build\"/d" ${clst_make_conf}
 
 echo "$locales" > /etc/locale.gen
@@ -81,7 +81,7 @@ if [ -e ${clst_make_conf} ]; then
 	done
 fi
 
-run_merge --verbose --implicit-system-deps=n --oneshot "${buildpkgs[@]}"
+run_merge --implicit-system-deps=n --oneshot "${buildpkgs[@]}"
 
 # TODO: Drop this when locale-gen in stable glibc supports ROOT.
 #
