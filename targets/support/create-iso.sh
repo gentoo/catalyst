@@ -125,106 +125,124 @@ run_mkisofs() {
 }
 
 # Here we actually create the ISO images for each architecture
-case ${clst_hostarch} in
-	alpha)
-		isoroot_checksum
 
-		echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
-		xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
-	;;
-	arm)
-	;;
-	hppa)
-		echo ">> Running mkisofs to create iso image...."
-		run_mkisofs -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
-		pushd "${clst_target_path}/"
-		palo -f boot/palo.conf -C "${1}"
-		popd
-	;;
-	mips)
-		if [[ ${clst_fstype} != squashfs ]]; then
-			die "SGI LiveCD(s) only support the 'squashfs' fstype!"
-		fi
+# We need to handle two different cases, the native build (i.e. catalyst runs on the
+# same architecture) and the emulated build (where we cannot use binary files from
+# the main system for, e.g., grub).
 
-		# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
-		[ ! -d "${clst_target_path}/loopback" ] && mkdir "${clst_target_path}/loopback"
-		[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir "${clst_target_path}/sgibootcd"
+if [[ -z "${clst_interpreter}" ]] ; then
 
-		# Setup variables
-		[ -f "${clst_target_path}/livecd" ] && rm -f "${clst_target_path}/livecd"
-		img="${clst_target_path}/loopback/image.squashfs"
-		knl="${clst_target_path}/kernels"
-		arc="${clst_target_path}/arcload"
-		cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
-		echo "" > "${cfg}"
+	# This is a native build.
 
-		# If the image file exists in $clst_target_path, move it to the loopback dir
-		[ -e "${clst_target_path}/image.squashfs" ] \
-			&& mv -f "${clst_target_path}/image.squashfs" "${clst_target_path}/loopback"
+	case ${clst_hostarch} in
+		alpha)
+			isoroot_checksum
 
-		# An sgibootcd config is essentially a collection of commandline params
-		# stored in a text file.  We could pass these on the command line, but it's
-		# far easier to generate a config file and pass it to sgibootcd versus using a
-		# ton of commandline params.
-		#
-		# f=	indicates files to go into DVH (disk volume header) in an SGI disklabel
-		#	    format: f=</path/to/file>@<DVH name>
-		# p0=	the first partition holds the LiveCD rootfs image
-		#	    format: p0=</path/to/image>
-		# p8=	the eighth partition is the DVH partition
-		# p10=	the tenth partition is the disk volume partition
-		#	    format: p8= is always "#dvh" and p10= is always "#volume"
+			echo ">> xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V \"${clst_iso_volume_id}\" -o \"${1}\" \"${clst_target_path}\""
+			xorriso -as genisofs -alpha-boot boot/bootlx -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}" || die "Cannot make ISO image"
+		;;
+		arm)
+		;;
+		hppa)
+			echo ">> Running mkisofs to create iso image...."
+			run_mkisofs -R -l -J -V "${clst_iso_volume_id}" -o "${1}" "${clst_target_path}"/
+			pushd "${clst_target_path}/"
+			palo -f boot/palo.conf -C "${1}"
+			popd
+		;;
+		mips)
+			if [[ ${clst_fstype} != squashfs ]]; then
+				die "SGI LiveCD(s) only support the 'squashfs' fstype!"
+			fi
 
-		# Add the kernels to the sgibootcd config
-		for x in ${clst_boot_kernel}; do
-			echo -e "f=${knl}/${x}@${x}" >> ${cfg}
-		done
+			# $clst_target_path/[kernels|arcload] already exists, create loopback and sgibootcd
+			[ ! -d "${clst_target_path}/loopback" ] && mkdir "${clst_target_path}/loopback"
+			[ ! -d "${clst_target_path}/sgibootcd" ] && mkdir "${clst_target_path}/sgibootcd"
 
-		# Next, the bootloader binaries and config
-		echo -e "f=${arc}/sash64@sash64" >> ${cfg}
-		echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
-		echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
+			# Setup variables
+			[ -f "${clst_target_path}/livecd" ] && rm -f "${clst_target_path}/livecd"
+			img="${clst_target_path}/loopback/image.squashfs"
+			knl="${clst_target_path}/kernels"
+			arc="${clst_target_path}/arcload"
+			cfg="${clst_target_path}/sgibootcd/sgibootcd.cfg"
+			echo "" > "${cfg}"
 
-		# Next, the Loopback Image
-		echo -e "p0=${img}" >> ${cfg}
+			# If the image file exists in $clst_target_path, move it to the loopback dir
+			[ -e "${clst_target_path}/image.squashfs" ] \
+				&& mv -f "${clst_target_path}/image.squashfs" "${clst_target_path}/loopback"
 
-		# Finally, the required SGI Partitions (dvh, volume)
-		echo -e "p8=#dvh" >> ${cfg}
-		echo -e "p10=#volume" >> ${cfg}
+			# An sgibootcd config is essentially a collection of commandline params
+			# stored in a text file.  We could pass these on the command line, but it's
+			# far easier to generate a config file and pass it to sgibootcd versus using a
+			# ton of commandline params.
+			#
+			# f=	indicates files to go into DVH (disk volume header) in an SGI disklabel
+			#	    format: f=</path/to/file>@<DVH name>
+			# p0=	the first partition holds the LiveCD rootfs image
+			#	    format: p0=</path/to/image>
+			# p8=	the eighth partition is the DVH partition
+			# p10=	the tenth partition is the disk volume partition
+			#	    format: p8= is always "#dvh" and p10= is always "#volume"
 
-		# All done; feed the config to sgibootcd and end up with an image
-		# c=	the config file
-		# o=	output image (burnable to CD; readable by fdisk)
-		/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
-	;;
-	amd64|arm64|ia64|loong*|ppc*|powerpc*|rv64_lp64d|sparc*|x86|i?86)
-		isoroot_checksum
+			# Add the kernels to the sgibootcd config
+			for x in ${clst_boot_kernel}; do
+				echo -e "f=${knl}/${x}@${x}" >> ${cfg}
+			done
 
-		extra_opts=("-joliet" "-iso-level" "3")
-		case ${clst_hostarch} in
-		sparc*) extra_opts+=("--sparc-boot") ;;
-		esac
+			# Next, the bootloader binaries and config
+			echo -e "f=${arc}/sash64@sash64" >> ${cfg}
+			echo -e "f=${arc}/sashARCS@sashARCS" >> ${cfg}
+			echo -e "f=${arc}/arc.cf@arc.cf" >> ${cfg}
 
-		# Second argument will specify size in kilobytes
-		if [[ ${2} =~ ^[0-9]+$ ]]; then
-			extrapart=${1%.*}-extra.img
-			rm -f "${extrapart}"
-			dd if=/dev/zero of="${extrapart}" bs=1k count="${2}"
-			# TODO: allow setting different fs type
-			mkfs.xfs "${extrapart}"
-			# 1=ESP, 2=HFS+, so 3 is first available partition
-			extra_opts+=(
-				"-append_partition"
-				"3"
-				"0FC63DAF-8483-4772-8E79-3D69D8477DE4"
-				"${extrapart}"
-			)
-		elif [[ -n ${2} ]]; then
-			die "Invalid second argument, must be an integer"
-		fi
+			# Next, the Loopback Image
+			echo -e "p0=${img}" >> ${cfg}
 
-		echo ">> Running grub-mkrescue to create iso image...."
-		grub-mkrescue --mbr-force-bootable -volid "${clst_iso_volume_id}" "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
-	;;
-esac
+			# Finally, the required SGI Partitions (dvh, volume)
+			echo -e "p8=#dvh" >> ${cfg}
+			echo -e "p10=#volume" >> ${cfg}
+
+			# All done; feed the config to sgibootcd and end up with an image
+			# c=	the config file
+			# o=	output image (burnable to CD; readable by fdisk)
+			/usr/bin/sgibootcd c=${cfg} o=${clst_iso}
+		;;
+		amd64|arm64|ia64|loong*|ppc*|powerpc*|rv64_lp64d|sparc*|x86|i?86)
+			isoroot_checksum
+
+			extra_opts=("-joliet" "-iso-level" "3")
+			case ${clst_hostarch} in
+				sparc*)
+					extra_opts+=("--sparc-boot")
+				;;
+			esac
+
+			# Second argument will specify size in kilobytes
+			if [[ ${2} =~ ^[0-9]+$ ]]; then
+				extrapart=${1%.*}-extra.img
+				rm -f "${extrapart}"
+				dd if=/dev/zero of="${extrapart}" bs=1k count="${2}"
+				# TODO: allow setting different fs type
+				mkfs.xfs "${extrapart}"
+				# 1=ESP, 2=HFS+, so 3 is first available partition
+				extra_opts+=(
+					"-append_partition"
+					"3"
+					"0FC63DAF-8483-4772-8E79-3D69D8477DE4"
+					"${extrapart}"
+				)
+			elif [[ -n ${2} ]]; then
+				die "Invalid second argument, must be an integer"
+			fi
+
+			echo ">> Running grub-mkrescue to create iso image...."
+			grub-mkrescue --mbr-force-bootable -volid "${clst_iso_volume_id}" "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
+		;;
+	esac
+
+else
+
+	die "Emulated iso build is not supported yet"
+
+fi
+
 exit  $?
