@@ -61,9 +61,14 @@ case $1 in
 		;;
 
 	rc-update)
-		exec_in_chroot ${clst_shdir}/support/rc-update.sh
-		;;
-
+		# Check for systemd enabled livecd
+ 		if [[ ${clst_livecd_systemd} == "yes" ]]; then
+ 			exec_in_chroot ${clst_shdir}/support/systemctl.sh
+ 		else
+ 			# Run as OpenRC
+ 			exec_in_chroot ${clst_shdir}/support/rc-update.sh
+ 		fi
+ 		;;
 	fsscript)
 		exec_in_chroot ${clst_fsscript}
 		;;
