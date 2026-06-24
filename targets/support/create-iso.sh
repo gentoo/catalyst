@@ -239,9 +239,33 @@ if [[ -z "${clst_interpreter}" ]] ; then
 		;;
 	esac
 
-else
-
-	die "Emulated iso build is not supported yet"
+	else
+		# Emulated ISO creation
+		# When using qemu-user to build ISOs Catalyst uses the host
+		# machine's bootloader creation tool's which doesn't have the
+		# needed support.
+		# GRUB can workaround this by adding the package to stage1
+		# and pointing to /usr/lib/grub/(target).
+		case ${clst_hostarch} in
+			sparc*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated sparc build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/sparc64-ieee1275" \
+				--mbr-force-bootable \
+				--sparc-boot \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				|| die "Cannot make ISO image"
+			;;
+			*)
+				die "Emulated iso build is not supported for ${clst_hostarch}"
+				;;
+				esac
+	fi
 
 fi
 
