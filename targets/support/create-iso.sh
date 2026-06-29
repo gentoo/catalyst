@@ -241,6 +241,19 @@ if [[ -z "${clst_interpreter}" ]] ; then
 	else
 		# Emulated build: run ISO creation on host where possible
 		case ${clst_hostarch} in
+			loong*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated loong build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/loongarch64-efi" \
+				--mbr-force-bootable \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				 die "Cannot make ISO image"
+				;;
 			rv64*|riscv*)
 				isoroot_checksum
 				echo ">> grub-mkrescue (emulated riscv build)"
