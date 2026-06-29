@@ -238,15 +238,22 @@ if [[ -z "${clst_interpreter}" ]] ; then
 			grub-mkrescue --mbr-force-bootable -volid "${clst_iso_volume_id}" "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
 		;;
 	esac
-
 	else
-		# Emulated ISO creation
-		# When using qemu-user to build ISOs Catalyst uses the host
-		# machine's bootloader creation tool's which doesn't have the
-		# needed support.
-		# GRUB can workaround this by adding the package to stage1
-		# and pointing to /usr/lib/grub/(target).
+		# Emulated build: run ISO creation on host where possible
 		case ${clst_hostarch} in
+			rv64*|riscv*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated riscv build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/riscv64-efi" \
+				--mbr-force-bootable \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				|| die "Cannot make ISO image"
+				;;
 			sparc*)
 				isoroot_checksum
 				echo ">> grub-mkrescue (emulated sparc build)"
@@ -260,13 +267,11 @@ if [[ -z "${clst_interpreter}" ]] ; then
 				-o "${1}" \
 				"${clst_target_path}" \
 				|| die "Cannot make ISO image"
-			;;
+				;;
 			*)
 				die "Emulated iso build is not supported for ${clst_hostarch}"
 				;;
 				esac
 	fi
-
-fi
 
 exit  $?
