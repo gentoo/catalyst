@@ -111,13 +111,13 @@ case ${clst_hostarch} in
 		mkdir -p $1/boot/grub
 		echo 'set default=0' > ${iacfg}
 		echo 'set gfxpayload=keep' >> ${iacfg}
-		echo 'set timeout=10' >> ${iacfg}
+		echo "set timeout=${clst_livecd_grub_timeout:-10}" >> ${iacfg}
 		echo 'insmod all_video' >> ${iacfg}
 		echo 'insmod png' >> ${iacfg}
 		echo 'insmod gfxterm' >> ${iacfg}
 		echo 'terminal_output gfxterm' >> ${iacfg}
 		echo 'set gfxmode=auto' >> ${iacfg}
-		echo 'set theme=/boot/grub/themes/gentoo_frosted/theme.txt' >> ${iacfg}
+		echo "set theme=${clst_livecd_grub_theme:-/boot/grub/themes/gentoo_frosted/theme.txt}" >> ${iacfg}
 		echo '' >> ${iacfg}
 		for x in ${clst_boot_kernel}
 		do
