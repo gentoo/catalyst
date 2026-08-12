@@ -191,6 +191,11 @@ when the ISO image is used as (USB) disk image. This option has no
 effect (other then making the ISO image larger) when the ISO is burned
 to an optical medium.
 
+*livecd/plymouth*::
+Set by using the Plymouth theme directory in /usr/share/plymouth/themes
+name. This will include a bootsplash in live media
+Requires both plymouth and theme to be installed with the stage1.
+
 *livecd/volid*::
 This option sets the volume ID of the CD created (example: `Gentoo
 Linux 2006.1 X86`).

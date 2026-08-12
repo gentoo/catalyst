@@ -12,6 +12,13 @@ case $1 in
 		shift
 		export kname="$1"
 
+		 # Set the plymouth theme if set, before the kernel so it is
+		 # included in dracut.
+		if [ -n "${clst_livecd_plymouth}" ]
+		then
+        		chroot ${clst_chroot_path} plymouth-set-default-theme "${clst_livecd_plymouth}"
+		fi
+
 		[ -n "${clst_linuxrc}" ] && \
 			copy_to_chroot ${clst_linuxrc} /tmp/linuxrc
 		exec_in_chroot ${clst_shdir}/support/kmerge.sh

@@ -32,6 +32,7 @@ class livecd_stage2(StageBase):
         "livecd/modblacklist",
         "livecd/motd",
         "livecd/overlay",
+	"livecd/plymouth",
         "livecd/rcadd",
         "livecd/rcdel",
         "livecd/readme",
