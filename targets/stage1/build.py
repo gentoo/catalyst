@@ -29,10 +29,10 @@ for pkg in pkgs:
     try:
         bidx = buildpkgs.index(dep_getkey(pkg))
         buildpkgs[bidx] = pkg
-        if buildpkgs[bidx][0:1] == "*":
-            buildpkgs[bidx] = buildpkgs[bidx][1:]
+        if str(buildpkgs[bidx])[0:1] == "*":
+            buildpkgs[bidx] = str(buildpkgs[bidx])[1:]
     except Exception:
         pass
 
 for b in buildpkgs:
-    sys.stdout.write(b + " ")
+    sys.stdout.write(str(b) + " ")
