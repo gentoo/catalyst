@@ -24,6 +24,8 @@ class livecd_stage2(StageBase):
         "livecd/fsscript",
         "livecd/fstype",
         "livecd/gk_mainargs",
+        "livecd/grub_theme",
+        "livecd/grub_timeout",
         "livecd/iso",
         "livecd/iso_extra_partition",
         "livecd/linuxrc",
