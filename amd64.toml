@@ -1,0 +1,37 @@
+[amd64.amd64]
+COMMON_FLAGS = "-O2 -pipe"
+
+[amd64.x86_64]
+COMMON_FLAGS = "-O2 -pipe"
+
+[amd64.x86_64-v3]
+COMMON_FLAGS = "-O2 -march=x86-64-v3 -pipe"
+CPU_FLAGS_X86 = [ "cmov", "cx8", "fpu", "fxsr ", "mmx", "osfxsr", "sce", "mmxext", "sse", "sse2",	"cmpxchg16b", "lahf_sahf", "popcnt", "sse3", "sse4_1", "sse4_2", "ssse3", "avx", "avx2", "bmi1", "bmi2", "f16c", "fma3", "lzcnt", "movbe", "osxsave",]
+
+[amd64.x86_64-v3-lto]
+COMMON_FLAGS = "-O2 -march=x86-64-v3 -pipe -flto -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
+CPU_FLAGS_X86 = [ "cmov", "cx8", "fpu", "fxsr ", "mmx", "osfxsr", "sce", "mmxext", "sse", "sse2", "cmpxchg16b", "lahf_sahf", "popcnt", "sse3", "sse4_1", "sse4_2", "ssse3", "avx", "avx2", "bmi1", "bmi2", "f16c", "fma3", "lzcnt", "movbe", "osxsave",]
+
+[amd64.k8]
+COMMON_FLAGS = "-O2 -march=k8 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse", "sse2",]
+
+[amd64.nocona]
+COMMON_FLAGS = "-O2 -march=nocona -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2", "sse3",]
+
+[amd64.core2]
+COMMON_FLAGS = "-O2 -march=core2 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "sse", "sse2", "sse3", "ssse3",]
+
+[amd64.k8-sse3]
+COMMON_FLAGS = "-O2 -march=k8-sse3 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse", "sse2", "sse3",]
+
+[amd64.amdfam10]
+COMMON_FLAGS = "-O2 -march=amdfam10 -pipe"
+CPU_FLAGS_X86 = [ "mmx", "mmxext", "3dnow", "3dnowext", "sse", "sse2", "sse3", "sse4a",]
+
+[amd64.x32]
+COMMON_FLAGS = "-O2 -pipe"
+
