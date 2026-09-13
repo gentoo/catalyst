@@ -5,26 +5,27 @@ source /tmp/chroot-functions.sh
 install -d /tmp/kerncache
 
 distkmerge_get_image_path() {
-    case ${clst_basearch} in
-        amd64|x86)
-            echo arch/x86/boot/bzImage
-            ;;
-        arm64)
-            echo arch/arm64/boot/Image.gz
-            ;;
-        arm)
-            echo arch/arm/boot/zImage
-            ;;
-        hppa|ppc|ppc64)
-            echo ./vmlinux
-            ;;
-        riscv)
-            echo arch/riscv/boot/Image.gz
-            ;;
-        *)
-            die "unsupported ARCH=${clst_basearch}"
-            ;;
-    esac
+	case ${clst_basearch} in
+	amd64|x86)
+		echo arch/x86/boot/bzImage
+		;;
+	arm64)
+		echo arch/arm64/boot/Image.gz
+		;;
+	arm)
+		echo arch/arm/boot/zImage
+		;;
+	alpha|hppa|ppc|ppc64|sparc|sparc64)
+		echo ./vmlinux
+		;;
+	riscv)
+		echo arch/riscv/boot/Image.gz
+		;;
+	*)
+		die "unsupported ARCH=${clst_basearch}"
+		exit 1
+		;;
+	esac
 }
 
 genkernel_compile() {

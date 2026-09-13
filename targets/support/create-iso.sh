@@ -238,11 +238,53 @@ if [[ -z "${clst_interpreter}" ]] ; then
 			grub-mkrescue --mbr-force-bootable -volid "${clst_iso_volume_id}" "${extra_opts[@]}" -o "${1}" "${clst_target_path}"
 		;;
 	esac
-
-else
-
-	die "Emulated iso build is not supported yet"
-
-fi
+	else
+		# Emulated build: run ISO creation on host where possible
+		case ${clst_hostarch} in
+			loong*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated loong build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/loongarch64-efi" \
+				--mbr-force-bootable \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				 die "Cannot make ISO image"
+				;;
+			rv64*|riscv*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated riscv build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/riscv64-efi" \
+				--mbr-force-bootable \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				|| die "Cannot make ISO image"
+				;;
+			sparc*)
+				isoroot_checksum
+				echo ">> grub-mkrescue (emulated sparc build)"
+				grub-mkrescue \
+				--directory="${clst_chroot_path}/usr/lib/grub/sparc64-ieee1275" \
+				--mbr-force-bootable \
+				--sparc-boot \
+				-volid "${clst_iso_volume_id}" \
+				-joliet \
+				-iso-level 3 \
+				-o "${1}" \
+				"${clst_target_path}" \
+				|| die "Cannot make ISO image"
+				;;
+			*)
+				die "Emulated iso build is not supported for ${clst_hostarch}"
+				;;
+				esac
+	fi
 
 exit  $?
