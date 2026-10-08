@@ -19,6 +19,9 @@ class TargetBase(ABC):
             'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
             'TERM': os.getenv('TERM', 'dumb'),
         }
+        for var in self.settings.get('envvars', []):
+            if var in os.environ:
+                self.env[var] = os.environ[var]
         self.snapshot = None
 
     def set_snapshot(self, treeish=None):

@@ -1147,12 +1147,13 @@ class StageBase(TargetBase, ClearBase, GenBase):
                     "Can't find envscript " + self.settings["envscript"],
                     print_traceback=True)
 
-            log.warning(
-                'env variables in catalystrc may cause catastrophic failure.\n'
-                'If your build fails look here first as the possible problem.')
-
             shutil.copy(self.settings['envscript'],
                         self.settings['chroot_path'] + '/tmp/envscript')
+
+        if "envscript" in self.settings or self.settings.get("envvars", []):
+            log.warning(
+                'env variables in catalystrc or envvars may cause catastrophic failure.\n'
+                'If your build fails, look here first as the possible problem.')
 
         # Copy over /etc/hosts from the host in case there are any
         # specialties in there
@@ -1533,6 +1534,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
     def setup_environment(self):
         log.debug('setup_environment(); settings = %r', self.settings)
         for x in list(self.settings):
+            if x == 'envvars':
+                continue
             log.debug('setup_environment(); processing: %s', x)
             if x == "options":
                 for opt in self.settings[x]:
