@@ -56,6 +56,13 @@ using POSIX shell notation:
 export FOO="bar"
 ---------------------------------
 
+*envvars* (string array)::
+Names of environment variables to pass from the environment that
+invokes Catalyst into the chroot and other commands.  Using *envscript*
+may be preferable to ensure the values remain consistent unless those
+values are sensitive.  Be aware that the values will be logged when
+Catalyst is invoked with the --debug option.
+
 *options* (string array)::
 Set different build-time options.  Supported values:
 +

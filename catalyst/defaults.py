@@ -16,6 +16,7 @@ valid_config_file_values = frozenset([
     "distcc_hosts",
     "distdir",
     "envscript",
+    "envvars",
     "jobs",
     "jobserver-fifo",
     "load-average",
