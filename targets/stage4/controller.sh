@@ -21,6 +21,12 @@ case $1 in
 		extract_modules ${clst_chroot_path} ${kname}
 	;;
 
+	pre-distkmerge)
+		# Install dracut
+		exec_in_chroot ${clst_shdir}/support/pre-distkmerge.sh
+		;;
+
+
 	build_packages)
 		shift
 		export clst_packages="$*"
