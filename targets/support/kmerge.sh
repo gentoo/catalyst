@@ -5,7 +5,7 @@ source /tmp/chroot-functions.sh
 install -d /tmp/kerncache
 
 distkmerge_get_image_path() {
-    case ${clst_basearch} in
+    case ${clst_buildarch} in
         amd64|x86)
             echo arch/x86/boot/bzImage
             ;;
@@ -15,14 +15,17 @@ distkmerge_get_image_path() {
         arm)
             echo arch/arm/boot/zImage
             ;;
-        hppa|ppc|ppc64)
+        alpha|hppa|ppc|ppc64|sparc*)
             echo ./vmlinux
             ;;
-        riscv)
+	loong|loongarch)
+	    echo arch/loongarch/boot/vmlinux.efi
+	    ;;
+        rv64*|riscv*)
             echo arch/riscv/boot/Image.gz
             ;;
         *)
-            die "unsupported ARCH=${clst_basearch}"
+            die "unsupported ARCH=${clst_buildarch}"
             ;;
     esac
 }
