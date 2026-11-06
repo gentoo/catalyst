@@ -5,7 +5,7 @@ source /tmp/chroot-functions.sh
 install -d /tmp/kerncache
 
 distkmerge_get_image_path() {
-    case ${clst_buildarch} in
+    case ${clst_basearch} in
         amd64|x86)
             echo arch/x86/boot/bzImage
             ;;
@@ -25,7 +25,7 @@ distkmerge_get_image_path() {
             echo arch/riscv/boot/Image.gz
             ;;
         *)
-            die "unsupported ARCH=${clst_buildarch}"
+            die "unsupported ARCH=${clst_basearch}"
             ;;
     esac
 }
