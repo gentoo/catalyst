@@ -130,6 +130,7 @@ class StageBase(TargetBase, ClearBase, GenBase):
                 for arch in [x for x in arch_config if x.startswith(name) and host in arch_config[x]]:
                     self.settings.update(arch_config[arch][host])
                     setarch = arch_config.get('setarch', {}).get(arch, {})
+                    self.settings["basearch"] = arch
                     break
                 else:
                     # Didn't find a matching subarchitecture, keep searching
